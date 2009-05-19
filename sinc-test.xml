@@ -11,7 +11,7 @@
     	<!-- path de los templates para el backend -->
     	<property name="test_backend_templates_dir" value="${test}/administrator/templates/" />
     	<!-- path librerías en test-->
-    	<property name="test_libraries_templates_dir" value="${test}/libraries" />
+    	<property name="test_libraries_dir" value="${test}/libraries" />
     	<!-- path imagenes -->
     	<property name="test_images_dir" value="${test}/images" />
     	<!-- path archivos include -->
