@@ -5,7 +5,7 @@
 	<property file="sinc-test.properties"/>
 
 	<!-- path a la instalación de prueba -->
-	<property name="test" value="${test.dir}" />
+	<property name="test" value="${zonales.base}/${test.dir}" />
 	<!-- path de los templates para el frontend -->
 	<property name="test_frontend_templates_dir" value="${test}/templates" />
     	<!-- path de los templates para el backend -->
@@ -23,7 +23,7 @@
 
 
 	<!-- path del proyecto de desarrollo -->
-    	<property name="dev" value="${dev.dir}" />
+    	<property name="dev" value="${zonales.base}/${dev.dir}" />
     	<!-- path de los templates para el frontend -->
     	<property name="dev_frontend_templates_dir" value="${dev}/templates" />
     	<!-- path de los templates para el backend -->
@@ -135,7 +135,7 @@
 
 	<target name="cp_all"
 		description="copia todos los archivos en la instalación de prueba"
-		depends="cp_templates, cp_language, cp_includes, cp_images, cp_libraries" />
+		depends="cp_templates, cp_language, cp_includes, cp_images, cp_libraries" >
 		<echo message="copiando todos los archivos en la instalación de prueba" />
 	</target>
 
