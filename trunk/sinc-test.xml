@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sinc-test" default="" basedir="">
+
+	<!-- archivo de propiedades -->
+	<property file="sinc-test.properties"/>
+
+	<!-- path a la instalación de prueba -->
+	<property name="test" value="${test.dir}" />
+	<!-- path de los templates para el frontend -->
+	<property name="test_frontend_templates_dir" value="${test}/templates" />
+    	<!-- path de los templates para el backend -->
+    	<property name="test_backend_templates_dir" value="${test}/administrator/templates/" />
+    	<!-- path librerías en test-->
+    	<property name="test_libraries_templates_dir" value="${test}/libraries" />
+    	<!-- path imagenes -->
+    	<property name="test_images_dir" value="${test}/images" />
+    	<!-- path archivos include -->
+    	<property name="test_includes_dir" value="${test}/includes" />
+    	<!-- path archivos i18n frontend -->
+    	<property name="test_frontend_language_dir" value="${test}/language" />
+    	<!-- path archivos i18n backend -->
+    	<property name="test_backend_language_dir" value="${test}/administrator/language" />
+
+
+	<!-- path del proyecto de desarrollo -->
+    	<property name="dev" value="${dev.dir}" />
+    	<!-- path de los templates para el frontend -->
+    	<property name="dev_frontend_templates_dir" value="${dev}/templates" />
+    	<!-- path de los templates para el backend -->
+    	<property name="dev_backend_templates_dir" value="${dev}/administrator/templates/" />
+    	<!-- path librerías -->
+    	<property name="dev_libraries_dir" value="${dev}/libraries" />
+    	<!-- path imagenes -->
+    	<property name="dev_images_dir" value="${dev}/images" />
+    	<!-- path archivos include -->
+    	<property name="dev_includes_dir" value="${dev}/includes" />
+    	<!-- path archivos i18n frontend -->
+    	<property name="dev_frontend_language_dir" value="${dev}/language" />
+    	<!-- path archivos i18n backend -->
+    	<property name="dev_backend_language_dir" value="${dev}/administrator/language" />
+    	
+
+    	<!-- archivos templates frontend -->
+    	<fileset dir="${dev_frontend_templates_dir}" id="dev_frontend_templates_files" />
+    	<!-- archivos templates backend -->
+    	<fileset dir="${dev_backend_templates_dir}" id="dev_backend_templates_files" />
+    	<!-- archivos librerias -->
+    	<fileset dir="${dev_libraries_dir}" id="dev_libraries_files" />
+    	<!-- archivos imagenes -->
+    	<fileset dir="${dev_images_dir}" id="dev_images_files" />
+    	<!-- archivos include -->
+    	<fileset dir="${dev_includes_dir}" id="dev_includes_files" />
+    	<!-- archivos language -->
+    	<fileset dir="${dev_language_dir}" id="dev_frontend_language_files" />
+    	<!-- archivos language backend -->
+    	<fileset dir="${dev_language_back_dir}" id="dev_backend_language_files" />
+
+
+    	<!-- copia template frontend en instalacion de prueba -->
+    	<target name="cp_frontend_templates" 
+    		description="copia template frontend en instalacion de prueba">
+        	<echo message="copiando templates frontend..." />
+        	<copy todir="${test_frontend_templates_dir}">
+            		<fileset refid="dev_frontend_templates_files" />
+        	</copy>
+    	</target>
+    	
+	<!-- copia template backend en instalacion de prueba -->
+    	<target name="cp_backend_templates" 
+    		description="copia template backend en instalacion de prueba">
+        	<echo message="copiando templates backend..." />
+        	<copy todir="${test_backend_templates_dir}">
+            		<fileset refid="dev_backend_templates_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia librerias en instalacion de prueba -->
+    	<target name="cp_libraries" 
+    		description="copia librerias en instalacion de prueba">
+        	<echo message="copiando librerias..." />
+        	<copy todir="${test_libraries_dir}">
+            		<fileset refid="dev_libraries_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia imagenes en instalacion de prueba -->
+    	<target name="cp_images" 
+    		description="copia imagenes en instalacion de prueba">
+        	<echo message="copiando imagenes..." />
+        	<copy todir="${test_images_dir}">
+            		<fileset refid="dev_images_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia includes en instalacion de prueba -->
+    	<target name="cp_includes" 
+    		description="copia includes en instalacion de prueba">
+        	<echo message="copiando includes..." />
+        	<copy todir="${test_includes_dir}">
+            		<fileset refid="dev_includes_files" />
+        	</copy>
+    	</target>
+    	
+	<!-- copia language frontend en instalacion de prueba -->
+    	<target name="cp_frontend_language" 
+    		description="copia language frontend en instalacion de prueba">
+        	<echo message="copiando language frontend..." />
+        	<copy todir="${test_frontend_language_dir}">
+            		<fileset refid="dev_frontend_language_files" />
+        	</copy>
+    	</target>
+    	
+	<!-- copia language backend en instalacion de prueba -->
+    	<target name="cp_backend_language" 
+    		description="copia language backend en instalacion de prueba">
+        	<echo message="copiando language backend..." />
+        	<copy todir="${test_backend_language_dir}">
+            		<fileset refid="dev_backend_language_files" />
+        	</copy>
+    	</target>
+
+
+	<!-- tareas integradas -->
+	<target name="cp_templates"
+		description="copia templates backend y frontend en instalación de prueba"
+		depends="cp_frontend_templates, cp_backend_templates" >
+		<echo message="copiando templates backend y frontend en instalacion de prueba" />
+	</target>
+	
+	<target name="cp_language"
+		description="copia language backend y frontend en instalación de prueba"
+		depends="cp_frontend_language, cp_backend_language" >
+		<echo message="copiando language backend y frontend en instalacion de prueba" />
+	</target>
+
+	<target name="cp_all"
+		description="copia todos los archivos en la instalación de prueba"
+		depends="cp_templates, cp_language, cp_includes, cp_images, cp_libraries" />
+		<echo message="copiando todos los archivos en la instalación de prueba" />
+	</target>
+
+</project>
