@@ -51,9 +51,9 @@
     	<!-- archivos include -->
     	<fileset dir="${dev_includes_dir}" id="dev_includes_files" />
     	<!-- archivos language -->
-    	<fileset dir="${dev_language_dir}" id="dev_frontend_language_files" />
+    	<fileset dir="${dev_frontend_language_dir}" id="dev_frontend_language_files" />
     	<!-- archivos language backend -->
-    	<fileset dir="${dev_language_back_dir}" id="dev_backend_language_files" />
+    	<fileset dir="${dev_backend_language_dir}" id="dev_backend_language_files" />
 
 
     	<!-- copia template frontend en instalacion de prueba -->
