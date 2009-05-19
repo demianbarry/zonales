@@ -13,7 +13,8 @@
     	<!-- path librerías en test-->
     	<property name="test_libraries_dir" value="${test}/libraries" />
     	<!-- path imagenes -->
-    	<property name="test_images_dir" value="${test}/images" />
+    	<property name="test_frontend_images_dir" value="${test}/images" />
+    	<property name="test_backend_images_dir" value="${test}/administrator/images" />
     	<!-- path archivos include -->
     	<property name="test_includes_dir" value="${test}/includes" />
     	<!-- path archivos i18n frontend -->
@@ -31,7 +32,8 @@
     	<!-- path librerías -->
     	<property name="dev_libraries_dir" value="${dev}/libraries" />
     	<!-- path imagenes -->
-    	<property name="dev_images_dir" value="${dev}/images" />
+    	<property name="dev_frontend_images_dir" value="${dev}/images" />
+    	<property name="dev_backend_images_dir" value="${dev}/administrator/images" />
     	<!-- path archivos include -->
     	<property name="dev_includes_dir" value="${dev}/includes" />
     	<!-- path archivos i18n frontend -->
@@ -47,7 +49,8 @@
     	<!-- archivos librerias -->
     	<fileset dir="${dev_libraries_dir}" id="dev_libraries_files" />
     	<!-- archivos imagenes -->
-    	<fileset dir="${dev_images_dir}" id="dev_images_files" />
+    	<fileset dir="${dev_frontend_images_dir}" id="dev_frontend_images_files" />
+    	<fileset dir="${dev_backend_images_dir}" id="dev_backend_images_files" />
     	<!-- archivos include -->
     	<fileset dir="${dev_includes_dir}" id="dev_includes_files" />
     	<!-- archivos language -->
@@ -84,11 +87,18 @@
     	</target>
 	
 	<!-- copia imagenes en instalacion de prueba -->
-    	<target name="cp_images" 
+    	<target name="cp_frontend_images" 
     		description="copia imagenes en instalacion de prueba">
         	<echo message="copiando imagenes..." />
-        	<copy todir="${test_images_dir}">
-            		<fileset refid="dev_images_files" />
+        	<copy todir="${test_frontend_images_dir}">
+            		<fileset refid="dev_frontend_images_files" />
+        	</copy>
+    	</target>
+    	<target name="cp_backend_images" 
+    		description="copia imagenes del backend en instalacion de prueba">
+        	<echo message="copiando imagenes backend..." />
+        	<copy todir="${test_backend_images_dir}">
+            		<fileset refid="dev_backend_images_files" />
         	</copy>
     	</target>
 	
@@ -131,6 +141,12 @@
 		description="copia language backend y frontend en instalación de prueba"
 		depends="cp_frontend_language, cp_backend_language" >
 		<echo message="copiando language backend y frontend en instalacion de prueba" />
+	</target>
+	
+	<target name="cp_images"
+		description="copia imagenes del backend y frontend en instalación de prueba"
+		depends="cp_frontend_images, cp_backend_images" >
+		<echo message="copiando imagenes backend y frontend en instalacion de prueba" />
 	</target>
 
 	<target name="cp_all"
