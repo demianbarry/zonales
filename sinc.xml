@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sinc" default="" basedir="">
+
+	<!-- archivo de propiedades -->
+	<!-- <property file="sinc-test.properties"/> -->
+
+	<!-- path proyecto target -->
+	<property name="target" value="${zonales.base}/${target.dir}" />
+    	<!-- path backend -->
+	<property name="target_backend_dir" value="${target}/administrator" />
+	<!-- path templates -->
+	<property name="target_frontend_templates_dir" value="${target}/templates" />
+    	<property name="target_backend_templates_dir" value="${target_backend_dir}/templates/" />
+    	<!-- path librerías -->
+    	<property name="target_libraries_dir" value="${target}/libraries" />
+    	<!-- path imagenes -->
+    	<property name="target_frontend_images_dir" value="${target}/images" />
+    	<property name="target_backend_images_dir" value="${target_backend_dir}/images" />
+    	<!-- path include -->
+    	<property name="target_frontend_includes_dir" value="${target}/includes" />
+    	<property name="target_backend_includes_dir" value="${target_backend_dir}/includes" />
+    	<!-- path i18n -->
+    	<property name="target_frontend_language_dir" value="${target}/language" />
+    	<property name="target_backend_language_dir" value="${target_backend_dir}/language" />
+    	<!-- path media -->
+	<property name="target_media_dir" value="${target}/media" />
+
+
+	<!-- path proyecto sorce -->
+    	<property name="src" value="${zonales.base}/${src.dir}" />
+    	<!-- path backend -->
+	<property name="src_backend_dir" value="${src}/administrator" />
+    	<!-- path templates -->
+    	<property name="src_frontend_templates_dir" value="${src}/templates" />
+    	<property name="src_backend_templates_dir" value="${src_backend_dir}/templates/" />
+    	<!-- path librerías -->
+    	<property name="src_libraries_dir" value="${src}/libraries" />
+    	<!-- path imagenes -->
+    	<property name="src_frontend_images_dir" value="${src}/images" />
+    	<property name="src_backend_images_dir" value="${src_backend_dir}/images" />
+    	<!-- path include -->
+    	<property name="src_frontend_includes_dir" value="${src}/includes" />
+    	<property name="src_backend_includes_dir" value="${src_backend_dir}/includes" />
+    	<!-- path i18n -->
+    	<property name="src_frontend_language_dir" value="${src}/language" />
+    	<property name="src_backend_language_dir" value="${src_backend_dir}/language" />
+    	<!-- path media -->
+	<property name="src_media_dir" value="${src}/media" />
+   
+ 
+	<!-- archivos backend -->
+	<fileset dir="${src_backend_dir}" id="src_backend_files">
+		<exclude name="backups/**" />
+		<exclude name="cache/**" />
+		<exclude name="help/**" />
+		<exclude name="images/**" />
+		<exclude name="language/**" />
+		<exclude name="modules/**" />
+		<exclude name="templates/**" />
+	</fileset>
+    	<!-- archivos templates -->
+    	<fileset dir="${src_frontend_templates_dir}" id="src_frontend_templates_files" />
+    	<fileset dir="${src_backend_templates_dir}" id="src_backend_templates_files" />
+    	<!-- archivos librerias -->
+    	<fileset dir="${src_libraries_dir}" id="src_libraries_files" />
+    	<!-- archivos imagenes -->
+    	<fileset dir="${src_frontend_images_dir}" id="src_frontend_images_files" />
+    	<fileset dir="${src_backend_images_dir}" id="src_backend_images_files" />
+    	<!-- archivos include -->
+    	<fileset dir="${src_frontend_includes_dir}" id="src_frontend_includes_files" />
+    	<fileset dir="${src_backend_includes_dir}" id="src_backend_includes_files" />
+    	<!-- archivos language -->
+    	<fileset dir="${src_frontend_language_dir}" id="src_frontend_language_files" />
+    	<fileset dir="${src_backend_language_dir}" id="src_backend_language_files" />
+    	<!-- archivos media -->
+	<fileset dir="${src_media_dir}" id="src_media_files" />
+
+
+    	<!-- copia templates instalacion de prueba -->
+    	<target name="cp_frontend_templates" 
+    		description="copia template frontend en instalacion de prueba">
+        	<echo message="copiando templates frontend..." />
+        	<copy todir="${target_frontend_templates_dir}">
+            		<fileset refid="src_frontend_templates_files" />
+        	</copy>
+    	</target>
+    	<target name="cp_backend_templates" 
+    		description="copia template backend en instalacion de prueba">
+        	<echo message="copiando templates backend..." />
+        	<copy todir="${target_backend_templates_dir}">
+            		<fileset refid="src_backend_templates_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia librerias en instalacion de prueba -->
+    	<target name="cp_libraries" 
+    		description="copia librerias en instalacion de prueba">
+        	<echo message="copiando librerias..." />
+        	<copy todir="${target_libraries_dir}">
+            		<fileset refid="src_libraries_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia imagenes en instalacion de prueba -->
+    	<target name="cp_frontend_images" 
+    		description="copia imagenes en instalacion de prueba">
+        	<echo message="copiando imagenes..." />
+        	<copy todir="${target_frontend_images_dir}">
+            		<fileset refid="src_frontend_images_files" />
+        	</copy>
+    	</target>
+    	<target name="cp_backend_images" 
+    		description="copia imagenes del backend en instalacion de prueba">
+        	<echo message="copiando imagenes backend..." />
+        	<copy todir="${target_backend_images_dir}">
+            		<fileset refid="src_backend_images_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia includes en instalacion de prueba -->
+    	<target name="cp_frontend_includes" 
+    		description="copia includes frontend en instalacion de prueba">
+        	<echo message="copiando includes..." />
+        	<copy todir="${target_frontend_includes_dir}">
+            		<fileset refid="src_frontend_includes_files" />
+        	</copy>
+    	</target>
+    	<target name="cp_backend_includes" 
+    		description="copia includes backend en instalacion de prueba">
+        	<echo message="copiando includes..." />
+        	<copy todir="${target_backend_includes_dir}">
+            		<fileset refid="src_backend_includes_files" />
+        	</copy>
+    	</target>
+    	
+    	
+	<!-- copia language frontend en instalacion de prueba -->
+    	<target name="cp_frontend_language" 
+    		description="copia language frontend en instalacion de prueba">
+        	<echo message="copiando language frontend..." />
+        	<copy todir="${target_frontend_language_dir}">
+            		<fileset refid="src_frontend_language_files" />
+        	</copy>
+    	</target>
+    	
+	<!-- copia language backend en instalacion de prueba -->
+    	<target name="cp_backend_language" 
+    		description="copia language backend en instalacion de prueba">
+        	<echo message="copiando language backend..." />
+        	<copy todir="${target_backend_language_dir}">
+            		<fileset refid="src_backend_language_files" />
+        	</copy>
+    	</target>
+	
+	<!-- copia media en instalacion de prueba -->
+    	<target name="cp_media" 
+    		description="copia media en instalacion de prueba">
+        	<echo message="copiando media..." />
+        	<copy todir="${target_media_dir}">
+            		<fileset refid="src_media_files" />
+        	</copy>
+    	</target>
+
+
+	<!-- tareas integradas -->
+	<target name="cp_templates"
+		description="copia templates backend y frontend en instalación de prueba"
+		depends="cp_frontend_templates, cp_backend_templates" >
+		<echo message="copiando templates backend y frontend en instalacion de prueba" />
+	</target>
+	
+	<target name="cp_language"
+		description="copia language backend y frontend en instalación de prueba"
+		depends="cp_frontend_language, cp_backend_language" >
+		<echo message="copiando language backend y frontend en instalacion de prueba" />
+	</target>
+	
+	<target name="cp_images"
+		description="copia imagenes del backend y frontend en instalación de prueba"
+		depends="cp_frontend_images, cp_backend_images" >
+		<echo message="copiando imagenes backend y frontend en instalacion de prueba" />
+	</target>
+
+	<target name="cp_includes"
+		description="copia includes del backend y frontend en instalación de prueba"
+		depends="cp_frontend_includes, cp_backend_includes" >
+		<echo message="copiando includes backend y frontend en instalacion de prueba" />
+	</target>
+
+	<target name="cp_all"
+		description="copia todos los archivos en la instalación de prueba"
+		depends="cp_templates, cp_language, cp_includes, cp_images, cp_libraries, cp_media" >
+		<echo message="copiando todos los archivos en la instalación de prueba" />
+	</target>
+
+</project>
