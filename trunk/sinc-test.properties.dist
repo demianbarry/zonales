@@ -1,7 +1,9 @@
 zonales.base=/path/to/base
 
-test.dir=zonales_test
-test.name=Zonales Test
+# test
+target.dir=zonales_test
+target.name=Zonales Test
 
-dev.dir=zonales_dev
-dev.name=Zonales Development
+# development
+src.dir=zonales_dev
+src.name=Zonales Development
