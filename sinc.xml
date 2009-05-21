@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="sinc" default="" basedir="">
 
-	<!-- archivo de propiedades -->
-	<!-- <property file="sinc-test.properties"/> -->
-
 	<!-- path proyecto target -->
 	<property name="target" value="${zonales.base}/${target.dir}" />
     	<!-- path backend -->
