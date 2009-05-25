@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="zonales" default="" basedir=".">
+
+  <!-- archivo properties -->
+  <property file="build.properties"/>
+  <!-- archivo de propiedades -->
+  <property file="sinc-test.properties" />
+
+  <!-- path base  -->
+  <property name="src" value="${basedir}"/>
+  <!-- path distribuibles --> 
+  <property name="src_dist_dir" value="${src}/dist" />
+  <!-- path i18n -->
+  <property name="src_i18n_dir" value="${src}/language" />
+  <!-- path modulos -->
+  <property name="src_modules" value="${src}/modules"/>
+
+  <!-- path devel -->
+  <property name="dst" value="${zonales.base}/${src.dir}" />
+  <property name="dst_frontend_language_dir" value="${dst}/language" />
+  <property name="dst_backend_language_dir" value="${dst}/administrator/language" />
+  <property name="dst_modules_dir" value="${dst}/modules" />
+
+  <!-- mod_seleccionazonal -->
+  <fileset dir="${src_modules}/mod_seleccionazonal" id="mod_seleccionazonal_files">
+    <include name="**" />
+  </fileset>
+  
+
+
+  <!-- ======================================================
+       		      copia archivos instalación
+       ====================================================== -->
+  <!-- archivos i18n -->
+  <target name="inst_frontend_i18n" description="copia archivos i18n frontend en instalación development">
+    <echo message="copiando archivos i18n en instalacion development"/>
+    <copy todir="${dst_frontend_language_dir}/es-ES">
+      <fileset dir="${src_i18n_dir}/frontend/es-ES" />
+    </copy>
+  </target>
+
+  <!-- modulo seleccionazonal --> 
+  <target name="inst_mod_seleccionazonal" description="copia modulo seleccionazonal a dev">
+    <echo message="copiando modulo seleccionazonal en instalacion development"/>
+    <copy todir="${dst_modules_dir}/mod_seleccionazonal">
+      <fileset dir="${src_modules}/mod_seleccionazonal" />
+    </copy>
+  </target>
+
+
+
+  <!-- ======================================================
+       			archivos distribución
+       ====================================================== -->
+  <!-- modulo seleccionazonal --> 
+  <target name="dist_mod_seleccionazonal" description="Crea archivo de distribución Joomla para el modulo SeleccionaZonal">
+    <echo message="Creando archivo de distribución de modulo SeleccionaZonal"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_seleccionazonal.file}.zip" >
+      <fileset refid="mod_seleccionazonal_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_seleccionazonal.ini" prefix="language" />
+    </zip>
+  </target>
+
+</project>
