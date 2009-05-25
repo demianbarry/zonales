@@ -7,9 +7,9 @@ class modSeleccionaZonalHelper
 	function getZonales() 
 	{
 	  	$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.label')
-                    .' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
+		$query = 'SELECT ' . $dbo->nameQuote('f.id') . ', ' . $dbo->nameQuote('f.label')
+                    	.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
 		$dbo->setQuery($query);
-		return $dbo->loadResultArray();
+		return $dbo->loadObjectList();
 	}
 }
