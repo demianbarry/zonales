@@ -14,12 +14,14 @@
   <property name="src_i18n_dir" value="${src}/language" />
   <!-- path modulos -->
   <property name="src_modules" value="${src}/modules"/>
+  <property name="src_frontend_components" value="${src}/site"/>
 
   <!-- path devel -->
   <property name="dst" value="${zonales.base}/${src.dir}" />
   <property name="dst_frontend_language_dir" value="${dst}/language" />
   <property name="dst_backend_language_dir" value="${dst}/administrator/language" />
   <property name="dst_modules_dir" value="${dst}/modules" />
+  <property name="dst_frontend_components_dir" value="${dst}/components" />
 
   <!-- mod_seleccionazonal -->
   <fileset dir="${src_modules}/mod_seleccionazonal" id="mod_seleccionazonal_files">
@@ -44,6 +46,14 @@
     <echo message="copiando modulo seleccionazonal en instalacion development"/>
     <copy todir="${dst_modules_dir}/mod_seleccionazonal">
       <fileset dir="${src_modules}/mod_seleccionazonal" />
+    </copy>
+  </target>
+
+  <!-- modulo content (modificado) --> 
+  <target name="inst_mod_content" description="copia modulo content a dev">
+    <echo message="copiando modulo content en instalacion development"/>
+    <copy todir="${dst_frontend_components_dir}/com_content">
+      <fileset dir="${src_frontend_components}/com_content" />
     </copy>
   </target>
 
