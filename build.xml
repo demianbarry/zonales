@@ -93,4 +93,12 @@
     </zip>
   </target>
 
+  <!-- componente com_content (modificaciones) -->
+  <target name="dist_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
+    <echo message="Creando archivos de distribución de componente content"/>
+    <zip destfile="${src_dist_dir}/${dist.com_content.file}.zip">
+      <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
+    </zip>
+  </target>
+
 </project>
