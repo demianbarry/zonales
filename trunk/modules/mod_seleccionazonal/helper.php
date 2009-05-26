@@ -12,4 +12,10 @@ class modSeleccionaZonalHelper
 		$dbo->setQuery($query);
 		return $dbo->loadObjectList();
 	}
+
+	function getZonalActual()
+	{
+		$session = JFactory::getSession();
+		return $session->get('zonales_zonal_id', NULL);
+	}
 }
