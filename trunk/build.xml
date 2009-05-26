@@ -14,7 +14,7 @@
   <property name="src_i18n_dir" value="${src}/language" />
   <!-- path modulos -->
   <property name="src_modules" value="${src}/modules"/>
-  <property name="src_frontend_components" value="${src}/site"/>
+  <property name="src_frontend_components" value="${src}/components"/>
 
   <!-- path devel -->
   <property name="dst" value="${zonales.base}/${src.dir}" />
@@ -28,6 +28,10 @@
     <include name="**" />
   </fileset>
   
+  <!-- com_userzonales -->
+  <fileset dir="${src_frontend_components}/com_userzonales" id="com_userzonales_files">
+    <include name="**" />
+  </fileset>
 
 
   <!-- ======================================================
@@ -49,11 +53,21 @@
     </copy>
   </target>
 
-  <!-- modulo content (modificado) --> 
-  <target name="inst_mod_content" description="copia modulo content a dev">
-    <echo message="copiando modulo content en instalacion development"/>
+  <!-- componente content (modificado) --> 
+  <target name="inst_com_content" description="copia componente content a dev">
+    <echo message="copiando componente content en instalacion development"/>
     <copy todir="${dst_frontend_components_dir}/com_content">
       <fileset dir="${src_frontend_components}/com_content" />
+    </copy>
+  </target>
+
+  <!-- componente userzonales --> 
+  <target name="inst_com_userzonales" description="copia componente userzonales a dev">
+    <echo message="copiando componente userzonales en instalacion development"/>
+    <copy todir="${dst_frontend_components_dir}/com_userzonales">
+      <fileset dir="${src_frontend_components}/com_userzonales">
+      	<exclude name="admin/**" />
+      </fileset>
     </copy>
   </target>
 
@@ -68,6 +82,14 @@
     <zip destfile="${src_dist_dir}/${dist.mod_seleccionazonal.file}.zip" >
       <fileset refid="mod_seleccionazonal_files"/>
       <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_seleccionazonal.ini" prefix="language" />
+    </zip>
+  </target>
+  
+  <!-- componente userzonales --> 
+  <target name="dist_com_userzonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
+    <echo message="Creando archivo de distribución de componente UserZonales"/>
+    <zip destfile="${src_dist_dir}/${dist.com_userzonales.file}.zip">
+      <fileset refid="com_userzonales_files"/>
     </zip>
   </target>
 
