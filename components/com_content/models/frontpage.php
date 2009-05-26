@@ -112,6 +112,16 @@ class ContentModelFrontpage extends JModel
 		return true;
 	}
 
+	function _buildCustomPropertiesJoin()
+	{
+		$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
+		$session = JFactory::getSession();
+		if ($zonal_id = $session->get('zonales_zonal_id', NULL)) {
+			$join .= ' AND p.field_id = ' . $zonal_id;
+		}
+		return $join;
+	}
+
 	function _buildQuery()
 	{
 		global $mainframe;
@@ -124,6 +134,8 @@ class ContentModelFrontpage extends JModel
 		// Get the WHERE and ORDER BY clauses for the query
 		$where	= $this->_buildContentWhere();
 		$orderby 			= $this->_buildContentOrderBy();
+		// Custom Properties join
+		$cpjoin = $this->_buildCustomPropertiesJoin();
 
 		$query = ' SELECT a.id, a.title, a.alias, a.title_alias, a.introtext, a.fulltext, a.sectionid, a.state, a.catid, a.created, a.created_by, a.created_by_alias, a.modified, a.modified_by,' .
 			' a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, a.images, a.attribs, a.urls, a.metakey, a.metadesc, a.access,' .
@@ -138,7 +150,7 @@ class ContentModelFrontpage extends JModel
 			' LEFT JOIN #__sections AS s ON s.id = a.sectionid'.
 			' LEFT JOIN #__users AS u ON u.id = a.created_by' .
 			' LEFT JOIN #__groups AS g ON a.access = g.id'.
-			' LEFT JOIN #__custom_properties p ON a.id = p.content_id'.
+			$cpjoin.
 			$voting['join'].
 			$where
 			.' GROUP BY a.id'
