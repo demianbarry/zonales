@@ -40,6 +40,11 @@ class UserZonalesController extends JController
 	{
 		global $option;
 
+		$zonal = JRequest::getVar('selectZonal', NULL, 'post', 'int');
+
+		$session = JFactory::getSession();
+		$session->set('zonales_zonal_id', $zonal);
+
 		$link = JRoute::_('index.php');
 		$this->setRedirect($link);
 	}
