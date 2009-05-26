@@ -17,7 +17,7 @@
     <filename>tmpl/index.html</filename>
   </files>
   <languages folder="language">
-    <language tag="es-ES">es-ES/es-ES.mod_seleccionazonal.ini</language>
+    <language tag="es-ES">es-ES.mod_seleccionazonal.ini</language>
   </languages>
   <params/>
 </install>
