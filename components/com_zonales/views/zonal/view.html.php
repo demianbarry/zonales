@@ -12,15 +12,18 @@ jimport( 'joomla.application.component.view');
  * @subpackage	Users
  * @since	1.0
  */
-class UserZonalesViewZonal extends JView
+class ZonalesViewZonal extends JView
 {
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
 
 		$app =& JFactory::getApplication();
+		$helper = new comUserZonalesHelper();
 
 		$this->assignRef('template', $app->getTemplate());
+		$this->assignRef('zonales', $helper->getZonales());
+		$this->assignRef('zonal_id', $helper->getZonalActual());
 
 		parent::display($tpl);
 	}
