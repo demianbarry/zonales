@@ -85,11 +85,13 @@
     </zip>
   </target>
   
-  <!-- componente userzonales --> 
+  <!-- componente zonales --> 
   <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
     <echo message="Creando archivo de distribución de componente UserZonales"/>
     <zip destfile="${src_dist_dir}/${dist.com_zonales.file}.zip">
       <fileset refid="com_zonales_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_zonales.ini" prefix="language" />
+      <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_zonales.ini" prefix="admin/language" />
     </zip>
   </target>
 
