@@ -28,8 +28,8 @@
     <include name="**" />
   </fileset>
   
-  <!-- com_userzonales -->
-  <fileset dir="${src_frontend_components}/com_userzonales" id="com_userzonales_files">
+  <!-- com_zonales -->
+  <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
     <include name="**" />
   </fileset>
 
@@ -62,10 +62,10 @@
   </target>
 
   <!-- componente userzonales --> 
-  <target name="inst_com_userzonales" description="copia componente userzonales a dev">
+  <target name="inst_com_zonales" description="copia componente userzonales a dev">
     <echo message="copiando componente userzonales en instalacion development"/>
-    <copy todir="${dst_frontend_components_dir}/com_userzonales">
-      <fileset dir="${src_frontend_components}/com_userzonales">
+    <copy todir="${dst_frontend_components_dir}/com_zonales">
+      <fileset dir="${src_frontend_components}/com_zonales">
       	<exclude name="admin/**" />
       </fileset>
     </copy>
@@ -86,10 +86,10 @@
   </target>
   
   <!-- componente userzonales --> 
-  <target name="dist_com_userzonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
+  <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
     <echo message="Creando archivo de distribución de componente UserZonales"/>
-    <zip destfile="${src_dist_dir}/${dist.com_userzonales.file}.zip">
-      <fileset refid="com_userzonales_files"/>
+    <zip destfile="${src_dist_dir}/${dist.com_zonales.file}.zip">
+      <fileset refid="com_zonales_files"/>
     </zip>
   </target>
 
