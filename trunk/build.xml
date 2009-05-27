@@ -102,5 +102,13 @@
       <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
     </zip>
   </target>
+  
+  <!-- componente mod_jxcomments_comment (modificaciones) -->
+  <target name="dist_mod_jxcomments_comment" description="Crea archivo de distribución con modificaciones hechas al módulo de comentarios JXComments">
+    <echo message="Creando archivos de distribución de módulo jxcomment"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_jxcomments_comment.file}.zip">
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_comment.ini" prefix="language/es-ES" />
+    </zip>
+  </target>
 
 </project>
