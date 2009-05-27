@@ -23,7 +23,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
   <input type="image" src="templates/<?php echo $template; ?>/images/bot_search_orange.gif" class="submit" name="button" title="title_here" />
   <?php if (!$useSubmitButton) echo "</noscript>"; ?>
   <input type="hidden" name="task" value="setZonal" />
-  <input type="hidden" name="option" value="com_userzonales" />
+  <input type="hidden" name="option" value="com_zonales" />
   <?php echo JHTML::_('form.token'); ?>
 </form>
 </div><!-- end #seleccionaZ -->
