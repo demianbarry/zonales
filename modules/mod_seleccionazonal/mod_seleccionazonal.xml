@@ -19,5 +19,20 @@
   <languages folder="language">
     <language tag="es-ES">es-ES.mod_seleccionazonal.ini</language>
   </languages>
-  <params/>
+  <params>
+    <param name="show_header" type="radio" default="1" label="Mostrar descripción" description="ZPARAMSSHOWDESCRIPTION">
+      <option value="0">No</option>
+      <option value="1">Si</option>
+    </param>
+    <param name="custom_header" type="radio" default="0" label="Descripción personalizada" description="ZPARAMSCUSTOMHEADER">
+      <option value="0">No</option>
+      <option value="1">Si</option>
+    </param>
+    <param name="header_text" type="textarea" rows="3" cols="40" default="" label="Texto descripción personalizada" description="ZPARAMSHEADERTEXT" />
+    <param name="@spacer" type="spacer" default="" label="" description="" />
+    <param name="use_submit_button" type="radio" default="0" label="Usar botón submit" description="ZPARAMSUSESUBMITBUTTON">
+      <option value="0">No</option>
+      <option value="1">Si</option>
+    </param>
+  </params>
 </install>
