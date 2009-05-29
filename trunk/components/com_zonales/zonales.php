@@ -25,7 +25,6 @@ $controller = new ZonalesController();
 
 // Perform the Request task
 $controller->execute( JRequest::getCmd('task'));
-//$controller->execute( JRequest::getVar('view'));
 
 // Redirect if set by the controller
 $controller->redirect();
