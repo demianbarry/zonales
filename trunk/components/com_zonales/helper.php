@@ -26,6 +26,6 @@ class comZonalesHelper
                     	.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
 			.' WHERE '. $dbo->nameQuote('f.id') .' = '. $zonal_id;
 		$dbo->setQuery($query);
-		return $dbo->loadObjectList();
+		return $dbo->loadObject();
 	}
 }

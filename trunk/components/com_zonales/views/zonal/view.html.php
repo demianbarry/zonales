@@ -19,7 +19,7 @@ class ZonalesViewZonal extends JView
 		global $mainframe, $option;
 
 		$app =& JFactory::getApplication();
-		$helper = new comUserZonalesHelper();
+		$helper = new comZonalesHelper();
 
 		$this->assignRef('template', $app->getTemplate());
 		$this->assignRef('zonales', $helper->getZonales());
