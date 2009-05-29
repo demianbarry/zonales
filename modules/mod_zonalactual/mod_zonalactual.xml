@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+  <name>Zonal Actual</name>
+  <author>Mediabit</author>
+  <creationDate>Mayo 2009</creationDate>
+  <copyright/>
+  <license/>
+  <authorEmail/>
+  <authorUrl>http://www.mediabit.com.ar</authorUrl>
+  <version>0.1</version>
+  <description>Muestra el zonal actual<description>
+  <files>
+    <filename module="mod_zonalactual">mod_zonalactual.php</filename>
+    <filename>helper.php</filename>
+    <filename>index.html</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
+  </files>
+  <params>
+    <param name="show_label" type="radio" default="1" label="Mostrar leyenda" description="ZPARAMSSHOWLABEL">
+      <option value="0">No</option>
+      <option value="1">Si</option>
+    </param>
+    <param name="label_text" type="textarea" rows="3" cols="40" default="Zonal actual:" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
+  </params>
+</install>
