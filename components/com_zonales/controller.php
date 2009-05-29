@@ -44,8 +44,7 @@ class ZonalesController extends JController
 
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
-
-		$link = JRoute::_('index.php');
-		$this->setRedirect($link);
+		
+		$this->setRedirect('index.php');
 	}
 }
