@@ -41,10 +41,12 @@ class ZonalesController extends JController
 		global $option;
 
 		$zonal = JRequest::getVar('selectZonal', NULL, 'post', 'int');
+		$query = JRequest::getVar('return', NULL, 'post', 'string');
 
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
 
-		$this->setRedirect('index.php' . comZonalesHelper::getCurrentUrl());
+		if ($query) $query = '?' . $query;
+		$this->setRedirect('index.php' . $query);
 	}
 }

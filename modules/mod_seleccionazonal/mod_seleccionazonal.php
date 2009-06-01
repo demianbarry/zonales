@@ -13,6 +13,10 @@ $zonal_id = $helper->getZonalActual();
 $app =& JFactory::getApplication();
 $template = $app->getTemplate();
 
+// url actual
+$uri = JURI::getInstance();
+$query = $uri->getQuery();
+
 // parametros
 $showHeader = $params->get('show_header');
 $useCustomHeader = $params->get('custom_header');
