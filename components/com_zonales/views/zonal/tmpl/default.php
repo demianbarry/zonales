@@ -10,7 +10,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <img src="templates/<?php echo $this->template; ?>/images/title_inicio_seleccion.gif" border="0" alt="Seleccioná tu Zonal" />
 <div class="padd5">
 <p><?php echo JText::_('SELECCIONA_ZONAL'); ?></p>
-<form action="index.php" method="post" name="setZonalForm" id="setZonalForm">
+<form action="index.php" method="post" name="setZonalComForm" id="setZonalComForm">
   <select class="cmb" id="selectZonal" name="selectZonal">
     <?php foreach ($this->zonales as $zonal): ?>
     <option value="<?php echo $zonal->id; ?>" <?php echo ($this->zonal_id == $zonal->id ? 'selected="selected"' : '') ?>><?php echo $zonal->label; ?></option>  
