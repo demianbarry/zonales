@@ -28,4 +28,13 @@ class comZonalesHelper
 		$dbo->setQuery($query);
 		return $dbo->loadObject();
 	}
+
+	function getCurrentUrl()
+	{
+		$menu =& JSite::getMenu();
+		$item = $menu->getActive();
+		if ($item->query['component']) {
+			return '?option=' . $item->query['component'] . '&view=' . $item->query['view'] . '&id=' . $item->id;
+		}
+	}
 }
