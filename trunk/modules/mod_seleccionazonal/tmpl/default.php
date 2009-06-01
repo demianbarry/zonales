@@ -13,8 +13,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
   <?php endif; ?>
 <?php endif; ?>
 </p>
-<form action="index.php" method="post" name="setZonalForm" id="setZonalForm">
-  <select class="cmb" id="selectZonal" name="selectZonal" <?php if (!$useSubmitButton) {echo 'OnChange="document.setZonalForm.submit()"';} ?> >
+<form action="index.php" method="post" name="setZonalModForm" id="setZonalModForm">
+  <select class="cmb" id="selectZonal" name="selectZonal" <?php if (!$useSubmitButton) {echo 'OnChange="document.setZonalModForm.submit()"';} ?> >
     <?php foreach ($zonales as $zonal): ?>
     <option value="<?php echo $zonal->id; ?>" <?php echo ($zonal_id == $zonal->id ? 'selected="selected"' : '') ?>><?php echo $zonal->label; ?></option>  
     <?php endforeach; ?>
@@ -24,7 +24,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
   <?php if (!$useSubmitButton) echo "</noscript>"; ?>
   <input type="hidden" name="task" value="setZonal" />
   <input type="hidden" name="option" value="com_zonales" />
-  <input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+  <input type="hidden" name="return" value="<?php echo $query; ?>" />
   <?php echo JHTML::_('form.token'); ?>
 </form>
 </div><!-- end #seleccionaZ -->
