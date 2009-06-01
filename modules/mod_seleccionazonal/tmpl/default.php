@@ -24,6 +24,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
   <?php if (!$useSubmitButton) echo "</noscript>"; ?>
   <input type="hidden" name="task" value="setZonal" />
   <input type="hidden" name="option" value="com_zonales" />
+  <input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
   <?php echo JHTML::_('form.token'); ?>
 </form>
 </div><!-- end #seleccionaZ -->

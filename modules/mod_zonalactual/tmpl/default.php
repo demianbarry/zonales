@@ -6,5 +6,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <div id="moduletable_zName">
     <p>
 	<?php if($showLabel) { echo $labelText; } ?>
-	<?php echo ' ' . $zonal_name->label; ?></p>
+	<?php if($zonal_name): ?>
+		<?php echo ' ' . $zonal_name->label; ?></p>
+	<?php endif; ?>
 </div>

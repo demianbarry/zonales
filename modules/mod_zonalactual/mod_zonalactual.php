@@ -8,7 +8,9 @@ require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
 $zonal_id = $helper->getZonalActual();
-$zonal_name = $helper->getZonal($zonal_id);
+if ($zonal_id) {
+	$zonal_name = $helper->getZonal($zonal_id);
+}
 
 // parametros
 $showLabel = $params->get('show_label');
