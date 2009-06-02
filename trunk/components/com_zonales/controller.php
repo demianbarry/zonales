@@ -40,9 +40,12 @@ class ZonalesController extends JController
 	{
 		global $option;
 
+		// parametros
 		$zonal = JRequest::getVar('selectZonal', NULL, 'post', 'int');
 		$query = JRequest::getVar('return', NULL, 'post', 'string');
 
+		// 0 no es un id válido, se convierte a NULL para homogeneizar los controles
+		if ($zonal == 0) $zonal = NULL;
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
 
