@@ -28,8 +28,8 @@ $lists['zonales_select'] = JHTML::_('select.genericlist', $zonales_list, 'select
 $app =& JFactory::getApplication();
 $template = $app->getTemplate();
 
-// url actual
-$uri = JURI::getInstance();
-$query = $uri->getQuery();
+// sección del menu actual
+$menu =& JSite::getMenu();
+$item = $menu->getActive();
 
 require(JModuleHelper::getLayoutPath('mod_seleccionazonal'));
