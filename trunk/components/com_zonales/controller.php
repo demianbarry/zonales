@@ -49,14 +49,6 @@ class ZonalesController extends JController
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
 		
-		$menu = &JSite::getMenu();
-		$item = $menu->getActive();
-
-		/*if ($item->id) {
-			$url = $item->link . '&Itemid=' . $item->id;
-		} else {
-			$url = 'index.php';
-		}*/
 		$this->setRedirect($query);
 	}
 }
