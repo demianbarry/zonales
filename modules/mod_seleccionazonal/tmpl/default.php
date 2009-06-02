@@ -14,11 +14,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <?php endif; ?>
 </p>
 <form action="index.php" method="post" name="setZonalModForm" id="setZonalModForm">
-  <select class="cmb" id="selectZonal" name="selectZonal" <?php if (!$useSubmitButton) {echo 'OnChange="document.setZonalModForm.submit()"';} ?> >
-    <?php foreach ($zonales as $zonal): ?>
-    <option value="<?php echo $zonal->id; ?>" <?php echo ($zonal_id == $zonal->id ? 'selected="selected"' : '') ?>><?php echo $zonal->label; ?></option>  
-    <?php endforeach; ?>
-  </select>
+  <?php echo $lists['zonales_select']; ?> 
   <?php if (!$useSubmitButton) echo "<noscript>"; ?>
   <input type="image" src="templates/<?php echo $template; ?>/images/bot_search_orange.gif" class="submit" name="button" title="title_here" />
   <?php if (!$useSubmitButton) echo "</noscript>"; ?>

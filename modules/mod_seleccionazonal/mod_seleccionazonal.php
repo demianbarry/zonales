@@ -2,12 +2,27 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+
+// parametros
+$showHeader = $params->get('show_header');
+$useCustomHeader = $params->get('custom_header');
+$customHeaderText = $params->get('header_text');
+$useSubmitButton = $params->get('use_submit_button');
 
 // lista de zonales, zonal actualmente seleccionado
-$helper = new modSeleccionaZonalHelper();
+$helper = new comZonalesHelper();
 $zonales =& $helper->getZonales();
 $zonal_id = $helper->getZonalActual();
+
+// js
+$js = !$useSubmitButton ? 'OnChange="document.setZonalModForm.submit()"' : '';
+// crea opcion nula para el select
+$blank_option[] = JHTML::_('select.option', '0', JText::_('SELECCIONE_ZONAL'), 'id', 'label');
+// crea select de zonales disponibles
+$zonales_list = array_merge($blank_option, $zonales);
+$lists['zonales_select'] = JHTML::_('select.genericlist', $zonales_list, 'selectZonal', 
+	'class="cmb" size="1" ' . $js, 'id', 'label', $zonal_id);
 
 // template
 $app =& JFactory::getApplication();
@@ -16,11 +31,5 @@ $template = $app->getTemplate();
 // url actual
 $uri = JURI::getInstance();
 $query = $uri->getQuery();
-
-// parametros
-$showHeader = $params->get('show_header');
-$useCustomHeader = $params->get('custom_header');
-$customHeaderText = $params->get('header_text');
-$useSubmitButton = $params->get('use_submit_button');
 
 require(JModuleHelper::getLayoutPath('mod_seleccionazonal'));
