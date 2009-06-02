@@ -21,6 +21,7 @@
       <option value="1">Si</option>
     </param>
     <param name="label_text" type="textarea" rows="3" cols="40" default="Zonal actual:" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
+    <param name="nozonal_text" type="textarea" rows="1" cols="40" default="no se ha seleccionado un zonal" label="Zonal no seleccionado" description="ZPARAMSNOZONALTEXT" />
   </params>
 </install>
 
