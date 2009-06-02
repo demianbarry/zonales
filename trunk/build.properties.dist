@@ -1,6 +1,8 @@
 # nombre componente
-dist.com_component.file=com_componentname
-
+dist.com_zonales.file=com_zonales
+dist.com_content.file=com_content
+ 
 # nombre modulo
-dist.mod_module.file=mod_modulename
-
+dist.mod_jxcomments.file=mod_jxcomments
+dist.mod_seleccionazonal.file=mod_seleccionazonal
+dist.mod_zonalactual.file=mod_zonalactual
