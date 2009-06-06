@@ -24,6 +24,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </div><!-- end .padd5 -->
 </div><!-- end #selZ-l -->
 <div id="selZ-r">
+<!--
 <img src="templates/<?php echo $this->template; ?>/images/title_inicio_visitados.gif" border="0" alt="Los más visitados" />
 <div class="padd5">
 <a href="/zonales-devel/">Burzaco</a>
