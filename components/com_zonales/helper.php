@@ -11,13 +11,13 @@ class comZonalesHelper
                     	.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
 		$dbo->setQuery($query);
 
-        $cache =& JFactory::getCache('com_zonales');
-        $zonales = $cache->get(array($dbo, 'loadObjectList'), array());
+		$cache =& JFactory::getCache('com_zonales');
+		$zonales = $cache->get(array($dbo, 'loadObjectList'), array());
 		
-        return $zonales;
+		return $zonales;
 	}
 
-    function getZonalActual()
+	function getZonalActual()
 	{
 		$session = JFactory::getSession();
 		return $session->get('zonales_zonal_id', NULL);
@@ -31,8 +31,8 @@ class comZonalesHelper
 			.' WHERE '. $dbo->nameQuote('f.id') .' = '. $zonal_id;
 		$dbo->setQuery($query);
 
-        $cache =& JFactory::getCache('com_zonales');
-        $zonal = $cache->get(array($dbo, 'loadObject'), array());
+		$cache =& JFactory::getCache('com_zonales');
+		$zonal = $cache->get(array($dbo, 'loadObject'), array());
 
 		return $zonal;
 	}
