@@ -36,19 +36,52 @@ class ZonalesController extends JController
 		$view->display();
 	}
 
+	function mapa()
+	{
+		global $option;
+
+		$document =& JFactory::getDocument();
+
+		$vType = $document->getType();
+		$vName = JRequest::getCmd('view','mapa');
+		$vLayout = JRequest::getCmd('layout','default');
+
+		$view =& $this->getView($vName, $vType);
+		$view->setLayout($vLayout);
+		$view->display();
+	}
+
+	/**
+	 * Setea o actualiza la variable de sesión con el zonal actualmente
+	 * seleccionado por el usuario, y redirecciona a la URL de retorno
+	 * especificada.
+	 */
 	function setZonal()
 	{
 		global $option;
 
 		// parametros
-		$zonal = JRequest::getVar('selectZonal', NULL, 'post', 'int');
-		$query = JRequest::getVar('return', NULL, 'post', 'string');
+		$zonal	= JRequest::getVar('selectZonal', NULL, 'post', 'int');
+		$return	= JRequest::getVar('return', NULL, 'post', 'string');
+		$zid	= JRequest::getVar('zid', NULL, 'post', 'string');
+
+		// zonal seleccionado desde mapa flash
+		if (!is_null($zid)) {
+			$helper = new comZonalesHelper();
+			$zonal = $helper->getZonalByName($zid)->id;
+
+			// debido a que flashvar utiliza & para separar las
+			// variables, el url de retorno se encuentra dividido
+			$view = JRequest::getVar('view', NULL, 'post', 'string');
+			$item = JRequest::getVar('Itemid', NULL, 'post', 'int');
+			$return .= '&view=' . $view . '&Itemid=' . $item;
+		}
 
 		// 0 no es un id válido, se convierte a NULL para homogeneizar los controles
 		if ($zonal == 0) $zonal = NULL;
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
 		
-		$this->setRedirect($query);
+		$this->setRedirect($return);
 	}
 }
