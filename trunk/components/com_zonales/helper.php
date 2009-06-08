@@ -12,7 +12,7 @@ class comZonalesHelper
 	function getZonales()
 	{
 		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.id') . ', ' . $dbo->nameQuote('f.label')
+		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
 		$dbo->setQuery($query);
 
@@ -62,6 +62,12 @@ class comZonalesHelper
 		return $zonal;
 	}
 
+	/**
+	 * Recupera información de un zonal a partir de un nombre.
+	 * 
+	 * @param string $name Nombre del zonal
+	 * @return object Objeto con información acerca del zonal indicado
+	 */
 	function getZonalByName($name)
 	{
 		$dbo	= & JFactory::getDBO();
@@ -76,6 +82,14 @@ class comZonalesHelper
 		return $zonal;
 	}
 
+	/**
+	 * Devuelve un array para convertir identificadores de zona de
+	 * Joomla a un identificador de zona del mapa flash (map.swf)
+	 * Los índices del array asociativo contienen los ZoneID habilitados
+	 * El valor correspondiente a este índice es el FlashID usado en map.swf
+	 *
+	 * @return array Arreglo con indetificadores
+	 */
 	function getZif2SifMap()
 	{
 		$j2f = array();

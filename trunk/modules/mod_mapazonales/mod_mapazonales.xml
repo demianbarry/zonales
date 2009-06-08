@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+  <name>Mapa Zonal</name>
+  <author>Mediabit</author>
+  <creationDate>Mayo 2009</creationDate>
+  <copyright/>
+  <license/>
+  <authorEmail/>
+  <authorUrl>http://www.mediabit.com.ar</authorUrl>
+  <version>0.1</version>
+  <description>Muestra mapa para selección de zonal</description>
+  <files>
+    <filename module="mod_mapazonales">mod_mapazonales.php</filename>
+    <filename>index.html</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
+  </files>
+  <params>
+    <param name="show_label" type="radio" default="1" label="Mostrar leyenda" description="ZPARAMSSHOWLABEL">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+    <param name="label_text" type="textarea" rows="3" cols="40" default="Zonal actual:" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
+  </params>
+</install>
+
