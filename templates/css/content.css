@@ -1,0 +1,148 @@
+/* CSS Document */
+
+#mainContent, #otherContent{
+	font-family:"trebuchet MS"; /* contenido principal */
+	color:#555555;
+	font-size:13px;
+	
+}
+
+#mainContent p, #otherContent p{
+	line-height:16px;
+	margin-bottom:10px;
+}
+
+
+#mainContent img{
+	margin-bottom:10px;
+}
+
+.componentheading{ /* título de la categoría */
+	font-family:"trebuchet MS";
+	font-size:10px;
+	color:#285AA4;
+	text-transform:uppercase;
+}
+
+.contentheading{ /* título de los artículos */
+	padding-bottom:5px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color:#333333;
+	font-size:20px;
+	font-weight:bold;
+}
+
+.contentheading a{ /* título de los artículos con link */
+	color:#555555;
+	text-decoration:none;
+}
+
+.small, .createdate{
+	font-family:Tahoma;
+	font-size:10px;
+	color:#CCCCCC;
+}
+
+.createdate{
+	padding-bottom:10px;
+}
+
+.modifydate{
+	font-family:Tahoma;
+	font-size:11px;
+	color:#B4B4B4;
+}
+
+a.readon{ /* leer más... */
+	display:block;
+	margin-top:10px;
+	
+	font-family:"trebuchet MS";
+	font-size:10px;
+	color:#FF9900;
+	text-decoration:none;
+	font-weight:normal;
+	text-transform:uppercase;
+}
+
+a:hover.readon{}
+
+.article_separator{
+	display:block;
+	border-bottom:1px solid #F1F1F1;
+	margin-bottom:10px;
+}
+
+.article_column{
+	padding-right:10px;
+}
+
+.column_separator{
+	padding-left:10px;
+	padding-right:0;
+	border-left:1px solid #F1F1F1;
+}
+
+.blog_more{
+	margin-bottom:20px;
+	padding:20px;
+	background:#FCFCFC;
+	border:1px solid #F1F1F1;
+}
+
+.blog_more strong{
+	display:block;
+	margin-bottom:10px;
+	color:#FF9900;
+	font-weight:bold;
+}
+
+.blog_more li{
+	line-height:16px;
+}
+
+.blog_more li a{
+	color:#666666;
+	text-decoration:none;
+}
+
+.blog_more li a:hover{
+	text-decoration:underline;
+}
+
+/* Agenda */
+
+.contentheading_agenda{
+	padding-bottom:10px;
+}
+
+.contentpagetitle_agenda{
+	font-family:Arial, Helvetica, sans-serif;
+	color:#555555;
+	font-size:16px;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.contentpaneopen_agenda span{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	line-height:18px;
+	color:#FF9900;
+}
+
+/* resultados del custom properties */
+
+.contentpaneopen .cp_result .cp_title a{ /* título de los artículos */
+	padding-bottom:5px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size:20px;
+	font-weight:bold;
+	color:#555555;
+	text-decoration:none;
+}
+
+.contentpaneopen .cp_result .cp_text p{
+	line-height:16px;
+	margin-bottom:10px;
+}

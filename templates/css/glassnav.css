@@ -1,0 +1,85 @@
+/* CSS glassmenu */
+
+	
+
+/* ----------- NAVIGATION----------- */
+
+#navigation{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	border:0; margin:0; padding:0;
+}
+
+#navigation{ /* arriba */
+	height:22px; 
+	margin:0 auto;
+	width:auto; 
+	background:#D7D9BF;
+	}
+	#navigation .right_link{
+		float:right;
+		font-size:11px;
+		margin:0 10px;
+	}
+	#navigation ul{
+	 height:22px;
+	 line-height:22px;	
+	}
+	#navigation ul li{
+		display:inline;
+	}
+	#navigation ul li a,
+	#navigation ul li a:visited {
+
+		padding:0 20px;
+
+		display:block;
+		text-decoration:none;
+		float:left;
+		color:#000000;
+		font-weight:bold;
+		line-height:22px;
+	}
+	#navigation ul li a:hover{
+		color:#FFFFFF;
+		background:#FF9900;
+		padding:0 20px;
+		line-height:22px;
+	}	
+/* ----------- SUBLINKS ----------- */
+#sublinks{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	border:0; margin:0; padding:0;
+}
+
+#sublinks{
+	width:auto;
+	margin:0 auto;
+	/*background:#888888 url(img/sublink.gif);*/
+	background:#FF9900;
+	height:22px;
+	font-size:11px;
+}	
+	#sublinks ul{
+	 height:22px;
+	 line-height:22px;	
+	}
+	#sublinks ul li{
+		display:inline;
+	}
+
+
+#sublinks a{
+		padding:0 20px;
+		display:block;
+		float:left;
+
+		color:#FFFFFF;
+		text-decoration:none;
+		line-height:22px;
+}
+
+#sublinks a:hover{
+	text-decoration:underline;
+}
