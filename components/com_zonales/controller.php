@@ -62,7 +62,7 @@ class ZonalesController extends JController
 
 		// parametros
 		$zonal	= JRequest::getVar('selectZonal', NULL, 'post', 'int');
-		$return	= JRequest::getVar('return', NULL, 'post', 'string');
+		$return	= JRequest::getVar('return', 'index.php', 'post', 'string');
 		$zid	= JRequest::getVar('zid', NULL, 'post', 'string');
 
 		// zonal seleccionado desde mapa flash
@@ -81,7 +81,7 @@ class ZonalesController extends JController
 		if ($zonal == 0) $zonal = NULL;
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
-		
+
 		$this->setRedirect($return);
 	}
 }

@@ -35,6 +35,10 @@
   <fileset dir="${src_modules}/mod_mapazonales" id="mod_mapazonales_files">
     <include name="**" />
   </fileset>
+  <!-- mod_mapainicio -->
+  <fileset dir="${src_modules}/mod_mapainicio" id="mod_mapainicio_files">
+    <include name="**" />
+  </fileset>
   
   <!-- com_zonales -->
   <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -107,6 +111,14 @@
     <echo message="Creando archivo de distribución de modulo ZonalActual"/>
     <zip destfile="${src_dist_dir}/${dist.mod_zonalactual.file}.zip" >
       <fileset refid="mod_zonalactual_files"/>
+    </zip>
+  </target>
+
+  <!-- modulo mapainicio -->
+  <target name="dist_mod_mapainicio" description="Crea archivo de distribución Joomla para el modulo MapaInicio">
+    <echo message="Creando archivo de distribución de modulo MapaInicio"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_mapainicio.file}.zip" >
+      <fileset refid="mod_mapainicio_files"/>
     </zip>
   </target>
   
