@@ -16,17 +16,8 @@
 <body>
 
 <div id="map" style="margin:auto; width:800px; height:560px;">
-  No se puede cargar la pel&iacute;cula.
+  <jdoc:include type="modules" name="index" style="xhtml" />
 </div><!-- END #map -->
-<script type="text/javascript">
-  // <![CDATA[
-  var so = new SWFObject("<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/swf/inicio.swf", "top_nav", "800", "560", "8", "#FFFFFF");
-  so.addParam("scale", "noscale");
-  // so.addParam("wmode", "transparent");
-  so.write("map");
-  // ]]>
-</script>
-
 
 </body>
 </html>
