@@ -61,13 +61,14 @@ class ZonalesController extends JController
 		global $option;
 
 		// parametros
-		$zonal	= JRequest::getVar('selectZonal', NULL, 'post', 'int');
+		$zonal	= JRequest::getVar('selectZonal', NULL, 'post', 'string');
 		$return	= JRequest::getVar('return', 'index.php', 'post', 'string');
 		$zid	= JRequest::getVar('zid', NULL, 'post', 'string');
 
+		$helper = new comZonalesHelper();
+
 		// zonal seleccionado desde mapa flash
 		if (!is_null($zid)) {
-			$helper = new comZonalesHelper();
 			$zonal = $helper->getZonalByName($zid)->id;
 
 			// debido a que flashvar utiliza & para separar las
@@ -76,10 +77,12 @@ class ZonalesController extends JController
 			$item = JRequest::getVar('Itemid', NULL, 'post', 'int');
 			if ($view && $item)
 				$return .= '&view=' . $view . '&Itemid=' . $item;
+		} else if (!is_null($zonal)) {
+			$zonal = $helper->getZonalByName($zonal)->id;
 		}
 
 		// 0 no es un id válido, se convierte a NULL para homogeneizar los controles
-		if ($zonal == 0) $zonal = NULL;
+		if ($zonal == "") $zonal = NULL;
 		$session = JFactory::getSession();
 		$session->set('zonales_zonal_id', $zonal);
 
