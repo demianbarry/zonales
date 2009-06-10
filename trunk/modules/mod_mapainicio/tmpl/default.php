@@ -23,7 +23,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
 	// Entonces ahora le digo al mapa flash cuál es el
 	// identificador correspondiente a cada flash_id
-	foreach ($this->j2f as $zid => $fid)
+	foreach ($j2f as $zid => $fid)
 	{
 		// El resultado de la siguiente acción será que el partido
 		// identificado en joomla como $zid e identificado en el
