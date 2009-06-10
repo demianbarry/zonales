@@ -74,7 +74,8 @@ class ZonalesController extends JController
 			// variables, el url de retorno se encuentra dividido
 			$view = JRequest::getVar('view', NULL, 'post', 'string');
 			$item = JRequest::getVar('Itemid', NULL, 'post', 'int');
-			$return .= '&view=' . $view . '&Itemid=' . $item;
+			if ($view && $item)
+				$return .= '&view=' . $view . '&Itemid=' . $item;
 		}
 
 		// 0 no es un id válido, se convierte a NULL para homogeneizar los controles
