@@ -15,7 +15,7 @@
 
 <body>
 
-<div id="map">
+<div id="map" style="margin:auto; width:800px; height:560px;">
   No se puede cargar la pel&iacute;cula.
 </div><!-- END #map -->
 <script type="text/javascript">
