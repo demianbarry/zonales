@@ -1,10 +1,10 @@
 <?php
-$session =& JFactory::getSession();
-$zonal = $session->get('zonales_zonal_id', NULL);
+require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+$helper = new comZonalesHelper();
 
 $view = 'component.php';
 
-if(is_null($zonal))
+if(is_null($helper->getZonal()))
 {
 // si no se ha seleccionado un zonal
 $view = 'component_map.php';

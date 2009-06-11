@@ -348,10 +348,13 @@ class ContentModelCategory extends JModel
 	function _buildCustomPropertiesJoin()
 	{
 		$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
-		$session = JFactory::getSession();
-		if ($zonal_id = $session->get('zonales_zonal_id', NULL)) {
-			$join .= ' AND p.field_id = ' . $zonal_id;
+
+		$helper = new comZonalesHelper();
+		$zonal = $helper->getZonal();
+		if ($zonal) {
+			$join .= ' AND p.field_id = ' . $zonal->id;
 		}
+
 		return $join;
 	}
 

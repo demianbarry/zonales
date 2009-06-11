@@ -102,10 +102,13 @@ class ContentModelArchive extends JModel
 	function _buildCustomPropertiesJoin()
 	{
 		$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
-		$session = JFactory::getSession();
-		if ($zonal_id = $session->get('zonales_zonal_id', NULL)) {
-			$join .= ' AND p.field_id = ' . $zonal_id;
+
+		$helper = new comZonalesHelper();
+		$zonal = $helper->getZonal();
+		if ($zonal) {
+			$join .= ' AND p.field_id = ' . $zonal->id;
 		}
+
 		return $join;
 	}
 
@@ -116,10 +119,7 @@ class ContentModelArchive extends JModel
 		$params = &$mainframe->getParams();
 
 		// If voting is turned on, get voting data as well for the content items
-		$voting	= ContentHelperQuery::buildVotingQuery($params);
-
-		// Get the WHERE and ORDER BY clauses for the query
-		$where		= $this->_buildContentWhere();
+		$voting	= ContentHelperQuery::buildVotingQuery($params); // Get the WHERE and ORDER BY clauses for the query $where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
 		// Custom Properties join
 		$cpjoin = $this->_buildCustomPropertiesJoin();

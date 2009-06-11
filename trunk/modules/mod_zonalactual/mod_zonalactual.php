@@ -10,8 +10,8 @@ $labelText = $params->get('label_text', 'label_text');
 
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
-$zonal_id = $helper->getZonalActual();
-$zonalName = $zonal_id ? $helper->getZonal($zonal_id)->label : $params->get('nozonal_text');
+$zonal = $helper->getZonal();
+$zonalName = $zonal ? $zonal->label : $params->get('nozonal_text');
 
 // template
 $app =& JFactory::getApplication();
