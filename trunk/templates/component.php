@@ -94,15 +94,6 @@
   	</div><!-- END #buttons_bottom-inner -->
   </div><!-- END #buttons_bottom -->
   
-  <div id="footer">
-    <div id="footer-l">
-    	<jdoc:include type="modules" name="footer" style="xhtml" />
-    </div><!-- END #footer-l -->
-    <div id="footer-r">
-    	Zonales.com.ar
-    </div><!-- END #footer-r -->
-    <div class="clear"></div>
-  </div><!-- END #footer -->
   <div id="copy">
     Copyright 2009 ZONALES.COM.AR | Todos los derechos reservados.
   </div><!-- END #copy -->
