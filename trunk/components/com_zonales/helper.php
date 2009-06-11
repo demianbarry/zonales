@@ -60,7 +60,7 @@ class comZonalesHelper
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
-			.' WHERE '. $dbo->nameQuote('f.name') .' = '. $dbo->quote($zonal_id);
+			.' WHERE '. $dbo->nameQuote('f.name') .' = '. $dbo->quote($zonal_name);
 		$dbo->setQuery($query);
 
 		$zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
