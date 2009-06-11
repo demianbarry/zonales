@@ -9,7 +9,6 @@ class comZonalesHelper
 
 	function __construct($default = array())
 	{
-		parent::_construct($default);
 		$this->_cache =& JFactory::getCache('com_zonales');
 	}
 
