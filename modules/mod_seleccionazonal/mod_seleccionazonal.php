@@ -13,8 +13,7 @@ $useSubmitButton = $params->get('use_submit_button');
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
 $zonales =& $helper->getZonales();
-//$zonal_id = $helper->getZonalActual();
-$zonal = $helper->getZonal($helper->getZonalActual());
+$zonal = $helper->getZonal();
 
 // js
 $js = !$useSubmitButton ? 'OnChange="document.setZonalModForm.submit()"' : '';
@@ -22,7 +21,7 @@ $js = !$useSubmitButton ? 'OnChange="document.setZonalModForm.submit()"' : '';
 $blank_option[] = JHTML::_('select.option', '', JText::_('SELECCIONE_ZONAL'), 'name', 'label');
 // crea select de zonales disponibles
 $zonales_list = array_merge($blank_option, $zonales);
-$lists['zonales_select'] = JHTML::_('select.genericlist', $zonales_list, 'selectZonal', 
+$lists['zonales_select'] = JHTML::_('select.genericlist', $zonales_list, 'zname',
 	'class="cmb" size="1" ' . $js, 'name', 'label', $zonal->name);
 
 // template

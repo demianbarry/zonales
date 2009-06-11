@@ -4,6 +4,15 @@ defined('_JEXEC') or die('Restricted access');
 
 class comZonalesHelper
 {
+	/** @var JCache */
+	var $_cache = null;
+
+	function __construct($default = array())
+	{
+		parent::_construct($default);
+		$this->_cache =& JFactory::getCache('com_zonales');
+	}
+
 	/**
 	 * Recupera una lista de los zonales actualmente disponibles
 	 *
@@ -16,8 +25,7 @@ class comZonalesHelper
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
 		$dbo->setQuery($query);
 
-		$cache =& JFactory::getCache('com_zonales');
-		$zonales = $cache->get(array($dbo, 'loadObjectList'), array());
+		$zonales = $this->_cache->get(array($dbo, 'loadObjectList'), array());
 
 		return $zonales;
 	}
@@ -26,38 +34,37 @@ class comZonalesHelper
 	 * Retorna el identificador del zonal actual de la sesión, o NULL en
 	 * caso de que no se encuentre seteado ninguno.
 	 *
-	 * @return  int Identificador del zonal actual
+	 * @return  string Identificador del zonal actual
 	 */
 	function getZonalActual()
 	{
 		$session = JFactory::getSession();
-		return $session->get('zonales_zonal_id', NULL);
+		return $session->get('zonales_zonal_name', NULL);
 	}
 
 	/**
 	 * Recupera información acerca de un zonal en particular. Si no se
-	 * especifica un identificador se recuperará información acerca del
+	 * especifica el nombre interno se recuperará información acerca del
 	 * zonal actual.
 	 *
-	 * @param int zonal_id Identificador del zonal
+	 * @param int zonal_name Nombre interno del zonal
 	 * @return object Objeto con información acerca del zonal indicado
 	 */
-	function getZonal($zonal_id = NULL)
+	function getZonal($zonal_name = NULL)
 	{
-		if (is_null($zonal_id))
+		if (is_null($zonal_name))
 		{
-			$zonal_id = $this->getZonalActual();
-			if (is_null($zonal_id)) return NULL;
+			$zonal_name = $this->getZonalActual();
+			if (is_null($zonal_name)) return NULL;
 		}
 
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
-			.' WHERE '. $dbo->nameQuote('f.id') .' = '. $zonal_id;
+			.' WHERE '. $dbo->nameQuote('f.name') .' = '. $dbo->quote($zonal_id);
 		$dbo->setQuery($query);
 
-		$cache =& JFactory::getCache('com_zonales');
-		$zonal = $cache->get(array($dbo, 'loadObject'), array());
+		$zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
 
 		return $zonal;
 	}
@@ -70,16 +77,7 @@ class comZonalesHelper
 	 */
 	function getZonalByName($name)
 	{
-		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.label')
-			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
-			.' WHERE '. $dbo->nameQuote('f.name') .' = '. $dbo->quote($name);
-		$dbo->setQuery($query);
-
-		$cache =& JFactory::getCache('com_zonales');
-		$zonal = $cache->get(array($dbo, 'loadObject'), array());
-
-		return $zonal;
+		return $this->getZonal($name);
 	}
 
 	/**

@@ -23,6 +23,15 @@ jimport('joomla.application.component.controller');
  */
 class ZonalesController extends JController
 {
+	/** @var class */
+	var $_zonalesHelper = null;
+
+	function __construct($default = array())
+	{
+		parent::__construct($default);
+		$this->_zonalesHelper = new comZonalesHelper();
+	}
+
 	function zonal()
 	{
 		global $option;
@@ -61,30 +70,21 @@ class ZonalesController extends JController
 		global $option;
 
 		// parametros
-		$zonal	= JRequest::getVar('selectZonal', NULL, 'post', 'string');
+		$zname	= JRequest::getVar('zname', NULL, 'post', 'string');
 		$return	= JRequest::getVar('return', 'index.php', 'post', 'string');
-		$zid	= JRequest::getVar('zid', NULL, 'post', 'string');
 
-		$helper = new comZonalesHelper();
+		$zonal = $this->helper->getZonalByName($zname);
 
-		// zonal seleccionado desde mapa flash
-		if (!is_null($zid)) {
-			$zonal = $helper->getZonalByName($zid)->id;
+		// debido a que flashvar utiliza & para separar las
+		// variables, el url de retorno se encuentra dividido
+		$view = JRequest::getVar('view', NULL, 'post', 'string');
+		$item = JRequest::getVar('Itemid', NULL, 'post', 'int');
+		if ($view && $item)
+			$return .= '&view=' . $view . '&Itemid=' . $item;
 
-			// debido a que flashvar utiliza & para separar las
-			// variables, el url de retorno se encuentra dividido
-			$view = JRequest::getVar('view', NULL, 'post', 'string');
-			$item = JRequest::getVar('Itemid', NULL, 'post', 'int');
-			if ($view && $item)
-				$return .= '&view=' . $view . '&Itemid=' . $item;
-		} else if (!is_null($zonal)) {
-			$zonal = $helper->getZonalByName($zonal)->id;
-		}
-
-		// 0 no es un id válido, se convierte a NULL para homogeneizar los controles
-		if ($zonal == "") $zonal = NULL;
+		if (!$zonal) $zonal = NULL;
 		$session = JFactory::getSession();
-		$session->set('zonales_zonal_id', $zonal);
+		$session->set('zonales_zonal_name', $zonal);
 
 		$this->setRedirect($return);
 	}
