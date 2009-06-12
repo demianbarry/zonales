@@ -14,6 +14,7 @@ jimport( 'joomla.application.component.view');
  */
 class ZonalesViewMapa extends JView
 {
+
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
@@ -25,10 +26,15 @@ class ZonalesViewMapa extends JView
 		$menu =& JSite::getMenu();
 		$item = $menu->getActive();
 
+		// si debe retornarse una respuesta mediante ajax
+		$this->ajax = JRequest::getBool('ajax');
+		$this->zonal = $helper->getZonal()->name;
+
 		$this->assignRef('j2f', $helper->getZif2SifMap());
 		$this->assignRef('template', $app->getTemplate());
 		$this->assignRef('item', $item);
 
 		parent::display($tpl);
 	}
+
 }

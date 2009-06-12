@@ -20,7 +20,7 @@
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
-    <param name="label_text" type="textarea" rows="3" cols="40" default="Zonal actual:" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
+    <param name="label_text" type="textarea" rows="3" cols="40" default="Seleccionar zonal" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
   </params>
 </install>
 

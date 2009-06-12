@@ -17,12 +17,14 @@ JHTML::script('swfobject.js');
 </div>
 <script type="text/javascript">
 	// <![CDATA[
-	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_0.1.swf?nocache=<?php echo time()?>", "map", "800", "600", "8", "#FFFFFF");
+	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_0.9.swf?nocache=<?php echo time()?>", "map", "800", "600", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 	so.addParam("allowScriptAccess", "sameDomain");
-	so.addVariable("URL_SET_ZONE", 'index.php');
-	so.addVariable("task", 'setZonal');
-	so.addVariable("option", 'com_zonales');
+	so.addVariable("MY_ZONES", "<?php echo $this->zonal; ?>");
+	so.addVariable("URL_SET_ZONE", "index.php");
+	so.addVariable("task", "<?php echo $this->ajax ? 'setZonalAjax' : 'setZonal'; ?>");
+	so.addVariable("option", "com_zonales");
+	<?php if ($this->ajax) echo "so.addVariable(\"format\",\"raw\");\n"; ?>
 	so.addVariable("return", "<?php echo $this->item->link .'&Itemid='. $this->item->id; ?>");
 	<?php
 	// El array devuelto tiene la forma: $j2d['JOOMLA_ZONE_ID'] = 'FLASH_ID'

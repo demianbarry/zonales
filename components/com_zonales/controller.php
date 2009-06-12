@@ -73,8 +73,6 @@ class ZonalesController extends JController
 		$zname	= JRequest::getVar('zname', NULL, 'post', 'string');
 		$return	= JRequest::getVar('return', 'index.php', 'post', 'string');
 
-		$zonal = $this->_zonalesHelper->getZonal($zname);
-
 		// debido a que flashvar utiliza & para separar las
 		// variables, el url de retorno se encuentra dividido
 		$view = JRequest::getVar('view', NULL, 'post', 'string');
@@ -82,10 +80,24 @@ class ZonalesController extends JController
 		if ($view && $item)
 			$return .= '&view=' . $view . '&Itemid=' . $item;
 
-		if (!$zonal) $zname = NULL;
+		$zonal = $this->_zonalesHelper->getZonal($zname);
+		
 		$session = JFactory::getSession();
-		$session->set('zonales_zonal_name', $zname);
+		$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
 
 		$this->setRedirect($return);
+	}
+
+	function setZonalAjax()
+	{
+		$zname	= JRequest::getVar('zname', NULL, 'post', 'string');
+
+		$zonal = $this->_zonalesHelper->getZonal($zname);
+
+		$session = JFactory::getSession();
+		$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+
+		echo "result=success&message=exito";
+		return;
 	}
 }
