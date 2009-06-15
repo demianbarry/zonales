@@ -7,6 +7,7 @@ require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 // parametros
 $showLabel = $params->get('show_label', 'show_label');
 $labelText = $params->get('label_text', 'label_text');
+$titleText = $params->get('title_text', 'title_text');
 
 // template
 $app =& JFactory::getApplication();
