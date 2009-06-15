@@ -26,7 +26,7 @@ JHTML::script('swfobject.js');
 	so.addVariable("option", "com_zonales");
 	<?php if ($this->ajax) echo "so.addVariable(\"format\",\"raw\");\n"; ?>
 	<?php if (!$this->ajax) echo "so.addVariable(\"return\", \"<?php echo $this->return; ?>\");\n"; ?>
-    so.addVariable("PHPSESSID", "<?php echo session_id() ?>")
+	so.addVariable("PHPSESSID", "<?php echo session_id() ?>");
 	<?php
 	// El array devuelto tiene la forma: $j2d['JOOMLA_ZONE_ID'] = 'FLASH_ID'
 	// para todos los zonales activos
