@@ -25,10 +25,10 @@ class ZonalesViewMapa extends JView
 		// url de retorno según sección del menu actual
 		$menu =& JSite::getMenu();
 		$item = $menu->getActive();
-        $return = $item ? $item->link . '&Itemid='. $item->id : 'index.php';
+		$return = $item ? $item->link . '&Itemid='. $item->id : 'index.php';
 
 		// si debe retornarse una respuesta mediante ajax
-        $this->ajax = JRequest::getBool('ajax');
+		$this->ajax = JRequest::getBool('ajax');
 		$this->task = JRequest::getBool('ajax') ? 'setZonalAjax' : 'setZonal';
 		$this->zonal = $helper->getZonal()->name;
 
