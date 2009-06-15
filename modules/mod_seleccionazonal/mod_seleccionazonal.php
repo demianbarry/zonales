@@ -28,8 +28,9 @@ $lists['zonales_select'] = JHTML::_('select.genericlist', $zonales_list, 'zname'
 $app =& JFactory::getApplication();
 $template = $app->getTemplate();
 
-// sección del menu actual
+// url de retorno según sección del menu actual
 $menu =& JSite::getMenu();
 $item = $menu->getActive();
+$return = $item ? $item->link . '&Itemid='. $item->id : 'index.php';
 
 require(JModuleHelper::getLayoutPath('mod_seleccionazonal'));
