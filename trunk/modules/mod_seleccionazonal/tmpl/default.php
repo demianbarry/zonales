@@ -20,7 +20,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
   <?php if (!$useSubmitButton) echo "</noscript>"; ?>
   <input type="hidden" name="task" value="setZonal" />
   <input type="hidden" name="option" value="com_zonales" />
-  <input type="hidden" name="return" value="<?php echo $item->link . '&Itemid='. $item->id; ?>" />
+  <input type="hidden" name="return" value="<?php echo $return; ?>" />
   <?php echo JHTML::_('form.token'); ?>
 </form>
 </div><!-- end #seleccionaZ -->
