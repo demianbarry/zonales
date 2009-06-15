@@ -22,17 +22,19 @@ class ZonalesViewMapa extends JView
 		$app =& JFactory::getApplication();
 		$helper = new comZonalesHelper();
 
-		// sección del menu actual
+		// url de retorno según sección del menu actual
 		$menu =& JSite::getMenu();
 		$item = $menu->getActive();
+        $return = $item ? $item->link . '&Itemid='. $item->id : 'index.php';
 
 		// si debe retornarse una respuesta mediante ajax
-		$this->ajax = JRequest::getBool('ajax');
+        $this->ajax = JRequest::getBool('ajax');
+		$this->task = JRequest::getBool('ajax') ? 'setZonalAjax' : 'setZonal';
 		$this->zonal = $helper->getZonal()->name;
 
 		$this->assignRef('j2f', $helper->getZif2SifMap());
 		$this->assignRef('template', $app->getTemplate());
-		$this->assignRef('item', $item);
+		$this->assignRef('return', $return);
 
 		parent::display($tpl);
 	}

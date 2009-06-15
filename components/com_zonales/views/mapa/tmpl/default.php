@@ -22,10 +22,10 @@ JHTML::script('swfobject.js');
 	so.addParam("allowScriptAccess", "sameDomain");
 	so.addVariable("MY_ZONES", "<?php echo $this->zonal; ?>");
 	so.addVariable("URL_SET_ZONE", "index.php");
-	so.addVariable("task", "<?php echo $this->ajax ? 'setZonalAjax' : 'setZonal'; ?>");
+	so.addVariable("task", "<?php echo $this->task; ?>");
 	so.addVariable("option", "com_zonales");
 	<?php if ($this->ajax) echo "so.addVariable(\"format\",\"raw\");\n"; ?>
-	so.addVariable("return", "<?php echo $this->item->link .'&Itemid='. $this->item->id; ?>");
+	<?php if (!$this->ajax) echo "so.addVariable(\"return\", \"<?php echo $this->return; ?>\");\n"; ?>
     so.addVariable("PHPSESSID", "<?php echo session_id() ?>")
 	<?php
 	// El array devuelto tiene la forma: $j2d['JOOMLA_ZONE_ID'] = 'FLASH_ID'
