@@ -79,27 +79,46 @@ class ZonalesController extends JController
 		if ($view && $item)
 			$return .= '&view=' . $view . '&Itemid=' . $item;
 
-		$zonal = $this->_zonalesHelper->getZonal($zname);
+		if ($zname) {
+			$zonal = $this->_zonalesHelper->getZonal($zname);
 		
-		$session = JFactory::getSession();
-		$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+			if ($zonal) {
+				$session = JFactory::getSession();
+				$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+			}
+		}
 
 		$this->setRedirect($return);
 	}
 
+	/**
+	 * Setea o actualiza la variable de sesión con el zonal actualmente
+	 * seleccionado por el usuario, y retorna mensaje de confirmación.
+	 * Este mètodo debe ser utilizado en operaciones tipo ajax.
+	 */
 	function setZonalAjax()
 	{
 		$zname	= JRequest::getVar('zname', NULL, 'post', 'string');
-        $sesid  = JRequest::getVar('PHPSESSID', NULL, 'post', 'string');
+		$sesid  = JRequest::getVar('PHPSESSID', NULL, 'post', 'string');
 
-		$zonal = $this->_zonalesHelper->getZonal($zname);
+		if ($sesid) session_id($sesid);
 
-		$session = JFactory::getSession();
-		$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+		$result = "failure";
+		$message = "Zonal desconocido";
 
-        if ($sesid) session_id($sesid);
+		if ($zname) {
+			$zonal = $this->_zonalesHelper->getZonal($zname);
 
-		echo "result=success&message=exito";
+			if ($zonal) {
+				$session = JFactory::getSession();
+				$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+
+				$result = "success";
+				$message = $zonal->label;
+			}
+		}
+
+		echo "result=$result&message=$message";
 		return;
 	}
 }
