@@ -16,12 +16,15 @@
     <filename>tmpl/index.html</filename>
   </files>
   <params>
+    <param name="title_text" type="text" default="Seleccione Zonal" label="Título" description="ZPARAMSTITLETEXT" />
     <param name="show_label" type="radio" default="1" label="Mostrar leyenda" description="ZPARAMSSHOWLABEL">
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
     <param name="label_text" type="textarea" rows="3" cols="40" default="Seleccionar zonal" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
-    <param name="title_text" type="text" default="Seleccione Zonal" label="Título" description="ZPARAMSTITLETEXT" />
+    <param name="@spacer" type="spacer" default="" label="" description="" />
+    <param name="width_popup" type="text" default="800" label="Ancho" description="ZPARAMSWIDTH"/>
+    <param name="height_popup" type="text" default="600" label="Alto" description="ZPARAMSHEIGHT"/>
   </params>
 </install>
 
