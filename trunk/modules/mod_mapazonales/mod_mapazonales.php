@@ -10,6 +10,7 @@ $labelText = $params->get('label_text', 'label_text');
 $titleText = $params->get('title_text', 'title_text');
 $height = $params->get('height_popup');
 $width = $params->get('width_popup');
+$useFlash = $params->get('use_flash', false);
 
 // template
 $app =& JFactory::getApplication();
