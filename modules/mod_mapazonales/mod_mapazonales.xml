@@ -25,6 +25,11 @@
     <param name="@spacer" type="spacer" default="" label="" description="" />
     <param name="width_popup" type="text" default="800" label="Ancho" description="ZPARAMSWIDTH"/>
     <param name="height_popup" type="text" default="600" label="Alto" description="ZPARAMSHEIGHT"/>
+    <param name="@spacer" type="spacer" default="" label="" description="" />
+    <param name="use_flash" type="radio" default="0" label="Solo pelicula flash (alpha)" description="Mostrar únicamente la película flash, en lugar del componente" >
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
   </params>
 </install>
 
