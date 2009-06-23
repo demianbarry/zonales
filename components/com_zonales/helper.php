@@ -13,7 +13,7 @@ class comZonalesHelper
 	}
 
 	/**
-	 * Recupera una lista de los zonales actualmente disponibles
+	 * Recupera una lista de los zonales actualmente disponibles. 
 	 *
 	 * @return array Lista de zonales recuperados
 	 */
@@ -30,7 +30,7 @@ class comZonalesHelper
 	}
 
 	/**
-	 * Retorna el identificador del zonal actual de la sesión, o NULL en
+	 * Retorna el identificador del zonal actual de la sesión, o null en
 	 * caso de que no se encuentre seteado ninguno.
 	 *
 	 * @return  string Identificador del zonal actual
@@ -38,7 +38,7 @@ class comZonalesHelper
 	function getZonalActual()
 	{
 		$session = JFactory::getSession();
-		return $session->get('zonales_zonal_name', NULL);
+		return $session->get('zonales_zonal_name', null);
 	}
 
 	/**
@@ -49,12 +49,12 @@ class comZonalesHelper
 	 * @param int zonal_name Nombre interno del zonal
 	 * @return object Objeto con información acerca del zonal indicado
 	 */
-	function getZonal($zonal_name = NULL)
+	function getZonal($zonal_name = null)
 	{
 		if (is_null($zonal_name))
 		{
 			$zonal_name = $this->getZonalActual();
-			if (is_null($zonal_name)) return NULL;
+			if (is_null($zonal_name)) return null;
 		}
 
 		$dbo	= & JFactory::getDBO();
@@ -99,4 +99,68 @@ class comZonalesHelper
 
 		return $j2f;
 	}
+
+	/**
+	 * Recupera los grupos de tags indicados como menúes.
+	 *
+	 * @param string prefix prefijo que indica que un grupo es un menú
+	 * @return array Arreglo con menúes
+	 */
+	function getMenus($prefix)
+	{
+		if (is_null($prefix))
+		{
+			// TODO: error
+		}
+
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
+			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
+			.' WHERE '. $dbo->nameQuote('f.name') .' REGEXP '. $dbo->quote('^'.$prefix);
+		$dbo->setQuery($query);
+
+		$zonal = $this->_cache->get(array($dbo, 'loadObjectList'), array());
+
+		return $zonal;
+	}
+
+	/**
+	 * Recupera los valores del tag indicado
+	 *
+	 * @param int id identificador del tag
+	 * @return array Arreglo de objetos value
+	 */
+	function getMenuValues($id)
+	{
+		if (is_null($id) || !is_numeric($id))
+		{
+			return null;
+		}
+
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '. $dbo->nameQuote('v.label')
+			.' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+			.' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+		$dbo->setQuery($query);
+
+		$zonal = $this->_cache->get(array($dbo, 'loadObjectList'), array());
+
+		return $zonal;
+	}
+
+	/**
+	 * Recupera una lista de los fields cargados en CP.
+	 *
+	 * @return array Lista de zonales recuperados
+	 */
+	function getCpFields()
+	{
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
+			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
+		$dbo->setQuery($query);
+
+		return $this->_cache->get(array($dbo, 'loadObjectList'), array());
+	}
+
 }

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0">
-  <name>Mapa Zonales Inicio</name>
+  <name>Menu Zonales</name>
   <author>Mediabit</author>
-  <creationDate>Mayo 2009</creationDate>
+  <creationDate>Junio 2009</creationDate>
   <copyright/>
   <license/>
   <authorEmail/>
   <authorUrl>http://www.mediabit.com.ar</authorUrl>
   <version>0.1</version>
-  <description>MOD_MAPAINICIO_DESC</description>
+  <description>MENUZONALES_DESC</description>
   <files>
-    <filename module="mod_mapainicio">mod_mapainicio.php</filename>
+    <filename module="mod_menuzonales">mod_menuzonales.php</filename>
     <filename>index.html</filename>
     <filename>tmpl/default.php</filename>
     <filename>tmpl/index.html</filename>
   </files>
   <languages folder="language">
-    <language tag="es-ES">es-ES.mod_mapainicio.ini</language>
+    <language tag="es-ES">es-ES.mod_menuzonales.ini</language>
   </languages>
-  <params/>
+  <params>
+    <param name="custom_menu_prefix" type="text" default="" label="CUSTOM_MENUTAGPREFIX" description="TIP_CUSTOM_MENUTAGPREFIX" />
+  </params>
 </install>
-

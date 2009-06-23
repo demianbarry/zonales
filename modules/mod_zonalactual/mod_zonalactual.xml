@@ -8,20 +8,23 @@
   <authorEmail/>
   <authorUrl>http://www.mediabit.com.ar</authorUrl>
   <version>0.1</version>
-  <description>Muestra el zonal actual</description>
+  <description>MOD_ZONALACTUAL_DESC</description>
   <files>
     <filename module="mod_zonalactual">mod_zonalactual.php</filename>
     <filename>index.html</filename>
     <filename>tmpl/default.php</filename>
     <filename>tmpl/index.html</filename>
   </files>
+  <languages folder="language">
+    <language tag="es-ES">es-ES.mod_zonalactual.ini</language>
+  </languages>
   <params>
-    <param name="show_label" type="radio" default="1" label="Mostrar leyenda" description="ZPARAMSSHOWLABEL">
-      <option value="0">No</option>
-      <option value="1">Si</option>
+    <param name="show_label" type="radio" default="1" label="SHOWLABEL" description="TIP_SHOWLABEL">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
     </param>
-    <param name="label_text" type="textarea" rows="3" cols="40" default="Zonal actual:" label="Texto leyenda" description="ZPARAMSLABELTEXT" />
-    <param name="nozonal_text" type="text" default="No se ha seleccionado un zonal" label="Zonal no seleccionado" description="ZPARAMSNOZONALTEXT" />
+    <param name="label_text" type="text" default="Zonal actual:" label="LABEL" description="TIP_LABEL" />
+    <param name="nozonal_text" type="text" default="Zonal no seleccionado" label="NOZONALSELECTED" description="TIP_NOZONALSELECTED" />
   </params>
 </install>
 

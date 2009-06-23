@@ -39,6 +39,10 @@
   <fileset dir="${src_modules}/mod_mapainicio" id="mod_mapainicio_files">
     <include name="**" />
   </fileset>
+  <!-- mod_menuzonales -->
+  <fileset dir="${src_modules}/mod_menuzonales" id="mod_menuzonales_files">
+    <include name="**" />
+  </fileset>
   
   <!-- com_zonales -->
   <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -111,6 +115,17 @@
     <echo message="Creando archivo de distribución de modulo ZonalActual"/>
     <zip destfile="${src_dist_dir}/${dist.mod_zonalactual.file}.zip" >
       <fileset refid="mod_zonalactual_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zonalactual.ini" prefix="language" />
+    </zip>
+  </target>
+
+  <!-- modulo menuzonales -->
+  <target name="dist_mod_menuzonales" description="Crea archivo de distribución Joomla para el modulo MenuZonales">
+    <echo message="Creando archivo de distribución de modulo MenuZonales"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_menuzonales.file}.zip" >
+      <fileset refid="mod_menuzonales_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="language" />
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="admin/language" />
     </zip>
   </target>
 
@@ -119,6 +134,7 @@
     <echo message="Creando archivo de distribución de modulo MapaInicio"/>
     <zip destfile="${src_dist_dir}/${dist.mod_mapainicio.file}.zip" >
       <fileset refid="mod_mapainicio_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapainicio.ini" prefix="language" />
     </zip>
   </target>
   
