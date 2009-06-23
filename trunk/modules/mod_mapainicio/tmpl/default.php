@@ -7,8 +7,10 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	No se puede cargar la pel&iacute;cula.
 </div><!-- END #map -->
 
-<script type="text/javascript">
+<script type="text/javascript" defer="defer">
 	// <![CDATA[
+	window.addEvent('domready', function() {
+
 	var so = new SWFObject("templates/<?php echo $template; ?>/swf/inicio.swf?nocache=<?php echo time()?>", "top_nav", "800", "560", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 
@@ -32,6 +34,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	}
 	?>
 
+	//window.addEvent('domReady', so.write("map"));
 	so.write("map");
+	});
 	// ]]>
 </script>
