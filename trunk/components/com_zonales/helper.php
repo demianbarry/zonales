@@ -13,23 +13,6 @@ class comZonalesHelper
 	}
 
 	/**
-	 * Recupera una lista de los zonales actualmente disponibles. 
-	 *
-	 * @return array Lista de zonales recuperados
-	 */
-	function getZonales()
-	{
-		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
-			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
-		$dbo->setQuery($query);
-
-		$zonales = $this->_cache->get(array($dbo, 'loadObjectList'), array());
-
-		return $zonales;
-	}
-
-	/**
 	 * Retorna el identificador del zonal actual de la sesión, o null en
 	 * caso de que no se encuentre seteado ninguno.
 	 *
@@ -101,27 +84,66 @@ class comZonalesHelper
 	}
 
 	/**
-	 * Recupera los grupos de tags indicados como menúes.
-	 *
-	 * @param string prefix prefijo que indica que un grupo es un menú
-	 * @return array Arreglo con menúes
+	 * Recupera información acerca de un tipo de tag.
+
+	 * @param string $tipo nombre del tipo a recuperar
+	 * @return object información del tipo recuperado
 	 */
-	function getMenus($prefix)
+	function getTipo($tipo)
 	{
-		if (is_null($prefix))
-		{
-			// TODO: error
+		if (is_null($tipo)) {
+			return null;
 		}
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT ' . $dbo->nameQuote('t.id') .', '. $dbo->nameQuote('t.tipo')
+			.' FROM ' . $dbo->nameQuote('#__zonales_tipotag') . ' t'
+			.' WHERE '. $dbo->nameQuote('t.tipo') .' = '. $dbo->quote($tipo);
+		$dbo->setQuery($query);
+
+		return $this->_cache->get(array($dbo, 'loadObject'), array());
+	}
+
+	/**
+	 * Recupera fields de CP según el tipo de tag asociado.
+	 * 
+	 * @param object información del tipo asociado
+	 * @return array lista de fields recuperados
+	 */
+	function getFields($tipo)
+	{
+		if (is_null($tipo)) return null;
 
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
-			.' WHERE '. $dbo->nameQuote('f.name') .' REGEXP '. $dbo->quote('^'.$prefix);
+			.' INNER JOIN '. $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
+			.' ON '. $dbo->nameQuote('c.field_id') .' = '. $dbo->nameQuote('f.id')
+			.' AND '. $dbo->nameQuote('c.tipo_id') .' = '. $tipo->id;
 		$dbo->setQuery($query);
 
-		$zonal = $this->_cache->get(array($dbo, 'loadObjectList'), array());
+		return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
+	}
 
-		return $zonal;
+	/**
+	 * Recupera una lista de los zonales actualmente disponibles.
+	 *
+	 * @return array Lista de zonales recuperados
+	 */
+	function getZonales()
+	{
+		$tipo = $this->getTipo('zonal');
+		return $this->getFields($tipo);
+	}
+
+	/**
+	 * Recupera los grupos de tags indicados como menúes.
+	 *
+	 * @return array Arreglo con menúes
+	 */
+	function getMenus()
+	{
+		$tipo = $this->getTipo('menu');
+		return $this->getFields($tipo);
 	}
 
 	/**
@@ -147,20 +169,4 @@ class comZonalesHelper
 
 		return $zonal;
 	}
-
-	/**
-	 * Recupera una lista de los fields cargados en CP.
-	 *
-	 * @return array Lista de zonales recuperados
-	 */
-	function getCpFields()
-	{
-		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
-			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f';
-		$dbo->setQuery($query);
-
-		return $this->_cache->get(array($dbo, 'loadObjectList'), array());
-	}
-
 }
