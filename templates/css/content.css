@@ -112,23 +112,35 @@ a:hover.readon{}
 
 /* agenda */
 
+.componentheading_agenda{
+	font-family:"trebuchet MS";
+	font-size:10px;
+	color:#285AA4;
+	text-transform:uppercase;
+	margin-bottom:10px;
+}
+
 .contentheading_agenda{
-	padding-bottom:10px;
+	padding-bottom:6px;
 }
 
 .contentpagetitle_agenda{
-	font-family:Arial, Helvetica, sans-serif;
-	color:#555555;
-	font-size:16px;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#555;
+	font-size:14px;
 	font-weight:bold;
 	text-decoration:none;
 }
 
-.contentpaneopen_agenda span{
-	font-family:Arial, Helvetica, sans-serif;
+.contentpaneopen_agenda{
+	font-family:"trebuchet MS";
 	font-size:11px;
-	line-height:18px;
-	color:#FF9900;
+	color:#666666;
+}
+
+.contentpaneopen_agenda p{
+	margin:0;
+	padding:0;
 }
 
 /* resultados del custom properties */
