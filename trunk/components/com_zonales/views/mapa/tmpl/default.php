@@ -17,7 +17,7 @@ JHTML::script('swfobject.js');
 </div>
 <script type="text/javascript">
 	// <![CDATA[
-	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_1.0.swf?nocache=<?php echo time()?>", "map", "800", "600", "8", "#FFFFFF");
+	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_1.0.swf?nocache=<?php echo time()?>", "map", "<?php echo $this->width; ?>", "<?php echo $this->height; ?>", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 	so.addParam("allowScriptAccess", "sameDomain");
 	so.addVariable("MY_ZONES", "<?php echo $this->zonal; ?>");

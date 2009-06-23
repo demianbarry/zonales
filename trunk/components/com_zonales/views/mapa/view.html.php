@@ -6,10 +6,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view');
 
 /**
- * User component login view class
+ * Mapa de selección de Zonales
  *
- * @package		Joomla
- * @subpackage	Users
+ * @package	zonales
  * @since	1.0
  */
 class ZonalesViewMapa extends JView
@@ -31,6 +30,11 @@ class ZonalesViewMapa extends JView
 		$this->ajax = JRequest::getBool('ajax');
 		$this->task = JRequest::getBool('ajax') ? 'setZonalAjax' : 'setZonal';
 		$this->zonal = $helper->getZonal()->name;
+
+		// parametros - alto y ancho
+		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+		$this->width = $zonalesParams->get('width_mapa_flash', '');
+		$this->height = $zonalesParams->get('height_mapa_flash', '');
 
 		$this->assignRef('j2f', $helper->getZif2SifMap());
 		$this->assignRef('template', $app->getTemplate());

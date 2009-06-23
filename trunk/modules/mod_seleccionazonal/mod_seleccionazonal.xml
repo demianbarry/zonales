@@ -8,7 +8,7 @@
   <authorEmail/>
   <authorUrl>http://www.mediabit.com.ar</authorUrl>
   <version>0.1</version>
-  <description>Permite al usuario seleccionar el Zonal de preferencia</description>
+  <description>MOD_SELECCIONAZONAL_DESC</description>
   <files>
     <filename module="mod_seleccionazonal">mod_seleccionazonal.php</filename>
     <filename>index.html</filename>
@@ -19,19 +19,19 @@
     <language tag="es-ES">es-ES.mod_seleccionazonal.ini</language>
   </languages>
   <params>
-    <param name="show_header" type="radio" default="1" label="Mostrar descripción" description="ZPARAMSSHOWDESCRIPTION">
-      <option value="0">No</option>
-      <option value="1">Si</option>
+    <param name="show_header" type="radio" default="1" label="SHOWDESCRIPTION" description="TIP_SHOWDESCRIPTION">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
     </param>
-    <param name="custom_header" type="radio" default="0" label="Descripción personalizada" description="ZPARAMSCUSTOMHEADER">
-      <option value="0">No</option>
-      <option value="1">Si</option>
+    <param name="custom_header" type="radio" default="0" label="USECUSTOMDESCRIPTION" description="TIP_USECUSTOMDESCRIPTION">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
     </param>
-    <param name="header_text" type="textarea" rows="3" cols="40" default="" label="Texto descripción personalizada" description="ZPARAMSHEADERTEXT" />
+    <param name="header_text" type="textarea" rows="3" cols="40" default="" label="CUSTOMDESCRIPTION" description="TIP_CUSTOMDESCRIPTION" />
     <param name="@spacer" type="spacer" default="" label="" description="" />
-    <param name="use_submit_button" type="radio" default="0" label="Usar botón submit" description="ZPARAMSUSESUBMITBUTTON">
-      <option value="0">No</option>
-      <option value="1">Si</option>
+    <param name="use_submit_button" type="radio" default="0" label="USESUBMITBUTTON" description="TIP_USESUBMITBUTTON">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
     </param>
   </params>
 </install>

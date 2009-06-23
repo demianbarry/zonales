@@ -79,13 +79,15 @@ class ZonalesController extends JController
 		if ($view && $item)
 			$return .= '&view=' . $view . '&Itemid=' . $item;
 
+		$session = JFactory::getSession();
 		if ($zname) {
 			$zonal = $this->_zonalesHelper->getZonal($zname);
-		
 			if ($zonal) {
-				$session = JFactory::getSession();
-				$session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+				$session->set('zonales_zonal_name', $zonal->name);
 			}
+		}
+		else {
+			$session->set('zonales_zonal_name', NULL);
 		}
 
 		$this->setRedirect($return);
