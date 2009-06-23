@@ -15,8 +15,10 @@ JHTML::script('swfobject.js');
 		<li>Ofrecer otra forma de elegir un zonal (por ejemplo, link a una página con un select)</li>
 	</ul>
 </div>
-<script type="text/javascript">
+<script type="text/javascript" defer="defer">
 	// <![CDATA[
+	window.addEvent('domready', function() {
+
 	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_1.0.swf?nocache=<?php echo time()?>", "map", "<?php echo $this->width; ?>", "<?php echo $this->height; ?>", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 	so.addParam("allowScriptAccess", "sameDomain");
@@ -42,6 +44,8 @@ JHTML::script('swfobject.js');
 	}
 	?>
 
+	//window.addEvent('domReady', so.write("map_content"));
 	so.write("map_content");
+	});
 	// ]]>
 </script>
