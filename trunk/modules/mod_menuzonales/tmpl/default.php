@@ -15,8 +15,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <div id="sublinks">
 	<?php foreach ($menues as $menu): ?>
 	<ul id="s<?php echo $menu->id; ?>_m">
-		<?php foreach ($menuValues[$menu->id] as $menuValue): ?>
-		<a href="#"><?php echo $menuValue->label; ?></a>
+		<?php foreach ($menu->submenus as $submenu): ?>
+		<a href="<?php echo $submenu->link; ?>"><?php echo $submenu->label; ?></a>
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>

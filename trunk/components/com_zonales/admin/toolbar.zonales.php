@@ -8,6 +8,11 @@ require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 
 // barra de tareas a mostrar según tarea
 switch($task) {
+	case 'editMenu':
+	case 'addMenu':
+		TOOLBAR_zonales_menu::_NEW();
+		break;
+
 	case 'editCp2TipoTag':
 	case 'addCp2TipoTag':
 		TOOLBAR_zonales_cp2tipotag::_NEW();
@@ -24,6 +29,10 @@ switch($task) {
 
 	case 'listTipoTag':
 		TOOLBAR_zonales_tipotag::_DEFAULT();
+		break;
+
+	case 'listMenu':
+		TOOLBAR_zonales_menu::_DEFAULT();
 		break;
 
 	default:

@@ -47,3 +47,21 @@ class TOOLBAR_zonales_cp2tipotag
 	}
 }
 
+class TOOLBAR_zonales_menu
+{
+	function _NEW() {
+		JToolBarHelper::save('saveMenu');
+		JToolBarHelper::apply('applyMenu');
+		JToolBarHelper::cancel('cancelMenu');
+	}
+
+
+	function _DEFAULT() {
+		JToolBarHelper::title( JText::_( 'ZONALES'));
+	        JToolBarHelper::preferences('com_zonales', 400, 575);
+		JToolBarHelper::editList('editMenu');
+		JToolBarHelper::deleteList(JText::_( 'DELETE_PLAN_WARNING' ), 'removeMenu');
+		JToolBarHelper::addNew('addMenu');
+	}
+}
+

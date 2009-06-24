@@ -24,6 +24,7 @@
     <filename>index.html</filename>
     <filename>controller.php</filename>
     <filename>helper.php</filename>
+
     <filename>views/index.html</filename>
     <filename>views/zonal/view.html.php</filename>
     <filename>views/zonal/index.html</filename>
@@ -31,6 +32,7 @@
     <filename>views/zonal/tmpl/index.html</filename>
     <filename>views/zonal/tmpl/default.xml</filename>
     <filename>views/zonal/tmpl/default.php</filename>
+
     <filename>views/mapa/view.html.php</filename>
     <filename>views/mapa/index.html</filename>
     <filename>views/mapa/metadata.xml</filename>
@@ -44,6 +46,7 @@
   <administration>
     <menu>Zonales</menu>
     <submenu>
+      <menu task="listMenu">Asociar Menús</menu>
       <menu task="listCp2TipoTag">Asociar Tipos</menu>
       <menu task="listTipoTag">Tipos de Tag</menu>
     </submenu>
@@ -57,29 +60,48 @@
       <filename>toolbar.zonales.html.php</filename>
       <filename>toolbar.zonales.php</filename>
       <filename>uninstall.mysql.sql</filename>
+
       <filename>models/basemodel.php</filename>
       <filename>models/index.html</filename>
       <filename>models/tipotag.php</filename>
       <filename>models/cp2tipotag.php</filename>
+      <filename>models/menu.php</filename>
+
       <filename>tables/index.html</filename>
       <filename>tables/tipotag.php</filename>
       <filename>tables/cp2tipotag.php</filename>
+      <filename>tables/menu.php</filename>
+
       <filename>views/listatipotag/tmpl/default.php</filename>
       <filename>views/listatipotag/tmpl/index.html</filename>
       <filename>views/listatipotag/index.html</filename>
       <filename>views/listatipotag/view.html.php</filename>
+
       <filename>views/listacp2tipotag/tmpl/default.php</filename>
       <filename>views/listacp2tipotag/tmpl/index.html</filename>
       <filename>views/listacp2tipotag/index.html</filename>
       <filename>views/listacp2tipotag/view.html.php</filename>
+
+      <filename>views/listamenu/tmpl/default.php</filename>
+      <filename>views/listamenu/tmpl/index.html</filename>
+      <filename>views/listamenu/index.html</filename>
+      <filename>views/listamenu/view.html.php</filename>
+
       <filename>views/editatipotag/tmpl/default.php</filename>
       <filename>views/editatipotag/tmpl/index.html</filename>
       <filename>views/editatipotag/index.html</filename>
       <filename>views/editatipotag/view.html.php</filename>
+
       <filename>views/editacp2tipotag/tmpl/default.php</filename>
       <filename>views/editacp2tipotag/tmpl/index.html</filename>
       <filename>views/editacp2tipotag/index.html</filename>
       <filename>views/editacp2tipotag/view.html.php</filename>
+
+      <filename>views/editamenu/tmpl/default.php</filename>
+      <filename>views/editamenu/tmpl/index.html</filename>
+      <filename>views/editamenu/index.html</filename>
+      <filename>views/editamenu/view.html.php</filename>
+
       <filename>views/baseview.php</filename>
     </files>
     <languages folder="admin/language">

@@ -26,6 +26,9 @@ class ZonalesController extends JController
 
 		$this->registerTask('applyCp2TipoTag', 'saveCp2TipoTag');
 		$this->registerTask('addCp2TipoTag', 'editCp2TipoTag');
+
+		$this->registerTask('applyMenu', 'saveMenu');
+		$this->registerTask('addMenu', 'editMenu');
 	}
 
 
@@ -126,6 +129,56 @@ class ZonalesController extends JController
 
 		$this->setRedirect($link, $msg);
 	}
+
+	function listMenu()
+	{
+		$this->baseDisplayTask('ListaMenu', 'Menu');
+	}
+
+	function editMenu()
+	{
+		$this->baseDisplayTask('EditaMenu', 'Menu', 'default', 1);
+	}
+
+	function cancelMenu()
+	{
+		$this->baseCancelTask(JText::_('INFO_CANCEL'), 'listMenu');
+	}
+
+	function removeMenu()
+	{
+		$this->baseRemoveTask('Menu', 'listMenu');
+	}
+
+	function saveMenu()
+	{
+		global $option;
+
+		$model = &$this->getModel('Menu');
+
+		if (!$model->store())
+		{
+			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+			exit();
+		}
+
+		$menu= $model->getData();
+		$msg = JText::sprintf('INFO_SAVE', 'Tipo Tag');
+
+		switch ($this->_task) {
+			case 'applyMenu':
+				$link = 'index.php?option=' . $option . '&task=editMenu&cid[]=' . $menu->id;
+				break;
+
+			case 'saveMenu':
+			default:
+				$link = 'index.php?option=' . $option . '&task=listMenu';
+				break;
+		}
+
+		$this->setRedirect($link, $msg);
+	}
+
 
 	function baseDisplayTask($view, $modelName, $layout = 'default', $hidemainmenu = 0, $vars = array())
 	{

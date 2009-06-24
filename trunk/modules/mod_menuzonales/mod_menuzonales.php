@@ -8,9 +8,8 @@ $helper = new comZonalesHelper();
 // menues
 $menues = $helper->getMenus();
 // submenues
-$menuValues = array();
 foreach ($menues as $menu) {
-	$menuValues[$menu->id] = $helper->getMenuValues($menu->id);
+	$menu->submenus = $helper->getMenuValues($menu->id);
 }
 
 // template
