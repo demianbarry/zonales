@@ -154,19 +154,22 @@ class comZonalesHelper
 	 */
 	function getMenuValues($id)
 	{
-		if (is_null($id) || !is_numeric($id))
+		if (is_null($id))
 		{
 			return null;
 		}
 
 		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '. $dbo->nameQuote('v.label')
+		$query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
+			.$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+			.' INNER JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
+			.' ON '. $dbo->nameQuote('zm.value_id') .' = '. $dbo->nameQuote('v.id')
+			.' INNER JOIN '. $dbo->nameQuote('#__menu') . ' jm'
+			.' ON '. $dbo->nameQuote('jm.id') .' = '. $dbo->nameQuote('zm.menu_id')
 			.' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
 		$dbo->setQuery($query);
 
-		$zonal = $this->_cache->get(array($dbo, 'loadObjectList'), array());
-
-		return $zonal;
+		return $this->_cache->get(array($dbo, 'loadObjectList'), array());
 	}
 }
