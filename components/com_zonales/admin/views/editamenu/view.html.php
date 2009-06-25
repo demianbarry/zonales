@@ -45,10 +45,8 @@ class ZonalesViewEditaMenu extends JView
 
 		// opción nula
 		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'name');
-
 		// values de fields asociados con un tipoo menu
 		$values = $helper->getCpMenuValues();
-
 		// genera select html
 		$tipo_list = array_merge($blank_option, $values);
 		$lists['value_lst'] = JHTML::_('select.genericlist', $tipo_list, 'value_id',
@@ -56,7 +54,6 @@ class ZonalesViewEditaMenu extends JView
 		
 		// items de menu
 		$itemsMenu = $helper->getJoomlaMenuItems();
-
 		// opción nula
 		unset ($blank_option);
 		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'name');
