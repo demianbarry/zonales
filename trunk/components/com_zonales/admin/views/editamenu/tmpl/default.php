@@ -6,11 +6,10 @@ JHTML::_('behavior.formvalidation');
 <!-- Validacion -->
 <script language="javascript" type="text/javascript">
 <!--
-
 function submitbutton(pressbutton) {
     var form = document.adminForm;
 
-    if (pressbutton == 'cancelTipoTag') {
+    if (pressbutton == 'cancelMenu') {
         submitform( pressbutton );
         return;
     }
@@ -29,7 +28,6 @@ function validateForm(frm) {
     }
     return false;
 }
-
 //-->
 </script>
 
@@ -41,7 +39,7 @@ function validateForm(frm) {
 			<table class="admintable">
 				<tr>
 					<td class="key">
-						<label for="value_id"><?php echo JText::_( 'Tag' ); ?>:</label>
+						<label for="value_id"><?php echo JText::_( 'Value' ); ?>:</label>
 					</td>
 					<td colspan="2">
 						<?echo $this->lists['value_lst']; ?>
@@ -49,7 +47,7 @@ function validateForm(frm) {
 				</tr>
 				<tr>
 					<td class="key">
-						<label for="menu_id"><?php echo JText::_( 'Field' ); ?>:</label>
+						<label for="menu_id"><?php echo JText::_( 'Item del Menú' ); ?>:</label>
 					</td>
 					<td colspan="2">
 						<?echo $this->lists['item_lst']; ?>
