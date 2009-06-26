@@ -3,26 +3,10 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript" defer="defer">
 	// <![CDATA[
 
 	window.addEvent('domready', function() {
-		Shadowbox.init({
-			skipSetup: true,
-			language: "es",
-			players: ['swf'],
-			flashParams: {
-				scale: "noscale",
-				allowScriptAccess: "sameDomain",
-				width: 400,
-				height: 500
-			},
-			flashVars: {
-				MY_ZONES: "bue_avellaneda",
-				URL_SET_ZONES: "index.php"
-			}
-		});
-
 		Shadowbox.setup($('zonal'), {
 			onClose:function() { window.location.reload(true); }
 		});
