@@ -28,6 +28,16 @@ function validateForm(frm) {
     }
     return false;
 }
+
+window.addEvent("domready", function(){
+		$("field_id").addEvent("change", function() {
+			var url="index.php?option=com_zonales&format=raw&task=listValues&fieldId="+this.getValue();
+			new Ajax(url, {
+				method: 'get',
+				update:$("value_id_container")
+			}).request();
+		});
+	});
 //-->
 </script>
 
@@ -42,7 +52,10 @@ function validateForm(frm) {
 						<label for="value_id"><?php echo JText::_( 'Value' ); ?>:</label>
 					</td>
 					<td colspan="2">
-						<?echo $this->lists['value_lst']; ?>
+						<?php echo $this->lists['field_lst']; ?>
+					</td>
+					<td id="value_id_container">
+							<?php if ($this->menu->id) echo $this->lists['value_lst']; ?>
 					</td>
 				</tr>
 				<tr>
@@ -50,7 +63,7 @@ function validateForm(frm) {
 						<label for="menu_id"><?php echo JText::_( 'Item del Menú' ); ?>:</label>
 					</td>
 					<td colspan="2">
-						<?echo $this->lists['item_lst']; ?>
+						<?php echo $this->lists['item_lst']; ?>
 					</td>
 				</tr>
 				<tr>

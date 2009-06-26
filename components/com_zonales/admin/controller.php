@@ -233,4 +233,23 @@ class ZonalesController extends JController
 		global $option;
 		$this->setRedirect('index.php?option='.$option.'&task='.$task, $msg);
 	}
+
+	/* --- AJAX --- */
+
+	function listValues()
+	{
+		$field_id = JRequest::getVar('fieldId', NULL, 'get', 'int');
+
+		$helper = new comZonalesAdminHelper();
+		$values = $helper->getCpMenuValues($field_id);
+
+		if (sizeof($values)) {
+			echo JHTML::_('select.genericlist', $values, 'value_id', 'size="1"', 'id', 'name');
+		}
+		else {
+			echo JText::_("Seleccione un field");
+		}
+
+		return;
+	}
 }
