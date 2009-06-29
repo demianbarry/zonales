@@ -18,6 +18,13 @@
   <languages folder="language">
     <language tag="es-ES">es-ES.mod_mapainicio.ini</language>
   </languages>
-  <params/>
+  <params>
+    <param name="width" type="text" default="800" label="WIDTH" description="TIP_WIDTH"/>
+    <param name="height" type="text" default="600" label="HEIGHT" description="TIP_HEIGHT"/>
+    <param name="wmode" type="radio" default="0" label="Transparente" description="TIP_WMODE">
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+  </params>
 </install>
 

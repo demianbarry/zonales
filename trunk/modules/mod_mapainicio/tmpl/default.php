@@ -13,7 +13,9 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
 	var so = new SWFObject("templates/<?php echo $template; ?>/swf/inicio.swf?nocache=<?php echo time()?>", "top_nav", "800", "560", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
-
+	<?php if($wmode): ?>
+	so.addParam("wmode", "transparent");
+	<?php endif; ?>
 	so.addParam("allowScriptAccess", "sameDomain");
 	so.addVariable("URL_SET_ZONE", 'index.php');
 	so.addVariable("task", 'setZonal');
