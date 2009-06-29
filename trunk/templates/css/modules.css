@@ -346,33 +346,6 @@ div.cp_field_label{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* comments */
 
 #comments{
@@ -380,6 +353,8 @@ div.cp_field_label{
 	font-size:11px;
 	color:#666;
 }
+
+#comments label{}
 
 #comments a{
 	color:#666 !important;
@@ -404,14 +379,37 @@ div.cp_field_label{
 }
 
 #comments #submitter{ /* enviar comentarios */
+	margin-top:5px;
 	background:#FF9900;
 	color:#FFFFFF;
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:11px;
+	border:none;
 }
 
 #comments #comment_body{
 	margin-top:10px;
+}
+
+#bbcode-editor, #comment_name, #comment_email{
+	margin-top:5px;
+}
+
+#comment_name, #comment_email, #comment_body{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#333333;
+	
+	background:#F1F2F3;
+	border:1px solid #CCCCCC;
+}
+
+#comment_name, #comment_email{
+	width:280px;
+}
+
+#comment_body{
+	width:466px;
 }
 
 /* slider Top */

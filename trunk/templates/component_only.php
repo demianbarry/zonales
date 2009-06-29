@@ -17,17 +17,13 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/glassnav.css">
 
 
+
 </head>
 
 <body>
 
-  <div id="containerContent">
-    <div id="container-l">
-      <div id="mainContent">
         <jdoc:include type="component" />
-      </div> <!-- mainContent -->
-    </div> <!-- container-l -->
-  </div> <!-- containerContent -->
+
 
 </body>
 </html>

@@ -4,7 +4,6 @@
 	font-family:"trebuchet MS"; /* contenido principal */
 	color:#555555;
 	font-size:13px;
-	
 }
 
 #mainContent p, #otherContent p{
@@ -12,9 +11,31 @@
 	margin-bottom:10px;
 }
 
+#mainContent p a{
+	color:#555555;
+	font-weight:bold;
+	text-decoration:none;
+}
+
 
 #mainContent img{
 	margin-bottom:10px;
+}
+
+#mainContent .article_column .contentpaneopen h6{ /* bajada en el listado */
+	font-size:13px;
+	line-height:16px;
+	margin-bottom:10px;
+	font-weight:normal;
+	color:#555555;	
+}
+
+#mainContent .contentpaneopen h6{ /* bajada en el interior del artículo */
+	font-size:14px;
+	line-height:18px;
+	margin-bottom:20px;
+	font-weight:normal;
+	color:#555555;
 }
 
 .componentheading{ /* título de la categoría */
