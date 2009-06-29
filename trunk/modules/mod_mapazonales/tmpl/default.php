@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	// ]]>
 </script>
 
-<div id="moduletable_zName">
+<div id="moduletable_zMap">
 	<?php if($showLabel): ?>
 	<p>
 		<?php echo $labelText; ?>
