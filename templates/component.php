@@ -21,42 +21,20 @@
 
 <body>
 
+<center>
 <div id="wrapper">
 	<div id="top">
-		<div id="logoTop"></div><!-- END #logoTop -->
+		<div id="logoTop" style="float:left;"></div><!-- END #logoTop -->
     
-    <div style="position:absolute; margin-left:280px;">
+    <div style="float:right; padding-right:228px;">
     	<jdoc:include type="modules" name="topCenter" style="xhtml" />
     </div>
     
-    <div style="position:absolute; margin-left:808px; margin-top:5px;">
-	    <jdoc:include type="modules" name="topRight" style="xhtml" />
-    </div>
-  
   </div><!-- END #top -->  
 
-  <!-- glassmenu -->
-  <div id="navigation">
-  <ul id="mymenu">
-    <li id="s0"><a href="<?php echo $this->baseurl ?>">Inicio</a></li>
-    <li id="s1"><a href="#">Noticias</a></li>
-    <li id="s2"><a href="index.php?option=com_content&view=section&layout=blog&id=3&Itemid=15">Agenda</a></li>
-    <li id="s3"><a href="index.php?option=com_content&view=category&layout=blog&id=2&Itemid=6">La Voz del Vecino</a></li>
-  </ul>
-  </div>
-  <div id="sublinks">
-    <ul id="s0_m"></ul>
-    <ul id="s1_m">
-      <jdoc:include type="modules" name="sub1" style="xhtml" />
-    </ul>
-      <ul id="s2_m"></ul>
-      <ul id="s3_m"></ul>
-  </div>
-  <!-- glassmenu -->
-
-<div id="mainMenu">
-	<jdoc:include type="modules" name="top" style="xhtml" />
-</div><!-- end #mainMenu -->
+  <div id="mainMenu">
+    <jdoc:include type="modules" name="top" style="xhtml" />
+  </div><!-- end #mainMenu -->
 
 	<div class="lineSplit" style="background:url(<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/linea_03.gif); height:10px; display:block; font-size:0; margin-bottom:10px;"></div>
   <div id="containerContent">
@@ -98,6 +76,7 @@
     Copyright 2009 ZONALES.COM.AR | Todos los derechos reservados.
   </div><!-- END #copy -->
 </div><!-- END #wrapper -->
+</center>
 
 </body>
 </html>
