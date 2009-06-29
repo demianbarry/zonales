@@ -26,5 +26,11 @@
       <option value="1">YES</option>
     </param>
   </params>
+  <params group="advanced">
+    <param name="cache" type="radio" default="0" label="CACHING" description="SELECT WHETHER TO CACHE THE CONTENT OF THIS MODULE" >
+      <option value="0">NO</option>
+      <option value="1">YES</option>
+    </param>
+  </params>
 </install>
 
