@@ -13,11 +13,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	</ul>
 </div>
 <div id="sublinks">
-	<ul id="s0_m"></ul>
+	<ul id="s0_m"><li /></ul>
 	<?php foreach ($menues as $menu): ?>
 	<ul id="s<?php echo $menu->id; ?>_m">
 		<?php foreach ($menu->submenus as $submenu): ?>
-		<a href="<?php echo $submenu->link; ?>"><?php echo $submenu->label; ?></a>
+		<li><a href="<?php echo $submenu->link; ?>"><?php echo $submenu->label; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>
