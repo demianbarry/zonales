@@ -23,6 +23,9 @@ abstract class ZonalesModelBaseModel extends JModel
 
 	var $_table_name    = null;
 
+	/** @var JCache */
+	var $_cache = null;
+
 	function ZonalesModelBaseModel()
 	{
 		$this->__construct();
@@ -49,6 +52,8 @@ abstract class ZonalesModelBaseModel extends JModel
 
 		$table =& $this->getTable();
 		$this->_table_name = $table->getTableName();
+
+		$this->_cache =& JFactory::getCache('com_zonales');
 	}
 
 	/**
@@ -77,7 +82,8 @@ abstract class ZonalesModelBaseModel extends JModel
 		{
 			$query = $this->_buildQuery($customQuery);
 			$this->_db->setQuery($query);
-			$this->_data = $this->_db->loadObject();
+			//$this->_data = $this->_db->loadObject();
+			$this->_data = $this->_cache->get(array($this->_db, 'loadObject'), array());
 		}
 		if (!$this->_data)
 		{
