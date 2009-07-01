@@ -161,7 +161,8 @@ class comZonalesHelper
 
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
-			.$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link')
+			.$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link') .', '
+			.$dbo->nameQuote('zm.menu_id')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
 			.' INNER JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
 			.' ON '. $dbo->nameQuote('zm.value_id') .' = '. $dbo->nameQuote('v.id')
