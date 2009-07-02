@@ -44,10 +44,15 @@ JHTML::_('behavior.tooltip');
 					</span>
 				</td>
 				<td>
-					<?php echo $menu->jname; ?>
+					<span class="editlinktip hasTip" title="<?php echo JText::_( 'EDITAR_MENU' );?>::<?php echo $menu->jname; ?>">
+						<b><a href="<?php echo $menu->jmenu_edit_link; ?>"> <?php echo $menu->jname; ?> </a></b>
+					</span>
 				</td>
 				<td>
-					<?php echo $menu->vname; ?>
+					<?php echo $menu->flabel; ?>
+					<?php if ($menu->vlabel) {
+						echo "»&nbsp;" . $menu->vlabel;
+					} ?>
 				</td>
 				<td>
 					<?php echo $menu->title; ?>
