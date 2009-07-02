@@ -458,6 +458,11 @@ div.cp_field_label{
 	margin-bottom:10px;
 }
 
+/* botón mapa lightbox */
+#moduletable_zMap{
+	margin-bottom:10px;
+}
+
 /* zonal actual*/
 
 #moduletable_zName p{

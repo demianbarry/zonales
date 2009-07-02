@@ -15,7 +15,7 @@
 
 <body>
 
-<div id="map" style="margin:auto; width:800px; height:560px;">
+<div id="map" style="width:900px; height:560px; margin-top:80px;">
   <jdoc:include type="modules" name="index" style="xhtml" />
 </div><!-- END #map -->
 
