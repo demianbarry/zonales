@@ -240,8 +240,11 @@ class ZonalesController extends JController
 	{
 		$field_id = JRequest::getVar('fieldId', NULL, 'get', 'int');
 
+		// opción nula
+		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'name');
+
 		$helper = new comZonalesAdminHelper();
-		$values = $helper->getCpMenuValues($field_id);
+		$values = array_merge(array(), $blank_option, $helper->getCpMenuValues($field_id));
 
 		if (sizeof($values)) {
 			echo JHTML::_('select.genericlist', $values, 'value_id', 'size="1"', 'id', 'name');

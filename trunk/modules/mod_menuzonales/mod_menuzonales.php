@@ -9,6 +9,10 @@ $helper = new comZonalesHelper();
 $menues = $helper->getMenus();
 // submenues
 foreach ($menues as $menu) {
+	if ($menu->link) {
+		$menu->link .= '&Itemid' . $menu->itemid;
+	}
+
 	$menu->submenus = $helper->getMenuValues($menu->id);
 	foreach ($menu->submenus as $submenu) {
 		$submenu->link = $submenu->link . '&Itemid=' . $submenu->menu_id;

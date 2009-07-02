@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS `#__zonales_menu_bak` (
   `id` INTEGER  NOT NULL AUTO_INCREMENT,
   `menu_id` INTEGER  NOT NULL,
+  `field_id` INTEGER NOT NULL,
   `value_id` INTEGER  NOT NULL,
   `title` VARCHAR(255)  NOT NULL,
   PRIMARY KEY (`id`),
@@ -31,6 +32,7 @@ ENGINE = MyISAM;
 CREATE TABLE `#__zonales_menu` (
   `id` INTEGER  NOT NULL AUTO_INCREMENT,
   `menu_id` INTEGER  NOT NULL,
+  `field_id` INTEGER NOT NULL,
   `value_id` INTEGER  NOT NULL,
   `title` VARCHAR(255)  NOT NULL,
   PRIMARY KEY (`id`),
@@ -55,9 +57,9 @@ CREATE TABLE `#__zonales_tipotag` (
 )
 ENGINE = MyISAM;
 
-INSERT INTO `#__zonales_menu` (`id`,`menu_id`,`value_id`,`title`)
-	SELECT `id`, `menu_id`, `value_id`, `title` FROM `#__zonales_menu_bak` `mb`
-	ON DUPLICATE KEY UPDATE `id` = `mb`.`id`, `menu_id` = `mb`.`menu_id`, `value_id` = `mb`.`value_id`, `title` = `mb`.`title`;
+INSERT INTO `#__zonales_menu` (`id`,`menu_id`,`field_id`,`value_id`,`title`)
+	SELECT `id`, `menu_id`, `field_id`, `value_id`, `title` FROM `#__zonales_menu_bak` `mb`
+	ON DUPLICATE KEY UPDATE `id` = `mb`.`id`, `menu_id` = `mb`.`menu_id`, `field_id` = `mb`.`field_id`, `value_id` = `mb`.`value_id`, `title` = `mb`.`title`;
 
 INSERT INTO `#__zonales_cp2tipotag` (`id`,`tipo_id`,`field_id`)
 	SELECT `id`, `tipo_id`, `field_id` FROM `#__zonales_cp2tipotag_bak` `mb`

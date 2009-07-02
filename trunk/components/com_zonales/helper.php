@@ -34,14 +34,14 @@ class comZonalesHelper
 	 */
 	function getZonal($zonal_name = null)
 	{
-		if (is_null($zonal_name))
-		{
+		if (is_null($zonal_name)) {
 			$zonal_name = $this->getZonalActual();
 			if (is_null($zonal_name)) return null;
 		}
 
 		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
+		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '.
+			$dbo->nameQuote('f.label')
 			.' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
 			.' WHERE '. $dbo->nameQuote('f.name') .' = '. $dbo->quote($zonal_name);
 		$dbo->setQuery($query);
@@ -94,6 +94,7 @@ class comZonalesHelper
 		if (is_null($tipo)) {
 			return null;
 		}
+
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('t.id') .', '. $dbo->nameQuote('t.tipo')
 			.' FROM ' . $dbo->nameQuote('#__zonales_tipotag') . ' t'
@@ -111,7 +112,9 @@ class comZonalesHelper
 	 */
 	function getFields($tipo)
 	{
-		if (is_null($tipo)) return null;
+		if (is_null($tipo)) {
+			return null;
+		}
 
 		$dbo	= & JFactory::getDBO();
 		$query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
@@ -143,7 +146,27 @@ class comZonalesHelper
 	function getMenus()
 	{
 		$tipo = $this->getTipo('menu');
-		return $this->getFields($tipo);
+
+		if (is_null($tipo)) {
+			return null;
+		}
+
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT '. $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '
+			. $dbo->nameQuote('f.label') .', '. $dbo->nameQuote('m.id') .' as itemid, '
+			. $dbo->nameQuote('m.link')
+			.' FROM '. $dbo->nameQuote('#__custom_properties_fields') . ' f'
+			.' INNER JOIN '. $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
+			.' ON '. $dbo->nameQuote('c.field_id') .' = '. $dbo->nameQuote('f.id')
+			.' AND '. $dbo->nameQuote('c.tipo_id') .' = '. $tipo->id
+			.' LEFT JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
+			.' ON '. $dbo->nameQuote('zm.field_id') .' = '. $dbo->nameQuote('f.id')
+			.' AND '. $dbo->nameQuote('zm.value_id') .' = 0'
+			.' LEFT JOIN '. $dbo->nameQuote('#__menu') .' m'
+			.' ON '. $dbo->nameQuote('m.id') .' = '. $dbo->nameQuote('zm.menu_id');
+		$dbo->setQuery($query);
+
+		return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
 	}
 
 	/**
@@ -154,16 +177,15 @@ class comZonalesHelper
 	 */
 	function getMenuValues($id)
 	{
-		if (is_null($id))
-		{
+		if (is_null($id)) {
 			return null;
 		}
 
 		$dbo	= & JFactory::getDBO();
-		$query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
+		$query = 'SELECT '. $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
 			.$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link') .', '
 			.$dbo->nameQuote('zm.menu_id')
-			.' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+			.' FROM '. $dbo->nameQuote('#__custom_properties_values') . ' v'
 			.' INNER JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
 			.' ON '. $dbo->nameQuote('zm.value_id') .' = '. $dbo->nameQuote('v.id')
 			.' INNER JOIN '. $dbo->nameQuote('#__menu') . ' jm'
