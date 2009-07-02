@@ -1,4 +1,4 @@
-window.addEvent('load', function(){
+window.addEvent('domready', function(){
 
 	// hide all submenu links
 	$('sublinks').getElements('ul').setStyle('display', 'none');
