@@ -18,6 +18,7 @@ class ZonalesViewListaMenu extends ZonalesViewBaseView
 		$menus =& $this->get('All');
 		foreach ($menus as $menu) {
 			$menu->link = JRoute::_('index.php?option=' . $option . '&cid[]=' . $menu->id . '&task=editMenu');
+			$menu->jmenu_edit_link = JRoute::_('http://zonales.localhost.com/administrator/index.php?option=com_menus&menutype=mainmenu&task=edit&cid[]='. $menu->menu_id);
 		}
 
 		// Titulo

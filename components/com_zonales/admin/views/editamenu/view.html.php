@@ -44,26 +44,28 @@ class ZonalesViewEditaMenu extends JView
 		$helper = new comZonalesAdminHelper();
 
 		// opción nula
-		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'name');
+		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'label');
 
 		// fields asociados con un tipoo menu
 		$fields = $helper->getCpMenuFields();
 		// genera select html
 		$field_list = array_merge(array(), $blank_option, $fields);
 		$lists['field_lst'] = JHTML::_('select.genericlist', $field_list, 'field_id',
-		    'size="1" required', 'id', 'name', $menu->id ? $menu->field_id : 0);
+		    'size="1" required', 'id', 'label', $menu->id ? $menu->field_id : 0);
 
 		if ($menu->id) {
 			// values de fields asociados con un tipo menu
 			$values = array_merge(array(), $blank_option, $helper->getCpMenuValues($menu->field_id));
 			// genera select html
 			$lists['value_lst'] = JHTML::_('select.genericlist', $values, 'value_id',
-			    'size="1" required', 'id', 'name', $menu->value_id);
+			    'size="1" required', 'id', 'label', $menu->value_id);
 		}
 
 		// items de menu
 		$itemsMenu = $helper->getJoomlaMenuItems();
 		// genera select html
+		unset($blank_option);
+		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'name');
 		$item_list = array_merge(array(), $blank_option, $itemsMenu);
 		$lists['item_lst'] = JHTML::_('select.genericlist', $item_list, 'menu_id',
 		    'size="1" required', 'id', 'name', $menu->menu_id);
