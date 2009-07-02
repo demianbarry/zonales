@@ -8,7 +8,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	<ul id="mymenu">
 		<li id="s0"><a href="<?php echo JURI::base(); ?>"><?php echo JText::_('Inicio'); ?></a></li>
 		<?php foreach ($menues as $menu): ?>
-		<li id="s<?php echo $menu->id; ?>"><a href="#"><?php echo $menu->label; ?></a></li>
+		<li id="s<?php echo $menu->id; ?>"><a href="<?php echo($menu->link ? $menu->link : '#'); ?>"><?php echo $menu->label; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 </div>

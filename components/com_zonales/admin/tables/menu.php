@@ -6,6 +6,8 @@ class TableMenu extends JTable
     /** @var int */
     var $id		= null;
     /** @var int */
+    var $field_id	= null;
+    /** @var int */
     var $value_id	= null;
     /** @var int */
     var $menu_id	= null;
