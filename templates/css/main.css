@@ -34,16 +34,19 @@
 
 #container-l{
 	float:left;
-	padding-left:10px;
-	padding-right:10px;
-/*width:778px;*/
+
+/* padding-left:10px;
+	 padding-right:10px;
+	 width:778px; */
+	
 	width:783px;
+	
 }
 
 #container-l #mainContent{
 	float:left;
 	width:468px;
-	background:#FFF;
+/* background:#FFF; */
 }
 
 #container-l #otherContent{

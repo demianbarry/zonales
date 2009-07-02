@@ -35,6 +35,8 @@
 
 	<div class="lineSplit" style="background:url(<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/linea_03.gif); height:10px; display:block; font-size:0; margin-bottom:10px;"></div>
   <div id="containerContent">
+
+<div style="margin-left:10px;">
     <div id="container-l">
       <div id="mainContent">
         <jdoc:include type="component" />
@@ -48,6 +50,8 @@
     	<jdoc:include type="modules" name="cols" style="xhtml" />
       
     </div><!-- END #container-l -->
+</div>
+
     <div id="container-r">
       <div id="bannersContent">
         <jdoc:include type="modules" name="right" style="xhtml" />
