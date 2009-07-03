@@ -66,6 +66,7 @@
       <filename>models/tipotag.php</filename>
       <filename>models/cp2tipotag.php</filename>
       <filename>models/menu.php</filename>
+      <filename>models/zbanner.php</filename>
 
       <filename>tables/index.html</filename>
       <filename>tables/tipotag.php</filename>
