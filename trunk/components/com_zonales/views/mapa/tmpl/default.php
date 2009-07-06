@@ -19,7 +19,7 @@ JHTML::script('swfobject.js');
 	// <![CDATA[
 	window.addEvent('domready', function() {
 
-	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/map_1.0.swf?nocache=<?php echo time()?>", "map", "<?php echo $this->width; ?>", "<?php echo $this->height; ?>", "8", "#FFFFFF");
+	var so = new SWFObject("templates/<?php echo $this->template; ?>/swf/<?php echo $this->flashfile; ?>", "Selección de Zonal", "<?php echo $this->width; ?>", "<?php echo $this->height; ?>", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 	so.addParam("allowScriptAccess", "sameDomain");
 	so.addVariable("MY_ZONES", "<?php echo $this->zonal; ?>");

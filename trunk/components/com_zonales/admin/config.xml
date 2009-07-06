@@ -6,5 +6,6 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="width_mapa_flash" type="text" default="800" label="Alto" description="tip_alto_mapa"/>
 		<param name="height_mapa_flash" type="text" default="600" label="Ancho" description="tip_ancho_mapa"/>
+		<param name="flash_file" type="text" default="mapa.swf" label="FLASHFILE" description="TIP_FLASHFILE"/>
 	</params>
 </root>

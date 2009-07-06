@@ -35,6 +35,7 @@ class ZonalesViewMapa extends JView
 		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
 		$this->width = $zonalesParams->get('width_mapa_flash', '');
 		$this->height = $zonalesParams->get('height_mapa_flash', '');
+		$this->flashfile = $zonalesParams->get('flash_file', '');
 
 		$this->assignRef('j2f', $helper->getZif2SifMap());
 		$this->assignRef('template', $app->getTemplate());

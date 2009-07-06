@@ -11,7 +11,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	// <![CDATA[
 	window.addEvent('domready', function() {
 
-	var so = new SWFObject("templates/<?php echo $template; ?>/swf/inicio.swf?nocache=<?php echo time()?>", "top_nav", "<?php echo $width; ?>", "<?php echo $height; ?>", "8", "#FFFFFF");
+	var so = new SWFObject("templates/<?php echo $template; ?>/swf/inicio.swf", "Mapa de Inicio", "<?php echo $width; ?>", "<?php echo $height; ?>", "8", "#FFFFFF");
 	so.addParam("scale", "noscale");
 	<?php if($wmode): ?>
 	so.addParam("wmode", "transparent");
