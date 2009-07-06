@@ -38,13 +38,13 @@
 
 #navigation ul li a,
 #navigation ul li a:visited {
-	padding:0 20px;
-	display:block;
-	text-decoration:none;
-	float:left;
-	color:#222222; /* color links del menú principal */
-	font-weight:bold;
-	line-height:22px;
+	padding:0 20px !important;
+	display:block !important;
+	text-decoration:none !important;
+	float:left !important;
+	color:#222222 !important; /* color links del menú principal */
+	font-weight:bold !important;
+	line-height:22px !important;
 }
 
 #navigation ul li a:hover{

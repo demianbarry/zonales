@@ -17,10 +17,10 @@
 	text-decoration:none;
 }
 
-
-
 #mainContent img{
 	margin-bottom:10px;
+	padding:10px;
+	background:url(../images/bg_img.gif);
 }
 
 #mainContent .article_column .contentpaneopen h6{ /* bajada en el listado */
