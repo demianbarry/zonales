@@ -23,9 +23,7 @@
 	<div id="top">
 		<a href="index.php" style="cursor:crosshair;"><div id="logoTop" style="float:left;"></div><!-- END #logoTop --></a>
     
-    <div style="float:right; padding-right:228px;">
-    	<jdoc:include type="modules" name="topCenter" style="xhtml" />
-    </div>
+    	<jdoc:include type="modules" name="topSearch" style="xhtml" />
     
   </div><!-- END #top -->  
 

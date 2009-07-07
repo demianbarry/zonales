@@ -25,32 +25,6 @@
 	text-decoration:none;
 }
 
-#searchTop{
-	float:right;
-	margin-top:20px;
-	width:500px;
-}
-
-/*#searchTop  .searchbox{
-	background:#999999;
-}
-
-#searchTop .searchfield{
-	background:#CCCCCC;
-}
-
-#searchTop .search-magnifier{
-	background:#FF0000;
-}
-
-#searchTop .search-close{
-	background:#0000FF;
-}
-
-.yoo-search{
-	background:#FFFF00;
-}
-*/
 /* ----------------> lasted (en home) */
 
 #lastedCols{
@@ -247,14 +221,6 @@ a.contentpagetitle_flashNews{
 	margin:0 !important;
 }
 
-/* extended menu */
-
-.moduletable_xMenu{}
-
-.moduletable_xMenu li{
-	display:inline;
-}
-
 /* custom properties Tags */
 
 div.cp_ce_label{
@@ -349,10 +315,6 @@ div.cp_field_label{
 	margin :0 ;
 	padding :4px;
 }
-
-
-
-
 
 /* comments */
 
@@ -532,4 +494,38 @@ div.cp_field_label{
 	font-size:11px;
 	color:#FFFFFF;
 }
+
+
+/* ////////////////////////////////////////////////////// yooSearch */
+
+.moduletable_yooSearch{
+	width:217px;
+	height:77px;
+	position:absolute;
+	margin-left:498px;
+	margin-top:25px;
+	background:url(../images/base_buscador.jpg);
+}
+
+.moduletable_yooSearch .blank{
+	margin-top:50px;
+	margin-left:55px;
+}
+
+.moduletable_yooSearch .blank .yoo-search .searchbox .searchfield{
+	margin:0;
+	padding:0;
+	border:0;
 	
+	width:155px;
+	height:21px;
+	background:url(../images/input_serach.jpg);
+	
+	font-family:Tahoma;
+	font-size:11px;
+	color:#666666;
+}
+
+.moduletable_yooSearch .blank .yoo-search .searchbox .search-magnifier{
+	visibility:hidden;
+}
