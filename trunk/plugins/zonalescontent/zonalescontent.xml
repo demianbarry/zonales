@@ -12,6 +12,9 @@
 	<files>
 		<filename plugin="zonalescontent">zonalescontent.php</filename>
 	</files>
+	<languages folder="language">
+	    <language tag="es-ES">es-ES.plg_search_zonalescontent.ini</language>
+	</languages>
 	<params>
 		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
 		<param name="@spacer" type="spacer" default="" label="" description="" />

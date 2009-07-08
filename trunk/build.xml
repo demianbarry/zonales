@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
 <project name="zonales" default="" basedir=".">
 
   <!-- archivo properties -->
@@ -14,6 +15,8 @@
   <property name="src_i18n_dir" value="${src}/language" />
   <!-- path modulos -->
   <property name="src_modules" value="${src}/modules"/>
+  <!-- path plugins -->
+  <property name="src_plugins" value="${src}/plugins"/>
   <property name="src_frontend_components" value="${src}/components"/>
 
   <!-- path devel -->
@@ -43,7 +46,16 @@
   <fileset dir="${src_modules}/mod_menuzonales" id="mod_menuzonales_files">
     <include name="**" />
   </fileset>
+  <!-- mod_zbanners -->
+  <fileset dir="${src_modules}/mod_zbanners" id="mod_zbanners_files">
+    <include name="**" />
+  </fileset>
   
+  <!-- plg_zonalescontent -->
+  <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
+    <include name="**" />
+  </fileset>
+
   <!-- com_zonales -->
   <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
     <include name="**" />
@@ -138,6 +150,24 @@
     </zip>
   </target>
   
+  <!-- modulo zbanners -->
+  <target name="dist_mod_zbanners" description="Crea archivo de distribución Joomla para el modulo ZBanners">
+    <echo message="Creando archivo de distribución de modulo ZBanners"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_zbanners.file}.zip" >
+      <fileset refid="mod_zbanners_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zbanners.ini" prefix="language" />
+    </zip>
+  </target>
+
+  <!-- plugin zonalescontent -->
+  <target name="dist_plg_zonalescontent" description="Crea archivo de distribución Joomla para el plugin ZonalesContent">
+    <echo message="Creando archivo de distribución de plugin ZonalesContent"/>
+    <zip destfile="${src_dist_dir}/${dist.plg_zonalescontent.file}.zip" >
+      <fileset refid="plg_zonalescontent_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_zonalescontent.ini" prefix="language" />
+    </zip>
+  </target>
+
   <!-- componente zonales --> 
   <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
     <echo message="Creando archivo de distribución de componente UserZonales"/>
