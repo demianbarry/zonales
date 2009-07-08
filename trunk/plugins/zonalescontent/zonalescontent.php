@@ -36,7 +36,7 @@ function &plgSearchContentAreas()
 
 /**
  * Retorna un join para buscar artículos asociados al zonal actual
- * @return <type> 
+ * @return string sentencia inner join para utilizar en un where
  */
 function _buildCustomPropertiesJoin()
 {
