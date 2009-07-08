@@ -15,6 +15,9 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+// Agrega el helper de zonales
+require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+
 $mainframe->registerEvent( 'onSearch', 'plgSearchContent' );
 $mainframe->registerEvent( 'onSearchAreas', 'plgSearchContentAreas' );
 
@@ -29,6 +32,23 @@ function &plgSearchContentAreas()
 		'content' => 'Articles'
 	);
 	return $areas;
+}
+
+/**
+ * Retorna un join para buscar artículos asociados al zonal actual
+ * @return <type> 
+ */
+function _buildCustomPropertiesJoin()
+{
+	$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
+
+	$helper = new comZonalesHelper();
+	$zonal = $helper->getZonal();
+	if ($zonal) {
+		$join .= ' AND p.field_id = ' . $zonal->id;
+	}
+
+	return $join;
 }
 
 /**
@@ -148,6 +168,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 		. ' FROM #__content AS a'
 		. ' INNER JOIN #__categories AS b ON b.id=a.catid'
 		. ' INNER JOIN #__sections AS u ON u.id = a.sectionid'
+		. _buildCustomPropertiesJoin()
 		. ' WHERE ( '.$where.' )'
 		. ' AND a.state = 1'
 		. ' AND u.published = 1'
@@ -221,6 +242,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 		. ' FROM #__content AS a'
 		. ' INNER JOIN #__categories AS b ON b.id=a.catid AND b.access <= ' .$user->get( 'gid' )
 		. ' INNER JOIN #__sections AS u ON u.id = a.sectionid'
+		. _buildCustomPropertiesJoin()
 		. ' WHERE ( '.$where.' )'
 		. ' AND a.state = -1'
 		. ' AND u.published = 1'
