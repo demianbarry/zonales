@@ -5,9 +5,9 @@
 
 Se hará uso del comando [http://dev.mysql.com/doc/refman/5.0/en/mysqld-multi.html mysqld_multi] de MySQL, que permite especificar múltiples configuraciones en el archivo `my.cnf`, cada una bajo un grupo `[mysqldN]`, donde *N* es el número de instancia. 
 
-Una vez modificado el archivo `my.cnf`, se crearán los scripts de inicio a partir del script `/etc/init.d/mysqld`.
+Una vez generado el archivo de configuración para las nuevas instancias, se crearán los scripts de inicio a partir del script `/etc/init.d/mysqld`.
 
-== my.cnf ==
+== my.multi.cnf ==
 
 Primero, crearemos una copia `my.cnf` en donde configuraremos las instancias que vamos a utilizar: 
 
