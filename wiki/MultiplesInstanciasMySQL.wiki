@@ -9,18 +9,12 @@ Una vez generado el archivo de configuración para las nuevas instancias, se cre
 
 == my.multi.cnf ==
 
-Primero, crearemos una copia `my.cnf` en donde configuraremos las instancias que vamos a utilizar: 
-
-`cp /etc/my.cnf /etc/my.multi.cnf`
-
-Luego reemplazamos el contenido de los nuevos archivos por lo siguiente, modificando donde sea neceario:
+Primero, crearemos una copia de seguidad de `my.cnf`. Luego reemplazamos el contenido del archivo por el, modificando donde sea neceario:
 
 {{{
 [mysqld_multi]
 mysqld=/usr/bin/mysqld_safe
 mysqladmin=/usr/bin/mysqladmin
-user=admin
-password=adminpass
 
 [mysqld1]
 datadir=/var/lib/mysql
@@ -55,12 +49,6 @@ Para crear los scripts con los cuales iniciaremos y detendremos las instancias d
 
 `cp /etc/init.d/mysqld /etc/init.d/mysqld2`
 
-Alteramos la función `get_mysql_option()` cuando invoca `my_print_defaults` agregando el siguiente como parámetro el fichero de configuración `my.multi.conf`:
-
-{{{
-result=`/usr/bin/my_print_defaults -c /etc/my.multi.conf ...
-}}}
-
 Modificamos el primer argumento de las invocaciones a la función `get_mysql_option` por el nombre de la sección correspondiente (`mysqld1`, `mysqld2`, etc):
 
 {{{
@@ -77,7 +65,7 @@ action $"Initializing MySQL database: " /usr/bin/mysql_install_db --datadir=$dat
 A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la función `start()` para llamar a `mysqld_multi`:
 
 {{{
-/usr/bin/mysqld_multi --defaults-file=/etc/my.multi.conf --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
+/usr/bin/mysqld_multi --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
 }}}
 
 Finalmente agregamos los scripts creados como nuevos servicios del sistema:
@@ -91,5 +79,3 @@ De esta manera podremos iniciar cada instancia mediante el comando `service`.
 == Notas ==
 
 Al reutilizar el script `mysqld` de RH, al crear una nueva instancia e iniciarla, automaticamente se creará el directorio de datos, se setearán los permisos del mismo y se iniciará la base de dato (de manerá identica al iniciar por primera vez el servicio `mysqld`).
-
-La instancia original de MySQL sigue estando disponible en el sistema, coexistiendo con las nuevas.
