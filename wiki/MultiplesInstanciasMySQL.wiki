@@ -52,6 +52,7 @@ Es importante que cada instancia cuenta con su propio `log-error`, `pid-file`, `
 Para crear los scripts con los cuales iniciaremos y detendremos las instancias de MySQL, crearemos nuevas copias del archivo `/etc/init.d/mysqld`, las cuales modificaremos acordemente:
 
 `cp /etc/init.d/mysqld /etc/init.d/mysqld1`
+
 `cp /etc/init.d/mysqld /etc/init.d/mysqld2`
 
 En cada archivo, modificamos el primer argumento de las invocaciones a la función `get_mysql_option` por el nombre de la sección correspondiente (`mysqld1`, `mysqld2`, etc):
