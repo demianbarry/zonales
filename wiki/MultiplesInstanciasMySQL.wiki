@@ -9,9 +9,11 @@ Una vez modificado el archivo `my.cnf`, se crearán los scripts de inicio a part
 
 == my.cnf ==
 
-Primero, creamos una copia de seguridad del mismo: `cp /etc/my.cnf /etc/my.cnf.backup`
+Primero, crearemos una copia `my.cnf` en donde configuraremos las instancias que vamos a utilizar: 
 
-Luego reemplazamos su contenido por lo siguiente, modificando donde sea neceario:
+`cp /etc/my.cnf /etc/my.multi.cnf`
+
+Luego reemplazamos el contenido de los nuevos archivos por lo siguiente, modificando donde sea neceario:
 
 {{{
 [mysqld_multi]
@@ -61,7 +63,7 @@ datadir="$result"
 A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la función `start()` para llamar a `mysqld_multi`:
 
 {{{
-/usr/bin/mysqld_multi --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
+/usr/bin/mysqld_multi --defaults-file=/etc/my.multi.conf --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
 }}}
 
 Finalmente agregamos los scripts creados como nuevos servicios del sistema:
@@ -74,3 +76,5 @@ De esta manera podremos iniciar cada instancia mediante el comando `service`.
 == Notas ==
 
 Al reutilizar el script `mysqld` de RH, al crear una nueva instancia e iniciarla, automaticamente se creará el directorio de datos, se setearán los permisos del mismo y se iniciará la base de dato (de manerá identica al iniciar por primera vez el servicio `mysqld`).
+
+La instancia original de MySQL sigue estando disponible en el sistema, coexistiendo con las nuevas.
