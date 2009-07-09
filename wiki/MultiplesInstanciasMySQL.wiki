@@ -71,6 +71,7 @@ A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la
 Finalmente agregamos los scripts creados como nuevos servicios del sistema:
 
 `chkconfig -add /etc/init.d/mysqld1`
+
 `chkconfig -add /etc/init.d/mysqld2`
 
 De esta manera podremos iniciar cada instancia mediante el comando `service`.
