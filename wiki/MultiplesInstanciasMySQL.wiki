@@ -68,13 +68,27 @@ A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la
 /usr/bin/mysqld_multi --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
 }}}
 
+Buscamos la siguiente línea:
+
+{{{
+RESPONSE=`/usr/bin/mysqladmin -uUNKNOWN_MYSQL_USER ping 2>&1` && break
+}}}
+
+y agregamos como parámetro el socket de la instancia:
+
+{{{
+RESPONSE=`/usr/bin/mysqladmin -uUNKNOWN_MYSQL_USER --socket="$socketfile" ping 2>&1` && break
+}}}
+
 Finalmente agregamos los scripts creados como nuevos servicios del sistema:
 
-`chkconfig -add /etc/init.d/mysqld1`
+`chkconfig --add /etc/init.d/mysqld1`
 
-`chkconfig -add /etc/init.d/mysqld2`
+`chkconfig --add /etc/init.d/mysqld2`
 
-De esta manera podremos iniciar cada instancia mediante el comando `service`.
+De esta manera podremos iniciar cada instancia mediante el comando `service`. Para que se inicien de manera automática al inicio del sistema:
+
+`chkconfig --level 3 mysqld1 on`
 
 == Notas ==
 
