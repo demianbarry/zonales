@@ -9,7 +9,7 @@ Una vez generado el archivo de configuración para las nuevas instancias, se cre
 
 == my.multi.cnf ==
 
-Primero, crearemos una copia de seguidad de `my.cnf`. Luego reemplazamos el contenido del archivo por el, modificando donde sea neceario:
+Primero, crearemos una copia de seguidad de `my.cnf`. Luego reemplazamos el contenido del archivo por lo siguiente, modificando donde sea neceario:
 
 {{{
 [mysqld_multi]
