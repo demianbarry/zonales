@@ -55,11 +55,23 @@ Para crear los scripts con los cuales iniciaremos y detendremos las instancias d
 
 `cp /etc/init.d/mysqld /etc/init.d/mysqld2`
 
-En cada archivo, modificamos el primer argumento de las invocaciones a la función `get_mysql_option` por el nombre de la sección correspondiente (`mysqld1`, `mysqld2`, etc):
+Alteramos la función `get_mysql_option()` cuando invoca `my_print_defaults` agregando el siguiente como parámetro el fichero de configuración `my.multi.conf`:
+
+{{{
+result=`/usr/bin/my_print_defaults -c /etc/my.multi.conf ...
+}}}
+
+Modificamos el primer argumento de las invocaciones a la función `get_mysql_option` por el nombre de la sección correspondiente (`mysqld1`, `mysqld2`, etc):
 
 {{{
 get_mysql_option mysqld1 datadir "/var/lib/mysql"
 datadir="$result"
+}}}
+
+Seguidamente agregamos la opción `--datadir` a la invocación del comando `mysqld_install_db`:
+
+{{{
+action $"Initializing MySQL database: " /usr/bin/mysql_install_db --datadir=$datadir
 }}}
 
 A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la función `start()` para llamar a `mysqld_multi`:
