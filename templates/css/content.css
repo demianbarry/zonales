@@ -194,3 +194,33 @@ a:hover.readon{}
 	line-height:16px;
 	margin-bottom:10px;
 }
+
+/* contactos */
+
+.contentpaneopen_contactos .contentheading_contactos{
+	font-family:"trebuchet MS";
+	font-size:10px;
+	color:#285AA4;
+	text-transform:uppercase;
+
+}
+
+.contentpaneopen_contactos .contentheading_contactos{
+	padding-bottom:10px;
+}
+
+.contentpaneopen_contactos p strong{
+	font-weight:bold;
+}
+
+.contentpaneopen_contactos p a{
+	font-weight:normal !important;
+	color:#FF9900 !important;
+	text-decoration:none !important;
+}
+
+.contentpaneopen_contactos p a:hover{
+	font-weight:normal !important;
+	color:#FF9900 !important;
+	text-decoration:underline !important;
+}
