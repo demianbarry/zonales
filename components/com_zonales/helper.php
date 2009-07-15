@@ -128,6 +128,27 @@ class comZonalesHelper
 	}
 
 	/**
+	 * Recupera los valores del field indicado.
+	 *
+	 * @param int id identificador del field.
+	 * @return array Arreglo de objetos value
+	 */
+	function getFieldValues($id)
+	{
+		if (is_null($id)) {
+			return null;
+		}
+
+		$dbo	= & JFactory::getDBO();
+		$query = 'SELECT '. $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', ' .$dbo->nameQuote('v.label')
+			.' FROM '. $dbo->nameQuote('#__custom_properties_values') . ' v'
+			.' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+		$dbo->setQuery($query);
+
+		return $this->_cache->get(array($dbo, 'loadObjectList'), array());
+	}
+
+	/**
 	 * Recupera una lista de los zonales actualmente disponibles.
 	 *
 	 * @return array Lista de zonales recuperados

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+  <name>Soy Corresponsal</name>
+  <author>Mediabit</author>
+  <creationDate>Julio 2009</creationDate>
+  <copyright/>
+  <license/>
+  <authorEmail/>
+  <authorUrl>http://www.mediabit.com.ar</authorUrl>
+  <version>0.1</version>
+  <description>MOD_SOYCORRESPONSAL_DESC</description>
+  <files>
+    <filename module="mod_soycorresponsal">mod_soycorresponsal.php</filename>
+    <filename>index.html</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/index.html</filename>
+  </files>
+  <languages folder="language">
+    <language tag="es-ES">es-ES.mod_soycorresponsal.ini</language>
+  </languages>
+  <params>
+  </params>
+</install>
