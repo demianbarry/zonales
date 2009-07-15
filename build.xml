@@ -50,6 +50,10 @@
   <fileset dir="${src_modules}/mod_zbanners" id="mod_zbanners_files">
     <include name="**" />
   </fileset>
+  <!-- mod_soycorresponsal -->
+  <fileset dir="${src_modules}/mod_soycorresponsal" id="mod_soycorresponsal_files">
+    <include name="**" />
+  </fileset>
   
   <!-- plg_zonalescontent -->
   <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
@@ -156,6 +160,15 @@
     <zip destfile="${src_dist_dir}/${dist.mod_zbanners.file}.zip" >
       <fileset refid="mod_zbanners_files"/>
       <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zbanners.ini" prefix="language" />
+    </zip>
+  </target>
+
+  <!-- modulo soycorresponsal -->
+  <target name="dist_mod_soycorresponsal" description="Crea archivo de distribución Joomla para el modulo SoyCorresponsal">
+    <echo message="Creando archivo de distribución de modulo SoyCorresponsal"/>
+    <zip destfile="${src_dist_dir}/${dist.mod_soycorresponsal.file}.zip" >
+      <fileset refid="mod_soycorresponsal_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_soycorresponsal.ini" prefix="language" />
     </zip>
   </target>
 

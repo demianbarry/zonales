@@ -4,6 +4,10 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 
+// parametros
+$showEmail = $params->get('show_email');
+$showPhone = $params->get('show_phone');
+
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
 $zonales =& $helper->getZonales();
@@ -35,5 +39,8 @@ $editorParams = array (
 		'theme' => 'simple',
 		'toolbar' => 'top'
 	);
+
+// info de usuario
+$user =& JFactory::getUser();
 
 require(JModuleHelper::getLayoutPath('mod_soycorresponsal'));
