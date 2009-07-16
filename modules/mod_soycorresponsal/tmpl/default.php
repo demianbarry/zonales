@@ -18,43 +18,44 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
 <!-- form -->
 <div class="moduletable_formVecinos">
+	<h1><?php echo $module->title; ?></h1>
 	<div style="margin-left:10px; margin-right:10px;">
 		<p>Zonales nos da la posibilidad de hacer pública una noticia de su barrio o localidad.</p>
 		<p><strong>Soy corresponsal</strong> nos permite ser vecinos y periodístas. Vea las publicaciones en <strong>La voz del vecino</strong>.</p>
 		<div class="splitter"></div>
 
 		<form action="index.php" method="post" id="formVecinos" name="formVecinos">
-			<label>Nombre y apellido <span>(no será publicado)</span></label>
-			<input id="nombre" type="text" value="<?php if (!$user->guest) echo $user->name; ?>"/>
+			<label for="nombre">Nombre y apellido <span>(no será publicado)</span></label>
+			<input id="nombre" name="nombre" type="text" value="<?php if (!$user->guest) echo $user->name; ?>"/>
 
 			<?php if ($showEmail): ?>
-			<label>E-Mail <span>(no será publicado)</span></label>
-			<input id="email" type="text" value="<?php if (!$user->guest) echo $user->email; ?>" />
+			<label for="email">E-Mail <span>(no será publicado)</span></label>
+			<input id="email" name="email" type="text" value="<?php if (!$user->guest) echo $user->email; ?>" />
 			<?php endif; ?>
 
 			<?php if ($showPhone): ?>
-			<label>Teléfono <span>(no será publicado)</span></label>
-			<input id="telefono" type="text" />
+			<label for="telefono">Teléfono <span>(no será publicado)</span></label>
+			<input id="telefono" name="telefono" type="text" />
 			<?php endif; ?>
 
-			<label>Partido</label>
+			<label for="partidos">Partido</label>
 			<?php echo $lists['partido_select']; ?>
-			<label>Ciudad</label>
+			<label for="localidad">Ciudad</label>
 			<?php echo $lists['localidad_select']; ?>
 
 			<div class="splitter"></div>
 
-			<label>Título</label>
-			<input id="titulo" />
+			<label for="title">Título</label>
+			<input id="title" name="title" type="text" />
 
-			<label>Texto</label>
-			<?php echo $editor->display( 'texto', '', '100%', '250', '60', '20', false, $editorParams ); ?>
+			<label for="text">Texto</label>
+			<?php echo $editor->display( 'text', '', '100%', '250', '60', '20', false, $editorParams ); ?>
 
-			<input name="" type="image" id="enviar" src="images/bot_sent.gif" />
+			<input id="enviar" name="enviar" src="templates/<?php echo $template; ?>/images/bot_sent.gif" type="image">
 
-			<input type="hidden" name="task" value="" />
-			<input type="hidden" name="option" value="" />
-			<input type="hidden" name="module" value="<?php echo $module->id; ?>"
+			<input type="hidden" name="task" value="saveCorresponsalContent" />
+			<input type="hidden" name="option" value="com_zonales" />
+			<input type="hidden" name="module" value="<?php echo $module->title; ?>"
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div>

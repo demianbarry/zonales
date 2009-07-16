@@ -1,14 +1,15 @@
 <?php
 /**
- * @version		$Id: controller.php 11215 2008-10-26 02:25:51Z ian $
- * @package		Zonales
- * @copyright		Mediabit	
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+ * @version	$Id$
+ * @package	Zonales
+ * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
+ * @license	GNU/GPL, see LICENSE.php
+ *
+ * Zonales is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,9 +17,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
 /**
- * User Zonales
+ * Controlador
  *
- * @package		Zonales
+ * @package Zonales
  * @since 1.5
  */
 class ZonalesController extends JController
@@ -122,5 +123,99 @@ class ZonalesController extends JController
 
 		echo "result=$result&message=$message";
 		return;
+	}
+
+	/**
+	 * Almacena la noticia enviada por el usuario a traves de una instancia
+	 * del módulo mod_soycorresponsal.
+	 */
+	function saveCorresponsalContent()
+	{
+		global $mainframe;
+
+		// chequea irregularidades en el request
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		// titulo del modulo que envio el request
+		$moduleTitle = JRequest::getVar('module', NULL, 'post', 'string' );
+
+		// chequea que el modulo especificado en el request sea valido
+		if (!$moduleTitle) {
+			jexit( 'No module name' );
+		} else {
+			jimport('joomla.application.module.helper');
+			$module = JModuleHelper::getModule('soycorresponsal', $moduleTitle);
+			if ($module->id == 0) {
+				jexit( 'Invalid module' );
+			}
+		}
+
+		// recupera parametros del módulo
+		$modparams = new JParameter($module->params);
+
+		// inicializa variables a utilizar
+		$db =& JFactory::getDBO();
+		$user =& JFactory::getUser($modparams->get('user'));
+		$catid = $modparams->get('category', 0);
+
+		$nullDate = $db->getNullDate();
+
+		// tabla de contenidos joomla
+		$row = & JTable::getInstance('content');
+
+		if ($catid == 0) {
+			jexit( 'No section id' );
+		} else {
+			$category =& JTable::getInstance('category');
+			$category->load($catid);
+			$sectionid = $category->section;
+		}
+
+		$createdate =& JFactory::getDate();
+
+		$row->title = JRequest::getVar('title', NULL, 'post', 'string');
+		$row->sectionid = $sectionid;
+		$row->catid = $catid;
+		$row->version = 0;
+		$row->state = 0;
+		$row->ordering = 0;
+		$row->images = array ();
+		$row->publish_down = $nullDate;
+		$row->created_by = $user->get('id');
+		$row->modified = $nullDate;
+
+		// corrección de la fecha
+		$config =& JFactory::getConfig();
+		$tzoffset = $config->getValue('config.offset');
+		$date =& JFactory::getDate('now', $tzoffset);
+		$row->created = $date->toMySQL();
+		$row->publish_up = $date->toMysQL();
+
+		// se redondea timestamp de creación
+		if ($row->created && strlen(trim( $row->created )) <= 10) {
+			$row->created 	.= ' 00:00:00';
+		}
+
+		// Prepare the content for saving to the database
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
+		ContentHelper::saveContentPrep( $row );
+
+		// Make sure the data is valid
+		if (!$row->check()) {
+			JError::raiseError( 500, $db->stderr() );
+			return false;
+		}
+
+		// Store the content to the database
+		if (!$row->store()) {
+			JError::raiseError( 500, $db->stderr() );
+			return false;
+		}
+
+		// Check the article and update item order
+		$row->checkin();
+		$row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
+
+		$mainframe->redirect('index.php');
 	}
 }
