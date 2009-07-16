@@ -28,5 +28,6 @@
 			<option value="1">YES</option>
 		</param>
 		<param name="category" type="category" label="Select a category" />
+		<param name="user" type="sql" default="" query="SELECT id, name FROM #__users" key_field="id" value_field="name" description="TIP_USER" />
 	</params>
 </install>

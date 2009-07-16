@@ -1,4 +1,17 @@
 <?php
+/**
+ * @version	$Id$
+ * @package	Zonales
+ * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
+ * @license	GNU/GPL, see LICENSE.php
+ *
+ * Zonales is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -14,15 +27,11 @@ $zonales =& $helper->getZonales();
 $zonal = $helper->getZonal();
 $localidades = $helper->getFieldValues($zonal->id);
 
-// crea opcion nula para el select
-$blank_option[] = JHTML::_('select.option', '', JText::_('SELECCIONE_PARTIDO'), 'name', 'label');
 // crea select de zonales disponibles
-$zonales_list = array_merge($blank_option, $zonales);
-$lists['partido_select'] = JHTML::_('select.genericlist', $zonales_list, 'partidos',
+$lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
 	'size="1"', 'name', 'label', $zonal->name);
 
 // crea opcion nula para el select
-unset($blank_option);
 $blank_option[] = JHTML::_('select.option', '', JText::_('SELECCIONE_LOCALIDAD'), 'name', 'label');
 // crea select de zonales disponibles
 $localidades_list = array_merge($blank_option, $localidades);
