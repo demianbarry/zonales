@@ -19,7 +19,7 @@
     <language tag="es-ES">es-ES.mod_zonalactual.ini</language>
   </languages>
   <params>
-    <param name="show_label" type="radio" default="1" label="SHOWLABEL" description="TIP_SHOWLABEL">
+    <param name="show_label" type="radio" default="0" label="SHOWLABEL" description="TIP_SHOWLABEL">
       <option value="0">NO</option>
       <option value="1">YES</option>
     </param>
