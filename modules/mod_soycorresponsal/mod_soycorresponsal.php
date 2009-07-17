@@ -17,6 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 
+$title = JRequest::getVar('title', '', 'post', 'string');
+$text = JRequest::getVar('text', '', 'post', 'string');
+
 // parametros
 $showEmail = $params->get('show_email');
 $showPhone = $params->get('show_phone');
@@ -29,14 +32,14 @@ $localidades = $helper->getFieldValues($zonal->id);
 
 // crea select de zonales disponibles
 $lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
-	'size="1"', 'name', 'label', $zonal->name);
+	'size="1" class="required"', 'name', 'label', $zonal->name);
 
 // crea opcion nula para el select
 $blank_option[] = JHTML::_('select.option', '', JText::_('SELECCIONE_LOCALIDAD'), 'name', 'label');
 // crea select de zonales disponibles
 $localidades_list = array_merge($blank_option, $localidades);
 $lists['localidad_select'] = JHTML::_('select.genericlist', $localidades_list, 'localidad',
-	'size="1"', 'name', 'label');
+	'size="1" class="required"', 'name', 'label');
 
 // template
 $app =& JFactory::getApplication();
