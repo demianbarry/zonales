@@ -200,6 +200,12 @@ class ZonalesController extends JController
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
 		ContentHelper::saveContentPrep( $row );
 
+		// Se agregan nombre de usuario, correo y telefono
+		$enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
+		$enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
+		$enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
+		$row->introtext .= "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
+
 		// Make sure the data is valid
 		if (!$row->check()) {
 			JError::raiseError( 500, $db->stderr() );
@@ -215,6 +221,22 @@ class ZonalesController extends JController
 		// Check the article and update item order
 		$row->checkin();
 		$row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
+
+		// Asignamos los tags de Custom Properties según los valores de zonal y localidad
+		$fieldId = JRequest::getVar('partidos', NULL, 'post', 'int');
+		$valueId = JRequest::getVar('localidad', NULL, 'post', 'int');
+		
+		$query = "
+			REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
+			SELECT 'content','$row->id',f.id AS field, v.id AS value
+			FROM #__custom_properties_fields f
+			  INNER JOIN  #__custom_properties_values v
+			  ON(f.id = v.field_id)
+			WHERE f.id = $fieldId
+			AND v.id = $valueId ";
+		$database = JFactory::getDBO();
+		$database->setQuery($query);
+		$database->query();
 
 		$mainframe->redirect('index.php');
 	}
