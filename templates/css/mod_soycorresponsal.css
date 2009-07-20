@@ -1,0 +1,104 @@
+/* CSS del módulo 'Soy corresponsal' */
+
+.moduletable_formVecinos{
+	width:300px;
+	
+	margin-bottom:10px;
+
+	background:#F8F8F1;
+	
+	border-bottom:1px dotted #CCCCCC;
+}
+
+.moduletable_formVecinos h1{
+	display:block;
+	padding:10px;
+	margin-bottom:10px;
+	background:#FF9900;
+	
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:16px;
+	color:#FFFFFF;
+	font-weight:bold;
+	letter-spacing:-1px;
+}
+
+.moduletable_formVecinos p{
+	line-height:13px;
+	font-family:"trebuchet MS";
+	font-size:11px;
+	color:#666666;
+	margin-bottom:7px;
+}
+
+.moduletable_formVecinos p strong{
+	font-weight:bold;
+}
+
+.moduletable_formVecinos .splitter, .moduletable_formVecinos #formVecinos .splitter{
+	display:block;
+	margin-top:10px;
+	margin-bottom:10px;
+	border-top:1px solid #ECECD9;
+	border-bottom:1px solid #FFFFFF;
+}
+
+.moduletable_formVecinos #formVecinos{
+	width:280px;
+}
+
+.moduletable_formVecinos label{
+	display:block;
+	margin-top:10px;
+	margin-bottom:4px;
+	
+	font-family:"trebuchet MS";
+	font-size:11px;
+	color:#666666;
+}
+
+.moduletable_formVecinos label span{
+	color:#999999;}
+
+.moduletable_formVecinos #formVecinos input, .moduletable_formVecinos #formVecinos select, .moduletable_formVecinos #formVecinos textarea{
+	border:1px solid #CCCCCC;margin:0;padding:0;
+	
+	font-family:"trebuchet MS";
+	font-size:11px;
+	color:#666666;
+}
+
+.moduletable_formVecinos #formVecinos #nombre{
+	width:220px;
+}
+
+.moduletable_formVecinos #formVecinos #email{
+	width:220px;
+}
+
+.moduletable_formVecinos #formVecinos #telefono{
+	width:220px;
+}
+
+.moduletable_formVecinos #formVecinos #partido{
+	width:220px;
+}
+
+.moduletable_formVecinos #formVecinos #localidad{
+	width:220px;
+}
+
+.moduletable_formVecinos #formVecinos #titulo{
+	width:280px;
+}
+
+.moduletable_formVecinos #formVecinos #texto{
+	width:280px;
+	height:200px;
+}
+
+.moduletable_formVecinos #formVecinos #enviar{
+	border:0;margin:0;padding:0;
+	margin-top:10px;
+	margin-bottom:10px;
+}
