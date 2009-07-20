@@ -16,6 +16,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+jimport ('joomla.filesystem.file');
 
 // parametros
 $showLabel = $params->get('show_label', 'show_label');
@@ -29,5 +30,12 @@ $zonalName = $zonal ? $zonal->label : $params->get('nozonal_text');
 // template
 $app =& JFactory::getApplication();
 $template = $app->getTemplate();
+
+// valores para los parametros del template
+$tparams = new JParameter(JFile::read(JPATH_BASE.DS.'templates'.DS.
+		$template.DS.'params.ini'));
+
+$mainColor = $tparams->get('mainColor', null);
+if ($mainColor) $mainColor = '_' . $mainColor;
 
 require(JModuleHelper::getLayoutPath('mod_zonalactual'));
