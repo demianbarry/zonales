@@ -1,0 +1,46 @@
+/* CSS main _violeta */
+
+#top{
+	background:url(../images/_violeta/bg_top.gif);
+	background-repeat:no-repeat;
+	background-position:right top;
+}
+
+#top #logoTop{
+	background:url(../images/_violeta/logo_top.jpg);
+}
+
+#logoBottom{
+	background:url(../images/_violeta/logo_bottom.gif);
+}
+
+.blog_more strong{
+	color:#009CC9;
+}
+
+/* glassmenu */
+
+#navigation ul li a:hover{
+	color:#FFFFFF !important;
+	background:#009CC9 !important;
+}
+
+#sublinks{
+	background:#009CC9 !important;
+}	
+
+/* mod soy corresponsal */
+
+.moduletable_formVecinos h1{
+	background:#009CC9;
+}
+
+/* mod ultimos comentarios */
+
+.moduletable h3{
+	background:#009CC9;
+}
+
+.comments-list a{
+	color:#009CC9;
+}
