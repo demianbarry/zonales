@@ -31,17 +31,15 @@ function submitform() {
     return true;
 }
 
-function validateForm(form) {
-    if (form.nombre.hasClass('invalid')) {
-        alert("<?php echo JText::_( 'SC_NAME_WARNING', true ); ?>");
+function validate(form, fn) {
+    if (document.formvalidator.isValid(form) == false) {
+        return fn(form);
     }
-    else if (form.email.hasClass('invalid')) {
-        alert("<?php echo JText::_( 'SC_EMAIL_WARNING', true ); ?>");
-    }
-    else if (form.telefono.hasClass('invalid')) {
-        alert("<?php echo JText::_( 'SC_PHONE_WARNING', true ); ?>");
-    }
-    else if (form.partidos.hasClass('invalid')) {
+    return true;
+}
+
+function validateNota(form) {
+    if (form.partidos.hasClass('invalid')) {
         alert("<?php echo JText::_( 'SC_PARTIDO_WARNING', true ); ?>");
     }
     else if (form.localidad.hasClass('invalid')) {
@@ -52,6 +50,42 @@ function validateForm(form) {
     }
     return false;
 }
+
+function validateForm(form) {
+    if (form.partidos.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_PARTIDO_WARNING', true ); ?>");
+    }
+    else if (form.localidad.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_LOCALIDAD_WARNING', true ); ?>");
+    }
+    else if (form.title.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_TITLE_WARNING', true ); ?>");
+    }
+    else if (form.nombre.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_NAME_WARNING', true ); ?>");
+    }
+    else if (form.email.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_EMAIL_WARNING', true ); ?>");
+    }
+    else if (form.telefono.hasClass('invalid')) {
+        alert("<?php echo JText::_( 'SC_PHONE_WARNING', true ); ?>");
+    }
+    return false;
+}
+
+window.addEvent('domready', function() {
+	$('next').addEvent('click', function() {
+		if (validate($('formVecinos'), validateNota)) {
+			$('nota').setStyle('display', 'none');
+			$('corresponsal').setStyle('display', '');
+			$('nombre').addClass('required');
+			$('email').addClass('required validate-email');
+			$('telefono').addClass('required');
+			return true;
+		}
+		return false;
+	});
+});
 //-->
 </script>
 
@@ -64,33 +98,41 @@ function validateForm(form) {
 		<div class="splitter"></div>
 
 		<form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" onsubmit="return submitform()">
-			<label for="nombre">Nombre y apellido <span>(no será publicado)</span></label>
-			<input id="nombre" name="nombre" type="text" class="required" value="<?php if (!$user->guest) echo $user->name; ?>"/>
+			<div id="nota">
+				<label for="partidos">Partido</label>
+				<?php echo $lists['partido_select']; ?>
+				<label for="localidad">Ciudad</label>
+				<?php echo $lists['localidad_select']; ?>
 
-			<?php if ($showEmail): ?>
-			<label for="email">E-Mail <span>(no será publicado)</span></label>
-			<input id="email" name="email" type="text" class="required validate-email" value="<?php if (!$user->guest) echo $user->email; ?>" />
-			<?php endif; ?>
+				<div class="splitter"></div>
 
-			<?php if ($showPhone): ?>
-			<label for="telefono">Teléfono <span>(no será publicado)</span></label>
-			<input id="telefono" name="telefono" type="text" class="required" />
-			<?php endif; ?>
+				<label for="title">Título</label>
+				<input id="title" name="title" type="text" class="required" value="<?php echo $title; ?>"/>
 
-			<label for="partidos">Partido</label>
-			<?php echo $lists['partido_select']; ?>
-			<label for="localidad">Ciudad</label>
-			<?php echo $lists['localidad_select']; ?>
+				<label for="text">Texto</label>
+				<?php echo $editor->display( 'text', $text, '100%', '250', '60', '20', false, $editorParams ); ?>
 
-			<div class="splitter"></div>
+				<a id="next" name="next" >
+					<img src="templates/<?php echo $template; ?>/images/bot_sent.gif" alt="siguiente" title="siguiente"/>
+				</a>
+			</div>
 
-			<label for="title">Título</label>
-			<input id="title" name="title" type="text" class="required" value="<?php echo $title; ?>"/>
+			<div id="corresponsal" style="display: none;">
+				<label for="nombre">Nombre y apellido <span>(no será publicado)</span></label>
+				<input id="nombre" name="nombre" type="text" class="" value="<?php if (!$user->guest) echo $user->name; ?>"/>
 
-			<label for="text">Texto</label>
-			<?php echo $editor->display( 'text', $text, '100%', '250', '60', '20', false, $editorParams ); ?>
+				<?php if ($showEmail): ?>
+				<label for="email">E-Mail <span>(no será publicado)</span></label>
+				<input id="email" name="email" type="text" class="" value="<?php if (!$user->guest) echo $user->email; ?>" />
+				<?php endif; ?>
 
-			<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/bot_sent.gif" type="image" />
+				<?php if ($showPhone): ?>
+				<label for="telefono">Teléfono <span>(no será publicado)</span></label>
+				<input id="telefono" name="telefono" type="text" class="" />
+				<?php endif; ?>
+
+				<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/bot_sent.gif" type="image" />
+			</div>
 
 			<input type="hidden" name="task" value="saveCorresponsalContent" />
 			<input type="hidden" name="option" value="com_zonales" />
