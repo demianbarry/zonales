@@ -21,11 +21,9 @@ JHTML::_('behavior.formvalidation');
 <script language="javascript" type="text/javascript">
 <!--
 function submitform() {
-    var form = document.formVecinos;
+    var form = $('formVecinos');
 
-    if (document.formvalidator.isValid(form) == false) {
-        return validateForm(form);
-    }
+    validate(form, validateForm);
 
     form.submit();
     return true;
@@ -77,13 +75,27 @@ window.addEvent('domready', function() {
 	$('next').addEvent('click', function() {
 		if (validate($('formVecinos'), validateNota)) {
 			$('nota').setStyle('display', 'none');
-			$('corresponsal').setStyle('display', '');
 			$('nombre').addClass('required');
 			$('email').addClass('required validate-email');
 			$('telefono').addClass('required');
+			$('corresponsal').setStyle('display', '');
 			return true;
 		}
 		return false;
+	});
+
+	$("partidos").addEvent("change", function() {
+		$("localidad_container").empty().addClass("ajax-loading");
+		var url="index.php?option=com_zonales&format=raw&task=getFieldValuesAjax&fieldId="+this.getValue();
+		new Ajax(url, {
+			method: 'get',
+			onComplete: function(response) {
+				$("localidad_container").removeClass("ajax-loading").setHTML(response);
+				fx.set("#fff").start("#f60").chain(function() {
+					this.start.delay(2000, this, "#000");
+				});
+			}
+		}).request();
 	});
 });
 //-->
@@ -101,8 +113,8 @@ window.addEvent('domready', function() {
 			<div id="nota">
 				<label for="partidos">Partido</label>
 				<?php echo $lists['partido_select']; ?>
-				<label for="localidad">Ciudad</label>
-				<?php echo $lists['localidad_select']; ?>
+				<label for="localidad">Localidad</label>
+				<div id="localidad_container"><?php echo $lists['localidad_select']; ?></div>
 
 				<div class="splitter"></div>
 
@@ -136,7 +148,7 @@ window.addEvent('domready', function() {
 
 			<input type="hidden" name="task" value="saveCorresponsalContent" />
 			<input type="hidden" name="option" value="com_zonales" />
-			<input type="hidden" name="module" value="<?php echo $module->title; ?>"
+			<input type="hidden" name="module" value="<?php echo $module->title; ?>" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div>

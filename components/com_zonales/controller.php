@@ -125,6 +125,25 @@ class ZonalesController extends JController
 		return;
 	}
 
+	function getFieldValuesAjax() 
+	{
+		$fieldId = JRequest::getVar('fieldId', NULL, 'get', 'int');
+
+		if ($fieldId) {
+			$helper = new comZonalesHelper();
+			$values = $helper->getFieldValues($fieldId);
+			
+			if (sizeof($values)) {
+				echo JHTML::_('select.genericlist', $values, 'localidad', 'size="1" class="required"', 'id', 'label');
+			}
+			else {
+				echo JText::_("No se han recuperado localidades");
+			}
+		} else { echo 'prueba'; }
+
+		return;
+	}
+
 	/**
 	 * Almacena la noticia enviada por el usuario a traves de una instancia
 	 * del módulo mod_soycorresponsal.

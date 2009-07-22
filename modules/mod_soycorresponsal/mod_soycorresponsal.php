@@ -34,11 +34,8 @@ $localidades = $helper->getFieldValues($zonal->id);
 $lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
 	'size="1" class="required"', 'id', 'label', $zonal->id);
 
-// crea opcion nula para el select
-$blank_option[] = JHTML::_('select.option', '', JText::_('SELECCIONE_LOCALIDAD'), 'id', 'label');
 // crea select de zonales disponibles
-$localidades_list = array_merge($blank_option, $localidades);
-$lists['localidad_select'] = JHTML::_('select.genericlist', $localidades_list, 'localidad',
+$lists['localidad_select'] = JHTML::_('select.genericlist', $localidades, 'localidad',
 	'size="1" class="required"', 'id', 'label');
 
 // template
