@@ -17,9 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 
-$title = JRequest::getVar('title', '', 'post', 'string');
-$text = JRequest::getVar('text', '', 'post', 'string');
-
 // parametros
 $showEmail = $params->get('show_email');
 $showPhone = $params->get('show_phone');
@@ -51,5 +48,12 @@ $editorParams = array (
 
 // info de usuario
 $user =& JFactory::getUser();
+
+// valores para los parametros del template
+$tparams = new JParameter(JFile::read(JPATH_BASE.DS.'templates'.DS.
+		$template.DS.'params.ini'));
+
+$mainColor = $tparams->get('mainColor', null);
+if ($mainColor) $mainColor = '_' . $mainColor;
 
 require(JModuleHelper::getLayoutPath('mod_soycorresponsal'));
