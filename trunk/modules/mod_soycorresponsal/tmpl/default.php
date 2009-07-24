@@ -20,15 +20,6 @@ JHTML::_('behavior.formvalidation');
 <!-- Validacion -->
 <script language="javascript" type="text/javascript">
 <!--
-function submitform() {
-    var form = $('formVecinos');
-
-    validate(form, validateForm);
-
-    form.submit();
-    return true;
-}
-
 function validate(form, fn) {
     if (document.formvalidator.isValid(form) == false) {
         return fn(form);
@@ -72,7 +63,7 @@ function validateForm(form) {
 }
 
 window.addEvent('domready', function() {
-	$('next').addEvent('click', function() {
+	$('siguiente').addEvent('click', function() {
 		if (validate($('formVecinos'), validateNota)) {
 			$('nota').setStyle('display', 'none');
 			$('nombre').addClass('required');
@@ -97,6 +88,23 @@ window.addEvent('domready', function() {
 			}
 		}).request();
 	});
+
+	$('formVecinos').addEvent('submit', function(e) {
+		new Event(e).stop();
+
+		if (validate(this, validateForm) == false) {
+			return false;
+		}
+
+		$('mensaje').empty().addClass('ajax-loading').setStyle('display', ''),
+		this.send({
+			update: $('mensaje'),
+			onComplete: function() {
+				$('formVecinos').setStyle('display', 'none');
+				$('mensaje').removeClass('ajax-loading');
+			}
+		});
+	});
 });
 //-->
 </script>
@@ -109,7 +117,7 @@ window.addEvent('domready', function() {
 		<p><strong>Soy corresponsal</strong> nos permite ser vecinos y periodístas. Vea las publicaciones en <strong>La voz del vecino</strong>.</p>
 		<div class="splitter"></div>
 
-		<form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" onsubmit="return submitform()">
+		<form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" >
 			<div id="nota">
 				<label for="partidos">Partido</label>
 				<?php echo $lists['partido_select']; ?>
@@ -124,9 +132,7 @@ window.addEvent('domready', function() {
 				<label for="text">Texto</label>
 				<?php echo $editor->display( 'text', $text, '100%', '250', '60', '20', false, $editorParams ); ?>
 
-				<a id="next" name="next" >
-					<img src="templates/<?php echo $template; ?>/images/bot_sent.gif" alt="siguiente" title="siguiente"/>
-				</a>
+				<a id="siguiente" name="siguiente" />Siguiente</a>
 			</div>
 
 			<div id="corresponsal" style="display: none;">
@@ -143,14 +149,17 @@ window.addEvent('domready', function() {
 				<input id="telefono" name="telefono" type="text" class="" />
 				<?php endif; ?>
 
-				<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/bot_sent.gif" type="image" />
+				<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
 			</div>
 
 			<input type="hidden" name="task" value="saveCorresponsalContent" />
 			<input type="hidden" name="option" value="com_zonales" />
+			<input type="hidden" name="format" value="raw" />
 			<input type="hidden" name="module" value="<?php echo $module->title; ?>" />
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
+
+		<p id="mensaje" title="mensaje" />
 	</div>
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->

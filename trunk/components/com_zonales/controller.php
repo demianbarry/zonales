@@ -125,6 +125,10 @@ class ZonalesController extends JController
 		return;
 	}
 
+	/**
+	 *
+	 * @return <type> 
+	 */
 	function getFieldValuesAjax() 
 	{
 		$fieldId = JRequest::getVar('fieldId', NULL, 'get', 'int');
@@ -257,6 +261,8 @@ class ZonalesController extends JController
 		$database->setQuery($query);
 		$database->query();
 
-		$mainframe->redirect('index.php');
+		// Todo ok, enviamos confirmación
+		echo $modparams->get('confirmacion');
+		return;
 	}
 }
