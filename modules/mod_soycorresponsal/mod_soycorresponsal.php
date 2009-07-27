@@ -15,11 +15,15 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+// helper zonales
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+// librería recaptcha
+jimport('recaptcha.recaptchalib');
 
 // parametros
 $showEmail = $params->get('show_email');
 $showPhone = $params->get('show_phone');
+$captcha_publickey = "6Lc8fwcAAAAAAP8aw0ojn_bac-OpAiPv3NnAg9lN";
 
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();

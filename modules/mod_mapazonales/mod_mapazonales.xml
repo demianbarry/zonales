@@ -19,7 +19,7 @@
     <language tag="es-ES">es-ES.mod_mapazonales.ini</language>
   </languages>
   <params>
-    <param name="title_text" type="text" default="Seleccione Zonal" label="TITLE" description="TIP_TITLE" />
+    <param name="title_text" type="text" default="" label="TITLE" description="TIP_TITLE" />
     <param name="show_label" type="radio" default="1" label="SHOWLABEL" description="TIP_SHOWLABEL">
       <option value="0">NO</option>
       <option value="1">YES</option>

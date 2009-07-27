@@ -173,6 +173,25 @@ class ZonalesController extends JController
 			}
 		}
 
+		// librería recaptcha
+		jimport('recaptcha.recaptchalib');
+		// parametros del componente
+		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+		$privatekey = $zonalesParams->get('recaptcha_privatekey', null);
+
+		if (!$privatekey) {
+			jexit('No recaptcha private key');
+		} else {
+			// validamos la respuesta del usuario
+			$challenge = JRequest::getVar('recaptcha_challenge_field', NULL, 'post', 'string' );
+			$response = JRequest::getVar('recaptcha_response_field', NULL, 'post', 'string' );
+			$resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $challenge, $response);
+
+			if (!$resp->is_valid) {
+				jexit("failure");
+			}
+		}
+
 		// recupera parametros del módulo
 		$modparams = new JParameter($module->params);
 
@@ -227,7 +246,7 @@ class ZonalesController extends JController
 		$enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
 		$enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
 		$enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
-		$row->introtext .= "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
+		$row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
 
 		// Make sure the data is valid
 		if (!$row->check()) {

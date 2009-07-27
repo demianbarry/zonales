@@ -62,6 +62,13 @@ function validateForm(form) {
     return false;
 }
 
+// informa a recaptcha de no generar la interface por default
+var RecaptchaOptions = {
+	theme: 'custom',
+	lang: 'es',
+	custom_theme_widget: 'recaptcha_widget'
+};
+
 window.addEvent('domready', function() {
 	$('siguiente').addEvent('click', function() {
 		if (validate($('formVecinos'), validateNota)) {
@@ -99,8 +106,13 @@ window.addEvent('domready', function() {
 		$('mensaje').empty().addClass('ajax-loading').setStyle('display', ''),
 		this.send({
 			update: $('mensaje'),
-			onComplete: function() {
-				$('formVecinos').setStyle('display', 'none');
+			onComplete: function(response) {
+				if (response == 'failure') {
+					Recaptcha.reload();
+					$('captchaStatus').setStyle('display','');
+				} else {
+					$('formVecinos').setStyle('display', 'none');
+				}
 				$('mensaje').removeClass('ajax-loading');
 			}
 		});
@@ -130,9 +142,9 @@ window.addEvent('domready', function() {
 				<input id="title" name="title" type="text" class="required" value="<?php echo $title; ?>"/>
 
 				<label for="text">Texto</label>
-				<?php echo $editor->display( 'text', $text, '100%', '250', '60', '20', false, $editorParams ); ?>
+				<?php echo $editor->display( 'text', '', '100%', '250', '60', '20', false, $editorParams ); ?>
 
-				<a id="siguiente" name="siguiente" />Siguiente</a>
+				<a id="siguiente" name="siguiente">Siguiente</a>
 			</div>
 
 			<div id="corresponsal" style="display: none;">
@@ -148,6 +160,32 @@ window.addEvent('domready', function() {
 				<label for="telefono">Teléfono <span>(no será publicado)</span></label>
 				<input id="telefono" name="telefono" type="text" class="" />
 				<?php endif; ?>
+
+				<div class="splitter"></div>
+				<style>
+					#recaptcha_image{
+						width:270px !important;
+					}
+
+					#recaptcha_image img{
+						width:270px !important;
+					}
+				</style>
+				<div id="captchaStatus" style="display: none; color:red;">Incorrecto. Otro intento.</div>
+				<div id="recaptcha_widget" style="display:none">
+					<div id="recaptcha_image"></div>
+					<br/>
+					<span class="recaptcha_only_if_image">Escribe las 2 palabras:</span>
+					<span class="recaptcha_only_if_audio">Escribe los 8 números:</span>
+					<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
+
+					<div><a href="javascript:Recaptcha.reload()">Obtener un nuevo reto</a></div>
+					<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Reto audible</a></div>
+					<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Reto visual</a></div>
+					<div><a href="javascript:Recaptcha.showhelp()">Ayuda</a></div>
+				</div>
+				<script type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
+				<div class="splitter"></div>
 
 				<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
 			</div>
