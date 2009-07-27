@@ -1,13 +1,19 @@
 /* CSS main _violeta */
 
+/* celeste #009CC9 */
+/* verde #97bf0d */
+
 #top{
-	background:url(../images/_violeta/bg_top.gif);
+	background:url(../images/_violeta/bg_header.jpg);
 	background-repeat:no-repeat;
-	background-position:right top;
 }
 
 #top #logoTop{
-	background:url(../images/_violeta/logo_top.jpg);
+	float:left;
+	margin-left:10px;
+	width:242px;
+	height:105px;
+	background:none;
 }
 
 #logoBottom{
@@ -42,5 +48,27 @@
 }
 
 .comments-list a{
+	color:#009CC9;
+}
+
+/* yoosearch */
+
+.moduletable_yooSearch{
+	background:url(../images/_violeta/base_buscador.jpg);
+
+}
+
+.resultbox .resultbox-bg .search-results h3.search-header{ /* título de la caja */
+	background:#009CC9;
+}
+
+.resultbox-bg{
+	background:#97bf0d;
+}
+
+.resultbox .resultbox-bl .resultbox-br .resultbox-b{
+	background:#97bf0d;
+}
+.resultbox .resultbox-bg .search-results .results h3{ /* titulos */
 	color:#009CC9;
 }

@@ -13,21 +13,19 @@
 
 #top{
 	width:978px;
-	height:125px;
-	background:url(../images/bg_top.gif);
+	height:170px;
+	
+	background:url(../images/_violeta/bg_header.jpg);
 	background-repeat:no-repeat;
-	background-position:right top;
 }
 
-#top #logoTop{
-	float:left;
-	margin-left:10px;
-	width:242px;
-	height:105px;
-	background:url(../images/logo_top.jpg);
+#mainMenu{
+	display:block;
+	/*padding-top:125px;*/
+	position:absolute;
+	width:978px;
+	top:125px;
 }
-
-#mainMenu{}
 
 #containerContent{
 	background:url(../images/back-wrapp.gif);

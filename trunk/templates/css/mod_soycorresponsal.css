@@ -102,3 +102,15 @@
 	margin-top:10px;
 	margin-bottom:10px;
 }
+
+
+
+/* recaptcha */
+
+.moduletable_formVecinos #recaptcha_image{
+	width:270px !important;
+}
+
+.moduletable_formVecinos #recaptcha_image img{
+	width:270px !important;
+}

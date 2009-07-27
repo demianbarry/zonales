@@ -515,35 +515,32 @@ div.cp_field_label{
 /* ////////////////////////////////////////////////////// yooSearch */
 
 .moduletable_yooSearch{
-	width:217px;
+	width:200px;
 	height:77px;
 	position:absolute;
 	margin-left:498px;
 	margin-top:25px;
 	background:url(../images/base_buscador.jpg);
+	background-repeat:no-repeat;
 }
 
 .moduletable_yooSearch .blank{
-	margin-top:50px;
-	margin-left:55px;
+	margin-top:43px;
+	margin-left:20px;
 }
 
 .moduletable_yooSearch .blank .yoo-search .searchbox .searchfield{
 	margin:0;
 	padding:0;
-	padding-top:4px;
-	padding-left:5px;
 	border:0;
 	
 	width:155px;
-	height:21px;
-	background:url(../images/input_serach.jpg);
-	background-repeat:no-repeat;
 	
 	font-family:Tahoma;
 	font-size:11px;
 	color:#666666;
 
+	background:none;
 }
 
 .moduletable_yooSearch .blank .yoo-search .searchbox .search-magnifier{
