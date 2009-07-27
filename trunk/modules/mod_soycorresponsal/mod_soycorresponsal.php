@@ -23,7 +23,9 @@ jimport('recaptcha.recaptchalib');
 // parametros
 $showEmail = $params->get('show_email');
 $showPhone = $params->get('show_phone');
-$captcha_publickey = "6Lc8fwcAAAAAAP8aw0ojn_bac-OpAiPv3NnAg9lN";
+
+$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+$captcha_publickey = $zonalesParams->get('recaptcha_publickey', null);
 
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();

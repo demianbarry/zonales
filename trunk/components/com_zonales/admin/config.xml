@@ -8,6 +8,7 @@
 		<param name="height_mapa_flash" type="text" default="600" label="Ancho" description="tip_ancho_mapa"/>
 		<param name="flash_file" type="text" default="mapa.swf" label="FLASHFILE" description="TIP_FLASHFILE"/>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="recaptcha_publickey" type="text" default="" label="RECAPTCHA_PUBLICKEY" description="TIP_RECAPTCHA_PUBLICKEY"/>
 		<param name="recaptcha_privatekey" type="text" default="" label="RECAPTCHA_PRIVATEKEY" description="TIP_RECAPTCHA_PRIVATEKEY"/>
 	</params>
 </root>

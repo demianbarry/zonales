@@ -216,4 +216,24 @@ class comZonalesHelper
 
 		return $this->_cache->get(array($dbo, 'loadObjectList'), array());
 	}
+
+	/** 
+	 * Genera un arreglo conteniendo los parametros pasados
+	 * representación JSON del mismo.
+	 *  
+	 * @param String $result resultado de la operación
+	 * @param String $msg mensaje al usuario
+	 * @param String $desc descripción opcional
+	 * @return String representación JSON de los parametros
+	 */
+	function getJsonResponse($result, $msg, $desc = null)
+	{
+		$response = array();
+
+		$response['result'] = $result;
+		$response['msg'] = $msg;
+		$response['desc'] = $desc;
+
+		return json_encode($response);
+	}
 }
