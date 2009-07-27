@@ -89,9 +89,6 @@ window.addEvent('domready', function() {
 			method: 'get',
 			onComplete: function(response) {
 				$("localidad_container").removeClass("ajax-loading").setHTML(response);
-				fx.set("#fff").start("#f60").chain(function() {
-					this.start.delay(2000, this, "#000");
-				});
 			}
 		}).request();
 	});
@@ -105,15 +102,16 @@ window.addEvent('domready', function() {
 
 		$('mensaje').empty().addClass('ajax-loading').setStyle('display', ''),
 		this.send({
-			update: $('mensaje'),
-			onComplete: function(response) {
-				if (response == 'failure') {
-					Recaptcha.reload();
+			onSuccess: function(response) {
+				var resp = Json.evaluate(response);
+				if (resp.result == 'captcha-failure') {
 					$('captchaStatus').setStyle('display','');
-				} else {
-					$('formVecinos').setStyle('display', 'none');
+					Recaptcha.reload();
 				}
-				$('mensaje').removeClass('ajax-loading');
+				if (resp.result == 'success') {
+					$('formVecinos').setStyle('display','none');
+				}
+				$('mensaje').removeClass('ajax-loading').setHTML(resp.msg);
 			}
 		});
 	});
@@ -139,7 +137,7 @@ window.addEvent('domready', function() {
 				<div class="splitter"></div>
 
 				<label for="title">Título</label>
-				<input id="title" name="title" type="text" class="required" value="<?php echo $title; ?>"/>
+				<input id="title" name="title" type="text" class="required" value="" />
 
 				<label for="text">Texto</label>
 				<?php echo $editor->display( 'text', '', '100%', '250', '60', '20', false, $editorParams ); ?>
@@ -162,15 +160,6 @@ window.addEvent('domready', function() {
 				<?php endif; ?>
 
 				<div class="splitter"></div>
-				<style>
-					#recaptcha_image{
-						width:270px !important;
-					}
-
-					#recaptcha_image img{
-						width:270px !important;
-					}
-				</style>
 				<div id="captchaStatus" style="display: none; color:red;">Incorrecto. Otro intento.</div>
 				<div id="recaptcha_widget" style="display:none">
 					<div id="recaptcha_image"></div>
@@ -184,10 +173,10 @@ window.addEvent('domready', function() {
 					<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Reto visual</a></div>
 					<div><a href="javascript:Recaptcha.showhelp()">Ayuda</a></div>
 				</div>
-				<script type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
+				<script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
 				<div class="splitter"></div>
 
-				<input id="enviar" name="submit" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
+				<input id="enviar" name="enviar" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
 			</div>
 
 			<input type="hidden" name="task" value="saveCorresponsalContent" />

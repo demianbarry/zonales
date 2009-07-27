@@ -155,6 +155,10 @@ class ZonalesController extends JController
 	function saveCorresponsalContent()
 	{
 		global $mainframe;
+		jimport('json.json');
+		$helper = new comZonalesHelper();
+
+		$response = array();
 
 		// chequea irregularidades en el request
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -164,14 +168,17 @@ class ZonalesController extends JController
 
 		// chequea que el modulo especificado en el request sea valido
 		if (!$moduleTitle) {
-			jexit( 'No module name' );
+			jexit($helper->getJsonResponse('failure', 'Error interno', 'No module name'));
 		} else {
 			jimport('joomla.application.module.helper');
 			$module = JModuleHelper::getModule('soycorresponsal', $moduleTitle);
 			if ($module->id == 0) {
-				jexit( 'Invalid module' );
+				jexit($helper->getJsonResponse('failure', 'Error interno', 'Invalid module'));
 			}
 		}
+
+		// recupera parametros del módulo
+		$modparams = new JParameter($module->params);
 
 		// librería recaptcha
 		jimport('recaptcha.recaptchalib');
@@ -180,7 +187,7 @@ class ZonalesController extends JController
 		$privatekey = $zonalesParams->get('recaptcha_privatekey', null);
 
 		if (!$privatekey) {
-			jexit('No recaptcha private key');
+			jexit($helper->getJsonResponse('failure', $modparams->get('error'), 'No recaptcha private key'));
 		} else {
 			// validamos la respuesta del usuario
 			$challenge = JRequest::getVar('recaptcha_challenge_field', NULL, 'post', 'string' );
@@ -188,100 +195,97 @@ class ZonalesController extends JController
 			$resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $challenge, $response);
 
 			if (!$resp->is_valid) {
-				jexit("failure");
+				jexit($helper->getJsonResponse('captcha-failure', $modparams->get('error'), 'Invalid response'));
+			} else {
+
+				// inicializa variables a utilizar
+				$db =& JFactory::getDBO();
+				$user =& JFactory::getUser($modparams->get('user'));
+				$catid = $modparams->get('category', 0);
+
+				$nullDate = $db->getNullDate();
+
+				// tabla de contenidos joomla
+				$row = & JTable::getInstance('content');
+
+				if ($catid == 0) {
+					jexit( getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
+				} else {
+					$category =& JTable::getInstance('category');
+					$category->load($catid);
+					$sectionid = $category->section;
+				}
+
+				$createdate =& JFactory::getDate();
+
+				$row->title = JRequest::getVar('title', NULL, 'post', 'string');
+				$row->sectionid = $sectionid;
+				$row->catid = $catid;
+				$row->version = 0;
+				$row->state = 0;
+				$row->ordering = 0;
+				$row->images = array ();
+				$row->publish_down = $nullDate;
+				$row->created_by = $user->get('id');
+				$row->modified = $nullDate;
+
+				// corrección de la fecha
+				$config =& JFactory::getConfig();
+				$tzoffset = $config->getValue('config.offset');
+				$date =& JFactory::getDate('now', $tzoffset);
+				$row->created = $date->toMySQL();
+				$row->publish_up = $date->toMysQL();
+
+				// se redondea timestamp de creación
+				if ($row->created && strlen(trim( $row->created )) <= 10) {
+					$row->created 	.= ' 00:00:00';
+				}
+
+				// Prepare the content for saving to the database
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
+				ContentHelper::saveContentPrep( $row );
+
+				// Se agregan nombre de usuario, correo y telefono
+				$enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
+				$enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
+				$enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
+				$row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
+
+				// Make sure the data is valid
+				if (!$row->check()) {
+					JError::raiseError( 500, $db->stderr() );
+				}
+
+				// Store the content to the database
+				if (!$row->store()) {
+					JError::raiseError( 500, $db->stderr() );
+				}
+
+				// Check the article and update item order
+				$row->checkin();
+				$row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
+
+				// Asignamos los tags de Custom Properties según los valores de zonal y localidad
+				$fieldId = JRequest::getVar('partidos', NULL, 'post', 'int');
+				$valueId = JRequest::getVar('localidad', NULL, 'post', 'int');
+
+				$query = "
+					REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
+					SELECT 'content','$row->id',f.id AS field, v.id AS value
+					FROM #__custom_properties_fields f
+					  INNER JOIN  #__custom_properties_values v
+					  ON(f.id = v.field_id)
+					WHERE f.id = $fieldId
+					AND v.id = $valueId ";
+				$database = JFactory::getDBO();
+				$database->setQuery($query);
+				$database->query();
+
+				// Todo ok, enviamos confirmación
+				echo $helper->getJsonResponse('success', $modparams->get('confirmacion'));
+				return;
 			}
 		}
 
-		// recupera parametros del módulo
-		$modparams = new JParameter($module->params);
-
-		// inicializa variables a utilizar
-		$db =& JFactory::getDBO();
-		$user =& JFactory::getUser($modparams->get('user'));
-		$catid = $modparams->get('category', 0);
-
-		$nullDate = $db->getNullDate();
-
-		// tabla de contenidos joomla
-		$row = & JTable::getInstance('content');
-
-		if ($catid == 0) {
-			jexit( 'No section id' );
-		} else {
-			$category =& JTable::getInstance('category');
-			$category->load($catid);
-			$sectionid = $category->section;
-		}
-
-		$createdate =& JFactory::getDate();
-
-		$row->title = JRequest::getVar('title', NULL, 'post', 'string');
-		$row->sectionid = $sectionid;
-		$row->catid = $catid;
-		$row->version = 0;
-		$row->state = 0;
-		$row->ordering = 0;
-		$row->images = array ();
-		$row->publish_down = $nullDate;
-		$row->created_by = $user->get('id');
-		$row->modified = $nullDate;
-
-		// corrección de la fecha
-		$config =& JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
-		$date =& JFactory::getDate('now', $tzoffset);
-		$row->created = $date->toMySQL();
-		$row->publish_up = $date->toMysQL();
-
-		// se redondea timestamp de creación
-		if ($row->created && strlen(trim( $row->created )) <= 10) {
-			$row->created 	.= ' 00:00:00';
-		}
-
-		// Prepare the content for saving to the database
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
-		ContentHelper::saveContentPrep( $row );
-
-		// Se agregan nombre de usuario, correo y telefono
-		$enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
-		$enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
-		$enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
-		$row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
-
-		// Make sure the data is valid
-		if (!$row->check()) {
-			JError::raiseError( 500, $db->stderr() );
-			return false;
-		}
-
-		// Store the content to the database
-		if (!$row->store()) {
-			JError::raiseError( 500, $db->stderr() );
-			return false;
-		}
-
-		// Check the article and update item order
-		$row->checkin();
-		$row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
-
-		// Asignamos los tags de Custom Properties según los valores de zonal y localidad
-		$fieldId = JRequest::getVar('partidos', NULL, 'post', 'int');
-		$valueId = JRequest::getVar('localidad', NULL, 'post', 'int');
-		
-		$query = "
-			REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
-			SELECT 'content','$row->id',f.id AS field, v.id AS value
-			FROM #__custom_properties_fields f
-			  INNER JOIN  #__custom_properties_values v
-			  ON(f.id = v.field_id)
-			WHERE f.id = $fieldId
-			AND v.id = $valueId ";
-		$database = JFactory::getDBO();
-		$database->setQuery($query);
-		$database->query();
-
-		// Todo ok, enviamos confirmación
-		echo $modparams->get('confirmacion');
-		return;
 	}
 }
