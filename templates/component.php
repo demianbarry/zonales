@@ -23,17 +23,17 @@
 <center>
 <div id="wrapper">
 	<div id="top">
-		<a href="index.php" style="cursor:crosshair;"><div id="logoTop" style="float:left;"></div><!-- END #logoTop --></a>
-    
-    	<jdoc:include type="modules" name="topSearch" style="xhtml" />
-    
-  </div><!-- END #top -->  
+
+    <jdoc:include type="modules" name="topSearch" style="xhtml" />
 
   <div id="mainMenu">
     <jdoc:include type="modules" name="top" style="xhtml" />
   </div><!-- end #mainMenu -->
+  
+  </div><!-- END #top -->
 
 	<div class="lineSplit" style="background:url(<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/linea_03.gif); height:10px; display:block; font-size:0; margin-bottom:10px;"></div>
+  
   <div id="containerContent">
 
 <div style="margin-left:10px;">
@@ -78,7 +78,7 @@
   </div><!-- END #copy -->
 
   <div id="w3c">
-	<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" /></a>
+	<a href="http://validator.w3.org/check?uri=referer"><img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/w3c_xhtml_01.gif" alt="Valid XHTML 1.0 Transitional" /></a>
 	</div><!-- END #w3c -->
 
 </div><!-- END #wrapper -->
