@@ -17,8 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // helper zonales
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
-// librería recaptcha
-jimport('recaptcha.recaptchalib');
 
 // parametros
 $showEmail = $params->get('show_email');

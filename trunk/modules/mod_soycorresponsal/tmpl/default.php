@@ -70,6 +70,16 @@ var RecaptchaOptions = {
 };
 
 window.addEvent('domready', function() {
+	// reconvierte el textarea usado por tinyMCE. neceasario para enviar
+	// el formulario por medio de Ajax.Form
+	var fixTiny = function(properties) {
+		var properties = properties || new Object();
+		var instance = properties.instance || 'mce_editor_0';
+		tinyMCE.execInstanceCommand(instance,'mceCleanup');
+		tinyMCE.triggerSave(true,true);
+		return true;
+	}
+
 	$('siguiente').addEvent('click', function() {
 		if (validate($('formVecinos'), validateNota)) {
 			$('nota').setStyle('display', 'none');
@@ -95,6 +105,8 @@ window.addEvent('domready', function() {
 
 	$('formVecinos').addEvent('submit', function(e) {
 		new Event(e).stop();
+
+		fixTiny({instace:'text'});
 
 		if (validate(this, validateForm) == false) {
 			return false;
@@ -140,7 +152,7 @@ window.addEvent('domready', function() {
 				<input id="title" name="title" type="text" class="required" value="" />
 
 				<label for="text">Texto</label>
-				<?php echo $editor->display( 'text', '', '100%', '250', '60', '20', false, $editorParams ); ?>
+				<?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
 
 				<a id="siguiente" name="siguiente">Siguiente</a>
 			</div>
@@ -172,6 +184,11 @@ window.addEvent('domready', function() {
 					<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Reto audible</a></div>
 					<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Reto visual</a></div>
 					<div><a href="javascript:Recaptcha.showhelp()">Ayuda</a></div>
+					<noscript>
+						<iframe src="http://api.recaptcha.net/noscript?k=<?php echo $captcha_publickey; ?>" height="300" width="500" frameborder="0"></iframe><br>
+						<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+						<input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+					</noscript>
 				</div>
 				<script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
 				<div class="splitter"></div>

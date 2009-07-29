@@ -197,7 +197,6 @@ class ZonalesController extends JController
 			if (!$resp->is_valid) {
 				jexit($helper->getJsonResponse('captcha-failure', $modparams->get('error'), 'Invalid response'));
 			} else {
-
 				// inicializa variables a utilizar
 				$db =& JFactory::getDBO();
 				$user =& JFactory::getUser($modparams->get('user'));
