@@ -41,6 +41,17 @@
 	background:#009CC9;
 }
 
+.moduletable_formVecinos #formVecinos #siguiente{
+	background:url(../images/_violeta/bot_next.gif);
+	display:block;
+	overflow:hidden;
+	width:82px !important;
+	height:18px;
+	text-indent:90px;
+	cursor:pointer;
+	margin-top:10px;
+}
+
 /* mod ultimos comentarios */
 
 .moduletable h3{
