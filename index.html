@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <script type="text/javascript" src="resources/mootools.js"></script>
+        <script type="text/javascript">
+            function writeText(txt,comp)
+            {
+                document.getElementById(comp).innerHTML=txt;
+            }
+
+            function verReserva(mesa) {
+                window.addEvent('domready', function() {
+                    
+                    //We can use one Request object many times.
+                    var req = new Request.HTML({url:'transport.php?action=' +
+                        escape('http://localhost:8080/pruebasJava/Main?mesa=')+mesa+
+                                    '&method=get&data1=101&data2=pass',
+                        onSuccess: function(html) {
+                            Tip(html.item(0).innerHTML) ;
+                        },
+                        //Our request will most likely succeed, but just in case, we'll add an
+                        //onFailure method which will let the user know what happened.
+                        onFailure: function() {
+                            Tip("Falló el requerimiento.");
+                        }
+                    });
+
+                    req.send();
+
+                });
+            }
+        </script>
+    </head>
+
+    <body>        
+        <script type="text/javascript" src="resources/wz_tooltip.js"></script>
+        <img src ="restaurante2.jpg" width ="600" height ="480" alt="Planets" usemap="#planetmap" onMouseMove="writeText('Coords: X=' + event.clientX + ' - Y='+event.clientY, 'coords')"/>
+
+        <map name="planetmap">
+            <area shape ="rect" coords ="0,230,125,300"
+                  onMouseOver="verReserva('1')"
+                  onMouseOut="UnTip()"
+                  onClick="alert('Reserva Mesa 1');"
+                  style="cursor: pointer;"
+                  />
+
+            <area shape ="rect" coords ="313,198,526,280"
+                  onMouseOver="verReserva('2')"
+                  onMouseOut="UnTip()"
+                  onClick="alert('Reserva Mesa 2');"
+                  style="cursor: pointer;"
+                  />
+        </map>
+        <p id="desc"></p>
+        <p id="coords"></p>
+
+    </body>
+</html>
+
+
+
+
