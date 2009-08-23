@@ -1,0 +1,97 @@
+RESERVA DE RECURSOS Y EVENTOS
+--------------------------------------------------------------------------------------------------------------
+Implica:
+	- Tratamiento sobre imagen (foto o plano) del estacio a tratar
+	- Identificar los recursos en la imagen
+	- Interactuar sobre los recursos para reserva --> DB y App
+
+Requirimientos:
+	- Liviano
+	- Herramienta para montar imagen + recurso + DB en forma ágil y para legos.
+	- Compatible con navegadores / plataformas / dispositivos
+
+Posibles Herramientas (evaluación interna):
+	- Ver cuadro comparativo adjunto
+
+
+Desiciones
+--------------------------------------------------------------------------------------------------------------
+- Trabajar sobre librería AJAX para integración DB + Recursos + Reservas
+  Condiciones:
+	- Lock del recurso coherente.
+	- Sesión, permanencia, cancelación, etc.
+- Implementar primer versión utilizando imágenes estáticas con coordenadas.
+- Evaluar segunda versión con imágenes dinámicas utilizando FLASH/FLEX o JavaFX (360°, zoom de recurso, 3D, redefinición de layout, etc.).
+
+
+Plan de trabajo
+--------------------------------------------------------------------------------------------------------------
+- Redactar el CU "Reservar un recurso"
+- Redactar Escenarios específicos para:
+	- Gastronomía
+	- Canchitas de deportes
+	- Espectáculos teatrales
+- Redactar Caso de prueba.
+----- Fecha límite: Viernes 21-08 --------
+
+El martes 25-08 lanzar tareas acordes al CU para comenzar diseño:
+
+- Evaluar diseño - viernes 28-08
+
+====================================================================================================
+
+INDEXADO Y BUSQUEDA DE DOCUMENTOS
+--------------------------------------------------------------------------------------------------------------
+
+Implica:
+	- Indexar contenido de todo tipo --> HTML. Documentos, XML, y texto de DB.
+	- Steaming y/o lematización de palabras --> Normalización del texto.
+	- Esquema de documentos a indexar / Configuración de reglas de Normalización 
+	  Configuración de pesos para resultados.
+	- Motor de búsqueda:
+		- Google + Normalizado + Aproximación (Normalización)
+		- Aprendizaje x usuario
+		- Sugerencia de búsqueda
+
+Requerimientos:
+	- Escalabilidad + Disponibilidad
+	- Módulo de administración
+	- Plug-ins --> Extensiones
+	- Normalización
+	- Compatible MySQL
+
+Posibles herramientas:
+	- Apache Lucene
+	- Desarrollo propio
+	- plug-ins --> Desarrollo propio
+
+Desiciones
+--------------------------------------------------------------------------------------------------------------
+- No se decide aún, se procede a evaluar más profundamente Apache Lucene
+- Fecha límite plan de trabajo: Viernes 29-08
+- Objetivo: Destruir Lucene.
+
+
+Plan de trabajo
+--------------------------------------------------------------------------------------------------------------
+- Escribir casos de test para el motor de búsquedas (Orientado a Zonales)
+- Montar Lucene sobre Joomla -->
+	- Administrar la indexación de DB (en principio todo lo que indexa Joomla por defecto. Artículos, 		  tags, comentarios)
+	- Crear plug-ins de normalición extras que se consideren necesarios: implica-->
+		- Reelevar las normalizaciones que hace Lucene.
+		- Agregar alguna de las normalizaciones investigadas.
+- Test de stress
+
+
+
+
+
+
+
+
+
+
+
+
+
+
