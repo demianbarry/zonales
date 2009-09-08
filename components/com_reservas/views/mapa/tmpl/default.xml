@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="DEFAULT MAPA LAYOUT">
+		<message>
+			<![CDATA[DEFAULT MAPA LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>DEFAULT MAPA LAYOUT</name>
+		<description>DEFAULT MAPA LAYOUT DESC</description>
+	</state>
+</metadata>

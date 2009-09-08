@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<params>
+		<param name="menu_tag_prefix" type="text" default="menu_" label="MENUTAGPREFIX" description="TIP_MENUTAGPREFIX" />
+		<param name="zonal_tag_prefix" type="text" default="zonal_" label="ZONALTAGPREFIX" description="TIP_ZONALTAGPREFIX" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="width_mapa_flash" type="text" default="800" label="Alto" description="tip_alto_mapa"/>
+		<param name="height_mapa_flash" type="text" default="600" label="Ancho" description="tip_ancho_mapa"/>
+		<param name="flash_file" type="text" default="mapa.swf" label="FLASHFILE" description="TIP_FLASHFILE"/>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="recaptcha_publickey" type="text" default="" label="RECAPTCHA_PUBLICKEY" description="TIP_RECAPTCHA_PUBLICKEY"/>
+		<param name="recaptcha_privatekey" type="text" default="" label="RECAPTCHA_PRIVATEKEY" description="TIP_RECAPTCHA_PRIVATEKEY"/>
+	</params>
+</root>
