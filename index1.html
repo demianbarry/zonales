@@ -8,18 +8,19 @@
             }
 
             function verReserva(mesa) {
-                var rValue;
                 window.addEvent('domready', function() {
-                    var app = document.getElementById("JavaFXJavaScript");
                     
+                    //We can use one Request object many times.
                     var req = new Request.HTML({url:'transport.php?action=' +
                             escape('http://localhost:8080/pruebasJava/Main')+
                             '&method=post'+"&mesa="+mesa,
                         onSuccess: function(html) {
-                            app.script.showMessage(html.item(0).innerHTML);
+                            Tip(html.item(0).innerHTML) ;
                         },
+                        //Our request will most likely succeed, but just in case, we'll add an
+                        //onFailure method which will let the user know what happened.
                         onFailure: function() {
-                            app.script.showMessage("Falló el requerimiento.");
+                            Tip("Falló el requerimiento.");
                         }
                     });
 
@@ -30,23 +31,7 @@
         </script>
     </head>
 
-    <body>
-        <h1>ReservasJavaFX</h1>
-                <script src="http://dl.javafx.com/1.2/dtfx.js"></script>
-        <script>
-            javafx(
-            {
-                archive: "./reservas/ReservasJavaFX.jar",
-                draggable: true,
-                width: 540,
-                height: 540,
-                code: "reservasjavafx.Main",
-                name: "ReservasJavaFX",
-                id: 'JavaFXJavaScript'
-            }
-        );
-        </script>
-                <!--
+    <body>        
         <script type="text/javascript" src="resources/wz_tooltip.js"></script>
         <img src ="restaurante2.jpg" width ="600" height ="480" alt="Planets" usemap="#planetmap" onMouseMove="writeText('Coords: X=' + event.clientX + ' - Y='+event.clientY, 'coords')"/>
 
@@ -69,7 +54,7 @@
         <div style="opacity:0.2;">
             <p id="desc">Hola</p>
             <p id="coords"></p>
-        </div>-->
+        </div>
 
     </body>
 </html>
