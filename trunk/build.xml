@@ -65,6 +65,11 @@
     <include name="**" />
   </fileset>
 
+    <!-- com_reservas -->
+  <fileset dir="${src_frontend_components}/com_reservas" id="com_reservas_files">
+    <include name="**" />
+  </fileset>
+
 
   <!-- ======================================================
        		      copia archivos instalación
@@ -98,6 +103,16 @@
     <echo message="copiando componente userzonales en instalacion development"/>
     <copy todir="${dst_frontend_components_dir}/com_zonales">
       <fileset dir="${src_frontend_components}/com_zonales">
+      	<exclude name="admin/**" />
+      </fileset>
+    </copy>
+  </target>
+
+    <!-- componente reservas -->
+  <target name="inst_com_reservas" description="copia componente reservas a dev">
+    <echo message="copiando componente reservas en instalacion development"/>
+    <copy todir="${dst_frontend_components_dir}/com_reservas">
+      <fileset dir="${src_frontend_components}/com_reservas">
       	<exclude name="admin/**" />
       </fileset>
     </copy>
@@ -188,6 +203,16 @@
       <fileset refid="com_zonales_files"/>
       <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_zonales.ini" prefix="language" />
       <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_zonales.ini" prefix="admin/language" />
+    </zip>
+  </target>
+
+  <!-- componente reservas -->
+  <target name="dist_com_resesrvas" description="Crea archivo de distribución Joomla para el componente Reservas">
+    <echo message="Creando archivo de distribución de componente Reservas"/>
+    <zip destfile="${src_dist_dir}/${dist.com_reservas.file}.zip">
+      <fileset refid="com_reservas_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_reservas.ini" prefix="language" />
+      <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_reservas.ini" prefix="admin/language" />
     </zip>
   </target>
 
