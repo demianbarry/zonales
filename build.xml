@@ -59,6 +59,10 @@
   <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
     <include name="**" />
   </fileset>
+  <!-- plg_solrsearch -->
+  <fileset dir="${src_plugins}/solrsearch" id="plg_solrsearch_files">
+    <include name="**" />
+  </fileset>
 
   <!-- com_zonales -->
   <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -196,6 +200,15 @@
     </zip>
   </target>
 
+  <!-- plugin solrsearch -->
+  <target name="dist_plg_solrsearch" description="Crea archivo de distribución Joomla para el plugin SolrSearch">
+    <echo message="Creando archivo de distribución de plugin SolrSearch"/>
+    <zip destfile="${src_dist_dir}/${dist.plg_solrsearch.file}.zip" >
+      <fileset refid="plg_solrsearch_files"/>
+      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_solrsearch.ini" prefix="language" />
+    </zip>
+  </target>
+
   <!-- componente zonales --> 
   <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
     <echo message="Creando archivo de distribución de componente UserZonales"/>
@@ -207,7 +220,7 @@
   </target>
 
   <!-- componente reservas -->
-  <target name="dist_com_resesrvas" description="Crea archivo de distribución Joomla para el componente Reservas">
+  <target name="dist_com_reservas" description="Crea archivo de distribución Joomla para el componente Reservas">
     <echo message="Creando archivo de distribución de componente Reservas"/>
     <zip destfile="${src_dist_dir}/${dist.com_reservas.file}.zip">
       <fileset refid="com_reservas_files"/>
