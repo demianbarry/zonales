@@ -23,6 +23,7 @@ class ReservasViewReserva extends JView
 
 		$this->assignRef('template', $app->getTemplate());
 		$this->assignRef('javafx_file', $helper->getJavaFX());
+                
 
 		parent::display($tpl);
 	}
