@@ -2,6 +2,7 @@
 
 # nombre componente
 dist.com_zonales.file=com_zonales
+dist.com_reservas.file=com_reservas
 dist.com_content.file=com_content
  
 # nombre modulo
@@ -14,3 +15,4 @@ dist.mod_menuzonales.file=mod_menuzonales
 dist.mod_zbanners.file=mod_zbanners
 dist.mod_soycorresponsal.file=mod_soycorresponsal
 dist.plg_zonalescontent.file=plg_zonalescontent
+dist.plg_solrsearch.file=plg_solrsearch
