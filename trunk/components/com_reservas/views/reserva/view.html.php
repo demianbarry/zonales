@@ -14,24 +14,26 @@ jimport( 'joomla.application.component.view');
  */
 class ReservasViewReserva extends JView
 {
-	function display($tpl = null)
-	{
-		global $mainframe, $option;
+    function display($tpl = null)
+    {
+        global $mainframe, $option;
 
-		$app =& JFactory::getApplication();
-		$helper = new comReservasHelper();
+        $app =& JFactory::getApplication();
+        $helper = new comReservasHelper();
 
-// parametros - alto y ancho
-		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
-		$this->width = $zonalesParams->get('width_javafx', '');
-		$this->height = $zonalesParams->get('height_javafx', '');
-		$this->javafxfile = $zonalesParams->get('javafxfile', '');
-                $this->draggable = $zonalesParams->get('draggable', '');
-                $this->code = $zonalesParams->get('code', '');
-                $this->name = $zonalesParams->get('name', '');
-                $this->id = $zonalesParams->get('id', '');
-                
+        // parametros - alto y ancho
+        $zonalesParams = &JComponentHelper::getParams( 'com_reservas' );
 
-		parent::display($tpl);
-	}
+        $this->assignRef('template', $app->getTemplate());
+        $this->width = $zonalesParams->get('width_javafx', '');
+        $this->height = $zonalesParams->get('height_javafx', '');
+        $this->javafxfile = $zonalesParams->get('javafxfile', '');
+        $this->draggable = $zonalesParams->get('draggable', '');
+        $this->code = $zonalesParams->get('code', '');
+        $this->name = $zonalesParams->get('name', '');
+        $this->id = $zonalesParams->get('id', '');
+
+
+        parent::display($tpl);
+    }
 }
