@@ -14,5 +14,8 @@ switch($task) {
 		break;	
 	case 'listMenu':
 		TOOLBAR_reservas_menu::_DEFAULT();
-		break;	
+		break;
+    default:
+        TOOLBAR_reservas_menu::_DEFAULT();
+        break;
 }

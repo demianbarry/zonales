@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<params>
-		<param name="width_javafx" type="text" default="800" label="Alto" description="tip_alto_mapa"/>
-		<param name="height_javafx" type="text" default="600" label="Ancho" description="tip_ancho_mapa"/>
-		<param name="javafxfile" type="text" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_JAVAFXFILE"/>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-                <param name="draggable" type="boolean" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_DRAGGABLE_JAVAFX"/>
-                <param name="code" type="text" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_CODE_JAVAFX"/>
-                <param name="name" type="text" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_NAME_JAVAFX"/>
-                <param name="id" type="text" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_ID_JAVAFX"/>
-	</params>
+    <params>        
+        <param name="javafxfile" type="text" default="ReservasJavaFX.jar" label="JavaFX File" description="TIP_JAVAFXFILE"/>
+        <param name="width_javafx" type="text" default="800" label="Alto" description="tip_alto_mapa"/>
+        <param name="height_javafx" type="text" default="600" label="Ancho" description="tip_ancho_mapa"/>
+        <!--<param name="@spacer" type="spacer" default="" label="" description="" />-->
+        <param name="draggable" type="radio" default="true" label="Draggable" description="TIP_DRAGGABLE_JAVAFX">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+        </param>
+        <param name="code" type="text" default="reservasjavafx.Main" label="Code" description="TIP_CODE_JAVAFX"/>
+        <param name="name" type="text" default="ReservasJavaFX" label="Name" description="TIP_NAME_JAVAFX"/>
+        <param name="id" type="text" default="JavaFXJavaScript" label="Id" description="TIP_ID_JAVAFX"/>
+    </params>
 </root>

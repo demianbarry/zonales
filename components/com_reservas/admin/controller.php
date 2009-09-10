@@ -10,7 +10,7 @@ jimport('joomla.filesystem.file');
  * Controlador
  *
  */
-class ZonalesController extends JController
+class ReservasController extends JController
 {
 	/**
 	 * Constructor
