@@ -21,113 +21,14 @@ class ZonalesController extends JController
 	{
 		parent::__construct($default);
 
-		$this->registerTask('applyTipoTag', 'saveTipoTag');
+		/*$this->registerTask('applyTipoTag', 'saveTipoTag');
 		$this->registerTask('addTipoTag', 'editTipoTag');
 
 		$this->registerTask('applyCp2TipoTag', 'saveCp2TipoTag');
 		$this->registerTask('addCp2TipoTag', 'editCp2TipoTag');
 
 		$this->registerTask('applyMenu', 'saveMenu');
-		$this->registerTask('addMenu', 'editMenu');
-	}
-
-
-	function listTipoTag()
-	{
-		$this->baseDisplayTask('ListaTipoTag', 'TipoTag');
-	}
-
-	function editTipoTag()
-	{
-		$this->baseDisplayTask('EditaTipoTag', 'TipoTag', 'default', 1);
-	}
-
-	function cancelTipoTag()
-	{
-		$this->baseCancelTask(JText::_('INFO_CANCEL'), 'listTipoTag');
-	}
-
-	function removeTipoTag()
-	{
-		$this->baseRemoveTask('TipoTag', 'listTipoTag');
-	}
-
-	function saveTipoTag()
-	{
-		global $option;
-
-		$model	= &$this->getModel('TipoTag');
-
-		if (!$model->store())
-		{
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-			exit();
-		}
-
-		$tipotag = $model->getData();
-		$msg = JText::sprintf('INFO_SAVE', 'Tipo Tag');
-
-		switch ($this->_task) {
-			case 'applyTipoTag':
-				$link = 'index.php?option=' . $option . '&task=editTipoTag&cid[]=' . $tipotag->id;
-				break;
-
-			case 'saveTipoTag':
-			default:
-				$link = 'index.php?option=' . $option . '&task=listTipoTag';
-				break;
-		}
-
-		$this->setRedirect($link, $msg);
-	}
-
-	function listCp2TipoTag()
-	{
-		$this->baseDisplayTask('ListaCp2TipoTag', 'Cp2TipoTag');
-	}
-
-	function editCp2TipoTag()
-	{
-		$this->baseDisplayTask('EditaCp2TipoTag', 'Cp2TipoTag', 'default', 1);
-	}
-
-	function cancelCp2TipoTag()
-	{
-		$this->baseCancelTask(JText::_('INFO_CANCEL'), 'listCp2TipoTag');
-	}
-
-	function removeCp2TipoTag()
-	{
-		$this->baseRemoveTask('Cp2TipoTag', 'listCp2TipoTag');
-	}
-
-	function saveCp2TipoTag()
-	{
-		global $option;
-
-		$model	= &$this->getModel('Cp2TipoTag');
-
-		if (!$model->store())
-		{
-			echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-			exit();
-		}
-
-		$cp2tipotag = $model->getData();
-		$msg = JText::sprintf('INFO_SAVE', 'Tipo Tag');
-
-		switch ($this->_task) {
-			case 'applyCp2TipoTag':
-				$link = 'index.php?option=' . $option . '&task=editCp2TipoTag&cid[]=' . $cp2tipotag->id;
-				break;
-
-			case 'saveCp2TipoTag':
-			default:
-				$link = 'index.php?option=' . $option . '&task=listCp2TipoTag';
-				break;
-		}
-
-		$this->setRedirect($link, $msg);
+		$this->registerTask('addMenu', 'editMenu');*/
 	}
 
 	function listMenu()

@@ -21,8 +21,15 @@ class ReservasViewReserva extends JView
 		$app =& JFactory::getApplication();
 		$helper = new comReservasHelper();
 
-		$this->assignRef('template', $app->getTemplate());
-		$this->assignRef('javafx_file', $helper->getJavaFX());
+// parametros - alto y ancho
+		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+		$this->width = $zonalesParams->get('width_javafx', '');
+		$this->height = $zonalesParams->get('height_javafx', '');
+		$this->javafxfile = $zonalesParams->get('javafxfile', '');
+                $this->draggable = $zonalesParams->get('draggable', '');
+                $this->code = $zonalesParams->get('code', '');
+                $this->name = $zonalesParams->get('name', '');
+                $this->id = $zonalesParams->get('id', '');
                 
 
 		parent::display($tpl);

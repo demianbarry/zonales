@@ -10,6 +10,6 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'baseview.php');
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
-$controller = new ZonalesController( array('default_task' => 'listCp2TipoTag') );
+$controller = new ReservasController( array('default_task') );
 $controller->execute( JRequest::getVar( 'task' ) );
 $controller->redirect();
