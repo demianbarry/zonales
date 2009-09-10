@@ -24,7 +24,7 @@ JHTML::script('dtfx.js');
         height: <?php echo $this->height; ?>,
         code: "<?php echo $this->code; ?>",
         name: "<?php echo $this->name; ?>",
-        id: "<?php echo $this->code; ?>"
+        id: "<?php echo $this->id; ?>"
     }
 );
 </script>
