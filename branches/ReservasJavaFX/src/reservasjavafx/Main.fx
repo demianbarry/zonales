@@ -39,9 +39,7 @@ import javafx.scene.text.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
 
-import java.applet.Applet;
-
-import reservasjavafx.menu.popupWindow;
+import reservasjavafx.menu.*;
 
 
 var image = Image{
@@ -50,13 +48,14 @@ var image = Image{
 var maxCol:Integer = ((image.width as Integer) / 100) - 1;
 var maxRow:Integer = ((image.height as Integer) / 100) - 1;
 
-var gap = 10;
-var TEXT_COLOR = Color.GRAY;
+var gapX = 10;
+var gapY = 40;
+var TEXT_COLOR = Color.WHITE;
 
 var stageDragInitialX:Number;
 var stageDragInitialY:Number;
 
-var applet: Applet = FX.getArgument("javafx.applet") as Applet;
+/*var applet: Applet = FX.getArgument("javafx.applet") as Applet;
 var jsObject = new JavaScriptUtil(applet);
 
 var inBrowser = "true".equals(FX.getArgument("isApplet") as String);
@@ -72,15 +71,19 @@ var dragRect:Rectangle = Rectangle { x: 0 y: 0 width: 520 height: 25 fill: Color
      }
 
 };
-var dragTextVisible = bind inBrowser and draggable and dragRect.hover;
+var dragTextVisible = bind inBrowser and draggable and dragRect.hover;*/
 
-        var imagen:ImageView = ImageView {
-            translateX: gap
-            translateY: 40
+var imagen:ImageView = ImageView {
+            translateX: gapX
+            translateY: gapY
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
-        };
+            onMouseClicked: function(e:MouseEvent):Void {
+                coords = "{e.x}-{e.y}";
+            }
 
-var dragControl:Group = Group {
+};
+
+/*var dragControl:Group = Group {
     content:[
         Text { x: (imagen.image.width - 5) y: 17 content: "Drag out of Browser" fill: TEXT_COLOR visible: bind dragTextVisible},
         ImageView { x: (imagen.image.width - 5) y: 8 image: Image { url: "{__DIR__}images/close_rollover.png" }
@@ -91,37 +94,87 @@ var dragControl:Group = Group {
             visible: bind inBrowser and draggable
         }
         ]
-};
+};*/
 
 // Primer menu flotante
-var popupWindow=popupWindow{
-
+var popupMenu=popupMenu {
+    animate:false
+    corner:20
+    padding:8
+    borderWidth:4
+    opacity: 0.9
+    content: [
+            menuItem {
+                call: clickMenuItem;
+                text: "CLICK AQUI"
+                pos: 1
+            }
+    ]
 };
 
-
+var coords :String;
 
 var g:Group = Group {
     content: [
 
         // the background and top header
-        Rectangle { fill: Color.BLACK width: imagen.image.width+gap*2 height: 400 },
-        Text { x: 10  y:17 content: "PHOTO EFFECTS" fill: TEXT_COLOR },
-        dragControl,
-        Line { stroke: TEXT_COLOR startX: 0 endX: imagen.image.width+gap*2 startY: 30 endY: 30 },
+        Rectangle { fill: Color.BLACK width: imagen.image.width+gapX*2 height: 400 },
+        Text { x: gapX+0  y:17 content: bind coords fill: TEXT_COLOR },
+        //dragControl,
+        Line { stroke: TEXT_COLOR startX: 0 endX: imagen.image.width+gapX*2 startY: 30 endY: 30 },
 
         // the actual image to be adjusted
         imagen,
         Polygon {
-            points: [10,230,85,210,118,218,10,250]
+            points: [   x(0),y(190),
+                        x(71),y(172),
+                        x(110),y(178),
+                        x(113),y(223),
+                        x(0),y(266)     ]
             fill: Color.TRANSPARENT
             stroke: Color.RED
+            onMouseClicked:function(e) {
+                popupMenu.event=e;
+            }
 
-            onMousePressed: function (e:MouseEvent){
-                // stop any timelines so you can start dragging imediatly
-                jsObject.call("verReserva", ["1"]);
+        },
+        Polygon {
+            points: [   x(128),y(161),
+                        x(165),y(147),
+                        x(213),y(151),
+                        x(227),y(177),
+                        x(131),y(192)     ]
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            onMouseClicked:function(e) {
+                popupMenu.event=e;
             }
         },
-        popupWindow
+        Polygon {
+            points: [   x(210),y(141),
+                        x(246),y(131),
+                        x(279),y(135),
+                        x(246),y(151),
+                        x(210),y(147)     ]
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            onMouseClicked:function(e) {
+                popupMenu.event=e;
+            }
+        },
+        Ellipse {
+            centerX: x(377)
+            centerY: y(172)
+            radiusX: 90
+            radiusY: 20
+            stroke: Color.RED
+            fill: Color.TRANSPARENT
+            onMouseClicked:function(e) {
+                popupMenu.event=e;
+            }
+        }
+
+        popupMenu
     ]
 };
 
@@ -131,7 +184,7 @@ var stage:Stage = Stage {
     visible: true
     scene: Scene {
         content: g
-    }
+    }/*
     extensions: [
         AppletStageExtension {
             shouldDragStart: function(e): Boolean {
@@ -145,13 +198,25 @@ var stage:Stage = Stage {
             }
             useDefaultClose: false
         }
-    ]
+    ]*/
 }
 
-public function showMessage(message: String) {
+/*public function showMessage(message: String) {
     popupWindow.translateX = 200;
     popupWindow.translateY = 200;
     popupWindow.content = message;
     popupWindow.visible = true;  
 
-};
+};*/
+
+function x(x:Integer):Integer {
+    return x + gapX;
+}
+
+function y(y:Integer):Integer {
+    return y + gapY;
+}
+
+function clickMenuItem(Void):Void {
+    java.lang.System.out.println("CLICK!");
+}
