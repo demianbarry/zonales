@@ -7,10 +7,10 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
-import javafx.geometry.*;
 import javafx.scene.effect.DropShadow;
 import javafx.animation.*;
 import java.lang.Math;
+import reservasjavafx.texthtml.TextHTML;
 
 public class popupMenu extends CustomNode {
 
@@ -65,11 +65,12 @@ public class popupMenu extends CustomNode {
         parseOptions(content) };
     public var event:MouseEvent=null on replace {
         // si oprimio el boton derecho, hace visible el menu
-        var isVisible = event.button==MouseButton.SECONDARY;
-        this.visible = isVisible;
+        parseOptions(content);        
         if (animate==true) then {
             appear.playFromStart();
         }
+        var isVisible = event.button==MouseButton.SECONDARY;
+        this.visible = isVisible;
     };
 
     // opciones graficas
@@ -79,7 +80,7 @@ public class popupMenu extends CustomNode {
     function parseOptions(options:menuItem[]):Void {
 
         // si hay opciones y font definido
-        if (options!=null and font!=null) then {
+        if (options!=null and font!=null and this.visible) then {
 
             // calcula ancho basico
             var maxWidth = 0.0;
@@ -91,7 +92,7 @@ public class popupMenu extends CustomNode {
                 // obtiene texto de la opcion
                 var text = Text {
                     font:bind font
-                    content: option.text
+                    content: bind option.text
                 };
                 // obtiene dimension del texto de la opcion
                 var rec = text.boundsInLocal;
@@ -112,7 +113,7 @@ public class popupMenu extends CustomNode {
                 // obtiene texto de la opcion
                 var text = Text {
                     font: bind font
-                    content: option.text
+                    content: bind option.text
                 };
                 // obtiene dimension del texto de la opcion
                 var rec=text.boundsInLocal;
@@ -155,12 +156,13 @@ public class popupMenu extends CustomNode {
                             height: bind rec.height
                         },
                         // texto de la opcion
+                        
                         Text {
                             fill: bind txtcolor
                             x: bind event.x + padding
                             y: bind event.y + option.pos
                             font: bind font
-                            content: option.text
+                            content: bind option.text
                             textOrigin: TextOrigin.TOP
                         },
                         // rectangulo transparente sobre el texto y fondo
@@ -194,7 +196,6 @@ public class popupMenu extends CustomNode {
                                 hide.playFromStart();
                             };
                         },
-
                     ]
                 };
                 // agrega la opcion a una secuencia (array o arreglo)

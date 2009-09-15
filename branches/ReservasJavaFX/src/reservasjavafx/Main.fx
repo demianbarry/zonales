@@ -42,10 +42,6 @@ import javafx.stage.*;
 import reservasjavafx.menu.*;
 
 import javafx.io.http.HttpRequest;
-import java.nio.charset.Charset;
-import java.io.StringBufferInputStream;
-import java.io.InputStreamReader;
-import java.nio.CharBuffer;
 
 
 var image = Image{
@@ -102,17 +98,20 @@ var imagen:ImageView = ImageView {
         ]
 };*/
 
+var message:String;
 // Primer menu flotante
-var popupMenu=popupMenu {
+var popupMenu:popupMenu=popupMenu {
     animate:false
     corner:20
     padding:8
     borderWidth:4
     opacity: 0.9
+    stroke: Color.web("#FF9900");
+    fill: Color.WHITE;
     content: [
             menuItem {
-                call: clickMenuItem;
-                text: "CLICK AQUI"
+                call: clickMenuItem
+                text: bind message
                 pos: 1
             }
     ]
@@ -124,10 +123,21 @@ var g:Group = Group {
     content: [
 
         // the background and top header
-        Rectangle { fill: Color.BLACK width: imagen.image.width+gapX*2 height: 400 },
-        Text { x: gapX+0  y:17 content: bind coords fill: TEXT_COLOR },
+        Rectangle {
+            fill: Color.web("#FF9900")
+            width: imagen.image.width+gapX*2
+            height: 400 },
+        Text {
+            x: gapX+0
+            y:17 content: bind coords
+            fill: TEXT_COLOR },
         //dragControl,
-        Line { stroke: TEXT_COLOR startX: 0 endX: imagen.image.width+gapX*2 startY: 30 endY: 30 },
+        Line {
+            stroke: TEXT_COLOR
+            startX: 0
+            endX: imagen.image.width+gapX*2
+            startY: 30
+            endY: 30 },
 
         // the actual image to be adjusted
         imagen,
@@ -140,7 +150,8 @@ var g:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                popupMenu.event=e;
+                setRequest(e);
+                getRequest.start();
             }
 
         },
@@ -153,7 +164,8 @@ var g:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                popupMenu.event=e;
+                setRequest(e);
+                getRequest.start();
             }
         },
         Polygon {
@@ -165,7 +177,8 @@ var g:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                popupMenu.event=e;
+                setRequest(e);
+                getRequest.start();
             }
         },
         Ellipse {
@@ -176,7 +189,8 @@ var g:Group = Group {
             stroke: Color.RED
             fill: Color.TRANSPARENT
             onMouseClicked:function(e) {
-                popupMenu.event=e;
+                setRequest(e);
+                getRequest.start();
             }
         }
 
@@ -225,13 +239,13 @@ function y(y:Integer):Integer {
 
 function clickMenuItem(Void):Void {
     java.lang.System.out.println("CLICK!");
-    setRequest();
-    getRequest.start();
+    //setRequest();
+    //getRequest.start();
 }
 
 var getRequest: HttpRequest;
 
-function setRequest():HttpRequest {
+function setRequest(e:MouseEvent):HttpRequest {    
     getRequest = HttpRequest {
 
     location: "http://localhost:8080/pruebasJava/Main?mesa=1";
@@ -281,11 +295,11 @@ function setRequest():HttpRequest {
     onInput: function(is: java.io.InputStream) {
         // use input stream to access content here.
         // can use input.available() to see how many bytes are available.
-        var message: String;
-        try {
+        try {            
+            message = new String();
             while(is.available() > 0)
                 message += Character.toString(Character.valueOf(is.read()));
-            println("onInput: {message}");
+            popupMenu.event = e;
         } finally {
             is.close();
         }
