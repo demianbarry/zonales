@@ -10,7 +10,6 @@ import javafx.scene.text.*;
 import javafx.scene.effect.DropShadow;
 import javafx.animation.*;
 import java.lang.Math;
-import reservasjavafx.texthtml.TextHTML;
 
 public class popupMenu extends CustomNode {
 

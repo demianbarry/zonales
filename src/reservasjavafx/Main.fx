@@ -142,6 +142,7 @@ var g:Group = Group {
         // the actual image to be adjusted
         imagen,
         Polygon {
+            cursor: Cursor.HAND
             points: [   x(0),y(190),
                         x(71),y(172),
                         x(110),y(178),
@@ -153,9 +154,14 @@ var g:Group = Group {
                 setRequest(e);
                 getRequest.start();
             }
+            onMouseEntered:function(e) {
+                
+            }
+
 
         },
         Polygon {
+            cursor: Cursor.HAND
             points: [   x(128),y(161),
                         x(165),y(147),
                         x(213),y(151),
@@ -169,6 +175,7 @@ var g:Group = Group {
             }
         },
         Polygon {
+            cursor: Cursor.HAND
             points: [   x(210),y(141),
                         x(246),y(131),
                         x(279),y(135),
@@ -182,6 +189,7 @@ var g:Group = Group {
             }
         },
         Ellipse {
+            cursor: Cursor.HAND
             centerX: x(377)
             centerY: y(172)
             radiusX: 90
