@@ -17,4 +17,10 @@ public class menuItem {
     // indica que no es un separador de opciones del menu
     protected var isSeparator=false;
 
+    public function equals(other:menuItem):Boolean {
+        java.lang.System.out.println("{this.text}---{other.text}");
+        return other.text.equals(this.text);
+    }
+
+
 };
