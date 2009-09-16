@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- InfoBAE -->
+<rss xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Infobae - Hollywood</title>
+    <description>Noticias de Hollywood</description>
+    <link>http://www.infobae.com</link>
+    <language>es</language>
+    <copyright>Copyright (c) 2005-2008 InfoBAE.com</copyright>
+    <ttl>10</ttl>
+    <pubDate>Wed, 16 Sep 2009 09:25:54 -0300</pubDate>
+    <lastBuildDate>Wed, 16 Sep 2009 09:25:54 -0300</lastBuildDate>
+    <docs>http://www.infobae.com/herramientas/rss.php</docs>
+<!--    <managingEditor>webmaster@infobae.com</managingEditor> -->
+    <webMaster>webmaster@infobae.com</webMaster>
+    <ttl>10</ttl>
+<!--    <category domain=""></category> -->
+    <generator>HTMLExport</generator>
+    <image>
+      <title>Infobae - Hollywood</title>
+      <url>http://www.infobae.com/imgs/log/logo_rss.gif</url>
+      <link>http://www.infobae.com</link>
+      <width>122</width>
+      <height>20</height>
+      <description>Noticias de Hollywood</description>
+    </image>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 25 Nov 2008 16:14:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Paris Hilton, parte dos</title>
+      <description>La exc&#xE9;ntrica millonaria habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com&#x3C;/STRONG&#x3E; sobre su papel en el film &#x3C;EM&#x3E;Repo! The Genetic Opera. &#x22; &#x3C;/EM&#x3E;En general, me contratan para el personaje de la rubia que no tiene nada en la cabeza&#x22;, admiti&#xF3;</description>
+      <link>http://www.infobae.com/contenidos/416928-101203-0-Entrevista-exclusiva-a-Paris-Hilton,-parte-dos</link>
+      <guid>http://www.infobae.com/contenidos/416928-101203-0-Entrevista-exclusiva-a-Paris-Hilton,-parte-dos</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 24 Nov 2008 17:02:00 -0300</PubDate>
+      <title>Entrevista exclusiva a la exc&#xE9;ntrica Paris Hilton</title>
+      <description>La&#xA0;joven millonaria habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;sobre su vida y sus esc&#xE1;ndalos. &#x22;Se puede tener toda la plata del mundo sin ser feliz todav&#xED;a&#x22;, declar&#xF3;&#x3C;BR&#x3E;&#xA0;</description>
+      <link>http://www.infobae.com/contenidos/416839-101203-0-Entrevista-exclusiva-a-la-exc&#xE9;ntrica-Paris-Hilton</link>
+      <guid>http://www.infobae.com/contenidos/416839-101203-0-Entrevista-exclusiva-a-la-exc&#xE9;ntrica-Paris-Hilton</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Sat, 22 Nov 2008 00:00:00 -0300</PubDate>
+      <title>Entrevista de Infobae.com a Ashley Tisdale</title>
+      <description></description>
+      <link>http://www.infobae.com/contenidos/416588-101203-0-Entrevista-de-Infobae.com-a-Ashley-Tisdale</link>
+      <guid>http://www.infobae.com/contenidos/416588-101203-0-Entrevista-de-Infobae.com-a-Ashley-Tisdale</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Thu, 20 Nov 2008 14:06:00 -0300</PubDate>
+      <title>La entrevista exclusiva a Vanessa Hudgens, parte II</title>
+      <description>La diosa de &#x3C;EM&#x3E;High School Musical &#x3C;/EM&#x3E;habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;sobre su vida, su carrera y su relaci&#xF3;n con Zac Efron&#xA0; &#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/416014-101203-0-La-entrevista-exclusiva-a-Vanessa-Hudgens,-parte-II</link>
+      <guid>http://www.infobae.com/contenidos/416014-101203-0-La-entrevista-exclusiva-a-Vanessa-Hudgens,-parte-II</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 19 Nov 2008 14:20:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Vanessa Hudgens, la diosa de High School Musical</title>
+      <description>La joven actriz habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;sobre su personaje Gabriella Montez y sobre el &#xE9;xito de la pel&#xED;cula de&#x3C;EM&#x3E; Disney&#x3C;/EM&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/415752-101203-0-Entrevista-exclusiva-a-Vanessa-Hudgens,-la-diosa-de-High-School-Musical</link>
+      <guid>http://www.infobae.com/contenidos/415752-101203-0-Entrevista-exclusiva-a-Vanessa-Hudgens,-la-diosa-de-High-School-Musical</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 18 Nov 2008 16:33:00 -0300</PubDate>
+      <title>Reportaje a fondo a Zac Efron, segunda parte</title>
+      <description>El &#xED;dolo de&#x3C;EM&#x3E; High School Musical &#x3C;/EM&#x3E;habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com&#x3C;/STRONG&#x3E; sobre c&#xF3;mo cambi&#xF3; su vida a partir del gran &#xE9;xito de &#x3C;EM&#x3E;Disney&#x3C;/EM&#x3E; y sus nuevos proyectos en el cine</description>
+      <link>http://www.infobae.com/contenidos/415700-101203-0-Reportaje-a-fondo-a-Zac-Efron,-segunda-parte</link>
+      <guid>http://www.infobae.com/contenidos/415700-101203-0-Reportaje-a-fondo-a-Zac-Efron,-segunda-parte</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 17 Nov 2008 17:08:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Zac Efron, el &#xED;dolo de High School Musical</title>
+      <description>El joven actor habl&#xF3; en exclusiva con &#x3C;STRONG&#x3E;Infobae.com&#x3C;/STRONG&#x3E; y cont&#xF3; sobre&#xA0;su relaci&#xF3;n con Vanessa Hudgens, c&#xF3;mo se lleva con el dinero y en qu&#xE9; gasta su fortuna&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/415456-101203-0-Entrevista-exclusiva-a-Zac-Efron,-el-&#xED;dolo-de-High-School-Musical</link>
+      <guid>http://www.infobae.com/contenidos/415456-101203-0-Entrevista-exclusiva-a-Zac-Efron,-el-&#xED;dolo-de-High-School-Musical</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 12 Nov 2008 13:14:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Daniel Craig, &#xFA;ltima parte</title>
+      <description>En esta tercera entrega de la entrevista exclusiva de &#x3C;STRONG&#x3E;Infobae.com&#x3C;/STRONG&#x3E; al&#xA0;&#xFA;ltimo &#x3C;EM&#x3E;James Bond&#x3C;/EM&#x3E;, el actor cuenta c&#xF3;mo es su relaci&#xF3;n con los ex &#x3C;EM&#x3E;007&#x3C;/EM&#x3E;, sus similitudes y diferencias con el personaje, y&#xA0;c&#xF3;mo es en su vida</description>
+      <link>http://www.infobae.com/contenidos/414463-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-&#xFA;ltima-parte</link>
+      <guid>http://www.infobae.com/contenidos/414463-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-&#xFA;ltima-parte</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 12 Nov 2008 09:05:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Daniel Craig, parte dos</title>
+      <description>El &#xFA;ltimo James Bond habl&#xF3; en exclusiva con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;y cont&#xF3; todos los detalles sobre la nueva pel&#xED;cula del Agente 007, &#x3C;EM&#x3E;Quantum of Solace&#x3C;/EM&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/414247-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-parte-dos</link>
+      <guid>http://www.infobae.com/contenidos/414247-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-parte-dos</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 10 Nov 2008 17:37:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Daniel Craig, el &#xFA;ltimo James Bond</title>
+      <description>El actor ingl&#xE9;s habl&#xF3; en exclusiva con &#x3C;STRONG&#x3E;Infobae.com&#x3C;/STRONG&#x3E; sobre su personaje del &#x3C;EM&#x3E;Agente&#xA0;007. &#x3C;/EM&#x3E;Tambi&#xE9;n cont&#xF3;&#xA0;c&#xF3;mo le lleg&#xF3; la gran propuesta para ser el nuevo Bond y qu&#xE9; hizo cuando cobr&#xF3; su primer cheque tras el &#xE9;xito de &#x3C;EM&#x3E;Casino Royale&#x3C;/EM&#x3E; &#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/414142-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-el-&#xFA;ltimo-James-Bond</link>
+      <guid>http://www.infobae.com/contenidos/414142-101203-0-Entrevista-exclusiva-a-Daniel-Craig,-el-&#xFA;ltimo-James-Bond</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Thu, 06 Nov 2008 10:00:00 -0300</PubDate>
+      <title>Entrevista exclusiva a Madonna, la &#xFA;ltima parte</title>
+      <description>&#x22;La Reina del Pop&#x22; habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;sobre su carrera y sobre su &#xF3;pera prima, el film Filth and Wisdom&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/413184-101203-0-Entrevista-exclusiva-a-Madonna,-la-&#xFA;ltima-parte</link>
+      <guid>http://www.infobae.com/contenidos/413184-101203-0-Entrevista-exclusiva-a-Madonna,-la-&#xFA;ltima-parte</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 04 Nov 2008 11:05:00 -0300</PubDate>
+      <title>La entrevista exclusiva a Madonna, segunda parte</title>
+      <description>Habl&#xF3; con &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;pocos d&#xED;as despu&#xE9;s de oficializar su separaci&#xF3;n de Guy Ritchie</description>
+      <link>http://www.infobae.com/contenidos/413065-101203-0-La-entrevista-exclusiva-a-Madonna,-segunda-parte</link>
+      <guid>http://www.infobae.com/contenidos/413065-101203-0-La-entrevista-exclusiva-a-Madonna,-segunda-parte</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 04 Nov 2008 08:11:00 -0300</PubDate>
+      <title>Entrevista exclusiva de Infobae.com a Madonna</title>
+      <description>La &#x3C;EM&#x3E;Reina del pop&#x3C;/EM&#x3E;, que el pr&#xF3;ximo mes vendr&#xE1; a la Argentina, habl&#xF3; sobre&#xA0;su vida, su carrera y su reciente separaci&#xF3;n</description>
+      <link>http://www.infobae.com/contenidos/412871-101203-0-Entrevista-exclusiva-de-Infobae.com-a-Madonna</link>
+      <guid>http://www.infobae.com/contenidos/412871-101203-0-Entrevista-exclusiva-de-Infobae.com-a-Madonna</guid>
+    </item>
+  </channel>
+</rss>
+<!-- InfoBAE -->

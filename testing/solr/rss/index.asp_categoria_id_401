@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/401</id>
+<title>Empleos - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=401" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173573</id>
+<title>Un mundo virtual, pero real</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173573" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Programadores de videojuegos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El mercado de desarrollo de videojuegos crece en la Argentina impulsado por la demanda local y extranjera. El pedido de profesionales del área supera la oferta<img src="http://www.lanacion.com.ar/anexos/fotos/00/1056700.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173890</id>
+<title>¿Qué precio tiene mi trabajo?</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173890" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Opinión</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Un desafío para quien trabaja en forma independiente</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173575</id>
+<title>Los dilemas del country manager</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173575" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Empresas / Dilución de la autoridad</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Muchos de ellos son  testimoniales  ; las decisiones las toma un superior que está en otro país</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173579</id>
+<title>"Un gerente debe dar sentido"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173579" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>En primera persona</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Es la visión de Andrés Carosio, gerente general de Medanito<img src="http://www.lanacion.com.ar/anexos/fotos/03/1056703.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173605</id>
+<title>Empleo: señales de recuperación</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173605" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173632</id>
+<title>Nueva caída de las expectativas económicas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173632" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173636</id>
+<title>Breves</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173636" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173892</id>
+<title>Comentarios de los lectores sobre el suplemento último</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173892" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>lanacion.com</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170859</id>
+<title>Qué quieren los Sub 24</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170859" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Expectativa laboral</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Según una encuesta  de TNS Gallup para la Universidad de Palermo, los chicos y jóvenes se inclinan por carreras humanísticas, buscan estabilidad y tienen espíritu emprendedor<img src="http://www.lanacion.com.ar/anexos/fotos/96/1053396.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170856</id>
+<title>El liderazgo en tiempos de incertidumbre</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170856" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Encuentro / Sobre RR.HH.</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En la quinta edición del Human Capital Forum los expertos analizaron el panorama actual<img src="http://www.lanacion.com.ar/anexos/fotos/93/1053393.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170858</id>
+<title>Una ley para un trabajo sin riesgos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170858" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Seguridad</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La indemnización no siempre paga lo que se ha perdido</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170861</id>
+<title>La discriminación laboral aqueja a quienes tienen sida</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170861" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Salud</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El 70% de quienes lo padecen, lo ocultan<img src="http://www.lanacion.com.ar/anexos/fotos/84/1053384.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170857</id>
+<title>La excelencia tiene premio</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170857" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Concurso / Fundación Deloitte</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/94/1053394.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170865</id>
+<title>Yo denuncio</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170865" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>Miradas</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Jorge Mosqueira<img src="http://www.lanacion.com.ar/anexos/fotos/90/1053390.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1171198</id>
+<title>Breves</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1171198" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1170862</id>
+<title>Comentarios de los lectores sobre el suplemento último</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1170862" />
+<updated>2009-09-06T00:00:00-03:00</updated>
+<summary>lanacion.com</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1168145</id>
+<title>No te olvides...</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1168145" />
+<updated>2009-08-30T00:00:00-03:00</updated>
+<summary>Salud mental</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Al igual que el cuerpo, la mente puede ejercitarse para evitar esos pequeños olvidos tan incómodos que, si son recurrentes,  hasta podrían poner en riesgo la vida laboral<img src="http://www.lanacion.com.ar/anexos/fotos/48/1049848.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1168467</id>
+<title>Claves para mantener un cerebro joven</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1168467" />
+<updated>2009-08-30T00:00:00-03:00</updated>
+<summary>Desafiando al tiempo</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Los especialistas recomiendan mantenerlo siempre activo</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1168146</id>
+<title>Cambiar de trabajo puede ser frustrante</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1168146" />
+<updated>2009-08-30T00:00:00-03:00</updated>
+<summary>Opinión / Búsqueda laboral</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Crecer profesionalmente es una de las razones más poderosas para buscar otro empleo</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1168481</id>
+<title>"La clase media disminuyó"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1168481" />
+<updated>2009-08-30T00:00:00-03:00</updated>
+<summary>En primera persona</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La opinión de Robert Benfari, profesor en la Universidad de Harvard<img src="http://www.lanacion.com.ar/anexos/fotos/51/1049851.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+</feed>

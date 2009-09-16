@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+
+
+<title>Futuro - Página/12</title>
+<link>http://www.pagina12.com.ar/diario/suplementos/futuro/index.html</link>
+<description>Suplemento Futuro - Página/12</description>
+<image>
+	<url>http://www.pagina12.com.ar/commons/imgs/rss/rss_logo-futuro.gif</url>
+	<title>Futuro - Página/12</title>
+	<link>http://www.pagina12.com.ar/diario/suplementos/futuro/index.html</link>
+	<description>Logo Suplemento Futuro - Página/12</description>
+	<width>117</width>
+	<height>35</height>
+</image>
+<ttl>10080</ttl>
+
+<atom:link href="http://www.pagina12.com.ar/diario/rss/futuro.xml" rel="self" type="application/rss+xml" />	
+<language>es-ar</language>
+<pubDate>Sat, 12 Sep 2009 04:00:00 -0300</pubDate>
+<lastBuildDate>Wed, 16 Sep 2009 05:41:50 -0300</lastBuildDate>
+<managingEditor>infop12@pagina12.com.ar (Editor)</managingEditor>
+<webMaster>webmaster@pagina12.com.ar (Webmaster)</webMaster>
+<copyright><![CDATA[Copyright 2000-2009 www.pagina12.com.ar | Rep&uacute;blica Argentina | Todos los Derechos Reservados]]></copyright>
+
+<item>
+	<title>Una genealogía del vacío</title>
+	<link>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2213-2009-09-12.html</link>
+	<description>
+		<![CDATA[
+		<p>
+						Concepto intermitente, los atomistas lo postularon. Plat&oacute;n y Arist&oacute;teles lo impugnaron. Torricelli dio vuelta un tubo de vidrio y lo volvi&oacute; a inventar. Las teor&iacute;as de la luz intentaron reemplazarlo por el &eacute;ter. Michelson y Morley, con un c&eacute;lebre experimento crucial, lo revivieron. Y la mec&aacute;nica cu&aacute;ntica volvi&oacute; a establecer su imposibilidad te&oacute;rica. Esta es la genealog&iacute;a inconstante del vac&iacute;o.
+		</p>
+				]]>
+	</description>
+		<pubDate>Sat, 12 Sep 2009 04:00:00 -0300</pubDate>
+	<guid>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2213-2009-09-12.html</guid>
+</item>
+<item>
+	<title>El infierno tan temido</title>
+	<link>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2214-2009-09-12.html</link>
+	<description>
+		<![CDATA[
+		<p>
+						Hace dos semanas, este mismo y curioso suplemento hablaba de Neptuno, uno de los planetas gigantes del Sistema Solar con temperaturas medias cercanas a los 210 grados bajo cero. Hoy, Futuro hablar&aacute; de un caso completamente opuesto y mucho, mucho m&aacute;s lejano: WASP-18B, un planeta extrasolar con una temperatura de m&aacute;s de 2000 grados cent&iacute;grados, descubierto recientemente, y cuyo destino m&aacute;s probable es terminar, a corto plazo, estrell&aacute;ndose contra su sol. El infierno est&aacute; encantador.
+		</p>
+				]]>
+	</description>
+		<pubDate>Sat, 12 Sep 2009 04:00:00 -0300</pubDate>
+	<guid>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2214-2009-09-12.html</guid>
+</item>
+<item>
+	<title>Libros y publicaciones</title>
+	<link>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2215-2009-09-12.html</link>
+	<description>
+		<![CDATA[
+		<p>
+						Universidad Nacional de Quilmes Instituto de Estudios Sociales de la Ciencia y la Tecnolog&iacute;a. REDES 29 Revista de estudios sociales de la ciencia La revista Redes, que dirige el soci&oacute;logo de la ciencia Pablo Kreimer (principal especialista argentino en la materia), aborda, obviamente, las articulaciones del conglomerado cient&iacute;fico y la sociedad, a trav&eacute;s de art&iacute;culos, dossiers y trabajos...
+		</p>
+				]]>
+	</description>
+		<pubDate>Sat, 12 Sep 2009 04:00:00 -0300</pubDate>
+	<guid>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2215-2009-09-12.html</guid>
+</item>
+<item>
+	<title>Agenda científica</title>
+	<link>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2216-2009-09-12.html</link>
+	<description>
+		<![CDATA[
+		<p>
+						Cursos de Astronomia en el Planetario  Como cada a&ntilde;o, el Planetario Galileo Galilei ofrece cursos gratuitos sobre Astronom&iacute;a destinados al p&uacute;blico en general. El 15 de septiembre, a las 19, comenzar&aacute; &quot;Mediciones en Astronom&iacute;a&quot;, a cargo del profesor Rafael Girola, y tendr&aacute; una duraci&oacute;n de ocho clases. En tanto, el curso &quot;Astronom&iacute;a General&quot;, dictado por el licenciado Mariano Ribas, iniciar&aacute;...
+		</p>
+				]]>
+	</description>
+		<pubDate>Sat, 12 Sep 2009 04:00:00 -0300</pubDate>
+	<guid>http://www.pagina12.com.ar/diario/suplementos/futuro/13-2216-2009-09-12.html</guid>
+</item>
+
+
+
+</channel>
+</rss>
+
+

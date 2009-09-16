@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/120</id>
+<title>Espectáculos - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=120" />
+<updated>2009-09-16T02:29:24.563-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175016</id>
+<title>Murió Patrick  Swayze, un  duro que sabía ser romántico</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175016" />
+<updated>2009-09-16T02:29:24.563-03:00</updated>
+<summary>A los 57 años</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Ex bailarín, se lució en dramas y films de acción</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Cine" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175015</id>
+<title>Cuando las pasiones son contagiosas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175015" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>En familia: tres actrices que comparten sangre y profesión</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Mirta Busnelli volvió  al teatro; su hija,  Ana Pauls, y su hermana, Amanda Busnelli comparten elenco<img src="http://www.lanacion.com.ar/anexos/fotos/19/1058119.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Teatro" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175007</id>
+<title>Guerrero Marthineitz, a Rivadavia</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175007" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Columnista</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Radio" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174970</id>
+<title>La encrucijada de una mujer</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174970" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Estreno de mañana</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Llega  El vestido  , de Paula de Luque, con Eduard Fernández y Antonella Costa<img src="http://www.lanacion.com.ar/anexos/fotos/82/1057982.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174987</id>
+<title>Cuando las salas de teatro y de cine barriales la pelean</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174987" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Buenos Aires y su falta de descentralización de la oferta cultural</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por fuera de la avenida Corrientes apenas hay cinco teatros para espectáculos comerciales y en más de la mitad de los barrios porteños no hay salas cinematográficas<img src="http://www.lanacion.com.ar/anexos/fotos/40/1058040.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Teatro" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175025</id>
+<title>Villa del Parque, de fiesta</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175025" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Teatro" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175023</id>
+<title>Rottemberg defiende la actividad</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175023" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Carlos Rottemberg  Para LA NACION</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Teatro" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175003</id>
+<title>Se cumplen 20 años de la muerte de Ana Itelman</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175003" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Una pionera</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Fue maestra de Araiz, Stekelman, Wainrot y otros<img src="http://www.lanacion.com.ar/anexos/fotos/65/1058065.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Música" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175002</id>
+<title>Una brasileña incansable</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175002" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Daniela Mercury presentó en el Luna Park su nuevo espectáculo,  Canibalia <img src="http://www.lanacion.com.ar/anexos/fotos/64/1058064.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Música" />
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175001</id>
+<title>Popurrí</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175001" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Música" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175012</id>
+<title>El semillero de la pantalla chica triunfa en el cine</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175012" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Opinión</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Marcelo Stiletano</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="TV/Cable" />
+<category term="GDA" />
+<category term="Marcelo Stiletano" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175013</id>
+<title>Señal de ajuste</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175013" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/72/1058072.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="TV/Cable" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175011</id>
+<title>Estrenos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175011" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Esta semana. Dos comedias románticas, un drama alemán, suspenso norteamericano y una película nacional</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Estrenos en video " />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175000</id>
+<title>Con nombre y apellido</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175000" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Ultima página</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/54/1058054.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174999</id>
+<title>Muestra como para cruzar la Cordillera</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174999" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Ultima página</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Ropa y objetos de Michael Jackson se exhibirán pronto en Chile<img src="http://www.lanacion.com.ar/anexos/fotos/50/1058050.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174998</id>
+<title>Audición  sin barreras</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174998" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Ultima página</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.arhttp://www.rollingstone.com.ar/weblogs/mixedmedia/nota.asp?nota_id=1174949</id>
+<title>Mixed Media, y el análisis de la TV política</title>
+<link href="http://www.rollingstone.com.ar/weblogs/mixedmedia/nota.asp?nota_id=1174949" />
+<updated>2009-09-15T18:19:06.447-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.arhttp://www.rollingstone.com.ar/nota.asp?nota_id=1174968</id>
+<title>Habla Aston "Family Man" Barrett, bajista de The Wailers</title>
+<link href="http://www.rollingstone.com.ar/nota.asp?nota_id=1174968" />
+<updated>2009-09-15T18:18:07.790-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.arhttp://www.rollingstone.com.ar/weblogs/poplife/nota.asp?nota_id=1174938</id>
+<title>Cinco motivos para odiar la muerte de Patrick Swayze</title>
+<link href="http://www.rollingstone.com.ar/weblogs/poplife/nota.asp?nota_id=1174938" />
+<updated>2009-09-15T18:16:49.587-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Pop Life, y su recuerdo para el actor de  Punto límite <img src="http://www.lanacion.com.ar/anexos/fotos/20/1058020.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174634</id>
+<title>El adiós a Patrick Swayze</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174634" />
+<updated>2009-09-15T18:09:03.997-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El protagonista de  Ghost  falleció ayer a  los 57 años, víctima de un cáncer pancreático; sufría la enfermedad desde 2008; el homenaje en Twitter; ¿qué papel te gustó más?; mirá videos </div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+</feed>

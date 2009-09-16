@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- InfoBAE -->
+<rss xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Infobae - Tecnología</title>
+    <description>Un analisis de  los avances tecnològicos</description>
+    <link>http://www.infobae.com</link>
+    <language>es</language>
+    <copyright>Copyright (c) 2005-2008 InfoBAE.com</copyright>
+    <ttl>10</ttl>
+    <pubDate>Wed, 16 Sep 2009 09:25:54 -0300</pubDate>
+    <lastBuildDate>Wed, 16 Sep 2009 09:25:54 -0300</lastBuildDate>
+    <docs>http://www.infobae.com/herramientas/rss.php</docs>
+<!--    <managingEditor>webmaster@infobae.com</managingEditor> -->
+    <webMaster>webmaster@infobae.com</webMaster>
+    <ttl>10</ttl>
+<!--    <category domain=""></category> -->
+    <generator>HTMLExport</generator>
+    <image>
+      <title>Infobae - Tecnología</title>
+      <url>http://www.infobae.com/imgs/log/logo_rss.gif</url>
+      <link>http://www.infobae.com</link>
+      <width>122</width>
+      <height>20</height>
+      <description>Un analisis de  los avances tecnològicos</description>
+    </image>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 16 Sep 2009 00:11:00 -0300</PubDate>
+      <title>Ni Skype se salva de los ciberdelincuentes</title>
+      <description>El uso del software que permite chatear y conversar con usuarios en cualquier lugar del mundo es aprovechado para &#x3C;STRONG&#x3E;diseminar spam y obtener informaci&#xF3;n privada. Detectaron un virus que graba conversaciones&#x3C;/STRONG&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472341-100918-0-Ni-Skype-se-salva-de-los-ciberdelincuentes</link>
+      <guid>http://www.infobae.com/contenidos/472341-100918-0-Ni-Skype-se-salva-de-los-ciberdelincuentes</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 16 Sep 2009 00:05:00 -0300</PubDate>
+      <title>Sistema anticopia de Sony sigue haciendo ruido</title>
+      <description>Un tribunal alem&#xE1;n oblig&#xF3; a indemnizar a un usuario que hab&#xED;a comprado un CD original que conten&#xED;a el rootkit de la discogr&#xE1;fica. El sistema le gener&#xF3; inconvenientes en el funcionamiento de sus tres computadoras</description>
+      <link>http://www.infobae.com/contenidos/472361-100918-0-Sistema-anticopia-de-Sony-sigue-haciendo-ruido</link>
+      <guid>http://www.infobae.com/contenidos/472361-100918-0-Sistema-anticopia-de-Sony-sigue-haciendo-ruido</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 16 Sep 2009 00:04:00 -0300</PubDate>
+      <title>Los accesos a internet crecen sin pausa en los hogares argentinos</title>
+      <description>De acuerdo al Indec, la cantidad de conexiones residenciales ascendi&#xF3; a 3,6 millones. Las cuentas de banda ancha aumentaron un 20,7 por ciento</description>
+      <link>http://www.infobae.com/contenidos/472333-100918-0-Los-accesos-a-internet-crecen-sin-pausa-en-los-hogares-argentinos</link>
+      <guid>http://www.infobae.com/contenidos/472333-100918-0-Los-accesos-a-internet-crecen-sin-pausa-en-los-hogares-argentinos</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 22:45:00 -0300</PubDate>
+      <title>Facebook, con chat de voz</title>
+      <description>La red social lleg&#xF3; a un acuerdo con Vivox para ofrecer a los usuarios la posibilidad de mantener una conversaci&#xF3;n hablada con cualquier amigo de su lista</description>
+      <link>http://www.infobae.com/contenidos/472371-100918-0-Facebook,-con-chat-de-voz</link>
+      <guid>http://www.infobae.com/contenidos/472371-100918-0-Facebook,-con-chat-de-voz</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 20:33:00 -0300</PubDate>
+      <title>C&#xE1;mara empresaria pide un debate m&#xE1;s profundo del impuestazo tecnol&#xF3;gico</title>
+      <description>La Cicomra realiz&#xF3; un pedido formal a diversos legisladores nacionales. Consideran que el proyecto beneficia &#x22;solamente a un n&#xFA;mero muy limitado de empresas ya instaladas en Tierra del Fuego&#x22;</description>
+      <link>http://www.infobae.com/contenidos/472380-100918-0-C&#xE1;mara-empresaria-pide-un-debate-m&#xE1;s-profundo-del-impuestazo-tecnol&#xF3;gico</link>
+      <guid>http://www.infobae.com/contenidos/472380-100918-0-C&#xE1;mara-empresaria-pide-un-debate-m&#xE1;s-profundo-del-impuestazo-tecnol&#xF3;gico</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 18:52:00 -0300</PubDate>
+      <title>Facebook lleg&#xF3; a 300 millones de usuarios y comenz&#xF3; a &#x22;facturar&#x22;</title>
+      <description>Marck Zuckerberg, creador de la red social, fue el encargado de anunciar que la facturaci&#xF3;n &#x3C;STRONG&#x3E;ser&#xE1; positiva &#x3C;/STRONG&#x3E;por primera vez durante este a&#xF1;o. La tasa de crecimiento de usuarios contin&#xFA;a en plena alza</description>
+      <link>http://www.infobae.com/contenidos/472352-100918-0-Facebook-lleg&#xF3;-a-300-millones-de-usuarios-y-comenz&#xF3;-a-&#x22;facturar&#x22;</link>
+      <guid>http://www.infobae.com/contenidos/472352-100918-0-Facebook-lleg&#xF3;-a-300-millones-de-usuarios-y-comenz&#xF3;-a-&#x22;facturar&#x22;</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 15:39:00 -0300</PubDate>
+      <title>Avanza en Francia la ley antipirater&#xED;a que prev&#xE9; cortar el acceso a la red</title>
+      <description>La C&#xE1;mara baja aprob&#xF3; un proyecto pionero que permite a las autoridades &#x3C;STRONG&#x3E;cortar el servicio&#xA0;a los&#xA0;usuarios que descarguen contenidos ilegalmente&#x3C;BR&#x3E;&#x3C;/STRONG&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472283-100918-0-Avanza-en-Francia-la-ley-antipirater&#xED;a-que-prev&#xE9;-cortar-el-acceso-a-la-red</link>
+      <guid>http://www.infobae.com/contenidos/472283-100918-0-Avanza-en-Francia-la-ley-antipirater&#xED;a-que-prev&#xE9;-cortar-el-acceso-a-la-red</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 15:24:00 -0300</PubDate>
+      <title>Bing propone un cambio en la manera de realizar las b&#xFA;squedas</title>
+      <description>Microsoft dio a conocer una versi&#xF3;n de prueba de Bing Visual Search, que muestra la b&#xFA;squeda en im&#xE1;genes en vez de texto ya que &#x22;los usuarios procesan las fotograf&#xED;as un 20% m&#xE1;s r&#xE1;pido que las palabras&#x22;</description>
+      <link>http://www.infobae.com/contenidos/472304-100918-0-Bing-propone-un-cambio-en-la-manera-de-realizar-las-b&#xFA;squedas</link>
+      <guid>http://www.infobae.com/contenidos/472304-100918-0-Bing-propone-un-cambio-en-la-manera-de-realizar-las-b&#xFA;squedas</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 15:04:00 -0300</PubDate>
+      <title>Google triunfa en los mercados emergentes</title>
+      <description>Brasil, India e Irlanda son los pa&#xED;ses que m&#xE1;s tiempo pasan conectados a los diversos servicios del gigante de internet. En promedio, un brasilero pasa casi el 30% de su tiempo en la web dentro de alguna aplicaci&#xF3;n de Google</description>
+      <link>http://www.infobae.com/contenidos/472298-100918-0-Google-triunfa-en-los-mercados-emergentes</link>
+      <guid>http://www.infobae.com/contenidos/472298-100918-0-Google-triunfa-en-los-mercados-emergentes</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 07:30:00 -0300</PubDate>
+      <title>Fast Flip, lo nuevo de Google para las noticias</title>
+      <description>El gigante de internet est&#xE1; haciendo pruebas a un formato nuevo que se supone har&#xE1; que la &#x3C;STRONG&#x3E;lectura de historias en l&#xED;nea &#x3C;/STRONG&#x3E;sea tan f&#xE1;cil como hojear una revista, un cambio que con el tiempo podr&#xED;a suministrar m&#xE1;s ventas de publicidad a editores hambrientos de ingresos&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472151-100918-0-Fast-Flip,-lo-nuevo-de-Google-para-las-noticias</link>
+      <guid>http://www.infobae.com/contenidos/472151-100918-0-Fast-Flip,-lo-nuevo-de-Google-para-las-noticias</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 00:16:00 -0300</PubDate>
+      <title>Se podr&#xE1; chatear por el Messenger mediante un mensaje de texto</title>
+      <description>&#x3C;STRONG&#x3E;La Argentina ser&#xE1; el primer pa&#xED;s en contar con el servicio&#x3C;/STRONG&#x3E; de Microsoft. Los usuarios podr&#xE1;n estar &#x3C;STRONG&#x3E;conectados desde el celular y chatear sin necesidad de tener un m&#xF3;vil de &#xFA;ltima generaci&#xF3;n o con conexi&#xF3;n a internet&#x3C;/STRONG&#x3E;. C&#xF3;mo es&#xA0;el servicio</description>
+      <link>http://www.infobae.com/contenidos/472076-100918-0-Se-podr&#xE1;-chatear-por-el-Messenger-mediante-un-mensaje-de-texto</link>
+      <guid>http://www.infobae.com/contenidos/472076-100918-0-Se-podr&#xE1;-chatear-por-el-Messenger-mediante-un-mensaje-de-texto</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 00:16:00 -0300</PubDate>
+      <title>Aumenta 2.000% una t&#xE9;cnica de env&#xED;o de spam</title>
+      <description>Se trata de los mensajes llamados NDR, es decir, los enviados autom&#xE1;ticamente para informar al emisor que el correo no fue entregado al destinatario. Ahora son aprovechados por los spammers</description>
+      <link>http://www.infobae.com/contenidos/472067-100918-0-Aumenta-2.000%-una-t&#xE9;cnica-de-env&#xED;o-de-spam</link>
+      <guid>http://www.infobae.com/contenidos/472067-100918-0-Aumenta-2.000%-una-t&#xE9;cnica-de-env&#xED;o-de-spam</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 00:09:00 -0300</PubDate>
+      <title>Un Wi-Fi m&#xE1;s eficiente</title>
+      <description>El organismo que regula los est&#xE1;ndares de esa tecnolog&#xED;a aprob&#xF3; la norma inal&#xE1;mbrica 802.11n, que &#x3C;STRONG&#x3E;ofrece una velocidad de transferencia hasta seis veces mayor que la actual.&#x3C;/STRONG&#x3E; Asimismo, mejora el alcance de la se&#xF1;al en interiores hasta 90 metros</description>
+      <link>http://www.infobae.com/contenidos/472094-100918-0-Un-Wi-Fi-m&#xE1;s-eficiente</link>
+      <guid>http://www.infobae.com/contenidos/472094-100918-0-Un-Wi-Fi-m&#xE1;s-eficiente</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 15 Sep 2009 00:05:00 -0300</PubDate>
+      <title>La compra de The Pirate Bay, en una nebulosa</title>
+      <description>La empresa Global Gaming Factory fue excluida de la Bolsa de Valores de Suecia a ra&#xED;z de una investigaci&#xF3;n relacionada con su situaci&#xF3;n econ&#xF3;mica. GGF hab&#xED;a anunciado que comprar&#xED;a uno de los principales sitios del mundo relacionados con la pirater&#xED;a</description>
+      <link>http://www.infobae.com/contenidos/472121-100918-0-La-compra-de-The-Pirate-Bay,-en-una-nebulosa</link>
+      <guid>http://www.infobae.com/contenidos/472121-100918-0-La-compra-de-The-Pirate-Bay,-en-una-nebulosa</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 17:33:00 -0300</PubDate>
+      <title>Corea del Sur, otro dolor de cabeza para Microsoft</title>
+      <description>Un tribunal de ese pa&#xED;s declar&#xF3; culpable al gigante del software por abuso de posici&#xF3;n dominante de acuerdo con las leyes de competencia al incluir su programa Windows Media Services en su sistema operativo</description>
+      <link>http://www.infobae.com/contenidos/472104-100918-0-Corea-del-Sur,-otro-dolor-de-cabeza-para-Microsoft</link>
+      <guid>http://www.infobae.com/contenidos/472104-100918-0-Corea-del-Sur,-otro-dolor-de-cabeza-para-Microsoft</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 17:01:00 -0300</PubDate>
+      <title>Editoriales de los EEUU escuchan planes para cobrar por noticias en la web</title>
+      <description>Algunas de las mayores compa&#xF1;&#xED;as tecnol&#xF3;gicas del mundo dicen que pueden ayudar a las compa&#xF1;&#xED;as editoriales a cobrar exitosamente por las noticias en internet. Ya se estudian 11 propuestas, incluida una de Google</description>
+      <link>http://www.infobae.com/contenidos/472098-100918-0-Editoriales-de-los-EEUU-escuchan-planes-para-cobrar-por-noticias-en-la-web</link>
+      <guid>http://www.infobae.com/contenidos/472098-100918-0-Editoriales-de-los-EEUU-escuchan-planes-para-cobrar-por-noticias-en-la-web</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 14:50:00 -0300</PubDate>
+      <title>Ampl&#xED;an revisi&#xF3;n del acuerdo entre Yahoo! y Microsoft</title>
+      <description>Los reguladores antimonopolio de los EEUU solicitaron m&#xE1;s documentos en su investigaci&#xF3;n sobre el acuerdo de Microsoft para aportar tecnolog&#xED;a de b&#xFA;squeda a Yahoo!</description>
+      <link>http://www.infobae.com/contenidos/472063-100918-0-Ampl&#xED;an-revisi&#xF3;n-del-acuerdo-entre-Yahoo!-y-Microsoft</link>
+      <guid>http://www.infobae.com/contenidos/472063-100918-0-Ampl&#xED;an-revisi&#xF3;n-del-acuerdo-entre-Yahoo!-y-Microsoft</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 14:30:00 -0300</PubDate>
+      <title>Seis pantallas para jugar mejor</title>
+      <description>AMD demostr&#xF3; una de las principales funciones de su pr&#xF3;ximo chipset gr&#xE1;fico ATI Radeon HD 5800, que &#x3C;STRONG&#x3E;soportar&#xE1; hasta seis pantallas LCD simult&#xE1;neas&#x3C;/STRONG&#x3E;. Ser&#xE1; anunciado oficialmente a finales de este mes&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472038-100918-0-Seis-pantallas-para-jugar-mejor</link>
+      <guid>http://www.infobae.com/contenidos/472038-100918-0-Seis-pantallas-para-jugar-mejor</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 13:08:00 -0300</PubDate>
+      <title>Google propone dar la m&#xE1;xima libertad a sus usuarios</title>
+      <description>La idea es que los usuarios de las plataformas de Gmail o Blogger&#x3C;STRONG&#x3E; puedan extraer o depositar informaci&#xF3;n propia&#xA0;cuando y&#xA0;como&#xA0;lo deseen &#x3C;BR&#x3E;&#x3C;/STRONG&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472024-100918-0-Google-propone-dar-la-m&#xE1;xima-libertad-a-sus-usuarios</link>
+      <guid>http://www.infobae.com/contenidos/472024-100918-0-Google-propone-dar-la-m&#xE1;xima-libertad-a-sus-usuarios</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Tue, 03 Mar 2009 00:15:00 -0300</PubDate>
+      <title>Yahoo! gast&#xF3; u$s79 millones para no ser vendida</title>
+      <description>El portal desembols&#xF3; u$s79 millones para defenderse de una posible adquisici&#xF3;n por parte del gigante de software Microsoft, seg&#xFA;n un informe de la empresa sobre su estado en 2008</description>
+      <link>http://www.infobae.com/contenidos/434398-100921-0-Yahoo!-gast&#xF3;-u$s79-millones-para-no-ser-vendida</link>
+      <guid>http://www.infobae.com/contenidos/434398-100921-0-Yahoo!-gast&#xF3;-u$s79-millones-para-no-ser-vendida</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 02 Mar 2009 15:51:00 -0300</PubDate>
+      <title>La posici&#xF3;n de la industria discogr&#xE1;fica en juicio por pirater&#xED;a</title>
+      <description>Un alto funcionario de una asociaci&#xF3;n de empresas del sector explic&#xF3; durante el juicio contra The Pirate Bay en Estocolmo que la pirater&#xED;a en internet ha causado un &#x22;da&#xF1;o inmenso&#x22; a artistas y productores en todo el mundo</description>
+      <link>http://www.infobae.com/contenidos/434391-100921-0-La-posici&#xF3;n-de-la-industria-discogr&#xE1;fica-en-juicio-por-pirater&#xED;a</link>
+      <guid>http://www.infobae.com/contenidos/434391-100921-0-La-posici&#xF3;n-de-la-industria-discogr&#xE1;fica-en-juicio-por-pirater&#xED;a</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 02 Mar 2009 00:00:00 -0300</PubDate>
+      <title>Microsoft le redujo el sueldo a sus empleados temporales</title>
+      <description>&#xA0;&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/434371-100921-0-Microsoft-le-redujo-el-sueldo-a-sus-empleados-temporales</link>
+      <guid>http://www.infobae.com/contenidos/434371-100921-0-Microsoft-le-redujo-el-sueldo-a-sus-empleados-temporales</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Sat, 21 Feb 2009 06:10:00 -0300</PubDate>
+      <title>Microsoft abri&#xF3; su primer laboratorio contra la pirater&#xED;a en Latinoam&#xE9;rica</title>
+      <description>El argentino Juan Hardoy, director de antipirater&#xED;a del gigante inform&#xE1;tico para la regi&#xF3;n, asegur&#xF3; que &#x3C;STRONG&#x3E;el centro fundado en Colombia prestar&#xE1; sus servicios a autoridades judiciales&#x3C;BR&#x3E;&#x3C;/STRONG&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/432819-100921-0-Microsoft-abri&#xF3;-su-primer-laboratorio-contra-la-pirater&#xED;a-en-Latinoam&#xE9;rica</link>
+      <guid>http://www.infobae.com/contenidos/432819-100921-0-Microsoft-abri&#xF3;-su-primer-laboratorio-contra-la-pirater&#xED;a-en-Latinoam&#xE9;rica</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Thu, 19 Feb 2009 20:33:00 -0300</PubDate>
+      <title>Desaparece celular con prototipo de nuevo software de Microsoft</title>
+      <description>Los secretos del nuevo Windows Mobile 6.5, que a&#xFA;n no ha salido al mercado, pueden haber ca&#xED;do en manos de desconocidos tras la desaparici&#xF3;n de un celular prototipo programado con &#xE9;l. Analizan si se trata de un caso de espionaje industrial</description>
+      <link>http://www.infobae.com/contenidos/432554-100921-0-Desaparece-celular-con-prototipo-de-nuevo-software-de-Microsoft</link>
+      <guid>http://www.infobae.com/contenidos/432554-100921-0-Desaparece-celular-con-prototipo-de-nuevo-software-de-Microsoft</guid>
+    </item>
+  </channel>
+</rss>
+<!-- InfoBAE -->

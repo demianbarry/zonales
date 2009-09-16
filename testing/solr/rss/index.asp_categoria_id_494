@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/494</id>
+<title>Revista - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=494" />
+<updated>2009-09-14T10:20:25.263-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173516</id>
+<title>Naomi Campbell, la belleza más temida</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173516" />
+<updated>2009-09-14T10:20:25.263-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Tan sexy como escandalosa, a los 39 años la modelo más polémica habla de su labor filantrópica, del modelaje hoy y de la política<img src="http://www.lanacion.com.ar/anexos/fotos/50/1056750.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Estilo de Vida" />
+<category term="Moda y Belleza" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1172269</id>
+<title>Paul Krugman: "Obama está fuera de la realidad"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1172269" />
+<updated>2009-09-13T03:46:38.743-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Entrevista exclusiva con un experto en crisis sobre la economia que viene<img src="http://www.lanacion.com.ar/anexos/fotos/35/1056735.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173518</id>
+<title>Vidas de emprendedores</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173518" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Tendencias</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Piensan, concretan, generan empleo, crean riqueza. A pesar de las crisis, la cultura emprendedora es cada vez más fuerte en el país. En esta nota, un puñado de protagonistas que son ejemplo para otros<img src="http://www.lanacion.com.ar/anexos/fotos/60/1056760.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173519</id>
+<title>Crear valor y riqueza</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173519" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Pablo Larguia</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173521</id>
+<title>Ejercer un derecho</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173521" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Sociedad</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El problema habitacional es uno de los grandes asuntos pendientes del planeta. Ronald Terwilliger, filántropo y presidente de la ONG Hábitat para la Humanidad, es un experto en el tema. Estuvo en el país, y aseguró que es posible construir viviendas dignas para todos<img src="http://www.lanacion.com.ar/anexos/fotos/65/1056765.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173520</id>
+<title>¿El fin de una idea?</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173520" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Tecnología</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Jonathan Zittrain, un abogado de Harvard experto en regulaciones cibernéticas, explica por qué Internet, tal como la conocemos, podría desaparecer<img src="http://www.lanacion.com.ar/anexos/fotos/62/1056762.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173524</id>
+<title>El artista de las tijeras</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173524" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Estilos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Elegido por las celebrities, pasea su peluqueria premium por el mundo, con sus baules a cuestas<img src="http://www.lanacion.com.ar/anexos/fotos/94/1056794.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173549</id>
+<title>De ida y de vuelta</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173549" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Correo Astrológico</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Kirón contesta las dudas de los lectores sobre astrología</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173535</id>
+<title>Libélula</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173535" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Restaurant</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Especialidad  Palermo Chico<img src="http://www.lanacion.com.ar/anexos/fotos/02/1056802.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173515</id>
+<title>Manchas en la alfombra</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173515" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Cambalache</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Enrique Pinti</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Enrique Pinti" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173542</id>
+<title>El valor de una vida propia</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173542" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Oxígeno / Diálogos del alma</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Sergio Sinay</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173536</id>
+<title>América libre de grasas trans</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173536" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Consumo</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Un esfuerzo entre la ciencia y la industria, hacia una vida saludable</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173548</id>
+<title>Carpetas de cartulina</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173548" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Miradas</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Cecilia Absatz</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173541</id>
+<title>Delicias asiaticas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173541" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Restaurant</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Moshi moshi propone platos japoneses con impronta de fusion y una gran variedad de sakes importados<img src="http://www.lanacion.com.ar/anexos/fotos/04/1056804.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173544</id>
+<title>Las mil formas de ser madre</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173544" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Oxígeno / En casa hablamos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Multifacéticas, emprendedoras, independientes y afectuosas. preocupadas por verse lindas. solas o compartiendo la crianza de sus hijos y las responsabilidades del hogar con sus maridos. radiografia de las mamas argentinas de hoy<img src="http://www.lanacion.com.ar/anexos/fotos/05/1056805.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173523</id>
+<title>Esencia trendy</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173523" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Estilos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Entre jeans y camisetas para vestir de dia y de noche, la tendencia es encontrar en la moda un estilo personal<img src="http://www.lanacion.com.ar/anexos/fotos/68/1056768.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173538</id>
+<title>Un vermucito</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173538" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Vinos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">De bebida popular en boliches lugareños al costado de la ruta a onda sofisticada en hoteles finoli<img src="http://www.lanacion.com.ar/anexos/fotos/03/1056803.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173525</id>
+<title>Espinazo de chancho asado con salsa rustica de mango y pepino</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173525" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Cocina / Con gusto a asado</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Martiniano Molina<img src="http://www.lanacion.com.ar/anexos/fotos/97/1056797.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173528</id>
+<title>Paleta de cordero perfumada en romero y ajies silvestres</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173528" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Cocina / Con gusto a asado</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Martiniano Molina<img src="http://www.lanacion.com.ar/anexos/fotos/99/1056799.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Martiniano" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173527</id>
+<title>Pechuga grill con aliño de mostaza y queso</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173527" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Gourmet / Cocina / Con gusto a asado</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Martiniano Molina<img src="http://www.lanacion.com.ar/anexos/fotos/98/1056798.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Martiniano" />
+</entry>
+</feed>

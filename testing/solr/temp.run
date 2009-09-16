@@ -1,0 +1,13 @@
+#!/bin/sh
+
+dir_conjugados='/home/alumnoing/g2p/workspace/bloques_conjugados'
+dir_sinonimos='/home/alumnoing/g2p/workspace/bloques_sinonimos'
+dir_unificado='/home/alumnoing/g2p/workspace/bloques_unificado'
+
+sinonimos_arch=`ls $dir_sinonimos`
+numero=0
+
+for arch_actual in $sinonimos_arch do
+	numero=`echo ${numero} | bc`
+	cp ${dir_sinonimos}/$arch_actual ${dir_unificado}/$numero
+done

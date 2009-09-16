@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/1</id>
+<title>Cultura - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=1" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175063</id>
+<title>Vuelve la vocación docente en la Capital</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175063" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Cambio de tendencia</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Creció el número de aspirantes a maestro</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175064</id>
+<title>Jóvenes que eligen por otros motivos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175064" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Opinión</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Graciela Morgade  Para LA NACION</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175069</id>
+<title>"Más que hablar, Israel y Palestina deberían escucharse"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175069" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Los intelectuales / Paul Mendes Flohr</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">"No soy optimista, pero tengo esperanzas", dice este historiador del pensamiento judío</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175017</id>
+<title>Agenda cultural</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175017" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175067</id>
+<title>Culto católico</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175067" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175068</id>
+<title>Breves</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175068" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174657</id>
+<title>La UBA juega su futuro en las urnas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174657" />
+<updated>2009-09-15T02:44:08.993-03:00</updated>
+<summary>El escenario en la universidad / Comenzaron las elecciones estudiantiles</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En la mayoría de las facultades habrá continuidad de los decanos; el rector Hallú aspira a un nuevo período<img src="http://www.lanacion.com.ar/anexos/fotos/56/1057556.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174663</id>
+<title>Educación tiene siete nuevos académicos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174663" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary>Reconocimientos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Incorporan a Rodríguez Giavarini y a Guadagni</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174660</id>
+<title>El efecto tsunami en el mercado  del arte</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174660" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Alicia de Arteaga</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Alicia de Arteaga" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174617</id>
+<title>Agenda cultural</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174617" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174658</id>
+<title>Culto católico</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174658" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174260</id>
+<title>La Iglesia pidió mejorar los aportes en Más por Menos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174260" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary>La colecta solidaria / Se realizó en todo el país</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El año pasado se recibió un promedio de $ 0,18 por habitante<img src="http://www.lanacion.com.ar/anexos/fotos/67/1057067.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174257</id>
+<title>Comienza hoy en la UBA la votación de los estudiantes</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174257" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary>Elecciones universitarias</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En las 13 facultades se eligen los delegados del claustro en los órganos de gobierno</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174261</id>
+<title>Entender que el otro no es un extraño, es alguien</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174261" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary>Actualidad religiosa</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Jorge Rouillon</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Jorge Rouillon" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174233</id>
+<title>Agenda cultural</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174233" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174259</id>
+<title>Culto católico</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174259" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173949</id>
+<title>Ir a la escuela incluye computadora</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173949" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Utopía tecnológica / Es el primer país del mundo en lograr que todos los chicos tengan acceso a Internet</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En Uruguay, un plan del gobierno entrega una laptop a cada alumno y a cada maestro del nivel primario<img src="http://www.lanacion.com.ar/anexos/fotos/36/1056936.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173952</id>
+<title>San Luis equipa a sus alumnos, financia compras y ofrece Wi-Fi</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173952" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173953</id>
+<title>La Iglesia realiza hoy la colecta Más por Menos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173953" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Campaña contra la pobreza</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Se reciben donaciones en los templos del país</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173954</id>
+<title>Retrato  de una feminista posmoderna</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173954" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>mientras tanto</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Juana Libedinsky</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+</feed>
