@@ -7,6 +7,7 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
+import javafx.geometry.*;
 import javafx.scene.effect.DropShadow;
 import javafx.animation.*;
 import java.lang.Math;
@@ -64,12 +65,11 @@ public class popupMenu extends CustomNode {
         parseOptions(content) };
     public var event:MouseEvent=null on replace {
         // si oprimio el boton derecho, hace visible el menu
-        parseOptions(content);        
+        var isVisible = event.button==MouseButton.SECONDARY;
+        this.visible = isVisible;
         if (animate==true) then {
             appear.playFromStart();
         }
-        var isVisible = event.button==MouseButton.SECONDARY;
-        this.visible = isVisible;
     };
 
     // opciones graficas
@@ -77,9 +77,8 @@ public class popupMenu extends CustomNode {
 
     // procesa opciones del menu
     function parseOptions(options:menuItem[]):Void {
-
         // si hay opciones y font definido
-        if (options!=null and font!=null and this.visible) then {
+        if (options!=null and font!=null) then {
 
             // calcula ancho basico
             var maxWidth = 0.0;
@@ -87,11 +86,11 @@ public class popupMenu extends CustomNode {
             var maxHeight = padding;
 
             // recorre opciones
-            for (option in options) {
+            for (option in options) {                
                 // obtiene texto de la opcion
                 var text = Text {
                     font:bind font
-                    content: bind option.text
+                    content: option.text
                 };
                 // obtiene dimension del texto de la opcion
                 var rec = text.boundsInLocal;
@@ -109,14 +108,17 @@ public class popupMenu extends CustomNode {
 
             // crea botones de opciones y espacios
             for (option in options) {
+                    java.lang.System.out.println("-----------------------------------");
+                java.lang.System.out.println("--> {option.text}");
+                java.lang.System.out.println("-----------------------------------");
                 // obtiene texto de la opcion
                 var text = Text {
                     font: bind font
-                    content: bind option.text
+                    content: option.text
                 };
                 // obtiene dimension del texto de la opcion
                 var rec=text.boundsInLocal;
-                
+
                 // crea opcion
                 var optionButton = Group {
 
@@ -155,13 +157,12 @@ public class popupMenu extends CustomNode {
                             height: bind rec.height
                         },
                         // texto de la opcion
-                        
                         Text {
                             fill: bind txtcolor
                             x: bind event.x + padding
                             y: bind event.y + option.pos
                             font: bind font
-                            content: bind option.text
+                            content: option.text
                             textOrigin: TextOrigin.TOP
                         },
                         // rectangulo transparente sobre el texto y fondo
@@ -195,10 +196,12 @@ public class popupMenu extends CustomNode {
                                 hide.playFromStart();
                             };
                         },
+
                     ]
                 };
                 // agrega la opcion a una secuencia (array o arreglo)
                 insert optionButton into optionsObjects;
+
             };
         };
     };
@@ -212,21 +215,13 @@ public class popupMenu extends CustomNode {
         ]
     };
 
+
     // crea el componente del menu flotante
     override function create():Node {
 
         // no es visible al crearlo
         this.visible=false;
-
-        Group {
-//            cache:true
-            rotate: bind rotate
-            scaleX: bind scale
-            scaleY: bind scale
-            opacity: bind opacity
-            content: [
-                // rectangulo de fondo del menu flotante
-                Rectangle {
+        insert Rectangle {
                     // posiciona en la ubicacion del mouse
                     x: bind event.x
                     y: bind event.y
@@ -247,10 +242,15 @@ public class popupMenu extends CustomNode {
                         }
                     }
                     else null;
-                },
-                // agrega las opciones pregeneradas
-                optionsObjects
-            ]
+        } into optionsObjects;
+
+        Group {
+//            cache:true
+            rotate: bind rotate
+            scaleX: bind scale
+            scaleY: bind scale
+            opacity: bind opacity
+            content: bind optionsObjects
         }
     }
 
