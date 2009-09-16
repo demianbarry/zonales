@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- InfoBAE -->
+<rss xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Infobae - Infofitness</title>
+    <description>Toda la información de Infofitness</description>
+    <link>http://www.infobae.com</link>
+    <language>es</language>
+    <copyright>Copyright (c) 2005-2008 InfoBAE.com</copyright>
+    <ttl>10</ttl>
+    <pubDate>Wed, 16 Sep 2009 09:25:54 -0300</pubDate>
+    <lastBuildDate>Wed, 16 Sep 2009 09:25:54 -0300</lastBuildDate>
+    <docs>http://www.infobae.com/herramientas/rss.php</docs>
+<!--    <managingEditor>webmaster@infobae.com</managingEditor> -->
+    <webMaster>webmaster@infobae.com</webMaster>
+    <ttl>10</ttl>
+<!--    <category domain=""></category> -->
+    <generator>HTMLExport</generator>
+    <image>
+      <title>Infobae - Infofitness</title>
+      <url>http://www.infobae.com/imgs/log/logo_rss.gif</url>
+      <link>http://www.infobae.com</link>
+      <width>122</width>
+      <height>20</height>
+      <description>Toda la información de Infofitness</description>
+    </image>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 14 Sep 2009 16:48:00 -0300</PubDate>
+      <title>&#x22;Canasta light&#x22;: cu&#xE1;nto cuesta ponerse a punto para el verano</title>
+      <description>Con la llegada de los d&#xED;as soleados, hombres y mujeres comienzan a destinar parte de la rutina diaria&#x3C;STRONG&#x3E; al ejercicio y a mejorar su dieta &#x3C;/STRONG&#x3E;con alimentos m&#xE1;s saludables y con menos calor&#xED;as. &#x3C;STRONG&#x3E;Infobae.com &#x3C;/STRONG&#x3E;te cuenta cu&#xE1;nto sale ponerse en forma&#x3C;BR&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/472012-101158-0-&#x22;Canasta-light&#x22;:-cu&#xE1;nto-cuesta-ponerse-a-punto-para-el-verano</link>
+      <guid>http://www.infobae.com/contenidos/472012-101158-0-&#x22;Canasta-light&#x22;:-cu&#xE1;nto-cuesta-ponerse-a-punto-para-el-verano</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Wed, 09 Sep 2009 08:16:00 -0300</PubDate>
+      <title>La actividad f&#xED;sica prolonga la vida</title>
+      <description>Lo confirma un estudio realizado en tres ciudades del pa&#xED;s que incluy&#xF3; a m&#xE1;s de 300 personas de 80 a&#xF1;os. Calzarse las zapatillas a esa edad para hacer &#x3C;STRONG&#x3E;30 minutos diarios de alguna actividad f&#xED;sica fue a&#xFA;n m&#xE1;s efectivo que controlar cualquier factor de riesgo para prolongar la&#xA0;vida&#x3C;/STRONG&#x3E;</description>
+      <link>http://www.infobae.com/contenidos/471160-101158-0-La-actividad-f&#xED;sica-prolonga-la-vida</link>
+      <guid>http://www.infobae.com/contenidos/471160-101158-0-La-actividad-f&#xED;sica-prolonga-la-vida</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 07 Sep 2009 20:18:00 -0300</PubDate>
+      <title>Hacer gimnasia en la oficina para prevenir problemas posturales</title>
+      <description>Rutinas breves, pr&#xE1;cticas f&#xE1;ciles de llevar a cabo, que apuntan a disminuir el sedentarismo y favorecen la movilidad y&#xA0;la relajaci&#xF3;n. Desde lo f&#xED;sico,&#xA0;evita lesiones, y desde el punto de vista ps&#xED;quico contribuye a incrementar la resistencia al estr&#xE9;s</description>
+      <link>http://www.infobae.com/contenidos/470874-101158-0-Hacer-gimnasia-en-la-oficina-para-prevenir-problemas-posturales</link>
+      <guid>http://www.infobae.com/contenidos/470874-101158-0-Hacer-gimnasia-en-la-oficina-para-prevenir-problemas-posturales</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Thu, 03 Sep 2009 18:22:00 -0300</PubDate>
+      <title>El peligro de las dietas bajas en carbohidratos</title>
+      <description>Si bien son las m&#xE1;s aconsejadas para reducir peso r&#xE1;pidamente, estos reg&#xED;menes pueden da&#xF1;ar las arterias y aumentar el riesgo de infartos. C&#xF3;mo adelgazar sin resignar salud</description>
+      <link>http://www.infobae.com/contenidos/470262-101158-0-El-peligro-de-las-dietas-bajas-en-carbohidratos</link>
+      <guid>http://www.infobae.com/contenidos/470262-101158-0-El-peligro-de-las-dietas-bajas-en-carbohidratos</guid>
+    </item>
+<!--      <category></category> -->
+    <item>
+      <PubDate>Mon, 31 Aug 2009 16:36:00 -0300</PubDate>
+      <title>Abren la inscripci&#xF3;n para la marat&#xF3;n UP 2009</title>
+      <description>La segunda edici&#xF3;n ser&#xE1; el domingo 4 de octubre, a las 9, desde los bosques de Palermo y se podr&#xE1; optar por los 10 kil&#xF3;metros competitivos o 4 participativos</description>
+      <link>http://www.infobae.com/contenidos/469581-101158-0-Abren-la-inscripci&#xF3;n-para-la-marat&#xF3;n-UP-2009</link>
+      <guid>http://www.infobae.com/contenidos/469581-101158-0-Abren-la-inscripci&#xF3;n-para-la-marat&#xF3;n-UP-2009</guid>
+    </item>
+  </channel>
+</rss>
+<!-- InfoBAE -->

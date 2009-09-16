@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/498</id>
+<title>Ciencia/Salud - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=498" />
+<updated>2009-09-16T00:42:18.460-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175117</id>
+<title>Promueven el uso de una vacuna</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175117" />
+<updated>2009-09-16T00:42:18.460-03:00</updated>
+<summary>Infectología pediátrica / Cada dosis cuesta 400 pesos y se necesitan cuatro</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Es la que combate el neumococo; un especialista aconseja incluirla en el calendario nacional de inmunizaciones</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175119</id>
+<title>Como siempre, argentinos contra viento y marea</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175119" />
+<updated>2009-09-16T00:27:54.450-03:00</updated>
+<summary>Viceversa</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Nora Bär</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Nora Bär" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175118</id>
+<title>Ya hay dos candidatas posibles</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175118" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175120</id>
+<title>Pastillas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175120" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174748</id>
+<title>Lograron explicar la causa de que los recuerdos perduren</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174748" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary>Avance de científicos argentinos / Los senderos de la memoria</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Un hecho intrascendente puede hacerse más duradero si se asocia con otro novedoso<img src="http://www.lanacion.com.ar/anexos/fotos/34/1057634.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174749</id>
+<title>Sólo el 18% controla bien la hipertensión</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174749" />
+<updated>2009-09-15T00:00:00-03:00</updated>
+<summary>En 10 millones de argentinos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Ayer, tras casi 20 años, se presentó un nuevo fármaco diseñado para mejorar su tratamiento</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174347</id>
+<title>Fue récord el envío de propuestas para la nueva edición de Innovar</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174347" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary>Talento argentino / Concurso de desarrollos tecnológicos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Llegaron 2630, entre las cuales se seleccionaron 450, que están siendo evaluadas<img src="http://www.lanacion.com.ar/anexos/fotos/13/1057113.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174345</id>
+<title>Gripe A: el virus es menos agresivo de lo que se temía</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174345" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary>Reunión científica en EE.UU.</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Infectólogos anticiparon también que la nueva vacuna protegerá a las embarazadas</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Gripe porcina" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174346</id>
+<title>Los desafíos del VIH</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174346" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174348</id>
+<title>Pastillas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174348" />
+<updated>2009-09-14T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173961</id>
+<title>"Un oasis de alegría que hace reflexionar"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173961" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173960</id>
+<title>Los animales como parte del tratamiento</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173960" />
+<updated>2009-09-13T00:00:00-03:00</updated>
+<summary>Encuentro argentino de zooterapia / Fueron presentadas distintas experiencias</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Su participación en forma complementaria a la terapia convencional permite mejorar la respuesta en múltiples afecciones<img src="http://www.lanacion.com.ar/anexos/fotos/16/1056816.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173599</id>
+<title>Gripe A: la vacuna es efectiva</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173599" />
+<updated>2009-09-12T00:00:00-03:00</updated>
+<summary>Estudio en EE.UU.</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Requiere una sola dosis, en vez de dos</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Gripe porcina" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173598</id>
+<title>Agenda</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173598" />
+<updated>2009-09-12T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173597</id>
+<title>La culpa, un sentimiento necesario</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173597" />
+<updated>2009-09-12T00:00:00-03:00</updated>
+<summary>Desarrollo / Aparece cerca del segundo año de vida</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Ayuda a los niños a convertirse en adultos conscientes y considerados, y colabora con el buen comportamiento<img src="http://www.lanacion.com.ar/anexos/fotos/65/1056465.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1173232</id>
+<title>La artritis, peligrosa para el corazón</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1173232" />
+<updated>2009-09-11T00:00:00-03:00</updated>
+<summary>Encuentro de expertos / Recomiendan chequeos periódicos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Nuevos estudios demuestran que las enfermedades reumáticas duplican el riesgo cardiovascular</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Salud" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1172782</id>
+<title>Primeras imágenes del nuevo Hubble</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1172782" />
+<updated>2009-09-10T15:59:58.077-03:00</updated>
+<summary>El telescopio espacial fue mejorado</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/90/1055390.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="Ciencia" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1172780</id>
+<title>El vestido rojo, un nuevo símbolo de prevención</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1172780" />
+<updated>2009-09-10T00:00:00-03:00</updated>
+<summary>Fundación Favaloro / Presentaron "Cuida Tu Corazón"</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Es la imagen de una campaña de salud cardiovascular femenina<img src="http://www.lanacion.com.ar/anexos/fotos/88/1055388.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1172781</id>
+<title>El colesterol alto afecta la sexualidad</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1172781" />
+<updated>2009-09-10T00:00:00-03:00</updated>
+<summary>En las mujeres</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1172368</id>
+<title>¿Llegó la hora de la geoingeniería?</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1172368" />
+<updated>2009-09-09T14:36:44.023-03:00</updated>
+<summary>Viceversa</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Nora Bär</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Nora Bär" />
+<category term="Ciencia" />
+</entry>
+</feed>

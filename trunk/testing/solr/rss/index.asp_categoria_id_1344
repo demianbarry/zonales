@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/1344</id>
+<title>Comunidad - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=1344" />
+<updated>2009-08-18T13:23:41.547-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162145</id>
+<title>Atención centrada en la familia</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162145" />
+<updated>2009-08-18T13:23:41.547-03:00</updated>
+<summary>Salud</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La probabilidad de sobrevida de los bebes prematuros aumentó al priorizar el vínculo del recién nacido con su círculo íntimo<img src="http://www.lanacion.com.ar/anexos/fotos/52/1043552.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162265</id>
+<title>El mapa del hambre</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162265" />
+<updated>2009-08-15T16:15:31.280-03:00</updated>
+<summary>Panorama nacional</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Las ONG que brindan asistencia alimentaria dan cuenta de la situación de emergencia que se está viviendo en el país. Declaran que cada vez más personas ingresan en la pobreza y se acercan por un plato de comida<img src="http://www.lanacion.com.ar/anexos/fotos/47/1041747.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162149</id>
+<title>Bancos de alimentos, al límite</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162149" />
+<updated>2009-08-15T03:58:20.010-03:00</updated>
+<summary>El mapa del hambre</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Estas entidades reconocen que no alcanzan a cubrir las necesidades de los comedores, que reciben cada vez más gente para alimentar<img src="http://www.lanacion.com.ar/anexos/fotos/91/1041691.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162629</id>
+<title>Hambre en las provincias</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162629" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162297</id>
+<title>Asignación única para los hijos</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162297" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Ernesto Kritz  Para LA NACION</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162276</id>
+<title>Las marcas invisibles del hambre</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162276" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Bernardo Klikberg  Para LA NACION</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162298</id>
+<title>Políticas públicas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162298" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162146</id>
+<title>¿Cómo reducir el hambre?</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162146" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>De todo un poco / Editorial</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Debe alentarse la posibilidad de unificar, en un programa alimentario, las numerosas iniciativas contra la desnutrición<img src="http://www.lanacion.com.ar/anexos/fotos/68/1041668.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162136</id>
+<title>La estirpe de los nuevos líderes</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162136" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Emprendedores sociales</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En una Argentina que no cree en los dirigentes políticos, ellos se arremangan para sacar el país adelante<img src="http://www.lanacion.com.ar/anexos/fotos/42/1041642.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162138</id>
+<title>Están donde hacen falta</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162138" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Joaquín Sorondo  Para LA NACION</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162139</id>
+<title>Comunidades autogestionadas exitosas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162139" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Sector social</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Asociaciones civiles, mutuales, sociedades de fomento y cooperativas se organizan para solucionar cuestiones de interés mutuo<img src="http://www.lanacion.com.ar/anexos/fotos/58/1041658.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162144</id>
+<title>¡Todos a las tablas!</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162144" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Arte e integración</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La compañía de teatro especial Adisa pone en el escenario a actores con distintas discapacidades<img src="http://www.lanacion.com.ar/anexos/fotos/62/1041662.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162189</id>
+<title>Los vecinos inciden en el presupuesto</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162189" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Participación ciudadana</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En Río Negro, Neuquén, Santa Fe y Buenos Aires, distintas municipalidades destinan fondos a los proyectos elaborados por los ciudadanos<img src="http://www.lanacion.com.ar/anexos/fotos/15/1041715.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162204</id>
+<title>"Es urgente retomar el equilibrio"</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162204" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Responsabilidad social empresaria</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Homero Santos afirma que las empresas tienen que ir más allá del lucro y concentrarse en el cuidado del medio ambiente y la comunidad<img src="http://www.lanacion.com.ar/anexos/fotos/18/1041718.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162147</id>
+<title>La riqueza de los pueblos originarios</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162147" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Opinión</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Por Patricio Sutton  Para LA NACION<img src="http://www.lanacion.com.ar/anexos/fotos/69/1041669.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162212</id>
+<title>Hacer comunidad</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162212" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162245</id>
+<title>Pregunta / Respuesta</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162245" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Espacio del lector</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">¿Cómo hacer una Internet segura para mis hijos?</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162247</id>
+<title>Tenés la palabra</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162247" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary>Espacio del lector</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162148</id>
+<title>Novedades</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162148" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/75/1041675.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1162213</id>
+<title>Servicios</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1162213" />
+<updated>2009-08-15T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+</feed>

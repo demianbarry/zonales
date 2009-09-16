@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<id>http://www.lanacion.com.ar/herramientas/rss/categoria/21</id>
+<title>Información general - lanacion.com</title>
+<logo>http://www.lanacion.com.ar/imgs/layout/logos/ln_112x16.gif</logo>
+<link rel="self" type="application/atom+xml" href="http://www.lanacion.com.ar/herramientas/rss/index.asp?categoria_id=21" />
+<updated>2009-09-16T09:15:23.177-03:00</updated>
+<rights>Copyright (c) 2009, SA LA NACION</rights>
+<icon>http://www.lanacion.com.ar/favicon.ico</icon>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175246</id>
+<title>Hoy no habrá subtes de 14 a 17 por un reclamo gremial</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175246" />
+<updated>2009-09-16T09:15:23.177-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La medida interrumpirá el servicio en las cinco líneas y el Premetro</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175251</id>
+<title>Boqueteros saquearon un local de ropa en La Plata</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175251" />
+<updated>2009-09-16T09:06:46.760-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Los delincuentes se llevaron casi toda la mercadería; tras realizar la denuncia, la propietaria decidió cerrar el comercio</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175174</id>
+<title>El cielo porteño fue escenario de la destreza de jets franceses</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175174" />
+<updated>2009-09-16T02:44:54.797-03:00</updated>
+<summary>Inusual espectáculo en el centro</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Una multitud aplaudió el paso de la escuadrilla sobre la avenida 9 de Julio<img src="http://www.lanacion.com.ar/anexos/fotos/22/1058222.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175169</id>
+<title>Ponen en marcha el distrito tecnológico</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175169" />
+<updated>2009-09-16T00:59:56.720-03:00</updated>
+<summary>Desarrollo urbano / Avance en Parque Patricios</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La empresa india Tata abrió sus oficinas en el polo impulsado por el gobierno porteño; otras 15 firmas compraron o alquilaron inmuebles<img src="http://www.lanacion.com.ar/anexos/fotos/16/1058216.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175122</id>
+<title>Salud se ocuparía de la atención de adictos a drogas</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175122" />
+<updated>2009-09-16T00:37:15.553-03:00</updated>
+<summary>Propuesta del comité asesor</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Aníbal Fernández se reunió ayer con el ministro Manzur para analizar las medidas</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+<category term="Flagelo de la droga" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175126</id>
+<title>Medio millón de fieles ante el Señor y la Virgen del Milagro</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175126" />
+<updated>2009-09-16T00:36:53.757-03:00</updated>
+<summary>En Salta, gran manifestación de fe</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"><img src="http://www.lanacion.com.ar/anexos/fotos/95/1058195.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175124</id>
+<title>Asalto en una casa de un country</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175124" />
+<updated>2009-09-16T00:36:37.400-03:00</updated>
+<summary>En Pilar</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175123</id>
+<title>Vestidos de policías robaron insumos médicos y dinero</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175123" />
+<updated>2009-09-16T00:36:21.070-03:00</updated>
+<summary>En una empresa del barrio de Mataderos</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Eran tres y dijeron que investigaban la mafia de los medicamentos</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175093</id>
+<title>La supervivencia en la villa donde la brea emerge del suelo</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175093" />
+<updated>2009-09-16T00:36:01.320-03:00</updated>
+<summary>En el Gran Buenos Aires / Un lugar declarado no apto para la vida humana</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">"El emporio del tanque", en Quilmes, es uno de los asentamientos con mayor contaminación<img src="http://www.lanacion.com.ar/anexos/fotos/70/1058170.jpg" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.arhttp://www.lanacion.com.ar/fotos/itemgaleria.asp?galeria_id=1313</id>
+<title>Los lectores de lanacion.com registraron el paso de los aviones</title>
+<link href="http://www.lanacion.com.ar/fotos/itemgaleria.asp?galeria_id=1313" />
+<updated>2009-09-16T00:12:33.910-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175173</id>
+<title>Los vecinos esperan  que mejore  al barrio</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175173" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Les preocupa la poca seguridad y el paco</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175175</id>
+<title>Hoy paran los subtes, de 14 a 17</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175175" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary>Reclamo gremial</summary>
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+<category term="GDA" />
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1175125</id>
+<title>Breve</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1175125" />
+<updated>2009-09-16T00:00:00-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"></div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174933</id>
+<title>La escuadrilla francesa desplegó colores sobre Buenos Aires</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174933" />
+<updated>2009-09-15T19:44:11.803-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Ocho aviones pintaron las banderas de Argentina y Francia en un desfile aéreo sobre el centro porteño, que culminó en la 9 de Julio<img src="http://www.lanacion.com.ar/anexos/fotos/21/1057921.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174989</id>
+<title>Demoras en Panamericana por un accidente fatal</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174989" />
+<updated>2009-09-15T18:24:51.100-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Una persona murió y otras dos resultaron heridas en un choque múltiple a la altura de Pablo Nogués</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174901</id>
+<title>Tras la primera jornada de conflicto, Metrovías pide que se declare ilegal el paro</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174901" />
+<updated>2009-09-15T18:12:34.540-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">La empresa hizo una presentación ante el Ministerio de Trabajo; esta mañana,  los trabajadores liberaron los molinetes de 8 a 10 en las principales cabeceras; mañana está prevista una medida  de 14 a 17 en reclamo del reconocimiento de la personería gremial<img src="http://www.lanacion.com.ar/anexos/fotos/22/1058022.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174930</id>
+<title>Tres delincuentes simulan allanar una droguería y la asaltan</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174930" />
+<updated>2009-09-15T17:17:29.730-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Los ladrones, disfrazaron de policías, fingieron realizar un procedimiento vinculado a la mafia de los medicamentos en un comercio de Mataderos; redujeron a los empleados y se llevaron 25.000 pesos, cajas con drogas y una camioneta</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174932</id>
+<title>El hombre que se llevó un secreto a la tumba</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174932" />
+<updated>2009-09-15T17:00:41.893-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">Federico Pippo falleció en junio; fue el principal sospechoso de la muerte de su ex mujer, Oriel Briant, en City Bell; el crimen nunca se resolvió; un par de medias y un poco de tierra fueron las pruebas fallidas<img src="http://www.lanacion.com.ar/anexos/fotos/78/1057878.JPG" />
+</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174951</id>
+<title>El comité asesor en drogas pidió más control sobre medicamentos y precursores</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174951" />
+<updated>2009-09-15T15:29:44.427-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">En una reunión con el Gobierno, los especialistas solicitaron modificar la legislación sobre el registro de remedios y sustancias químicas; además, presentaron un proyecto en materia de narcotráfico y atención a adictos</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+<entry>
+<id>http://www.lanacion.com.ar/nota.asp?nota_id=1174921</id>
+<title>Admiten dificultades económicas en el policlínico bancario</title>
+<link href="http://www.lanacion.com.ar/nota.asp?nota_id=1174921" />
+<updated>2009-09-15T13:11:29.923-03:00</updated>
+<summary />
+<content type="xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml">El director del establecimiento aseguró que, a pesar de las dificultades, ofrecen la eficacia médica de siempre y garantizó que no se darán medicamentos irregulares</div>
+</content>
+<author><name>lanacion.com</name><uri>http://www.lanacion.com.ar/</uri><email>noreply@lanacionline.com.ar</email></author>
+</entry>
+</feed>
