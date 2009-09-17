@@ -1,6 +1,5 @@
 package reservasjavafx.menu;
 
-import javafx.scene.paint.*;
 import javafx.scene.input.MouseEvent;
 
 // contiene una opcion del menu
@@ -17,9 +16,13 @@ public class menuItem {
     // indica que no es un separador de opciones del menu
     protected var isSeparator=false;
 
-    public function equals(other:menuItem):Boolean {
-        java.lang.System.out.println("{this.text}---{other.text}");
-        return other.text.equals(this.text);
+    override function equals(other:Object):Boolean {
+        if(other instanceof menuItem)    {
+            var item:menuItem = other as menuItem;
+            return item.text.equals(this.text);
+        }
+        return false;
+        
     }
 
 

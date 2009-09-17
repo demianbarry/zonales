@@ -44,7 +44,9 @@ var popupMenu:popupMenu = popupMenu {
     borderWidth:4
     opacity: 0.9
     stroke: Color.web("#FF9900");
-    fill: Color.WHITE;    
+    fill: Color.WHITE;
+    containerWidth: bind imagen.image.width
+    containerHeight: bind imagen.image.height
 };
 
 var coords :String;
@@ -80,8 +82,7 @@ var g:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                setRequest(e);
-                getRequest.start();
+                mousePressed(e);
             }
         },
         Polygon {
@@ -89,13 +90,13 @@ var g:Group = Group {
             points: [   x(128),y(161),
                         x(165),y(147),
                         x(213),y(151),
-                        x(227),y(177),
-                        x(131),y(192)     ]
+                        x(211),y(161),
+                        x(171),y(172),
+                        x(128),y(171) ]
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                setRequest(e);
-                getRequest.start();
+                mousePressed(e);
             }
         },
         Polygon {
@@ -108,8 +109,44 @@ var g:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.RED
             onMouseClicked:function(e) {
-                setRequest(e);
-                getRequest.start();
+                mousePressed(e);
+            }
+        },
+        Polygon {
+            cursor: Cursor.HAND
+            points: [   x(342),y(135),
+                        x(355),y(130),
+                        x(399),y(128),
+                        x(394),y(138) ]
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            onMouseClicked:function(e) {
+                mousePressed(e);
+            }
+        },
+        Polygon {
+            cursor: Cursor.HAND
+            points: [   x(271),y(127),
+                        x(280),y(123),
+                        x(310),y(124),
+                        x(312),y(131),
+                        x(299),y(135)   ]
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            onMouseClicked:function(e) {
+                mousePressed(e);
+            }
+        },
+        Polygon {
+            cursor: Cursor.HAND
+            points: [   x(450),y(137),
+                        x(450),y(130),
+                        x(507),y(128),
+                        x(526),y(136)   ]
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            onMouseClicked:function(e) {
+                mousePressed(e);
             }
         },
         Ellipse {
@@ -121,8 +158,7 @@ var g:Group = Group {
             stroke: Color.RED
             fill: Color.TRANSPARENT
             onMouseClicked:function(e) {
-                setRequest(e);
-                getRequest.start();
+                mousePressed(e);
             }
         }
 
@@ -233,4 +269,11 @@ function setRequest(e:MouseEvent):HttpRequest {
      }
      };
      return getRequest;
+}
+
+function mousePressed(e:MouseEvent) {
+    if(e.button == MouseButton.SECONDARY) {
+        setRequest(e);
+        getRequest.start();
+    }
 }
