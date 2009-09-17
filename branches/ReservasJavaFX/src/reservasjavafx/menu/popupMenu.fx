@@ -26,6 +26,10 @@ public class popupMenu extends CustomNode {
     // escala del menu
     var scale=1.0;
 
+    public var containerWidth;
+    public var containerHeight;
+
+
     // font del menu
     public var font:Font = Font{ size: 14};
     // color de fondo del menu
@@ -108,9 +112,6 @@ public class popupMenu extends CustomNode {
 
             // crea botones de opciones y espacios
             for (option in options) {
-                    java.lang.System.out.println("-----------------------------------");
-                java.lang.System.out.println("--> {option.text}");
-                java.lang.System.out.println("-----------------------------------");
                 // obtiene texto de la opcion
                 var text = Text {
                     font: bind font
@@ -221,20 +222,20 @@ public class popupMenu extends CustomNode {
 
         // no es visible al crearlo
         this.visible=false;
-        insert Rectangle {
-                    // posiciona en la ubicacion del mouse
-                    x: bind event.x
-                    y: bind event.y
+        var marco:Rectangle = Rectangle {
+                    // posiciona en la ubicacion del mouse                    
                     arcHeight: bind corner
                     arcWidth: bind corner
                     // asigna tamano dependiendo de las opciones
                     width: bind menuWidth + padding * 2
                     height: bind menuHeight + padding
+                    x: bind if ((event.x + marco.width) > containerWidth) then (containerWidth - marco.width) else event.x
+                    y: bind if ((event.y + marco.height) > containerHeight) then (containerHeight - marco.height) else event.y
                     // parametros para pintar el fondo
                     fill: bind if (gradient != null) then gradient else fill
                     stroke: bind borderColor
                     strokeWidth: bind borderWidth
-                    // si la sobra esta activa, la agrega, sino la omite
+                    // si la sombra esta activa, la agrega, sino la omite
                     effect: bind if (shadow) {
                         DropShadow {
                             offsetX:bind shadowX
@@ -242,7 +243,8 @@ public class popupMenu extends CustomNode {
                         }
                     }
                     else null;
-        } into optionsObjects;
+        };
+        insert marco into optionsObjects;
 
         Group {
 //            cache:true
