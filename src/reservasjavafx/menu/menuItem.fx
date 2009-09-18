@@ -21,8 +21,7 @@ public class menuItem {
             var item:menuItem = other as menuItem;
             return item.text.equals(this.text);
         }
-        return false;
-        
+        return false;        
     }
 
 
