@@ -7,7 +7,6 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
-import javafx.geometry.*;
 import javafx.scene.effect.DropShadow;
 import javafx.animation.*;
 import java.lang.Math;
@@ -152,16 +151,16 @@ public class popupMenu extends CustomNode {
                         // rectangulo de fondo para la opcion
                         Rectangle {
                             fill:bind color
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
+                            x: bind if ((event.x + padding + maxWidth) > containerWidth) then containerWidth - marco.width +padding else event.x + padding
+                            y: bind if ((event.y + option.pos + rec.height) > containerHeight) then containerHeight - marco.height + option.pos else event.y + option.pos
                             width: bind maxWidth
                             height: bind rec.height
                         },
                         // texto de la opcion
                         Text {
                             fill: bind txtcolor
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
+                            x: bind if ((event.x + padding + maxWidth) > containerWidth) then containerWidth - marco.width +padding else event.x + padding
+                            y: bind if ((event.y + option.pos + rec.height) > containerHeight) then containerHeight - marco.height + option.pos else event.y + option.pos
                             font: bind font
                             content: option.text
                             textOrigin: TextOrigin.TOP
@@ -171,8 +170,8 @@ public class popupMenu extends CustomNode {
                             // bloquea el click para los elementos que estan debajo
                             blocksMouse:true
                             fill:Color.TRANSPARENT
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
+                            x: bind if ((event.x + padding + maxWidth) > containerWidth) then containerWidth - marco.width +padding else event.x + padding
+                            y: bind if ((event.y + option.pos + rec.height) > containerHeight) then containerHeight - marco.height + option.pos else event.y + option.pos
                             width: bind maxWidth
                             height: bind rec.height
                             // si el usuario hace click sobre la opcion
@@ -207,6 +206,7 @@ public class popupMenu extends CustomNode {
         };
     };
 
+
     // animacion para mostrar menu
     var appear=Timeline {
         repeatCount:1
@@ -216,14 +216,8 @@ public class popupMenu extends CustomNode {
         ]
     };
 
-
-    // crea el componente del menu flotante
-    override function create():Node {
-
-        // no es visible al crearlo
-        this.visible=false;
-        var marco:Rectangle = Rectangle {
-                    // posiciona en la ubicacion del mouse                    
+    var marco:Rectangle = Rectangle {
+                    // posiciona en la ubicacion del mouse
                     arcHeight: bind corner
                     arcWidth: bind corner
                     // asigna tamano dependiendo de las opciones
@@ -244,6 +238,13 @@ public class popupMenu extends CustomNode {
                     }
                     else null;
         };
+
+    // crea el componente del menu flotante
+    override function create():Node {
+
+        // no es visible al crearlo
+        this.visible=false;
+        
         insert marco into optionsObjects;
 
         Group {

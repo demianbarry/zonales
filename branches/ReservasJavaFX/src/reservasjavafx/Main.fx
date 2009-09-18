@@ -12,6 +12,17 @@ import reservasjavafx.menu.*;
 
 import javafx.io.http.HttpRequest;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import java.lang.Void;
+
+import reservasjavafx.domain.forms.NameForm;
+import reservasjavafx.domain.model.ResourceBean;
+import reservasjavafx.domain.model.ResourcePresentationModel;
+
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -30,6 +41,7 @@ var imagen:ImageView = ImageView {
             translateX: gapX
             translateY: gapY
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
+            visible: bind (slideFormX != 0)
             onMouseClicked: function(e:MouseEvent):Void {
                 coords = "{e.x}-{e.y}";
             }
@@ -166,15 +178,6 @@ var g:Group = Group {
     ]
 };
 
-// show it all on screen
-var stage:Stage = Stage {
-    style: StageStyle.UNDECORATED
-    visible: true
-    scene: Scene {
-        content: g
-    }
-}
-
 function x(x:Integer):Integer {
     return x + gapX;
 }
@@ -189,91 +192,187 @@ function clickMenuItem(Void):Void {
 
 var getRequest: HttpRequest;
 
-function setRequest(e:MouseEvent):HttpRequest {    
+function startRequest(e:MouseEvent) {
     getRequest = HttpRequest {
 
-    location: "http://localhost:8080/pruebasJava/Main?mesa=1";
+        location: "http://localhost:8080/pruebasJava/Main?mesa=1";
 
-    onStarted: function() {
-        println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
-    }
-
-    onConnecting: function() { println("onConnecting") }
-    onDoneConnect: function() { println("onDoneConnect") }
-    onReadingHeaders: function() { println("onReadingHeaders") }
-    onResponseCode: function(code:Integer) { println("onResponseCode - responseCode: {code}") }
-    onResponseMessage: function(msg:String) { println("onResponseMessage - responseMessage: {msg}") }
-
-    onResponseHeaders: function(headerNames: String[]) {
-        println("onResponseHeaders - there are {headerNames.size()} response headers:");
-        for (name in headerNames) {
-            println("    {name}: {getRequest.getResponseHeaderValue(name)}");
+        onStarted: function() {
+            println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
         }
-    }
 
-    onReading: function() { println("onReading") }
+        onConnecting: function() { println("onConnecting") }
+        onDoneConnect: function() { println("onDoneConnect") }
+        onReadingHeaders: function() { println("onReadingHeaders") }
+        onResponseCode: function(code:Integer) { println("onResponseCode - responseCode: {code}") }
+        onResponseMessage: function(msg:String) { println("onResponseMessage - responseMessage: {msg}") }
 
-    onToRead: function(bytes: Long) {
-        if (bytes < 0) {
-            println("onToRead - Content length not specified by server; bytes: {bytes}");
-        } else {
-            println("onToRead - total number of content bytes to read: {bytes}");
+        onResponseHeaders: function(headerNames: String[]) {
+            println("onResponseHeaders - there are {headerNames.size()} response headers:");
+            for (name in headerNames) {
+                println("    {name}: {getRequest.getResponseHeaderValue(name)}");
+            }
         }
-    }
 
-    // The onRead callback is called when some more data has been read into
-    // the input stream's buffer.  The input stream will not be available until
-    // the onInput call back is called, but onRead can be used to show the
-    // progress of reading the content from the location.
-    onRead: function(bytes: Long) {
-        // The toread variable is non negative only if the server provides the content length
-        def progress =
-        if (getRequest.toread > 0) "({(bytes * 100 / getRequest.toread)}%)" else "";
-        println("onRead - bytes read: {bytes} {progress}");
-    }
+        onReading: function() { println("onReading") }
 
-    // The content of a response can be accessed in the onInput callback function.
-    // Be sure to close the input sream when finished with it in order to allow
-    // the HttpRequest implementation to clean up resources related to this
-    // request as promptly as possible.
-    onInput: function(is: java.io.InputStream) {
-        // use input stream to access content here.
-        // can use input.available() to see how many bytes are available.
-        try {
-            var message = new String();
-            var item:menuItem;
-            while(is.available() > 0)
-                message += Character.toString(Character.valueOf(is.read()));
-            item = menuItem {
-                    //call: clickMenuItem
+        onToRead: function(bytes: Long) {
+
+            if (bytes < 0) {
+                println("onToRead - Content length not specified by server; bytes: {bytes}");
+            } else {
+                println("onToRead - total number of content bytes to read: {bytes}");
+            }
+        }
+
+        // The onRead callback is called when some more data has been read into
+        // the input stream's buffer.  The input stream will not be available until
+        // the onInput call back is called, but onRead can be used to show the
+        // progress of reading the content from the location.
+
+        onRead: function(bytes: Long) {
+            // The toread variable is non negative only if the server provides the content length
+            def progress =
+                if (getRequest.toread > 0) "({(bytes * 100 / getRequest.toread)}%)" else "";
+                println("onRead - bytes read: {bytes} {progress}");
+        }
+
+        // The content of a response can be accessed in the onInput callback function.
+        // Be sure to close the input sream when finished with it in order to allow
+        // the HttpRequest implementation to clean up resources related to this
+        // request as promptly as possible.
+
+        onInput: function(is: java.io.InputStream) {
+            // use input stream to access content here.
+            // can use input.available() to see how many bytes are available.
+            try {
+                var message = new String();
+                var item:menuItem;
+
+                while(is.available() > 0)
+                    message += Character.toString(Character.valueOf(is.read()));
+
+                item = menuItem {
                     text: "{message}"
                     call: clickMenuItem
-            };
-            if(javafx.util.Sequences.indexOf(popupMenu.content, item) == -1) {
-                insert item into popupMenu.content;
+                };
+
+                if(javafx.util.Sequences.indexOf(popupMenu.content, item) == -1) {
+                    insert item into popupMenu.content;
+                }
+                popupMenu.event = e;
+            } finally {
+                is.close();
             }
-            popupMenu.event = e;
-        } finally {
-            is.close();
         }
-    }
 
-    onException: function(ex: java.lang.Exception) {
-        println("onException - exception: {ex.getClass()} {ex.getMessage()}");
-    }
+        onException: function(ex: java.lang.Exception) {
+            println("onException - exception: {ex.getClass()} {ex.getMessage()}");
+        }
 
-    onDoneRead: function() { println("onDoneRead") }
-    onDone: function() { 
-        println("onDone") ;
-        getRequest.stop();
-     }
-     };
-     return getRequest;
+        onDoneRead: function() {
+            println("onDoneRead")
+        }
+
+        onDone: function() {
+            println("onDone") ;
+            getRequest.stop();
+        }
+    };
+    getRequest.start();
 }
 
 function mousePressed(e:MouseEvent) {
     if(e.button == MouseButton.SECONDARY) {
-        setRequest(e);
-        getRequest.start();
+        startRequest(e);
     }
 }
+
+    var resourceBean:ResourceBean = new ResourceBean();
+    resourceBean.setRecurso("Mesa 1");
+    resourceBean.setFecha("1/01/2009");
+    resourceBean.setHora("13:00");
+    resourceBean.setUsuario("Jr.");
+
+    var value:String;
+    var slideFormX:Float;
+    var resourceForm:NameForm = NameForm{
+        presentationModel: ResourcePresentationModel{}
+        translateX: bind slideFormX
+        translateY: bind gapY
+    };
+    
+    resourceForm.presentationModel.jBean = resourceBean;
+
+    var diff:Float = bind resourceForm.boundsInParent.width;
+    var slideLeft:Timeline = Timeline {
+            repeatCount: 1
+            keyFrames : [
+                KeyFrame {
+                    time : 0s
+                    canSkip : true
+                    values: slideFormX => 0
+                },
+                KeyFrame {
+                    time : 350ms
+                    canSkip : true
+                    values: slideFormX => -diff tween Interpolator.EASEIN
+                }
+            ]
+        };
+    var slideRight:Timeline = Timeline {
+            repeatCount: 1
+            keyFrames : [
+                KeyFrame {
+                    time : 0s
+                    canSkip : true
+                    values: slideFormX => -diff
+                }
+                KeyFrame {
+                    time : 350ms
+                    canSkip : true
+                    values: slideFormX => 0 tween Interpolator.EASEIN
+                }
+            ]
+        };
+
+
+
+    var nextButton:Button = Button {
+            translateX: bind myScene.width - nextButton.width - 5
+            translateY: bind myScene.height - nextButton.height - 5
+            text: " Next >> "
+            action: function() {
+                resourceForm.setVisibleErrWarnNodes(false);
+                slideRight.stop();
+                slideLeft.play();
+            }
+        };
+
+    var backButton:Button = Button {
+            translateX: bind myScene.width - backButton.width - 5 - nextButton.width - 5
+            translateY: bind myScene.height - backButton.height - 5
+            text: " << Back "
+            action: function() {
+                slideLeft.stop();
+                slideRight.play();
+                resourceForm.setVisibleErrWarnNodes(true);
+                //resourceForm.toBack();
+            }
+        };
+
+    var mainOpacity : Float = 0.0;
+
+    
+var myScene:Scene = Scene {
+    content: [g, resourceForm, backButton, nextButton]
+}
+
+// show it all on screen
+var stage:Stage = Stage {
+    style: StageStyle.UNDECORATED
+    visible: true
+    scene: myScene
+}
+
+resourceForm.presentationModel.mainScene = myScene;
