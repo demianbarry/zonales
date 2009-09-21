@@ -40,13 +40,16 @@ var stageDragInitialY:Number;
 var imagen:ImageView = ImageView {
             translateX: gapX
             translateY: gapY
+            opacity: bind imageOpacity
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
-            visible: bind (slideFormX != 0)
+            visible: bind (slideFormX == -diff)
             onMouseClicked: function(e:MouseEvent):Void {
                 coords = "{e.x}-{e.y}";
             }
 
 };
+
+var imageOpacity:Float = 0;
 
 // Primer menu flotante
 var popupMenu:popupMenu = popupMenu {
@@ -92,7 +95,6 @@ var g:Group = Group {
                         x(113),y(223),
                         x(0),y(266)     ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -106,7 +108,6 @@ var g:Group = Group {
                         x(171),y(172),
                         x(128),y(171) ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -119,7 +120,6 @@ var g:Group = Group {
                         x(246),y(151),
                         x(210),y(147)     ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -131,12 +131,12 @@ var g:Group = Group {
                         x(399),y(128),
                         x(394),y(138) ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
         },
         Polygon {
+
             cursor: Cursor.HAND
             points: [   x(271),y(127),
                         x(280),y(123),
@@ -144,7 +144,6 @@ var g:Group = Group {
                         x(312),y(131),
                         x(299),y(135)   ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -156,7 +155,6 @@ var g:Group = Group {
                         x(507),y(128),
                         x(526),y(136)   ]
             fill: Color.TRANSPARENT
-            stroke: Color.RED
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -167,7 +165,6 @@ var g:Group = Group {
             centerY: y(172)
             radiusX: 90
             radiusY: 20
-            stroke: Color.RED
             fill: Color.TRANSPARENT
             onMouseClicked:function(e) {
                 mousePressed(e);
@@ -295,7 +292,8 @@ function mousePressed(e:MouseEvent) {
     resourceBean.setUsuario("Jr.");
 
     var value:String;
-    var slideFormX:Float;
+    var diff:Float = bind resourceForm.boundsInParent.width;
+    var slideFormX:Float = -diff;
     var resourceForm:NameForm = NameForm{
         presentationModel: ResourcePresentationModel{}
         translateX: bind slideFormX
@@ -304,19 +302,24 @@ function mousePressed(e:MouseEvent) {
     
     resourceForm.presentationModel.jBean = resourceBean;
 
-    var diff:Float = bind resourceForm.boundsInParent.width;
     var slideLeft:Timeline = Timeline {
             repeatCount: 1
             keyFrames : [
                 KeyFrame {
                     time : 0s
                     canSkip : true
-                    values: slideFormX => 0
+                    values: [   slideFormX => 0 ]
                 },
                 KeyFrame {
                     time : 350ms
                     canSkip : true
-                    values: slideFormX => -diff tween Interpolator.EASEIN
+                    values: [   slideFormX => -diff tween Interpolator.EASEIN,
+                                imageOpacity => 0 ]
+                }
+                KeyFrame {
+                    time : 500ms
+                    canSkip : true
+                    values: [   imageOpacity => 1 tween Interpolator.EASEIN ]
                 }
             ]
         };
@@ -326,12 +329,18 @@ function mousePressed(e:MouseEvent) {
                 KeyFrame {
                     time : 0s
                     canSkip : true
-                    values: slideFormX => -diff
+                    values: [   imageOpacity => 1 ]
                 }
                 KeyFrame {
-                    time : 350ms
+                    time : 150ms
                     canSkip : true
-                    values: slideFormX => 0 tween Interpolator.EASEIN
+                    values: [   slideFormX => -diff,
+                                imageOpacity => 0 tween Interpolator.EASEIN]
+                }
+                KeyFrame {
+                    time : 500ms
+                    canSkip : true
+                    values: [   slideFormX => 0 tween Interpolator.EASEIN ]
                 }
             ]
         };
