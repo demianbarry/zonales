@@ -1,249 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<project name="zonales" default="" basedir=".">
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="ReservasJavaFXconServlet" default="default" basedir=".">
+    <description>Builds, tests, and runs the project ReservasJavaFXconServlet.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
 
-  <!-- archivo properties -->
-  <property file="build.properties"/>
-  <!-- archivo de propiedades -->
-  <property file="sinc-test.properties" />
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
 
-  <!-- path base  -->
-  <property name="src" value="${basedir}"/>
-  <!-- path distribuibles --> 
-  <property name="src_dist_dir" value="${src}/dist" />
-  <!-- path i18n -->
-  <property name="src_i18n_dir" value="${src}/language" />
-  <!-- path modulos -->
-  <property name="src_modules" value="${src}/modules"/>
-  <!-- path plugins -->
-  <property name="src_plugins" value="${src}/plugins"/>
-  <property name="src_frontend_components" value="${src}/components"/>
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
 
-  <!-- path devel -->
-  <property name="dst" value="${zonales.base}/${src.dir}" />
-  <property name="dst_frontend_language_dir" value="${dst}/language" />
-  <property name="dst_backend_language_dir" value="${dst}/administrator/language" />
-  <property name="dst_modules_dir" value="${dst}/modules" />
-  <property name="dst_frontend_components_dir" value="${dst}/components" />
+    (Targets beginning with '-' are not intended to be called on their own.)
 
-  <!-- mod_seleccionazonal -->
-  <fileset dir="${src_modules}/mod_seleccionazonal" id="mod_seleccionazonal_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_zonalactual -->
-  <fileset dir="${src_modules}/mod_zonalactual" id="mod_zonalactual_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_mapazonales -->
-  <fileset dir="${src_modules}/mod_mapazonales" id="mod_mapazonales_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_mapainicio -->
-  <fileset dir="${src_modules}/mod_mapainicio" id="mod_mapainicio_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_menuzonales -->
-  <fileset dir="${src_modules}/mod_menuzonales" id="mod_menuzonales_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_zbanners -->
-  <fileset dir="${src_modules}/mod_zbanners" id="mod_zbanners_files">
-    <include name="**" />
-  </fileset>
-  <!-- mod_soycorresponsal -->
-  <fileset dir="${src_modules}/mod_soycorresponsal" id="mod_soycorresponsal_files">
-    <include name="**" />
-  </fileset>
-  
-  <!-- plg_zonalescontent -->
-  <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
-    <include name="**" />
-  </fileset>
-  <!-- plg_solrsearch -->
-  <fileset dir="${src_plugins}/solrsearch" id="plg_solrsearch_files">
-    <include name="**" />
-  </fileset>
+    Example of inserting an obfuscator after compilation could look like this:
 
-  <!-- com_zonales -->
-  <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
-    <include name="**" />
-  </fileset>
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
 
-    <!-- com_reservas -->
-  <fileset dir="${src_frontend_components}/com_reservas" id="com_reservas_files">
-    <include name="**" />
-  </fileset>
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
 
 
-  <!-- ======================================================
-       		      copia archivos instalación
-       ====================================================== -->
-  <!-- archivos i18n -->
-  <target name="inst_frontend_i18n" description="copia archivos i18n frontend en instalación development">
-    <echo message="copiando archivos i18n en instalacion development"/>
-    <copy todir="${dst_frontend_language_dir}/es-ES">
-      <fileset dir="${src_i18n_dir}/frontend/es-ES" />
-    </copy>
-  </target>
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
 
-  <!-- modulo seleccionazonal --> 
-  <target name="inst_mod_seleccionazonal" description="copia modulo seleccionazonal a dev">
-    <echo message="copiando modulo seleccionazonal en instalacion development"/>
-    <copy todir="${dst_modules_dir}/mod_seleccionazonal">
-      <fileset dir="${src_modules}/mod_seleccionazonal" />
-    </copy>
-  </target>
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
 
-  <!-- componente content (modificado) --> 
-  <target name="inst_com_content" description="copia componente content a dev">
-    <echo message="copiando componente content en instalacion development"/>
-    <copy todir="${dst_frontend_components_dir}/com_content">
-      <fileset dir="${src_frontend_components}/com_content" />
-    </copy>
-  </target>
+    An example of overriding the target for project execution could look like this:
 
-  <!-- componente userzonales --> 
-  <target name="inst_com_zonales" description="copia componente userzonales a dev">
-    <echo message="copiando componente userzonales en instalacion development"/>
-    <copy todir="${dst_frontend_components_dir}/com_zonales">
-      <fileset dir="${src_frontend_components}/com_zonales">
-      	<exclude name="admin/**" />
-      </fileset>
-    </copy>
-  </target>
+        <target name="run" depends="ReservasJavaFXconServlet-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
 
-    <!-- componente reservas -->
-  <target name="inst_com_reservas" description="copia componente reservas a dev">
-    <echo message="copiando componente reservas en instalacion development"/>
-    <copy todir="${dst_frontend_components_dir}/com_reservas">
-      <fileset dir="${src_frontend_components}/com_reservas">
-      	<exclude name="admin/**" />
-      </fileset>
-    </copy>
-  </target>
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
 
-
-
-  <!-- ======================================================
-       			archivos distribución
-       ====================================================== -->
-  <!-- modulo seleccionazonal --> 
-  <target name="dist_mod_seleccionazonal" description="Crea archivo de distribución Joomla para el modulo SeleccionaZonal">
-    <echo message="Creando archivo de distribución de modulo SeleccionaZonal"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_seleccionazonal.file}.zip" >
-      <fileset refid="mod_seleccionazonal_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_seleccionazonal.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- modulo mapazonales -->
-  <target name="dist_mod_mapazonales" description="Crea archivo de distribución Joomla para el modulo MapaZonales">
-    <echo message="Creando archivo de distribución de modulo MapaZonales"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_mapazonales.file}.zip" >
-      <fileset refid="mod_mapazonales_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapazonales.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- modulo zonalactual --> 
-  <target name="dist_mod_zonalactual" description="Crea archivo de distribución Joomla para el modulo ZonalActual">
-    <echo message="Creando archivo de distribución de modulo ZonalActual"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_zonalactual.file}.zip" >
-      <fileset refid="mod_zonalactual_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zonalactual.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- modulo menuzonales -->
-  <target name="dist_mod_menuzonales" description="Crea archivo de distribución Joomla para el modulo MenuZonales">
-    <echo message="Creando archivo de distribución de modulo MenuZonales"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_menuzonales.file}.zip" >
-      <fileset refid="mod_menuzonales_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="language" />
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="admin/language" />
-    </zip>
-  </target>
-
-  <!-- modulo mapainicio -->
-  <target name="dist_mod_mapainicio" description="Crea archivo de distribución Joomla para el modulo MapaInicio">
-    <echo message="Creando archivo de distribución de modulo MapaInicio"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_mapainicio.file}.zip" >
-      <fileset refid="mod_mapainicio_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapainicio.ini" prefix="language" />
-    </zip>
-  </target>
-  
-  <!-- modulo zbanners -->
-  <target name="dist_mod_zbanners" description="Crea archivo de distribución Joomla para el modulo ZBanners">
-    <echo message="Creando archivo de distribución de modulo ZBanners"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_zbanners.file}.zip" >
-      <fileset refid="mod_zbanners_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zbanners.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- modulo soycorresponsal -->
-  <target name="dist_mod_soycorresponsal" description="Crea archivo de distribución Joomla para el modulo SoyCorresponsal">
-    <echo message="Creando archivo de distribución de modulo SoyCorresponsal"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_soycorresponsal.file}.zip" >
-      <fileset refid="mod_soycorresponsal_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_soycorresponsal.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- plugin zonalescontent -->
-  <target name="dist_plg_zonalescontent" description="Crea archivo de distribución Joomla para el plugin ZonalesContent">
-    <echo message="Creando archivo de distribución de plugin ZonalesContent"/>
-    <zip destfile="${src_dist_dir}/${dist.plg_zonalescontent.file}.zip" >
-      <fileset refid="plg_zonalescontent_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_zonalescontent.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- plugin solrsearch -->
-  <target name="dist_plg_solrsearch" description="Crea archivo de distribución Joomla para el plugin SolrSearch">
-    <echo message="Creando archivo de distribución de plugin SolrSearch"/>
-    <zip destfile="${src_dist_dir}/${dist.plg_solrsearch.file}.zip" >
-      <fileset refid="plg_solrsearch_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_solrsearch.ini" prefix="language" />
-    </zip>
-  </target>
-
-  <!-- componente zonales --> 
-  <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
-    <echo message="Creando archivo de distribución de componente UserZonales"/>
-    <zip destfile="${src_dist_dir}/${dist.com_zonales.file}.zip">
-      <fileset refid="com_zonales_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_zonales.ini" prefix="language" />
-      <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_zonales.ini" prefix="admin/language" />
-    </zip>
-  </target>
-
-  <!-- componente reservas -->
-  <target name="dist_com_reservas" description="Crea archivo de distribución Joomla para el componente Reservas">
-    <echo message="Creando archivo de distribución de componente Reservas"/>
-    <zip destfile="${src_dist_dir}/${dist.com_reservas.file}.zip">
-      <fileset refid="com_reservas_files"/>
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_reservas.ini" prefix="language" />
-      <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_reservas.ini" prefix="admin/language" />
-    </zip>
-  </target>
-
-  <!-- componente com_content (modificaciones) -->
-  <target name="dist_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
-    <echo message="Creando archivos de distribución de componente content"/>
-    <zip destfile="${src_dist_dir}/${dist.com_content.file}.zip">
-      <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
-    </zip>
-  </target>
-  
-  <!-- componente mod_jxcomments_comment (modificaciones) -->
-  <target name="dist_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
-    <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
-    <zip destfile="${src_dist_dir}/${dist.mod_jxcomments.file}.zip">
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
-      <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
-    </zip>
-  </target>
-
+    -->
 </project>
