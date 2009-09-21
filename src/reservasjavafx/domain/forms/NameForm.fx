@@ -103,7 +103,7 @@ public class NameForm extends fxforms.ui.form.Form {
         };
         // 4 Text instructions.
         var title:Label = Label {
-                text: "Full Name"
+                text: "Reserva"
                 font : Font {
                     size: 24
                 }
@@ -219,32 +219,32 @@ public class NameForm extends fxforms.ui.form.Form {
 
         insert vBox_9 into hBox_8.content;
 
-        var lastNameTextBox:TextBox = fxforms.ui.controls.MyTextBox {
+        var recurso:TextBox = fxforms.ui.controls.MyTextBox {
             id:"recurso"
             columns:20
         };
-        var miNameTextBox:TextBox = fxforms.ui.controls.MyTextBox {
+        var fecha:TextBox = fxforms.ui.controls.MyTextBox {
             id:"fecha"
             columns:20
         };
-        var firstNameTextBox:TextBox = fxforms.ui.controls.MyTextBox {
+        var hora:TextBox = fxforms.ui.controls.MyTextBox {
             id:"hora"
             columns:20
         };
-        var suffixNameTextBox:TextBox = fxforms.ui.controls.MyTextBox {
+        var usuario:TextBox = fxforms.ui.controls.MyTextBox {
             id:"usuario"
             columns:5
         };
 
-        insert lastNameTextBox into vBox_10.content;
-        insert firstNameTextBox into vBox_10.content;
-        insert miNameTextBox into vBox_10.content;
-        insert suffixNameTextBox into vBox_10.content;
+        insert recurso into vBox_10.content;
+        insert fecha into vBox_10.content;
+        insert hora into vBox_10.content;
+        insert usuario into vBox_10.content;
 
         insert vBox_10 into hBox_8.content;
         insert hBox_8 into vBox_1.content;
 
-        guiFields = [lastNameTextBox, firstNameTextBox, miNameTextBox, suffixNameTextBox];
+        guiFields = [recurso, fecha, hora, usuario];
         presentationModel.addGuiFields(guiFields);
 
         return mainPanel;
