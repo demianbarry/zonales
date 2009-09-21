@@ -42,14 +42,13 @@ var imagen:ImageView = ImageView {
             translateY: gapY
             opacity: bind imageOpacity
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
-            visible: bind (slideFormX == -diff)
+            
             onMouseClicked: function(e:MouseEvent):Void {
                 coords = "{e.x}-{e.y}";
             }
-
 };
 
-var imageOpacity:Float = 0;
+var imageOpacity:Float = 1;
 
 // Primer menu flotante
 var popupMenu:popupMenu = popupMenu {
@@ -292,17 +291,19 @@ function mousePressed(e:MouseEvent) {
     resourceBean.setUsuario("Jr.");
 
     var value:String;
-    var diff:Float = bind resourceForm.boundsInParent.width;
-    var slideFormX:Float = -diff;
+
     var resourceForm:NameForm = NameForm{
         presentationModel: ResourcePresentationModel{}
         translateX: bind slideFormX
         translateY: bind gapY
     };
     
+    var diff:Float = bind -resourceForm.boundsInParent.width;
+    var slideFormX:Float = diff;
+    
     resourceForm.presentationModel.jBean = resourceBean;
 
-    var slideLeft:Timeline = Timeline {
+    var slideRight:Timeline = Timeline {
             repeatCount: 1
             keyFrames : [
                 KeyFrame {
@@ -313,17 +314,18 @@ function mousePressed(e:MouseEvent) {
                 KeyFrame {
                     time : 350ms
                     canSkip : true
-                    values: [   slideFormX => -diff tween Interpolator.EASEIN,
+                    values: [   slideFormX => diff tween Interpolator.EASEBOTH,
                                 imageOpacity => 0 ]
                 }
                 KeyFrame {
                     time : 500ms
                     canSkip : true
-                    values: [   imageOpacity => 1 tween Interpolator.EASEIN ]
+                    values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
                 }
             ]
         };
-    var slideRight:Timeline = Timeline {
+
+    var slideLeft:Timeline = Timeline {
             repeatCount: 1
             keyFrames : [
                 KeyFrame {
@@ -334,47 +336,46 @@ function mousePressed(e:MouseEvent) {
                 KeyFrame {
                     time : 150ms
                     canSkip : true
-                    values: [   slideFormX => -diff,
-                                imageOpacity => 0 tween Interpolator.EASEIN]
+                    values: [   imageOpacity => 0 tween Interpolator.EASEBOTH,
+                                slideFormX => diff ]
                 }
                 KeyFrame {
                     time : 500ms
                     canSkip : true
-                    values: [   slideFormX => 0 tween Interpolator.EASEIN ]
+                    values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
                 }
             ]
         };
 
 
 
-    var nextButton:Button = Button {
-            translateX: bind myScene.width - nextButton.width - 5
-            translateY: bind myScene.height - nextButton.height - 5
-            text: " Next >> "
+    var okButton:Button = Button {
+            translateX: bind myScene.width - okButton.width - 5
+            translateY: bind myScene.height - okButton.height - 5
+            text: " Ok "
+            visible: bind (slideFormX == 0)
             action: function() {
                 resourceForm.setVisibleErrWarnNodes(false);
                 slideRight.stop();
-                slideLeft.play();
+                slideLeft.play();                                
             }
         };
 
-    var backButton:Button = Button {
-            translateX: bind myScene.width - backButton.width - 5 - nextButton.width - 5
-            translateY: bind myScene.height - backButton.height - 5
-            text: " << Back "
+    var cancelButton:Button = Button {
+            translateX: bind myScene.width - cancelButton.width - 5 - okButton.width - 5
+            translateY: bind myScene.height - cancelButton.height - 5
+            text: " Cancel "
+            visible: bind (slideFormX == 0)
             action: function() {
                 slideLeft.stop();
-                slideRight.play();
+                slideRight.play();                               
                 resourceForm.setVisibleErrWarnNodes(true);
                 //resourceForm.toBack();
             }
         };
 
-    var mainOpacity : Float = 0.0;
-
-    
 var myScene:Scene = Scene {
-    content: [g, resourceForm, backButton, nextButton]
+    content: [g, resourceForm, okButton, cancelButton ]
 }
 
 // show it all on screen
