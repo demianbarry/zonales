@@ -12,6 +12,7 @@ import reservasjavafx.menu.*;
 
 import javafx.io.http.HttpRequest;
 
+import java.util.StringTokenizer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,6 +34,9 @@ var maxRow:Integer = ((image.height as Integer) / 100) - 1;
 var gapX = 10;
 var gapY = 40;
 var TEXT_COLOR = Color.WHITE;
+
+var mesa: Integer = 0;
+var selected: String;
 
 var stageDragInitialX:Number;
 var stageDragInitialY:Number;
@@ -86,7 +90,7 @@ var g:Group = Group {
 
         // the actual image to be adjusted
         imagen,
-        Polygon {
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(0),y(190),
                         x(71),y(172),
@@ -94,11 +98,14 @@ var g:Group = Group {
                         x(113),y(223),
                         x(0),y(266)     ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 1
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
+
         },
-        Polygon {
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(128),y(161),
                         x(165),y(147),
@@ -107,11 +114,13 @@ var g:Group = Group {
                         x(171),y(172),
                         x(128),y(171) ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 2
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
         },
-        Polygon {
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(210),y(141),
                         x(246),y(131),
@@ -119,23 +128,26 @@ var g:Group = Group {
                         x(246),y(151),
                         x(210),y(147)     ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 3
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
         },
-        Polygon {
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(342),y(135),
                         x(355),y(130),
                         x(399),y(128),
                         x(394),y(138) ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 4
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
         },
-        Polygon {
-
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(271),y(127),
                         x(280),y(123),
@@ -143,17 +155,21 @@ var g:Group = Group {
                         x(312),y(131),
                         x(299),y(135)   ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 5
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
         },
-        Polygon {
+        CustomResource {
             cursor: Cursor.HAND
             points: [   x(450),y(137),
                         x(450),y(130),
                         x(507),y(128),
                         x(526),y(136)   ]
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 6
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -182,16 +198,12 @@ function y(y:Integer):Integer {
     return y + gapY;
 }
 
-function clickMenuItem(Void):Void {
-    java.lang.System.out.println("CLICK!");
-}
-
 var getRequest: HttpRequest;
 
-function startRequest(e:MouseEvent) {
+function startConsultaRequest(e:MouseEvent, url: String) {
     getRequest = HttpRequest {
 
-        location: "http://localhost:8080/pruebasJava/Main?mesa=1";
+        location: url;
 
         onStarted: function() {
             println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
@@ -248,15 +260,23 @@ function startRequest(e:MouseEvent) {
                 while(is.available() > 0)
                     message += Character.toString(Character.valueOf(is.read()));
 
-                item = menuItem {
-                    text: "{message}"
-                    call: clickMenuItem
-                };
+                var tokenizer : StringTokenizer = new StringTokenizer(message, ";");
 
-                if(javafx.util.Sequences.indexOf(popupMenu.content, item) == -1) {
-                    insert item into popupMenu.content;
+                popupMenu.deleteOptions();
+                while (tokenizer.hasMoreTokens()) {
+                    var texto : String = tokenizer.nextToken();
+                    item = menuItem {
+                        //call: clickMenuItem
+                        text: texto
+                        customCall: optionSelected
+                    };
+
+                    if(javafx.util.Sequences.indexOf(popupMenu.content, item) == -1) {
+                        insert item into popupMenu.content;
+                    }
                 }
                 popupMenu.event = e;
+
             } finally {
                 is.close();
             }
@@ -278,17 +298,82 @@ function startRequest(e:MouseEvent) {
     getRequest.start();
 }
 
-function mousePressed(e:MouseEvent) {
-    if(e.button == MouseButton.SECONDARY) {
-        startRequest(e);
-    }
+
+function startConfirmaRequest(texto:String):Void {
+
+    getRequest = HttpRequest {
+
+        location: "http://localhost:8080/pruebasJava/Main?accion=confirma&locacion=resto&nroMesa={mesa}&horario={texto}";
+
+        onStarted: function() {
+            println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
+        }
+
+        onConnecting: function() { println("onConnecting") }
+        onDoneConnect: function() { println("onDoneConnect") }
+        onReadingHeaders: function() { println("onReadingHeaders") }
+        onResponseCode: function(code:Integer) { println("onResponseCode - responseCode: {code}") }
+        onResponseMessage: function(msg:String) { println("onResponseMessage - responseMessage: {msg}") }
+
+        onResponseHeaders: function(headerNames: String[]) {
+            println("onResponseHeaders - there are {headerNames.size()} response headers:");
+            for (name in headerNames) {
+                println("    {name}: {getRequest.getResponseHeaderValue(name)}");
+            }
+        }
+
+        onReading: function() { println("onReading") }
+
+        onToRead: function(bytes: Long) {
+
+            if (bytes < 0) {
+                println("onToRead - Content length not specified by server; bytes: {bytes}");
+            } else {
+                println("onToRead - total number of content bytes to read: {bytes}");
+            }
+        }
+
+        // The onRead callback is called when some more data has been read into
+        // the input stream's buffer.  The input stream will not be available until
+        // the onInput call back is called, but onRead can be used to show the
+        // progress of reading the content from the location.
+
+        onRead: function(bytes: Long) {
+            // The toread variable is non negative only if the server provides the content length
+            def progress =
+                if (getRequest.toread > 0) "({(bytes * 100 / getRequest.toread)}%)" else "";
+                println("onRead - bytes read: {bytes} {progress}");
+        }
+
+        // The content of a response can be accessed in the onInput callback function.
+        // Be sure to close the input sream when finished with it in order to allow
+        // the HttpRequest implementation to clean up resources related to this
+        // request as promptly as possible.
+
+        onInput: function(is: java.io.InputStream) {
+            // use input stream to access content here.
+            // can use input.available() to see how many bytes are available.
+
+        }
+
+        onException: function(ex: java.lang.Exception) {
+            println("onException - exception: {ex.getClass()} {ex.getMessage()}");
+        }
+
+        onDoneRead: function() {
+            println("onDoneRead")
+        }
+
+        onDone: function() {
+            println("onDone") ;
+            getRequest.stop();
+        }
+    };
+    getRequest.start();
 }
 
+
     var resourceBean:ResourceBean = new ResourceBean();
-    resourceBean.setRecurso("Mesa 1");
-    resourceBean.setFecha("1/01/2009");
-    resourceBean.setHora("13:00");
-    resourceBean.setUsuario("Jr.");
 
     var value:String;
 
@@ -347,7 +432,25 @@ function mousePressed(e:MouseEvent) {
             ]
         };
 
+function mousePressed(e:MouseEvent) {
+    var recurso: CustomResource = e.node as CustomResource;
 
+    if(e.button == MouseButton.SECONDARY) {
+        mesa = recurso.nroRecurso as Integer;
+        startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+    }
+}
+
+function optionSelected(texto:String):Void {
+    resourceBean.setRecurso("Mesa {mesa}");
+    resourceBean.setFecha("1/01/2009");
+    resourceBean.setHora("{texto}");
+    resourceBean.setUsuario("Jr.");
+    selected = texto;
+    slideLeft.play();
+    slideRight.stop();
+    resourceForm.setVisibleErrWarnNodes(true);
+}
 
     var okButton:Button = Button {
             translateX: bind myScene.width - okButton.width - 5
@@ -355,9 +458,10 @@ function mousePressed(e:MouseEvent) {
             text: " Ok "
             visible: bind (slideFormX == 0)
             action: function() {
+                startConfirmaRequest(selected);
                 resourceForm.setVisibleErrWarnNodes(false);
-                slideRight.stop();
-                slideLeft.play();                                
+                slideRight.play();
+                slideLeft.stop();
             }
         };
 
