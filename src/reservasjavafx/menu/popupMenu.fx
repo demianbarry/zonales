@@ -7,7 +7,6 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
-import javafx.geometry.*;
 import javafx.scene.effect.DropShadow;
 import javafx.animation.*;
 import java.lang.Math;
@@ -66,11 +65,13 @@ public class popupMenu extends CustomNode {
     // opciones del menu popup
     public var content:menuItem[]=null on replace {
         // si cambia, obtiene dimensiones del menu y preprocesa opciones
-        parseOptions(content) };
+        parseOptions(content)
+    };
     public var event:MouseEvent=null on replace {
         // si oprimio el boton derecho, hace visible el menu
         var isVisible = event.button==MouseButton.SECONDARY;
         this.visible = isVisible;
+
         if (animate==true) then {
             appear.playFromStart();
         }
@@ -90,7 +91,7 @@ public class popupMenu extends CustomNode {
             var maxHeight = padding;
 
             // recorre opciones
-            for (option in options) {                
+            for (option in options) {
                 // obtiene texto de la opcion
                 var text = Text {
                     font:bind font
@@ -119,6 +120,9 @@ public class popupMenu extends CustomNode {
                 };
                 // obtiene dimension del texto de la opcion
                 var rec=text.boundsInLocal;
+
+                var traslatedX = bind if ((event.x + padding + maxWidth) > containerWidth) then containerWidth - marco.width +padding else event.x + padding;
+                var traslatedY = bind if ((event.y + option.pos + rec.height) > containerHeight) then containerHeight - marco.height + option.pos else event.y + option.pos;
 
                 // crea opcion
                 var optionButton = Group {
@@ -149,64 +153,64 @@ public class popupMenu extends CustomNode {
 
                     // declara la opcion de menu
                     content: [
-                        // rectangulo de fondo para la opcion
-                        Rectangle {
-                            fill:bind color
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
-                            width: bind maxWidth
-                            height: bind rec.height
-                        },
-                        // texto de la opcion
-                        Text {
-                            fill: bind txtcolor
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
-                            font: bind font
-                            content: option.text
-                            textOrigin: TextOrigin.TOP
-                        },
-                        // rectangulo transparente sobre el texto y fondo
-                        Rectangle {
-                            // bloquea el click para los elementos que estan debajo
-                            blocksMouse:true
-                            fill:Color.TRANSPARENT
-                            x: bind event.x + padding
-                            y: bind event.y + option.pos
-                            width: bind maxWidth
-                            height: bind rec.height
-                            // si el usuario hace click sobre la opcion
-                            onMousePressed: function(e) {
-                                // con el boton principal del mouse
-                                if (e.button==MouseButton.PRIMARY) {
-                                    // ejecuta la funcion asociada al boton
-                                    // traspasando el evento del mouse (posicion del mouse)
-                                    option.call(e);
-                                    option.customCall(option.text);
-                                    // oculta el menu flotante
-                                    this.visible=false;
-                                }
-                            };
-                            // si entra con el mouse a la opcion
-                            onMouseEntered: function(e) {
-                                // destaca la opcion (cambiando colores)
-                                show.playFromStart();
-                            };
-                            // si sale de la opcion con el mouse
-                            onMouseExited: function(e) {
-                                // restaura opcion (repone colores)
-                                hide.playFromStart();
-                            };
-                        },
+                    // rectangulo de fondo para la opcion
+                    Rectangle {
+                        fill:bind color
+                        x: bind traslatedX
+                        y: bind traslatedY
+                        width: bind maxWidth
+                        height: bind rec.height
+                    },
+                    // texto de la opcion
+                    Text {
+                        fill: bind txtcolor
+                        x: bind traslatedX
+                        y: bind traslatedY
+                        font: bind font
+                        content: option.text
+                        textOrigin: TextOrigin.TOP
+                    },
+                    // rectangulo transparente sobre el texto y fondo
+                    Rectangle {
+                        // bloquea el click para los elementos que estan debajo
+                        blocksMouse:true
+                        fill:Color.TRANSPARENT
+                        x: bind traslatedX
+                        y: bind traslatedY
+                        width: bind maxWidth
+                        height: bind rec.height
+                        // si el usuario hace click sobre la opcion
+                        onMousePressed: function(e) {
+                            // con el boton principal del mouse
+                            if (e.button==MouseButton.PRIMARY) {
+                                // ejecuta la funcion asociada al boton
+                                // traspasando el evento del mouse (posicion del mouse)
+                                option.call(e);
+                                option.customCall(option.text);
+                                // oculta el menu flotante
+                                this.visible=false;
+                            }
+                        };
+                        // si entra con el mouse a la opcion
+                        onMouseEntered: function(e) {
+                        // destaca la opcion (cambiando colores)
+                            show.playFromStart();
+                        };
+                        // si sale de la opcion con el mouse
+                        onMouseExited: function(e) {
+                            // restaura opcion (repone colores)
+                            hide.playFromStart();
+                        };
+                    },
 
                     ]
-                };
-                // agrega la opcion a una secuencia (array o arreglo)
-                insert optionButton into optionsObjects;
-
+                 };
+                 // agrega la opcion a una secuencia (array o arreglo)
+                 insert optionButton into optionsObjects;
             };
         };
     };
+
 
     // animacion para mostrar menu
     var appear=Timeline {
@@ -217,38 +221,39 @@ public class popupMenu extends CustomNode {
         ]
     };
 
+    var marco:Rectangle = Rectangle {
+        // posiciona en la ubicacion del mouse
+        arcHeight: bind corner
+        arcWidth: bind corner
+        // asigna tamano dependiendo de las opciones
+        width: bind menuWidth + padding * 2
+        height: bind menuHeight + padding
+        x: bind if ((event.x + marco.width) > containerWidth) then (containerWidth - marco.width) else event.x
+        y: bind if ((event.y + marco.height) > containerHeight) then (containerHeight - marco.height) else event.y
+        // parametros para pintar el fondo
+        fill: bind if (gradient != null) then gradient else fill
+        stroke: bind borderColor
+        strokeWidth: bind borderWidth
+        // si la sombra esta activa, la agrega, sino la omite
+        effect: bind if (shadow) {
+            DropShadow {
+                offsetX:bind shadowX
+                offsetY:bind shadowY
+            }
+        }
+        else null;
+    };
 
     // crea el componente del menu flotante
     override function create():Node {
 
         // no es visible al crearlo
         this.visible=false;
-        var marco:Rectangle = Rectangle {
-                    // posiciona en la ubicacion del mouse                    
-                    arcHeight: bind corner
-                    arcWidth: bind corner
-                    // asigna tamano dependiendo de las opciones
-                    width: bind menuWidth + padding * 2
-                    height: bind menuHeight + padding
-                    x: bind if ((event.x + marco.width) > containerWidth) then (containerWidth - marco.width) else event.x
-                    y: bind if ((event.y + marco.height) > containerHeight) then (containerHeight - marco.height) else event.y
-                    // parametros para pintar el fondo
-                    fill: bind if (gradient != null) then gradient else fill
-                    stroke: bind borderColor
-                    strokeWidth: bind borderWidth
-                    // si la sombra esta activa, la agrega, sino la omite
-                    effect: bind if (shadow) {
-                        DropShadow {
-                            offsetX:bind shadowX
-                            offsetY:bind shadowY
-                        }
-                    }
-                    else null;
-        };
+
         insert marco into optionsObjects;
 
         Group {
-//            cache:true
+            // cache:true
             rotate: bind rotate
             scaleX: bind scale
             scaleY: bind scale
@@ -261,6 +266,4 @@ public class popupMenu extends CustomNode {
         delete optionsObjects[1..sizeof(optionsObjects) - 1];
         content = null;
     }
-
-
 }

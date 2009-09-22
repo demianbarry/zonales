@@ -23,6 +23,9 @@ import java.lang.Void;
 import reservasjavafx.domain.forms.NameForm;
 import reservasjavafx.domain.model.ResourceBean;
 import reservasjavafx.domain.model.ResourcePresentationModel;
+import reservasjavafx.CustomResource;
+
+import java.util.Date;
 
 
 var image = Image{
@@ -91,7 +94,6 @@ var g:Group = Group {
         // the actual image to be adjusted
         imagen,
         CustomResource {
-            cursor: Cursor.HAND
             points: [   x(0),y(190),
                         x(71),y(172),
                         x(110),y(178),
@@ -106,7 +108,6 @@ var g:Group = Group {
 
         },
         CustomResource {
-            cursor: Cursor.HAND
             points: [   x(128),y(161),
                         x(165),y(147),
                         x(213),y(151),
@@ -121,7 +122,6 @@ var g:Group = Group {
             }
         },
         CustomResource {
-            cursor: Cursor.HAND
             points: [   x(210),y(141),
                         x(246),y(131),
                         x(279),y(135),
@@ -135,7 +135,6 @@ var g:Group = Group {
             }
         },
         CustomResource {
-            cursor: Cursor.HAND
             points: [   x(342),y(135),
                         x(355),y(130),
                         x(399),y(128),
@@ -147,8 +146,7 @@ var g:Group = Group {
                 mousePressed(e);
             }
         },
-        CustomResource {
-            cursor: Cursor.HAND
+        CustomResource {            
             points: [   x(271),y(127),
                         x(280),y(123),
                         x(310),y(124),
@@ -162,7 +160,6 @@ var g:Group = Group {
             }
         },
         CustomResource {
-            cursor: Cursor.HAND
             points: [   x(450),y(137),
                         x(450),y(130),
                         x(507),y(128),
@@ -174,13 +171,15 @@ var g:Group = Group {
                 mousePressed(e);
             }
         },
-        Ellipse {
-            cursor: Cursor.HAND
-            centerX: x(377)
-            centerY: y(172)
-            radiusX: 90
-            radiusY: 20
+        CustomResource {
+            type: CustomResource.ELLIPSE
+            x: x(377)
+            y: y(172)
+            radX: 90
+            radY: 20
             fill: Color.TRANSPARENT
+            stroke: Color.TRANSPARENT
+            nroRecurso: 7
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
@@ -381,9 +380,10 @@ function startConfirmaRequest(texto:String):Void {
         presentationModel: ResourcePresentationModel{}
         translateX: bind slideFormX
         translateY: bind gapY
+
     };
     
-    var diff:Float = bind -resourceForm.boundsInParent.width;
+    var diff:Float = bind -resourceForm.boundsInParent.width*2;
     var slideFormX:Float = diff;
     
     resourceForm.presentationModel.jBean = resourceBean;
@@ -432,25 +432,25 @@ function startConfirmaRequest(texto:String):Void {
             ]
         };
 
-function mousePressed(e:MouseEvent) {
-    var recurso: CustomResource = e.node as CustomResource;
+    function mousePressed(e:MouseEvent) {
+        var recurso: CustomResource = e.node as CustomResource;
 
-    if(e.button == MouseButton.SECONDARY) {
-        mesa = recurso.nroRecurso as Integer;
-        startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+        if(e.button == MouseButton.SECONDARY) {
+            mesa = recurso.nroRecurso as Integer;
+            startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+        }
     }
-}
 
-function optionSelected(texto:String):Void {
-    resourceBean.setRecurso("Mesa {mesa}");
-    resourceBean.setFecha("1/01/2009");
-    resourceBean.setHora("{texto}");
-    resourceBean.setUsuario("Jr.");
-    selected = texto;
-    slideLeft.play();
-    slideRight.stop();
-    resourceForm.setVisibleErrWarnNodes(true);
-}
+    function optionSelected(texto:String):Void {
+        resourceBean.setRecurso("Mesa {mesa}");
+        resourceBean.setFecha("01/01/2009");
+        resourceBean.setHora("{texto}");
+        resourceBean.setUsuario("Jr.");
+        selected = texto;
+        slideLeft.play();
+        slideRight.stop();
+        resourceForm.setVisibleErrWarnNodes(true);
+    }
 
     var okButton:Button = Button {
             translateX: bind myScene.width - okButton.width - 5

@@ -95,7 +95,7 @@ public class NameForm extends fxforms.ui.form.Form {
 
         // 3 Label section number
         var sectionLabel:Label = Label {
-            text: "1"
+            text: ""
             font : Font {
                     size: 24
             }
@@ -179,7 +179,7 @@ public class NameForm extends fxforms.ui.form.Form {
             spacing:5
             content:[]
         }
-        var lastNameLabel:Label = Label {
+        var recursoLabel:Label = Label {
             text: "Recurso"
             hpos:HPos.RIGHT
             font : Font {
@@ -187,7 +187,7 @@ public class NameForm extends fxforms.ui.form.Form {
             }
             layoutInfo: LayoutInfo { minWidth: 100 width: 150 maxWidth: 200 }
         };
-        var firstLabel:Label = Label {
+        var fechaLabel:Label = Label {
             text: "Fecha"
             hpos:HPos.RIGHT
             font : Font {
@@ -195,7 +195,7 @@ public class NameForm extends fxforms.ui.form.Form {
             }
             layoutInfo: LayoutInfo { minWidth: 100 width: 150 maxWidth: 200 }
         };
-        var miLabel:Label = Label {
+        var horaLabel:Label = Label {
             text: "Hora"
             hpos:HPos.RIGHT
             font : Font {
@@ -203,7 +203,7 @@ public class NameForm extends fxforms.ui.form.Form {
             }
             layoutInfo: LayoutInfo { minWidth: 100 width: 150 maxWidth: 200 }
         };
-        var suffixLabel:Label = Label {
+        var usuarioLabel:Label = Label {
             text: "Usuario"
             hpos:HPos.RIGHT
             font : Font {
@@ -212,10 +212,10 @@ public class NameForm extends fxforms.ui.form.Form {
             layoutInfo: LayoutInfo { minWidth: 100 width: 150 maxWidth: 200 }
         };
 
-        insert lastNameLabel into vBox_9.content;
-        insert firstLabel into vBox_9.content;
-        insert miLabel into vBox_9.content;
-        insert suffixLabel into vBox_9.content;
+        insert recursoLabel into vBox_9.content;
+        insert fechaLabel into vBox_9.content;
+        insert horaLabel into vBox_9.content;
+        insert usuarioLabel into vBox_9.content;
 
         insert vBox_9 into hBox_8.content;
 
