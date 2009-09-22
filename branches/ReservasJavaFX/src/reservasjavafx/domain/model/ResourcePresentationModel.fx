@@ -24,7 +24,7 @@ public class ResourcePresentationModel extends fxforms.model.model.PresentationM
         var validateFecha:Validator =  Validator {
             id: ResourceBean.FECHA;
             public override function validate(value:Object){
-                return validateF(value, ResourceBean.FECHA, "Warning");
+                return validateF(value, ResourceBean.FECHA, "Error");
             }
         };
 
