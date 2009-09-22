@@ -438,7 +438,10 @@ function startConfirmaRequest(texto:String):Void {
         if(e.button == MouseButton.SECONDARY) {
             mesa = recurso.nroRecurso as Integer;
             startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+        } else {
+            popupMenu.visible = false;
         }
+
     }
 
     function optionSelected(texto:String):Void {
@@ -473,7 +476,7 @@ function startConfirmaRequest(texto:String):Void {
             action: function() {
                 slideLeft.stop();
                 slideRight.play();                               
-                resourceForm.setVisibleErrWarnNodes(true);
+                resourceForm.setVisibleErrWarnNodes(false);
                 //resourceForm.toBack();
             }
         };
