@@ -6,9 +6,6 @@ import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.scene.shape.*;
-import javafx.stage.*;
-
-import reservasjavafx.menu.*;
 
 import javafx.io.http.HttpRequest;
 
@@ -25,7 +22,23 @@ import reservasjavafx.domain.model.ResourceBean;
 import reservasjavafx.domain.model.ResourcePresentationModel;
 import reservasjavafx.CustomResource;
 
-import java.util.Date;
+import calendarpicker.CalendarPicker;
+
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import javafx.ext.swing.SwingComponent;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+
+
+
+import reservasjavafx.menu.popupMenu;
+import reservasjavafx.menu.menuItem;
+
 
 
 var image = Image{
@@ -49,7 +62,7 @@ var imagen:ImageView = ImageView {
             translateY: gapY
             opacity: bind imageOpacity
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
-            
+
             onMouseClicked: function(e:MouseEvent):Void {
                 coords = "{e.x}-{e.y}";
             }
@@ -58,7 +71,7 @@ var imagen:ImageView = ImageView {
 var imageOpacity:Float = 1;
 
 // Primer menu flotante
-var popupMenu:popupMenu = popupMenu {
+var myPopupMenu:popupMenu = popupMenu {
     animate:true
     corner:20
     padding:8
@@ -146,7 +159,7 @@ var g:Group = Group {
                 mousePressed(e);
             }
         },
-        CustomResource {            
+        CustomResource {
             points: [   x(271),y(127),
                         x(280),y(123),
                         x(310),y(124),
@@ -185,7 +198,7 @@ var g:Group = Group {
             }
         }
 
-        popupMenu
+        myPopupMenu
     ]
 };
 
@@ -261,20 +274,19 @@ function startConsultaRequest(e:MouseEvent, url: String) {
 
                 var tokenizer : StringTokenizer = new StringTokenizer(message, ";");
 
-                popupMenu.deleteOptions();
+                myPopupMenu.deleteOptions();
                 while (tokenizer.hasMoreTokens()) {
                     var texto : String = tokenizer.nextToken();
                     item = menuItem {
-                        //call: clickMenuItem
                         text: texto
                         customCall: optionSelected
                     };
 
-                    if(javafx.util.Sequences.indexOf(popupMenu.content, item) == -1) {
-                        insert item into popupMenu.content;
+                    if(javafx.util.Sequences.indexOf(myPopupMenu.content, item) == -1) {
+                        insert item into myPopupMenu.content;
                     }
                 }
-                popupMenu.event = e;
+                myPopupMenu.event = e;
 
             } finally {
                 is.close();
@@ -382,15 +394,15 @@ function startConfirmaRequest(texto:String):Void {
         translateY: bind gapY
 
     };
-    
+
     var diff:Float = bind -resourceForm.boundsInParent.width*2;
     var slideFormX:Float = diff;
-    
+
     resourceForm.presentationModel.jBean = resourceBean;
 
     var slideRight:Timeline = Timeline {
-            repeatCount: 1
-            keyFrames : [
+        repeatCount: 1
+        keyFrames : [
                 KeyFrame {
                     time : 0s
                     canSkip : true
@@ -407,8 +419,8 @@ function startConfirmaRequest(texto:String):Void {
                     canSkip : true
                     values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
                 }
-            ]
-        };
+         ]
+    };
 
     var slideLeft:Timeline = Timeline {
             repeatCount: 1
@@ -430,7 +442,7 @@ function startConfirmaRequest(texto:String):Void {
                     values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
                 }
             ]
-        };
+    };
 
     function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
@@ -438,10 +450,7 @@ function startConfirmaRequest(texto:String):Void {
         if(e.button == MouseButton.SECONDARY) {
             mesa = recurso.nroRecurso as Integer;
             startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
-        } else {
-            popupMenu.visible = false;
         }
-
     }
 
     function optionSelected(texto:String):Void {
@@ -475,14 +484,36 @@ function startConfirmaRequest(texto:String):Void {
             visible: bind (slideFormX == 0)
             action: function() {
                 slideLeft.stop();
-                slideRight.play();                               
+                slideRight.play();
                 resourceForm.setVisibleErrWarnNodes(false);
                 //resourceForm.toBack();
             }
         };
 
+
+
+
+
+// the picker
+var calendarPicker:CalendarPicker = CalendarPicker
+{
+        mode: CalendarPicker.MODE_SINGLE
+	translateX: bind (imagen.image.width+gapX*2)/2-calendarPicker.width
+        translateY: bind (imagen.image.height+gapX*2)/2-calendarPicker.height
+
+        onMouseClicked: function(e:MouseEvent) {
+
+        }
+
+}
+
+var button:Button = Button {
+
+}
+
+
 var myScene:Scene = Scene {
-    content: [g, resourceForm, okButton, cancelButton ]
+    content: [g, resourceForm, okButton, cancelButton, calendarPicker]
 }
 
 // show it all on screen
