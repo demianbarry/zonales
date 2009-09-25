@@ -87,7 +87,7 @@ on replace
 // skin
 var skinComboBox : ComboBox = ComboBox
 {	items: [ "Standard", "Control"]
-,	layoutInfo: LayoutInfo { width: 150 }
+	layoutInfo: LayoutInfo { width: 150 }
 };
 var skinComboBoxChanged = bind skinComboBox.selectedIndex // on change event
 on replace

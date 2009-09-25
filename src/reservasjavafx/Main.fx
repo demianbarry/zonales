@@ -6,9 +6,7 @@ import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.scene.shape.*;
-
 import javafx.io.http.HttpRequest;
-
 import java.util.StringTokenizer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -16,30 +14,22 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import java.lang.Void;
-
 import reservasjavafx.domain.forms.NameForm;
 import reservasjavafx.domain.model.ResourceBean;
 import reservasjavafx.domain.model.ResourcePresentationModel;
 import reservasjavafx.CustomResource;
-
 import calendarpicker.CalendarPicker;
-
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import javafx.ext.swing.SwingComponent;
-import java.awt.event.ActionEvent;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-
-
-
 import reservasjavafx.menu.popupMenu;
 import reservasjavafx.menu.menuItem;
+import javafx.scene.layout.VBox;
 
+import javafx.scene.layout.HBox;
+import java.util.Calendar;
 
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.LayoutInfo;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -57,9 +47,12 @@ var selected: String;
 var stageDragInitialX:Number;
 var stageDragInitialY:Number;
 
+var coords :String;
+var panelWidth:Number = 0.42;
+
+var imageOpacity:Float = 1;
+
 var imagen:ImageView = ImageView {
-            translateX: gapX
-            translateY: gapY
             opacity: bind imageOpacity
             image: Image { url: "{__DIR__}images/restaurante2.jpg" }
 
@@ -67,8 +60,6 @@ var imagen:ImageView = ImageView {
                 coords = "{e.x}-{e.y}";
             }
 };
-
-var imageOpacity:Float = 1;
 
 // Primer menu flotante
 var myPopupMenu:popupMenu = popupMenu {
@@ -83,28 +74,36 @@ var myPopupMenu:popupMenu = popupMenu {
     containerHeight: bind imagen.image.height
 };
 
-var coords :String;
-
-var g:Group = Group {
+var toolbar:Group = Group {
     content: [
-
         // the background and top header
         Rectangle {
-            fill: Color.web("#FF9900")
-            width: imagen.image.width+gapX*2
-            height: 400 },
-        Text {
-            x: gapX+0
-            y:17 content: bind coords
-            fill: TEXT_COLOR },
-        Line {
-            stroke: TEXT_COLOR
-            startX: 0
-            endX: imagen.image.width+gapX*2
-            startY: 30
-            endY: 30 },
+            fill: Color.TRANSPARENT
+            stroke: Color.RED
+            width: (imagen.image.width) * (1 + panelWidth)
+            height: gapY
+        }
+     ]
+}
 
-        // the actual image to be adjusted
+
+// the picker
+var calendarPicker:CalendarPicker = CalendarPicker
+{
+        mode: CalendarPicker.MODE_SINGLE
+	translateX: gapX
+        translateY: gapY
+
+        onMouseClicked: function(e:MouseEvent) {
+        }
+}
+
+var currentCalendar = bind calendarPicker.calendar;
+
+
+var layout:Group = Group {
+    content: [
+        // the actual image
         imagen,
         CustomResource {
             points: [   x(0),y(190),
@@ -118,7 +117,6 @@ var g:Group = Group {
             onMouseClicked:function(e) {
                 mousePressed(e);
             }
-
         },
         CustomResource {
             points: [   x(128),y(161),
@@ -202,6 +200,71 @@ var g:Group = Group {
     ]
 };
 
+var button:Button = Button {
+
+}
+
+var slotComboBox : ComboBox = ComboBox {
+        items: [ "Standard", "Control"]
+        layoutInfo: LayoutInfo {    width: 200
+                                    height: 100
+                                }
+        onInputMethodTextChanged:function(e:InputMethodEvent){
+            java.lang.System.out.println("CAMBIO!");
+        }
+
+};
+
+
+
+var vbox:VBox = VBox {
+    content: [  slotComboBox,
+                calendarPicker,]
+}
+
+
+var hbox:HBox = HBox {
+    content:[   Group {
+                    content: [  
+                                Rectangle {
+                                    width: (imagen.image.width)*panelWidth - gapX*2
+                                },
+                                vbox
+                             ]
+                },
+                layout
+             ]
+}
+
+var background:Group = Group {
+    content: [
+        // the background and top header
+                        Rectangle {
+                            fill: Color.web("#FF9900")
+                            width: (imagen.image.width) * (1 + panelWidth)
+                            height: imagen.image.height+gapY*2
+                        },
+                        Text {
+                            x: gapX+0
+                            y:17 content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                            fill: TEXT_COLOR
+                        },
+                        Line {
+                            stroke: TEXT_COLOR
+                            startX: 0
+                            endX: (imagen.image.width+gapX*2) * (1 + panelWidth)
+                            startY: 30
+                            endY: 30
+                        },
+        VBox {
+            content: [
+                        toolbar,
+                        hbox
+                       ]
+        }
+    ]
+}
+
 function x(x:Integer):Integer {
     return x + gapX;
 }
@@ -209,6 +272,128 @@ function x(x:Integer):Integer {
 function y(y:Integer):Integer {
     return y + gapY;
 }
+
+
+
+
+    var resourceBean:ResourceBean = new ResourceBean();
+
+    var value:String;
+
+    var resourceForm:NameForm = NameForm{
+        presentationModel: ResourcePresentationModel{}
+        translateX: bind slideFormX
+        translateY: bind gapY
+
+    };
+
+    var diff:Float = bind -resourceForm.boundsInParent.width*2;
+    var slideFormX:Float = diff;
+
+    resourceForm.presentationModel.jBean = resourceBean;
+
+    var slideRight:Timeline = Timeline {
+        repeatCount: 1
+        keyFrames : [
+                KeyFrame {
+                    time : 0s
+                    canSkip : true
+                    values: [   slideFormX => 0 ]
+                },
+                KeyFrame {
+                    time : 350ms
+                    canSkip : true
+                    values: [   slideFormX => diff tween Interpolator.EASEBOTH,
+                                imageOpacity => 0 ]
+                }
+                KeyFrame {
+                    time : 500ms
+                    canSkip : true
+                    values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
+                }
+         ]
+    };
+
+    var slideLeft:Timeline = Timeline {
+            repeatCount: 1
+            keyFrames : [
+                KeyFrame {
+                    time : 0s
+                    canSkip : true
+                    values: [   imageOpacity => 1 ]
+                }
+                KeyFrame {
+                    time : 150ms
+                    canSkip : true
+                    values: [   imageOpacity => 0 tween Interpolator.EASEBOTH,
+                                slideFormX => diff ]
+                }
+                KeyFrame {
+                    time : 500ms
+                    canSkip : true
+                    values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
+                }
+            ]
+    };
+
+    function mousePressed(e:MouseEvent) {
+        var recurso: CustomResource = e.node as CustomResource;
+
+        if(e.button == MouseButton.SECONDARY) {
+            mesa = recurso.nroRecurso as Integer;
+            startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+        }
+    }
+
+    function optionSelected(texto:String):Void {
+        resourceBean.setRecurso("Mesa {mesa}");
+        resourceBean.setFecha("01/01/2009");
+        resourceBean.setHora("{texto}");
+        resourceBean.setUsuario("Jr.");
+        selected = texto;
+        slideLeft.play();
+        slideRight.stop();
+        resourceForm.setVisibleErrWarnNodes(true);
+    }
+
+    var okButton:Button = Button {
+            translateX: bind myScene.width - okButton.width - 5
+            translateY: bind myScene.height - okButton.height - 5
+            text: " Ok "
+            visible: bind (slideFormX == 0)
+            action: function() {
+                startConfirmaRequest(selected);
+                resourceForm.setVisibleErrWarnNodes(false);
+                slideRight.play();
+                slideLeft.stop();
+            }
+        };
+
+    var cancelButton:Button = Button {
+            translateX: bind myScene.width - cancelButton.width - 5 - okButton.width - 5
+            translateY: bind myScene.height - cancelButton.height - 5
+            text: " Cancel "
+            visible: bind (slideFormX == 0)
+            action: function() {
+                slideLeft.stop();
+                slideRight.play();
+                resourceForm.setVisibleErrWarnNodes(false);
+            }
+    };
+
+
+var myScene:Scene = Scene {
+    content: [background, resourceForm, okButton, cancelButton]
+}
+
+// show it all on screen
+var stage:Stage = Stage {
+    style: StageStyle.UNDECORATED
+    visible: true
+    scene: myScene
+}
+
+resourceForm.presentationModel.mainScene = myScene;
 
 var getRequest: HttpRequest;
 
@@ -383,144 +568,8 @@ function startConfirmaRequest(texto:String):Void {
     getRequest.start();
 }
 
+function dayOfWeek(dayOfWeek:Integer):String {
+    var days:String[]=["","Domingo","Lunes","Martes","Miercoles", "Jueves","Viernes","Sabado"];
 
-    var resourceBean:ResourceBean = new ResourceBean();
-
-    var value:String;
-
-    var resourceForm:NameForm = NameForm{
-        presentationModel: ResourcePresentationModel{}
-        translateX: bind slideFormX
-        translateY: bind gapY
-
-    };
-
-    var diff:Float = bind -resourceForm.boundsInParent.width*2;
-    var slideFormX:Float = diff;
-
-    resourceForm.presentationModel.jBean = resourceBean;
-
-    var slideRight:Timeline = Timeline {
-        repeatCount: 1
-        keyFrames : [
-                KeyFrame {
-                    time : 0s
-                    canSkip : true
-                    values: [   slideFormX => 0 ]
-                },
-                KeyFrame {
-                    time : 350ms
-                    canSkip : true
-                    values: [   slideFormX => diff tween Interpolator.EASEBOTH,
-                                imageOpacity => 0 ]
-                }
-                KeyFrame {
-                    time : 500ms
-                    canSkip : true
-                    values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
-                }
-         ]
-    };
-
-    var slideLeft:Timeline = Timeline {
-            repeatCount: 1
-            keyFrames : [
-                KeyFrame {
-                    time : 0s
-                    canSkip : true
-                    values: [   imageOpacity => 1 ]
-                }
-                KeyFrame {
-                    time : 150ms
-                    canSkip : true
-                    values: [   imageOpacity => 0 tween Interpolator.EASEBOTH,
-                                slideFormX => diff ]
-                }
-                KeyFrame {
-                    time : 500ms
-                    canSkip : true
-                    values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
-                }
-            ]
-    };
-
-    function mousePressed(e:MouseEvent) {
-        var recurso: CustomResource = e.node as CustomResource;
-
-        if(e.button == MouseButton.SECONDARY) {
-            mesa = recurso.nroRecurso as Integer;
-            startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
-        }
-    }
-
-    function optionSelected(texto:String):Void {
-        resourceBean.setRecurso("Mesa {mesa}");
-        resourceBean.setFecha("01/01/2009");
-        resourceBean.setHora("{texto}");
-        resourceBean.setUsuario("Jr.");
-        selected = texto;
-        slideLeft.play();
-        slideRight.stop();
-        resourceForm.setVisibleErrWarnNodes(true);
-    }
-
-    var okButton:Button = Button {
-            translateX: bind myScene.width - okButton.width - 5
-            translateY: bind myScene.height - okButton.height - 5
-            text: " Ok "
-            visible: bind (slideFormX == 0)
-            action: function() {
-                startConfirmaRequest(selected);
-                resourceForm.setVisibleErrWarnNodes(false);
-                slideRight.play();
-                slideLeft.stop();
-            }
-        };
-
-    var cancelButton:Button = Button {
-            translateX: bind myScene.width - cancelButton.width - 5 - okButton.width - 5
-            translateY: bind myScene.height - cancelButton.height - 5
-            text: " Cancel "
-            visible: bind (slideFormX == 0)
-            action: function() {
-                slideLeft.stop();
-                slideRight.play();
-                resourceForm.setVisibleErrWarnNodes(false);
-                //resourceForm.toBack();
-            }
-        };
-
-
-
-
-
-// the picker
-var calendarPicker:CalendarPicker = CalendarPicker
-{
-        mode: CalendarPicker.MODE_SINGLE
-	translateX: bind (imagen.image.width+gapX*2)/2-calendarPicker.width
-        translateY: bind (imagen.image.height+gapX*2)/2-calendarPicker.height
-
-        onMouseClicked: function(e:MouseEvent) {
-
-        }
-
+    return days[dayOfWeek];
 }
-
-var button:Button = Button {
-
-}
-
-
-var myScene:Scene = Scene {
-    content: [g, resourceForm, okButton, cancelButton, calendarPicker]
-}
-
-// show it all on screen
-var stage:Stage = Stage {
-    style: StageStyle.UNDECORATED
-    visible: true
-    scene: myScene
-}
-
-resourceForm.presentationModel.mainScene = myScene;
