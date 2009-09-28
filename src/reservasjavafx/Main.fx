@@ -22,14 +22,15 @@ import calendarpicker.CalendarPicker;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import reservasjavafx.menu.popupMenu;
-import reservasjavafx.menu.menuItem;
+//import reservasjavafx.menu.menuItem;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.layout.HBox;
 import java.util.Calendar;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.LayoutInfo;
+import calendarpicker.ComboBox;
+
+import calendarpicker.CalendarPickerSkinStandard;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -39,7 +40,7 @@ var maxRow:Integer = ((image.height as Integer) / 100) - 1;
 
 var gapX = 10;
 var gapY = 40;
-var TEXT_COLOR = Color.WHITE;
+var TEXT_COLOR = Color.BLACK;
 
 var mesa: Integer = 0;
 var selected: String;
@@ -76,11 +77,10 @@ var myPopupMenu:popupMenu = popupMenu {
 
 var toolbar:Group = Group {
     content: [
-        // the background and top header
         Rectangle {
             fill: Color.TRANSPARENT
-            stroke: Color.RED
-            width: (imagen.image.width) * (1 + panelWidth)
+            stroke: Color.web("#FF9900");
+            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
             height: gapY
         }
      ]
@@ -88,17 +88,14 @@ var toolbar:Group = Group {
 
 
 // the picker
-var calendarPicker:CalendarPicker = CalendarPicker
-{
+var calendarPicker:CalendarPicker = CalendarPicker {
         mode: CalendarPicker.MODE_SINGLE
-	translateX: gapX
-        translateY: gapY
+};
 
-        onMouseClicked: function(e:MouseEvent) {
-        }
-}
-
-var currentCalendar = bind calendarPicker.calendar;
+(calendarPicker.skin as CalendarPickerSkinStandard).setGreyScheme();
+var currentCalendar = bind calendarPicker.calendar on replace {
+        startConsultaRequest(null, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa=1");
+};
 
 
 var layout:Group = Group {
@@ -204,22 +201,19 @@ var button:Button = Button {
 
 }
 
-var slotComboBox : ComboBox = ComboBox {
-        items: [ "Standard", "Control"]
-        layoutInfo: LayoutInfo {    width: 200
-                                    height: 100
-                                }
-        onInputMethodTextChanged:function(e:InputMethodEvent){
-            java.lang.System.out.println("CAMBIO!");
-        }
-
+var slotComboBox : ComboBox = ComboBox {        
 };
+slotComboBox.select(0);
 
+var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
 
 
 var vbox:VBox = VBox {
+    translateX: gapX
+    translateY: gapY
     content: [  slotComboBox,
-                calendarPicker,]
+                calendarPicker
+                ]
 }
 
 
@@ -252,25 +246,25 @@ var background:Group = Group {
                         Line {
                             stroke: TEXT_COLOR
                             startX: 0
-                            endX: (imagen.image.width+gapX*2) * (1 + panelWidth)
+                            endX: (imagen.image.width) * (1 + panelWidth) - gapX*2
                             startY: 30
                             endY: 30
                         },
-        VBox {
-            content: [
-                        toolbar,
-                        hbox
-                       ]
+                        VBox {
+                            content: [
+                                        toolbar,
+                                        hbox
+                                     ]
         }
     ]
 }
 
 function x(x:Integer):Integer {
-    return x + gapX;
+    return x + imagen.x as Integer;
 }
 
 function y(y:Integer):Integer {
-    return y + gapY;
+    return y + imagen.y as Integer ;
 }
 
 
@@ -388,59 +382,19 @@ var myScene:Scene = Scene {
 
 // show it all on screen
 var stage:Stage = Stage {
-    style: StageStyle.UNDECORATED
+    style: StageStyle.TRANSPARENT
     visible: true
     scene: myScene
 }
 
 resourceForm.presentationModel.mainScene = myScene;
 
-var getRequest: HttpRequest;
+var request: HttpRequest;
 
 function startConsultaRequest(e:MouseEvent, url: String) {
-    getRequest = HttpRequest {
+    request = HttpRequest {
 
         location: url;
-
-        onStarted: function() {
-            println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
-        }
-
-        onConnecting: function() { println("onConnecting") }
-        onDoneConnect: function() { println("onDoneConnect") }
-        onReadingHeaders: function() { println("onReadingHeaders") }
-        onResponseCode: function(code:Integer) { println("onResponseCode - responseCode: {code}") }
-        onResponseMessage: function(msg:String) { println("onResponseMessage - responseMessage: {msg}") }
-
-        onResponseHeaders: function(headerNames: String[]) {
-            println("onResponseHeaders - there are {headerNames.size()} response headers:");
-            for (name in headerNames) {
-                println("    {name}: {getRequest.getResponseHeaderValue(name)}");
-            }
-        }
-
-        onReading: function() { println("onReading") }
-
-        onToRead: function(bytes: Long) {
-
-            if (bytes < 0) {
-                println("onToRead - Content length not specified by server; bytes: {bytes}");
-            } else {
-                println("onToRead - total number of content bytes to read: {bytes}");
-            }
-        }
-
-        // The onRead callback is called when some more data has been read into
-        // the input stream's buffer.  The input stream will not be available until
-        // the onInput call back is called, but onRead can be used to show the
-        // progress of reading the content from the location.
-
-        onRead: function(bytes: Long) {
-            // The toread variable is non negative only if the server provides the content length
-            def progress =
-                if (getRequest.toread > 0) "({(bytes * 100 / getRequest.toread)}%)" else "";
-                println("onRead - bytes read: {bytes} {progress}");
-        }
 
         // The content of a response can be accessed in the onInput callback function.
         // Be sure to close the input sream when finished with it in order to allow
@@ -452,7 +406,8 @@ function startConsultaRequest(e:MouseEvent, url: String) {
             // can use input.available() to see how many bytes are available.
             try {
                 var message = new String();
-                var item:menuItem;
+                //var item:menuItem;
+                var item:String;
 
                 while(is.available() > 0)
                     message += Character.toString(Character.valueOf(is.read()));
@@ -462,16 +417,17 @@ function startConsultaRequest(e:MouseEvent, url: String) {
                 myPopupMenu.deleteOptions();
                 while (tokenizer.hasMoreTokens()) {
                     var texto : String = tokenizer.nextToken();
-                    item = menuItem {
+                    item = texto;
+                    /*item = menuItem {
                         text: texto
                         customCall: optionSelected
-                    };
-
-                    if(javafx.util.Sequences.indexOf(myPopupMenu.content, item) == -1) {
-                        insert item into myPopupMenu.content;
+                    };*/
+                    if(javafx.util.Sequences.indexOf(slotComboBox.items, item) == -1) {
+                        //insert item into myPopupMenu.content;
+                        insert item into slotComboBox.items;
                     }
                 }
-                myPopupMenu.event = e;
+                //myPopupMenu.event = e;
 
             } finally {
                 is.close();
@@ -482,90 +438,35 @@ function startConsultaRequest(e:MouseEvent, url: String) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
         }
 
-        onDoneRead: function() {
-            println("onDoneRead")
-        }
-
         onDone: function() {
-            println("onDone") ;
-            getRequest.stop();
+            request.stop();
         }
     };
-    getRequest.start();
+    request.start();
 }
 
 
 function startConfirmaRequest(texto:String):Void {
-
-    getRequest = HttpRequest {
+    request = HttpRequest {
 
         location: "http://localhost:8080/pruebasJava/Main?accion=confirma&locacion=resto&nroMesa={mesa}&horario={texto}";
-
-        onStarted: function() {
-            println("onStarted - started performing method: {getRequest.method} on location: {getRequest.location}");
-        }
-
-        onConnecting: function() { println("onConnecting") }
-        onDoneConnect: function() { println("onDoneConnect") }
-        onReadingHeaders: function() { println("onReadingHeaders") }
-        onResponseCode: function(code:Integer) { println("onResponseCode - responseCode: {code}") }
-        onResponseMessage: function(msg:String) { println("onResponseMessage - responseMessage: {msg}") }
-
-        onResponseHeaders: function(headerNames: String[]) {
-            println("onResponseHeaders - there are {headerNames.size()} response headers:");
-            for (name in headerNames) {
-                println("    {name}: {getRequest.getResponseHeaderValue(name)}");
-            }
-        }
-
-        onReading: function() { println("onReading") }
-
-        onToRead: function(bytes: Long) {
-
-            if (bytes < 0) {
-                println("onToRead - Content length not specified by server; bytes: {bytes}");
-            } else {
-                println("onToRead - total number of content bytes to read: {bytes}");
-            }
-        }
-
-        // The onRead callback is called when some more data has been read into
-        // the input stream's buffer.  The input stream will not be available until
-        // the onInput call back is called, but onRead can be used to show the
-        // progress of reading the content from the location.
-
-        onRead: function(bytes: Long) {
-            // The toread variable is non negative only if the server provides the content length
-            def progress =
-                if (getRequest.toread > 0) "({(bytes * 100 / getRequest.toread)}%)" else "";
-                println("onRead - bytes read: {bytes} {progress}");
-        }
-
-        // The content of a response can be accessed in the onInput callback function.
-        // Be sure to close the input sream when finished with it in order to allow
-        // the HttpRequest implementation to clean up resources related to this
-        // request as promptly as possible.
 
         onInput: function(is: java.io.InputStream) {
             // use input stream to access content here.
             // can use input.available() to see how many bytes are available.
 
-        }
+        }      
 
         onException: function(ex: java.lang.Exception) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
         }
 
-        onDoneRead: function() {
-            println("onDoneRead")
-        }
-
         onDone: function() {
             println("onDone") ;
-            getRequest.stop();
+            request.stop();
         }
     };
-    getRequest.start();
+    request.start();
 }
 
 function dayOfWeek(dayOfWeek:Integer):String {

@@ -43,7 +43,7 @@ public class CalendarPickerSkinStandard extends CalendarPickerSkinAbstract
 	public-init var gridColor : Color = Color.DARKGRAY;
 	public-init var selectedColor : Color = Color.rgb(0, 153, 255);
 	public-init var todayColor : Color = Color.rgb(153, 204, 255);
-	public-init var backgroundColor : Color = Color.WHITE;
+	public-init var backgroundColor : Color = Color.TRANSPARENT;
 	public-init var focusColor : Color = Color.rgb(0, 124, 216);
 
 	public function setCaspianScheme()
