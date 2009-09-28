@@ -5,11 +5,17 @@
  */
 
 package calendarpicker;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.effect.*;
 import calendarpicker.ComboBox;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextBox;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Tile;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * @author Tom Eugelink
