@@ -6,19 +6,26 @@
 
 package calendarpicker;
 
-import javafx.scene.*;
-import javafx.scene.text.*;
-import nl.innovationinvestments.javafx.scene.*;
-import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import java.util.Random;
-import javafx.scene.paint.*;
 import javafx.util.Math;
 import javafx.scene.input.MouseEvent;
 import calendarpicker.CalendarPickerBehavior;
-import javafx.animation.*;
 import javafx.scene.effect.DropShadow;
+
+import calendarpicker.autoanimating.AutoAnimatingCustomNode;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextOrigin;
+
 
 /**
  * @author Tom Eugelink

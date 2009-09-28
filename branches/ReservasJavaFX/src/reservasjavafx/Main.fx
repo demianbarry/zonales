@@ -30,8 +30,6 @@ import java.util.Calendar;
 
 import calendarpicker.ComboBox;
 
-import calendarpicker.CalendarPickerSkinStandard;
-
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
 
@@ -75,24 +73,12 @@ var myPopupMenu:popupMenu = popupMenu {
     containerHeight: bind imagen.image.height
 };
 
-var toolbar:Group = Group {
-    content: [
-        Rectangle {
-            fill: Color.TRANSPARENT
-            stroke: Color.web("#FF9900");
-            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-            height: gapY
-        }
-     ]
-}
-
-
 // the picker
 var calendarPicker:CalendarPicker = CalendarPicker {
         mode: CalendarPicker.MODE_SINGLE
+        
 };
 
-(calendarPicker.skin as CalendarPickerSkinStandard).setGreyScheme();
 var currentCalendar = bind calendarPicker.calendar on replace {
         startConsultaRequest(null, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa=1");
 };
@@ -192,7 +178,6 @@ var layout:Group = Group {
                 mousePressed(e);
             }
         }
-
         myPopupMenu
     ]
 };
@@ -201,60 +186,63 @@ var button:Button = Button {
 
 }
 
-var slotComboBox : ComboBox = ComboBox {        
-};
-slotComboBox.select(0);
-
 var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
 
 
 var vbox:VBox = VBox {
     translateX: gapX
     translateY: gapY
-    content: [  slotComboBox,
-                calendarPicker
-                ]
+    content: [  calendarPicker  ]
 }
 
 
 var hbox:HBox = HBox {
     content:[   Group {
-                    content: [  
-                                Rectangle {
+                    content: [  Rectangle {
                                     width: (imagen.image.width)*panelWidth - gapX*2
                                 },
-                                vbox
-                             ]
+                                vbox    ]
                 },
-                layout
-             ]
+                layout  ]
 }
+
+var dayText:Text = Text {
+                            x: gapX+0
+                            y:17 content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                            fill: TEXT_COLOR
+                        }
+
+
+var slotComboBox : ComboBox = ComboBox {
+    translateX: bind (dayText.x + dayText.boundsInLocal.width + gapX*2)
+};
+slotComboBox.select(0);
+slotComboBox.skin.node.visible = false;
 
 var background:Group = Group {
     content: [
         // the background and top header
-                        Rectangle {
-                            fill: Color.web("#FF9900")
-                            width: (imagen.image.width) * (1 + panelWidth)
-                            height: imagen.image.height+gapY*2
-                        },
-                        Text {
-                            x: gapX+0
-                            y:17 content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
-                            fill: TEXT_COLOR
-                        },
+                        dayText,
+                        slotComboBox,
                         Line {
                             stroke: TEXT_COLOR
                             startX: 0
-                            endX: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                            endX: (imagen.image.width + gapX*2) * (1 + panelWidth)
                             startY: 30
                             endY: 30
                         },
                         VBox {
-                            content: [
-                                        toolbar,
-                                        hbox
-                                     ]
+                            content: [  Rectangle {
+                                            fill: Color.TRANSPARENT
+                                            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                            height: gapY
+                                        },
+                                        hbox,
+                                        Rectangle {
+                                            fill: Color.TRANSPARENT
+                                            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                            height: gapY
+                                        }   ]
         }
     ]
 }
@@ -270,23 +258,23 @@ function y(y:Integer):Integer {
 
 
 
-    var resourceBean:ResourceBean = new ResourceBean();
+var resourceBean:ResourceBean = new ResourceBean();
 
-    var value:String;
+var value:String;
 
-    var resourceForm:NameForm = NameForm{
+var resourceForm:NameForm = NameForm{
         presentationModel: ResourcePresentationModel{}
         translateX: bind slideFormX
         translateY: bind gapY
 
-    };
+};
 
-    var diff:Float = bind -resourceForm.boundsInParent.width*2;
-    var slideFormX:Float = diff;
+var diff:Float = bind -resourceForm.boundsInParent.width*2;
+var slideFormX:Float = diff;
 
-    resourceForm.presentationModel.jBean = resourceBean;
+resourceForm.presentationModel.jBean = resourceBean;
 
-    var slideRight:Timeline = Timeline {
+var slideRight:Timeline = Timeline {
         repeatCount: 1
         keyFrames : [
                 KeyFrame {
@@ -306,9 +294,9 @@ function y(y:Integer):Integer {
                     values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
                 }
          ]
-    };
+};
 
-    var slideLeft:Timeline = Timeline {
+var slideLeft:Timeline = Timeline {
             repeatCount: 1
             keyFrames : [
                 KeyFrame {
@@ -328,18 +316,18 @@ function y(y:Integer):Integer {
                     values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
                 }
             ]
-    };
+};
 
-    function mousePressed(e:MouseEvent) {
+function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
 
         if(e.button == MouseButton.SECONDARY) {
             mesa = recurso.nroRecurso as Integer;
             startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
         }
-    }
+}
 
-    function optionSelected(texto:String):Void {
+function optionSelected(texto:String):Void {
         resourceBean.setRecurso("Mesa {mesa}");
         resourceBean.setFecha("01/01/2009");
         resourceBean.setHora("{texto}");
@@ -348,9 +336,9 @@ function y(y:Integer):Integer {
         slideLeft.play();
         slideRight.stop();
         resourceForm.setVisibleErrWarnNodes(true);
-    }
+}
 
-    var okButton:Button = Button {
+var okButton:Button = Button {
             translateX: bind myScene.width - okButton.width - 5
             translateY: bind myScene.height - okButton.height - 5
             text: " Ok "
@@ -361,9 +349,9 @@ function y(y:Integer):Integer {
                 slideRight.play();
                 slideLeft.stop();
             }
-        };
+};
 
-    var cancelButton:Button = Button {
+var cancelButton:Button = Button {
             translateX: bind myScene.width - cancelButton.width - 5 - okButton.width - 5
             translateY: bind myScene.height - cancelButton.height - 5
             text: " Cancel "
@@ -373,10 +361,11 @@ function y(y:Integer):Integer {
                 slideRight.play();
                 resourceForm.setVisibleErrWarnNodes(false);
             }
-    };
+};
 
 
 var myScene:Scene = Scene {
+    fill: Color.web("#FF9900")
     content: [background, resourceForm, okButton, cancelButton]
 }
 
@@ -414,7 +403,7 @@ function startConsultaRequest(e:MouseEvent, url: String) {
 
                 var tokenizer : StringTokenizer = new StringTokenizer(message, ";");
 
-                myPopupMenu.deleteOptions();
+                //myPopupMenu.deleteOptions();
                 while (tokenizer.hasMoreTokens()) {
                     var texto : String = tokenizer.nextToken();
                     item = texto;
@@ -426,6 +415,8 @@ function startConsultaRequest(e:MouseEvent, url: String) {
                         //insert item into myPopupMenu.content;
                         insert item into slotComboBox.items;
                     }
+                    slotComboBox.skin.node.visible = (item.length() != 0);
+                    slotComboBox.select(0);
                 }
                 //myPopupMenu.event = e;
 
