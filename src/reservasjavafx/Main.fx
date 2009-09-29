@@ -22,13 +22,16 @@ import calendarpicker.CalendarPicker;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import reservasjavafx.menu.popupMenu;
-//import reservasjavafx.menu.menuItem;
 import javafx.scene.layout.VBox;
-
+import javafx.data.pull.PullParser;
 import javafx.scene.layout.HBox;
 import java.util.Calendar;
 
 import calendarpicker.ComboBox;
+
+
+import javafx.data.pull.Event;
+import javafx.data.xml.QName;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -180,6 +183,7 @@ var layout:Group = Group {
         myPopupMenu
     ]
 };
+doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
 
 var button:Button = Button {
 
@@ -197,12 +201,8 @@ var vbox:VBox = VBox {
     translateX: gapX
     translateY: gapY
     content: [  calendarPicker,
-                /*Rectangle {
-                    height: gapY
-                },*/
                 slotComboBox    ]
 }
-
 
 var hbox:HBox = HBox {
     content:[   Group {
@@ -215,29 +215,29 @@ var hbox:HBox = HBox {
 }
 
 var dayText:Text = Text {
-                            x: gapX+0
-                            y:22
-                            content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
-                            fill: TEXT_COLOR
-                        }
+                        x: gapX+0
+                        y:22
+                        content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                        fill: TEXT_COLOR
+                   }
 
 var background:Group = Group {
     content: [
         // the background and top header
-                        dayText,
-                        VBox {
-                            content: [  Rectangle {
-                                            fill: Color.TRANSPARENT
-                                            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                            height: gapY
-                                        },
-                                        hbox,
-                                        Rectangle {
-                                            fill: Color.TRANSPARENT
-                                            width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                            height: gapY
-                                        }   ]
-        }
+                dayText,
+                VBox {
+                    content: [  Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                    height: gapY
+                                },
+                                hbox,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                    height: gapY
+                                }   ]
+                }
     ]
 }
 
@@ -248,9 +248,6 @@ function x(x:Integer):Integer {
 function y(y:Integer):Integer {
     return y + imagen.y as Integer ;
 }
-
-
-
 
 var resourceBean:ResourceBean = new ResourceBean();
 
@@ -453,6 +450,52 @@ function startConfirmaRequest(texto:String):Void {
     };
     request.start();
 }
+
+function doRequest(url:String) {
+    request = HttpRequest {
+
+        location: url;
+
+        onInput: function(is: java.io.InputStream){
+            // use input stream to access content here.
+            // can use input.available() to see how many bytes are available.
+                PullParser {
+                    documentType:PullParser.JSON
+                    input: is
+                    onEvent: function(event: Event) {
+                                java.lang.System.out.println("===> {event.level}");
+                                if (event.type == PullParser.START_ELEMENT and event.level == 1) {
+                                    java.lang.System.out.println("Start a new element {event.qname.name}");
+                                    var qAttr : QName = QName {name : "id"};
+                                    var attVal : String = event.getAttributeValue(qAttr);
+                                    java.lang.System.out.println("Attribute ID value {attVal}");
+                                }
+                                else if (event.type == PullParser.END_ELEMENT) {
+                                    var nodeName : String = event.qname.name;
+                                    java.lang.System.out.println("End element {nodeName}");
+                                    // Now we extract the text only if the node is name or surname
+                                    if (nodeName == "name" or nodeName == "surname") {
+                                        var textVal : String = event.text;
+                                        java.lang.System.out.println("Text {textVal}");
+                                    }
+                                }
+                    }
+
+                }.parse();
+        }
+
+        onException: function(ex: java.lang.Exception) {
+            println("onException - exception: {ex.getClass()} {ex.getMessage()}");
+        }
+
+        onDone: function() {
+            println("onDone") ;
+            request.stop();
+        }
+    };
+    request.start();
+}
+
 
 function dayOfWeek(dayOfWeek:Integer):String {
     var days:String[]=["","Domingo","Lunes","Martes","Miercoles", "Jueves","Viernes","Sabado"];
