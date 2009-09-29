@@ -8,6 +8,14 @@
         <servlet-name>Main</servlet-name>
         <url-pattern>/Main</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetVisualConfiguration</servlet-name>
+        <servlet-class>pruebas.GetVisualConfiguration</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetVisualConfiguration</servlet-name>
+        <url-pattern>/GetVisualConfiguration</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
