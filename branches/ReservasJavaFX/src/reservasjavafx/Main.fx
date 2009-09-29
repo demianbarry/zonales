@@ -47,7 +47,7 @@ var stageDragInitialX:Number;
 var stageDragInitialY:Number;
 
 var coords :String;
-var panelWidth:Number = 0.42;
+var panelWidth:Number = 0.4;
 
 var imageOpacity:Float = 1;
 
@@ -76,7 +76,6 @@ var myPopupMenu:popupMenu = popupMenu {
 // the picker
 var calendarPicker:CalendarPicker = CalendarPicker {
         mode: CalendarPicker.MODE_SINGLE
-        
 };
 
 var currentCalendar = bind calendarPicker.calendar on replace {
@@ -186,13 +185,22 @@ var button:Button = Button {
 
 }
 
-var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
+var slotComboBox : ComboBox = ComboBox {
+};
+slotComboBox.select(0);
+slotComboBox.skin.node.visible = false;
 
+var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
+slotComboBox.skin.control.translateY = 150;
 
 var vbox:VBox = VBox {
     translateX: gapX
     translateY: gapY
-    content: [  calendarPicker  ]
+    content: [  calendarPicker,
+                /*Rectangle {
+                    height: gapY
+                },*/
+                slotComboBox    ]
 }
 
 
@@ -208,29 +216,15 @@ var hbox:HBox = HBox {
 
 var dayText:Text = Text {
                             x: gapX+0
-                            y:17 content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                            y:22
+                            content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
                             fill: TEXT_COLOR
                         }
-
-
-var slotComboBox : ComboBox = ComboBox {
-    translateX: bind (dayText.x + dayText.boundsInLocal.width + gapX*2)
-};
-slotComboBox.select(0);
-slotComboBox.skin.node.visible = false;
 
 var background:Group = Group {
     content: [
         // the background and top header
                         dayText,
-                        slotComboBox,
-                        Line {
-                            stroke: TEXT_COLOR
-                            startX: 0
-                            endX: (imagen.image.width + gapX*2) * (1 + panelWidth)
-                            startY: 30
-                            endY: 30
-                        },
                         VBox {
                             content: [  Rectangle {
                                             fill: Color.TRANSPARENT
