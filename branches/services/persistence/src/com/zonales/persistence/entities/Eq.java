@@ -32,7 +32,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "eq", catalog = "services", schema = "")
 @NamedQueries({@NamedQuery(name = "Eq.findAll", query = "SELECT e FROM Eq e"), @NamedQuery(name = "Eq.findById", query = "SELECT e FROM Eq e WHERE e.id = :id"), @NamedQuery(name = "Eq.findByNombre", query = "SELECT e FROM Eq e WHERE e.nombre = :nombre"), @NamedQuery(name = "Eq.findByDescripcion", query = "SELECT e FROM Eq e WHERE e.descripcion = :descripcion"), @NamedQuery(name = "Eq.findByObservaciones", query = "SELECT e FROM Eq e WHERE e.observaciones = :observaciones"), @NamedQuery(name = "Eq.findByUserId", query = "SELECT e FROM Eq e WHERE e.userId = :userId"), @NamedQuery(name = "Eq.findBySolrqueryBq", query = "SELECT e FROM Eq e WHERE e.solrqueryBq = :solrqueryBq")})
-public class Eq implements Serializable {
+public class Eq extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -144,6 +144,11 @@ public class Eq implements Serializable {
     @Override
     public String toString() {
         return "com.zonales.persistence.entities.Eq[id=" + id + "]";
+    }
+
+    @Override
+    public Object getPK() {
+        return id;
     }
 
 }

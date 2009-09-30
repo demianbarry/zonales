@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "valor_permitido_atrcomp", catalog = "services", schema = "")
 @NamedQueries({@NamedQuery(name = "ValorPermitidoAtrcomp.findAll", query = "SELECT v FROM ValorPermitidoAtrcomp v"), @NamedQuery(name = "ValorPermitidoAtrcomp.findById", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.id = :id"), @NamedQuery(name = "ValorPermitidoAtrcomp.findByValor", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.valor = :valor"), @NamedQuery(name = "ValorPermitidoAtrcomp.findByValorHasta", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.valorHasta = :valorHasta"), @NamedQuery(name = "ValorPermitidoAtrcomp.findByDescripcion", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.descripcion = :descripcion"), @NamedQuery(name = "ValorPermitidoAtrcomp.findByObservaciones", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.observaciones = :observaciones"), @NamedQuery(name = "ValorPermitidoAtrcomp.findByValorPermitidoFiltroPadre", query = "SELECT v FROM ValorPermitidoAtrcomp v WHERE v.valorPermitidoFiltroPadre = :valorPermitidoFiltroPadre")})
-public class ValorPermitidoAtrcomp implements Serializable {
+public class ValorPermitidoAtrcomp extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -161,6 +161,11 @@ public class ValorPermitidoAtrcomp implements Serializable {
     @Override
     public String toString() {
         return "com.zonales.persistence.entities.ValorPermitidoAtrcomp[id=" + id + "]";
+    }
+
+    @Override
+    public Object getPK() {
+        return id;
     }
 
 }

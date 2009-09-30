@@ -28,7 +28,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "clase_atributo", catalog = "services", schema = "")
 @NamedQueries({@NamedQuery(name = "ClaseAtributo.findAll", query = "SELECT c FROM ClaseAtributo c"), @NamedQuery(name = "ClaseAtributo.findById", query = "SELECT c FROM ClaseAtributo c WHERE c.id = :id"), @NamedQuery(name = "ClaseAtributo.findByNombre", query = "SELECT c FROM ClaseAtributo c WHERE c.nombre = :nombre"), @NamedQuery(name = "ClaseAtributo.findByDescripcion", query = "SELECT c FROM ClaseAtributo c WHERE c.descripcion = :descripcion"), @NamedQuery(name = "ClaseAtributo.findByObservaciones", query = "SELECT c FROM ClaseAtributo c WHERE c.observaciones = :observaciones"), @NamedQuery(name = "ClaseAtributo.findByTipo", query = "SELECT c FROM ClaseAtributo c WHERE c.tipo = :tipo"), @NamedQuery(name = "ClaseAtributo.findByObligatorio", query = "SELECT c FROM ClaseAtributo c WHERE c.obligatorio = :obligatorio"), @NamedQuery(name = "ClaseAtributo.findByQryLovExterna", query = "SELECT c FROM ClaseAtributo c WHERE c.qryLovExterna = :qryLovExterna"), @NamedQuery(name = "ClaseAtributo.findByFiltraXPadre", query = "SELECT c FROM ClaseAtributo c WHERE c.filtraXPadre = :filtraXPadre"), @NamedQuery(name = "ClaseAtributo.findByQryFiltraXPadre", query = "SELECT c FROM ClaseAtributo c WHERE c.qryFiltraXPadre = :qryFiltraXPadre"), @NamedQuery(name = "ClaseAtributo.findByEcualizable", query = "SELECT c FROM ClaseAtributo c WHERE c.ecualizable = :ecualizable")})
-public class ClaseAtributo implements Serializable {
+public class ClaseAtributo extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -230,6 +230,11 @@ public class ClaseAtributo implements Serializable {
     @Override
     public String toString() {
         return "com.zonales.persistence.entities.ClaseAtributo[id=" + id + "]";
+    }
+
+    @Override
+    public Object getPK() {
+        return id;
     }
 
 }

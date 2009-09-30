@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "eq_atributos", catalog = "services", schema = "")
 @NamedQueries({@NamedQuery(name = "EqAtributos.findAll", query = "SELECT e FROM EqAtributos e"), @NamedQuery(name = "EqAtributos.findById", query = "SELECT e FROM EqAtributos e WHERE e.id = :id"), @NamedQuery(name = "EqAtributos.findByValor", query = "SELECT e FROM EqAtributos e WHERE e.valor = :valor"), @NamedQuery(name = "EqAtributos.findByPeso", query = "SELECT e FROM EqAtributos e WHERE e.peso = :peso")})
-public class EqAtributos implements Serializable {
+public class EqAtributos extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,6 +121,11 @@ public class EqAtributos implements Serializable {
     @Override
     public String toString() {
         return "com.zonales.persistence.entities.EqAtributos[id=" + id + "]";
+    }
+
+    @Override
+    public Object getPK() {
+        return id;
     }
 
 }
