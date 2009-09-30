@@ -19,8 +19,9 @@ import javax.persistence.Version;
  *
  * @author fep
  */
-@org.hibernate.annotations.Entity(optimisticLock = org.hibernate.annotations.OptimisticLockType.ALL,
-dynamicUpdate = true)
+@org.hibernate.annotations.Entity(
+    optimisticLock = org.hibernate.annotations.OptimisticLockType.ALL,
+    dynamicUpdate = true)
 public abstract class BaseEntity {
 
     public abstract Object getPK();
