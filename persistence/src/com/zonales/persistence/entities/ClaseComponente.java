@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "clase_componente", catalog = "services", schema = "")
 @NamedQueries({@NamedQuery(name = "ClaseComponente.findAll", query = "SELECT c FROM ClaseComponente c"), @NamedQuery(name = "ClaseComponente.findById", query = "SELECT c FROM ClaseComponente c WHERE c.id = :id"), @NamedQuery(name = "ClaseComponente.findByNombre", query = "SELECT c FROM ClaseComponente c WHERE c.nombre = :nombre"), @NamedQuery(name = "ClaseComponente.findByDescripcion", query = "SELECT c FROM ClaseComponente c WHERE c.descripcion = :descripcion"), @NamedQuery(name = "ClaseComponente.findByObservaciones", query = "SELECT c FROM ClaseComponente c WHERE c.observaciones = :observaciones")})
-public class ClaseComponente implements Serializable {
+public class ClaseComponente extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,6 +118,11 @@ public class ClaseComponente implements Serializable {
     @Override
     public String toString() {
         return "com.zonales.persistence.entities.ClaseComponente[id=" + id + "]";
+    }
+
+    @Override
+    public Object getPK() {
+        return id;
     }
 
 }
