@@ -30,8 +30,14 @@ import java.util.Calendar;
 import calendarpicker.ComboBox;
 
 
-import javafx.data.pull.Event;
-import javafx.data.xml.QName;
+
+import java.io.InputStream;
+
+import javafx.reflect.FXLocal;
+import javafx.reflect.FXLocal.ClassType;
+import javafx.reflect.FXLocal.Context;
+import javafx.reflect.FXObjectValue;
+import javafx.reflect.FXVarMember;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -354,7 +360,6 @@ var cancelButton:Button = Button {
             }
 };
 
-
 var myScene:Scene = Scene {
     fill: Color.web("#FF9900")
     content: [background, resourceForm, okButton, cancelButton]
@@ -456,33 +461,7 @@ function doRequest(url:String) {
 
         location: url;
 
-        onInput: function(is: java.io.InputStream){
-            // use input stream to access content here.
-            // can use input.available() to see how many bytes are available.
-                PullParser {
-                    documentType:PullParser.JSON
-                    input: is
-                    onEvent: function(event: Event) {
-                                java.lang.System.out.println("===> {event.level}");
-                                if (event.type == PullParser.START_ELEMENT and event.level == 1) {
-                                    java.lang.System.out.println("Start a new element {event.qname.name}");
-                                    var qAttr : QName = QName {name : "id"};
-                                    var attVal : String = event.getAttributeValue(qAttr);
-                                    java.lang.System.out.println("Attribute ID value {attVal}");
-                                }
-                                else if (event.type == PullParser.END_ELEMENT) {
-                                    var nodeName : String = event.qname.name;
-                                    java.lang.System.out.println("End element {nodeName}");
-                                    // Now we extract the text only if the node is name or surname
-                                    if (nodeName == "name" or nodeName == "surname") {
-                                        var textVal : String = event.text;
-                                        java.lang.System.out.println("Text {textVal}");
-                                    }
-                                }
-                    }
-
-                }.parse();
-        }
+        onInput: parseResources
 
         onException: function(ex: java.lang.Exception) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
@@ -495,6 +474,75 @@ function doRequest(url:String) {
     };
     request.start();
 }
+
+function parseResources(is:InputStream):Void {
+
+    var parser = PullParser {
+                    documentType:PullParser.JSON
+                    input: is
+                    //onEvent: function(event: Event) {
+                                    /*if(event.type == PullParser.START_VALUE)
+                                        java.lang.System.out.println("{event.typeName} - Start a new element {event.name}")
+                                    else if(event.type == PullParser.TEXT)
+                                        java.lang.System.out.println("Value: {event.text}")
+                                    else if(event.type == PullParser.INTEGER)
+                                        java.lang.System.out.println("Value: {event.integerValue}")
+                                    else if(event.type == PullParser.NUMBER)
+                                        java.lang.System.out.println("Value: {event.numberValue}")
+                                    else if(event.type == PullParser.FALSE or event.type == PullParser.TRUE)
+                                        java.lang.System.out.println("Value: {event.booleanValue}")
+                                    else
+                                        java.lang.System.out.println("----> {event.typeName}");*/
+                    //}
+    }//.parse();
+
+    while(parser.event.type != PullParser.END_DOCUMENT) {
+        parser.seek("type");
+        if(parser.event.type == PullParser.START_VALUE) {
+            //parser.forward();
+            var res:CustomResource = CustomResource{};
+            parseResource(res, parser);
+            java.lang.System.out.println("---> {res.type}");
+        }
+
+    }
+
+}
+
+function parseResource(resource:CustomResource, parser:PullParser) {
+    var local: FXLocal = new FXLocal();
+    var context: Context = local.getContext();
+    var fxVarMember: FXVarMember;
+    var localClassType: ClassType;
+    var objectValue: FXObjectValue;
+
+    localClassType = context.makeClassRef(resource.getClass());
+    objectValue = context.mirrorOf(resource);
+
+    while(parser.event.type != PullParser.END_DOCUMENT) {
+        parser.forward();        
+        if(parser.event.type == PullParser.END_ARRAY_ELEMENT) {
+            break;
+        } else if (parser.event.type == PullParser.START_VALUE) {
+            fxVarMember =  localClassType.getVariable(parser.event.name);
+        } else if (parser.event.type == PullParser.TEXT) {
+            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.text}");
+            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.text));
+        } else if (parser.event.type == PullParser.INTEGER) {
+            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.integerValue}");
+            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.integerValue));
+        } else if (parser.event.type == PullParser.TRUE) {
+            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.booleanValue}");
+            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.booleanValue));
+        } else if (parser.event.type == PullParser.NUMBER) {
+            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.numberValue}");
+            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.numberValue));
+        }
+    }
+
+}
+
+
 
 
 function dayOfWeek(dayOfWeek:Integer):String {
