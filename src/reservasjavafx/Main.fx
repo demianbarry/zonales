@@ -34,10 +34,13 @@ import calendarpicker.ComboBox;
 import java.io.InputStream;
 
 import javafx.reflect.FXLocal;
+import javafx.reflect.FXType;
 import javafx.reflect.FXLocal.ClassType;
 import javafx.reflect.FXLocal.Context;
 import javafx.reflect.FXObjectValue;
 import javafx.reflect.FXVarMember;
+import java.awt.Event;
+import com.sun.javafx.data.pull.impl.StreamException;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -95,7 +98,7 @@ var currentCalendar = bind calendarPicker.calendar on replace {
 var layout:Group = Group {
     content: [
         // the actual image
-        imagen,
+        /*imagen,
         CustomResource {
             points: [   x(0),y(190),
                         x(71),y(172),
@@ -105,9 +108,7 @@ var layout:Group = Group {
             fill: Color.TRANSPARENT
             stroke: Color.TRANSPARENT
             nroRecurso: 1
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
+            onMouseClicked:mousePressed
         },
         CustomResource {
             points: [   x(128),y(161),
@@ -186,7 +187,7 @@ var layout:Group = Group {
                 mousePressed(e);
             }
         }
-        myPopupMenu
+        myPopupMenu*/
     ]
 };
 doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
@@ -476,6 +477,7 @@ function doRequest(url:String) {
 }
 
 function parseResources(is:InputStream):Void {
+    delete layout.content;
 
     var parser = PullParser {
                     documentType:PullParser.JSON
@@ -496,54 +498,94 @@ function parseResources(is:InputStream):Void {
                     //}
     }//.parse();
 
+    insert imagen into layout.content;
     while(parser.event.type != PullParser.END_DOCUMENT) {
-        parser.seek("type");
-        if(parser.event.type == PullParser.START_VALUE) {
-            //parser.forward();
-            var res:CustomResource = CustomResource{};
-            parseResource(res, parser);
-            java.lang.System.out.println("---> {res.type}");
+        if (parser.event.type == PullParser.START_ARRAY_ELEMENT) {
+            var resource = parseResource(parser);
+            insert resource into layout.content;
+            java.lang.System.out.println(":::::::::::::::::::::::::::::{resource.nroRecurso}---{resource.points}");
+        }        
+        try {
+            parser.forward();
+        } catch(ex:StreamException) {
+
         }
 
     }
-
+    insert myPopupMenu into layout.content;
 }
 
-function parseResource(resource:CustomResource, parser:PullParser) {
+function parseResource(parser:PullParser):CustomResource {
+    var resource = CustomResource{};
+
     var local: FXLocal = new FXLocal();
     var context: Context = local.getContext();
     var fxVarMember: FXVarMember;
     var localClassType: ClassType;
     var objectValue: FXObjectValue;
-
     localClassType = context.makeClassRef(resource.getClass());
     objectValue = context.mirrorOf(resource);
 
-    while(parser.event.type != PullParser.END_DOCUMENT) {
+    var evt = bind parser.event;
+
+    while(evt.type != PullParser.END_DOCUMENT) {        
         parser.forward();        
+        if(evt.type == PullParser.END_ARRAY_ELEMENT) {
+            break;
+        } else if (evt.type == PullParser.START_ARRAY_ELEMENT) {
+            resource.points = parsePoints(parser);
+        } else if (evt.type == PullParser.START_VALUE) {
+            parser.forward();
+            if (evt.type == PullParser.TEXT) {
+                    if(evt.name.equalsIgnoreCase("type")) {
+                        if(evt.text.equalsIgnoreCase("ELLIPSE"))
+                            resource.type = CustomResource.ELLIPSE
+                        else
+                            resource.type = CustomResource.POLYGON
+                    } else
+                    if(evt.name.equalsIgnoreCase("fill")) {
+                            resource.fill = Color.web(evt.text)
+                    } else
+                    if(evt.name.equalsIgnoreCase("stroke")) {
+                            resource.stroke = Color.web(evt.text)
+                    }
+
+            } else if (evt.type == PullParser.INTEGER) {
+                    if(evt.name.equalsIgnoreCase("nroRecurso")) {
+                            resource.nroRecurso = evt.integerValue
+                    } else
+                    if(evt.name.equalsIgnoreCase("fill")) {
+                            resource.fill = Color.web("white",evt.integerValue)
+                    } else
+                    if(evt.name.equalsIgnoreCase("stroke")) {
+                            resource.stroke = Color.web("white",evt.integerValue)
+                    }
+            } else if (evt.type == PullParser.TRUE) {
+            } else if (evt.type == PullParser.NUMBER) {
+            }
+        }
+    }
+    return resource;
+}
+
+function parsePoints(parser:PullParser):Number[] {
+    var points:Number[];
+
+    while(parser.event.type != PullParser.END_DOCUMENT) {        
+        parser.forward();
         if(parser.event.type == PullParser.END_ARRAY_ELEMENT) {
             break;
         } else if (parser.event.type == PullParser.START_VALUE) {
-            fxVarMember =  localClassType.getVariable(parser.event.name);
-        } else if (parser.event.type == PullParser.TEXT) {
-            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.text}");
-            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.text));
-        } else if (parser.event.type == PullParser.INTEGER) {
-            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.integerValue}");
-            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.integerValue));
-        } else if (parser.event.type == PullParser.TRUE) {
-            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.booleanValue}");
-            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.booleanValue));
-        } else if (parser.event.type == PullParser.NUMBER) {
-            java.lang.System.out.println(".... {parser.event.typeName}....{parser.event.numberValue}");
-            fxVarMember.setValue(objectValue, context.mirrorOf(parser.event.numberValue));
+            parser.forward();
+        }
+        if (parser.event.type == PullParser.INTEGER) {
+                if(parser.event.name.equalsIgnoreCase(""))
+            insert parser.event.integerValue into points;
+            java.lang.System.out.println("{parser.event.name}---{parser.event.integerValue}");
         }
     }
-
+    return points
 }
-
-
-
 
 function dayOfWeek(dayOfWeek:Integer):String {
     var days:String[]=["","Domingo","Lunes","Martes","Miercoles", "Jueves","Viernes","Sabado"];

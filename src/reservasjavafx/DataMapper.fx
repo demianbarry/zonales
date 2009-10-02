@@ -54,6 +54,7 @@ class Mapper {
         localClassType = context.makeClassRef(fxObject.getClass());
         objectValue = context.mirrorOf(fxObject);
 
+
         def parser = PullParser {
         documentType: PullParser.JSON;
         input: bin;

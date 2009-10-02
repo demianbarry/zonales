@@ -27,15 +27,15 @@ public def POLYGON:String = "Polygon";
 
 public class CustomResource extends CustomNode {
 
-    public-init var points: Number[];
-    public-init var nroRecurso: Integer;
-    public-init var fill: Color;
-    public-init var stroke: Color;
-    public-init var x: Number;
-    public-init var y: Number;
-    public-init var radX: Number;
-    public-init var radY: Number;
-    public-init var type: String;
+    public var points: Number[];
+    public var nroRecurso: Integer;
+    public var fill: Color;
+    public var stroke: Color;
+    public var x: Number;
+    public var y: Number;
+    public var radX: Number;
+    public var radY: Number;
+    public var type: String;
 
     //var applet: Applet = FX.getArgument("javafx.applet") as Applet;
     //var jsObject = new JavaScriptUtil(applet);
