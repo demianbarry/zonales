@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Indicó la taglib para poder llamar a la función que recupera los labels de acuerdo al idioma del navegador -->
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<!-- Instancio el DataBinder estadar, que vincula cada anotacion ${...} con el objeto correspondiente -->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./abmcAtributosWin"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="abmcAtributosWin"
+        title="Administrar Atributos"
+        width="100%"
+        height="100%"
+        use="com.zonales.userinterface.controllers.AbmcAtributosController"
+    >
+        <grid   id="atributos"
+                fixedLayout="true"
+                width="600px"
+                model="@{abmcAtributosWin.atributosModel.all}"
+        >
+            <rows>
+                <row self="@{each=att}">
+                    <detail open="false">
+                        <checkbox id="editar"
+                                label="Editar Atributo"
+                        />
+
+                        <separator bar="true"/>
+
+                        <label value="Nombre: "/>
+                        <textbox id="nombre"
+                                value="@{att.nombre}"
+                                readonly="${editar.checked}"
+                        />
+
+                        <label value="Descripcion"/>
+                        <textbox id="descripcion"
+                                value="@{att.descripcion}"
+                                readonly="${editar.checked}"
+                        />
+
+                        <label value="Observaciones"/>
+                        <textbox id="observaciones"
+                                value="@{att.observaciones}"
+                                rows="5"
+                                readonly="${editar.checked}"
+                        />
+
+                        <checkbox id="filtraPorPadre"
+                                    label="Filtrar por padre"
+                                    checked="@{att.filtrarPorPadre}"
+                                   readonly="${editar.checked}"
+                        />
+                        <textbox id="qryFiltraPorPadre"
+                                visible="${filtrarPorPadre.checked}"
+                                value="@{att.queryFiltrarPorPadre}"
+                                readonly="${editar.checked}"
+                        />
+
+                        <label value="Consulta externa"/>
+                        <textbox id="qryLovExterna"
+                                    value="@{att.queryLovExterna}"
+                                    readonly="${editar.checked}"
+                        />
+
+                        <label value="Tipo de atributo"/>
+                        <textbox id="tipo"
+                                    value="@{att.tipo}"
+                                    readonly="${editar.checked}"
+                        />
+
+                        <checkbox id="ecualizable"
+                                    label="Ecualizable"
+                                    checked="@{att.equalizable}"
+                                    readonly="${editar.checked}"
+                        />
+                        <checkbox id="obligatorio"
+                                    label="Obligatorio"
+                                    checked="@{att.obligatorio}"
+                                    readonly="${editar.checked}"
+                        />
+                    </detail>
+                </row>
+            </rows>
+        </grid>
+    </window>
+</zk>

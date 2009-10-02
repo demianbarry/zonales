@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Indicó la taglib para poder llamar a la función que recupera los labels de acuerdo al idioma del navegador -->
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<!-- Instancio el DataBinder estadar, que vincula cada anotacion ${...} con el objeto correspondiente -->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./abmcEqualizador"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="abmcEqualizador"
+        title="Administrar Ecualizadores"
+        width="100%"
+        height="100%"
+        use="com.zonales.userinterface.controllers.AbmcEcualizadorController"
+    >
+        <columnlayout>
+            <!--
+            columna que muestra
+            la lista de ecualizadores
+            (solo sus nombres)
+            -->
+            <columnchildren width="30%" 
+                            style="padding: 5px"
+            >
+                <listbox id="listaEcualizadores"
+                         model="@{abmcEqualizador.ecualizadorModel.all}"
+                >
+                    <listhead>
+                        <listheader label="Ecualizador"/>
+                    </listhead>
+                    <listitem self="@{each=eq}">
+                        <listcell label="@{eq.nombre}"/>
+                    </listitem>
+                </listbox>
+            </columnchildren>
+            <!--
+            columna que muestra
+            los detalles
+            del ecualizador seleccionado
+            en la columna anterior
+            -->
+            <columnchildren width="30%" 
+                            style="padding: 5px"
+            >
+                <panel  height="100px"
+                        style="margin-bottom:10px"
+			title="Editando ecualizador" 
+                        border="normal"
+                        maximizable="true"
+			collapsible="true"
+                >
+                    <vbox>
+                        <textbox id="nombreEqualizador"/>
+                        <textbox id="descripcion"/>
+                        <textbox id="queryLov"/>
+                        <textbox id="observaciones"/>
+                        <combobox>
+		     		<comboitem label=""/>
+	                </combobox>
+                    </vbox>
+                </panel>
+
+            </columnchildren>
+        </columnlayout>
+    </window>
+</zk>
+
