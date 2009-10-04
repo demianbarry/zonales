@@ -5,7 +5,7 @@
 
 package services;
 
-import entities.JosSlots;
+import java.util.List;
 
 /**
  *
@@ -15,12 +15,15 @@ public class GetConfigStruct {
 
     String nombre = "config";
     Range range;
-    JosSlots[] slots;
+    List<Slots> slots;
 
-    public GetConfigStruct(Range range, JosSlots[] slots) {
+    public GetConfigStruct(Range range) {
         this.range = range;
-        this.slots = slots;
     }
 
+    public void add(Slots slot) {
+        this.slots.add(slot);
+    }
+    
 }
 

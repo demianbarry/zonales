@@ -5,8 +5,7 @@
 
 package services;
 
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -16,14 +15,14 @@ public class Slots {
 
     int id;
     String day;
-    Time from;
-    Time to;
-    Timestamp min;
-    Timestamp max;
-    Timestamp steep;
-    Timestamp tolerance;
+    Date from;
+    Date to;
+    Date min;
+    Date max;
+    Date steep;
+    Date tolerance;
 
-    public Slots(int id, String day, Time from, Time to, Timestamp min, Timestamp max, Timestamp steep, Timestamp tolerance) {
+    public Slots(int id, String day, Date from, Date to, Date min, Date max, Date steep, Date tolerance) {
         this.id = id;
         this.day = day;
         this.from = from;

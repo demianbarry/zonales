@@ -39,7 +39,7 @@ public class Main extends HttpServlet {
 
         if (service.compareTo("getConfig") == 0) {
             GetConfigService getConfig = new GetConfigService();
-            response = getConfig.serve(request, response);
+            getConfig.serve(request, response);
         }
         
         }
