@@ -160,7 +160,7 @@ public class BaseModel {
 
     public static EntityManager getEntityManager() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("g2p-tracker-PU");
+            emf = Persistence.createEntityManagerFactory("ReservasServletPU");
         }
         return emf.createEntityManager();
     }

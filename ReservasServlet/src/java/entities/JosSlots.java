@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Nosotros
+ * @author Nos
  */
 @Entity
 @Table(name = "jos_slots")
@@ -38,8 +38,7 @@ public class JosSlots extends BaseEntity implements Serializable {
     private Integer slotId;
     @Basic(optional = false)
     @Column(name = "day")
-    @Temporal(TemporalType.DATE)
-    private Date day;
+    private String day;
     @Basic(optional = false)
     @Column(name = "hour_from")
     @Temporal(TemporalType.TIME)
@@ -50,19 +49,19 @@ public class JosSlots extends BaseEntity implements Serializable {
     private Date hourTo;
     @Basic(optional = false)
     @Column(name = "max_duration")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date maxDuration;
     @Basic(optional = false)
     @Column(name = "min_duration")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date minDuration;
     @Basic(optional = false)
     @Column(name = "steep")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date steep;
     @Basic(optional = false)
     @Column(name = "tolerance")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date tolerance;
 
     public JosSlots() {
@@ -72,7 +71,7 @@ public class JosSlots extends BaseEntity implements Serializable {
         this.slotId = slotId;
     }
 
-    public JosSlots(Integer slotId, Date day, Date hourFrom, Date hourTo, Date maxDuration, Date minDuration, Date steep, Date tolerance) {
+    public JosSlots(Integer slotId, String day, Date hourFrom, Date hourTo, Date maxDuration, Date minDuration, Date steep, Date tolerance) {
         this.slotId = slotId;
         this.day = day;
         this.hourFrom = hourFrom;
@@ -91,11 +90,11 @@ public class JosSlots extends BaseEntity implements Serializable {
         this.slotId = slotId;
     }
 
-    public Date getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(Date day) {
+    public void setDay(String day) {
         this.day = day;
     }
 

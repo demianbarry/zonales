@@ -3,6 +3,22 @@
   <persistence-unit name="ReservasServletPU" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>services.jdbc.mysql</jta-data-source>
+    <class>entities.JosCities</class>
+    <class>entities.JosEvents</class>
+    <class>entities.JosLocations</class>
+    <class>entities.JosProfessionals</class>
+    <class>entities.JosProfessionalsHasJosSpecialties</class>
+    <class>entities.JosReserve</class>
+    <class>entities.JosReserveHasJosResources</class>
+    <class>entities.JosResourceTypes</class>
+    <class>entities.JosResources</class>
+    <class>entities.JosResourcesGroup</class>
+    <class>entities.JosSlots</class>
+    <class>entities.JosSlotsHasJosResourcesGroup</class>
+    <class>entities.JosSpecialties</class>
+    <class>entities.JosSuppliers</class>
+    <class>entities.Phones</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
 </persistence>
