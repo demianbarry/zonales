@@ -27,7 +27,7 @@ public def POLYGON:String = "Polygon";
 
 public class CustomResource extends CustomNode {
 
-    public var points: Number[];
+    public var points: Integer[];
     public var nroRecurso: Integer;
     public var fill: Color;
     public var stroke: Color;
@@ -44,17 +44,10 @@ public class CustomResource extends CustomNode {
     var resource : Group;
 
     public override function create(): Node {
-        resource = createResource(points, nroRecurso, fill, stroke);
-        return Group {
-            content: [
-                resource
-            ]
-        };
+        return createResource(points, nroRecurso, fill, stroke);
     }
 
     function createResource (points: Number[], nroRecurso: Number, fillColor: Color, strokeColor: Color) {
-        Group {
-            content: [
                 if(type.equals(ELLIPSE)) {
                     Ellipse {
                         cursor: Cursor.HAND
@@ -73,7 +66,5 @@ public class CustomResource extends CustomNode {
                         stroke: strokeColor
                     }
                 }
-            ]
-        }
     }
 }

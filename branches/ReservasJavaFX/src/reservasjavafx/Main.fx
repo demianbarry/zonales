@@ -41,12 +41,13 @@ import javafx.reflect.FXObjectValue;
 import javafx.reflect.FXVarMember;
 import java.awt.Event;
 import com.sun.javafx.data.pull.impl.StreamException;
+import javafx.util.Sequences;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
 
-var maxCol:Integer = ((image.width as Integer) / 100) - 1;
-var maxRow:Integer = ((image.height as Integer) / 100) - 1;
+//var maxCol:Integer = ((image.width as Integer) / 100) - 1;
+//var maxRow:Integer = ((image.height as Integer) / 100) - 1;
 
 var gapX = 10;
 var gapY = 40;
@@ -96,7 +97,8 @@ var currentCalendar = bind calendarPicker.calendar on replace {
 
 
 var layout:Group = Group {
-    content: [
+    //content: []
+    /*[
         // the actual image
         /*imagen,
         CustomResource {
@@ -187,8 +189,8 @@ var layout:Group = Group {
                 mousePressed(e);
             }
         }
-        myPopupMenu*/
-    ]
+        myPopupMenu
+    ]*/
 };
 doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
 
@@ -202,54 +204,25 @@ slotComboBox.select(0);
 slotComboBox.skin.node.visible = false;
 
 var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
-slotComboBox.skin.control.translateY = 150;
+slotComboBox.skin.control.translateY = 170;
 
 var vbox:VBox = VBox {
     translateX: gapX
     translateY: gapY
-    content: [  calendarPicker,
-                slotComboBox    ]
-}
-
-var hbox:HBox = HBox {
-    content:[   Group {
-                    content: [  Rectangle {
-                                    width: (imagen.image.width)*panelWidth - gapX*2
-                                },
-                                vbox    ]
-                },
-                layout  ]
-}
-
-var dayText:Text = Text {
-                        x: gapX+0
-                        y:22
-                        content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
-                        fill: TEXT_COLOR
-                   }
-
-var background:Group = Group {
-    content: [
-        // the background and top header
-                dayText,
-                VBox {
-                    content: [  Rectangle {
+    content: [   Group {
+                        content: [  Rectangle {
                                     fill: Color.TRANSPARENT
-                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                    height: gapY
+                                    width: (imagen.image.width)*panelWidth
+                                    height: (imagen.image.height)
                                 },
-                                hbox,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                    height: gapY
-                                }   ]
-                }
-    ]
+                                calendarPicker,
+                                slotComboBox    ]
+                       }
+                    ]
 }
 
 function x(x:Integer):Integer {
-    return x + imagen.x as Integer;
+    return  (x + imagen.x as Integer);
 }
 
 function y(y:Integer):Integer {
@@ -361,20 +334,6 @@ var cancelButton:Button = Button {
             }
 };
 
-var myScene:Scene = Scene {
-    fill: Color.web("#FF9900")
-    content: [background, resourceForm, okButton, cancelButton]
-}
-
-// show it all on screen
-var stage:Stage = Stage {
-    style: StageStyle.TRANSPARENT
-    visible: true
-    scene: myScene
-}
-
-resourceForm.presentationModel.mainScene = myScene;
-
 var request: HttpRequest;
 
 function startConsultaRequest(e:MouseEvent, url: String) {
@@ -477,7 +436,7 @@ function doRequest(url:String) {
 }
 
 function parseResources(is:InputStream):Void {
-    delete layout.content;
+    //delete layout.content;
 
     var parser = PullParser {
                     documentType:PullParser.JSON
@@ -503,28 +462,86 @@ function parseResources(is:InputStream):Void {
         if (parser.event.type == PullParser.START_ARRAY_ELEMENT) {
             var resource = parseResource(parser);
             insert resource into layout.content;
-            java.lang.System.out.println(":::::::::::::::::::::::::::::{resource.nroRecurso}---{resource.points}");
         }        
         try {
             parser.forward();
         } catch(ex:StreamException) {
-
         }
 
     }
+
+    insert CustomResource {
+            points: [   x(450),y(137),
+                        x(450),y(130),
+                        x(507),y(128),
+                        x(526),y(136)   ]
+            fill: Color.BLACK
+            stroke: Color.TRANSPARENT
+            nroRecurso: 8
+            onMouseClicked:function(e) {
+                mousePressed(e);
+            }
+        } into layout.content;
+
+        var r:CustomResource = layout.content[2] as CustomResource;
+
+        java.lang.System.out.println("=> {r.fill}--{r.nroRecurso}--{r.visible}--{r.type}");
+
+        r= layout.content[8] as CustomResource;
+
+        java.lang.System.out.println("=> {r.fill}--{r.nroRecurso}--{r.points}");
     insert myPopupMenu into layout.content;
 }
 
-function parseResource(parser:PullParser):CustomResource {
-    var resource = CustomResource{};
+var hbox:HBox = HBox {
+    content: bind [ vbox,
+                    layout  ]
+}
 
-    var local: FXLocal = new FXLocal();
-    var context: Context = local.getContext();
-    var fxVarMember: FXVarMember;
-    var localClassType: ClassType;
-    var objectValue: FXObjectValue;
-    localClassType = context.makeClassRef(resource.getClass());
-    objectValue = context.mirrorOf(resource);
+var dayText:Text = Text {
+                        x: gapX+0
+                        y:22
+                        content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                        fill: TEXT_COLOR
+                   }
+
+var background:Group = Group {
+    content: bind [
+        // the background and top header
+                dayText,
+                VBox {
+                    content: bind [  Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                    height: gapY
+                                },
+                                hbox,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
+                                    height: gapY
+                                }   ]
+                }
+    ]
+}
+
+function parseResource(parser:PullParser):CustomResource {
+    var resource = CustomResource{            };
+
+
+    var type:String;
+
+    var fill:String;
+
+    var stroke:String;
+
+    var intFill:Integer;
+
+    var intStroke:Integer;
+
+    var nroRecurso:Integer;
+
+
 
     var evt = bind parser.event;
 
@@ -539,51 +556,57 @@ function parseResource(parser:PullParser):CustomResource {
             if (evt.type == PullParser.TEXT) {
                     if(evt.name.equalsIgnoreCase("type")) {
                         if(evt.text.equalsIgnoreCase("ELLIPSE"))
-                            resource.type = CustomResource.ELLIPSE
+                            type = CustomResource.ELLIPSE
                         else
-                            resource.type = CustomResource.POLYGON
+                            type = CustomResource.POLYGON
                     } else
                     if(evt.name.equalsIgnoreCase("fill")) {
-                            resource.fill = Color.web(evt.text)
+                            fill = evt.name
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
-                            resource.stroke = Color.web(evt.text)
+                            stroke = evt.text
                     }
 
             } else if (evt.type == PullParser.INTEGER) {
                     if(evt.name.equalsIgnoreCase("nroRecurso")) {
-                            resource.nroRecurso = evt.integerValue
+                            nroRecurso = evt.integerValue
                     } else
                     if(evt.name.equalsIgnoreCase("fill")) {
-                            resource.fill = Color.web("white",evt.integerValue)
+                            intFill = evt.integerValue
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
-                            resource.stroke = Color.web("white",evt.integerValue)
+                            intStroke = evt.integerValue
                     }
             } else if (evt.type == PullParser.TRUE) {
             } else if (evt.type == PullParser.NUMBER) {
             }
         }
     }
+    java.lang.System.out.println("--------------------");
+    java.lang.System.out.println("-------> {resource.type}");
+    java.lang.System.out.println("-------> {resource.points}");
+    java.lang.System.out.println("-------> {resource.nroRecurso}");
+    java.lang.System.out.println("--------------------");
     return resource;
 }
 
-function parsePoints(parser:PullParser):Number[] {
-    var points:Number[];
+function parsePoints(parser:PullParser):Integer[] {
+    var points:Integer[];
 
     while(parser.event.type != PullParser.END_DOCUMENT) {        
         parser.forward();
-        if(parser.event.type == PullParser.END_ARRAY_ELEMENT) {
+        if(parser.event.type == PullParser.END_ARRAY) {
             break;
         } else if (parser.event.type == PullParser.START_VALUE) {
             parser.forward();
         }
         if (parser.event.type == PullParser.INTEGER) {
-                if(parser.event.name.equalsIgnoreCase(""))
-            insert parser.event.integerValue into points;
-            java.lang.System.out.println("{parser.event.name}---{parser.event.integerValue}");
+                if("x".equals(parser.event.name))
+                    insert x(parser.event.integerValue) into points
+                else if("y".equals(parser.event.name))
+                    insert y(parser.event.integerValue) into points;
         }
-    }
+    }    
     return points
 }
 
@@ -592,3 +615,18 @@ function dayOfWeek(dayOfWeek:Integer):String {
 
     return days[dayOfWeek];
 }
+
+var myScene:Scene = Scene {
+    width: imagen.image.width*(1+panelWidth)+gapX*2;
+    fill: Color.web("#FF9900")
+    content: [background, resourceForm, okButton, cancelButton]
+}
+
+// show it all on screen
+var stage:Stage = Stage {
+    style: StageStyle.TRANSPARENT
+    visible: true
+    scene: myScene
+}
+
+resourceForm.presentationModel.mainScene = myScene;
