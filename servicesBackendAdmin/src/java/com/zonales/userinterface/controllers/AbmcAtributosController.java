@@ -7,22 +7,23 @@ package com.zonales.userinterface.controllers;
 
 import com.zonales.persistence.entities.ClaseAtributo;
 import com.zonales.persistence.models.ClaseAtributoModel;
-import java.util.List;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zkplus.databind.DataBinder;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Grid;
 
 /**
  *
  * @author Cristian
  */
-public class AbmcAtributosController extends BaseController{
+public class AbmcAtributosController extends BaseController {
     private ClaseAtributoModel atributoModel;
 
     private Grid atributos;
+    private Button btnAceptar;
 
     public AbmcAtributosController(){
-        super(true);
+        super(false);
         atributoModel = new ClaseAtributoModel();
     }
 
@@ -45,6 +46,10 @@ public class AbmcAtributosController extends BaseController{
 //            atributoModel.setSelected((ClaseAtributo) model.get(0));
 //            binder.loadComponent(rolesDetail);
 //        }
+    }
+
+    public void onClick$btnAceptar(Event event){
+
     }
 
 }
