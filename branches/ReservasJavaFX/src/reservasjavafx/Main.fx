@@ -26,22 +26,9 @@ import javafx.scene.layout.VBox;
 import javafx.data.pull.PullParser;
 import javafx.scene.layout.HBox;
 import java.util.Calendar;
-
 import calendarpicker.ComboBox;
-
-
-
 import java.io.InputStream;
-
-import javafx.reflect.FXLocal;
-import javafx.reflect.FXType;
-import javafx.reflect.FXLocal.ClassType;
-import javafx.reflect.FXLocal.Context;
-import javafx.reflect.FXObjectValue;
-import javafx.reflect.FXVarMember;
-import java.awt.Event;
 import com.sun.javafx.data.pull.impl.StreamException;
-import javafx.util.Sequences;
 
 var image = Image{
     url:"{__DIR__}puzzle_picture.jpg"};
@@ -194,12 +181,7 @@ var layout:Group = Group {
 };
 doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
 
-var button:Button = Button {
-
-}
-
-var slotComboBox : ComboBox = ComboBox {
-};
+var slotComboBox : ComboBox = ComboBox {};
 slotComboBox.select(0);
 slotComboBox.skin.node.visible = false;
 
@@ -292,6 +274,7 @@ var slideLeft:Timeline = Timeline {
 function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
 
+        java.lang.System.out.println("------->{e.node}");
         if(e.button == MouseButton.SECONDARY) {
             mesa = recurso.nroRecurso as Integer;
             startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
@@ -398,12 +381,6 @@ function startConfirmaRequest(texto:String):Void {
 
         location: "http://localhost:8080/pruebasJava/Main?accion=confirma&locacion=resto&nroMesa={mesa}&horario={texto}";
 
-        onInput: function(is: java.io.InputStream) {
-            // use input stream to access content here.
-            // can use input.available() to see how many bytes are available.
-
-        }      
-
         onException: function(ex: java.lang.Exception) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
         }
@@ -441,21 +418,7 @@ function parseResources(is:InputStream):Void {
     var parser = PullParser {
                     documentType:PullParser.JSON
                     input: is
-                    //onEvent: function(event: Event) {
-                                    /*if(event.type == PullParser.START_VALUE)
-                                        java.lang.System.out.println("{event.typeName} - Start a new element {event.name}")
-                                    else if(event.type == PullParser.TEXT)
-                                        java.lang.System.out.println("Value: {event.text}")
-                                    else if(event.type == PullParser.INTEGER)
-                                        java.lang.System.out.println("Value: {event.integerValue}")
-                                    else if(event.type == PullParser.NUMBER)
-                                        java.lang.System.out.println("Value: {event.numberValue}")
-                                    else if(event.type == PullParser.FALSE or event.type == PullParser.TRUE)
-                                        java.lang.System.out.println("Value: {event.booleanValue}")
-                                    else
-                                        java.lang.System.out.println("----> {event.typeName}");*/
-                    //}
-    }//.parse();
+    }
 
     insert imagen into layout.content;
     while(parser.event.type != PullParser.END_DOCUMENT) {
@@ -470,32 +433,12 @@ function parseResources(is:InputStream):Void {
 
     }
 
-    insert CustomResource {
-            points: [   x(450),y(137),
-                        x(450),y(130),
-                        x(507),y(128),
-                        x(526),y(136)   ]
-            fill: Color.BLACK
-            stroke: Color.TRANSPARENT
-            nroRecurso: 8
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        } into layout.content;
-
-        var r:CustomResource = layout.content[2] as CustomResource;
-
-        java.lang.System.out.println("=> {r.fill}--{r.nroRecurso}--{r.visible}--{r.type}");
-
-        r= layout.content[8] as CustomResource;
-
-        java.lang.System.out.println("=> {r.fill}--{r.nroRecurso}--{r.points}");
     insert myPopupMenu into layout.content;
 }
 
 var hbox:HBox = HBox {
     content: bind [ vbox,
-                    layout  ]
+               layout  ]
 }
 
 var dayText:Text = Text {
@@ -506,11 +449,11 @@ var dayText:Text = Text {
                    }
 
 var background:Group = Group {
-    content: bind [
+    content: [
         // the background and top header
                 dayText,
                 VBox {
-                    content: bind [  Rectangle {
+                    content: [  Rectangle {
                                     fill: Color.TRANSPARENT
                                     width: (imagen.image.width) * (1 + panelWidth) - gapX*2
                                     height: gapY
@@ -526,22 +469,16 @@ var background:Group = Group {
 }
 
 function parseResource(parser:PullParser):CustomResource {
-    var resource = CustomResource{            };
-
 
     var type:String;
-
-    var fill:String;
-
-    var stroke:String;
-
-    var intFill:Integer;
-
-    var intStroke:Integer;
-
+    var fillColor:Color;
+    var strokeColor:Color;
     var nroRecurso:Integer;
-
-
+    var points:Integer[];
+    var x;
+    var y;
+    var radX;
+    var radY;
 
     var evt = bind parser.event;
 
@@ -550,7 +487,7 @@ function parseResource(parser:PullParser):CustomResource {
         if(evt.type == PullParser.END_ARRAY_ELEMENT) {
             break;
         } else if (evt.type == PullParser.START_ARRAY_ELEMENT) {
-            resource.points = parsePoints(parser);
+            points = parsePoints(parser);
         } else if (evt.type == PullParser.START_VALUE) {
             parser.forward();
             if (evt.type == PullParser.TEXT) {
@@ -561,10 +498,10 @@ function parseResource(parser:PullParser):CustomResource {
                             type = CustomResource.POLYGON
                     } else
                     if(evt.name.equalsIgnoreCase("fill")) {
-                            fill = evt.name
+                            fillColor = Color.web(evt.text);
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
-                            stroke = evt.text
+                            strokeColor = Color.web(evt.text);
                     }
 
             } else if (evt.type == PullParser.INTEGER) {
@@ -572,22 +509,41 @@ function parseResource(parser:PullParser):CustomResource {
                             nroRecurso = evt.integerValue
                     } else
                     if(evt.name.equalsIgnoreCase("fill")) {
-                            intFill = evt.integerValue
+                            fillColor = Color.web("WHITE", evt.integerValue);
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
-                            intStroke = evt.integerValue
+                            strokeColor = Color.web("WHITE", evt.integerValue);
+                    } else
+                    if(evt.name.equalsIgnoreCase("x")) {
+                            x = evt.integerValue;
+                    } else
+                    if(evt.name.equalsIgnoreCase("y")) {
+                            y = evt.integerValue;
+                    } else
+                    if(evt.name.equalsIgnoreCase("radX")) {
+                            radX = evt.integerValue;
+                    } else
+                    if(evt.name.equalsIgnoreCase("radY")) {
+                            radY = evt.integerValue;
                     }
             } else if (evt.type == PullParser.TRUE) {
             } else if (evt.type == PullParser.NUMBER) {
             }
         }
     }
-    java.lang.System.out.println("--------------------");
-    java.lang.System.out.println("-------> {resource.type}");
-    java.lang.System.out.println("-------> {resource.points}");
-    java.lang.System.out.println("-------> {resource.nroRecurso}");
-    java.lang.System.out.println("--------------------");
-    return resource;
+
+    return CustomResource {
+                    type: type
+                    fill: fillColor
+                    stroke: strokeColor
+                    points: points
+                    nroRecurso:nroRecurso
+                    x: x
+                    y: y
+                    radX: radX
+                    radY: radY
+                    onMouseClicked:mousePressed
+    };
 }
 
 function parsePoints(parser:PullParser):Integer[] {
@@ -603,10 +559,12 @@ function parsePoints(parser:PullParser):Integer[] {
         if (parser.event.type == PullParser.INTEGER) {
                 if("x".equals(parser.event.name))
                     insert x(parser.event.integerValue) into points
-                else if("y".equals(parser.event.name))
+                else
+                if("y".equals(parser.event.name))
                     insert y(parser.event.integerValue) into points;
         }
-    }    
+    }
+    
     return points
 }
 
@@ -625,7 +583,6 @@ var myScene:Scene = Scene {
 // show it all on screen
 var stage:Stage = Stage {
     style: StageStyle.TRANSPARENT
-    visible: true
     scene: myScene
 }
 
