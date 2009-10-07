@@ -9,42 +9,45 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
- * @author Nosotros
+ * @author Nos
  */
 @Entity
-@Table(name = "phones")
-@NamedQueries({@NamedQuery(name = "Phones.findAll", query = "SELECT p FROM Phones p")})
-public class Phones extends BaseEntity implements Serializable {
+@Table(name = "jos_phones")
+@NamedQueries({@NamedQuery(name = "JosPhones.findAll", query = "SELECT j FROM JosPhones j")})
+public class JosPhones extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "phone_id")
     private Integer phoneId;
-    @Basic(optional = false)
-    @Column(name = "supplier_id")
-    private int supplierId;
+    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosSuppliers supplierId;
     @Basic(optional = false)
     @Column(name = "phone")
     private String phone;
 
-    public Phones() {
+    public JosPhones() {
     }
 
-    public Phones(Integer phoneId) {
+    public JosPhones(Integer phoneId) {
         this.phoneId = phoneId;
     }
 
-    public Phones(Integer phoneId, int supplierId, String phone) {
+    public JosPhones(Integer phoneId, JosSuppliers supplierId, String phone) {
         this.phoneId = phoneId;
         this.supplierId = supplierId;
         this.phone = phone;
@@ -58,11 +61,11 @@ public class Phones extends BaseEntity implements Serializable {
         this.phoneId = phoneId;
     }
 
-    public int getSupplierId() {
+    public JosSuppliers getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(JosSuppliers supplierId) {
         this.supplierId = supplierId;
     }
 
@@ -84,10 +87,10 @@ public class Phones extends BaseEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Phones)) {
+        if (!(object instanceof JosPhones)) {
             return false;
         }
-        Phones other = (Phones) object;
+        JosPhones other = (JosPhones) object;
         if ((this.phoneId == null && other.phoneId != null) || (this.phoneId != null && !this.phoneId.equals(other.phoneId))) {
             return false;
         }
@@ -96,7 +99,7 @@ public class Phones extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Phones[phoneId=" + phoneId + "]";
+        return "entities.JosPhones[phoneId=" + phoneId + "]";
     }
 
     @Override
@@ -105,9 +108,8 @@ public class Phones extends BaseEntity implements Serializable {
     }
 
     public int compareTo(BaseEntity o) {
-        return getPhone().compareTo(((Phones)o).getPhone());
+        return getPhone().compareTo(((JosPhones)o).getPhone());
     }
-
 
 
 }

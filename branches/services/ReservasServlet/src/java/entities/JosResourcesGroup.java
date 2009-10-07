@@ -6,15 +6,21 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -40,12 +46,16 @@ public class JosResourcesGroup extends BaseEntity implements Serializable {
     @Lob
     @Column(name = "visual_config")
     private String visualConfig;
-    @Basic(optional = false)
-    @Column(name = "location_id")
-    private int locationId;
-    @Basic(optional = false)
-    @Column(name = "resource_type_id")
-    private int resourceTypeId;
+    @JoinColumn(name = "location_id", referencedColumnName = "location_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosLocations locationId;
+    @JoinColumn(name = "resource_type_id", referencedColumnName = "resource_type_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosResourceTypes resourceTypeId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId", fetch = FetchType.LAZY)
+    private Set<JosSlotsHasJosResourcesGroup> josSlotsHasJosResourcesGroupCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId", fetch = FetchType.LAZY)
+    private Set<JosResources> josResourcesCollection;
 
     public JosResourcesGroup() {
     }
@@ -54,7 +64,7 @@ public class JosResourcesGroup extends BaseEntity implements Serializable {
         this.groupId = groupId;
     }
 
-    public JosResourcesGroup(Integer groupId, String name, int locationId, int resourceTypeId) {
+    public JosResourcesGroup(Integer groupId, String name, JosLocations locationId, JosResourceTypes resourceTypeId) {
         this.groupId = groupId;
         this.name = name;
         this.locationId = locationId;
@@ -85,21 +95,39 @@ public class JosResourcesGroup extends BaseEntity implements Serializable {
         this.visualConfig = visualConfig;
     }
 
-    public int getLocationId() {
+    public JosLocations getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(int locationId) {
+    public void setLocationId(JosLocations locationId) {
         this.locationId = locationId;
     }
 
-    public int getResourceTypeId() {
+    public JosResourceTypes getResourceTypeId() {
         return resourceTypeId;
     }
 
-    public void setResourceTypeId(int resourceTypeId) {
+    public void setResourceTypeId(JosResourceTypes resourceTypeId) {
         this.resourceTypeId = resourceTypeId;
     }
+
+    public Set<JosResources> getJosResourcesCollection() {
+        return josResourcesCollection;
+    }
+
+    public void setJosResourcesCollection(Set<JosResources> josResourcesCollection) {
+        this.josResourcesCollection = josResourcesCollection;
+    }
+
+    public Set<JosSlotsHasJosResourcesGroup> getJosSlotsHasJosResourcesGroupCollection() {
+        return josSlotsHasJosResourcesGroupCollection;
+    }
+
+    public void setJosSlotsHasJosResourcesGroupCollection(Set<JosSlotsHasJosResourcesGroup> josSlotsHasJosResourcesGroupCollection) {
+        this.josSlotsHasJosResourcesGroupCollection = josSlotsHasJosResourcesGroupCollection;
+    }
+
+    
 
     @Override
     public int hashCode() {

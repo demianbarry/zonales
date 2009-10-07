@@ -6,12 +6,16 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -30,6 +34,8 @@ public class JosCities extends BaseEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "city")
     private String city;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cityId", fetch = FetchType.LAZY)
+    private Set<JosSuppliers> josSuppliersCollection;
 
     public JosCities() {
     }
@@ -58,6 +64,15 @@ public class JosCities extends BaseEntity implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public Set<JosSuppliers> getJosSuppliersCollection() {
+        return josSuppliersCollection;
+    }
+
+    public void setJosSuppliersCollection(Set<JosSuppliers> josSuppliersCollection) {
+        this.josSuppliersCollection = josSuppliersCollection;
+    }
+    
 
     @Override
     public int hashCode() {

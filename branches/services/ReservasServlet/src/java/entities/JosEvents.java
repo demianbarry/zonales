@@ -6,14 +6,18 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -35,6 +39,8 @@ public class JosEvents extends BaseEntity implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId", fetch = FetchType.LAZY)
+    private Set<JosEvents> josEventsCollection;
 
     public JosEvents() {
     }
@@ -70,6 +76,14 @@ public class JosEvents extends BaseEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<JosEvents> getJosEventsCollection() {
+        return josEventsCollection;
+    }
+
+    public void setJosEventsCollection(Set<JosEvents> josEventsCollection) {
+        this.josEventsCollection = josEventsCollection;
     }
 
     @Override

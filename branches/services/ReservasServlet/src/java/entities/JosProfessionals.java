@@ -6,14 +6,20 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -35,9 +41,12 @@ public class JosProfessionals extends BaseEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "jos_users_id")
     private int josUsersId;
-    @Basic(optional = false)
-    @Column(name = "resource_id")
-    private int resourceId;
+    @JoinColumn(name = "resource_id", referencedColumnName = "resource_id")
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    private JosResources resourceId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "professionalId", fetch = FetchType.LAZY)
+    private Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection;
+
 
     public JosProfessionals() {
     }
@@ -46,7 +55,7 @@ public class JosProfessionals extends BaseEntity implements Serializable {
         this.professionalId = professionalId;
     }
 
-    public JosProfessionals(Integer professionalId, int josUsersId, int resourceId) {
+    public JosProfessionals(Integer professionalId, int josUsersId, JosResources resourceId) {
         this.professionalId = professionalId;
         this.josUsersId = josUsersId;
         this.resourceId = resourceId;
@@ -76,12 +85,20 @@ public class JosProfessionals extends BaseEntity implements Serializable {
         this.josUsersId = josUsersId;
     }
 
-    public int getResourceId() {
+    public JosResources getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(int resourceId) {
+    public void setResourceId(JosResources resourceId) {
         this.resourceId = resourceId;
+    }
+
+    public Set<JosProfessionalsHasJosSpecialties> getJosProfessionalsHasJosSpecialtiesCollection() {
+        return josProfessionalsHasJosSpecialtiesCollection;
+    }
+
+    public void setJosProfessionalsHasJosSpecialtiesCollection(Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection) {
+        this.josProfessionalsHasJosSpecialtiesCollection = josProfessionalsHasJosSpecialtiesCollection;
     }
 
     @Override

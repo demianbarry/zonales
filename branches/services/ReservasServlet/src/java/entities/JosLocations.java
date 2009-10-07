@@ -6,14 +6,20 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -38,9 +44,11 @@ public class JosLocations extends BaseEntity implements Serializable {
     private String street;
     @Column(name = "number")
     private Integer number;
-    @Basic(optional = false)
-    @Column(name = "supplier_id")
-    private int supplierId;
+    @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosSuppliers supplierId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId", fetch = FetchType.LAZY)
+    private Set<JosResourcesGroup> josResourcesGroupCollection;
 
     public JosLocations() {
     }
@@ -49,7 +57,7 @@ public class JosLocations extends BaseEntity implements Serializable {
         this.locationId = locationId;
     }
 
-    public JosLocations(Integer locationId, String name, String street, int supplierId) {
+    public JosLocations(Integer locationId, String name, String street, JosSuppliers supplierId) {
         this.locationId = locationId;
         this.name = name;
         this.street = street;
@@ -88,13 +96,22 @@ public class JosLocations extends BaseEntity implements Serializable {
         this.number = number;
     }
 
-    public int getSupplierId() {
+    public JosSuppliers getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(JosSuppliers supplierId) {
         this.supplierId = supplierId;
     }
+
+    public Set<JosResourcesGroup> getJosResourcesGroupCollection() {
+        return josResourcesGroupCollection;
+    }
+
+    public void setJosResourcesGroupCollection(Set<JosResourcesGroup> josResourcesGroupCollection) {
+        this.josResourcesGroupCollection = josResourcesGroupCollection;
+    }
+
 
     @Override
     public int hashCode() {
