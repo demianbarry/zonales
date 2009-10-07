@@ -84,10 +84,10 @@ var currentCalendar = bind calendarPicker.calendar on replace {
 
 
 var layout:Group = Group {
-    //content: []
-    /*[
+    /*content:
+    [
         // the actual image
-        /*imagen,
+        imagen
         CustomResource {
             points: [   x(0),y(190),
                         x(71),y(172),
@@ -180,6 +180,8 @@ var layout:Group = Group {
     ]*/
 };
 doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
+
+//doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1");
 
 var slotComboBox : ComboBox = ComboBox {};
 slotComboBox.select(0);
@@ -274,7 +276,6 @@ var slideLeft:Timeline = Timeline {
 function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
 
-        java.lang.System.out.println("------->{e.node}");
         if(e.button == MouseButton.SECONDARY) {
             mesa = recurso.nroRecurso as Integer;
             startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
@@ -413,7 +414,7 @@ function doRequest(url:String) {
 }
 
 function parseResources(is:InputStream):Void {
-    //delete layout.content;
+    delete layout.content;
 
     var parser = PullParser {
                     documentType:PullParser.JSON
@@ -437,8 +438,8 @@ function parseResources(is:InputStream):Void {
 }
 
 var hbox:HBox = HBox {
-    content: bind [ vbox,
-               layout  ]
+    content: [ vbox,
+                    layout  ]
 }
 
 var dayText:Text = Text {
@@ -577,7 +578,7 @@ function dayOfWeek(dayOfWeek:Integer):String {
 var myScene:Scene = Scene {
     width: imagen.image.width*(1+panelWidth)+gapX*2;
     fill: Color.web("#FF9900")
-    content: [background, resourceForm, okButton, cancelButton]
+    content: bind [background, resourceForm, okButton, cancelButton]
 }
 
 // show it all on screen
