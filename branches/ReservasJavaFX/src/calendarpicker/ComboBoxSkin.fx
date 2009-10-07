@@ -58,6 +58,9 @@ import javafx.animation.Timeline;
 
 import javafx.scene.control.Behavior;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Sequences;
+
+import com.sun.javafx.runtime.AssignToBoundException;
 
 /**
  * @author Rakesh Menon
@@ -336,8 +339,11 @@ public class ComboBoxSkin extends Skin {
         }
 
         // Ensure that we are not adding twice
-        delete list from node.scene.content;
-        insert list into node.scene.content;
+        //delete list from node.scene.content;
+        if(Sequences.indexOf(node.scene.content, list) == -1)
+        try {
+                insert list into node.scene.content
+        } catch(ex:AssignToBoundException){};
 
         list.layoutX = x + 4;
         showPopup = true;
