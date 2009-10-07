@@ -56,7 +56,7 @@ public class JosReserve extends BaseEntity implements Serializable {
     @Column(name = "expiry")
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiry;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reserveId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reserves", fetch = FetchType.LAZY)
     private Set<JosReserveHasJosResources> josReserveHasJosResourcesCollection;
 
     public JosReserve() {

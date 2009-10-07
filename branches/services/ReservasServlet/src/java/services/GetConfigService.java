@@ -7,7 +7,7 @@ package services;
 
 import com.google.gson.Gson;
 import entities.BaseEntity;
-import entities.JosSlotsHasJosResourcesGroup;
+import entities.JosSlotsHasJosResourcesGroupPK;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
@@ -35,7 +35,6 @@ public class GetConfigService {
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
         String group = request.getParameter("resourceGroup");
-        System.out.println("2----> " + group);
         int idGroup = Integer.valueOf(group);
         Calendar from = Calendar.getInstance();
         Calendar to = Calendar.getInstance();
@@ -46,9 +45,6 @@ public class GetConfigService {
         String toYear = request.getParameter("toYear");
         String toMonth = request.getParameter("toMonth");
         String toDate = request.getParameter("toDate");
-
-        System.out.println("From: " + fromDate + "/" + fromMonth + "/" + fromYear);
-        System.out.println("To: " + toDate + "/" + toMonth + "/" + toYear);
 
         from.set(Integer.valueOf(fromYear),
                  Integer.valueOf(fromMonth) - 1,
@@ -61,14 +57,13 @@ public class GetConfigService {
                  );
 
         resourceGroupModel.setSelected(idGroup);
-        System.out.println("from: " + from.getTime());
-        System.out.println("to: " + to.getTime());
         List<BaseEntity> slotsList = resourceGroupModel.getSlots(from.getTime(), to.getTime());
         range = new Range(idGroup, from, to);
         retorno = new GetConfigStruct(range);
 
         for (int i = 0; i < slotsList.size(); i++) {
-            int slotId = ((JosSlotsHasJosResourcesGroup)slotsList).getJosSlotsHasJosResourcesGroupPK().getSlotId();
+            Object slote = slotsList.get(i).getPK();
+            int slotId = ((JosSlotsHasJosResourcesGroupPK)slote).getSlotId();
             slotsModel.setSelected(slotId);
             Slots slot = new Slots(
                     slotsModel.getSelected().getSlotId(),
@@ -78,7 +73,8 @@ public class GetConfigService {
                     slotsModel.getSelected().getMinDuration(),
                     slotsModel.getSelected().getMaxDuration(),
                     slotsModel.getSelected().getSteep(),
-                    slotsModel.getSelected().getTolerance());
+                    slotsModel.getSelected().getTolerance()
+            );
             retorno.add(slot);
         }
 

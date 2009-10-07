@@ -47,7 +47,7 @@ public class JosResources extends BaseEntity implements Serializable {
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private JosResourcesGroup groupId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resourceId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resources", fetch = FetchType.LAZY)
     private Set<JosReserveHasJosResources> josReserveHasJosResourcesCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "resourceId", fetch = FetchType.LAZY)
     private JosProfessionals josProfessionalsCollection;

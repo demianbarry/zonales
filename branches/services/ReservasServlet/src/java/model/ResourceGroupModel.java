@@ -24,10 +24,10 @@ public class ResourceGroupModel extends BaseModel {
     public List<BaseEntity> getSlots(Date from, Date to) {
         if (selected != null) {
             Hashtable<String, Object> queryParameters = new Hashtable<String, Object>();
-            queryParameters.put("groupId", selected.getPK());
+            queryParameters.put("groupId", ((JosResourcesGroup)selected).getGroupId());
             queryParameters.put("from", from);
             queryParameters.put("to", to);
-            return findEntities("JosSlotsHasJosResourcesGroup.findByUserIdInRange", queryParameters);
+            return findEntities("JosSlotsHasJosResourcesGroup.findByGroupIdInRange", queryParameters);
         }
 
         return null;

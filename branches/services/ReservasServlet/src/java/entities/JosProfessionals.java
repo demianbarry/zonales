@@ -44,7 +44,7 @@ public class JosProfessionals extends BaseEntity implements Serializable {
     @JoinColumn(name = "resource_id", referencedColumnName = "resource_id")
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private JosResources resourceId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "professionalId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "professionals", fetch = FetchType.LAZY)
     private Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection;
 
 

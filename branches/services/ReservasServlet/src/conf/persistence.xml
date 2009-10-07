@@ -17,7 +17,7 @@
     <class>entities.JosSlotsHasJosResourcesGroup</class>
     <class>entities.JosSpecialties</class>
     <class>entities.JosSuppliers</class>
-    <class>entities.Phones</class>
+    <class>entities.JosPhones</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.SunONETransactionManagerLookup"/>

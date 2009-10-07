@@ -42,6 +42,11 @@ public class Main extends HttpServlet {
             GetConfigService getConfig = new GetConfigService();
             getConfig.serve(request, response);
         }
+
+        if ("getLayout".equals(service)) {
+            GetLayoutService getLayout = new GetLayoutService();
+            getLayout.serve(request, response);
+        }
         
         }
 

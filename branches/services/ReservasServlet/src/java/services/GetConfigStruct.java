@@ -5,6 +5,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class GetConfigStruct {
 
     String nombre = "config";
     Range range;
-    List<Slots> slots;
+    List<Slots> slots = new ArrayList<Slots>();
 
     public GetConfigStruct(Range range) {
         this.range = range;
