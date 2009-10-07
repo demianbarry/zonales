@@ -23,6 +23,9 @@ public class JosProfessionalsHasJosSpecialtiesPK implements Serializable {
     @Column(name = "id_specialty")
     private int idSpecialty;
 
+    public JosProfessionalsHasJosSpecialtiesPK() {
+    }
+
     public JosProfessionalsHasJosSpecialtiesPK(int professionalId, int idSpecialty) {
         this.professionalId = professionalId;
         this.idSpecialty = idSpecialty;

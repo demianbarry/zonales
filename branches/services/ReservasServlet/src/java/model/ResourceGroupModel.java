@@ -37,7 +37,7 @@ public class ResourceGroupModel extends BaseModel {
 
         Hashtable<String, Integer> queryParameters = new Hashtable<String, Integer>();
         queryParameters.put("groupId", groupId);
-        super.setSelected((BaseEntity) findEntities("JosResourcesGroup.findByUserId", queryParameters));
+        super.setSelected(findEntities("JosResourcesGroup.findByGroupId", queryParameters).get(0));
     }
 
 

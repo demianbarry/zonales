@@ -23,6 +23,9 @@ public class JosReserveHasJosResourcesPK implements Serializable {
     @Column(name = "resource_id")
     private int resourceId;
 
+    public JosReserveHasJosResourcesPK() {
+    }
+
     public JosReserveHasJosResourcesPK(int reserveId, int resourceId) {
         this.reserveId = reserveId;
         this.resourceId = resourceId;

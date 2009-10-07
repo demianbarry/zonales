@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class Main extends HttpServlet {
 
         String service = request.getParameter("name");
 
-        if (service.compareTo("getConfig") == 0) {
+        if ("getConfig".equals(service)) {
             GetConfigService getConfig = new GetConfigService();
             getConfig.serve(request, response);
         }

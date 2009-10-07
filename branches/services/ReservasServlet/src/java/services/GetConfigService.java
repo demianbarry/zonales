@@ -34,22 +34,35 @@ public class GetConfigService {
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
-
-        int idGroup = Integer.valueOf(request.getParameter("resourceGruop"));
+        String group = request.getParameter("resourceGroup");
+        System.out.println("2----> " + group);
+        int idGroup = Integer.valueOf(group);
         Calendar from = Calendar.getInstance();
         Calendar to = Calendar.getInstance();
 
-        from.set(Integer.valueOf(request.getParameter("fromYear")),
-                 Integer.valueOf(request.getParameter("fromMonth")),
-                 Integer.valueOf(request.getParameter("fromDate"))
+        String fromYear = request.getParameter("fromYear");
+        String fromMonth = request.getParameter("fromMonth");
+        String fromDate = request.getParameter("fromDate");
+        String toYear = request.getParameter("toYear");
+        String toMonth = request.getParameter("toMonth");
+        String toDate = request.getParameter("toDate");
+
+        System.out.println("From: " + fromDate + "/" + fromMonth + "/" + fromYear);
+        System.out.println("To: " + toDate + "/" + toMonth + "/" + toYear);
+
+        from.set(Integer.valueOf(fromYear),
+                 Integer.valueOf(fromMonth) - 1,
+                 Integer.valueOf(fromDate)
                  );
 
-        to.set(Integer.valueOf(request.getParameter("toYear")),
-                 Integer.valueOf(request.getParameter("toMonth")),
-                 Integer.valueOf(request.getParameter("toDate"))
+        to.set(Integer.valueOf(toYear),
+                 Integer.valueOf(toMonth) - 1,
+                 Integer.valueOf(toDate)
                  );
 
         resourceGroupModel.setSelected(idGroup);
+        System.out.println("from: " + from.getTime());
+        System.out.println("to: " + to.getTime());
         List<BaseEntity> slotsList = resourceGroupModel.getSlots(from.getTime(), to.getTime());
         range = new Range(idGroup, from, to);
         retorno = new GetConfigStruct(range);

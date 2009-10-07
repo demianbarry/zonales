@@ -23,6 +23,9 @@ public class JosSlotsHasJosResourcesGroupPK implements Serializable {
     @Column(name = "group_id")
     private int groupId;
 
+    public JosSlotsHasJosResourcesGroupPK() {
+    }
+
     public JosSlotsHasJosResourcesGroupPK(int slotId, int groupId) {
         this.slotId = slotId;
         this.groupId = groupId;
