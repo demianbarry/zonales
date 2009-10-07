@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 @Table(name = "jos_slots_has_jos_resources_group")
 @NamedQueries({
     @NamedQuery(name = "JosSlotsHasJosResourcesGroup.findAll", query = "SELECT j FROM JosSlotsHasJosResourcesGroup j"),
-    @NamedQuery(name = "JosSlotsHasJosResourcesGroup.findbyUserIdFromTo", query = "SELECT j FROM JosSlotsHasJosResourcesGroup j WHERE j.josSlotsHasJosResourcesGroupPK.groupId = :groupId AND j.dateFrom >= :from AND j.dateTo <= :to")
+    @NamedQuery(name = "JosSlotsHasJosResourcesGroup.findByUserIdInRange", query = "SELECT j FROM JosSlotsHasJosResourcesGroup j WHERE j.josSlotsHasJosResourcesGroupPK.groupId = :groupId AND j.dateFrom <= :from AND j.dateTo >= :to")
 })
 public class JosSlotsHasJosResourcesGroup extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;

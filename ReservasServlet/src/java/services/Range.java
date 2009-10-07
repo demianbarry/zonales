@@ -24,10 +24,10 @@ public class Range {
     public Range(Integer resourceGruopID, Calendar from, Calendar to) {
         this.resourceGruopID = resourceGruopID;
         this.fromYear = from.get(Calendar.YEAR);
-        this.fromMonth = from.get(Calendar.MONTH);
+        this.fromMonth = from.get(Calendar.MONTH) + 1;
         this.fromDate = from.get(Calendar.DATE);
         this.toYear = to.get(Calendar.YEAR);
-        this.toMonth = to.get(Calendar.MONTH);
+        this.toMonth = to.get(Calendar.MONTH) + 1;
         this.toDate = to.get(Calendar.DATE);
     }
     
