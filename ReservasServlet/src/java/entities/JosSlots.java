@@ -67,7 +67,7 @@ public class JosSlots extends BaseEntity implements Serializable {
     @Column(name = "tolerance")
     @Temporal(TemporalType.TIME)
     private Date tolerance;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "slotId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "slots", fetch = FetchType.LAZY)
     private Set<JosSlotsHasJosResourcesGroup> josSlotsHasJosResourcesGroupCollection;
 
     public JosSlots() {

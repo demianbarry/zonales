@@ -39,7 +39,7 @@ public class JosSpecialties extends BaseEntity implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "specialtyId", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "specialties", fetch = FetchType.LAZY)
     private Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection;
 
     public JosSpecialties() {
