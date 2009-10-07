@@ -6,14 +6,20 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -38,9 +44,13 @@ public class JosSuppliers extends BaseEntity implements Serializable {
     private String street;
     @Column(name = "number")
     private Integer number;
-    @Basic(optional = false)
-    @Column(name = "city_id")
-    private int cityId;
+    @JoinColumn(name = "city_id", referencedColumnName = "city_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosCities cityId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId", fetch = FetchType.LAZY)
+    private Set<JosPhones> josPhonesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationId", fetch = FetchType.LAZY)
+    private Set<JosLocations> josLocationsCollection;
 
     public JosSuppliers() {
     }
@@ -49,7 +59,7 @@ public class JosSuppliers extends BaseEntity implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public JosSuppliers(Integer supplierId, String name, String street, int cityId) {
+    public JosSuppliers(Integer supplierId, String name, String street, JosCities cityId) {
         this.supplierId = supplierId;
         this.name = name;
         this.street = street;
@@ -88,13 +98,31 @@ public class JosSuppliers extends BaseEntity implements Serializable {
         this.number = number;
     }
 
-    public int getCityId() {
+    public JosCities getCityId() {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(JosCities cityId) {
         this.cityId = cityId;
     }
+
+    public Set<JosLocations> getJosLocationsCollection() {
+        return josLocationsCollection;
+    }
+
+    public void setJosLocationsCollection(Set<JosLocations> josLocationsCollection) {
+        this.josLocationsCollection = josLocationsCollection;
+    }
+
+    public Set<JosPhones> getJosPhonesCollection() {
+        return josPhonesCollection;
+    }
+
+    public void setJosPhonesCollection(Set<JosPhones> josPhonesCollection) {
+        this.josPhonesCollection = josPhonesCollection;
+    }
+
+    
 
     @Override
     public int hashCode() {

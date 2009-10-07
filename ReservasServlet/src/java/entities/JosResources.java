@@ -6,14 +6,21 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,9 +44,14 @@ public class JosResources extends BaseEntity implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
-    @Basic(optional = false)
-    @Column(name = "group_id")
-    private int groupId;
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosResourcesGroup groupId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "resourceId", fetch = FetchType.LAZY)
+    private Set<JosReserveHasJosResources> josReserveHasJosResourcesCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "resourceId", fetch = FetchType.LAZY)
+    private JosProfessionals josProfessionalsCollection;
+
 
     public JosResources() {
     }
@@ -48,7 +60,7 @@ public class JosResources extends BaseEntity implements Serializable {
         this.resourceId = resourceId;
     }
 
-    public JosResources(Integer resourceId, String name, int groupId) {
+    public JosResources(Integer resourceId, String name, JosResourcesGroup groupId) {
         this.resourceId = resourceId;
         this.name = name;
         this.groupId = groupId;
@@ -86,12 +98,28 @@ public class JosResources extends BaseEntity implements Serializable {
         this.description = description;
     }
 
-    public int getGroupId() {
+    public JosResourcesGroup getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(JosResourcesGroup groupId) {
         this.groupId = groupId;
+    }
+
+    public JosProfessionals getJosProfessionalsCollection() {
+        return josProfessionalsCollection;
+    }
+
+    public void setJosProfessionalsCollection(JosProfessionals josProfessionalsCollection) {
+        this.josProfessionalsCollection = josProfessionalsCollection;
+    }
+
+    public Set<JosReserveHasJosResources> getJosReserveHasJosResourcesCollection() {
+        return josReserveHasJosResourcesCollection;
+    }
+
+    public void setJosReserveHasJosResourcesCollection(Set<JosReserveHasJosResources> josReserveHasJosResourcesCollection) {
+        this.josReserveHasJosResourcesCollection = josReserveHasJosResourcesCollection;
     }
 
     @Override

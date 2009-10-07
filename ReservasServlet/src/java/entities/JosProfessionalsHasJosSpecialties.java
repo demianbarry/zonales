@@ -8,6 +8,9 @@ package entities;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,6 +26,12 @@ public class JosProfessionalsHasJosSpecialties extends BaseEntity implements Ser
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected JosProfessionalsHasJosSpecialtiesPK josProfessionalsHasJosSpecialtiesPK;
+    @JoinColumn(name = "professional_id", referencedColumnName = "professional_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosProfessionals professionals;
+    @JoinColumn(name = "specialty_id", referencedColumnName = "specialty_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosSpecialties specialties;
 
     public JosProfessionalsHasJosSpecialties() {
     }
@@ -41,6 +50,22 @@ public class JosProfessionalsHasJosSpecialties extends BaseEntity implements Ser
 
     public void setJosProfessionalsHasJosSpecialtiesPK(JosProfessionalsHasJosSpecialtiesPK josProfessionalsHasJosSpecialtiesPK) {
         this.josProfessionalsHasJosSpecialtiesPK = josProfessionalsHasJosSpecialtiesPK;
+    }
+
+    public JosProfessionals getProfessionals() {
+        return professionals;
+    }
+
+    public void setProfessionals(JosProfessionals professionals) {
+        this.professionals = professionals;
+    }
+
+    public JosSpecialties getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(JosSpecialties specialties) {
+        this.specialties = specialties;
     }
 
     @Override

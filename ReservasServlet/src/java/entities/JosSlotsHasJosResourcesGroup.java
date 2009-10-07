@@ -11,6 +11,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -39,9 +42,15 @@ public class JosSlotsHasJosResourcesGroup extends BaseEntity implements Serializ
     @Column(name = "date_to")
     @Temporal(TemporalType.DATE)
     private Date dateTo;
-    @Basic(optional = false)
-    @Column(name = "event_id")
-    private int eventId;
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosEvents eventId;
+    @JoinColumn(name = "slot_id", referencedColumnName = "slot_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosSlots slots;
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosResourcesGroup resourcesGroup;
 
     public JosSlotsHasJosResourcesGroup() {
     }
@@ -50,7 +59,7 @@ public class JosSlotsHasJosResourcesGroup extends BaseEntity implements Serializ
         this.josSlotsHasJosResourcesGroupPK = josSlotsHasJosResourcesGroupPK;
     }
 
-    public JosSlotsHasJosResourcesGroup(JosSlotsHasJosResourcesGroupPK josSlotsHasJosResourcesGroupPK, Date dateFrom, Date dateTo, int eventId) {
+    public JosSlotsHasJosResourcesGroup(JosSlotsHasJosResourcesGroupPK josSlotsHasJosResourcesGroupPK, Date dateFrom, Date dateTo, JosEvents eventId) {
         this.josSlotsHasJosResourcesGroupPK = josSlotsHasJosResourcesGroupPK;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
@@ -85,13 +94,31 @@ public class JosSlotsHasJosResourcesGroup extends BaseEntity implements Serializ
         this.dateTo = dateTo;
     }
 
-    public int getEventId() {
+    public JosEvents getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(JosEvents eventId) {
         this.eventId = eventId;
     }
+
+    public JosResourcesGroup getResourcesGroup() {
+        return resourcesGroup;
+    }
+
+    public void setResourcesGroup(JosResourcesGroup resourcesGroup) {
+        this.resourcesGroup = resourcesGroup;
+    }
+
+    public JosSlots getSlots() {
+        return slots;
+    }
+
+    public void setSlots(JosSlots slots) {
+        this.slots = slots;
+    }
+
+    
 
     @Override
     public int hashCode() {

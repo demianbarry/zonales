@@ -6,14 +6,18 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -35,6 +39,8 @@ public class JosSpecialties extends BaseEntity implements Serializable {
     private String name;
     @Column(name = "description")
     private String description;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "specialtyId", fetch = FetchType.LAZY)
+    private Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection;
 
     public JosSpecialties() {
     }
@@ -70,6 +76,14 @@ public class JosSpecialties extends BaseEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<JosProfessionalsHasJosSpecialties> getJosProfessionalsHasJosSpecialtiesCollection() {
+        return josProfessionalsHasJosSpecialtiesCollection;
+    }
+
+    public void setJosProfessionalsHasJosSpecialtiesCollection(Set<JosProfessionalsHasJosSpecialties> josProfessionalsHasJosSpecialtiesCollection) {
+        this.josProfessionalsHasJosSpecialtiesCollection = josProfessionalsHasJosSpecialtiesCollection;
     }
 
     @Override

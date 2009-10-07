@@ -8,6 +8,9 @@ package entities;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,6 +26,12 @@ public class JosReserveHasJosResources extends BaseEntity implements Serializabl
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected JosReserveHasJosResourcesPK josReserveHasJosResourcesPK;
+    @JoinColumn(name = "resource_id", referencedColumnName = "resource_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosResources resources;
+    @JoinColumn(name = "reserve_id", referencedColumnName = "reserve_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosReserve reserves;
 
     public JosReserveHasJosResources() {
     }
@@ -41,6 +50,22 @@ public class JosReserveHasJosResources extends BaseEntity implements Serializabl
 
     public void setJosReserveHasJosResourcesPK(JosReserveHasJosResourcesPK josReserveHasJosResourcesPK) {
         this.josReserveHasJosResourcesPK = josReserveHasJosResourcesPK;
+    }
+
+    public JosReserve getReserves() {
+        return reserves;
+    }
+
+    public void setReserves(JosReserve reserves) {
+        this.reserves = reserves;
+    }
+
+    public JosResources getResources() {
+        return resources;
+    }
+
+    public void setResources(JosResources resources) {
+        this.resources = resources;
     }
 
     @Override
