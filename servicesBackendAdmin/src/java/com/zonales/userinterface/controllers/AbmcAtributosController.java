@@ -5,12 +5,23 @@
 
 package com.zonales.userinterface.controllers;
 
+import com.zonales.persistence.daos.exceptions.RollbackFailureException;
 import com.zonales.persistence.entities.ClaseAtributo;
+import com.zonales.persistence.models.BaseModel;
 import com.zonales.persistence.models.ClaseAtributoModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+import javax.transaction.SystemException;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zkex.zul.Columnchildren;
 import org.zkoss.zkplus.databind.DataBinder;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Textbox;
 
 /**
  *
@@ -19,8 +30,20 @@ import org.zkoss.zul.Grid;
 public class AbmcAtributosController extends BaseController {
     private ClaseAtributoModel atributoModel;
 
-    private Grid atributos;
-    private Button btnAceptar;
+    protected  Grid atributos;
+    protected Button btnAceptar;
+    protected Textbox nombre;
+    protected Textbox descripcion;
+    protected Textbox observaciones;
+    protected Checkbox filtraPorPadre;
+    protected Textbox qryFiltraPorPadre;
+    protected Textbox qryLovExterna;
+    protected Listbox tipo;
+    protected Checkbox ecualizable;
+    protected Checkbox obligatorio;
+    protected Checkbox editar;
+    protected Checkbox selValorPermitido;
+    protected Columnchildren columnaValores;
 
     public AbmcAtributosController(){
         super(false);
@@ -49,7 +72,122 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onClick$btnAceptar(Event event){
+        guardar();
+    }
 
+    private void guardar() {
+        if (editar.isChecked()) {
+            try {
+                ClaseAtributo atributoActual = (ClaseAtributo) atributoModel.getSelected();
+                atributoActual.setNombre(nombre.getValue());
+                atributoActual.setDescripcion(descripcion.getValue());
+                atributoActual.setEcualizable(ecualizable.isChecked());
+                atributoActual.setFiltraXPadre(filtraPorPadre.isChecked());
+                atributoActual.setObligatorio(obligatorio.isChecked());
+                atributoActual.setObservaciones(observaciones.getValue());
+                atributoActual.setQryFiltraXPadre(qryFiltraPorPadre.getValue());
+                atributoActual.setQryLovExterna(qryLovExterna.getValue());
+                atributoActual.setTipo((String) tipo.getSelectedItem().getValue());
+
+                // TERMINAR !!!!!!!!!!!!1
+                atributoActual.setValorPermitidoAtrcompList(null);
+
+                BaseModel.editEntity(atributoActual, true);
+
+                
+            } catch (RollbackFailureException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (NamingException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (IllegalStateException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (SecurityException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (SystemException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+
+    public void onCheck$selValorPermitido(Event event){
+        qryLovExterna.setVisible(selValorPermitido.isChecked());
+        columnaValores.setVisible(!selValorPermitido.isChecked());
+    }
+
+    public void onClick$eliminarAtributo(Event event){
+        try {
+            int res = Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
+
+            // si el usuario confirma la accion
+            if (res == Messagebox.OK){
+                // elimino el  atributo y todos sus valores permitidos
+
+                // hago invisible la entrada
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public void onClick$nuevoAtributo(Event event){
+        // agrego una nueva fila con todos sus campos en blanco
+
+        // hago visible el boton aceptar
+    }
+
+    public void onClick$editarAtributo(Event event){
+        // hago editable todos los campos
+
+        // hago visible el boton aceptar
+    }
+
+    public void onClick$nuevoValor(Event event){
+        // agrego una nueva fila con todos sus campos en blanco
+
+        // hago visible el boton aceptar
+    }
+
+    public void onClick$editarValor(Event event){
+        // hago editable todos los campos
+
+        // hago visible el boton aceptar
+    }
+
+    public void onClick$eliminarValor(Event event){
+        try {
+            int res = Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
+
+            // si el usuario confirma la accion
+            if (res == Messagebox.OK){
+                // elimino el  valor 
+
+                // hago invisible la entrada
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public void onClick$btnAceptarValor(Event event){
+        // chequeo si es un insertar o actualizar
+
+        // realizo la operacion
+
+        // hago invisible el boton aceptar
     }
 
 }
