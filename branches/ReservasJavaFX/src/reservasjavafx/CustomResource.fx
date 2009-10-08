@@ -18,6 +18,10 @@ import javafx.scene.shape.*;
 
 import javafx.scene.shape.Polygon;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Sequences;
+
 
 public def ELLIPSE:String = "Ellipse";
 public def POLYGON:String = "Polygon";
@@ -36,6 +40,7 @@ public class CustomResource extends CustomNode {
     public var radX: Number;
     public var radY: Number;
     public var type: String;
+    public var image: String;
 
     //var applet: Applet = FX.getArgument("javafx.applet") as Applet;
     //var jsObject = new JavaScriptUtil(applet);
@@ -48,23 +53,56 @@ public class CustomResource extends CustomNode {
     }
 
     function createResource (points: Number[], nroRecurso: Number, fillColor: Color, strokeColor: Color) {
-                if(type.equals(ELLIPSE)) {
-                    Ellipse {
-                        cursor: Cursor.HAND
-                        centerX: x
-                        centerY: y
-                        radiusX: radX
-                        radiusY: radY
-                        fill: fillColor
-                        stroke: strokeColor
-                    }
-                } else {
-                    Polygon {
-                        cursor: Cursor.HAND
-                        points: points
-                        fill: fillColor
-                        stroke: strokeColor
-                    }
+                Group { content: [
+                    if(type.equals(ELLIPSE)) {
+                        Ellipse {
+                            cursor: Cursor.HAND
+                            centerX: x
+                            centerY: y
+                            radiusX: radX
+                            radiusY: radY
+                            fill: fillColor
+                            stroke: strokeColor
+                        }
+                    } else {
+                        Polygon {
+                            cursor: Cursor.HAND
+                            points: points
+                            fill: fillColor
+                            stroke: strokeColor
+                        }
+                    },
+                            ImageView {
+                                image: Image { url: "{__DIR__}images/{image}" }
+                                x: getCenterX(points)
+                                y: getCenterY(points)
+                            }
+                    ]
                 }
+    }
+
+    function getCenterX(points:Integer[]):Integer {
+        var average = 0;
+        var count = 0;
+        for(i in points) {
+            if(count++ mod 2 == 0) {
+                average += i;
+            }
+        }
+        return average/(sizeof(points)/2)
+    }
+
+    function getCenterY(points:Integer[]):Integer {
+        var average = 0;
+        var count = 0;
+        for(i in points) {
+            if(count++ mod 2 != 0) {
+                average += i;
+            }
+        }
+        java.lang.System.out.println("----------");
+        java.lang.System.out.println("{sizeof(points)/2}");
+        java.lang.System.out.println("----------");
+        return average/(sizeof(points)/2)
     }
 }
