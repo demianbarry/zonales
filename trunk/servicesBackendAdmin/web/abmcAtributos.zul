@@ -19,76 +19,155 @@
         >
             <rows>
                 <row self="@{each=att}">
-                    <detail open="false">
-                        <checkbox id="editar"
-                                label="Editar Atributo"
-                        />
+                    <detail open="false" >
+                        <columnlayout>
+                            <columnchildren width="30%" style="padding: 5px">
+                                <vbox>
+                                    <toolbar>
+                                        <toolbarbutton id="editarAtributo"
+                                                    label="Editar Atributo"
+                                        />
+                                        <toolbarbutton id="nuevoAtributo"
+                                                    label="Nuevo Atributo"
+                                        />
+                                        <toolbarbutton id="eliminarAtributo"
+                                                    label="Eliminar Atributo"
+                                        />
+                                    </toolbar>
 
-                        <separator bar="true"/>
+                                    <!-- detalle de los atributos -->
+                                    <label value="Nombre: "/>
+                                    <textbox id="nombre"
+                                            value="@{att.nombre}"
+                                    />
 
-                        <label value="Nombre: "/>
-                        <textbox id="nombre"
-                                value="@{att.nombre}"
-                                readonly="${editar.checked}"
-                        />
+                                    <label value="Descripcion"/>
+                                    <textbox id="descripcion"
+                                            value="@{att.descripcion}"
+                                    />
 
-                        <label value="Descripcion"/>
-                        <textbox id="descripcion"
-                                value="@{att.descripcion}"
-                                readonly="${editar.checked}"
-                        />
+                                    <label value="Observaciones"/>
+                                    <textbox id="observaciones"
+                                            value="@{att.observaciones}"
+                                            rows="5"
+                                    />
 
-                        <label value="Observaciones"/>
-                        <textbox id="observaciones"
-                                value="@{att.observaciones}"
-                                rows="5"
-                                readonly="${editar.checked}"
-                        />
+                                    <checkbox id="filtraPorPadre"
+                                            label="Filtrar por padre"
+                                            checked="@{att.filtrarPorPadre}"
+                                    />
+                                    <textbox id="qryFiltraPorPadre"
+                                            visible="${filtrarPorPadre.checked}"
+                                            value="@{att.queryFiltrarPorPadre}"
+                                    />
 
-                        <checkbox id="filtraPorPadre"
-                                    label="Filtrar por padre"
-                                    checked="@{att.filtrarPorPadre}"
-                                   disabled="${editar.checked}"
-                        />
-                        <textbox id="qryFiltraPorPadre"
-                                visible="${filtrarPorPadre.checked}"
-                                value="@{att.queryFiltrarPorPadre}"
-                                readonly="${editar.checked}"
-                        />
+                                    <label value="Consulta externa"/>
+                                    <checkbox id="selValorPermitido"
+                                            label="Usar valores permitidos preestablecidos"
+                                    />
 
-                        <label value="Consulta externa"/>
-                        <textbox id="qryLovExterna"
-                                    value="@{att.queryLovExterna}"
-                                    readonly="${editar.checked}"
-                        />
+                                    <textbox id="qryLovExterna"
+                                            value="@{att.queryLovExterna}"
+                                            visible="${selValorPermitido.checked}"
+                                    />
 
-                        <label value="Tipo de atributo"/>
-                        <textbox id="tipo"
-                                    value="@{att.tipo}"
-                                    readonly="${editar.checked}"
-                        />
+                                    <label value="Tipo de atributo"/>
 
-                        <checkbox id="ecualizable"
-                                    label="Ecualizable"
-                                    checked="@{att.equalizable}"
-                                    disabled="${editar.checked}"
-                        />
-                        <checkbox id="obligatorio"
-                                    label="Obligatorio"
-                                    checked="@{att.obligatorio}"
-                                    disabled="${editar.checked}"
-                        />
-                        <button id="btnAceptar"
-                                label="Aceptar"
-                                visible="${editar.checked}"
-                        >
-                            <attribute name="onClick">{
-                                Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
-                            }
-                            </attribute>
-                        </button>
-                        </detail>
-                        </row>
+                                    <listbox id="tipo"
+                                            selectedItem="@{att.tipo}"
+                                    >
+                                        <listhead>
+                                            <listheader label="Tipo"/>
+                                        </listhead>
+                                        <listitem id="INT">
+                                            <listcell label="INT"/>
+                                        </listitem>
+                                        <listitem id="DOUBLE">
+                                            <listcell label="DOUBLE"/>
+                                        </listitem>
+                                        <listitem id="DATE">
+                                            <listcell label="DATE"/>
+                                        </listitem>
+                                        <listitem id="TEXT">
+                                            <listcell label="TEXT"/>
+                                        </listitem>
+
+                                    </listbox>
+
+                                    <checkbox id="ecualizable"
+                                            label="Ecualizable"
+                                            checked="@{att.equalizable}"
+                                    />
+                                    <checkbox id="obligatorio"
+                                            label="Obligatorio"
+                                            checked="@{att.obligatorio}"
+                                    />
+
+
+                                    <button id="btnAceptar"
+                                            label="Aceptar"
+                                            visible="false"
+                                    />
+                                </vbox>
+                            </columnchildren>
+
+
+
+                            <!-- Valores permitidos -->
+                            <columnchildren id="columnaValores" width="30%" style="padding: 5px" >
+                                <button id="nuevoValor"
+                                        label="Nuevo"
+                                />
+                                <grid   id="valores"
+                                        fixedLayout="true"
+                                        width="100px"
+                                        model="@{att.valorPermitidoAtrcompList}"
+                                >
+                                    <columns>
+                                        <column label="Desde" />
+                                        <column label="Hasta" />
+                                        <column label="Descripcion" />
+                                        <column label="Observaciones" />
+                                        <column label="Acciones" />
+                                    </columns>
+                                    <rows>
+                                        <row self="@{each=val}">
+                                            <textbox id="desde"
+                                                    value="@{val.valor}"
+                                            />
+                                            <textbox id="hasta"
+                                                    value="@{val.valorHasta}"
+                                            />
+
+                                            <textbox id="descripcionValores"
+                                                    value="@{val.descripcion}"
+                                            />
+
+                                            <textbox id="observacionesValores"
+                                                    value="@{val.observaciones}"
+                                                    rows="5"
+                                            />
+                                            <panel>
+                                                <hbox>
+                                                    <button id="editarValor"
+                                                            label="Editar"
+                                                    />
+                                                    <button id="btnAceptarValor"
+                                                            label="Aceptar"
+                                                            visible="false"
+                                                    />
+                                                    <button id="eliminarValor"
+                                                            label="Eliminar"
+                                                    />
+                                                </hbox>
+                                            </panel>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </columnchildren>
+                        </columnlayout>
+                    </detail>
+                </row>
             </rows>
         </grid>
     </window>
