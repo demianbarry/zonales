@@ -29,17 +29,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
- * http://blogs.sun.com/rakeshmenonp/entry/javafx_combobox
- */
 
 package calendarpicker;
+
+import javafx.scene.control.Control;
 
 /**
  * @author Rakesh Menon
  */
-
-import javafx.scene.control.Control;
 
 public class ComboBox extends Control {
 
@@ -49,30 +46,23 @@ public class ComboBox extends Control {
     public-read var selectedIndex = bind (skin as ComboBoxSkin).listView.selectedIndex;
     public-read var selectedItem = bind (skin as ComboBoxSkin).listView.selectedItem;
 
-    public function select(index : Integer) : Void
-	{
+    public function select(index : Integer) : Void {
         (skin as ComboBoxSkin).listView.select(index);
     }
 
-    public function selectFirstRow() : Void
-	{
+    public function selectFirstRow() : Void {
         (skin as ComboBoxSkin).listView.selectFirstRow();
     }
 
-    public function selectLastRow() : Void
-	{
+    public function selectLastRow() : Void {
         (skin as ComboBoxSkin).listView.selectLastRow();
     }
 
-    public function selectNextRow() : Void
-	{
+    public function selectNextRow() : Void {
         (skin as ComboBoxSkin).listView.selectNextRow();
     }
 
-    public function selectPreviousRow() : Void
-	{
+    public function selectPreviousRow() : Void {
         (skin as ComboBoxSkin).listView.selectPreviousRow();
     }
 }
-
-

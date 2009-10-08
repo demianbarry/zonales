@@ -30,12 +30,6 @@ import calendarpicker.ComboBox;
 import java.io.InputStream;
 import com.sun.javafx.data.pull.impl.StreamException;
 
-var image = Image{
-    url:"{__DIR__}puzzle_picture.jpg"};
-
-//var maxCol:Integer = ((image.width as Integer) / 100) - 1;
-//var maxRow:Integer = ((image.height as Integer) / 100) - 1;
-
 var gapX = 10;
 var gapY = 40;
 var TEXT_COLOR = Color.BLACK;
@@ -185,7 +179,7 @@ doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
 
 var slotComboBox : ComboBox = ComboBox {};
 slotComboBox.select(0);
-slotComboBox.skin.node.visible = false;
+//slotComboBox.skin.node.visible = false;
 
 var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
 slotComboBox.skin.control.translateY = 170;
@@ -347,15 +341,10 @@ function startConsultaRequest(e:MouseEvent, url: String) {
                 while (tokenizer.hasMoreTokens()) {
                     var texto : String = tokenizer.nextToken();
                     item = texto;
-                    /*item = menuItem {
-                        text: texto
-                        customCall: optionSelected
-                    };*/
-                    if(javafx.util.Sequences.indexOf(slotComboBox.items, item) == -1) {
-                        //insert item into myPopupMenu.content;
-                        insert item into slotComboBox.items;
-                    }
-                    slotComboBox.skin.node.visible = (item.length() != 0);
+                    //insert item into myPopupMenu.content;
+                    delete item from slotComboBox.items;
+                    insert item into slotComboBox.items;
+                    slotComboBox.skin.node.visible = (sizeof(slotComboBox.items) != 0);
                     slotComboBox.select(0);
                 }
                 //myPopupMenu.event = e;
@@ -480,6 +469,7 @@ function parseResource(parser:PullParser):CustomResource {
     var y;
     var radX;
     var radY;
+    var imagen;
 
     var evt = bind parser.event;
 
@@ -503,6 +493,9 @@ function parseResource(parser:PullParser):CustomResource {
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
                             strokeColor = Color.web(evt.text);
+                    } else
+                    if(evt.name.equalsIgnoreCase("imagen")) {
+                            imagen = evt.text;
                     }
 
             } else if (evt.type == PullParser.INTEGER) {
@@ -529,6 +522,12 @@ function parseResource(parser:PullParser):CustomResource {
                     }
             } else if (evt.type == PullParser.TRUE) {
             } else if (evt.type == PullParser.NUMBER) {
+                    if(evt.name.equalsIgnoreCase("fill")) {
+                            fillColor = Color.web("WHITE", evt.numberValue);
+                    } else
+                    if(evt.name.equalsIgnoreCase("stroke")) {
+                            strokeColor = Color.web("WHITE", evt.numberValue);
+                    }
             }
         }
     }
@@ -544,6 +543,7 @@ function parseResource(parser:PullParser):CustomResource {
                     radX: radX
                     radY: radY
                     onMouseClicked:mousePressed
+                    image: imagen
     };
 }
 
@@ -578,7 +578,7 @@ function dayOfWeek(dayOfWeek:Integer):String {
 var myScene:Scene = Scene {
     width: imagen.image.width*(1+panelWidth)+gapX*2;
     fill: Color.web("#FF9900")
-    content: bind [background, resourceForm, okButton, cancelButton]
+    content: [background, resourceForm, okButton, cancelButton]
 }
 
 // show it all on screen
