@@ -7,8 +7,10 @@ package com.zonales.userinterface.controllers;
 
 import com.zonales.persistence.daos.exceptions.RollbackFailureException;
 import com.zonales.persistence.entities.ClaseAtributo;
+import com.zonales.persistence.entities.ValorPermitidoAtrcomp;
 import com.zonales.persistence.models.BaseModel;
 import com.zonales.persistence.models.ClaseAtributoModel;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -30,7 +32,7 @@ import org.zkoss.zul.Textbox;
 public class AbmcAtributosController extends BaseController {
     private ClaseAtributoModel atributoModel;
 
-    protected  Grid atributos;
+    protected  Listbox atributos;
     protected Button btnAceptar;
     protected Textbox nombre;
     protected Textbox descripcion;
@@ -69,6 +71,8 @@ public class AbmcAtributosController extends BaseController {
 //            atributoModel.setSelected((ClaseAtributo) model.get(0));
 //            binder.loadComponent(rolesDetail);
 //        }
+        ((ClaseAtributo) atributoModel.getAll().get(0)).getPK();
+        atributos.getSelectedItem().getId();
     }
 
     public void onClick$btnAceptar(Event event){
@@ -188,6 +192,23 @@ public class AbmcAtributosController extends BaseController {
         // realizo la operacion
 
         // hago invisible el boton aceptar
+    }
+
+    public void onSelect$atributos(Event event){
+        Integer pk;
+        ClaseAtributo atributo;
+        List<ValorPermitidoAtrcomp> valores;
+
+        // recupero el la PK del atributo
+        pk = Integer.parseInt(atributos.getSelectedItem().getId());
+
+        // consulto a la base de datos por todos los valores asociados
+        atributo = (ClaseAtributo) BaseModel.findEntityByPK(pk, ClaseAtributo.class);
+        valores = atributo.getValorPermitidoAtrcompList();
+
+        // completo la interfaz con los datos obtenidos
+        nombre.setValue(atributo.getNombre());
+        descripcion.setValue(USER);
     }
 
 }

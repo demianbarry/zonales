@@ -11,18 +11,21 @@
         height="50%"
         use="com.zonales.userinterface.controllers.AbmcAtributosController"
     >
-        
-        <grid   id="atributos"
-                fixedLayout="true"
-                width="600px"
-                model="@{abmcAtributosWin.atributoModel.all}"
-        >
-            <rows>
-                <row self="@{each=att}">
-                    <detail open="false" >
-                        <columnlayout>
-                            <columnchildren width="30%" style="padding: 5px">
-                                <vbox>
+
+        <columnlayout>
+            <columnchildren id="listaAtributos" width="33%" style="padding: 5px">
+                <listbox id="atributos"  model="@{abmcAtributosWin.atributoModel.all}" >
+                    <listhead>
+                        <listheader label="Atributo"/>
+                    </listhead>
+                    <listitem self="@{each=att}">
+                        <listcell label="@{att.nombre}" id="@{att.id}"/>
+                    </listitem>
+
+                </listbox>
+            </columnchildren>
+            <columnchildren id="detalleAtributos" width="33%" style="padding: 5px" >
+                <vbox>
                                     <toolbar>
                                         <toolbarbutton id="editarAtributo"
                                                     label="Editar Atributo"
@@ -38,27 +41,21 @@
                                     <!-- detalle de los atributos -->
                                     <label value="Nombre: "/>
                                     <textbox id="nombre"
-                                            value="@{att.nombre}"
                                     />
 
                                     <label value="Descripcion"/>
                                     <textbox id="descripcion"
-                                            value="@{att.descripcion}"
                                     />
 
                                     <label value="Observaciones"/>
                                     <textbox id="observaciones"
-                                            value="@{att.observaciones}"
                                             rows="5"
                                     />
 
                                     <checkbox id="filtraPorPadre"
                                             label="Filtrar por padre"
-                                            checked="@{att.filtrarPorPadre}"
                                     />
                                     <textbox id="qryFiltraPorPadre"
-                                            visible="${filtrarPorPadre.checked}"
-                                            value="@{att.queryFiltrarPorPadre}"
                                     />
 
                                     <label value="Consulta externa"/>
@@ -67,14 +64,11 @@
                                     />
 
                                     <textbox id="qryLovExterna"
-                                            value="@{att.queryLovExterna}"
-                                            visible="${selValorPermitido.checked}"
                                     />
 
                                     <label value="Tipo de atributo"/>
 
                                     <listbox id="tipo"
-                                            selectedItem="@{att.tipo}"
                                     >
                                         <listhead>
                                             <listheader label="Tipo"/>
@@ -96,11 +90,9 @@
 
                                     <checkbox id="ecualizable"
                                             label="Ecualizable"
-                                            checked="@{att.equalizable}"
                                     />
                                     <checkbox id="obligatorio"
                                             label="Obligatorio"
-                                            checked="@{att.obligatorio}"
                                     />
 
 
@@ -109,13 +101,9 @@
                                             visible="false"
                                     />
                                 </vbox>
-                            </columnchildren>
-
-
-
-                            <!-- Valores permitidos -->
-                            <columnchildren id="columnaValores" width="30%" style="padding: 5px" >
-                                <button id="nuevoValor"
+            </columnchildren>
+            <columnchildren id="valoresPermitidos" width="33%" style="padding: 5px">
+                <button id="nuevoValor"
                                         label="Nuevo"
                                 />
                                 <grid   id="valores"
@@ -164,11 +152,7 @@
                                         </row>
                                     </rows>
                                 </grid>
-                            </columnchildren>
-                        </columnlayout>
-                    </detail>
-                </row>
-            </rows>
-        </grid>
+            </columnchildren>
+        </columnlayout>
     </window>
 </zk>
