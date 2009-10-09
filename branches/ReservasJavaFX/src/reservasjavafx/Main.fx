@@ -200,11 +200,11 @@ var vbox:VBox = VBox {
 }
 
 function x(x:Integer):Integer {
-    return  (x + imagen.x as Integer);
+    return (x + imagen.x as Integer);
 }
 
 function y(y:Integer):Integer {
-    return y + imagen.y as Integer ;
+    return (y + imagen.y as Integer);
 }
 
 var resourceBean:ResourceBean = new ResourceBean();
