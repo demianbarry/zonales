@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Indicó la taglib para poder llamar a la función que recupera los labels de acuerdo al idioma del navegador -->
-<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<!-- Instancio el DataBinder estadar, que vincula cada anotacion ${...} con el objeto correspondiente -->
-<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./abmcAtributosWin"?>
 
 <!--
 index.zul
