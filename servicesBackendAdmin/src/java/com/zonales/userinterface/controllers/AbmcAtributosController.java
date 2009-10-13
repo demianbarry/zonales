@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.zonales.userinterface.controllers;
 
 import com.zonales.persistence.daos.exceptions.RollbackFailureException;
@@ -22,12 +21,11 @@ import org.zkoss.zkex.zul.Columnchildren;
 import org.zkoss.zkplus.databind.DataBinder;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Panel;
 import org.zkoss.zul.Textbox;
 
 /**
@@ -35,9 +33,9 @@ import org.zkoss.zul.Textbox;
  * @author Cristian
  */
 public class AbmcAtributosController extends BaseController {
-    private ClaseAtributoModel atributoModel;
 
-    protected  Listbox atributos;
+    private ClaseAtributoModel atributoModel;
+    protected Listbox atributos;
     protected Button btnAceptar;
     protected Textbox nombre;
     protected Textbox descripcion;
@@ -57,8 +55,17 @@ public class AbmcAtributosController extends BaseController {
     protected Textbox hasta;
     protected Textbox descripcionValores;
     protected Textbox observacionesValores;
+    protected Label atribPK;
+    protected Label valorPK;
 
-    public AbmcAtributosController(){
+    private enum Accion {
+
+        CONSULTAR, EDITAR, CREAR, ELIMINAR
+    }
+    private Accion accionValor;
+    private Accion accionAtributo;
+
+    public AbmcAtributosController() {
         super(false);
         atributoModel = new ClaseAtributoModel();
     }
@@ -86,68 +93,90 @@ public class AbmcAtributosController extends BaseController {
         atributos.getSelectedItem().getId();
     }
 
-    public void onClick$btnAceptar(Event event){
+    public void onClick$btnAceptar(Event event) {
         guardar();
     }
 
     private void guardar() {
-        if (editar.isChecked()) {
+        if (accionAtributo == Accion.CONSULTAR) {
             try {
-                ClaseAtributo atributoActual = (ClaseAtributo) atributoModel.getSelected();
-                atributoActual.setNombre(nombre.getValue());
-                atributoActual.setDescripcion(descripcion.getValue());
-                atributoActual.setEcualizable(ecualizable.isChecked());
-                atributoActual.setFiltraXPadre(filtraPorPadre.isChecked());
-                atributoActual.setObligatorio(obligatorio.isChecked());
-                atributoActual.setObservaciones(observaciones.getValue());
-                atributoActual.setQryFiltraXPadre(qryFiltraPorPadre.getValue());
-                atributoActual.setQryLovExterna(qryLovExterna.getValue());
-                atributoActual.setTipo((String) tipo.getSelectedItem().getValue());
+                Messagebox.show("Por favor, seleccione primero editar o nuevo");
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
-                // TERMINAR !!!!!!!!!!!!1
-                atributoActual.setValorPermitidoAtrcompList(null);
 
-                BaseModel.editEntity(atributoActual, true);
+        try {
+            ClaseAtributo atributoActual = new ClaseAtributo();
+            atributoActual.setId(new Integer(atribPK.getValue()));
+            atributoActual.setNombre(nombre.getValue());
+            atributoActual.setDescripcion(descripcion.getValue());
+            atributoActual.setEcualizable(ecualizable.isChecked());
+            atributoActual.setFiltraXPadre(filtraPorPadre.isChecked());
+            atributoActual.setObligatorio(obligatorio.isChecked());
+            atributoActual.setObservaciones(observaciones.getValue());
+            atributoActual.setQryFiltraXPadre(qryFiltraPorPadre.getValue());
+            atributoActual.setQryLovExterna(qryLovExterna.getValue());
+            atributoActual.setTipo((String) tipo.getSelectedItem().getValue());
 
-                
-            } catch (RollbackFailureException ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            } catch (NamingException ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            } catch (IllegalStateException ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            } catch (SecurityException ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            } catch (SystemException ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
-            } catch (Exception ex) {
-                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
+            // chequeo si es un insertar o actualizar
+            switch (accionAtributo) {
+                case CREAR:
+                    BaseModel.createEntity(atributoActual, true);
+                    break;
+                case EDITAR:
+                    BaseModel.editEntity(atributoActual, true);
+                    break;
+                case ELIMINAR:
+                    BaseModel.deleteEntity(atributoActual, true);
+                    break;
+                default:
+                    break;
             }
 
+
+        } catch (RollbackFailureException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (NamingException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (SecurityException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (SystemException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
+
     }
 
-
-    public void onCheck$selValorPermitido(Event event){
+    public void onCheck$selValorPermitido(Event event) {
         qryLovExterna.setVisible(selValorPermitido.isChecked());
         columnaValores.setVisible(!selValorPermitido.isChecked());
     }
 
-    public void onClick$eliminarAtributo(Event event){
+    public void onClick$eliminarAtributo(Event event) {
         try {
             int res = Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
 
             // si el usuario confirma la accion
-            if (res == Messagebox.OK){
+            if (res == Messagebox.OK) {
                 // elimino el  atributo y todos sus valores permitidos
+                accionAtributo = Accion.ELIMINAR;
+                onClick$btnAceptar(event);
 
                 // hago invisible la entrada
+                atributos.getSelectedItem().setVisible(false);
+                atributos.setSelectedIndex(0);
             }
 
         } catch (InterruptedException ex) {
@@ -156,56 +185,101 @@ public class AbmcAtributosController extends BaseController {
         }
     }
 
-    public void onClick$nuevoAtributo(Event event){
-        // agrego una nueva fila con todos sus campos en blanco
+    public void onClick$nuevoAtributo(Event event) {
+        nombre.setValue("");
+        descripcion.setValue("");
+        observaciones.setValue("");
+        filtraPorPadre.setChecked(false);
+        qryFiltraPorPadre.setValue("");
+        selValorPermitido.setChecked(true);
+        qryLovExterna.setValue("");
+        tipo.setSelectedIndex(0);
+        ecualizable.setChecked(true);
+        obligatorio.setChecked(false);
+        atribPK.setValue("0");
 
-        // hago visible el boton aceptar
+        accionAtributo = Accion.CREAR;
+        habilitarDetallesAtributo(true);
+
     }
 
-    public void onClick$editarAtributo(Event event){
-        // hago editable todos los campos
+    public void onClick$editarAtributo(Event event) {
+        if (accionAtributo != Accion.CONSULTAR) {
+            try {
+                Messagebox.show("No ha seleccionado ningun atributo");
 
-        // hago visible el boton aceptar
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        habilitarDetallesAtributo(true);
+
+        accionAtributo = Accion.EDITAR;
     }
 
-    public void onClick$nuevoValor(Event event){
+    public void onClick$nuevoValor(Event event) {
         editarValor.setVisible(true);
 
         desde.setValue("");
         hasta.setValue("");
         observacionesValores.setValue("");
         descripcionValores.setValue("");
+        valorPK.setValue("0");
+
+        accionValor = Accion.CREAR;
     }
 
-    public void onClick$editarValor(Event event){
-        // obtengo los datos del valor seleccionado
-        ValorPermitidoAtrcomp valorActual;
-
-        StringTokenizer tokens = new StringTokenizer(valores.getSelectedItem().getId(), "-");
-        tokens.nextToken();
-        int pk = Integer.parseInt(tokens.nextToken());
-
-        valorActual = (ValorPermitidoAtrcomp) BaseModel.findEntityByPK(pk, ValorPermitidoAtrcomp.class);
-
-
-        editarValor.setVisible(true);
-        
-
-        desde.setValue(valorActual.getValor());
-        hasta.setValue(valorActual.getValorHasta());
-        observacionesValores.setValue(valorActual.getObservaciones());
-        descripcionValores.setValue(valorActual.getDescripcion());
+    private void habilitarDetallesAtributo(boolean habilitar) {
+        nombre.setReadonly(!habilitar);
+        descripcion.setReadonly(!habilitar);
+        observaciones.setReadonly(!habilitar);
+        filtraPorPadre.setDisabled(!habilitar);
+        qryFiltraPorPadre.setReadonly(!habilitar);
+        selValorPermitido.setDisabled(!habilitar);
+        qryLovExterna.setReadonly(!habilitar);
+        tipo.setDisabled(!habilitar);
+        ecualizable.setDisabled(!habilitar);
+        obligatorio.setDisabled(!habilitar);
     }
 
-    public void onClick$eliminarValor(Event event){
+    public void onClick$editarValor(Event event) {
+        if (accionValor != Accion.CONSULTAR) {
+            try {
+                Messagebox.show("No ha seleccionado ningun valor");
+
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        habilitarDetallesValor(true);
+        accionValor = Accion.EDITAR;
+    }
+
+    public void onClick$eliminarValor(Event event) {
+        if (accionValor != Accion.CONSULTAR) {
+            try {
+                Messagebox.show("Por favor, seleccione primero un valor");
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         try {
             int res = Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
 
             // si el usuario confirma la accion
-            if (res == Messagebox.OK){
-                // elimino el  valor 
+            if (res == Messagebox.OK) {
+                accionValor = Accion.ELIMINAR;
+                onClick$btnAceptarValor(event);
 
                 // hago invisible la entrada
+                valores.getSelectedItem().setVisible(false);
+                valores.setSelectedIndex(0);
             }
 
         } catch (InterruptedException ex) {
@@ -214,15 +288,63 @@ public class AbmcAtributosController extends BaseController {
         }
     }
 
-    public void onClick$btnAceptarValor(Event event){
-        // chequeo si es un insertar o actualizar
+    public void onClick$btnAceptarValor(Event event) {
+        try {
+            if (accionValor == Accion.CONSULTAR) {
+                try {
+                    Messagebox.show("Por favor, seleccione primero editar o nuevo");
+                    return;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // recupero los datos
+            ValorPermitidoAtrcomp valorActual = new ValorPermitidoAtrcomp();
+            valorActual.setId(new Integer(valorPK.getValue()));
+            valorActual.setDescripcion(descripcionValores.getValue());
+            valorActual.setObservaciones(observacionesValores.getValue());
+            valorActual.setValor(desde.getValue());
+            valorActual.setValorHasta(hasta.getValue());
+            // chequeo si es un insertar o actualizar
+            switch (accionValor) {
+                case CREAR:
+                    BaseModel.createEntity(valorActual, true);
+                    break;
+                case EDITAR:
+                    BaseModel.editEntity(valorActual, true);
+                    break;
+                case ELIMINAR:
+                    BaseModel.deleteEntity(valorActual, true);
+                    break;
+                default:
+                    break;
+            }
+            // realizo la operacion
+        } catch (RollbackFailureException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (NamingException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (SecurityException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (SystemException ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
 
         // realizo la operacion
 
-        // hago invisible el boton aceptar
     }
 
-    public void onSelect$atributos(Event event){
+    public void onSelect$atributos(Event event) {
         Integer pk;
         ClaseAtributo atributo;
         List<ValorPermitidoAtrcomp> valores;
@@ -243,26 +365,27 @@ public class AbmcAtributosController extends BaseController {
         obligatorio.setChecked(atributo.isObligatorio());
         observaciones.setValue(atributo.getObservaciones());
         qryFiltraPorPadre.setValue(atributo.getQryFiltraXPadre());
+        atribPK.setValue(atributo.getId().toString());
 
         itItems = tipo.getItems().iterator();
 
-        while (itItems.hasNext()){
+        while (itItems.hasNext()) {
             Listitem itemActual = itItems.next();
-            if (((String) itemActual.getValue()).compareTo(atributo.getTipo())  == 0){
+            if (((String) itemActual.getValue()).compareTo(atributo.getTipo()) == 0) {
                 tipo.setSelectedItem(itemActual);
                 break;
             }
         }
 
         // si no se requiere una consulta a una tabla externa
-        if (atributo.getQryLovExterna() == null){
+        if (atributo.getQryLovExterna() == null) {
             qryLovExterna.setVisible(false);
             selValorPermitido.setChecked(true);
 
             valores = atributo.getValorPermitidoAtrcompList();
             Iterator<ValorPermitidoAtrcomp> itValor = valores.iterator();
 
-            while (itValor.hasNext()){
+            while (itValor.hasNext()) {
                 ValorPermitidoAtrcomp valorActual = itValor.next();
                 Listitem itemActual = new Listitem();
 
@@ -275,13 +398,45 @@ public class AbmcAtributosController extends BaseController {
                 this.valores.appendChild(itemActual);
 
             }
-        }
-        else {
+        } else {
             qryLovExterna.setValue(atributo.getQryLovExterna());
             qryLovExterna.setVisible(true);
             selValorPermitido.setChecked(false);
         }
 
+        accionValor = Accion.CONSULTAR;
+        habilitarDetallesAtributo(false);
+
     }
 
+    public void onSelect$valores(Event event) {
+        // obtengo los datos del valor seleccionado
+        ValorPermitidoAtrcomp valorActual;
+
+        StringTokenizer tokens = new StringTokenizer(valores.getSelectedItem().getId(), "-");
+        tokens.nextToken();
+        int pk = Integer.parseInt(tokens.nextToken());
+
+        valorActual = (ValorPermitidoAtrcomp) BaseModel.findEntityByPK(pk, ValorPermitidoAtrcomp.class);
+
+
+        editarValor.setVisible(true);
+
+
+        desde.setValue(valorActual.getValor());
+        hasta.setValue(valorActual.getValorHasta());
+        observacionesValores.setValue(valorActual.getObservaciones());
+        descripcionValores.setValue(valorActual.getDescripcion());
+        valorPK.setValue(valorActual.getId().toString());
+
+        habilitarDetallesValor(false);
+        accionValor = Accion.CONSULTAR;
+    }
+
+    private void habilitarDetallesValor(boolean habilitar) {
+        desde.setReadonly(!habilitar);
+        hasta.setReadonly(!habilitar);
+        descripcionValores.setReadonly(!habilitar);
+        observacionesValores.setReadonly(!habilitar);
+    }
 }

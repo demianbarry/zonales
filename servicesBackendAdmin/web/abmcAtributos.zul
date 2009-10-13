@@ -94,7 +94,7 @@
                                     <checkbox id="obligatorio"
                                             label="Obligatorio"
                                     />
-
+                                    <label id="atribPK" visible="false"/>
 
                                     <button id="btnAceptar"
                                             label="Aceptar"
@@ -122,6 +122,7 @@
 
             <columnchildren id="editarValor" width="25%" style="padding: 5px" visible="false">
                 <vbox>
+                    <label id="valorPK" visible="false"/>
                     <textbox id="desde"/>
                     <textbox id="hasta"/>
 
