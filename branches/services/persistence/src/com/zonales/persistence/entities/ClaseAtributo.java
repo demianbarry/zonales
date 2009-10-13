@@ -127,7 +127,7 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
         this.tipo = tipo;
     }
 
-    public boolean getObligatorio() {
+    public boolean isObligatorio() {
         return obligatorio;
     }
 
@@ -143,7 +143,7 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
         this.qryLovExterna = qryLovExterna;
     }
 
-    public boolean getFiltraXPadre() {
+    public boolean isFiltraXPadre() {
         return filtraXPadre;
     }
 
@@ -159,7 +159,7 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
         this.qryFiltraXPadre = qryFiltraXPadre;
     }
 
-    public boolean getEcualizable() {
+    public boolean isEcualizable() {
         return ecualizable;
     }
 
