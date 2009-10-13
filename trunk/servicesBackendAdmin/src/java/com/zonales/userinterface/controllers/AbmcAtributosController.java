@@ -5,6 +5,7 @@
 package com.zonales.userinterface.controllers;
 
 import com.zonales.persistence.daos.exceptions.RollbackFailureException;
+import com.zonales.persistence.entities.BaseEntity;
 import com.zonales.persistence.entities.ClaseAtributo;
 import com.zonales.persistence.entities.ValorPermitidoAtrcomp;
 import com.zonales.persistence.models.BaseModel;
@@ -89,8 +90,23 @@ public class AbmcAtributosController extends BaseController {
 //            atributoModel.setSelected((ClaseAtributo) model.get(0));
 //            binder.loadComponent(rolesDetail);
 //        }
-        ((ClaseAtributo) atributoModel.getAll().get(0)).getPK();
-        atributos.getSelectedItem().getId();
+        cargarAtributos();
+    }
+
+    private void cargarAtributos(){
+        Iterator<BaseEntity> itAtributo = atributoModel.getAll().iterator();
+
+        while (itAtributo.hasNext()){
+            Listcell celda = new Listcell();
+            Listitem item = new Listitem();
+            ClaseAtributo atributo = (ClaseAtributo) itAtributo.next();
+
+            celda.setLabel(atributo.getNombre());
+            item.setId("at-" + atributo.getId());
+
+            item.appendChild(celda);
+            this.atributos.appendChild(item);
+        }
     }
 
     public void onClick$btnAceptar(Event event) {
@@ -165,6 +181,15 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onClick$eliminarAtributo(Event event) {
+        if (accionAtributo != Accion.CONSULTAR) {
+            try {
+                Messagebox.show("Por favor, seleccione primero un atributo");
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AbmcAtributosController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         try {
             int res = Messagebox.show("¿Esta seguro?", "Por favor confirme", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
 
@@ -196,7 +221,7 @@ public class AbmcAtributosController extends BaseController {
         tipo.setSelectedIndex(0);
         ecualizable.setChecked(true);
         obligatorio.setChecked(false);
-        atribPK.setValue("0");
+        atribPK.setValue("A0");
 
         accionAtributo = Accion.CREAR;
         habilitarDetallesAtributo(true);
@@ -226,7 +251,7 @@ public class AbmcAtributosController extends BaseController {
         hasta.setValue("");
         observacionesValores.setValue("");
         descripcionValores.setValue("");
-        valorPK.setValue("0");
+        valorPK.setValue("V0");
 
         accionValor = Accion.CREAR;
     }
@@ -351,11 +376,12 @@ public class AbmcAtributosController extends BaseController {
         Iterator<Listitem> itItems;
 
         // recupero el la PK del atributo
-        pk = Integer.parseInt(atributos.getSelectedItem().getId());
+        StringTokenizer tokens = new StringTokenizer(atributos.getSelectedItem().getId(), "-");
+        tokens.nextToken();
+        pk = Integer.parseInt(tokens.nextToken());
 
         // consulto a la base de datos por todos los valores asociados
         atributo = (ClaseAtributo) BaseModel.findEntityByPK(pk, ClaseAtributo.class);
-        valores = atributo.getValorPermitidoAtrcompList();
 
         // completo la interfaz con los datos obtenidos
         nombre.setValue(atributo.getNombre());
@@ -371,7 +397,9 @@ public class AbmcAtributosController extends BaseController {
 
         while (itItems.hasNext()) {
             Listitem itemActual = itItems.next();
-            if (((String) itemActual.getValue()).compareTo(atributo.getTipo()) == 0) {
+            System.err.println("item: " + ((String) itemActual.getValue()));
+            System.err.println("tipo: " + atributo.getTipo());
+            if (((String) ((Listcell)itemActual.getFirstChild()).getLabel()).compareTo(atributo.getTipo()) == 0) {
                 tipo.setSelectedItem(itemActual);
                 break;
             }
