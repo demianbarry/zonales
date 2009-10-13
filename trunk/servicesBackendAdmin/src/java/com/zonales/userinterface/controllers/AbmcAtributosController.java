@@ -10,7 +10,9 @@ import com.zonales.persistence.entities.ClaseAtributo;
 import com.zonales.persistence.entities.ValorPermitidoAtrcomp;
 import com.zonales.persistence.models.BaseModel;
 import com.zonales.persistence.models.ClaseAtributoModel;
+import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -22,7 +24,10 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Panel;
 import org.zkoss.zul.Textbox;
 
 /**
@@ -46,6 +51,12 @@ public class AbmcAtributosController extends BaseController {
     protected Checkbox editar;
     protected Checkbox selValorPermitido;
     protected Columnchildren columnaValores;
+    protected Listbox valores;
+    protected Columnchildren editarValor;
+    protected Textbox desde;
+    protected Textbox hasta;
+    protected Textbox descripcionValores;
+    protected Textbox observacionesValores;
 
     public AbmcAtributosController(){
         super(false);
@@ -158,15 +169,32 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onClick$nuevoValor(Event event){
-        // agrego una nueva fila con todos sus campos en blanco
+        editarValor.setVisible(true);
 
-        // hago visible el boton aceptar
+        desde.setValue("");
+        hasta.setValue("");
+        observacionesValores.setValue("");
+        descripcionValores.setValue("");
     }
 
     public void onClick$editarValor(Event event){
-        // hago editable todos los campos
+        // obtengo los datos del valor seleccionado
+        ValorPermitidoAtrcomp valorActual;
 
-        // hago visible el boton aceptar
+        StringTokenizer tokens = new StringTokenizer(valores.getSelectedItem().getId(), "-");
+        tokens.nextToken();
+        int pk = Integer.parseInt(tokens.nextToken());
+
+        valorActual = (ValorPermitidoAtrcomp) BaseModel.findEntityByPK(pk, ValorPermitidoAtrcomp.class);
+
+
+        editarValor.setVisible(true);
+        
+
+        desde.setValue(valorActual.getValor());
+        hasta.setValue(valorActual.getValorHasta());
+        observacionesValores.setValue(valorActual.getObservaciones());
+        descripcionValores.setValue(valorActual.getDescripcion());
     }
 
     public void onClick$eliminarValor(Event event){
@@ -198,6 +226,7 @@ public class AbmcAtributosController extends BaseController {
         Integer pk;
         ClaseAtributo atributo;
         List<ValorPermitidoAtrcomp> valores;
+        Iterator<Listitem> itItems;
 
         // recupero el la PK del atributo
         pk = Integer.parseInt(atributos.getSelectedItem().getId());
@@ -208,7 +237,51 @@ public class AbmcAtributosController extends BaseController {
 
         // completo la interfaz con los datos obtenidos
         nombre.setValue(atributo.getNombre());
-        descripcion.setValue(USER);
+        descripcion.setValue(atributo.getDescripcion());
+        ecualizable.setChecked(atributo.isEcualizable());
+        filtraPorPadre.setChecked(atributo.isFiltraXPadre());
+        obligatorio.setChecked(atributo.isObligatorio());
+        observaciones.setValue(atributo.getObservaciones());
+        qryFiltraPorPadre.setValue(atributo.getQryFiltraXPadre());
+
+        itItems = tipo.getItems().iterator();
+
+        while (itItems.hasNext()){
+            Listitem itemActual = itItems.next();
+            if (((String) itemActual.getValue()).compareTo(atributo.getTipo())  == 0){
+                tipo.setSelectedItem(itemActual);
+                break;
+            }
+        }
+
+        // si no se requiere una consulta a una tabla externa
+        if (atributo.getQryLovExterna() == null){
+            qryLovExterna.setVisible(false);
+            selValorPermitido.setChecked(true);
+
+            valores = atributo.getValorPermitidoAtrcompList();
+            Iterator<ValorPermitidoAtrcomp> itValor = valores.iterator();
+
+            while (itValor.hasNext()){
+                ValorPermitidoAtrcomp valorActual = itValor.next();
+                Listitem itemActual = new Listitem();
+
+                itemActual.appendChild(new Listcell(valorActual.getValor()));
+                itemActual.appendChild(new Listcell(valorActual.getValorHasta()));
+                itemActual.appendChild(new Listcell(valorActual.getDescripcion()));
+                itemActual.appendChild(new Listcell(valorActual.getObservaciones()));
+                itemActual.setId("vp-" + valorActual.getId());
+
+                this.valores.appendChild(itemActual);
+
+            }
+        }
+        else {
+            qryLovExterna.setValue(atributo.getQryLovExterna());
+            qryLovExterna.setVisible(true);
+            selValorPermitido.setChecked(false);
+        }
+
     }
 
 }

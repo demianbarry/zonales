@@ -13,7 +13,7 @@
     >
 
         <columnlayout>
-            <columnchildren id="listaAtributos" width="33%" style="padding: 5px">
+            <columnchildren id="listaAtributos" width="25%" style="padding: 5px">
                 <listbox id="atributos"  model="@{abmcAtributosWin.atributoModel.all}" >
                     <listhead>
                         <listheader label="Atributo"/>
@@ -24,7 +24,7 @@
 
                 </listbox>
             </columnchildren>
-            <columnchildren id="detalleAtributos" width="33%" style="padding: 5px" >
+            <columnchildren id="detalleAtributos" width="25%" style="padding: 5px" >
                 <vbox>
                                     <toolbar>
                                         <toolbarbutton id="editarAtributo"
@@ -102,56 +102,34 @@
                                     />
                                 </vbox>
             </columnchildren>
-            <columnchildren id="valoresPermitidos" width="33%" style="padding: 5px">
-                <button id="nuevoValor"
-                                        label="Nuevo"
-                                />
-                                <grid   id="valores"
-                                        fixedLayout="true"
-                                        width="100px"
-                                        model="@{att.valorPermitidoAtrcompList}"
-                                >
-                                    <columns>
-                                        <column label="Desde" />
-                                        <column label="Hasta" />
-                                        <column label="Descripcion" />
-                                        <column label="Observaciones" />
-                                        <column label="Acciones" />
-                                    </columns>
-                                    <rows>
-                                        <row self="@{each=val}">
-                                            <textbox id="desde"
-                                                    value="@{val.valor}"
-                                            />
-                                            <textbox id="hasta"
-                                                    value="@{val.valorHasta}"
-                                            />
+            <columnchildren width="25%" style="padding: 5px">
+                <hbox>
+                    <button id="nuevoValor" label="Nuevo"/>
+                    <button id="editarValor" label="Editar"/>
+                    <button id="eliminarValor" label="Eliminar" />
+                </hbox>
+                <listbox id="valores">
+                    <listhead>
+                        <listheader label="Desde" />
+                        <listheader label="Hasta" />
+                        <listheader label="Descripcion" />
+                        <listheader label="Observaciones" />
+                    </listhead>
 
-                                            <textbox id="descripcionValores"
-                                                    value="@{val.descripcion}"
-                                            />
+                </listbox>
+            </columnchildren>
+            
 
-                                            <textbox id="observacionesValores"
-                                                    value="@{val.observaciones}"
-                                                    rows="5"
-                                            />
-                                            <panel>
-                                                <hbox>
-                                                    <button id="editarValor"
-                                                            label="Editar"
-                                                    />
-                                                    <button id="btnAceptarValor"
-                                                            label="Aceptar"
-                                                            visible="false"
-                                                    />
-                                                    <button id="eliminarValor"
-                                                            label="Eliminar"
-                                                    />
-                                                </hbox>
-                                            </panel>
-                                        </row>
-                                    </rows>
-                                </grid>
+            <columnchildren id="editarValor" width="25%" style="padding: 5px" visible="false">
+                <vbox>
+                    <textbox id="desde"/>
+                    <textbox id="hasta"/>
+
+                    <textbox id="descripcionValores"/>
+
+                    <textbox id="observacionesValores" rows="5"/>
+                    <button id="btnAceptarValor" label="Aceptar"/>
+                </vbox>
             </columnchildren>
         </columnlayout>
     </window>
