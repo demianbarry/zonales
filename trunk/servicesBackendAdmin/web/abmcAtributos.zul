@@ -7,8 +7,8 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <window id="abmcAtributosWin"
         title="Administrar Atributos"
-        width="50%"
-        height="50%"
+        width="100%"
+        height="100%"
         use="com.zonales.userinterface.controllers.AbmcAtributosController"
     >
 
@@ -63,25 +63,13 @@
 
                             <label value="Tipo de atributo"/>
 
-                            <listbox id="tipo">
-                                <listhead>
-                                    <listheader label="Tipo"/>
-                                </listhead>
-                                <listitem id="INT">
-                                    <listcell label="INT"/>
-                                </listitem>
-                                <listitem id="DOUBLE">
-                                    <listcell label="DOUBLE"/>
-                                </listitem>
-                                <listitem id="DATE">
-                                    <listcell label="DATE"/>
-                                </listitem>
-                                <listitem id="TEXT">
-                                    <listcell label="TEXT"/>
-                                </listitem>
-
-                            </listbox>
-
+                            <combobox id="tipo">
+		     		<comboitem label="Entero" value="INT"/>
+                                <comboitem label="Real" value="DOUBLE"/>
+                                <comboitem label="Fecha" value="DATE"/>
+                                <comboitem label="Texto" value="TEXT"/>
+	                </combobox>
+                        
                             <checkbox id="ecualizable"
                                             label="Ecualizable"
                                     />

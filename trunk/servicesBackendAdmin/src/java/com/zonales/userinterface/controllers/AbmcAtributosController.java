@@ -22,6 +22,8 @@ import org.zkoss.zkex.zul.Columnchildren;
 import org.zkoss.zkplus.databind.DataBinder;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -44,14 +46,15 @@ public class AbmcAtributosController extends BaseController {
     protected Checkbox filtraPorPadre;
     protected Textbox qryFiltraPorPadre;
     protected Textbox qryLovExterna;
-    protected Listbox tipo;
+    //protected Listbox tipo;
+    protected Combobox tipo;
     protected Checkbox ecualizable;
     protected Checkbox obligatorio;
     protected Checkbox editar;
     protected Checkbox selValorPermitido;
     protected Columnchildren columnaValores;
     protected Listbox valores;
-    protected Columnchildren editarValor;
+    protected Columnchildren detalleValor;
     protected Textbox desde;
     protected Textbox hasta;
     protected Textbox descripcionValores;
@@ -245,7 +248,7 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onClick$nuevoValor(Event event) {
-        editarValor.setVisible(true);
+        detalleValor.setVisible(true);
 
         desde.setValue("");
         hasta.setValue("");
@@ -267,6 +270,7 @@ public class AbmcAtributosController extends BaseController {
         tipo.setDisabled(!habilitar);
         ecualizable.setDisabled(!habilitar);
         obligatorio.setDisabled(!habilitar);
+        btnAceptar.setVisible(habilitar);
     }
 
     public void onClick$editarValor(Event event) {
@@ -373,7 +377,8 @@ public class AbmcAtributosController extends BaseController {
         Integer pk;
         ClaseAtributo atributo;
         List<ValorPermitidoAtrcomp> valores;
-        Iterator<Listitem> itItems;
+        Iterator<Comboitem> itItems;
+        final String namespace = "vp";
 
         // recupero el la PK del atributo
         StringTokenizer tokens = new StringTokenizer(atributos.getSelectedItem().getId(), "-");
@@ -396,10 +401,9 @@ public class AbmcAtributosController extends BaseController {
         itItems = tipo.getItems().iterator();
 
         while (itItems.hasNext()) {
-            Listitem itemActual = itItems.next();
-            System.err.println("item: " + ((String) itemActual.getValue()));
-            System.err.println("tipo: " + atributo.getTipo());
-            if (((String) ((Listcell)itemActual.getFirstChild()).getLabel()).compareTo(atributo.getTipo()) == 0) {
+            //Listitem itemActual = itItems.next();
+            Comboitem itemActual = itItems.next();
+            if (((String) itemActual.getValue()).compareTo(atributo.getTipo()) == 0) {
                 tipo.setSelectedItem(itemActual);
                 break;
             }
@@ -413,6 +417,12 @@ public class AbmcAtributosController extends BaseController {
             valores = atributo.getValorPermitidoAtrcompList();
             Iterator<ValorPermitidoAtrcomp> itValor = valores.iterator();
 
+            int cantItems = this.valores.getItems().size();
+
+            for (int i = 0;i < cantItems;i++){
+                this.valores.removeItemAt(i);
+            }
+
             while (itValor.hasNext()) {
                 ValorPermitidoAtrcomp valorActual = itValor.next();
                 Listitem itemActual = new Listitem();
@@ -421,7 +431,7 @@ public class AbmcAtributosController extends BaseController {
                 itemActual.appendChild(new Listcell(valorActual.getValorHasta()));
                 itemActual.appendChild(new Listcell(valorActual.getDescripcion()));
                 itemActual.appendChild(new Listcell(valorActual.getObservaciones()));
-                itemActual.setId("vp-" + valorActual.getId());
+                itemActual.setId(namespace + "-" + valorActual.getId());
 
                 this.valores.appendChild(itemActual);
 
@@ -433,7 +443,9 @@ public class AbmcAtributosController extends BaseController {
         }
 
         accionValor = Accion.CONSULTAR;
+        accionAtributo = Accion.CONSULTAR;
         habilitarDetallesAtributo(false);
+        habilitarDetallesValor(false);
 
     }
 
@@ -448,7 +460,7 @@ public class AbmcAtributosController extends BaseController {
         valorActual = (ValorPermitidoAtrcomp) BaseModel.findEntityByPK(pk, ValorPermitidoAtrcomp.class);
 
 
-        editarValor.setVisible(true);
+        detalleValor.setVisible(true);
 
 
         desde.setValue(valorActual.getValor());
@@ -466,5 +478,6 @@ public class AbmcAtributosController extends BaseController {
         hasta.setReadonly(!habilitar);
         descripcionValores.setReadonly(!habilitar);
         observacionesValores.setReadonly(!habilitar);
+        detalleValor.setVisible(habilitar);
     }
 }
