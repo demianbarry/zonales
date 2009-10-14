@@ -35,6 +35,7 @@ public class CustomResource extends CustomNode {
     public var stroke: Color;
     public var x: Number;
     public var y: Number;
+    public var scale: Number;
     public var radX: Number;
     public var radY: Number;
     public var type: String;
@@ -43,8 +44,11 @@ public class CustomResource extends CustomNode {
     //var applet: Applet = FX.getArgument("javafx.applet") as Applet;
     //var jsObject = new JavaScriptUtil(applet);
 
-
+    var myImage:Image = Image {  url: "{__DIR__}images/{image}"};
     var resource : Group;
+
+    var imageWidth = bind myImage.width;
+    var imageHeight = bind myImage.height;
 
     public override function create(): Node {
         return createResource(points, nroRecurso, fill, stroke);
@@ -64,10 +68,11 @@ public class CustomResource extends CustomNode {
                             stroke: strokeColor
                         },
                         ImageView {
-                                image: Image {  url: "{__DIR__}images/{image}"
-                                             }
-                                x: bind x
-                                y: bind y
+                                image: myImage
+                                x: bind x  - imageWidth/2
+                                y: bind y  - imageHeight/2
+                                scaleX: scale
+                                scaleY: scale
                         }]
                         }
                     } else {
@@ -79,10 +84,11 @@ public class CustomResource extends CustomNode {
                             stroke: strokeColor
                         },
                         ImageView {
-                                image: Image {  url: "{__DIR__}images/{image}"
-                                             }
-                                x: bind getCenterX(points)
-                                y: bind getCenterY(points)
+                                image: myImage;
+                                x: bind getCenterX(points) - imageWidth/2
+                                y: bind getCenterY(points) - imageHeight/2
+                                scaleX: scale
+                                scaleY: scale
                         }]
                     }
                     }]
@@ -91,17 +97,19 @@ public class CustomResource extends CustomNode {
 
     function getCenterX(points:Integer[]):Integer {
         if(sizeof(points) != 0) {
+            var max = points[0];
+            var min = points[0];
             var average = 0;
             var count = 0;
             for(i in points) {
-                java.lang.System.out.println("X-{count mod 2}---{count}---{i}");
                 if(count++ mod 2 == 0) {
+                    if(i > max)
+                        max = i;
+                    if(i < min)
+                        min = i;
                     average += i;
                 }
             }
-            java.lang.System.out.println("=====================");
-            java.lang.System.out.println("{average/(sizeof(points)/2)}---{sizeof(points)}--------{image}");
-            java.lang.System.out.println("=====================");
             return average/(sizeof(points)/2)
         }
         return 0;
@@ -109,17 +117,19 @@ public class CustomResource extends CustomNode {
 
     function getCenterY(points:Integer[]):Integer {
         if(sizeof(points) != 0) {
+            var max = points[1];
+            var min = points[1];
             var average = 0;
             var count = 0;
             for(i in points) {
-                java.lang.System.out.println("Y-{count mod 2}---{count}---{i}");
                 if(count++ mod 2 != 0) {
+                    if(i > max)
+                        max = i;
+                    if(i < min)
+                        min = i;
                     average += i;
                 }
             }
-            java.lang.System.out.println("=====================");
-            java.lang.System.out.println("{average/(sizeof(points)/2)}----{sizeof(points)}-------{image}");
-            java.lang.System.out.println("=====================");
             return average/(sizeof(points)/2)
         }
         return 0;
