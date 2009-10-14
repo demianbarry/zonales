@@ -29,6 +29,7 @@ import java.util.Calendar;
 import calendarpicker.ComboBox;
 import java.io.InputStream;
 import com.sun.javafx.data.pull.impl.StreamException;
+import calendarpicker.CalendarPickerSkinStandard;
 
 var gapX = 10;
 var gapY = 40;
@@ -41,7 +42,6 @@ var stageDragInitialX:Number;
 var stageDragInitialY:Number;
 
 var coords :String;
-var panelWidth:Number = 0.4;
 
 var imageOpacity:Float = 1;
 
@@ -61,8 +61,8 @@ var myPopupMenu:popupMenu = popupMenu {
     padding:8
     borderWidth:4
     opacity: 0.9
-    stroke: Color.web("#FF9900");
-    fill: Color.WHITE;
+    stroke: Color.web("#FF9900")
+    fill: Color.WHITE
     containerWidth: bind imagen.image.width
     containerHeight: bind imagen.image.height
 };
@@ -176,28 +176,6 @@ var layout:Group = Group {
 doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
 
 //doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1");
-
-var slotComboBox : ComboBox = ComboBox {};
-slotComboBox.select(0);
-//slotComboBox.skin.node.visible = false;
-
-var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
-slotComboBox.skin.control.translateY = 170;
-
-var vbox:VBox = VBox {
-    translateX: gapX
-    translateY: gapY
-    content: [   Group {
-                        content: [  Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width)*panelWidth
-                                    height: (imagen.image.height)
-                                },
-                                calendarPicker,
-                                slotComboBox    ]
-                       }
-                    ]
-}
 
 function x(x:Integer):Integer {
     return (x + imagen.x as Integer);
@@ -314,6 +292,13 @@ var cancelButton:Button = Button {
 
 var request: HttpRequest;
 
+var slotComboBox : ComboBox = ComboBox {};
+slotComboBox.select(0);
+//slotComboBox.skin.node.visible = false;
+
+var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
+slotComboBox.skin.control.translateX = 300;
+
 function startConsultaRequest(e:MouseEvent, url: String) {
     request = HttpRequest {
 
@@ -427,8 +412,8 @@ function parseResources(is:InputStream):Void {
 }
 
 var hbox:HBox = HBox {
-    content: [ vbox,
-                    layout  ]
+    content: [      calendarPicker,
+                    slotComboBox    ]
 }
 
 var dayText:Text = Text {
@@ -438,22 +423,42 @@ var dayText:Text = Text {
                         fill: TEXT_COLOR
                    }
 
-var background:Group = Group {
+var vbox:VBox = VBox {
+    content: [  dayText,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                hbox,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                layout,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                }   ]
+}
+
+
+
+var background:HBox = HBox {
     content: [
         // the background and top header
-                dayText,
-                VBox {
-                    content: [  Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                    height: gapY
-                                },
-                                hbox,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width) * (1 + panelWidth) - gapX*2
-                                    height: gapY
-                                }   ]
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: gapX
+                    height: 3*gapY
+                },                
+                vbox,
+                 Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: gapX
+                    height: 3*gapY
                 }
     ]
 }
@@ -467,6 +472,7 @@ function parseResource(parser:PullParser):CustomResource {
     var points:Integer[];
     var x;
     var y;
+    var scale = 1.0;
     var radX;
     var radY;
     var imagen;
@@ -527,7 +533,11 @@ function parseResource(parser:PullParser):CustomResource {
                     } else
                     if(evt.name.equalsIgnoreCase("stroke")) {
                             strokeColor = Color.web("WHITE", evt.numberValue);
+                    } else
+                    if(evt.name.equalsIgnoreCase("scale")) {
+                            scale = evt.numberValue;
                     }
+
             }
         }
     }
@@ -544,6 +554,7 @@ function parseResource(parser:PullParser):CustomResource {
                     radY: radY
                     onMouseClicked:mousePressed
                     image: imagen
+                    scale: scale
     };
 }
 
@@ -575,8 +586,13 @@ function dayOfWeek(dayOfWeek:Integer):String {
     return days[dayOfWeek];
 }
 
+java.lang.System.out.println("-----------------------------");
+java.lang.System.out.println("{calendarPicker.skin.node.boundsInLocal.height}----{((calendarPicker.skin.node as Group).content[0] as Rectangle).height}");
+java.lang.System.out.println("-----------------------------");
+
 var myScene:Scene = Scene {
-    width: imagen.image.width*(1+panelWidth)+gapX*2;
+    width: imagen.image.width+gapX*2;
+    height: gapY*3+ 200+imagen.image.height
     fill: Color.web("#FF9900")
     content: [background, resourceForm, okButton, cancelButton]
 }
