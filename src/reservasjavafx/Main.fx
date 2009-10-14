@@ -8,15 +8,8 @@ import javafx.scene.text.*;
 import javafx.scene.shape.*;
 import javafx.io.http.HttpRequest;
 import java.util.StringTokenizer;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import java.lang.Void;
-import reservasjavafx.domain.forms.NameForm;
-import reservasjavafx.domain.model.ResourceBean;
-import reservasjavafx.domain.model.ResourcePresentationModel;
 import reservasjavafx.CustomResource;
 import calendarpicker.CalendarPicker;
 import javafx.stage.Stage;
@@ -29,7 +22,6 @@ import java.util.Calendar;
 import calendarpicker.ComboBox;
 import java.io.InputStream;
 import com.sun.javafx.data.pull.impl.StreamException;
-import calendarpicker.CalendarPickerSkinStandard;
 
 var gapX = 10;
 var gapY = 40;
@@ -185,7 +177,7 @@ function y(y:Integer):Integer {
     return (y + imagen.y as Integer);
 }
 
-var resourceBean:ResourceBean = new ResourceBean();
+/*var resourceBean:ResourceBean = new ResourceBean();
 
 var value:String;
 
@@ -243,7 +235,7 @@ var slideLeft:Timeline = Timeline {
                     values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
                 }
             ]
-};
+};*/
 
 function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
@@ -254,7 +246,7 @@ function mousePressed(e:MouseEvent) {
         }
 }
 
-function optionSelected(texto:String):Void {
+/*function optionSelected(texto:String):Void {
         resourceBean.setRecurso("Mesa {mesa}");
         resourceBean.setFecha("01/01/2009");
         resourceBean.setHora("{texto}");
@@ -263,9 +255,9 @@ function optionSelected(texto:String):Void {
         slideLeft.play();
         slideRight.stop();
         resourceForm.setVisibleErrWarnNodes(true);
-}
+}*/
 
-var okButton:Button = Button {
+/*var okButton:Button = Button {
             translateX: bind myScene.width - okButton.width - 5
             translateY: bind myScene.height - okButton.height - 5
             text: " Ok "
@@ -288,7 +280,7 @@ var cancelButton:Button = Button {
                 slideRight.play();
                 resourceForm.setVisibleErrWarnNodes(false);
             }
-};
+};*/
 
 var request: HttpRequest;
 
@@ -412,8 +404,11 @@ function parseResources(is:InputStream):Void {
 }
 
 var hbox:HBox = HBox {
-    content: [      calendarPicker,
-                    slotComboBox    ]
+    content: [  Group {
+                    content: [  calendarPicker,
+                                slotComboBox    ]
+                }
+             ]
 }
 
 var dayText:Text = Text {
@@ -424,43 +419,47 @@ var dayText:Text = Text {
                    }
 
 var vbox:VBox = VBox {
-    content: [  dayText,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                },
-                hbox,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                },
-                layout,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                }   ]
+    content: [                  Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width)+gapX*2
+                                    height: gapY/2
+                                },
+                                dayText,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width)+gapX*2
+                                    height: gapY/2
+                                },
+                                hbox,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width)+gapX*2
+                                    height: gapY/2
+                                },
+                                layout,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: (imagen.image.width)+gapX*2
+                                    height: gapY/2
+                                }
+            ]
 }
 
 
 
 var background:HBox = HBox {
-    content: [
-        // the background and top header
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: gapX
-                    height: 3*gapY
-                },                
-                vbox,
-                 Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: gapX
-                    height: 3*gapY
-                }
-    ]
+                    content: [  Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: gapX
+                                    height: 3*gapY
+                                },
+                                vbox,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: gapX
+                                    height: 3*gapY
+                                }
+                            ]
 }
 
 function parseResource(parser:PullParser):CustomResource {
@@ -586,15 +585,11 @@ function dayOfWeek(dayOfWeek:Integer):String {
     return days[dayOfWeek];
 }
 
-java.lang.System.out.println("-----------------------------");
-java.lang.System.out.println("{calendarPicker.skin.node.boundsInLocal.height}----{((calendarPicker.skin.node as Group).content[0] as Rectangle).height}");
-java.lang.System.out.println("-----------------------------");
-
 var myScene:Scene = Scene {
     width: imagen.image.width+gapX*2;
-    height: gapY*3+ 200+imagen.image.height
+    height: gapY*3+ 150+ imagen.image.height
     fill: Color.web("#FF9900")
-    content: [background, resourceForm, okButton, cancelButton]
+    content: [background/*, resourceForm, okButton, cancelButton*/]
 }
 
 // show it all on screen
@@ -603,4 +598,4 @@ var stage:Stage = Stage {
     scene: myScene
 }
 
-resourceForm.presentationModel.mainScene = myScene;
+//resourceForm.presentationModel.mainScene = myScene;
