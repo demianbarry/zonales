@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,9 +59,9 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "ecualizable")
     private boolean ecualizable;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "atributoComponenteId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "atributoComponenteId")
     private List<EqAtributos> eqAtributosList;
-    @OneToMany(mappedBy = "claseAtributoId")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "claseAtributoId")
     private List<ClaseAtributo> claseAtributoList;
     @JoinColumn(name = "clase_atributo_id", referencedColumnName = "id")
     @ManyToOne
@@ -68,7 +69,7 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
     @JoinColumn(name = "clase_componente_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ClaseComponente claseComponenteId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "atributoComponenteId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "atributoComponenteId")
     private List<ValorPermitidoAtrcomp> valorPermitidoAtrcompList;
 
     public ClaseAtributo() {
