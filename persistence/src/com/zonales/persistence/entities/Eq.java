@@ -17,6 +17,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class Eq extends BaseEntity implements Serializable {
     private Integer userId;
     @Column(name = "solrquery_bq")
     private String solrqueryBq;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eqId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "eqId")
     private List<EqAtributos> eqAtributosList;
 
     public Eq() {

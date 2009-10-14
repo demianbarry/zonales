@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class ClaseComponente extends BaseEntity implements Serializable {
     private String descripcion;
     @Column(name = "observaciones")
     private String observaciones;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claseComponenteId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "claseComponenteId")
     private List<ClaseAtributo> claseAtributoList;
 
     public ClaseComponente() {
