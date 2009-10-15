@@ -53,11 +53,16 @@ public class Main extends HttpServlet {
             getAvailability.serve(request, response);
         }
 
-        if ("confirmReservation".equals(service)) {
-            ConfirmReservationService confirmReservation = new ConfirmReservationService();
-            confirmReservation.serve(request, response);
+        if ("confirmReserve".equals(service)) {
+            ConfirmReserveService confirmReserve = new ConfirmReserveService();
+            confirmReserve.serve(request, response);
         }
-        
+
+        if ("getReserve".equals(service)) {
+            GetReserveService getReserve = new GetReserveService();
+            getReserve.serve(request, response);
+        }
+
         }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
