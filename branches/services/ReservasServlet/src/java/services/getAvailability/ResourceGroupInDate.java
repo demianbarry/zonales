@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.getAvailability;
 
 import java.util.Calendar;
 import java.util.Date;

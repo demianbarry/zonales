@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.getAvailability;
 
+import services.*;
 import com.google.gson.Gson;
 import entities.BaseEntity;
 import entities.JosReserveHasJosResources;
@@ -31,7 +32,7 @@ public class GetAvailabilityService {
     ResourceGroupModel resourceGroupModel = new ResourceGroupModel();
     ResourcesModel resourcesModel = new ResourcesModel();
     ReserveModel reserveModel = new ReserveModel();
-    getAvailabilityStruct retorno;
+    GetAvailabilityStruct retorno;
     ResourceGroupInDate resourceGroupInDate;
     Gson gson = new Gson();
 
@@ -71,7 +72,7 @@ public class GetAvailabilityService {
         List<BaseEntity> resourcesList = resourceGroupModel.getResources();
         
         resourceGroupInDate = new ResourceGroupInDate(idGroup, date, hourd, duration);
-        retorno = new getAvailabilityStruct(resourceGroupInDate);
+        retorno = new GetAvailabilityStruct(resourceGroupInDate);
 
         for (int i = 0; i < resourcesList.size(); i++) {
             int resourceId = (Integer)resourcesList.get(i).getPK();
