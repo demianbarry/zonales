@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class GetConfigStruct {
 
-    String nombre = "config";
+    String name = "config";
     Range range;
-    List<Slots> slots = new ArrayList<Slots>();
+    List<Slot> slots = new ArrayList<Slot>();
 
     public GetConfigStruct(Range range) {
         this.range = range;
     }
 
-    public void add(Slots slot) {
+    public void add(Slot slot) {
         this.slots.add(slot);
     }
     

@@ -7,7 +7,6 @@ package model;
 
 import entities.BaseEntity;
 import entities.JosResourcesGroup;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -21,13 +20,21 @@ public class ResourceGroupModel extends BaseModel {
         super(JosResourcesGroup.class);
     }
 
-    public List<BaseEntity> getSlots(Date from, Date to) {
+    public List<BaseEntity> getSlots() {
+        if (selected != null) {
+            Hashtable<String, Integer> queryParameters = new Hashtable<String, Integer>();
+            queryParameters.put("groupId", ((JosResourcesGroup)selected).getGroupId());
+            return findEntities("JosSlotsHasJosResourcesGroup.findByGroupId", queryParameters);
+        }
+
+        return null;
+    }
+
+    public List<BaseEntity> getResources() {
         if (selected != null) {
             Hashtable<String, Object> queryParameters = new Hashtable<String, Object>();
-            queryParameters.put("groupId", ((JosResourcesGroup)selected).getGroupId());
-            queryParameters.put("from", from);
-            queryParameters.put("to", to);
-            return findEntities("JosSlotsHasJosResourcesGroup.findByGroupIdInRange", queryParameters);
+            queryParameters.put("group", (JosResourcesGroup)selected);
+            return findEntities("JosResources.findByGroupId", queryParameters);
         }
 
         return null;

@@ -29,7 +29,10 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "jos_reserve")
-@NamedQueries({@NamedQuery(name = "JosReserve.findAll", query = "SELECT j FROM JosReserve j")})
+@NamedQueries({
+    @NamedQuery(name = "JosReserve.findAll", query = "SELECT j FROM JosReserve j"),
+    @NamedQuery(name = "JosReserve.findByReserveId", query = "SELECT j FROM JosReserve j WHERE j.reserveId = :reserveId")
+})
 public class JosReserve extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

@@ -47,6 +47,16 @@ public class Main extends HttpServlet {
             GetLayoutService getLayout = new GetLayoutService();
             getLayout.serve(request, response);
         }
+
+        if ("getAvailability".equals(service)) {
+            GetAvailabilityService getAvailability = new GetAvailabilityService();
+            getAvailability.serve(request, response);
+        }
+
+        if ("confirmReservation".equals(service)) {
+            ConfirmReservationService confirmReservation = new ConfirmReservationService();
+            confirmReservation.serve(request, response);
+        }
         
         }
 

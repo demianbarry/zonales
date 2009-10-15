@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Nos
+ * @author Nosotros
  */
 @Entity
 @Table(name = "jos_slots")
@@ -67,8 +67,11 @@ public class JosSlots extends BaseEntity implements Serializable {
     @Column(name = "tolerance")
     @Temporal(TemporalType.TIME)
     private Date tolerance;
+    @Column(name = "alias")
+    private String alias;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "slots", fetch = FetchType.LAZY)
     private Set<JosSlotsHasJosResourcesGroup> josSlotsHasJosResourcesGroupCollection;
+    
 
     public JosSlots() {
     }
@@ -152,6 +155,14 @@ public class JosSlots extends BaseEntity implements Serializable {
         this.tolerance = tolerance;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public Set<JosSlotsHasJosResourcesGroup> getJosSlotsHasJosResourcesGroupCollection() {
         return josSlotsHasJosResourcesGroupCollection;
     }
@@ -193,7 +204,5 @@ public class JosSlots extends BaseEntity implements Serializable {
     public int compareTo(BaseEntity o) {
         return getDay().compareTo(((JosSlots)o).getDay());
     }
-
-
 
 }
