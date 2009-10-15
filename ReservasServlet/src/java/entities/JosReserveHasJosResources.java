@@ -21,7 +21,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "jos_reserve_has_jos_resources")
-@NamedQueries({@NamedQuery(name = "JosReserveHasJosResources.findAll", query = "SELECT j FROM JosReserveHasJosResources j")})
+@NamedQueries({
+    @NamedQuery(name = "JosReserveHasJosResources.findAll", query = "SELECT j FROM JosReserveHasJosResources j"),
+    @NamedQuery(name = "JosReserveHasJosResources.findByResourceIdInDate", query = "SELECT j FROM JosReserveHasJosResources j WHERE j.resources = :resources AND j.reserves.datetimeRealization > :from AND j.reserves.datetimeRealization < :to"),
+    @NamedQuery(name = "JosReserveHasJosResources.findByResourceId", query = "SELECT j FROM JosReserveHasJosResources j WHERE j.resources = :resources")
+})
 public class JosReserveHasJosResources extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
