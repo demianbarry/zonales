@@ -81,91 +81,91 @@ var listY = 0.0;
 
 var timeline : Timeline = Timeline {
 
-keyFrames: [
-KeyFrame {
-time: 0s
-canSkip: true
-values: [
-listY => (node.localToScene(node.layoutBounds).maxY) - 120
-]
-action: function() {
-list.visible = (timeline.rate == 1);
-}
-},
-KeyFrame {
-time: 200ms
-canSkip: true
-values: [
-listY => (node.localToScene(node.layoutBounds).maxY) + 2 tween Interpolator.EASEOUT
-]
-}
-]
+    keyFrames: [
+        KeyFrame {
+            time: 0s
+            canSkip: true
+            values: [
+                listY => (node.localToScene(node.layoutBounds).maxY) - 120
+            ]
+            action: function() {
+                list.visible = (timeline.rate == 1);
+            }
+        },
+        KeyFrame {
+            time: 200ms
+            canSkip: true
+            values: [
+                listY => (node.localToScene(node.layoutBounds).maxY) + 2 tween Interpolator.EASEOUT
+            ]
+        }
+    ]
 };
 
 public var showPopup = false on replace {
 
-if(showPopup) {
-timeline.rate = 1;
-timeline.playFromStart();
-list.visible = true;
-listView.requestFocus();
-} else if(timeline.running) {
-timeline.stop();
-listY = (node.localToScene(node.layoutBounds).maxY) - 120;
-} else {
-timeline.rate = -1;
-timeline.time = 200ms;
-timeline.play();
-}
+    if(showPopup) {
+        timeline.rate = 1;
+        timeline.playFromStart();
+        list.visible = true;
+        listView.requestFocus();
+    } else if(timeline.running) {
+        timeline.stop();
+        listY = (node.localToScene(node.layoutBounds).maxY) - 120;
+    } else {
+        timeline.rate = -1;
+        timeline.time = 200ms;
+        timeline.play();
+    }
 }
 
 public-read var listView : ListView = ListView {
 
-translateY: bind listY
+    translateY: bind listY
 
-items: bind (control as ComboBox).items
+    items: bind (control as ComboBox).items
 
-onMouseClicked: function(e) {
-showPopup = false;
-control.requestFocus();
-}
+    onMouseClicked: function(e) {
+        showPopup = false;
+        control.requestFocus();
+    }
 
-layoutInfo: LayoutInfo {
-width: bind control.width - 10
-height: 120
-}
+    layoutInfo: LayoutInfo {
+        width: bind control.width - 10
+        height: 120
+    }
 };
 
 public-read var list : HBox = HBox {
-visible: false
-content: [ listView ]
-blocksMouse: true
-clip: bind Rectangle {
-x: -2
-y: bind node.localToScene(node.layoutBounds).maxY
-width: bind control.width + 4
-height: 124
-}
+        visible: false
+        content: [ listView ]
+        blocksMouse: true
+        clip: bind Rectangle {
+        x: -2
+        y: bind node.localToScene(node.layoutBounds).maxY
+        width: bind control.width + 4
+        height: 124
+    }
 };
 
 var listViewFocus = bind listView.focused on replace {
-if(not listViewFocus) {
-showPopup = false;
-}
+    if(not listViewFocus) {
+        showPopup = false;
+    }
 }
 
 var listVisible = bind list.visible on replace {
-if(not listVisible) {
-delete list from list.scene.content;
-}
+    if(not listVisible) {
+        delete list from list.scene.content;
+    }
 }
 
 var text : Label = Label {
-font : Font { size : 12 }
-text: bind "{listView.selectedItem}"
-width: bind control.width - buttonWidth - 8
-layoutX: 8
-layoutY: bind (control.height - text.layoutBounds.height)/2.0
+    font : Font { size : 12 }
+    text: bind "{listView.selectedItem}"
+    width: bind control.width - buttonWidth - 8
+    layoutX: 8
+    layoutY: bind (control.height - text.layoutBounds.height)/2.0
 }
 
 var buttonBGRect : Rectangle = Rectangle {
