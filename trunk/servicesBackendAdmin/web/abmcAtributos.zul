@@ -115,11 +115,15 @@
                     <panelchildren>
                         <vbox>
                             <label id="valorPK" visible="false"/>
+                            <label value="Valor desde: "/>
                             <textbox id="desde"/>
+                            <label value="Valor hasta: "/>
                             <textbox id="hasta"/>
 
+                            <label value="Descripcion: "/>
                             <textbox id="descripcionValores"/>
 
+                            <label value="Observaciones: "/>
                             <textbox id="observacionesValores" rows="5"/>
                             <button id="btnAceptarValor" label="Aceptar"/>
                         </vbox>
