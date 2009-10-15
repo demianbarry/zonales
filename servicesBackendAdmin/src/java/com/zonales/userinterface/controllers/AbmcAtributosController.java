@@ -7,6 +7,7 @@ package com.zonales.userinterface.controllers;
 import com.zonales.persistence.daos.exceptions.RollbackFailureException;
 import com.zonales.persistence.entities.BaseEntity;
 import com.zonales.persistence.entities.ClaseAtributo;
+import com.zonales.persistence.entities.ClaseComponente;
 import com.zonales.persistence.entities.ValorPermitidoAtrcomp;
 import com.zonales.persistence.models.BaseModel;
 import com.zonales.persistence.models.ClaseAtributoModel;
@@ -40,19 +41,18 @@ public class AbmcAtributosController extends BaseController {
     private ClaseAtributoModel atributoModel;
     protected Listbox atributos;
     protected Button btnAceptar;
+    protected Button btnAceptarValor;
     protected Textbox nombre;
     protected Textbox descripcion;
     protected Textbox observaciones;
     protected Checkbox filtraPorPadre;
     protected Textbox qryFiltraPorPadre;
     protected Textbox qryLovExterna;
-    //protected Listbox tipo;
     protected Combobox tipo;
     protected Checkbox ecualizable;
     protected Checkbox obligatorio;
     protected Checkbox editar;
     protected Checkbox selValorPermitido;
-    protected Columnchildren columnaValores;
     protected Listbox valores;
     protected Columnchildren detalleValor;
     protected Textbox desde;
@@ -86,13 +86,6 @@ public class AbmcAtributosController extends BaseController {
         // Obtengo el DataBinder que instancia la página
         binder = (DataBinder) getVariable("binder", true);
 
-//        final List model = (List) atributos.getModel();
-//
-//        if (!model.isEmpty()) {
-//            // si el model no está vacio, selecciono el primer registro y cargo el detalle
-//            atributoModel.setSelected((ClaseAtributo) model.get(0));
-//            binder.loadComponent(rolesDetail);
-//        }
         cargarAtributos();
     }
 
@@ -129,7 +122,6 @@ public class AbmcAtributosController extends BaseController {
 
         try {
             ClaseAtributo atributoActual = new ClaseAtributo();
-            atributoActual.setId(new Integer(atribPK.getValue()));
             atributoActual.setNombre(nombre.getValue());
             atributoActual.setDescripcion(descripcion.getValue());
             atributoActual.setEcualizable(ecualizable.isChecked());
@@ -140,18 +132,27 @@ public class AbmcAtributosController extends BaseController {
             atributoActual.setQryLovExterna(qryLovExterna.getValue());
             atributoActual.setTipo((String) tipo.getSelectedItem().getValue());
 
+            // tiene valor por defecto ya que no se usa actualmente
+            // planes para uso futuro
+            atributoActual.setClaseComponenteId(new ClaseComponente(1));
+
+            System.err.println("########### " + atributoActual.getObservaciones() +" ###########");
+
             // chequeo si es un insertar o actualizar
             switch (accionAtributo) {
                 case CREAR:
                     BaseModel.createEntity(atributoActual, true);
                     break;
                 case EDITAR:
+                    atributoActual.setId(new Integer(atribPK.getValue()));
                     BaseModel.editEntity(atributoActual, true);
                     break;
                 case ELIMINAR:
+                    atributoActual.setId(new Integer(atribPK.getValue()));
                     BaseModel.deleteEntity(atributoActual, true);
                     break;
                 default:
+                    System.err.println("########### salio por default ###########");
                     break;
             }
 
@@ -179,8 +180,8 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onCheck$selValorPermitido(Event event) {
-        qryLovExterna.setVisible(selValorPermitido.isChecked());
-        columnaValores.setVisible(!selValorPermitido.isChecked());
+        qryLovExterna.setVisible(!selValorPermitido.isChecked());
+        detalleValor.setVisible(selValorPermitido.isChecked());
     }
 
     public void onClick$eliminarAtributo(Event event) {
@@ -257,6 +258,7 @@ public class AbmcAtributosController extends BaseController {
         valorPK.setValue("V0");
 
         accionValor = Accion.CREAR;
+        habilitarDetallesValor(true);
     }
 
     private void habilitarDetallesAtributo(boolean habilitar) {
@@ -329,20 +331,22 @@ public class AbmcAtributosController extends BaseController {
             }
             // recupero los datos
             ValorPermitidoAtrcomp valorActual = new ValorPermitidoAtrcomp();
-            valorActual.setId(new Integer(valorPK.getValue()));
             valorActual.setDescripcion(descripcionValores.getValue());
             valorActual.setObservaciones(observacionesValores.getValue());
             valorActual.setValor(desde.getValue());
             valorActual.setValorHasta(hasta.getValue());
+            valorActual.setAtributoComponenteId(new ClaseAtributo(getPKAtributoActual()));
             // chequeo si es un insertar o actualizar
             switch (accionValor) {
                 case CREAR:
                     BaseModel.createEntity(valorActual, true);
                     break;
                 case EDITAR:
+                    valorActual.setId(new Integer(valorPK.getValue()));
                     BaseModel.editEntity(valorActual, true);
                     break;
                 case ELIMINAR:
+                    valorActual.setId(new Integer(valorPK.getValue()));
                     BaseModel.deleteEntity(valorActual, true);
                     break;
                 default:
@@ -373,6 +377,13 @@ public class AbmcAtributosController extends BaseController {
 
     }
 
+    private int getPKAtributoActual(){
+        StringTokenizer tokens = new StringTokenizer(atributos.getSelectedItem().getId(), "-");
+        tokens.nextToken();
+
+        return Integer.parseInt(tokens.nextToken());
+    }
+
     public void onSelect$atributos(Event event) {
         Integer pk;
         ClaseAtributo atributo;
@@ -381,9 +392,7 @@ public class AbmcAtributosController extends BaseController {
         final String namespace = "vp";
 
         // recupero el la PK del atributo
-        StringTokenizer tokens = new StringTokenizer(atributos.getSelectedItem().getId(), "-");
-        tokens.nextToken();
-        pk = Integer.parseInt(tokens.nextToken());
+        pk = getPKAtributoActual();
 
         // consulto a la base de datos por todos los valores asociados
         atributo = (ClaseAtributo) BaseModel.findEntityByPK(pk, ClaseAtributo.class);
@@ -479,5 +488,10 @@ public class AbmcAtributosController extends BaseController {
         descripcionValores.setReadonly(!habilitar);
         observacionesValores.setReadonly(!habilitar);
         detalleValor.setVisible(habilitar);
+        desde.setVisible(habilitar);
+        hasta.setVisible(habilitar);
+        descripcionValores.setVisible(habilitar);
+        observacionesValores.setVisible(habilitar);
+        btnAceptarValor.setVisible(habilitar);
     }
 }
