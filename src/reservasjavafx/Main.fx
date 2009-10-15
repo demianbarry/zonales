@@ -23,9 +23,30 @@ import calendarpicker.ComboBox;
 import java.io.InputStream;
 import com.sun.javafx.data.pull.impl.StreamException;
 
+
+import com.google.gson.Gson;
+import reservasjavafx.GetConfigStruct;
+
+import java.util.Date;
+
 var gapX = 10;
 var gapY = 40;
 var TEXT_COLOR = Color.BLACK;
+
+var RESOURCE = "resource";
+var SLOTS = "slots";
+
+var structConfig:GetConfigStruct = new GetConfigStruct();
+
+var fromCal:Calendar = Calendar.getInstance();
+var toCal:Calendar = Calendar.getInstance();
+toCal.setTime(fromCal.getTime());
+var range = bind structConfig.range on replace {
+    fromCal.set(structConfig.range.fromYear, structConfig.range.fromMonth, structConfig.range.fromDate);
+    toCal.set(structConfig.range.toYear, structConfig.range.toMonth, structConfig.range.toDate);
+}
+
+
 
 var mesa: Integer = 0;
 var selected: String;
@@ -64,110 +85,41 @@ var calendarPicker:CalendarPicker = CalendarPicker {
         mode: CalendarPicker.MODE_SINGLE
 };
 
-var currentCalendar = bind calendarPicker.calendar on replace {
-        startConsultaRequest(null, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa=1");
-};
+var currentCalendar:Calendar = bind calendarPicker.calendar on replace {
+    findSlots();
+}
+function findSlots(){
+    if(fromCal.equals(toCal) or fromCal.compareTo(currentCalendar)*toCal.compareTo(currentCalendar) > 0) {
+        
+        fromCal.setTime(currentCalendar.getTime());
+        toCal.setTime(currentCalendar.getTime());
+        toCal.add(Calendar.DATE, 30);
+        doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getConfig&resourceGroup=1&fromYear={fromCal.get(Calendar.YEAR)}&fromMonth={fromCal.get(Calendar.MONTH)}&fromDate={fromCal.get(Calendar.DATE)}&toYear={toCal.get(Calendar.YEAR)}&toMonth={toCal.get(Calendar.MONTH)}&toDate={toCal.get(Calendar.DATE)}", SLOTS);
+    }
 
+}
 
-var layout:Group = Group {
-    /*content:
-    [
-        // the actual image
-        imagen
-        CustomResource {
-            points: [   x(0),y(190),
-                        x(71),y(172),
-                        x(110),y(178),
-                        x(113),y(223),
-                        x(0),y(266)     ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 1
-            onMouseClicked:mousePressed
-        },
-        CustomResource {
-            points: [   x(128),y(161),
-                        x(165),y(147),
-                        x(213),y(151),
-                        x(211),y(161),
-                        x(171),y(172),
-                        x(128),y(171) ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 2
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        },
-        CustomResource {
-            points: [   x(210),y(141),
-                        x(246),y(131),
-                        x(279),y(135),
-                        x(246),y(151),
-                        x(210),y(147)     ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 3
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        },
-        CustomResource {
-            points: [   x(342),y(135),
-                        x(355),y(130),
-                        x(399),y(128),
-                        x(394),y(138) ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 4
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        },
-        CustomResource {
-            points: [   x(271),y(127),
-                        x(280),y(123),
-                        x(310),y(124),
-                        x(312),y(131),
-                        x(299),y(135)   ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 5
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        },
-        CustomResource {
-            points: [   x(450),y(137),
-                        x(450),y(130),
-                        x(507),y(128),
-                        x(526),y(136)   ]
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 6
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
-        },
-        CustomResource {
-            type: CustomResource.ELLIPSE
-            x: x(377)
-            y: y(172)
-            radX: 90
-            radY: 20
-            fill: Color.TRANSPARENT
-            stroke: Color.TRANSPARENT
-            nroRecurso: 7
-            onMouseClicked:function(e) {
-                mousePressed(e);
-            }
+function setSlots() {
+    var maxLength = 0;
+    var item:String;
+    for(slot in structConfig.slots) {
+        if(slot.day.equalsIgnoreCase(dayOfWeek(currentCalendar.DAY_OF_WEEK))) {
+            if(maxLength < slot.toString().length())
+                maxLength = slot.toString().length();
+            delete slot from slotComboBox.items;
+            insert slot into slotComboBox.items;
         }
-        myPopupMenu
-    ]*/
-};
-doRequest("http://localhost:8080/pruebasJava/GetVisualConfiguration");
+    }
 
-//doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1");
+    slotComboBox.skin.node.visible = (sizeof(slotComboBox.items) != 0);
+    slotComboBox.skin.control.width = maxLength*7;
+    slotComboBox.select(0);
+}
+
+
+var layout:Group = Group {};
+
+doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1", RESOURCE);
 
 function x(x:Integer):Integer {
     return (x + imagen.x as Integer);
@@ -240,9 +192,10 @@ var slideLeft:Timeline = Timeline {
 function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
 
-        if(e.button == MouseButton.SECONDARY) {
-            mesa = recurso.nroRecurso as Integer;
-            startConsultaRequest(e, "http://localhost:8080/pruebasJava/Main?accion=consulta&locacion=resto&nroMesa={recurso.nroRecurso as Integer}");
+        if(e.button == MouseButton.PRIMARY) {
+            java.lang.System.out.println("------------------");
+            java.lang.System.out.println("{slotComboBox.selectedItem} --- {recurso.nroRecurso}");
+            java.lang.System.out.println("------------------");
         }
 }
 
@@ -296,11 +249,6 @@ function startConsultaRequest(e:MouseEvent, url: String) {
 
         location: url;
 
-        // The content of a response can be accessed in the onInput callback function.
-        // Be sure to close the input sream when finished with it in order to allow
-        // the HttpRequest implementation to clean up resources related to this
-        // request as promptly as possible.
-
         onInput: function(is: java.io.InputStream) {
             // use input stream to access content here.
             // can use input.available() to see how many bytes are available.
@@ -314,17 +262,14 @@ function startConsultaRequest(e:MouseEvent, url: String) {
 
                 var tokenizer : StringTokenizer = new StringTokenizer(message, ";");
 
-                //myPopupMenu.deleteOptions();
                 while (tokenizer.hasMoreTokens()) {
                     var texto : String = tokenizer.nextToken();
                     item = texto;
-                    //insert item into myPopupMenu.content;
                     delete item from slotComboBox.items;
                     insert item into slotComboBox.items;
                     slotComboBox.skin.node.visible = (sizeof(slotComboBox.items) != 0);
                     slotComboBox.select(0);
                 }
-                //myPopupMenu.event = e;
 
             } finally {
                 is.close();
@@ -360,23 +305,48 @@ function startConfirmaRequest(texto:String):Void {
     request.start();
 }
 
-function doRequest(url:String) {
+ function doRequest(url:String, type:String) {
     request = HttpRequest {
 
         location: url;
 
-        onInput: parseResources
+        onInput: {
+                if(type == RESOURCE)
+                    parseResources
+                else
+                    parseSlots
+                }
 
         onException: function(ex: java.lang.Exception) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
         }
 
         onDone: function() {
-            println("onDone") ;
+            if(type == SLOTS)
+                setSlots();
+
+            println("onDone");
             request.stop();
         }
     };
     request.start();
+}
+
+function parseSlots(is:InputStream):Void {
+    try {
+        var message = new String();
+
+        while(is.available() > 0)
+            message += Character.toString(Character.valueOf(is.read()));
+
+        var gson:Gson = new Gson();
+        structConfig = gson.fromJson(message, GetConfigStruct.class);
+
+        
+        
+    } finally {
+        is.close();
+    }
 }
 
 function parseResources(is:InputStream):Void {
@@ -591,6 +561,7 @@ var myScene:Scene = Scene {
     fill: Color.web("#FF9900")
     content: [background/*, resourceForm, okButton, cancelButton*/]
 }
+
 
 // show it all on screen
 var stage:Stage = Stage {
