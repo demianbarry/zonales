@@ -28,7 +28,7 @@ import model.ResourcesModel;
  *
  * @author Nosotros
  */
-public class ConfirmReservationService {
+public class ConfirmReserveService {
 
     public void serve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -53,18 +53,23 @@ public class ConfirmReservationService {
             resources.add(Integer.valueOf(tokenizer.nextElement().toString()));
         }
 
-        Calendar date = Calendar.getInstance();
-        date.set(Integer.valueOf(sDateYear),
-                 Integer.valueOf(sDateMonth),
-                 Integer.valueOf(sDateDay), 0, 0, 0);
-
         Calendar hour = Calendar.getInstance();
         hour.setTime(Time.valueOf(sHour));
 
-        Calendar duration = Calendar.getInstance();
-        hour.setTime(Time.valueOf(sDuration));
+        Calendar date = Calendar.getInstance();
+        date.set(Integer.valueOf(sDateYear),
+                 Integer.valueOf(sDateMonth) - 1,
+                 Integer.valueOf(sDateDay),
+                 hour.get(Calendar.HOUR_OF_DAY),
+                 hour.get(Calendar.MINUTE),
+                 hour.get(Calendar.SECOND)
+                 );
 
-        Integer userId = Integer.valueOf(sUser);
+
+        Calendar duration = Calendar.getInstance();
+        duration.setTime(Time.valueOf(sDuration));
+
+        int userId = Integer.valueOf(sUser);
 
         for (int i = 0; i < resources.size(); i++) {
             resourcesModel.setSelected(resources.get(i));
@@ -88,13 +93,26 @@ public class ConfirmReservationService {
         }
 
         if ("".compareTo(sResponse) == 0) {
-            JosReserve josReserve = new JosReserve(null, userId, null, null, null, null)
-            reserveModel.setSelected(null)
-            reservesHasResourcesModel.setSelected(new JosReserveHasJosResources());
+            JosReserve josReserve = new JosReserve(null, userId, new Date(), date.getTime(), duration.getTime(), new Date());
+            reserveModel.setSelected(josReserve);
+            try {
+                reserveModel.persist(true);
+            } catch (Exception ex) {
+                sResponse = "Error de persistencia" + ex.getStackTrace();
+            }
+            for (int i = 0; i < resources.size(); i++) {
+                reservesHasResourcesModel.setSelected(new JosReserveHasJosResources(reserveModel.getSelected().getReserveId(), resources.get(i)));
+                try {
+                    reservesHasResourcesModel.persist(true);
+                } catch (Exception ex) {
+                    sResponse = "Error de persistencia" + ex.getStackTrace();
+                }
+            }
+            sResponse = reserveModel.getSelected().getReserveId() + ";" + reserveModel.getSelected().getExpiry();
 
-        } else {
-            out.print(sResponse);
         }
+
+        out.print(sResponse);
 
     }
 
