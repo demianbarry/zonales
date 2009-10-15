@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.confirmReserve;
 
+import services.*;
 import entities.BaseEntity;
 import entities.JosReserve;
 import entities.JosReserveHasJosResources;

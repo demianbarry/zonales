@@ -1,5 +1,10 @@
 package services;
 
+import services.getReserve.GetReserveService;
+import services.confirmReserve.ConfirmReserveService;
+import services.getLayout.GetLayoutService;
+import services.getAvailability.GetAvailabilityService;
+import services.getConfig.GetConfigService;
 import java.io.IOException;
 import java.util.Enumeration;
 import javax.servlet.ServletException;

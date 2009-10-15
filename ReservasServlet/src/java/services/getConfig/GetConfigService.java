@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.getConfig;
 
 import com.google.gson.Gson;
 import entities.BaseEntity;

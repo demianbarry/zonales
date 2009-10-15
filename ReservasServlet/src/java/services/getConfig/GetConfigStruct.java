@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.getConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,9 @@ public class GetConfigStruct {
     String name = "config";
     Range range;
     List<Slot> slots = new ArrayList<Slot>();
+
+    public GetConfigStruct() {
+    }
 
     public GetConfigStruct(Range range) {
         this.range = range;

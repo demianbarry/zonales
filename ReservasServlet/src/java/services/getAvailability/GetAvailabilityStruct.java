@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package services;
+package services.getAvailability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,16 @@ import java.util.List;
  *
  * @author Nosotros
  */
-public class getAvailabilityStruct {
+public class GetAvailabilityStruct {
 
     String name = "noAvailability";
     ResourceGroupInDate resourceGroupInDate;
     List<ResourceIdAndName> noAvailableResources = new ArrayList<ResourceIdAndName>();
 
-    public getAvailabilityStruct(ResourceGroupInDate resourceGroupInDate) {
+    public GetAvailabilityStruct() {
+    }
+
+    public GetAvailabilityStruct(ResourceGroupInDate resourceGroupInDate) {
         this.resourceGroupInDate = resourceGroupInDate;
     }
 
