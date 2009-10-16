@@ -335,7 +335,10 @@ public class AbmcAtributosController extends BaseController {
             valorActual.setObservaciones(observacionesValores.getValue());
             valorActual.setValor(desde.getValue());
             valorActual.setValorHasta(hasta.getValue());
-            valorActual.setAtributoComponenteId(new ClaseAtributo(getPKAtributoActual()));
+
+            ClaseAtributo atrib = (ClaseAtributo) BaseModel.findEntityByPK(getPKAtributoActual(), ClaseAtributo.class);
+
+            valorActual.setAtributoComponenteId(atrib);
             // chequeo si es un insertar o actualizar
             switch (accionValor) {
                 case CREAR:
