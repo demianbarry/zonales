@@ -11,12 +11,14 @@
 	<description>ALLOWS SEARCHING OF ALL ARTICLES</description>
 	<files>
 		<filename plugin="solrsearch">solrsearch.php</filename>
+                <!-- <filename>requerimiento.xml</filename> -->
 	</files>
 	<languages folder="language">
 	    <language tag="es-ES">es-ES.plg_search_solrsearch.ini</language>
 	</languages>
 	<params>
 		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
+                <param name="ws_endpoint" type="text" size="50" default="" label="WSDL endpoint" description="WSDL Endpoint" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="search_content" type="radio" default="1" label="Content Items" description="Search Content Items?">
 			<option value="0">No</option>
