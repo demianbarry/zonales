@@ -134,4 +134,11 @@ public class CustomResource extends CustomNode {
         }
         return 0;
     }
+
+    override function equals(other:Object):Boolean {
+        if(not(other instanceof CustomResource))
+            return false;
+        return (other as CustomResource).nroRecurso.equals(this.nroRecurso);
+    }
+
 }
