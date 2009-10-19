@@ -26,8 +26,10 @@ import com.sun.javafx.data.pull.impl.StreamException;
 
 import com.google.gson.Gson;
 import reservasjavafx.GetConfigStruct;
-
-import java.util.Date;
+import reservasjavafx.GetAvailabilityStruct;
+import reservasjavafx.ResourceIdAndName;
+import javax.sound.midi.Sequence;
+import javafx.util.Sequences;
 
 var gapX = 10;
 var gapY = 40;
@@ -35,8 +37,11 @@ var TEXT_COLOR = Color.BLACK;
 
 var RESOURCE = "resource";
 var SLOTS = "slots";
+var AVAILABILITY = "availability";
 
 var structConfig:GetConfigStruct = new GetConfigStruct();
+
+var structAvailability:GetAvailabilityStruct = new GetAvailabilityStruct();
 
 var fromCal:Calendar = Calendar.getInstance();
 var toCal:Calendar = Calendar.getInstance();
@@ -46,10 +51,7 @@ var range = bind structConfig.range on replace {
     toCal.set(structConfig.range.toYear, structConfig.range.toMonth, structConfig.range.toDate);
 }
 
-
-
-var mesa: Integer = 0;
-var selected: String;
+var reserveDuration: Integer;
 
 var stageDragInitialX:Number;
 var stageDragInitialY:Number;
@@ -88,6 +90,7 @@ var calendarPicker:CalendarPicker = CalendarPicker {
 var currentCalendar:Calendar = bind calendarPicker.calendar on replace {
     findSlots();
 }
+
 function findSlots(){
     if(fromCal.equals(toCal) or fromCal.compareTo(currentCalendar)*toCal.compareTo(currentCalendar) > 0) {
         
@@ -96,7 +99,6 @@ function findSlots(){
         toCal.add(Calendar.DATE, 30);
         doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getConfig&resourceGroup=1&fromYear={fromCal.get(Calendar.YEAR)}&fromMonth={fromCal.get(Calendar.MONTH)}&fromDate={fromCal.get(Calendar.DATE)}&toYear={toCal.get(Calendar.YEAR)}&toMonth={toCal.get(Calendar.MONTH)}&toDate={toCal.get(Calendar.DATE)}", SLOTS);
     }
-
 }
 
 function setSlots() {
@@ -239,9 +241,21 @@ var request: HttpRequest;
 
 var slotComboBox : ComboBox = ComboBox {};
 slotComboBox.select(0);
-//slotComboBox.skin.node.visible = false;
 
-var slotSelectedIndexChanged = bind slotComboBox.selectedIndex; // on change event
+var slotSelected = bind slotComboBox.selectedItem on replace {
+        getAvailability();
+};
+
+function getAvailability() {
+    var slot:Slot = slotSelected as Slot;
+    var duration = reserveDuration;
+    if(slot.min.equals(slot.max)) {
+        duration = Integer.parseInt(slot.min);
+    }
+    doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getAvailability&resourceGroup=1&dateYear={currentCalendar.get(Calendar.YEAR)}&dateMonth={currentCalendar.get(Calendar.MONTH)}&dateDay={currentCalendar.get(Calendar.DATE)}&hour={slot.from}&duration={duration}", AVAILABILITY);
+}
+
+
 slotComboBox.skin.control.translateX = 300;
 
 function startConsultaRequest(e:MouseEvent, url: String) {
@@ -287,25 +301,7 @@ function startConsultaRequest(e:MouseEvent, url: String) {
     request.start();
 }
 
-
-function startConfirmaRequest(texto:String):Void {
-    request = HttpRequest {
-
-        location: "http://localhost:8080/pruebasJava/Main?accion=confirma&locacion=resto&nroMesa={mesa}&horario={texto}";
-
-        onException: function(ex: java.lang.Exception) {
-            println("onException - exception: {ex.getClass()} {ex.getMessage()}");
-        }
-
-        onDone: function() {
-            println("onDone") ;
-            request.stop();
-        }
-    };
-    request.start();
-}
-
- function doRequest(url:String, type:String) {
+function doRequest(url:String, type:String) {
     request = HttpRequest {
 
         location: url;
@@ -314,8 +310,12 @@ function startConfirmaRequest(texto:String):Void {
                 if(type == RESOURCE)
                     parseResources
                 else
+                if(type == SLOTS)
                     parseSlots
+                else
+                    parseAvailability
                 }
+
 
         onException: function(ex: java.lang.Exception) {
             println("onException - exception: {ex.getClass()} {ex.getMessage()}");
@@ -341,8 +341,6 @@ function parseSlots(is:InputStream):Void {
 
         var gson:Gson = new Gson();
         structConfig = gson.fromJson(message, GetConfigStruct.class);
-
-        
         
     } finally {
         is.close();
@@ -367,10 +365,33 @@ function parseResources(is:InputStream):Void {
             parser.forward();
         } catch(ex:StreamException) {
         }
-
     }
 
     insert myPopupMenu into layout.content;
+}
+
+function parseAvailability(is:InputStream):Void {
+    try {
+        var message = new String();
+
+        while(is.available() > 0)
+            message += Character.toString(Character.valueOf(is.read()));
+
+        var gson:Gson = new Gson();
+        structAvailability = gson.fromJson(message, GetAvailabilityStruct.class);
+
+        var customResource:CustomResource = CustomResource {};
+
+        for(resource in structAvailability.noAvailableResources) {
+            customResource.nroRecurso = (resource as ResourceIdAndName).id;
+            if(Sequences.indexOf(customResource, layout.content) != -1) {
+
+            }
+        }
+
+    } finally {
+        is.close();
+    }
 }
 
 var hbox:HBox = HBox {
@@ -389,29 +410,29 @@ var dayText:Text = Text {
                    }
 
 var vbox:VBox = VBox {
-    content: [                  Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width)+gapX*2
-                                    height: gapY/2
-                                },
-                                dayText,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width)+gapX*2
-                                    height: gapY/2
-                                },
-                                hbox,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width)+gapX*2
-                                    height: gapY/2
-                                },
-                                layout,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: (imagen.image.width)+gapX*2
-                                    height: gapY/2
-                                }
+    content: [  Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                dayText,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                hbox,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                layout,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                }
             ]
 }
 
