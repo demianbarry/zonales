@@ -227,6 +227,7 @@ class plgSearchSolrsearch extends JPlugin {
         $limit = $pluginParams->def( 'search_limit', 50 );
         $ws_endpoint = $pluginParams->def( 'ws_endpoint', null );
 
+        // No se especifico ningún endpoint en la configuración
         if ($ws_endpoint == null) {
             return array();
         }
@@ -245,8 +246,25 @@ XML;
         $ns = "http://www.zonales.com.ar/schema/ZonalesSolrQueryRespuesta";
         $ns1 = "http://xml.netbeans.org/schema/ZonalesSolrQueryRequerimiento";
 
-        $option=array('trace'=>1);
-        $client = new SoapClient($ws_endpoint, $option);
+        $option = array('trace' => 1, 'exceptions' => TRUE);
+
+        /**
+         * http://bugs.php.net/bug.php?id=34657
+         * http://bugs.xdebug.org/view.php?id=249
+         *
+         * "Supuestamente" solucionado, pero igualmente sigue apareciendo un
+         * error fatal que no puede ser atrapado por el catch... para resolver
+         * el problema, temporalmente, se desactiva xdebug, si esta habilitado.
+         */
+        if (array_search('xdebug', get_loaded_extensions()) !== FALSE) {
+            xdebug_disable();
+        }
+
+        try {
+            $client = new SoapClient($ws_endpoint, $option);
+        } catch (Exception $e) {
+            return $return;
+        }
 
         // ---------- requerimiento ----------------
         $xml = simplexml_load_string($xmlstr, null, null, $ns1);
@@ -320,7 +338,7 @@ XML;
         $parametro->valor = $limit;
 
         // ----------- respuesta --------------
-        $response = $client->solrQuery(array("mensaje" => $xml->asXML()));
+        $response = $client->solrquery(array("mensaje" => $xml->asXML()));
 
         if ($response == null) {
             return $return;
