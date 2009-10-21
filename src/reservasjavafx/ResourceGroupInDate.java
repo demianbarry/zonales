@@ -21,6 +21,9 @@ public class ResourceGroupInDate {
     String hour;
     String duration;
 
+    public ResourceGroupInDate() {
+    }
+
     public ResourceGroupInDate(Integer resourceGruopID, Calendar date, Date hour, Calendar duration) {
         this.resourceGruopID = resourceGruopID;
         this.dateYear = date.get(Calendar.YEAR);

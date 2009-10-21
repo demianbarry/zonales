@@ -40,6 +40,7 @@ public class CustomResource extends CustomNode {
     public var radY: Number;
     public var type: String;
     public var image: String;
+    public var visibleImage: Boolean;
 
     //var applet: Applet = FX.getArgument("javafx.applet") as Applet;
     //var jsObject = new JavaScriptUtil(applet);
@@ -73,6 +74,7 @@ public class CustomResource extends CustomNode {
                                 y: bind y  - imageHeight/2
                                 scaleX: scale
                                 scaleY: scale
+                                visible: bind visibleImage
                         }]
                         }
                     } else {
@@ -89,6 +91,7 @@ public class CustomResource extends CustomNode {
                                 y: bind getCenterY(points) - imageHeight/2
                                 scaleX: scale
                                 scaleY: scale
+                                visible: bind visibleImage
                         }]
                     }
                     }]
