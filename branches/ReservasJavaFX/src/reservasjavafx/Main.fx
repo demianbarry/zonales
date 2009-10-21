@@ -28,8 +28,12 @@ import com.google.gson.Gson;
 import reservasjavafx.GetConfigStruct;
 import reservasjavafx.GetAvailabilityStruct;
 import reservasjavafx.ResourceIdAndName;
-import javax.sound.midi.Sequence;
 import javafx.util.Sequences;
+
+import java.util.List;
+import reservasjavafx.menu.menuItem;
+import javafx.scene.control.TextBox;
+import java.lang.Exception;
 
 var gapX = 10;
 var gapY = 40;
@@ -38,6 +42,7 @@ var TEXT_COLOR = Color.BLACK;
 var RESOURCE = "resource";
 var SLOTS = "slots";
 var AVAILABILITY = "availability";
+var RESERVE = "reserve";
 
 var structConfig:GetConfigStruct = new GetConfigStruct();
 
@@ -46,12 +51,13 @@ var structAvailability:GetAvailabilityStruct = new GetAvailabilityStruct();
 var fromCal:Calendar = Calendar.getInstance();
 var toCal:Calendar = Calendar.getInstance();
 toCal.setTime(fromCal.getTime());
+
 var range = bind structConfig.range on replace {
     fromCal.set(structConfig.range.fromYear, structConfig.range.fromMonth, structConfig.range.fromDate);
     toCal.set(structConfig.range.toYear, structConfig.range.toMonth, structConfig.range.toDate);
 }
 
-var reserveDuration: Integer;
+var reserveDuration: String = bind duracionTB.text;
 
 var stageDragInitialX:Number;
 var stageDragInitialY:Number;
@@ -88,27 +94,29 @@ var calendarPicker:CalendarPicker = CalendarPicker {
 };
 
 var currentCalendar:Calendar = bind calendarPicker.calendar on replace {
+    calendarPicker.blocksMouse = true;
     findSlots();
+    getAvailability();
+    calendarPicker.blocksMouse = false;
 }
 
 function findSlots(){
     if(fromCal.equals(toCal) or fromCal.compareTo(currentCalendar)*toCal.compareTo(currentCalendar) > 0) {
-        
         fromCal.setTime(currentCalendar.getTime());
         toCal.setTime(currentCalendar.getTime());
         toCal.add(Calendar.DATE, 30);
-        doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getConfig&resourceGroup=1&fromYear={fromCal.get(Calendar.YEAR)}&fromMonth={fromCal.get(Calendar.MONTH)}&fromDate={fromCal.get(Calendar.DATE)}&toYear={toCal.get(Calendar.YEAR)}&toMonth={toCal.get(Calendar.MONTH)}&toDate={toCal.get(Calendar.DATE)}", SLOTS);
+        doRequest("http://192.168.0.29:8080/ReservasServlet/Reserves?name=getConfig&resourceGroup=1&fromYear={fromCal.get(Calendar.YEAR)}&fromMonth={fromCal.get(Calendar.MONTH)}&fromDate={fromCal.get(Calendar.DATE)}&toYear={toCal.get(Calendar.YEAR)}&toMonth={toCal.get(Calendar.MONTH)}&toDate={toCal.get(Calendar.DATE)}", SLOTS);
     }
 }
 
 function setSlots() {
     var maxLength = 0;
     var item:String;
+    delete slotComboBox.items;
     for(slot in structConfig.slots) {
         if(slot.day.equalsIgnoreCase(dayOfWeek(currentCalendar.DAY_OF_WEEK))) {
             if(maxLength < slot.toString().length())
                 maxLength = slot.toString().length();
-            delete slot from slotComboBox.items;
             insert slot into slotComboBox.items;
         }
     }
@@ -121,7 +129,7 @@ function setSlots() {
 
 var layout:Group = Group {};
 
-doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1", RESOURCE);
+doRequest("http://192.168.0.29:8080/ReservasServlet/Reserves?name=getLayout&resourceGroup=1", RESOURCE);
 
 function x(x:Integer):Integer {
     return (x + imagen.x as Integer);
@@ -131,111 +139,21 @@ function y(y:Integer):Integer {
     return (y + imagen.y as Integer);
 }
 
-/*var resourceBean:ResourceBean = new ResourceBean();
-
-var value:String;
-
-var resourceForm:NameForm = NameForm{
-        presentationModel: ResourcePresentationModel{}
-        translateX: bind slideFormX
-        translateY: bind gapY
-
-};
-
-var diff:Float = bind -resourceForm.boundsInParent.width*2;
-var slideFormX:Float = diff;
-
-resourceForm.presentationModel.jBean = resourceBean;
-
-var slideRight:Timeline = Timeline {
-        repeatCount: 1
-        keyFrames : [
-                KeyFrame {
-                    time : 0s
-                    canSkip : true
-                    values: [   slideFormX => 0 ]
-                },
-                KeyFrame {
-                    time : 350ms
-                    canSkip : true
-                    values: [   slideFormX => diff tween Interpolator.EASEBOTH,
-                                imageOpacity => 0 ]
-                }
-                KeyFrame {
-                    time : 500ms
-                    canSkip : true
-                    values: [   imageOpacity => 1 tween Interpolator.EASEBOTH ]
-                }
-         ]
-};
-
-var slideLeft:Timeline = Timeline {
-            repeatCount: 1
-            keyFrames : [
-                KeyFrame {
-                    time : 0s
-                    canSkip : true
-                    values: [   imageOpacity => 1 ]
-                }
-                KeyFrame {
-                    time : 150ms
-                    canSkip : true
-                    values: [   imageOpacity => 0 tween Interpolator.EASEBOTH,
-                                slideFormX => diff ]
-                }
-                KeyFrame {
-                    time : 500ms
-                    canSkip : true
-                    values: [   slideFormX => 0 tween Interpolator.EASEBOTH ]
-                }
-            ]
-};*/
-
 function mousePressed(e:MouseEvent) {
         var recurso: CustomResource = e.node as CustomResource;
-
-        if(e.button == MouseButton.PRIMARY) {
-            java.lang.System.out.println("------------------");
-            java.lang.System.out.println("{slotComboBox.selectedItem} --- {recurso.nroRecurso}");
-            java.lang.System.out.println("------------------");
+        var item:menuItem;
+        if(e.button == MouseButton.SECONDARY) {
+             item = menuItem {
+                    call:function(e){
+                        startConsultaRequest(e, "http://192.168.0.29:8080/ReservasServlet/Reserves?name=confirmReserve&resources={recurso.nroRecurso}&dateYear={currentCalendar.get(Calendar.YEAR)}&dateMonth={currentCalendar.get(Calendar.MONTH)}&dateDay={currentCalendar.get(Calendar.DATE)}&hour={horarioTB.rawText}&duration={duracionTB.rawText}&user=1");
+                    }
+                    text: "Reservar"
+            }
+            delete item from myPopupMenu.content;
+            insert item into myPopupMenu.content;
+            myPopupMenu.event = e;
         }
 }
-
-/*function optionSelected(texto:String):Void {
-        resourceBean.setRecurso("Mesa {mesa}");
-        resourceBean.setFecha("01/01/2009");
-        resourceBean.setHora("{texto}");
-        resourceBean.setUsuario("Jr.");
-        selected = texto;
-        slideLeft.play();
-        slideRight.stop();
-        resourceForm.setVisibleErrWarnNodes(true);
-}*/
-
-/*var okButton:Button = Button {
-            translateX: bind myScene.width - okButton.width - 5
-            translateY: bind myScene.height - okButton.height - 5
-            text: " Ok "
-            visible: bind (slideFormX == 0)
-            action: function() {
-                startConfirmaRequest(selected);
-                resourceForm.setVisibleErrWarnNodes(false);
-                slideRight.play();
-                slideLeft.stop();
-            }
-};
-
-var cancelButton:Button = Button {
-            translateX: bind myScene.width - cancelButton.width - 5 - okButton.width - 5
-            translateY: bind myScene.height - cancelButton.height - 5
-            text: " Cancel "
-            visible: bind (slideFormX == 0)
-            action: function() {
-                slideLeft.stop();
-                slideRight.play();
-                resourceForm.setVisibleErrWarnNodes(false);
-            }
-};*/
 
 var request: HttpRequest;
 
@@ -243,22 +161,15 @@ var slotComboBox : ComboBox = ComboBox {};
 slotComboBox.select(0);
 
 var slotSelected = bind slotComboBox.selectedItem on replace {
+        slotComboBox.blocksMouse = true;
         getAvailability();
+        slotComboBox.blocksMouse = false;
 };
-
-function getAvailability() {
-    var slot:Slot = slotSelected as Slot;
-    var duration = reserveDuration;
-    if(slot.min.equals(slot.max)) {
-        duration = Integer.parseInt(slot.min);
-    }
-    doRequest("http://localhost:8080/ReservasServlet/Reserves?name=getAvailability&resourceGroup=1&dateYear={currentCalendar.get(Calendar.YEAR)}&dateMonth={currentCalendar.get(Calendar.MONTH)}&dateDay={currentCalendar.get(Calendar.DATE)}&hour={slot.from}&duration={duration}", AVAILABILITY);
-}
-
 
 slotComboBox.skin.control.translateX = 300;
 
 function startConsultaRequest(e:MouseEvent, url: String) {
+        java.lang.System.out.println("URL: {url}");
     request = HttpRequest {
 
         location: url;
@@ -295,13 +206,20 @@ function startConsultaRequest(e:MouseEvent, url: String) {
         }
 
         onDone: function() {
-            request.stop();
+            request.stop(); 
+            var slot:Slot = slotSelected as Slot;
+            var duration = reserveDuration;
+            if(slot.min.equals(slot.max)) {
+                duration = slot.min;
+            }
+            doSecondRequest("http://192.168.0.29:8080/ReservasServlet/Reserves?name=getAvailability&resourceGroup=1&dateYear={currentCalendar.get(Calendar.YEAR)}&dateMonth={currentCalendar.get(Calendar.MONTH)}&dateDay={currentCalendar.get(Calendar.DATE)}&hour={slot.from}&duration={duration}", AVAILABILITY);
         }
     };
     request.start();
 }
 
 function doRequest(url:String, type:String) {
+        java.lang.System.out.println("1 .URL: {url}");
     request = HttpRequest {
 
         location: url;
@@ -322,9 +240,38 @@ function doRequest(url:String, type:String) {
         }
 
         onDone: function() {
-            if(type == SLOTS)
+            if(type == SLOTS) {
                 setSlots();
+            }
+            println("onDone");
+            request.stop();
+        }
+    };
+    request.start();
+}
 
+function doSecondRequest(url:String, type:String) {
+        java.lang.System.out.println("2 .URL: {url}");
+    request = HttpRequest {
+
+        location: url;
+
+        onInput: {
+                if(type == RESOURCE)
+                    parseResources
+                else
+                if(type == SLOTS)
+                    parseSlots
+                else
+                    parseAvailability
+                }
+
+
+        onException: function(ex: java.lang.Exception) {
+            println("onException - exception: {ex.getClass()} {ex.getMessage()}");
+        }
+
+        onDone: function() {
             println("onDone");
             request.stop();
         }
@@ -345,6 +292,21 @@ function parseSlots(is:InputStream):Void {
     } finally {
         is.close();
     }
+}
+
+
+function getAvailability() {
+    if(slotSelected instanceof Slot) {
+        var slot:Slot = slotSelected as Slot;
+        var duration = reserveDuration;
+        if(slot.min.equals(slot.max)) {
+            duration = slot.min;
+        }
+        doRequest("http://192.168.0.29:8080/ReservasServlet/Reserves?name=getAvailability&resourceGroup=1&dateYear={currentCalendar.get(Calendar.YEAR)}&dateMonth={currentCalendar.get(Calendar.MONTH)}&dateDay={currentCalendar.get(Calendar.DATE)}&hour={slot.from}&duration={duration}", AVAILABILITY);
+    } else {
+        java.lang.System.out.println("No es Slot!");
+    }
+
 }
 
 function parseResources(is:InputStream):Void {
@@ -381,76 +343,24 @@ function parseAvailability(is:InputStream):Void {
         structAvailability = gson.fromJson(message, GetAvailabilityStruct.class);
 
         var customResource:CustomResource = CustomResource {};
+        var resourceIdAndName:ResourceIdAndName = new ResourceIdAndName();
 
-        for(resource in structAvailability.noAvailableResources) {
-            customResource.nroRecurso = (resource as ResourceIdAndName).id;
-            if(Sequences.indexOf(customResource, layout.content) != -1) {
-
+        for(resource in layout.content) {
+            if(resource instanceof CustomResource) {
+                customResource = resource as CustomResource;
+                resourceIdAndName.id = customResource.nroRecurso;
+                var myList:List  = structAvailability.noAvailableResources;
+                if(Sequences.indexOf(structAvailability.noAvailableResources.toArray(), resourceIdAndName) == -1) {
+                    customResource.visibleImage = false;
+                }
+                else {
+                    customResource.visibleImage = true;
+                    }
             }
         }
-
     } finally {
         is.close();
     }
-}
-
-var hbox:HBox = HBox {
-    content: [  Group {
-                    content: [  calendarPicker,
-                                slotComboBox    ]
-                }
-             ]
-}
-
-var dayText:Text = Text {
-                        x: gapX+0
-                        y:22
-                        content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
-                        fill: TEXT_COLOR
-                   }
-
-var vbox:VBox = VBox {
-    content: [  Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                },
-                dayText,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                },
-                hbox,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                },
-                layout,
-                Rectangle {
-                    fill: Color.TRANSPARENT
-                    width: (imagen.image.width)+gapX*2
-                    height: gapY/2
-                }
-            ]
-}
-
-
-
-var background:HBox = HBox {
-                    content: [  Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: gapX
-                                    height: 3*gapY
-                                },
-                                vbox,
-                                Rectangle {
-                                    fill: Color.TRANSPARENT
-                                    width: gapX
-                                    height: 3*gapY
-                                }
-                            ]
 }
 
 function parseResource(parser:PullParser):CustomResource {
@@ -469,8 +379,8 @@ function parseResource(parser:PullParser):CustomResource {
 
     var evt = bind parser.event;
 
-    while(evt.type != PullParser.END_DOCUMENT) {        
-        parser.forward();        
+    while(evt.type != PullParser.END_DOCUMENT) {
+        parser.forward();
         if(evt.type == PullParser.END_ARRAY_ELEMENT) {
             break;
         } else if (evt.type == PullParser.START_ARRAY_ELEMENT) {
@@ -545,13 +455,14 @@ function parseResource(parser:PullParser):CustomResource {
                     onMouseClicked:mousePressed
                     image: imagen
                     scale: scale
+                    visibleImage: false
     };
 }
 
 function parsePoints(parser:PullParser):Integer[] {
     var points:Integer[];
 
-    while(parser.event.type != PullParser.END_DOCUMENT) {        
+    while(parser.event.type != PullParser.END_DOCUMENT) {
         parser.forward();
         if(parser.event.type == PullParser.END_ARRAY) {
             break;
@@ -566,8 +477,84 @@ function parsePoints(parser:PullParser):Integer[] {
                     insert y(parser.event.integerValue) into points;
         }
     }
-    
+
     return points
+}
+
+var horarioTB: TextBox = TextBox {
+    translateX: slotComboBox.skin.control.translateX
+    translateY: slotComboBox.skin.control.translateY + 60
+    width: 200
+    promptText: "Horario"
+}
+
+var duracionTB: TextBox = TextBox {
+    translateX: slotComboBox.skin.control.translateX
+    translateY: horarioTB.translateY + 60
+    width: 200
+    promptText: "Duracion"
+}
+
+
+var hbox:HBox = HBox {
+    content: [  Group {
+                    content: [  calendarPicker,
+                                slotComboBox,
+                                horarioTB,
+                                duracionTB]
+                }
+             ]
+}
+
+var dayText:Text = Text {
+                        x: gapX+0
+                        y:22
+                        content: bind "{dayOfWeek(currentCalendar.get(Calendar.DAY_OF_WEEK))}, {currentCalendar.get(java.util.Calendar.DATE)}-{currentCalendar.get(java.util.Calendar.MONTH) + 1}-{currentCalendar.get(java.util.Calendar.YEAR)}";
+                        fill: TEXT_COLOR
+                   }
+
+var vbox:VBox = VBox {
+    content: [  Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                dayText,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                hbox,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                },
+                layout,
+                Rectangle {
+                    fill: Color.TRANSPARENT
+                    width: (imagen.image.width)+gapX*2
+                    height: gapY/2
+                }
+            ]
+}
+
+
+
+var background:HBox = HBox {
+                    content: [  Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: gapX
+                                    height: 3*gapY
+                                },
+                                vbox,
+                                Rectangle {
+                                    fill: Color.TRANSPARENT
+                                    width: gapX
+                                    height: 3*gapY
+                                }
+                            ]
 }
 
 function dayOfWeek(dayOfWeek:Integer):String {
@@ -590,4 +577,5 @@ var stage:Stage = Stage {
     scene: myScene
 }
 
-//resourceForm.presentationModel.mainScene = myScene;
+findSlots();
+getAvailability();
