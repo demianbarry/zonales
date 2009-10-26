@@ -71,8 +71,7 @@
 			so that a query of "wifi" or "wi fi" could match a document containing "Wi-Fi".
 			Synonyms and stopwords are customized by external files, and stemming is enabled.
 			Duplicate tokens at the same position (which may result from Stemmed Synonyms or
-			WordDelim parts) are removed.
-		-->
+			WordDelim parts) are removed. -->
 	    	<fieldType name="text" class="solr.TextField" positionIncrementGap="100">
 	      		<analyzer type="index">
 				<!-- removes HTML code and pass result to a WhitespaceTokenizer -->				
@@ -161,7 +160,7 @@
 	<solrQueryParser defaultOperator="OR" />
 
 	<!-- copyField commands copy one field to another at the time a document is added to the index.  
-	It's used either to index the same field differently, or to add multiple fields to the same field for easier/faster searching.  -->
+	It's used either to index the same field differently, or to add multiple fields to the same field for easier/faster searching. -->
 	<copyField source="intro_content" dest="all" />
 	<copyField source="full_content" dest="all" />
 	<copyField source="title" dest="all"/>

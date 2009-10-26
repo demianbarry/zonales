@@ -424,8 +424,7 @@
 <!-- DisMaxRequestHandler allows easy searching across multiple fields
        for simple user-entered phrases.  It's implementation is now
        just the standard SearchHandler with a default query type
-       of "dismax".
-       see http://wiki.apache.org/solr/DisMaxRequestHandler
+       of "dismax". See http://wiki.apache.org/solr/DisMaxRequestHandler
 
        Handler especializado para la búsqueda de contenidos
    -->
@@ -447,8 +446,8 @@
      </str>
      <int name="ps">0</int>
      
-     <!-- boost functions -->
-     <!-- <str name="bf">
+     <!-- boost functions
+     <str name="bf">
         ord(popularity)^0.5 recip(rord(price),1,1000,1000)^0.3
      </str> -->
 
@@ -459,11 +458,10 @@
      <!-- min-should-match, a feature which describes how many clauses
             should match, depending on how many are there in the query:
             OR: 0%      (Cualquier palabra)
-            AND: 100%   (Todas las palabras)
-            -->
+            AND: 100%   (Todas las palabras) -->
      <str name="mm">
         0%
-     </str> -->
+     </str>
      
      <!-- query that is performed if q is not specified -->
      <str name="q.alt">*:*</str>
