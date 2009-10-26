@@ -13,9 +13,12 @@
  */
  -->
 <dataConfig>
-	<dataSource driver="com.mysql.jdbc.Driver" url="jdbc:mysql://<host>:<port>/<db>?zeroDateTimeBehavior=convertToNull" user="user" password="password"/>
-    	<document name="article">
-            	<entity name="item" pk="a.id" 
+	<dataSource driver="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://<host>:<port>/<db>?zeroDateTimeBehavior=convertToNull"
+            user="user" password="password" batchSize="-1"/>
+
+        <document name="contenido">
+            	<entity name="articulo" pk="a.id" datasource="jdbc"
 
 			query="select a.id, a.title, a.introtext, a.`fulltext`, a.metakey, a.metadesc, 
 				s.title as section, cat.title as category, a.sectionid, a.catid,
@@ -68,7 +71,7 @@
 					from jos_custom_properties jcp
 					inner join jos_content a on a.id = jcp.content_id
 					inner join jos_custom_properties_fields jcpf on jcp.field_id = jcpf.id
-					where content_id = '${item.id}'
+					where content_id = '${articulo.id}'
 					group by content_id, jcp.field_id
 					order by content_id">
                 		<field column="f_name" name="tags_names" />
@@ -78,7 +81,7 @@
 					from jos_custom_properties jcp
 					inner join jos_content a on a.id = jcp.content_id
 					inner join jos_custom_properties_values jcpv on jcp.value_id = jcpv.id
-					where content_id = '${item.id}'
+					where content_id = '${articulo.id}'
 					order by content_id">
                 		<field column="v_name" name="tags_values" />
                         </entity>
