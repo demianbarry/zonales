@@ -421,6 +421,75 @@
     </lst>
   </requestHandler>
 
+<!-- DisMaxRequestHandler allows easy searching across multiple fields
+       for simple user-entered phrases.  It's implementation is now
+       just the standard SearchHandler with a default query type
+       of "dismax".
+       see http://wiki.apache.org/solr/DisMaxRequestHandler
+
+       Handler especializado para la búsqueda de contenidos
+   -->
+  <requestHandler name="zonalesContent" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+
+     <!-- query fields -->
+     <str name="qf">
+        intro_content^0.7 full_content^0.5 title^1.0
+     </str>
+     <int name="qs">1</int>
+
+     <!-- phrase boosting -->
+     <str name="pf">
+        intro_content^1.0 full_content^1.0 title^1.5
+     </str>
+     <int name="ps">0</int>
+     
+     <!-- boost functions -->
+     <!-- <str name="bf">
+        ord(popularity)^0.5 recip(rord(price),1,1000,1000)^0.3
+     </str> -->
+
+     <str name="fl">
+	intro_content,full_content,title,id,score,publishUpDate
+     </str>
+
+     <!-- min-should-match, a feature which describes how many clauses
+            should match, depending on how many are there in the query:
+            OR: 0%      (Cualquier palabra)
+            AND: 100%   (Todas las palabras)
+            -->
+     <str name="mm">
+        0%
+     </str> -->
+     
+     <!-- query that is performed if q is not specified -->
+     <str name="q.alt">*:*</str>
+
+     <str name="hl">true</str>
+     <!-- comma separated list of fields that will be highlighted -->
+     <str name="hl.fl">intro_content full_content title</str>
+     <str name="hl.usePhraseHighlighter">true</str>
+     <str name="hl.highlightMultiTerm">true</str>
+
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.title.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are found -->
+     <str name="f.title.hl.alternateField">title</str>
+
+     <str name="f.intro_content.hl.fragsize">350</str>
+     <str name="f.full_content.hl.fragsize">350</str>
+     <str name="f.intro_content.hl.alternateField">intro_content</str>
+     <str name="f.full_content.hl.alternateField">full_content</str>
+     <str name="f.intro_content.hl.maxAlternateFieldLength">350</str>
+     <str name="f.full_content.hl.maxAlternateFieldLength">350</str>
+
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+  </requestHandler>
+
   <!-- Note how you can register the same handler multiple times with
        different names (and different init parameters)
     -->
