@@ -459,9 +459,7 @@
             should match, depending on how many are there in the query:
             OR: 0%      (Cualquier palabra)
             AND: 100%   (Todas las palabras) -->
-     <str name="mm">
-        0%
-     </str>
+     <str name="mm">0%</str>
      
      <!-- query that is performed if q is not specified -->
      <str name="q.alt">*:*</str>
