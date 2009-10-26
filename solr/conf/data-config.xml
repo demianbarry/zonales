@@ -76,6 +76,7 @@
 					order by content_id">
                 		<field column="f_name" name="tags_names" />
                         </entity>
+
 			<entity name="tags" 
                 		query="select jcp.content_id, jcpv.name AS v_name
 					from jos_custom_properties jcp
