@@ -16,7 +16,7 @@
             <columnchildren id="listaAtributos" width="25%" style="padding: 5px">
                 <panel>
                     <panelchildren>
-                        <listbox id="atributos" >
+                        <listbox id="atributos">
                             <listhead>
                                 <listheader label="Atributo"/>
                             </listhead>
@@ -103,7 +103,6 @@
                                 <listheader label="Descripcion" />
                                 <listheader label="Observaciones" />
                             </listhead>
-
                         </listbox>
                     </panelchildren>
                 </panel>
