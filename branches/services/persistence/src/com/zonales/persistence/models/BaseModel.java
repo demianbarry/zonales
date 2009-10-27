@@ -135,7 +135,7 @@ public class BaseModel {
         edit(selected, ownTx);
     }
 
-    public void delete(boolean ownTx) throws EntityNotFoundException, 
+    public void delete(boolean ownTx) throws EntityNotFoundException,
             IllegalOrphanException, NonexistentEntityException,
             RollbackFailureException, Exception {
         destroy(selected, ownTx);
@@ -159,10 +159,10 @@ public class BaseModel {
         final StringBuffer sb = new StringBuffer(256);
         sb.append("FROM " + selected.getClass().getName());
         /*if (!Strings.isBlank(where)) {
-            sb.append(" WHERE " + where);
+        sb.append(" WHERE " + where);
         }
         if (!Strings.isBlank(orderBy)) {
-            sb.append(" ORDER BY " + orderBy);
+        sb.append(" ORDER BY " + orderBy);
         }*/
         return sb.toString();
     }
@@ -187,7 +187,7 @@ public class BaseModel {
         getUtx().begin();
     }
 
-    public void commitTransaction() throws NamingException, NamingException, 
+    public void commitTransaction() throws NamingException, NamingException,
             RollbackException, HeuristicMixedException, HeuristicMixedException,
             HeuristicRollbackException, HeuristicRollbackException,
             SecurityException, IllegalStateException, IllegalStateException,
@@ -195,7 +195,7 @@ public class BaseModel {
         getUtx().commit();
     }
 
-    public void rollbackTransaction() throws NamingException, NamingException, 
+    public void rollbackTransaction() throws NamingException, NamingException,
             IllegalStateException, IllegalStateException, SecurityException,
             SecurityException, SystemException {
         getUtx().rollback();
@@ -208,7 +208,7 @@ public class BaseModel {
         return emf.createEntityManager();
     }
 
-    public void create(BaseEntity entity, boolean ownTx) throws 
+    public void create(BaseEntity entity, boolean ownTx) throws
             RollbackFailureException, NamingException, IllegalStateException,
             SecurityException, SystemException, Exception {
         EntityManager em = null;
@@ -236,7 +236,7 @@ public class BaseModel {
         }
     }
 
-    public void edit(BaseEntity entity, boolean ownTx) throws 
+    public void edit(BaseEntity entity, boolean ownTx) throws
             NonexistentEntityException, NamingException, IllegalStateException,
             SecurityException, SystemException, Exception {
         EntityManager em = null;
@@ -248,8 +248,7 @@ public class BaseModel {
             em = getEntityManager();
 
             if ((findEntity(entity.getPK())) == null) {
-                throw new NonexistentEntityException("El item con el id "
-                        + entity.getPK() + " fue eliminado por otro usuario.");
+                throw new NonexistentEntityException("El item con el id " + entity.getPK() + " fue eliminado por otro usuario.");
             }
 
             em.merge(entity);
@@ -269,7 +268,7 @@ public class BaseModel {
         }
     }
 
-    public void destroy(BaseEntity entity, boolean ownTx) throws 
+    public void destroy(BaseEntity entity, boolean ownTx) throws
             NamingException, IllegalStateException, SecurityException,
             SystemException, Exception {
         EntityManager em = null;
@@ -303,27 +302,25 @@ public class BaseModel {
             NotSupportedException {
         EntityManager em = getEntityManager();
         try {
-            return ((Long) em.createQuery("select count(o) from " 
-                    + entity.getSimpleName()
-                    + " as o").getSingleResult()).intValue();
+            return ((Long) em.createQuery("select count(o) from " + entity.getSimpleName() + " as o").getSingleResult()).intValue();
         } finally {
             em.close();
         }
     }
 
-    public void create(BaseEntity entity) throws RollbackFailureException, 
+    public void create(BaseEntity entity) throws RollbackFailureException,
             NamingException, IllegalStateException, SecurityException,
             SystemException, Exception {
         create(entity, true);
     }
 
-    public void edit(BaseEntity entity) throws NonexistentEntityException, 
+    public void edit(BaseEntity entity) throws NonexistentEntityException,
             NamingException, IllegalStateException, SecurityException,
             SystemException, Exception {
         edit(entity, true);
     }
 
-    public void destroy(BaseEntity entity) throws NamingException, 
+    public void destroy(BaseEntity entity) throws NamingException,
             IllegalStateException, SecurityException, SystemException,
             Exception {
         destroy(entity, true);
@@ -351,7 +348,7 @@ public class BaseModel {
         mergeFiltered(true);
     }
 
-    public static void createEntity(BaseEntity entity, boolean ownTx) throws 
+    public static void createEntity(BaseEntity entity, boolean ownTx) throws
             RollbackFailureException, NamingException, IllegalStateException,
             SecurityException, SystemException, Exception {
         EntityManager em = null;
@@ -381,7 +378,7 @@ public class BaseModel {
         }
     }
 
-    public static void editEntity(BaseEntity entity, boolean ownTx) throws 
+    public static void editEntity(BaseEntity entity, boolean ownTx) throws
             RollbackFailureException, NamingException, IllegalStateException,
             SecurityException, SystemException, Exception {
         EntityManager em = null;
@@ -411,7 +408,7 @@ public class BaseModel {
         }
     }
 
-    public static void deleteEntity(BaseEntity entity, boolean ownTx) throws 
+    public static void deleteEntity(BaseEntity entity, boolean ownTx) throws
             RollbackFailureException, NamingException, IllegalStateException,
             SecurityException, SystemException, Exception {
         EntityManager em = null;
@@ -423,15 +420,16 @@ public class BaseModel {
             }
 
             em = getEntityManager();
-            BaseEntity entidad = em.find(entity.getClass(), entity.getPK());
+            //BaseEntity entidad = em.find(entity.getClass(), entity.getPK());
             //em.remove(em.getReference(entity.getClass(), entity.getPK()));
-            em.remove(em.getReference(entidad.getClass(), entidad.getPK()));
+            em.remove(em.getReference(entity.getClass(), entity.getPK()));
 
             if (ownTx) {
                 utx.commit();
             }
 
         } catch (Exception ex) {
+            System.out.println("-----------------D "+ex.getMessage());
             if (ownTx) {
                 utx.rollback();
             }
@@ -544,7 +542,7 @@ public class BaseModel {
 
     public void filter(List<BaseEntity> entities) {
         removeFilter();
-        if(entities == null){
+        if (entities == null) {
             entities = new ArrayList();
         }
         if (all != null) {
@@ -592,7 +590,7 @@ public class BaseModel {
         }
     }
 
-    private Object getAttributeValue(String attribute, BaseEntity entity) 
+    private Object getAttributeValue(String attribute, BaseEntity entity)
             throws NoSuchMethodException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
         Method m = this.entity.getMethod("get" + attribute);

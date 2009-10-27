@@ -89,10 +89,10 @@ public class AbmcAtributosController extends BaseController {
         cargarAtributos();
     }
 
-    private void cargarAtributos(){
+    private void cargarAtributos() {
         Iterator<BaseEntity> itAtributo = atributoModel.getAll().iterator();
 
-        while (itAtributo.hasNext()){
+        while (itAtributo.hasNext()) {
             Listcell celda = new Listcell();
             Listitem item = new Listitem();
             ClaseAtributo atributo = (ClaseAtributo) itAtributo.next();
@@ -136,7 +136,7 @@ public class AbmcAtributosController extends BaseController {
             // planes para uso futuro
             atributoActual.setClaseComponenteId(new ClaseComponente(1));
 
-            System.err.println("########### " + atributoActual.getObservaciones() +" ###########");
+            System.err.println("########### " + atributoActual.getObservaciones() + " ###########");
 
             // chequeo si es un insertar o actualizar
             switch (accionAtributo) {
@@ -291,7 +291,7 @@ public class AbmcAtributosController extends BaseController {
     }
 
     public void onClick$eliminarValor(Event event) {
-        if (accionValor != Accion.CONSULTAR) {
+        if (valores.getSelectedCount() != 1) {
             try {
                 Messagebox.show("Por favor, seleccione primero un valor");
                 return;
@@ -338,10 +338,14 @@ public class AbmcAtributosController extends BaseController {
 
             ClaseAtributo atrib = (ClaseAtributo) BaseModel.findEntityByPK(getPKAtributoActual(), ClaseAtributo.class);
 
+
+
+
             valorActual.setAtributoComponenteId(atrib);
             // chequeo si es un insertar o actualizar
             switch (accionValor) {
                 case CREAR:
+                    //atrib.getValorPermitidoAtrcompList().add(valorActual);
                     BaseModel.createEntity(valorActual, true);
                     break;
                 case EDITAR:
@@ -349,8 +353,17 @@ public class AbmcAtributosController extends BaseController {
                     BaseModel.editEntity(valorActual, true);
                     break;
                 case ELIMINAR:
-                    valorActual.setId(new Integer(valorPK.getValue()));
-                    BaseModel.deleteEntity(valorActual, true);
+                    int indice = atrib.getValorPermitidoAtrcompList().indexOf(new ValorPermitidoAtrcomp(Integer.parseInt(valorPK.getValue())));
+                    valorActual = atrib.getValorPermitidoAtrcompList().get(indice);
+
+                    System.err.println("@@@@@@@@@@@@@@@@@@" + indice + "@@@@@@@@@@@@@@@@@@");
+
+                    //System.err.println("@@@@@@@@@@@@@@@@@@" + valorPK.getValue() + "@@@@@@@@@@@@@@@@@@");
+                    //valorActual = (ValorPermitidoAtrcomp) BaseModel.findEntityByPK(Integer.parseInt(valorPK.getValue()), ValorPermitidoAtrcomp.class);
+                    //atrib.removeValor(valorActual);
+                    atrib.getValorPermitidoAtrcompList().remove(indice);
+                    //atrib.
+                    BaseModel.editEntity(atrib, false);
                     break;
                 default:
                     break;
@@ -380,7 +393,7 @@ public class AbmcAtributosController extends BaseController {
 
     }
 
-    private int getPKAtributoActual(){
+    private int getPKAtributoActual() {
         StringTokenizer tokens = new StringTokenizer(atributos.getSelectedItem().getId(), "-");
         tokens.nextToken();
 
@@ -431,7 +444,7 @@ public class AbmcAtributosController extends BaseController {
 
             int cantItems = this.valores.getItems().size();
 
-            for (int i = 0;i < cantItems;i++){
+            for (int i = 0; i < cantItems; i++) {
                 this.valores.removeItemAt(i);
             }
 
@@ -483,6 +496,7 @@ public class AbmcAtributosController extends BaseController {
 
         habilitarDetallesValor(false);
         accionValor = Accion.CONSULTAR;
+        System.err.println("/////////" + accionValor);
     }
 
     private void habilitarDetallesValor(boolean habilitar) {
