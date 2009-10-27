@@ -59,7 +59,7 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "ecualizable")
     private boolean ecualizable;
-    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "atributoComponenteId")
+        @OneToMany(mappedBy = "atributo_Componente_Id")
     private List<EqAtributos> eqAtributosList;
     @OneToMany(fetch=FetchType.LAZY, mappedBy = "claseAtributoId")
     private List<ClaseAtributo> claseAtributoList;
@@ -238,4 +238,8 @@ public class ClaseAtributo extends BaseEntity implements Serializable {
         return id;
     }
 
+
+    public void removeValor(ValorPermitidoAtrcomp valor) {
+        valorPermitidoAtrcompList.remove(valor);
+    }
 }
