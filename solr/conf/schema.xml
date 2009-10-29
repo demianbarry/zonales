@@ -150,22 +150,11 @@
 		<field name="hits" type="integer" indexed="true" stored="false"/>
 
 		<field name="state" type="integer" indexed="true" stored="true"/>
-
-	        <!-- catchall field, containing all other searchable text fields (implemented via copyField further on in this schema) -->
-        	<field name="all" type="text" indexed="true" stored="false" multiValued="true"/>
 	</fields>
 
 	<uniqueKey>id</uniqueKey>
 	<defaultSearchField>all</defaultSearchField>
 	<solrQueryParser defaultOperator="OR" />
-
-	<!-- copyField commands copy one field to another at the time a document is added to the index.  
-	It's used either to index the same field differently, or to add multiple fields to the same field for easier/faster searching. -->
-	<copyField source="intro_content" dest="all" />
-	<copyField source="full_content" dest="all" />
-	<copyField source="title" dest="all"/>
-	<copyField source="metakey" dest="all"/>
-	<copyField source="metadesc" dest="all"/>
 
         <copyField source="intro_content" dest="intro_content_f" />
 	<copyField source="full_content" dest="full_content_f" />
