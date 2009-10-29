@@ -30,7 +30,7 @@
 				if(a.publish_up, true, false) as has_publish_up,
 				if(a.publish_down, true, false) as has_publish_down
 
-				from jos_content_dos a 
+				from jos_content a 
 				inner join jos_users u on u.id = a.created_by
 				left join jos_sections s on s.id = a.sectionid
 				left join jos_categories cat on cat.id = a.catid"
