@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : ZonalesSolrQueryRespuesta.xml
+    Created on : 6 de octubre de 2009, 19:45
+    Author     : fep
+    Description:
+        Purpose of the document follows.
+-->
+
+<ns0:respuesta  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns:ns0='http://www.zonales.com.ar/schema/ZonalesSolrQueryResponse'
+   xsi:schemaLocation='http://www.zonales.com.ar/schema/ZonalesSolrQueryResponse ZonalesSolrQueryRespuesta.xsd'>
+    <ns0:contenido>
+        <ns0:resultados>
+            <ns0:resultado>
+                <ns0:id></ns0:id>
+            </ns0:resultado>
+            <ns0:resultado>
+                <ns0:id></ns0:id>
+            </ns0:resultado>
+            <ns0:resultado>
+                <ns0:id></ns0:id>
+            </ns0:resultado>
+        </ns0:resultados>
+    </ns0:contenido>
+    <ns0:diagnosticos>
+        <ns0:diagnostico></ns0:diagnostico>
+        <ns0:diagnostico></ns0:diagnostico>
+        <ns0:diagnostico></ns0:diagnostico>
+    </ns0:diagnosticos>
+
+</ns0:respuesta>
