@@ -38,9 +38,9 @@ public class EqAtributos extends BaseEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "peso")
     private int peso;
-    @JoinColumn(name = "atributo_componente_id", referencedColumnName = "id")
+    @JoinColumn(name = "clase_atributo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private ClaseAtributo atributo_Componente_Id;
+    private ClaseAtributo clase_atributo_Id;
     @JoinColumn(name = "eq_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Eq eqId;
@@ -83,11 +83,11 @@ public class EqAtributos extends BaseEntity implements Serializable {
     }
 
     public ClaseAtributo getAtributoComponenteId() {
-        return atributo_Componente_Id;
+        return clase_atributo_Id;
     }
 
     public void setAtributoComponenteId(ClaseAtributo atributoComponenteId) {
-        this.atributo_Componente_Id = atributoComponenteId;
+        this.clase_atributo_Id = atributoComponenteId;
     }
 
     public Eq getEqId() {
