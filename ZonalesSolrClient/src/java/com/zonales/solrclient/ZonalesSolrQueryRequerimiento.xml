@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : ZonalesSolrQueryRequerimiento.xml
+    Created on : 14 de octubre de 2009, 16:16
+    Author     : fep
+    Description:
+        Purpose of the document follows.
+-->
+
+<ns0:requerimiento  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns:ns0='http://xml.netbeans.org/schema/ZonalesSolrQueryRequerimiento'
+   xsi:schemaLocation='http://xml.netbeans.org/schema/ZonalesSolrQueryRequerimiento ZonalesSolrQueryRequerimiento.xsd'>
+    <ns0:contenido>
+        <ns0:query></ns0:query>
+        <ns0:sortFields>
+            <ns0:sort field="" order=""></ns0:sort>
+            <ns0:sort field="" order=""></ns0:sort>
+            <ns0:sort field="" order=""></ns0:sort>
+        </ns0:sortFields>
+        <ns0:parametros>
+            <ns0:parametro>
+                <ns0:clave></ns0:clave>
+                <ns0:valor></ns0:valor>
+            </ns0:parametro>
+            <ns0:parametro>
+                <ns0:clave></ns0:clave>
+                <ns0:valor></ns0:valor>
+            </ns0:parametro>
+            <ns0:parametro>
+                <ns0:clave></ns0:clave>
+                <ns0:valor></ns0:valor>
+            </ns0:parametro>
+        </ns0:parametros>
+    </ns0:contenido>
+
+</ns0:requerimiento>

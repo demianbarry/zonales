@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.zonales.com.ar/schema/ZonalesSolrQueryRespuesta"
+    elementFormDefault="qualified" xmlns:tns="http://www.zonales.com.ar/schema/ZonalesSolrQueryRespuesta">
+    <xsd:complexType name="resultadoType">
+        <xsd:all>
+            <xsd:element name="id" type="xsd:integer"></xsd:element>
+            <xsd:element name="titulo" type="xsd:string"></xsd:element>
+            <xsd:element name="texto" type="xsd:string"></xsd:element>
+            <xsd:element name="fecha_publicacion" type="xsd:dateTime"></xsd:element>
+        </xsd:all>
+        <xsd:attribute name="score" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="resultadosType">
+        <xsd:sequence>
+            <xsd:element name="resultado" type="tns:resultadoType" maxOccurs="unbounded"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="contenidoType">
+        <xsd:sequence>
+            <xsd:element name="resultados" type="tns:resultadosType"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="diagnosticosType">
+        <xsd:sequence>
+            <xsd:element name="diagnostico" type="xsd:string" maxOccurs="unbounded"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="respuesta">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="contenido" type="tns:contenidoType"></xsd:element>
+                <xsd:element name="diagnosticos" type="tns:diagnosticosType" minOccurs="0"></xsd:element>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
+
+
+
+
+
+
+
+
