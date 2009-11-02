@@ -48,7 +48,7 @@
  		<!-- A text field that only splits on whitespace for exact matching of words -->
         	<fieldtype name="text_ws" class="solr.TextField" positionIncrementGap="100">
             		<analyzer type="index">
-                		<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                		<tokenizer class="solr.PatternTokenizerFactory" pattern=", *" />
 				<filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
             		</analyzer>
             		<analyzer type="query">
