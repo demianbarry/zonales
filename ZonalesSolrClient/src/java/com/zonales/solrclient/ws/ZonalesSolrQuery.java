@@ -4,6 +4,9 @@
  */
 package com.zonales.solrclient.ws;
 
+import com.zonales.persistence.entities.Eq;
+import com.zonales.persistence.entities.EqAtributos;
+import com.zonales.persistence.models.BaseModel;
 import com.zonales.solrclient.jaxb.requerimiento.ParametroType;
 import com.zonales.solrclient.jaxb.requerimiento.Requerimiento;
 import com.zonales.solrclient.jaxb.requerimiento.SortType;
@@ -18,6 +21,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -111,6 +115,7 @@ public class ZonalesSolrQuery {
 
         // boost querys (ecualizador)
         // solrQuery.setParam("bq", "tags_values:actualidad^40 tags_values:deportes^20");
+        //solrQuery = getEqQuery(solrQuery, 1, null);
 
         // offset
         solrQuery.setStart(0);
@@ -254,6 +259,60 @@ public class ZonalesSolrQuery {
             Logger.getLogger(ZonalesSolrQuery.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             return xmlRespuesta;
+        }
+    }
+
+    /**
+     * Modifica el query para que se adapte a los delineamientos del ecualizador
+     *
+     * @param query     query a modificar
+     * @param idUser
+     * @param idEQ
+     * @return
+     */
+    private SolrQuery getEqQuery(SolrQuery query, Integer idUser, Integer idEQ) {
+        try {
+            StringBuffer eqData = new StringBuffer("");
+            Eq ecualizador;
+            Iterator<EqAtributos> itEqAtrib;
+
+            // eleccion del ecualizador
+            if (idEQ == null) { // si se requiere usar el equalizador por defecto
+                Hashtable<String, Integer> parameters = new Hashtable<String, Integer>();
+
+                parameters.put("userId", idUser);
+                ecualizador = (Eq) BaseModel.findEntities("Eq.findByUserId", parameters).get(0);
+            } else { // si se requiere usar un ecualizador especifico
+                ecualizador = (Eq) BaseModel.findEntityByPK(idEQ, Eq.class);
+            }
+
+            // armado de la equalizacion
+            itEqAtrib = ecualizador.getEqAtributosList().iterator();
+
+            while (itEqAtrib.hasNext()){
+                EqAtributos eaActual = itEqAtrib.next();
+                String atributo = eaActual.getAtributoComponenteId().getNombre();
+                String valor = eaActual.getValor();
+
+                eqData.append(" tags_values:" + atributo + "^" + valor);
+            }
+            eqData.deleteCharAt(0);
+
+            // setea el ecualizador por defecto hasta que se termine de implementar
+            // este metodo
+            eqData.delete(0, eqData.length());
+            eqData.append("tags_values:actualidad^40 tags_values:deportes^20");
+
+            // modificacion del query para de acuerdo del ecualizador
+            query.setParam("bq", eqData.toString());
+
+        } catch (IndexOutOfBoundsException ex) {
+            System.err.println("######### ERROR ############");
+            System.err.println("No se encontro ningun equalizador asociado al usuario (metodo getEqQuery en ZonalesSolrQuery)");
+            System.err.println("############################");
+        }
+        finally {
+            return query;
         }
     }
 }
