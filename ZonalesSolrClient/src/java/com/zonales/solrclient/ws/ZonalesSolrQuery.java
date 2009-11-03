@@ -216,8 +216,7 @@ public class ZonalesSolrQuery {
             }
 
             // Conexión con Servidor Solr
-            SolrServer solrServer = new CommonsHttpSolrServer("http://192.168.0.29:8983/solr");
-            //SolrServer solrServer = new CommonsHttpSolrServer("http://localhost:8983/solr");
+            SolrServer solrServer = new CommonsHttpSolrServer("http://www.zonales.com.ar:8080/apache-solr-1.3.0");
 
             // Se obtiene query enviada por cliente
             Requerimiento r = (Requerimiento) u.unmarshal(source);            

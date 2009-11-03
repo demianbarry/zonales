@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+            *** GENERATED FROM xml_binding_cfg.xml - DO NOT EDIT  ***
+            *** Configure thru JAXB Wizard.                       ***
+        -->
+<project name="ZonalesSolrClient_jaxb" default="default" basedir=".">
+    <target name="xjc-typedef-target" depends="-init-project">
+        <typedef classname="com.sun.tools.xjc.XJCTask" name="xjc" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig">
+            <classpath path="${jaxbwiz.xjcdef.classpath}"/>
+        </typedef>
+    </target>
+    <target name="jaxb-clean-code-generation" depends="clean,jaxb-code-generation"/>
+    <target name="jaxb-code-generation" depends="xjc-typedef-target,-do-init,-init-macrodef-javac">
+        <mkdir dir="${build.generated.sources.dir}/jaxb" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache/Requerimiento"/>
+        <xjc package="com.zonales.solrclient.jaxb.requerimiento" destdir="build/generated/jaxbCache/Requerimiento" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/Requerimiento/ZonalesSolrQueryRequerimiento.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/Requerimiento/ZonalesSolrQueryRequerimiento.xsd"/>
+            <produces dir="build/generated/jaxbCache/Requerimiento"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/Requerimiento"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/Respuesta"/>
+        <xjc package="com.zonales.solrclient.jaxb.respuesta" destdir="build/generated/jaxbCache/Respuesta" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/Respuesta/ZonalesSolrQueryRespuesta.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/Respuesta/ZonalesSolrQueryRespuesta.xsd"/>
+            <produces dir="build/generated/jaxbCache/Respuesta"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/Respuesta"/>
+        </copy>
+        <!--*** EJB project javac macro does not support sourcepath attribute, so do not pass "sourcepath=${src.dir}"-->
+    </target>
+</project>

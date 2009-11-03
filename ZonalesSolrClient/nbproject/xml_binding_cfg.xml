@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<schemas xmlns='http://xml.netbeans.org/schema/JAXBWizConfig' destdir='build/generated-sources/jaxb' projectName='ZonalesSolrClient' version='1.0'>
+	<schema type='-xmlschema' package='com.zonales.solrclient.jaxb.requerimiento' name='Requerimiento'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/Requerimiento/ZonalesSolrQueryRequerimiento.xsd' origLocation='src/java/com/zonales/solrclient/ZonalesSolrQueryRequerimiento.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.zonales.solrclient.jaxb.respuesta' name='Respuesta'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/Respuesta/ZonalesSolrQueryRespuesta.xsd' origLocation='src/java/com/zonales/solrclient/ZonalesSolrQueryRespuesta.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+</schemas>

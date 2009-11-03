@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/fep/NetBeansProjects/ZonalesSolrClient/src/java/com/zonales/solrclient/ZonalesSolrQueryResponse.xsd" uri="src/conf/xml-resources/jaxb/Response/ZonalesSolrQueryResponse.xsd"/>
+    <system systemId="file:/home/fep/NetBeansProjects/ZonalesSolrClient/src/java/com/zonales/solrclient/ZonalesSolrQueryRequerimiento.xsd" uri="src/conf/xml-resources/jaxb/Requerimiento/ZonalesSolrQueryRequerimiento.xsd"/>
+    <system systemId="file:/home/fep/NetBeansProjects/ZonalesSolrClient/src/java/com/zonales/solrclient/ZonalesSolrQueryRespuesta.xsd" uri="src/conf/xml-resources/jaxb/Respuesta/ZonalesSolrQueryRespuesta.xsd"/>
+</catalog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
