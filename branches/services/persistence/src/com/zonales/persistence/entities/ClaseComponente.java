@@ -41,7 +41,7 @@ public class ClaseComponente extends BaseEntity implements Serializable {
     private String descripcion;
     @Column(name = "observaciones")
     private String observaciones;
-    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "claseComponenteId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "claseComponenteId")
     private List<ClaseAtributo> claseAtributoList;
 
     public ClaseComponente() {
