@@ -51,7 +51,7 @@ public class Eq extends BaseEntity implements Serializable {
     private Integer userId;
     @Column(name = "solrquery_bq")
     private String solrqueryBq;
-    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "eqId")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "eqId")
     private List<EqAtributos> eqAtributosList;
 
     public Eq() {
