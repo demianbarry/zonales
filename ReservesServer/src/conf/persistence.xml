@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="ReservasServletPU" transaction-type="JTA">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>services.jdbc.mysql</jta-data-source>
+    <class>entities.JosCities</class>
+    <class>entities.JosEvents</class>
+    <class>entities.JosLocations</class>
+    <class>entities.JosProfessionals</class>
+    <class>entities.JosProfessionalsHasJosSpecialties</class>
+    <class>entities.JosReserve</class>
+    <class>entities.JosReserveHasJosResources</class>
+    <class>entities.JosResourceTypes</class>
+    <class>entities.JosResources</class>
+    <class>entities.JosResourcesGroup</class>
+    <class>entities.JosSlots</class>
+    <class>entities.JosSlotsHasJosResourcesGroup</class>
+    <class>entities.JosSpecialties</class>
+    <class>entities.JosSuppliers</class>
+    <class>entities.JosPhones</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.SunONETransactionManagerLookup"/>
+      <property name="hibernate.show_sql" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>
