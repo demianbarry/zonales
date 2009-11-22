@@ -519,17 +519,19 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.hibernate-support.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.hibernate-support.classpath" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.GSON.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.GSON.classpath" todir="${dist.ear.dir}"/>
         <copyfiles files="${file.reference.derbyclient.jar}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.file.reference.derbyclient.jar" todir="${dist.ear.dir}"/>
-        <copyfiles files="${libs.JodaTime.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.JodaTime.classpath" todir="${dist.ear.dir}"/>
+        <copyfiles files="${libs.ZK3.6.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.ZK3.6.0.classpath" todir="${dist.ear.dir}"/>
+        <copyfiles files="${libs.ZK5.0.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.ZK5.0.0.classpath" todir="${dist.ear.dir}"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.libs.hibernate-support.classpath} ${manifest.libs.GSON.classpath} ${manifest.file.reference.derbyclient.jar} ${manifest.libs.JodaTime.classpath} "/>
+            <attribute name="Class-Path" value="${manifest.libs.hibernate-support.classpath} ${manifest.libs.GSON.classpath} ${manifest.file.reference.derbyclient.jar} ${manifest.libs.ZK3.6.0.classpath} ${manifest.libs.ZK5.0.0.classpath} "/>
         </manifest>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
         <copyfiles files="${libs.hibernate-support.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.GSON.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${file.reference.derbyclient.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${libs.JodaTime.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${libs.ZK3.6.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${libs.ZK5.0.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" if="do.tmp.war.package" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
