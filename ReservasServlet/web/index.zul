@@ -1,0 +1,19 @@
+<?page title="Reserves BackEnd" contentType="text/html;charset=UTF-8"?>
+<?component name="window1" macroURI="/pruebaWindow.zul"?>
+
+<window id="indexWindow" use="backend.controllers.indexController">
+<zk>
+<menubar>
+	<menu label="Mantenimiento">
+		<menupopup>
+			<menuitem id="recursosMenu" label="Recursos"/>
+			<menuitem label="Grupo de Recursos" />
+			<menuseparator />
+			<menuitem label="Salir" />
+		</menupopup>
+	</menu>
+	<menuitem label="About" />
+</menubar>
+<window1/>
+</window>
+</zk>
