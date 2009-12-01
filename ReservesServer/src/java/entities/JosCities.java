@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,20 +22,30 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Nosotros
+ * @author nacho
  */
 @Entity
 @Table(name = "jos_cities")
-@NamedQueries({@NamedQuery(name = "JosCities.findAll", query = "SELECT j FROM JosCities j")})
+@NamedQueries({
+    @NamedQuery(name = "JosCities.findAll", query = "SELECT j FROM JosCities j"),
+    @NamedQuery(name = "JosCities.findByCityId", query = "SELECT j FROM JosCities j WHERE j.cityId = :cityId")
+})
 public class JosCities extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "city_id")
     private Integer cityId;
     @Basic(optional = false)
     @Column(name = "city")
     private String city;
+    @Basic(optional = false)
+    @Column(name = "zip_code")
+    private String zipCode;
+    @Basic(optional = false)
+    @Column(name = "province")
+    private String province;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cityId", fetch = FetchType.LAZY)
     private Set<JosSuppliers> josSuppliersCollection;
 
@@ -44,9 +56,11 @@ public class JosCities extends BaseEntity implements Serializable {
         this.cityId = cityId;
     }
 
-    public JosCities(Integer cityId, String city) {
+    public JosCities(Integer cityId, String city, String zipCode, String province) {
         this.cityId = cityId;
         this.city = city;
+        this.zipCode = zipCode;
+        this.province = province;
     }
 
     public Integer getCityId() {
@@ -65,14 +79,21 @@ public class JosCities extends BaseEntity implements Serializable {
         this.city = city;
     }
 
-    public Set<JosSuppliers> getJosSuppliersCollection() {
-        return josSuppliersCollection;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setJosSuppliersCollection(Set<JosSuppliers> josSuppliersCollection) {
-        this.josSuppliersCollection = josSuppliersCollection;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
-    
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     @Override
     public int hashCode() {
@@ -107,7 +128,6 @@ public class JosCities extends BaseEntity implements Serializable {
     public int compareTo(BaseEntity o) {
         return getCity().compareTo(((JosCities)o).getCity());
     }
-
 
 
 }
