@@ -19,7 +19,7 @@ import model.ResourceGroupModel;
  */
 public class GetLayoutService {
 
-    ResourceGroupModel resourceGroupModel = new ResourceGroupModel();
+    ResourceGroupModel resourceGroupModel = new ResourceGroupModel(false);
 
     public void serve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class SlotsModel extends BaseModel {
 
-    public SlotsModel() {
-        super(JosSlots.class);
+    public SlotsModel(boolean all) {
+        super(JosSlots.class, all);
     }
 
     public void setSelected(int slotId) {

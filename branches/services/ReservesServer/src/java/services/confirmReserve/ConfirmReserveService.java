@@ -33,9 +33,9 @@ public class ConfirmReserveService {
 
     public void serve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ResourcesModel resourcesModel = new ResourcesModel();
-        ReservesHasResourcesModel reservesHasResourcesModel = new ReservesHasResourcesModel();
-        ReserveModel reserveModel = new ReserveModel();
+        ResourcesModel resourcesModel = new ResourcesModel(false);
+        ReservesHasResourcesModel reservesHasResourcesModel = new ReservesHasResourcesModel(false);
+        ReserveModel reserveModel = new ReserveModel(false);
 
         String sResponse = "";
         PrintWriter out = response.getWriter();

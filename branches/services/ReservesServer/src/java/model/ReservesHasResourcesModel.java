@@ -7,7 +7,6 @@ package model;
 
 import entities.BaseEntity;
 import entities.JosReserveHasJosResources;
-import entities.JosSlotsHasJosResourcesGroup;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -17,8 +16,8 @@ import java.util.List;
  */
 public class ReservesHasResourcesModel extends BaseModel {
 
-    public ReservesHasResourcesModel() {
-        super(JosReserveHasJosResources.class);
+    public ReservesHasResourcesModel(boolean all) {
+        super(JosReserveHasJosResources.class, all);
     }
 
     public List<BaseEntity> getReserves() {

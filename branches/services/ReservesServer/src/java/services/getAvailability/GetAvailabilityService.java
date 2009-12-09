@@ -29,9 +29,9 @@ import model.ResourcesModel;
  */
 public class GetAvailabilityService {
 
-    ResourceGroupModel resourceGroupModel = new ResourceGroupModel();
-    ResourcesModel resourcesModel = new ResourcesModel();
-    ReserveModel reserveModel = new ReserveModel();
+    ResourceGroupModel resourceGroupModel = new ResourceGroupModel(false);
+    ResourcesModel resourcesModel = new ResourcesModel(false);
+    ReserveModel reserveModel = new ReserveModel(false);
     GetAvailabilityStruct retorno;
     ResourceGroupInDate resourceGroupInDate;
     Gson gson = new Gson();

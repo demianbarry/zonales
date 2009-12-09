@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class ReserveModel extends BaseModel {
 
-    public ReserveModel() {
-        super(JosReserve.class);
+    public ReserveModel(boolean all) {
+        super(JosReserve.class, all);
     }
 
     public void setSelected(int reserveId) {

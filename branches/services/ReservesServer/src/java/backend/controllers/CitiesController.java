@@ -6,14 +6,12 @@ package backend.controllers;
 
 import entities.JosCities;
 import exceptions.ExceptionsController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityNotFoundException;
-import javax.swing.JOptionPane;
 import model.CityModel;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zkplus.databind.DataBinder;
 import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.api.Button;
 import org.zkoss.zul.api.Listbox;
 import org.zkoss.zul.api.Textbox;
@@ -26,9 +24,9 @@ public class CitiesController extends BaseController {
 
     CityModel cityModel = null;
     Listbox citiesList;
-    Button newCityButton;
-    Button editCityButton;
-    Button deleteCityButton;
+    Button newButton;
+    Button editButton;
+    Button deleteButton;
     Button aceptarButton;
     Button cancelarButton;
     Groupbox editableArea;
@@ -37,40 +35,49 @@ public class CitiesController extends BaseController {
     Textbox city;
     Textbox province;
     Boolean buttons = true;
+    int selectedItem;
 
     public CitiesController() {
         super(false);
-        cityModel = new CityModel();
-        System.out.println("----->" + ((JosCities) cityModel.getAll().get(0)).getCity());
+        cityModel = new CityModel(true);
     }
 
     public void onCreate$citiesWindow(ForwardEvent event) {
         try {
             // Obtengo el DataBinder que instancia la página
-            binder = (DataBinder) getAttribute("binder", true);
+            binder = (DataBinder) getVariable("binder", true);
+            //binder = (DataBinder) getAttribute("binder");
             refreshList();
         } catch (Exception ex) {
-            Logger.getLogger(CitiesController.class.getName()).log(Level.SEVERE, null, ex);
+            ExceptionsController.exceptionCatch(ex);
         }
     }
 
     public void onSelect$citiesList(ForwardEvent event) {
-        zipCode.setValue(cityModel.getSelected().getZipCode());
-        city.setValue(cityModel.getSelected().getCity());
-        province.setValue(cityModel.getSelected().getProvince());
-        refreshEditableArea();
-
+        if (!newButton.isVisible()) {
+            citiesList.setSelectedIndex(selectedItem);
+        } else {
+            selectedItem = citiesList.getSelectedIndex();
+            editButton.setDisabled(false);
+            deleteButton.setDisabled(false);
+            zipCode.setValue(cityModel.getSelected().getZipCode());
+            city.setValue(cityModel.getSelected().getCity());
+            province.setValue(cityModel.getSelected().getProvince());
+            refreshEditableArea();
+        }
     }
 
-    public void onClick$editCityButton(ForwardEvent event) {
+    public void onClick$editButton(ForwardEvent event) {
         setEditMode(true);
         disableTextboxs(false);
         changeButtons();
         zipCode.setFocus(true);
     }
 
-    public void onClick$newCityButton(ForwardEvent event) {
+    public void onClick$newButton(ForwardEvent event) {
         setEditMode(false);
+        editButton.setDisabled(false);
+        deleteButton.setDisabled(false);
         disableTextboxs(false);
         zipCode.setValue("");
         city.setValue("");
@@ -79,13 +86,15 @@ public class CitiesController extends BaseController {
         zipCode.setFocus(true);
     }
 
-    public void onClick$deleteCityButton(ForwardEvent event) {
+    public void onClick$deleteButton(ForwardEvent event) {
         try {
-            int option = JOptionPane.showConfirmDialog(null, "Eliminar localidad?", "Eliminar", JOptionPane.YES_NO_OPTION);
-            if (option == 0) {
+            int option = Messagebox.show("Eliminar localidad?", "Eliminar", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION);
+            if (option == Messagebox.OK) {
                 cityModel.delete(true);
             }
             clearEditableArea();
+            editButton.setDisabled(true);
+            deleteButton.setDisabled(true);
             refreshList();
         } catch (EntityNotFoundException ex) {
             ExceptionsController.exceptionCatch(ex);
@@ -97,26 +106,18 @@ public class CitiesController extends BaseController {
     public void onClick$aceptarButton(ForwardEvent event) {
         try {
             if (isEditMode()) {
-                int option = JOptionPane.showConfirmDialog(null, "Guardar?", "Nueva", JOptionPane.YES_NO_OPTION);
-                if (option == 0) {
-                    cityModel.getSelected().setCity(city.getValue());
-                    cityModel.getSelected().setProvince(province.getValue());
-                    cityModel.getSelected().setZipCode(zipCode.getValue());
-                    cityModel.merge(true);
-                }
+                cityModel.getSelected().setCity(city.getValue());
+                cityModel.getSelected().setProvince(province.getValue());
+                cityModel.getSelected().setZipCode(zipCode.getValue());
+                cityModel.merge(true);
             } else {
-                int option = JOptionPane.showConfirmDialog(null, "Guardar?", "Editar", JOptionPane.YES_NO_OPTION);
-                if (option == 0) {
-                    JosCities josCities = new JosCities(null, city.getValue(), zipCode.getValue(), province.getValue());
-                    cityModel.setSelected(josCities);
-                    //cityModel.getSelected().setCity(city.getValue());
-                    //cityModel.getSelected().setProvince(province.getValue());
-                    //cityModel.getSelected().setZipCode(zipCode.getValue());
-                    cityModel.persist(true);
-                }
+                JosCities josCities = new JosCities(null, city.getValue(), zipCode.getValue(), province.getValue());
+                cityModel.setSelected(josCities);
+                cityModel.persist(true);
             }
-            clearEditableArea();
+            //clearEditableArea();
             changeButtons();
+            disableTextboxs(true);
             refreshList();
         } catch (Exception ex) {
             ExceptionsController.exceptionCatch(ex);
@@ -142,8 +143,10 @@ public class CitiesController extends BaseController {
 
     public void refreshEditableArea() {
         cityModel.refreshAll();
-        binder.loadComponent(editableArea); //reload visible to force refresh
-        binder.loadAttribute(editableArea, "model"); //reload model to force refresh
+    }
+
+    public void refreshButtonArea() {
+        cityModel.refreshAll();
     }
 
     public void clearEditableArea() {
@@ -151,12 +154,6 @@ public class CitiesController extends BaseController {
         zipCode.setValue("");
         province.setValue("");
         refreshEditableArea();
-    }
-
-    public void refreshButtonArea() {
-        cityModel.refreshAll();
-        binder.loadComponent(buttonArea); //reload visible to force refresh
-        binder.loadAttribute(buttonArea, "model"); //reload model to force refresh
     }
 
     public CityModel getCityModel() {
@@ -168,9 +165,9 @@ public class CitiesController extends BaseController {
     }
 
     private void changeButtons() {
-        editCityButton.setVisible(!buttons);
-        newCityButton.setVisible(!buttons);
-        deleteCityButton.setVisible(!buttons);
+        editButton.setVisible(!buttons);
+        newButton.setVisible(!buttons);
+        deleteButton.setVisible(!buttons);
         aceptarButton.setVisible(buttons);
         cancelarButton.setVisible(buttons);
         buttons = !buttons;

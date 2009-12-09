@@ -7,7 +7,7 @@
             <minimum-ant-version>1.6</minimum-ant-version>
             <web-module-libraries>
                 <library>
-                    <file>${libs.ZK5.0.0.classpath}</file>
+                    <file>${libs.ZK3.6.3.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library>

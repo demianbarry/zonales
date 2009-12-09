@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class ResourceGroupModel extends BaseModel {
 
-    public ResourceGroupModel() {
-        super(JosResourcesGroup.class);
+    public ResourceGroupModel(boolean all) {
+        super(JosResourcesGroup.class, all);
     }
 
     public List<BaseEntity> getSlots() {

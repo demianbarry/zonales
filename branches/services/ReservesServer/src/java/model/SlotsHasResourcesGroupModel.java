@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class SlotsHasResourcesGroupModel extends BaseModel {
 
-    public SlotsHasResourcesGroupModel() {
-        super(JosSlotsHasJosResourcesGroup.class);
+    public SlotsHasResourcesGroupModel(boolean all) {
+        super(JosSlotsHasJosResourcesGroup.class, all);
     }
 
     public List<BaseEntity> getSlot() {

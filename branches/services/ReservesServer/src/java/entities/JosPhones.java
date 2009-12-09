@@ -25,7 +25,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "jos_phones")
-@NamedQueries({@NamedQuery(name = "JosPhones.findAll", query = "SELECT j FROM JosPhones j")})
+@NamedQueries({
+    @NamedQuery(name = "JosPhones.findAll", query = "SELECT j FROM JosPhones j"),
+    @NamedQuery(name = "JosPhones.findByPhoneId", query = "SELECT j FROM JosPhones j WHERE j.phoneId = :phoneId"),
+    @NamedQuery(name = "JosPhones.findBySupplierId", query = "SELECT j FROM JosPhones j WHERE j.supplierId.supplierId = :supplierId")
+})
 public class JosPhones extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

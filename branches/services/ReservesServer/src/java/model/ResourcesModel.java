@@ -8,7 +8,6 @@ package model;
 import entities.BaseEntity;
 import entities.JosResources;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -18,8 +17,8 @@ import java.util.List;
  */
 public class ResourcesModel extends BaseModel {
 
-    public ResourcesModel() {
-        super(JosResources.class);
+    public ResourcesModel(boolean all) {
+        super(JosResources.class, all);
     }
 
     public void setSelected(int resourceId) {
