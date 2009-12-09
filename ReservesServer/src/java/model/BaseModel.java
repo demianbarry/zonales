@@ -55,6 +55,14 @@ public class BaseModel {
         filtered = new ArrayList();
     }
 
+    public BaseModel(Class entity, boolean all) {
+        setEntity(entity);
+        if (all) {
+            setAll(Collections.synchronizedList(findEntities(entity.getSimpleName() + ".findAll", null)));
+        }
+        filtered = new ArrayList();
+    }
+
     public BaseEntity getSelected() {
         return selected;
     }
@@ -533,4 +541,5 @@ public class BaseModel {
         Method m = this.entity.getMethod("get" + attribute);
         return m.invoke(entity);
     }
+
 }

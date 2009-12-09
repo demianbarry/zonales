@@ -1,0 +1,131 @@
+<!-- Instancio el DataBinder estadar, que vincula cada anotacion ${...} con el objeto correspondiente -->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./suppliersWindow"?>
+
+<window
+    id="locationsWindow"
+    use="backend.controllers.LocationsController"
+    title="Lugares"
+    border="normal"
+    width="650px"
+    height="291px"
+    closable="true"
+    position="center"
+    visible="true"
+    Mode="overlapped">
+<hbox>
+	<vbox>
+		<listbox
+            id="locationsList"
+			width="400px"
+			height="247px"
+                        model="@{locationsWindow.locationsModel.all}"
+                        selectedItem="@{locationsWindow.locationsModel.selected}">
+			<listhead>
+				<listheader
+					label="Nombre"
+					sort="auto" />
+				<listheader
+					label="Localidad"
+					sort="auto" />
+				<listheader
+					label="Proveedor"
+					sort="auto" />
+			</listhead>
+			<listitem
+                            self="@{each=locations}">
+                            <listcell
+                                label="@{locations.name}"/>
+                            <listcell
+                                label="@{locations.cityId.city}"/>
+                            <listcell
+                                label="@{locations.supplierId.name}"/>
+                        </listitem>
+		</listbox>
+	</vbox>
+	<separator
+		width="3px"/>
+	<vbox>
+		<groupbox
+                    id="editableArea">
+			<vbox>
+				<label
+					value="Nombre:" />
+				<textbox
+					id="name"
+					disabled="true"
+					width="195px"/>
+				<hbox>
+					<label
+						value="Dirección:" />
+					<separator
+						width="70px"/>
+					<label
+						value="Nro:" />
+				</hbox>
+				<hbox>
+				<textbox
+					id="street"
+					disabled="true"
+					width="135px"/>
+				<textbox
+					id="number"
+					disabled="true"
+					width="54px"/>
+				</hbox>
+				<label
+					value="Localidad:" />
+				<combobox
+					id="cities"
+					disabled="true"
+                                        visible="false"
+                                        autocomplete="true"
+                                        autodrop="true"
+					width="179px"/>
+        		<textbox
+					id="city"
+					disabled="true"
+					width="195px"/>
+				<label
+					value="Proveedor de servicios:" />
+				<combobox
+					id="suppliers"
+					disabled="true"
+                                        visible="false"
+                                        autocomplete="true"
+                                        autodrop="true"
+					width="179px"/>
+        		<textbox
+					id="supplier"
+					disabled="true"
+					width="195px"/>
+			</vbox>
+		</groupbox>
+		<groupbox
+                    id="buttonArea">
+			<button
+                                id="newButton"
+			 	label="Nueva"
+			 	width="60px" />
+		 	<button
+                                id="editButton"
+			 	label="Editar"
+			 	width="60px" />
+			<button
+                                id="deleteButton"
+			 	label="Eliminar"
+			 	width="60px" />
+                        <button
+                                id="aceptarButton"
+			 	label="Aceptar"
+                                visible="false"
+			 	width="60px" />
+                        <button
+                                id="cancelarButton"
+			 	label="Cancelar"
+                                visible="false"
+			 	width="60px" />
+		</groupbox>
+	</vbox>
+</hbox>
+
+</window>

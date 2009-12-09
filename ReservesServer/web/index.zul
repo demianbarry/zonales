@@ -12,8 +12,11 @@
 			<menuitem 
                             id="citiesMenu"
                             label="Localidades"/>
+                        <menuitem
+                            id="locationsMenu"
+                            label="Lugares"/>
 			<menuitem
-                            id="supliersMenu"
+                            id="suppliersMenu"
                             label="Proveedores de Servicios" />
 		</menupopup>
 	</menu>

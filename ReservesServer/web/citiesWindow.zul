@@ -69,16 +69,18 @@
 		<groupbox
                     id="buttonArea">
 			<button
-                                id="newCityButton"
+                                id="newButton"
 			 	label="Nueva"
 			 	width="60px" />
 		 	<button
-                                id="editCityButton"
+                                id="editButton"
 			 	label="Editar"
+                                disabled="true"
 			 	width="60px" />
 			<button
-                                id="deleteCityButton"
+                                id="deleteButton"
 			 	label="Eliminar"
+                                disabled="true"
 			 	width="60px" />
                         <button
                                 id="aceptarButton"

@@ -28,7 +28,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "jos_suppliers")
-@NamedQueries({@NamedQuery(name = "JosSuppliers.findAll", query = "SELECT j FROM JosSuppliers j")})
+@NamedQueries({
+    @NamedQuery(name = "JosSuppliers.findAll", query = "SELECT j FROM JosSuppliers j"),
+    @NamedQuery(name = "JosCities.findBySupplierId", query = "SELECT j FROM JosSuppliers j WHERE j.supplierId = :supplierId")
+})
 public class JosSuppliers extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,10 +62,11 @@ public class JosSuppliers extends BaseEntity implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public JosSuppliers(Integer supplierId, String name, String street, JosCities cityId) {
+    public JosSuppliers(Integer supplierId, String name, String street, Integer number, JosCities cityId) {
         this.supplierId = supplierId;
         this.name = name;
         this.street = street;
+        this.number = number;
         this.cityId = cityId;
     }
 

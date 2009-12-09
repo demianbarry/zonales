@@ -47,6 +47,9 @@ public class JosLocations extends BaseEntity implements Serializable {
     @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private JosSuppliers supplierId;
+    @JoinColumn(name = "city_id", referencedColumnName = "city_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private JosCities cityId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId", fetch = FetchType.LAZY)
     private Set<JosResourcesGroup> josResourcesGroupCollection;
 
@@ -102,6 +105,14 @@ public class JosLocations extends BaseEntity implements Serializable {
 
     public void setSupplierId(JosSuppliers supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public JosCities getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(JosCities cityId) {
+        this.cityId = cityId;
     }
 
     public Set<JosResourcesGroup> getJosResourcesGroupCollection() {

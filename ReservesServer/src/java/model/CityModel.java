@@ -7,7 +7,6 @@ package model;
 
 import entities.BaseEntity;
 import entities.JosCities;
-import entities.JosReserve;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -17,8 +16,8 @@ import java.util.List;
  */
 public class CityModel extends BaseModel {
 
-    public CityModel() {
-        super(JosCities.class);
+    public CityModel(boolean all) {
+        super(JosCities.class, all);
     }
 
     public void setSelected(int cityId) {
@@ -27,6 +26,7 @@ public class CityModel extends BaseModel {
         List<BaseEntity> result = findEntities("JosCities.findByCityId", queryParameters);
         super.setSelected(result.get(0));
     }
+
 
     @Override
     public JosCities getSelected() {

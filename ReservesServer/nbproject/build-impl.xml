@@ -516,17 +516,17 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,-do-dist-with-manifest,-do-dist-without-manifest" name="do-dist"/>
     <target depends="init" if="dist.ear.dir" name="library-inclusion-in-manifest">
-        <copyfiles files="${libs.ZK5.0.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.ZK5.0.0.classpath" todir="${dist.ear.dir}"/>
+        <copyfiles files="${libs.ZK3.6.3.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.ZK3.6.3.classpath" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.hibernate-support.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.hibernate-support.classpath" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.GSON.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.GSON.classpath" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.hibernate-persistence.classpath}" iftldtodir="${build.web.dir}/WEB-INF" manifestproperty="manifest.libs.hibernate-persistence.classpath" todir="${dist.ear.dir}"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.libs.ZK5.0.0.classpath} ${manifest.libs.hibernate-support.classpath} ${manifest.libs.GSON.classpath} ${manifest.libs.hibernate-persistence.classpath} "/>
+            <attribute name="Class-Path" value="${manifest.libs.ZK3.6.3.classpath} ${manifest.libs.hibernate-support.classpath} ${manifest.libs.GSON.classpath} ${manifest.libs.hibernate-persistence.classpath} "/>
         </manifest>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
-        <copyfiles files="${libs.ZK5.0.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${libs.ZK3.6.3.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.hibernate-support.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.GSON.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.hibernate-persistence.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>

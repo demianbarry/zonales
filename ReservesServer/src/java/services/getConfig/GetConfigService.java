@@ -26,8 +26,8 @@ import model.SlotsModel;
  */
 public class GetConfigService {
 
-    ResourceGroupModel resourceGroupModel = new ResourceGroupModel();
-    SlotsModel slotsModel = new SlotsModel();
+    ResourceGroupModel resourceGroupModel = new ResourceGroupModel(false);
+    SlotsModel slotsModel = new SlotsModel(false);
     GetConfigStruct retorno;
     Range range;
     Gson gson = new Gson();
