@@ -351,7 +351,10 @@ private function logme($db,$message) {
                         return false;
                     }
 
-		    $query='update #__users set birthdate=' . $db->Quote($user->get('birthdate')) . ' where username="' . $user->get('username') . '"';
+		    $query='update #__users set birthdate=' . $db->Quote($user->get('birthdate')) . 
+                    ', sex=' . $db->Quote($user->get('sex')) . 
+                    ', email2=' . $db->Quote($user->get('email2')) .
+                    ' where username="' . $user->get('username') . '"';
                     $db->setQuery($query);
                     $db->query();
 

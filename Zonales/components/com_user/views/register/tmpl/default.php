@@ -60,6 +60,17 @@ if(isset($this->message)) {
                 <input type="text" id="email" name="email" size="40" value="<?php echo $this->escape($this->user->get( 'email' ));?>" class="inputbox required validate-email" maxlength="100" /> 
             </td>
         </tr>
+        <!-- SOLICITUD DE CORREO ELECTRONICO AUXILIAR-->
+        <tr>
+            <td height="40">
+                <label id="email2msg" for="email2">
+                    <?php echo '*' . JText::_( 'Backup Email' ); ?>:
+                </label>
+            </td>
+            <td>
+                <input type="text" id="email2" name="email2" size="40" value="<?php echo $this->escape($this->user->get( 'email2' ));?>" class="inputbox required validate-email" maxlength="100" />
+            </td>
+        </tr>
 
         <!-- SOLICITUD DE FECHA DE NACIMIENTO -->
         <!-- agregado por G2P -->
