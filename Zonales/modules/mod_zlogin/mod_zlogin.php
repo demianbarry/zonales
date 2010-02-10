@@ -5,38 +5,14 @@
  */
 
 ?>
-<script type="text/javascript">
-    function showElement(id) {
-                document.getElementById('openid').style.display = 'none';
-                document.getElementById('zonales').style.display = 'none';
-		document.getElementById(id).style.display = 'block';
-            }
-    <!--
-    Window.onDomReady(function(){
-        document.formvalidator.setHandler('passverify', function (value) { return ($('password').value == value); }	);
-    });
-    // -->
-</script>
+<script type="text/javascript" src="/zonales/components/com_ubar/assets/js/mt-1.1.js?0.9.3"></script>
+<script type="text/javascript" src="/zonales/components/com_ubar/assets/js/bar.js?0.9.3"></script>
+var JLanguage = {}; JLanguage.WHAT_IS_OPENID = '¿Qué es OpenId?'; JLanguage.LOGIN_WITH_OPENID = 'Loguearse con el OpenID'; JLanguage.NORMAL_LOGIN = 'Volver a la forma normal de loguearse'; var modlogin = 1;
+window.addEvent("domready",function(){UTb.init({elementID:"uBarDiv",openIcon:"http://192.168.0.29/zonales/components/com_ubar/assets/img/icons/cog.png",styles:{barColor:"#ffffff",barPad:0,borderColor:"#333",borderStyle:"none",borderWidth:2,highlight:"#ffffff",opacity:1,position:"left-middle",textColor:"#060606"}},{siteRoot:"http://192.168.0.29/zonales/",txtDir:"ltr",version:"0.9.3",hide:1,mootools:1.1});UTb.addButton({id:"uBarBtnuBarBtnClose",message:"",icon:"http://192.168.0.29/zonales/components/com_ubar/assets/img/icons/cross.png",className:""},UserToolbar.hideToolbar.bind(UserToolbar));UTb.addLink({id:"uBarBtn1",message:"Ingrese al Zonales mediante Yahoo!",icon:"http://192.168.0.29/zonales/images/login/yahoo.png",className:""},"http%3A%2F%2F192.168.0.29%2Fzonales%2Findex.php%3Foption%3Dcom_user%26amp%3Btask%3Dlogin%26amp%3Bprovider%3DYahoo%26amp%3B1d6fd93fc44e959cd34f3e3c9f10e97d%3D1");UTb.addLink({id:"uBarBtn2",message:"Ingrese a Zonales mediante Google",icon:"http://192.168.0.29/zonales/images/login/google.png",className:""},"http%3A%2F%2F192.168.0.29%2Fzonales%2Findex.php%3Foption%3Dcom_user%26amp%3Btask%3Dlogin%26amp%3Bprovider%3DGoogle%26amp%3B1d6fd93fc44e959cd34f3e3c9f10e97d%3D1");UTb.addHtml({id:"uBarBtn3",message:"Ingrese a Zonales mediante usuario y contraseña",icon:"http://192.168.0.29/zonales/images/login/zonales.png",className:""},"%3Cform+action%3D%22%2Fzonales%2Findex.php%22+method%3D%22post%22+name%3D%22login%22+id%3D%22form-login%22+%3E%0A%09%09%3Cfieldset+class%3D%22input%22%3E%0A%09%3Cp+id%3D%22form-login-username%22%3E%0A%09%09%3Clabel+for%3D%22modlgn_username%22%3ENombre+de+usuario%3C%2Flabel%3E%3Cbr+%2F%3E%0A%09%09%3Cinput+id%3D%22modlgn_username%22+type%3D%22text%22+name%3D%22username%22+class%3D%22inputbox%22+alt%3D%22username%22+size%3D%2218%22+%2F%3E%0A%09%3C%2Fp%3E%0A%09%3Cp+id%3D%22form-login-password%22%3E%0A%09%09%3Clabel+for%3D%22modlgn_passwd%22%3EContrase%C3%B1a%3C%2Flabel%3E%3Cbr+%2F%3E%0A%09%09%3Cinput+id%3D%22modlgn_passwd%22+type%3D%22password%22+name%3D%22passwd%22+class%3D%22inputbox%22+size%3D%2218%22+alt%3D%22password%22+%2F%3E%0A%09%3C%2Fp%3E%0A%09%09%3Cp+id%3D%22form-login-remember%22%3E%0A%09%09%3Clabel+for%3D%22modlgn_remember%22%3ERecordarme%3C%2Flabel%3E%0A%09%09%3Cinput+id%3D%22modlgn_remember%22+type%3D%22checkbox%22+name%3D%22remember%22+class%3D%22inputbox%22+value%3D%22yes%22+alt%3D%22Remember+Me%22+%2F%3E%0A%09%3C%2Fp%3E%0A%09%09%3Cinput+type%3D%22submit%22+name%3D%22Submit%22+class%3D%22button%22+value%3D%22Iniciar+sesi%C3%B3n%22+%2F%3E%0A%09%3C%2Ffieldset%3E%0A%09%3Cul%3E%0A%09%09%3Cli%3E%0A%09%09%09%3Ca+href%3D%22%2Fzonales%2Findex.php%3Foption%3Dcom_user%26amp%3Bview%3Dreset%22%3E%0A%09%09%09%C2%BFOlvid%C3%B3+su+contrase%C3%B1a%3F%3C%2Fa%3E%0A%09%09%3C%2Fli%3E%0A%09%09%3Cli%3E%0A%09%09%09%3Ca+href%3D%22%2Fzonales%2Findex.php%3Foption%3Dcom_user%26amp%3Bview%3Dremind%22%3E%0A%09%09%09%C2%BFOlvido+su+nombre+de+usuario%3F%3C%2Fa%3E%0A%09%09%3C%2Fli%3E%0A%09%09%09%09%3Cli%3E%0A%09%09%09%3Ca+href%3D%22%2Fzonales%2Findex.php%3Foption%3Dcom_user%26amp%3Bview%3Dregister%22%3E%0A%09%09%09%09Reg%C3%ADstrese+aqu%C3%AD%3C%2Fa%3E%0A%09%09%3C%2Fli%3E%0A%09%09%09%3C%2Ful%3E%0A%09%0A%09%3Cinput+type%3D%22hidden%22+name%3D%22option%22+value%3D%22com_user%22+%2F%3E%0A%09%3Cinput+type%3D%22hidden%22+name%3D%22task%22+value%3D%22login%22+%2F%3E%0A%09%3Cinput+type%3D%22hidden%22+name%3D%22return%22+value%3D%22L3pvbmFsZXMvaW5kZXgucGhwP29wdGlvbj1jb21fY29udGVudCZ2aWV3PWZyb250cGFnZSZJdGVtaWQ9MQ%3D%3D%22+%2F%3E%0A%09%3Cinput+type%3D%22hidden%22+name%3D%221d6fd93fc44e959cd34f3e3c9f10e97d%22+value%3D%221%22+%2F%3E%3C%2Fform%3E%0A");UTb.addHtml({id:"uBarBtn4",message:"Autentiquese mediante OpenID",icon:"http://192.168.0.29/zonales/images/login/openid.png",className:""},"%0A%3Cform+id%3D%22form-login%22+action%3D%22%2Findex.php%3Foption%3Dcom_content%26amp%3Bview%3Dfrontpage%26amp%3BItemid%3D1%22+method%3D%22post%22%3E%0A++++%3Cfieldset+class%3D%22input%22%3E%0A++++++++%3Cp+id%3D%22form-login-username%22%3E%0A++++++++++++%3Clabel+for%3D%22modlgn_username%22%3EIngrese+su+identificador+OpenID%3A%3C%2Flabel%3E%0A++++++++++++%3Cbr+%2F%3E%0A++++++++++++%3Cinput+id%3D%22modlgn_username%22+class%3D%22inputbox%22+alt%3D%22username%22+name%3D%22username%22+size%3D%2218%22+type%3D%22text%22+%2F%3E%0A++++++++%3C%2Fp%3E%0A++++++++%3Cinput+name%3D%22option%22+type%3D%22hidden%22+value%3D%22com_user%22+%2F%3E%0A++++++++%3Cinput+name%3D%22task%22+type%3D%22hidden%22+value%3D%22login%22+%2F%3E%0A++++++++%3Cinput+name%3D%22return%22+type%3D%22hidden%22+value%3D%22L2luZGV4LnBocD9vcHRpb249Y29tX2NvbnRlbnQmdmlldz1mcm9udHBhZ2UmSXRlbWlkPTE%3D%22+%2F%3E%0A++++++++%3Cinput+name%3D%22provider%22+type%3D%22hidden%22+value%3D%22OpenID%22+%2F%3E%0A++++++++%3Cinput+type%3D%22hidden%22+name%3D%221d6fd93fc44e959cd34f3e3c9f10e97d%22+value%3D%221%22+%2F%3E++++%3C%2Ffieldset%3E%0A%3C%2Fform%3E%0A%0A%0A");});
+var JLanguage = {}; JLanguage.WHAT_IS_OPENID = '¿Qué es OpenId?'; JLanguage.LOGIN_WITH_OPENID = 'Loguearse con el OpenID'; JLanguage.NORMAL_LOGIN = 'Volver a la forma normal de loguearse'; var modlogin = 1;
+  </script>
 
+  <!-- JoomlaWorks "Ultimate PNG Fix" (v2.0) starts here -->
+	<!--[if lt IE 7]>
 
-<ul>
-    <?php foreach ($this->providerslist as $provider): ?>
-    <li>
-        <a href=<?php if ($provider->providername == 'Zonales' || $provider->providername == 'OpenID') {
-            echo '"#" onClick="showElement(\''. strtolower($provider->providername) .'\')"';
-        }
-        else {
-            $url = 'index.php?option=com_user&task=login&provider=' .
-                urlencode($provider->providername) . '&' . JUtility::getToken() .'=1';
-            echo '"' . $url . '"';
-        }
-           ?>>
-            <img src="<?php echo 'images'.DS.$provider->icon_url ?>"
-                 alt="<?php echo $provider->providername ?>"
-                 title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
-                 />
-        </a>
-    </li>
-    <?php endforeach ?>
-</ul>
 
