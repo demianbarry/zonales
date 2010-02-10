@@ -369,7 +369,7 @@ private function logme($db,$message) {
                     $password = ($password == '') ? JUserHelper::genRandomPassword() : $password;
 
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-                    //UserController::_sendMail($user, $password);
+                    UserController::_sendMail($user, $password);
 
 
                 }
@@ -401,7 +401,7 @@ private function logme($db,$message) {
                     $this->logme($db, 'alias agregado');
 
                     // Send registration confirmation mail
-                    $selectpass = 'select u.password from #__users where id=' . $userid;
+                    $selectpass = 'select u.password from #__users u where id=' . $userid;
                     $db->setQuery($selectpass);
                     $dbpass = $db->loadObject();
 

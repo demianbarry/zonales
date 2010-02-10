@@ -6,6 +6,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 document.getElementById('password').style.display = 'block';
                 document.getElementById('pw2msg').style.display = 'block';
                 document.getElementById('password2').style.display = 'block';
+                document.getElementById('password').className = 'inputbox required validate-passverify';
+                document.getElementById('password2').className = 'inputbox required validate-passverify';
             }
     <!--
     Window.onDomReady(function(){
@@ -139,7 +141,7 @@ if(isset($this->message)) {
                 </label>
             </td>
             <td>
-                <input style="display: none;" class="inputbox required validate-password" type="password" id="password" name="password" size="40" value="" /> 
+                <input style="display: none;" class="" type="password" id="password" name="password" size="40" value="" /> 
             </td>
         </tr>
         <tr>
@@ -149,7 +151,7 @@ if(isset($this->message)) {
                 </label>
             </td>
             <td>
-                <input style="display: none;" class="inputbox required validate-passverify" type="password" id="password2" name="password2" size="40" value="" /> 
+                <input style="display: none;" class="" type="password" id="password2" name="password2" size="40" value="" /> 
             </td>
         </tr>
         <tr>
