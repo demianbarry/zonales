@@ -73,10 +73,15 @@ class UserViewRegister extends JView
                 $db->setQuery($selectProviders);
                 $providerslist = $db->loadObjectList();
 
+                $providerid = JRequest::getInt('providerid', '0', 'method');
+                $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+
                 // enviar parametros a la plantilla
                 $this->assignRef('providerslist',$providerslist);
 		$this->assignRef('user', $user);
 		$this->assignRef('params',$params);
+                $this->assign('providerid',$providerid);
+                $this->assign('externalid',$externalid);
 		parent::display($tpl);
 	}
 }

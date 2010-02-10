@@ -164,6 +164,11 @@ private function logme($db,$message) {
                 $providerid = JRequest::getInt('providerid', '0', 'method');
                 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
+                ##### testing ##########
+                $db = &JFactory::getDBO();
+                $this->logme($db, 'el external id es: ' . $externalid);
+                $this->logme($db, 'el provider id es: ' . $providerid);
+
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
 
@@ -176,7 +181,7 @@ private function logme($db,$message) {
 
                         if ($providerid != 0 && $externalid != ''){
                             $user =& JFactory::getUser();
-                            $db = &JFactory::getDBO();
+                            
 
                             $externalid = urldecode($externalid);
                             $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
@@ -361,7 +366,7 @@ private function logme($db,$message) {
                     // Send registration confirmation mail
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-                    UserController::_sendMail($user, $password);
+                    //UserController::_sendMail($user, $password);
 
 
                 }
@@ -375,24 +380,17 @@ private function logme($db,$message) {
                 $providerid = JRequest::getInt('providerid', '0', 'method');
                 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
+                                ##### testing ##########
+                $this->logme($db, 'el external id es: ' . $externalid);
+                $this->logme($db, 'el provider id es: ' . $providerid);
+
                 if ($externalid != '' && $providerid != 0) {
                 // hay que agregar un alias
 
                 $this->logme($db, 'vamos a gregar un alias');
 
                     $userid = $this->getUserId($db, $userClone);
-//                    $passphrase = JUtility::getHash( JUserHelper::genRandomPassword());
-//
-//                    $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation) ' .
-//                        'values (' . $userid . ',"' . $userClone->get('externalid') .
-//                        '",' . $userClone->get('providerid') . ',"' . date('Y-m-d') . '",' .
-//                        $block . ',"' . $passphrase . '")';
-//
-//                    $db->setQuery($insertAlias);
-//                    if (!$db->query()) {
-//                        $this->logme($db, 'No se pudo insertar el alias');
-//$this->logme($db, $userid);
-//                    }
+
                     $externalid = urldecode($externalid);
 
                     $this->insertAlias($block, $userid, $externalid,$userClone->get('providerid'));

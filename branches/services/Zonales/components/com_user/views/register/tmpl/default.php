@@ -114,7 +114,7 @@ if(isset($this->message)) {
                     <!-- CREA UNA LISTA DE PROVEEDORES CON LOS CUALES ES POSIBLE ACCEDER -->
                     <?php foreach ($this->providerslist as $provider): ?>
                     <a href=<?php if ($provider->protocolname == 'Tradicional'){
-                        echo '"#" onClick="showPass()"';
+                        echo '"#passlocation" onClick="showPass()"';
                     }
                     else {
                         $url = 'index.php?option=com_user&task=login&provider=' .
@@ -133,6 +133,7 @@ if(isset($this->message)) {
         </tr>
         <tr>
             <td height="40">
+                <a name="passlocation"></a>
                 <label style="display: none;" id="pwmsg" for="password">
                     <?php echo '*' . JText::_( 'Password' ); ?>:
                 </label>
@@ -161,7 +162,7 @@ if(isset($this->message)) {
     <input type="hidden" name="task" value="register_save" />
     <input type="hidden" name="id" value="0" />
     <input type="hidden" name="gid" value="0" />
-    <input type="hidden" name="externalid" value="<?php echo JRequest::getVar('externalid', '', 'get', 'string');?>" />
-    <input type="hidden" name="providerid" value="<?php echo JRequest::getVar('providerid', '', 'get', 'string');?>" />
+    <input type="hidden" name="providerid" value="<?php echo $this->providerid; ?>" />
+    <input type="hidden" name="externalid" value="<?php echo $this->externalid; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
