@@ -365,6 +365,9 @@ private function logme($db,$message) {
 
                     // Send registration confirmation mail
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+
+                    $password = ($password == '') ? JUserHelper::genRandomPassword() : $password;
+
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
                     //UserController::_sendMail($user, $password);
 
