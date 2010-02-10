@@ -326,7 +326,12 @@ private function logme($db,$message) {
                 $block = ($useractivation == '1') ? '1' : '0';
 
                 if (!$this->userExists($db, $user)) {
+                    $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
+                    if ($password == ''){
+                        $password = JUserHelper::genRandomPassword();
+                        $block = '0';
+                    }
 
                 // Set some initial user values
                     $user->set('id', 0);
@@ -335,7 +340,7 @@ private function logme($db,$message) {
 
                     $date =& JFactory::getDate();
                     $user->set('registerDate', $date->toMySQL());
-                    #$user->set('birthdate',$birthdate);
+                    $user->set('password',md5($password));
 
 
 
@@ -364,9 +369,7 @@ private function logme($db,$message) {
                     $db->query();
 
                     // Send registration confirmation mail
-                    $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
-
-                    $password = ($password == '') ? JUserHelper::genRandomPassword() : $password;
+                    
 
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
                     UserController::_sendMail($user, $password);
