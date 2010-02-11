@@ -10,7 +10,7 @@
             <?php foreach($this->aliaslist as $dbalias):?>
             <tr>
                 <td>
-                    <img src="<?php echo 'images'.DS.$dbalias->icon_url?>" alt="<?php echo $dbalias->providername ?>"/>
+                    <img src="<?php echo $dbalias->icon_url?>" alt="<?php echo $dbalias->providername ?>"/>
                 </td>
                 <td>
                     <input type="checkbox" name="<?php echo 'alias'.$dbalias->id ?>"

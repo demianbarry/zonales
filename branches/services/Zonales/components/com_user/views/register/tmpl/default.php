@@ -124,7 +124,7 @@ if(isset($this->message)) {
                         echo '"' . $url . '"';
                     }
                     ?>>
-                        <img src="<?php echo 'images'.DS.$provider->icon_url ?>"
+                        <img src="<?php echo $provider->icon_url ?>"
                          alt="<?php echo $provider->providername ?>"
                          title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
                          />
