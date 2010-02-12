@@ -3,10 +3,14 @@ jimport('joomla.application.module.helper');
 
 $db = &JFactory::getDBO();
 
-$selectProviders = 'select p.name, p.icon_url, p.module ' . 
-                    'from #__providers p';
+$selectProviders = 'select p.name, p.icon_url, p.module, g.name as groupname ' .
+                    'from #__providers p, #__groups g ' .
+                    'where p.access=g.id';
 $db->setQuery($selectProviders);
 $providerslist = $db->loadObjectList();
+
+$user =& JFactory::getUser();
+$userislogged = (!$user->guest);
 
 ?>
 <script type="text/javascript">
@@ -35,6 +39,9 @@ foreach ($providerslist as $prov) {
     </thead>
     <tbody>
         <?php foreach ($providerslist as $provider): ?>
+        <?php if (!$user->guest && $provider->groupname == 'Guest'):
+        else :
+        ?>
         <tr>
             <td>
                 <div>
@@ -66,6 +73,7 @@ foreach ($providerslist as $prov) {
         </div>
             </td>
         </tr>
+        <?php endif ?>
         <?php endforeach ?>
     </tbody>
 </table>

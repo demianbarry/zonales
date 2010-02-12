@@ -18,6 +18,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 #jimport('joomla.mail.mail');
 jimport( 'joomla.utilities.utility' );
+jimport('joomla.user.helper');
 
 /**
  * User Component Controller
@@ -135,6 +136,28 @@ private function logme($db,$message) {
 		$this->setRedirect( 'index.php' );
 	}
 
+        private function aliasreg($providerid,$externalid) {
+
+            if ($providerid != 0 && $externalid != '') {
+                $db = &JFactory::getDBO();
+                $user =& JFactory::getUser();
+
+                $externalid = urldecode($externalid);
+                $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
+                $this->insertAlias('0', $user->id, $externalid, $providerid);
+            }
+        }
+
+        function aliasregister() {
+            // Check for request forgeries
+            JRequest::checkToken('request') or jexit( 'Invalid Token' );
+
+            $providerid = JRequest::getInt('providerid', '0', 'method');
+            $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+
+            $this->aliasreg($providerid,$externalid);
+        }
+
 	function login()
 	{
 
@@ -179,15 +202,16 @@ private function logme($db,$message) {
 				$return	= 'index.php?option=com_user';
 			}
 
-                        if ($providerid != 0 && $externalid != ''){
-                            $user =& JFactory::getUser();
-                            
-
-                            $externalid = urldecode($externalid);
-                            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
-                            $this->insertAlias('0', $user->id, $externalid, $providerid);
-                        }
-
+//                        if ($providerid != 0 && $externalid != ''){
+//
+//
+//                            $user =& JFactory::getUser();
+//
+//                            $externalid = urldecode($externalid);
+//                            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
+//                            $this->insertAlias('0', $user->id, $externalid, $providerid);
+//                        }
+                        $this->aliasreg($providerid,$externalid);
 
 			$mainframe->redirect( $return );
 		}
