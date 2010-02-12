@@ -11,12 +11,15 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
+jimport( 'joomla.application.module.helper');
 
 /**
  * HTML View class for the HelloWorld Component
  *
  * @package    HelloWorld
  */
+ 
+ jimport( 'joomla.methods' );
 
 class AliasViewAlias extends JView {
     
@@ -29,8 +32,27 @@ class AliasViewAlias extends JView {
                 ' and a.provider_id=p.id';
         $db->setQuery($query);
         $dbaliaslist = $db->loadObjectList();
+        
+        $titleAliasBlockAdmin = JText::_('Alias block administration');
+        $messageAliasBlockAdmin = JText::_('Here you can block or unblock your alias');
+
+        $titleNewAlias = JText::_('New alias registration');
+        $messageNewAlias = JText::_('Add new ways to authenticate you on Zonales');
+
+        $titleAlias = JText::_('Alias');
+        $titleUnblock = JText::_('Unblock');
+
+        $moduleProviders = JModuleHelper::getModule('mod_zlogin');
+        $htmlProviders = JModuleHelper::renderModule($moduleProviders);
 
         $this->assignRef( 'aliaslist', $dbaliaslist );
+        $this->assign('titleAliasBlockAdmin',$titleAliasBlockAdmin);
+        $this->assign('messageAliasBlockAdmin',$messageAliasBlockAdmin);
+        $this->assign('titleNewAlias',$titleNewAlias);
+        $this->assing('messageNewAlias',$messageNewAlias);
+        $this->assign('titleAlias',$titleAlias);
+        $this->assign('titleUnblock',$titleUnblock);
+        $this->assign('moduleproviders',$htmlProviders);
 
         parent::display($tpl);
     }
