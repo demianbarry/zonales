@@ -1,9 +1,13 @@
+<h2><?php echo $this->titleAliasBlockAdmin ?></h2>
+<p>
+    <?php echo $this->messageAliasBlockAdmin ?>
+</p>
 <form name="aliasadmin" action="/index.php" method="POST">
     <table border="0" cellspacing="4">
         <thead>
             <tr>
-                <th>Alias</th>
-                <th>Habilitar</th>
+                <th><?php echo $this->titleAlias ?></th>
+                <th><?php echo $this->titleUnblock ?></th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +24,10 @@
             <?php endforeach ?>
         </tbody>
     </table>
+
+    <h2><?php echo $this->titleNewAlias ?></h2>
+    <p><?php echo $this->messageNewAlias ?></p>
+    <?php echo $this->moduleproviders ?>
 
     <input type="submit" value="<?php echo JText::_('Accept'); ?>" name="submit" />
     <input type="hidden" name="option" value="com_alias" />
