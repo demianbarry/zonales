@@ -19,6 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 jimport('joomla.database.database');
 jimport('joomla.user.helper');
+jimport('joomla.utilities.utility');
 
 /**
  * OpenID Authentication Plugin
@@ -259,8 +260,18 @@ $this->logme($db, 'en el plugin openid');
                         } else { // si el alias no existe
                             $this->logme($db, 'el alias no existe :(');
 
-                            $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $result->getDisplayIdentifier() .
+                            $user =& JFactory::getUser();
+                            if ($user->guest){
+                                $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $result->getDisplayIdentifier() .
                                 '&providerid=' . $dbprovider->id);
+                            }
+                            else {
+                                $token = JUtility::getToken();
+                                $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($result->getDisplayIdentifier()) .
+                                '&providerid=' . $dbprovider->id . '&' . $token .'=1');
+                            }
+
+                            
 
                         }
                     }
