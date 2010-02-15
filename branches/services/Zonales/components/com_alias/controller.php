@@ -2,6 +2,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.controller');
+//JTable::addIncludePath(JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table');
+//jimport('joomla.database.table.alias');
 
 class AliasController extends JController {
 
@@ -16,12 +18,13 @@ class AliasController extends JController {
     }
 
     function unblock() {
-        $db =& JFactory::getDBO();
-        $this->logme($db, 'alias'.$alias->id);
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         $db =& JFactory::getDBO();
         $user =& JFactory::getUser();
+
+        //$row =& JTable::getInstance('alias', 'Table');
+        //$row = new JTableAlias($db);
 
         $userid = $user->id;
         $query = 'select a.id from #__alias a where user_id=' . $userid;
@@ -37,6 +40,11 @@ class AliasController extends JController {
             $this->logme($db, 'el bloqueo es: ' . $block);
 
 
+//            $row->load($alias->id);
+//            $row->block = (int) $block;
+//            if (!$row->store()) {
+//                JError::raiseError(500, $row->getError() );
+//            }
 
             $update = 'update #__alias set block=' . $block .
                 ' where id=' . $alias->id;

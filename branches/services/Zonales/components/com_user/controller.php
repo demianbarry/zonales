@@ -276,11 +276,31 @@ private function logme($db,$message) {
 
 		parent::display();
 	}
+
+        private function getVariations($string){
+            $variations = array();
+
+            $variations[] = $string;
+            $variations[] = strtolower($string);
+            $variations[] = ucwords(strtolower($string));
+            $variations[] = strtoupper($string);
+
+            return $variations;
+
+        }
         
         private function getUserId($db,$user) {
+//            $id_query = 'SELECT u.id FROM #__users u'.
+//                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
+//                ' AND u.birthdate="' . $user->get('birthdate') . '"';
+
+            $variations = $this->getVariations($user->get('name'));
+            $end = implode('","', $variations);
+            $end = '"' . $end . '"';
+
             $id_query = 'SELECT u.id FROM #__users u'.
-                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
-                ' AND u.birthdate="' . $user->get('birthdate') . '"';
+                ' WHERE u.birthdate="' . $user->get('birthdate') . '"' .
+                ' AND u.name IN (' . $end . ')';
             $db->setQuery($id_query);
             $dbuserid = $db->loadObject();
             
@@ -384,13 +404,6 @@ private function logme($db,$message) {
                         $this->register();
                         return false;
                     }
-
-		    $query='update #__users set birthdate=' . $db->Quote($user->get('birthdate')) . 
-                    ', sex=' . $db->Quote($user->get('sex')) . 
-                    ', email2=' . $db->Quote($user->get('email2')) .
-                    ' where username="' . $user->get('username') . '"';
-                    $db->setQuery($query);
-                    $db->query();
 
                     // Send registration confirmation mail
                     
