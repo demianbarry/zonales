@@ -46,13 +46,13 @@ class AliasViewAlias extends JView {
         $htmlProviders = JModuleHelper::renderModule($moduleProviders);
 
         $this->assignRef( 'aliaslist', $dbaliaslist );
-        $this->assign('titleAliasBlockAdmin',$titleAliasBlockAdmin);
-        $this->assign('messageAliasBlockAdmin',$messageAliasBlockAdmin);
-        $this->assign('titleNewAlias',$titleNewAlias);
-        $this->assing('messageNewAlias',$messageNewAlias);
-        $this->assign('titleAlias',$titleAlias);
-        $this->assign('titleUnblock',$titleUnblock);
-        $this->assign('moduleproviders',$htmlProviders);
+        $this->assignRef('titleAliasBlockAdmin',$titleAliasBlockAdmin);
+        $this->assignRef('messageAliasBlockAdmin',$messageAliasBlockAdmin);
+        $this->assignRef('titleNewAlias',$titleNewAlias);
+        $this->assignRef('messageNewAlias',$messageNewAlias);
+        $this->assignRef('titleAlias',$titleAlias);
+        $this->assignRef('titleUnblock',$titleUnblock);
+        $this->assignRef('moduleproviders',$htmlProviders);
 
         parent::display($tpl);
     }

@@ -1,6 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+jimport( 'joomla.user.user' );
 
+$user =& JFactory::getUser();
+if ($user->guest):
 ?>
 
 <form id="form-login" action="<?php echo JRoute::_('index.php'); ?>
@@ -18,5 +21,11 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
 </form>
+<?php else :
+    jimport('joomla.application.module.helper');
+    $module = JModuleHelper::getModule('mod_login');
+    $html = JModuleHelper::renderModule($module);
+    echo $html;
 
+?>
 
