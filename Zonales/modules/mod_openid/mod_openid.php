@@ -1,13 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.user.user' );
+jimport( 'joomla.methods' );
 
-$user =& JFactory::getUser();
-if ($user->guest):
 ?>
 
-<form id="form-login" action="<?php echo JRoute::_('index.php'); ?>
-" method="post">
+<form id="form-openidlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
     <fieldset class="input">
         <p id="form-login-username">
             <label for="modlgn_username">Ingrese su identificador OpenID:</label>
@@ -21,11 +18,5 @@ if ($user->guest):
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
 </form>
-<?php else :
-    jimport('joomla.application.module.helper');
-    $module = JModuleHelper::getModule('mod_login');
-    $html = JModuleHelper::renderModule($module);
-    echo $html;
 
-?>
 

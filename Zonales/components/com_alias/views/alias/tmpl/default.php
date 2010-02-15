@@ -2,7 +2,7 @@
 <p>
     <?php echo $this->messageAliasBlockAdmin ?>
 </p>
-<form name="aliasadmin" action="/index.php" method="POST">
+<form name="aliasadmin" action="<?php echo JRoute::_('index.php') ?>" method="POST">
     <table border="0" cellspacing="4">
         <thead>
             <tr>
