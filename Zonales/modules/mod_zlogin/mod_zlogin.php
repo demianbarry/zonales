@@ -14,6 +14,12 @@ $userislogged = (!$user->guest);
 
 ?>
 <script type="text/javascript">
+    function setElement(id,message,provider){
+        document.getElementById(id + '_message').value=message;
+        document.getElementById(id + '_provider').value=provider;
+        showElement(id);
+    }
+
     function showElement(id) {
 <?php
 foreach ($providerslist as $prov) {
@@ -46,7 +52,7 @@ foreach ($providerslist as $prov) {
                 <div>
 
             <a href=<?php if ($provider->module != null) {
-                    echo '"#' .$provider->module. 'location" onClick="showElement(\''.$provider->module.'\')"';
+                    echo '"#' .$provider->module. 'location" onClick="setElement(\''.$provider->module.'\')"';
                 }
                 else {
                     $url = 'index.php?option=com_user&task=login&provider=' .
