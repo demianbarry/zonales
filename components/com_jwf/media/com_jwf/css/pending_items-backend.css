@@ -1,0 +1,26 @@
+.icon-48-jwf-logo{
+	background-image: url('../images/logo-48.png'); 	
+}
+
+div.progress{
+	width:90%;
+	border:1px solid black;
+	padding:3px;
+	height:20px;
+	text-align:left;
+}
+
+div.progress div.green{
+	background-color:green;
+	height:20px;
+} 
+
+div.progress div.yellow{
+	background-color:yellow;
+	height:20px;
+}
+
+div.progress div.red{
+	background-color:red;
+	height:20px;
+}

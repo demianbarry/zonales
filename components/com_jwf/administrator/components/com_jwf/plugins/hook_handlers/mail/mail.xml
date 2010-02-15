@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* XML config file for Mail plugin
+*
+* @version		$Id: mail.xml 1435 2009-08-16 09:08:22Z mostafa.muhammad $
+* @package		Joomla
+* @subpackage	JForms
+* @copyright	Copyright (C) 2008 Mostafa Muhammad. All rights reserved.
+* @license		GNU/GPL
+-->
+<form>
+	<name>Mail plugin parameters</name>
+	<params>
+		<param name="SendAdmin" type="list" default="1" label="Send notification to Administrators on new entries" description="MAILSENDADMIN">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="AdminText" type="textarea" rows="5" cols="30"  default="The item {item:title} has been moved at {item:arrival} to station {station:title} whose task is {station:task}, To access this task {item:link}" label="Administrator Message Format" description="MAILFORMATUSER" />
+		
+		<param name="SendUser" type="list" default="1" label="Send User a confirmation message" description="MAILSENDUSER">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="UserText"  type="textarea" rows="5" cols="30"  default="A new task is awaiting you" label="User Message Format" description="MAILFORMATUSER" />
+	</params>
+</form>
+
