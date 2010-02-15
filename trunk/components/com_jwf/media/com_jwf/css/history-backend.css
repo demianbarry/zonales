@@ -1,0 +1,148 @@
+.icon-48-jwf-logo{
+	background-image: url('../images/logo-48.png'); 	
+}
+div#item-container{
+	
+	border: 1px solid black;
+	padding:10px;
+	width:80%;
+	margin:auto;
+	height:400px;
+	overflow:scroll;
+}
+div#field-container{
+	width:70%;
+	margin:auto;
+}
+#stations{
+	margin-top:15px;
+}
+
+#backward-station{
+	
+	width:32.5%;
+	height:50px;
+	border:1px solid black;
+	float:left;
+	text-align:left;
+	padding:5px;
+}
+
+#backward-station a.move {
+	background-image:url('../images/left.png');
+	background-repeat:no-repeat;
+	background-position:center left;
+	display:block;
+	height:30px;
+	text-align:right;
+	width:150px;
+	padding-top:10px;
+	float:left;
+	font-size:120%;
+}
+
+#backward-station .stop {
+	background-image:url('../images/stop.png');
+	background-repeat:no-repeat;
+	background-position:center left;
+	display:block;
+	height:30px;
+	text-align:left;
+	text-indent:48px;
+	width:150px;
+	padding-top:10px;
+	float:left;
+	font-size:150%;
+
+}
+
+#current-station{
+	text-align:center;
+	width:32.5%;
+	height:50px;
+	border:1px solid black;
+	float:left;
+	padding:5px;
+	font-weight:bold;
+	font-size:120%;
+}
+
+#current-station a.edit{
+
+	background-repeat:no-repeat;
+	background-position:center left;
+	display:block;
+	height:30px;
+	margin:auto;
+	width:150px;
+	padding-top:10px;
+	
+
+}
+
+#next-station{
+	width:32.5%;
+	height:50px;
+	border:1px solid black;
+	float:left;
+	text-align:right;
+	padding:5px;
+	
+}
+
+
+#next-station a.move {
+	background-image:url('../images/right.png');
+	background-repeat:no-repeat;
+	background-position:center right;
+	display:block;
+	height:30px;
+	text-align:left;
+	width:150px;
+	padding-top:10px;
+	float:right;
+	font-size:120%;
+}
+
+#next-station .stop {
+	background-image:url('../images/stop.png');
+	background-repeat:no-repeat;
+	background-position:center right;
+	display:block;
+	height:30px;
+	text-align:left;
+	width:150px;
+	padding-top:10px;
+	float:right;
+	font-size:120%;
+}
+
+/* Tooltips */
+.tip {
+	float: left;
+	background: #ffc;
+	border: 1px solid #D4D5AA;
+	padding: 5px;
+	max-width: 200px;
+	z-index: 50;
+}
+
+.tip -title {
+	padding: 0;
+	margin: 0;
+	font-size: 100%;
+	font-weight: bold;
+	margin-top: -15px;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	background: url('../images/selector-arrow.png') no-repeat;
+}
+
+.tip -text {
+	font-size: 100%;
+	margin: 0;
+}
+
+table.adminlist td{
+	text-align:center;
+}

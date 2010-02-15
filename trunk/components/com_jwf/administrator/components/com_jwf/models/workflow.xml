@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Workflow Form XML File
+*
+* @version		$Id: workflow.xml 1439 2009-08-16 12:41:13Z mostafa.muhammad $
+* @package		Joomla
+* @subpackage	JWF
+* @copyright	Copyright (C) 2008 Mostafa Muhammad. All rights reserved.
+* @license		GNU/GPL
+-->
+<form>
+	<name>Workflow Edit Form</name>
+	
+	<params>
+		<param name="title" type="text" size="20" default="" label="Title" description="WFTITLE" />
+		<param name="state" type="list" size="20" default="1" label="Published" description="WFPUBLISH">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="component" type="contentselector" id="general_input_component" label="Content Type" description="WFCOMPONENT" />
+		<param name="category" type="categoryselector" id="general_input_category" label="Categories" description="WFCATEGORY" />
+		<param name="acl" type="aclgroup" id="general_input_acl" label="ACL Handler" description="WFACL" />
+		<param name="admin_gid" type="list" size="20" label="Administrating Group" description="WFADMING">
+		</param>
+		<param name="publish_up" type="calendar" default="" label="Start Publishing" description="WFPUBLISHSTART" />
+		<param name="publish_down" type="calendar" default="" label="Finish Publishing" description="WFPUBLISHFINISH" />
+	</params>
+</form>

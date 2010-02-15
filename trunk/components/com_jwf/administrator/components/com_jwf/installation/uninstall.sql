@@ -1,0 +1,9 @@
+--
+-- Uninstall SQL Script
+--
+-- @version		$Id: uninstall.sql 1439 2009-08-16 12:41:13Z mostafa.muhammad $
+-- @package		Joomla
+-- @subpackage	JWF
+-- @copyright	Copyright (C) 2008 Mostafa Muhammad. All rights reserved.
+-- @license		GNU/GPL
+--

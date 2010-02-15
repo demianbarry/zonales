@@ -1,0 +1,26 @@
+<!--
+* XML Setup file
+*
+* @version		$Id: jwf.xml 1441 2009-08-16 14:30:27Z mostafa.muhammad $
+* @package		Joomla
+* @subpackage	JWF.core
+* @copyright	Copyright (C) 2008 Mostafa Muhammad. All rights reserved.
+* @license		GNU/GPL
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="system">
+	<name>System - JWF</name>
+	<author>Mostafa Muhammad</author>
+	<creationDate>May 2009</creationDate>
+	<copyright>(C) 2009 Mostafa Muhammad. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>mostafa.mohmmed@gmail.com</authorEmail>
+	<authorUrl>http://mostafa.mosmar.com/blog/</authorUrl>
+	<version>Beta</version>
+	<description>Core plugin for Joomla! Workflow Extension</description>
+	<files>
+		<filename plugin="jwf">jwf.php</filename>
+		<filename plugin="jwf">jwf.cron.php</filename>
+	</files>
+	<params></params>
+</install>
