@@ -17,7 +17,7 @@ $userislogged = (!$user->guest);
     function showElement(id) {
 <?php
 foreach ($providerslist as $prov) {
-    if ($prov->module != null){
+    if ($prov->module != null && !(!$user->guest && $prov->groupname == 'Guest')){
         echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
     }
 }
@@ -39,8 +39,7 @@ foreach ($providerslist as $prov) {
     </thead>
     <tbody>
         <?php foreach ($providerslist as $provider): ?>
-        <?php if (!$user->guest && $provider->groupname == 'Guest'):
-        else :
+        <?php if (!(!$user->guest && $provider->groupname == 'Guest')):
         ?>
         <tr>
             <td>
