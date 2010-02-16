@@ -74,6 +74,11 @@
     <include name="**" />
   </fileset>
 
+  <!-- com_customproperties -->
+  <fileset dir="${src_frontend_components}/com_customproperties" id="com_customproperties_files">
+      <include name="**" />
+  </fileset>
+
 
   <!-- ======================================================
        		      copia archivos instalación
@@ -243,6 +248,14 @@
     <zip destfile="${src_dist_dir}/${dist.mod_jxcomments.file}.zip">
       <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
       <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
+    </zip>
+  </target>
+
+   <!-- componente com_customproperties (fork) -->
+  <target name="dist_com_customproperties" description="Crea archivo de distribución Joomla para el componente CustomProperties (fork)">
+    <echo message="Creando archivo de distribución de componente CustomProperties (fork)"/>
+    <zip destfile="${src_dist_dir}/${dist.com_customproperties.file}.zip">
+      <fileset refid="com_customproperties_files"/>
     </zip>
   </target>
 

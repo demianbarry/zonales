@@ -4,6 +4,7 @@
 dist.com_zonales.file=com_zonales
 dist.com_reservas.file=com_reservas
 dist.com_content.file=com_content
+dist.com_customproperties.file=com_customproperties
  
 # nombre modulo
 dist.mod_jxcomments.file=mod_jxcomments
