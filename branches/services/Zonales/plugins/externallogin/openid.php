@@ -69,12 +69,12 @@ $this->logme($db, 'en el plugin openid');
         ## asignar valor a $provider!!!!!!
         $provider = (isset($credentials['provider']) && $credentials['provider'] != null) ? $credentials['provider'] : 'OpenID';
 
-        $selectProvider = 'select p.id, p.discovery_url from #__providers p where p.name = "' . $provider . '"';
+        $selectProvider = 'select p.id, p.discovery_url, p.prefix, p.suffix from #__providers p where p.name = "' . $provider . '"';
         $db->setQuery($selectProvider);
         $dbprovider = $db->loadObject();
 
         $this->logme($db, 'la url de discovery es: ###' . $dbprovider->discovery_url . '###');
-        $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
+        $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
 
         ################################################
 

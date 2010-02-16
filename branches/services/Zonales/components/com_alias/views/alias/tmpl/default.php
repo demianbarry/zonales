@@ -1,4 +1,4 @@
-<h2><?php echo $this->titleAliasBlockAdmin ?></h2>
+<h2 class="aliastitle"><?php echo $this->titleAliasBlockAdmin ?></h2>
 <p>
     <?php echo $this->messageAliasBlockAdmin ?>
 </p>
@@ -25,7 +25,7 @@
         </tbody>
     </table>
 
-    <h2><?php echo $this->titleNewAlias ?></h2>
+    <h2 class="aliastitle"><?php echo $this->titleNewAlias ?></h2>
     <p><?php echo $this->messageNewAlias ?></p>
     <?php echo $this->moduleproviders ?>
 
