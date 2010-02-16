@@ -14,6 +14,11 @@ class AliasController extends JController {
      */
     function display()
     {
+        $user =& JFactory::getUser();
+
+        if ($user->guest){
+            die('Restricted access');
+        }
         parent::display();
     }
 

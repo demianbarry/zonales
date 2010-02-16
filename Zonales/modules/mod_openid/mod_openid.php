@@ -4,7 +4,7 @@ jimport( 'joomla.methods' );
 
 ?>
 
-<form id="form-openidlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
+<form id="form-login" action="<?php echo JRoute::_('index.php') ?>" method="post">
     <fieldset class="input">
         <p id="form-login-username">
             <label id="mod_openid_message" name="mod_login_message" for="modlgn_username">Ingrese su identificador OpenID:</label>

@@ -74,7 +74,10 @@ $this->logme($db, 'en el plugin openid');
         $dbprovider = $db->loadObject();
 
         $this->logme($db, 'la url de discovery es: ###' . $dbprovider->discovery_url . '###');
-        $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
+        $this->logme($db, 'el prefijo es: ###' . $dbprovider->prefix . '###');
+        $this->logme($db, 'el sufijo es: ###' . $dbprovider->suffix . '###');
+        $credentials['username'] = $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
+        $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
 
         ################################################
 
