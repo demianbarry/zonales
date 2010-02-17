@@ -144,8 +144,10 @@ private function logme($db,$message) {
 
                 $externalid = urldecode($externalid);
                 $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
-                $this->insertAlias('0', $user->id, $externalid, $providerid);
+                $status = $this->insertAlias('0', $user->id, $externalid, $providerid);
+                return $status;
             }
+            return false;
         }
 
         function aliasregister() {
@@ -155,7 +157,12 @@ private function logme($db,$message) {
             $providerid = JRequest::getInt('providerid', '0', 'method');
             $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
-            $this->aliasreg($providerid,$externalid);
+            $statusAux = $this->aliasreg($providerid,$externalid);
+
+            $status = ($statusAux) ? '0' : '1';
+
+            global $mainframe;
+            $mainframe->redirect(JRoute::_('index.php?option=com_alias&view=addmessage&status=' . $status));
         }
 
 	function login()
@@ -324,7 +331,9 @@ private function logme($db,$message) {
             if (!$db->query()) {
                 $this->logme($db, 'No se pudo insertar el alias');
                 $this->logme($db, $userid);
+                return false;
             }
+            return true;
         }
 
 	/**
