@@ -2,7 +2,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
-jimport( 'joomla.application.module.helper');
 
 class AliasViewAddMessage extends JView {
 
@@ -10,24 +9,26 @@ class AliasViewAddMessage extends JView {
         $status = JRequest::getInt('status', '0', 'method');
         $class = 'aliasmessage';
         $returnUrl = JRoute::_('index.php');
-        $returnMessage = JText::_('Go home');
+        $returnMessage = JText::_('ZONALES_ALIAS_COMEBACK');
 
         switch ($status) {
             case 0:
-                $message = JText::_('Your identifier has been added successfully as your new alias');
+                $message = JText::_('ZONALES_ALIAS_ADDED_SUCCESSFULLY');
                 $class = $class . '.success';
                 break;
 
             default:
-                $message = JText::_('Your identifier could not be added as your new alias');
+                $message = JText::_('ZONALES_ALIAS_NOT_ADDED');
                 $class = $class . '.error';
                 break;
         }
 
-        $this->assignRef('message',$message);
-        $this->assignRef('class',$class);
-        $this->assignRef('return',$returnUrl);
-        $this->assignRef('returnmessage',$returnMessage);
+        $this->assign('message',$message);
+        $this->assign('class',$class);
+        $this->assign('return',$returnUrl);
+        $this->assign('returnmessage',$returnMessage);
+
+        parent::display($tpl);
     }
 }
 ?>
