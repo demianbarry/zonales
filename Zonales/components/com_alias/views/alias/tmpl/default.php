@@ -25,14 +25,12 @@
         </tbody>
     </table>
 
-    <h2 class="aliastitle"><?php echo $this->titleNewAlias ?></h2>
-    <p><?php echo $this->messageNewAlias ?></p>
-    <?php echo $this->moduleproviders ?>
-
     <input type="submit" value="<?php echo JText::_('Accept'); ?>" name="submit" />
     <input type="hidden" name="option" value="com_alias" />
     <input type="hidden" name="task" value="unblock" />
     <?php echo JHTML::_( 'form.token' ); ?>
 
 </form>
-
+<h2 class="aliastitle"><?php echo $this->titleNewAlias ?></h2>
+    <p><?php echo $this->messageNewAlias ?></p>
+    <?php echo $this->moduleproviders ?>

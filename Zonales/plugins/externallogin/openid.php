@@ -85,11 +85,10 @@ $this->logme($db, 'en el plugin openid');
         if ($beginning != $dbprovider->prefix){
             $credentials['username'] = $dbprovider->prefix . $credentials['username'];
         }
-        if ($ending == ''){
+        if ($ending != $dbprovider->suffix){
             $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
         }
 
-        //$credentials['username'] = $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
         $this->logme($db, 'el username es: ###' . $credentials['username'] . '###');
         $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
 
