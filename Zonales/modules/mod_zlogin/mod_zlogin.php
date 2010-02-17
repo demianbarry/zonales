@@ -12,6 +12,9 @@ $providerslist = $db->loadObjectList();
 $user =& JFactory::getUser();
 $userislogged = (!$user->guest);
 
+$elements = array();
+$elementsHTML = array();
+
 ?>
 <script type="text/javascript">
     function setElement(id,message,provider){
@@ -26,7 +29,10 @@ $userislogged = (!$user->guest);
 <?php
 foreach ($providerslist as $prov) {
     if ($prov->module != null && !(!$user->guest && $prov->groupname == 'Guest')) {
-        echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+        if (!isset ($elements[$prov->module])){
+            $elements[$prov->module] = 1;
+            echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+        }
     }
 }
 ?>
@@ -62,6 +68,9 @@ foreach ($providerslist as $prov) {
                              title="Ingrese a Zonales mediante <?php echo $provider->name ?>"
                              />
                     </a>
+                    <?php if ($provider->module != null && !isset ($elementsHTML[$provider->module])):
+                    $elementsHTML[$provider->module] = 1;
+                    ?>
                     <a name="<?php echo $provider->name ?>"></a>
                     <div style="display: none;" id="<?php echo $provider->module ?>">
                                 <?php if ($provider->module != null) {
@@ -71,7 +80,7 @@ foreach ($providerslist as $prov) {
                                 }
                                 ?>
                     </div>
-
+                    <?php endif ?>
                 </div>
             </td>
         </tr>

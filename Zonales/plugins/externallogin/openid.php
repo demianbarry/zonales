@@ -76,7 +76,21 @@ $this->logme($db, 'en el plugin openid');
         $this->logme($db, 'la url de discovery es: ###' . $dbprovider->discovery_url . '###');
         $this->logme($db, 'el prefijo es: ###' . $dbprovider->prefix . '###');
         $this->logme($db, 'el sufijo es: ###' . $dbprovider->suffix . '###');
-        $credentials['username'] = $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
+        $this->logme($db, 'el username es: ###' . $credentials['username'] . '###');
+        $beginning = substr($credentials['username'], 0, strlen($dbprovider->prefix));
+        $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($dbprovider->suffix));
+        
+        $this->logme($db, 'el inicio es: ###' . $beginning . '###');
+        $this->logme($db, 'el fin es: ###' . $ending . '###');
+        if ($beginning != $dbprovider->prefix){
+            $credentials['username'] = $dbprovider->prefix . $credentials['username'];
+        }
+        if ($ending == ''){
+            $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
+        }
+
+        //$credentials['username'] = $dbprovider->prefix . $credentials['username'] . $dbprovider->suffix;
+        $this->logme($db, 'el username es: ###' . $credentials['username'] . '###');
         $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
 
         ################################################
@@ -129,14 +143,14 @@ $this->logme($db, 'en el plugin openid');
             }
 
             # armamos la peticion la informacion asociada al usuario
-            $sreg_request = Auth_OpenID_SRegRequest::build(
-                array ('email'),
-                array ('fullname','language','timezone')
-            );
-
-            if ($sreg_request) {
-                $auth_request->addExtension($sreg_request);
-            }
+//            $sreg_request = Auth_OpenID_SRegRequest::build(
+//                array ('email'),
+//                array ('fullname','language','timezone')
+//            );
+//
+//            if ($sreg_request) {
+//                $auth_request->addExtension($sreg_request);
+//            }
             $policy_uris = array();
             if ($this->params->get( 'phishing-resistant', 0)) {
                 $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';

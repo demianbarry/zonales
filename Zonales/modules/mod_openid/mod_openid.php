@@ -13,7 +13,7 @@ jimport( 'joomla.methods' );
         </p>
         <input name="option" type="hidden" value="com_user" />
         <input name="task" type="hidden" value="login" />
-        <input name="return" type="hidden" value="L2luZGV4LnBocD9vcHRpb249Y29tX2NvbnRlbnQmdmlldz1mcm9udHBhZ2UmSXRlbWlkPTE=" />
+        <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
         <input id="mod_openid_provider" name="provider" type="hidden" value="OpenID" />
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
