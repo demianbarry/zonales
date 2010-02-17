@@ -318,16 +318,5 @@ $this->logme($db, 'en el plugin openid');
         $db->query();
     }
 
-    private function userExists($db,$response) {
-        $query = 'SELECT u.id, u.username FROM #__users u'.
-            ' WHERE u.name = ' . $db->Quote($response->fullname) .
-            ' AND birthdate=' . $db->Quote($response->birthdate);
-        $db->setQuery($query);
-        $dbuserid = $db->loadObject();
-
-        $this->logme($db, 'se realizo la busqueda del id del usuario');
-
-        return ($dbuserid) ? true : false;
-    }
 }
 

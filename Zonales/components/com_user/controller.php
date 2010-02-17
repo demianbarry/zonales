@@ -347,6 +347,9 @@ private function logme($db,$message) {
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
+                $providerid = JRequest::getInt('providerid', '0', 'method');
+                $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+
                 $db = &JFactory::getDBO();
 
 		// Get required system objects
@@ -375,13 +378,15 @@ private function logme($db,$message) {
 		}
 
 		$userClone = clone($user);
-                $useractivation = $usersConfig->get( 'useractivation' );
-                $block = ($useractivation == '1') ? '1' : '0';
+                $useractivation = (int) $usersConfig->get( 'useractivation' );
+                $this->logme($db, 'user activation es: ' . $useractivation);
+                //$block = ($useractivation == 1) ? '1' : '0';
+                $block = $useractivation;
 
                 if (!$this->userExists($db, $user)) {
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
-                    if ($password == ''){
+                    if ($password == '' && $externalid != '' && $providerid != 0){
                         $password = JUserHelper::genRandomPassword();
                         $block = '0';
                     }
@@ -429,8 +434,6 @@ private function logme($db,$message) {
 
 
                 ######### agregado por G2P ##############
-                $providerid = JRequest::getInt('providerid', '0', 'method');
-                $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
                                 ##### testing ##########
                 $this->logme($db, 'el external id es: ' . $externalid);
