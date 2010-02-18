@@ -1,3 +1,4 @@
+<?php if ($this->showAliasBlock): ?>
 <h2 class="aliastitle"><?php echo $this->titleAliasBlockAdmin ?></h2>
 <p>
     <?php echo $this->messageAliasBlockAdmin ?>
@@ -31,6 +32,11 @@
     <?php echo JHTML::_( 'form.token' ); ?>
 
 </form>
+<?php else: ?>
+<p class="noalias">
+    <?php echo $this->noAliasMessage ?>
+</p>
+<?php endif ?>
 <h2 class="aliastitle"><?php echo $this->titleNewAlias ?></h2>
     <p><?php echo $this->messageNewAlias ?></p>
     <?php echo $this->moduleproviders ?>

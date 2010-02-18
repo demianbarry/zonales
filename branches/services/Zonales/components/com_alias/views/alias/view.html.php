@@ -4,7 +4,7 @@
  * @subpackage Components
  * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_1
  * @license    GNU/GPL
-*/
+ */
 
 // no direct access
 
@@ -18,41 +18,59 @@ jimport( 'joomla.application.module.helper');
  *
  * @package    HelloWorld
  */
- 
- jimport( 'joomla.methods' );
+
+jimport( 'joomla.methods' );
 
 class AliasViewAlias extends JView {
-    
+
     function display($tpl = null) {
         $db =& JFactory::getDBO();
         $user =& JFactory::getUser();
 
-        $userid = $user->id;
-        $query = 'select a.id, p.icon_url, a.block, p.name as providername from #__alias a, #__providers p where user_id=' . $userid .
-                ' and a.provider_id=p.id';
-        $db->setQuery($query);
-        $dbaliaslist = $db->loadObjectList();
+        $showAliasBlock = true;
         
-        $titleAliasBlockAdmin = JText::_('Alias block administration');
-        $messageAliasBlockAdmin = JText::_('Here you can block or unblock your alias');
+        if ($user->guest) {
+            $showAliasBlock = false;
+        }
+        else {
+            $userid = $user->id;
+            $query = 'select a.id, p.icon_url, a.block, p.name as providername from #__alias a, #__providers p where user_id=' . $userid .
+                ' and a.provider_id=p.id';
+            $db->setQuery($query);
+            $dbaliaslist = $db->loadObjectList();
+            
+            if (count($dbaliaslist) == 0) {
+                $showAliasBlock = false;
+            }
+            else {
+                $titleAliasBlockAdmin = JText::_('ZONALES_ALIAS_TITLE_BLOCK_ADMIN');
+                $messageAliasBlockAdmin = JText::_('ZONALES_ALIAS_MESSAGE_BLOCK_ADMIN');
+                
+                $titleUnblock = JText::_('ZONALES_ALIAS_UNBLOCK');
 
-        $titleNewAlias = JText::_('New alias registration');
-        $messageNewAlias = JText::_('Add new ways to authenticate you on Zonales');
+                $titleAlias = JText::_('ZONALES_ALIAS_TITLE');
+                $this->assignRef('titleAlias',$titleAlias);
+                $this->assignRef( 'aliaslist', $dbaliaslist );
+                $this->assignRef('titleAliasBlockAdmin',$titleAliasBlockAdmin);
+                $this->assignRef('messageAliasBlockAdmin',$messageAliasBlockAdmin);
+                $this->assignRef('titleUnblock',$titleUnblock);
+            }
+        }
 
-        $titleAlias = JText::_('Alias');
-        $titleUnblock = JText::_('Unblock');
+        if (!$showAliasBlock){
+            $noAliasMessage = JText::_('ZONALES_ALIAS_NO_ALIAS');
+        }
 
+        $titleNewAlias = JText::_('ZONALES_ALIAS_NEW_TITLE');
+        $messageNewAlias = JText::_('ZONALES_ALIAS_NEW_MESSAGE');
         $moduleProviders = JModuleHelper::getModule('mod_zlogin');
         $htmlProviders = JModuleHelper::renderModule($moduleProviders);
 
-        $this->assignRef( 'aliaslist', $dbaliaslist );
-        $this->assignRef('titleAliasBlockAdmin',$titleAliasBlockAdmin);
-        $this->assignRef('messageAliasBlockAdmin',$messageAliasBlockAdmin);
         $this->assignRef('titleNewAlias',$titleNewAlias);
         $this->assignRef('messageNewAlias',$messageNewAlias);
-        $this->assignRef('titleAlias',$titleAlias);
-        $this->assignRef('titleUnblock',$titleUnblock);
         $this->assignRef('moduleproviders',$htmlProviders);
+        $this->assign('showAliasBlock',$showAliasBlock);
+        $this->assignRef('noAliasMessage',$noAliasMessage);
 
         parent::display($tpl);
     }
