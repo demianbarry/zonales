@@ -1,42 +1,109 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+jimport('joomla.application.module.helper');
+
+$db = &JFactory::getDBO();
+
+$selectProviders = 'select p.name, p.icon_url, p.module, g.name as groupname ' .
+    'from #__providers p, #__groups g ' .
+    'where p.access=g.id';
+$db->setQuery($selectProviders);
+$providerslist = $db->loadObjectList();
+
+$user =& JFactory::getUser();
+$userislogged = (!$user->guest);
+
+$elements = array();
+$elementsHTML = array();
 
 ?>
 <script type="text/javascript">
+    function setElement(id,message,provider){
+        if (id != 'mod_login'){
+            document.getElementById(id + '_message').innerHTML=message;
+            document.getElementById(id + '_provider').value=provider;
+        }
+        showElement(id);
+    }
+
     function showElement(id) {
-                document.getElementById('openid').style.display = 'none';
-                document.getElementById('zonales').style.display = 'none';
-		document.getElementById(id).style.display = 'block';
-            }
-    <!--
-    Window.onDomReady(function(){
-        document.formvalidator.setHandler('passverify', function (value) { return ($('password').value == value); }	);
-    });
-    // -->
+<?php
+foreach ($providerslist as $prov) {
+    if ($prov->module != null && !(!$user->guest && $prov->groupname == 'Guest')) {
+        if (!isset ($elements[$prov->module])) {
+            $elements[$prov->module] = 1;
+            echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+        }
+    }
+}
+?>
+        document.getElementById(id).style.display = 'block';
+    }
 </script>
 
+<table border="0" cellspacing="1">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <!-- aca empieza -->
+                <ul>
+                    <?php foreach ($providerslist as $provider): ?>
+                        <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
+                    <li>
+                        <div>
 
-<ul>
-    <?php foreach ($this->providerslist as $provider): ?>
-    <li>
-        <a href=<?php if ($provider->providername == 'Zonales' || $provider->providername == 'OpenID') {
-            echo '"#" onClick="showElement(\''. strtolower($provider->providername) .'\')"';
-        }
-        else {
-            $url = 'index.php?option=com_user&task=login&provider=' .
-                urlencode($provider->providername) . '&' . JUtility::getToken() .'=1';
-            echo '"' . $url . '"';
-        }
-           ?>>
-            <img src="<?php echo 'images'.DS.$provider->icon_url ?>"
-                 alt="<?php echo $provider->providername ?>"
-                 title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
-                 />
-        </a>
-    </li>
-    <?php endforeach ?>
-</ul>
+                            <a href=<?php if ($provider->module != null) {
+                                        echo '"#' .$provider->module. 'location" onClick="setElement(\''.$provider->module.'\',\'Ingrese su identificacion de '.$provider->name.'\',\''.$provider->name.'\')"';
+                                    }
+                                    else {
+                                        $url = 'index.php?option=com_user&task=login&provider=' .
+                                            $provider->name . '&' . JUtility::getToken() .'=1';
+                                        echo '"' . $url . '"';
+                                    }
+                                       ?>>
+                                <img src="<?php echo $provider->icon_url ?>"
+                                     alt="<?php echo $provider->name ?>"
+                                     title="Ingrese a Zonales mediante <?php echo $provider->name ?>"
+                                     />
+                            </a>
+                        </div>
+                    <li>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+
+                </ul>
+                <!-- aca termina -->
+            </td>
+            <td>
+                <ul>
+                    <?php foreach ($providerslist as $provider): ?>
+                        <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
+                    <li>
+                                <?php if ($provider->module != null && !isset ($elementsHTML[$provider->module])):
+                                    $elementsHTML[$provider->module] = 1;
+                                    ?>
+                        <a name="<?php echo $provider->name ?>"></a>
+                        <div style="display: none;" id="<?php echo $provider->module ?>">
+                                        <?php if ($provider->module != null) {
+                                            $module = JModuleHelper::getModule($provider->module);
+                                            $html = JModuleHelper::renderModule($module);
+                                            echo $html;
+                                        }
+                                        ?>
+                        </div>
+                                <?php endif ?>
+                    </li>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 
