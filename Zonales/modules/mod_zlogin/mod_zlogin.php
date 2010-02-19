@@ -15,6 +15,9 @@ $userislogged = (!$user->guest);
 $elements = array();
 $elementsHTML = array();
 
+$providerid = JRequest::getInt('providerid', '0', 'method');
+$externalid = JRequest::getVar('externalid', '', 'method', 'string');
+
 ?>
 <script type="text/javascript">
     function setElement(id,message,provider){
@@ -104,7 +107,8 @@ foreach ($providerslist as $prov) {
                                        name="connectbutton"
                                        onclick="window.location.href='<?php
                                         echo 'index.php?option=com_user&task=login&provider=' .
-                                            $provider->name . '&' . JUtility::getToken() .'=1';
+                                            $provider->name . '&' . JUtility::getToken() .'=1' .
+                                            '&providerid=' . $providerid . '&externalid=' . urlencode($externalid);
                                            ?>'" />
                             
                             </div>
