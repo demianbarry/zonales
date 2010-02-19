@@ -18,7 +18,7 @@ $elementsHTML = array();
 ?>
 <script type="text/javascript">
     function setElement(id,message,provider){
-        if (id != 'mod_login'){
+        if (id != 'mod_login' && id != 'connect'){
             document.getElementById(id + '_message').innerHTML=message;
             document.getElementById(id + '_provider').value=provider;
         }
@@ -40,52 +40,97 @@ foreach ($providerslist as $prov) {
     }
 </script>
 
-<table border="0" cellspacing="1">
+<p class="connect-message">
+    <?php echo JText::_('ZONALES_PROVIDER_CONNECT_WITH') ?>
+</p>
+<table border="0">
     <thead>
         <tr>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($providerslist as $provider): ?>
-            <?php if (!(!$user->guest && $provider->groupname == 'Guest')):
-                ?>
         <tr>
             <td>
+                <!-- aqui va el selector de proveedores -->
+                <select class="providers" id="selprovider" name="selprovider"
+                        >
+                    <?php foreach ($providerslist as $provider): ?>
+                        <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
+                    <option value="<?php echo ($provider->module == null) ? 'connect' : $provider->module ?>" onclick="setElement(document.getElementById('selprovider').value,
+                            <?php echo '\''.sprintf(JText::_('ZONALES_PROVIDER_ENTER_ID'),$provider->name).'\',\''.$provider->name.'\')"' ?>
+                            "
+                            style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
+                            class="providers-option"
+                            >
+                    <?php echo $provider->name ?>
+                    </option>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </select>
+            </td>
+            <td>
+                <!-- aqui va el modulo o el boton de conexion -->
+                <?php foreach ($providerslist as $provider): ?>
+                    <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                 <div>
-
-                    <a href=<?php if ($provider->module != null) {
-                                echo '"#' .$provider->module. 'location" onClick="setElement(\''.$provider->module.'\',\'Ingrese su identificacion de '.$provider->name.'\',\''.$provider->name.'\')"';
-                            }
-                            else {
-                                $url = 'index.php?option=com_user&task=login&provider=' .
-                                    $provider->name . '&' . JUtility::getToken() .'=1';
-                                echo '"' . $url . '"';
-                            }
-                               ?>>
-                        <img src="<?php echo $provider->icon_url ?>"
-                             alt="<?php echo $provider->name ?>"
-                             title="Ingrese a Zonales mediante <?php echo $provider->name ?>"
-                             />
-                    </a>
-                    <?php if ($provider->module != null && !isset ($elementsHTML[$provider->module])):
-                    $elementsHTML[$provider->module] = 1;
-                    ?>
-                    <a name="<?php echo $provider->name ?>"></a>
-                    <div style="display: none;" id="<?php echo $provider->module ?>">
-                                <?php if ($provider->module != null) {
-                                    $module = JModuleHelper::getModule($provider->module);
-                                    $html = JModuleHelper::renderModule($module);
-                                    echo $html;
-                                }
-                                ?>
-                    </div>
-                    <?php endif ?>
+                    <ul>
+                        <li>
+                                    <?php if ($provider->module != null):
+                                        if (!isset ($elementsHTML[$provider->module])) :
+                                            $elementsHTML[$provider->module] = 1;
+                                            ?>
+                            <a name="<?php echo $provider->name ?>"></a>
+                            <div style="display: none;" id="<?php echo $provider->module ?>">
+                                                <?php
+                                                $module = JModuleHelper::getModule($provider->module);
+                                                $html = JModuleHelper::renderModule($module);
+                                                echo $html;
+                                                ?>
+                            </div>
+                                        <?php endif ?>
+                                    <?php else: ?>
+                            <div style="display: none;" id="connect">
+                            <input class="login" type="button" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" name="connectbutton" />
+                            &nbsp;
+                            <a href="<?php
+                                        $url = 'index.php?option=com_user&task=login&provider=' .
+                                            $provider->name . '&' . JUtility::getToken() .'=1';
+                                        echo '"' . $url . '"';
+                                           ?>">
+                            </a>
+                            </div>
+                                       <?php endif ?>
+                        </li>
+                    </ul>
                 </div>
+                    <?php endif ?>
+                <?php endforeach ?>
+
             </td>
         </tr>
-            <?php endif ?>
-        <?php endforeach ?>
+        <tr>
+            <td colspan="2" align="center">
+                <ul>
+                    <li>
+                        <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
+                        <?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
+                    </li>
+                    <li>
+                        <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
+                        <?php echo JText::_('FORGOT_YOUR_USERNAME'); ?></a>
+                    </li>
+                    <?php
+                    $usersConfig = &JComponentHelper::getParams( 'com_users' );
+                    if ($usersConfig->get('allowUserRegistration')) : ?>
+                    <li>
+                        <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register' ); ?>">
+                            <?php echo JText::_('REGISTER'); ?></a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </td>
+        </tr>
     </tbody>
 </table>
-

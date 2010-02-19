@@ -386,7 +386,8 @@ private function logme($db,$message) {
                 if (!$this->userExists($db, $user)) {
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
-                    if ($password == '' && $externalid != '' && $providerid != 0){
+                   // if ($password == '' && $externalid != '' && $providerid != 0){
+                   if ($password == ''){
                         $password = JUserHelper::genRandomPassword();
                         $block = '0';
                     }
@@ -421,7 +422,6 @@ private function logme($db,$message) {
 
                     // Send registration confirmation mail
                     
-
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
                     UserController::_sendMail($user, $password);
 
@@ -695,7 +695,7 @@ private function logme($db,$message) {
 		if ( $useractivation == 1 ){
 			$message = sprintf ( JText::_( 'SEND_MSG_ACTIVATE' ), $name, $sitename, $siteURL."index.php?option=com_user&task=activate&activation=".$user->get('activation'), $siteURL, $username, $password);
 		} else {
-			$message = sprintf ( JText::_( 'SEND_MSG' ), $name, $sitename, $siteURL);
+			$message = sprintf ( JText::_( 'SEND_MSG' ), $name, $sitename, $siteURL,$username, $password);
 		}
 
 		$message = html_entity_decode($message, ENT_QUOTES);
