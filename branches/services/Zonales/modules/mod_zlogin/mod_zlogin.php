@@ -18,7 +18,8 @@ $elementsHTML = array();
 ?>
 <script type="text/javascript">
     function setElement(id,message,provider){
-        if (id != 'mod_login' && id != 'connect'){
+        connect = provider + 'connect';
+        if (id != 'mod_login' && id != connect){
             document.getElementById(id + '_message').innerHTML=message;
             document.getElementById(id + '_provider').value=provider;
         }
@@ -28,10 +29,15 @@ $elementsHTML = array();
     function showElement(id) {
 <?php
 foreach ($providerslist as $prov) {
-    if ($prov->module != null && !(!$user->guest && $prov->groupname == 'Guest')) {
-        if (!isset ($elements[$prov->module])){
-            $elements[$prov->module] = 1;
-            echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+    if (!(!$user->guest && $prov->groupname == 'Guest')) {
+        if ($prov->module != null) {
+            if (!isset ($elements[$prov->module])) {
+                $elements[$prov->module] = 1;
+                echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+            }
+        }
+        else {
+            echo 'document.getElementById(\'' . $prov->name . 'connect\').style.display = \'none\';';
         }
     }
 }
@@ -58,7 +64,7 @@ foreach ($providerslist as $prov) {
                         >
                     <?php foreach ($providerslist as $provider): ?>
                         <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                    <option value="<?php echo ($provider->module == null) ? 'connect' : $provider->module ?>" onclick="setElement(document.getElementById('selprovider').value,
+                    <option value="<?php echo ($provider->module == null) ? $provider->name.'connect' : $provider->module ?>" onclick="setElement(document.getElementById('selprovider').value,
                             <?php echo '\''.sprintf(JText::_('ZONALES_PROVIDER_ENTER_ID'),$provider->name).'\',\''.$provider->name.'\')"' ?>
                             "
                             style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
@@ -91,15 +97,16 @@ foreach ($providerslist as $prov) {
                             </div>
                                         <?php endif ?>
                                     <?php else: ?>
-                            <div style="display: none;" id="connect">
-                            <input class="login" type="button" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" name="connectbutton" />
-                            &nbsp;
-                            <a href="<?php
-                                        $url = 'index.php?option=com_user&task=login&provider=' .
+                            <div style="display: none;" id="<?php echo $provider->name ?>connect">
+                                <input class="login"
+                                       type="button"
+                                       value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
+                                       name="connectbutton"
+                                       onclick="window.location.href='<?php
+                                        echo 'index.php?option=com_user&task=login&provider=' .
                                             $provider->name . '&' . JUtility::getToken() .'=1';
-                                        echo '"' . $url . '"';
-                                           ?>">
-                            </a>
+                                           ?>'" />
+                            
                             </div>
                                        <?php endif ?>
                         </li>
