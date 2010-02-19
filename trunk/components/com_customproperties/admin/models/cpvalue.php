@@ -22,15 +22,15 @@ jimport('joomla.application.component.model');
   * @version 1.90
   * @subpackage Component
  */
-class CustompropertiesModelCpfield extends JModel {
+class CustompropertiesModelCpvalue extends JModel {
 	/**
-	* Field id
+	* Value id
 	*
 	* @var integer
 	*/
 	var $_id;
 	/**
-	 * CP Field data
+	 * CP Value data
 	 *
 	 * @var array
 	 */
@@ -40,7 +40,7 @@ class CustompropertiesModelCpfield extends JModel {
 	 *
 	 * @var array
 	 */
-	var $_values;
+	var $_childs;
 
 	/**
 	 * Constructor that retrieves the ID from the request
@@ -69,7 +69,7 @@ class CustompropertiesModelCpfield extends JModel {
 	}
 
 	/**
-	 * Retrieves the CP Field data
+	 * Retrieves the CP Value data
 	 * @return array Array of objects containing the data from the database
 	 */
 	function & getData() {
@@ -77,7 +77,7 @@ class CustompropertiesModelCpfield extends JModel {
 		if (empty ($this->_data)) {
 			$database = $this->_db;
 			/* retrieve record */
-			$query = 'SELECT * FROM #__custom_properties_fields' . ' WHERE id = ' . $this->_id . ' ORDER BY ordering ';
+			$query = 'SELECT * FROM #__custom_properties_values' . ' WHERE id = ' . $this->_id . ' ORDER BY ordering ';
 
 			$database->setQuery($query);
 			$this->_data = $database->loadObject();
@@ -85,26 +85,28 @@ class CustompropertiesModelCpfield extends JModel {
 		if (!$this->_data) {
 			$this->_data = new stdClass();
 			$this->_data->id = 0;
+                        $this->_data->field_id = null;
+                        $this->_data->parent_id = null;
 			$this->_data->name = '';
 			$this->_data->label = '';
-			$this->_data->access = 0;
-			$this->_data->published = 0;
-			$this->_data->field_type = null;
-			$this->_data->modules = '';
+			$this->_data->priority = 0;
+			$this->_data->default = 0;
+			$this->_data->ordering = 0;
+			$this->_data->multiple = 1;
 		}
 		return $this->_data;
 	}
 
 	/**
-	 * Retrieves the CP Field values array
+	 * Retrieves the CP Childs Values array
 	 * @return array Array of objects containing the Values from the database
 	 */
-	function & getValues() {
+	function & getChilds() {
 		// Load the data
-		if (empty ($this->_values)) {
+		if (empty ($this->_childs)) {
 			$database = $this->_db;
 			/* retrieve values */
-			$query = 'SELECT * FROM #__custom_properties_values' . ' WHERE field_id = ' . $this->_id . ' ORDER BY ordering ';
+			$query = 'SELECT * FROM #__custom_properties_values' . ' WHERE parent_id = ' . $this->_id . ' ORDER BY ordering ';
 
 			$database->setQuery($query);
 			$this->_values = $database->loadObjectList();
@@ -113,96 +115,101 @@ class CustompropertiesModelCpfield extends JModel {
 	}
 
 	/**
-	 * Method to change fields order my moving records up or down of 1 position
+	 * Method to change values order my moving records up or down of 1 position
 	 * @param int 1 , -1
 	 * @return void
 	 */
-	function orderField($direction) {
+	function orderValue($direction) {
 		if ($this->_id) {
-			$row = & JTable::getInstance('cpfield', 'Table');
+			$row = & JTable::getInstance('cpvalue', 'Table');
 			$row->load($this->_id);
 			$row->move($direction);
 		}
 	}
 
 	/**
-	 * Method to save fields order
+	 * Method to save values order
 	 * @return void
 	 */
-	function saveFieldsOrder() {
+	function saveValuesOrder() {
 		$cid = JRequest::getVar('cid', '', '', 'array');
 		$total = count($cid);
 		$order = JRequest::getVar('order', '', '', 'array');
-		$field = & JTable::getInstance('cpfield', 'Table');
+		$value = & JTable::getInstance('cpvalue', 'Table');
 
 		// update ordering values
 		for ($i = 0; $i < $total; $i++) {
-			$field->load((int) $cid[$i]);
-			if ($field->ordering != $order[$i]) {
-				$field->ordering = $order[$i];
-				if (!$field->store()) {
-					JError::raiseError(500, JText::_('Error saving fields order.'));
+			$value->load((int) $cid[$i]);
+			if ($value->ordering != $order[$i]) {
+				$value->ordering = $order[$i];
+				if (!$value->store()) {
+					JError::raiseError(500, JText::_('Error saving values order.'));
 				}
 			}
 		}
-		$field->reorder();
+		$value->reorder();
 	}
 
 	/**
-	 * Method to publish / unpublish one ore more fields
+	 * Method to publish / unpublish one ore more values
 	 * @return void
 	 */
-	function publishFields() {
+	function publishValues() {
 		$cid = JRequest::getVar('cid', '', '', 'array');
-		$field = & JTable::getInstance('cpfield', 'Table');
+		$value = & JTable::getInstance('cpvalue', 'Table');
 		$action = JRequest::getCmd('task') == 'publish' ? 1 : 0;
-		$result = $field->publish($cid, $action);
+		$result = $value->publish($cid, $action);
 	}
 
 	/**
-	 * Method to delete one or more fields
+	 * Method to delete one or more values
 	 * @return void
 	 */
-	function deleteFields() {
+	function deleteValues() {
 		$cid = JRequest::getVar('cid', '', '', 'array');
-		$field = & JTable::getInstance('cpfield', 'Table');
+		$value = & JTable::getInstance('cpvalue', 'Table');
 
 		foreach ($cid as $recordID) {
-			$field->load($recordID);
-			$field->delete();
+			$value->load($recordID);
+			$value->delete();
 		}
 	}
 	/**
-	 * Method for saving fields
+	 * Method for saving values
 	 *
 	 * @access public
 	 * @returns true if save is successful, an array of errors otherwise
 	 */
-	function saveField() {
+	function saveValue($parent_id = 0) {
 
 		$array = array ();
 		$array['id'] 			= $id = JRequest::getVar('cid', 0, '', 'int');
+                $array['field_id']              = "0";
+                $array['parent_id']             = $parent_id;
 		$array['name']			= $this->_fixName(JRequest::getVar('name', '', '', 'string'));
 		$array['label'] 		= $this->_fixLabel(JRequest::getVar('label', '', '', 'string'));
-		$array['field_type']	= JRequest::getVar('field_type', '', '', 'string');
-		$array['published']		= JRequest::getVar('published', '', '', 'int');
-		$array['access'] 		= JRequest::getVar('access', '', '', 'int');
+		$array['priority']              = JRequest::getVar('priority', '', '', 'int');
+		$array['default']		= JRequest::getVar('default', '', '', 'int');
 		$array['ordering'] 		= JRequest::getVar('ordering', '', '', 'int');
-		$array['modules'] 		= implode(',', JRequest::getVar('modules', '', '', 'array'));
+		$array['multiple'] 		= JRequest::getVar('multiple', '', '', 'int');
+                
+
+                print_r($array);
 
 		// init db object
-		$field = & JTable::getInstance('cpfield', 'Table');
+		$value = & JTable::getInstance('cpvalue', 'Table');
 		// set ordering for new fields
 		if ($id == 0)
-			$array['ordering'] = $field->getNextOrder();
+			$array['ordering'] = $value->getNextOrder();
 		//  bind temp array to db object
-		$field->bind($array);
+		$value->bind($array);
 		// validity check
-		if ($field->check()) {
+		if ($value->check()) {
 			// save field data
-			$field->store();
-			$this->_id = $field->id;
-			// save values
+                        echo "Paso el check";
+			$value->store();
+			$this->_id = $value->id;
+			/* save values
 			if ($id > 0) { // saving values only if not a new field
 				$save_value_result = $this->_saveValues();
 				if ($save_value_result === true) {
@@ -214,11 +221,12 @@ class CustompropertiesModelCpfield extends JModel {
 				}
 			} else {
 				return true;
-			}
+			}*/
 		} else {
-			$this->_errors = $field->getErrors();
+			$this->_errors = $value->getErrors();
 			return false;
 		}
+                return true;
 	}
 
 	/**
@@ -258,13 +266,13 @@ class CustompropertiesModelCpfield extends JModel {
 	 * @returns true if save is successful, an array of errors otherwise
 	 */
 
-	function _saveValues() {
+	/*function _saveValues() { */
 		/* parent field */
-		$cid = JRequest::getVar('cid', '', '', 'array');
-		$field_id = $cid[0];
+	/*	$cid = JRequest::getVar('cid', '', '', 'array');
+		$field_id = $cid[0]; */
 
 		/* we expect an array for every field */
-		$ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
+	/*	$ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
 		$names 		= JRequest::getVar('value_name', 	null, 	'', 'array');
 		$labels 	= JRequest::getVar('value_label', 	'', 	'', 'array');
 		$priorities	= JRequest::getVar('value_priority','', 	'', 'array');
@@ -319,7 +327,7 @@ class CustompropertiesModelCpfield extends JModel {
 		} else {
 			return true;
 		}
-	}
+	}*/
 
 	/**
 	 * Method to clean field and/or value name

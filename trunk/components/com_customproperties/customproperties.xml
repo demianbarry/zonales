@@ -89,6 +89,11 @@
 				controller="fields">
 				Manage Custom Properties
 			</menu>
+                        <menu
+				img="components/com_customproperties/images/editcp.png"
+				controller="values">
+				Manage Hierarchic Values
+			</menu>
 			<menu
 				img="components/com_customproperties/images/assign.png"
 				controller="assign">
@@ -127,6 +132,7 @@
 			<filename>controllers/assign.php</filename>
 			<filename>controllers/cpanel.php</filename>
 			<filename>controllers/fields.php</filename>
+                        <filename>controllers/values.php</filename>
 			<filename>controllers/utilities.php</filename>
 			<filename>controllers/tagging.php</filename>
 
@@ -161,6 +167,8 @@
 			<filename>models/content.php</filename>
 			<filename>models/cpfield.php</filename>
 			<filename>models/cpfields.php</filename>
+                        <filename>models/cpvalue.php</filename>
+			<filename>models/cpvalues.php</filename>
 
 			<filename>samplece/index.html</filename>
 			<filename>samplece/booklibrary.xml</filename>
@@ -192,6 +200,12 @@
 			<filename>views/cpfields/tmpl/index.html</filename>
 			<filename>views/cpfields/tmpl/default.php</filename>
 			<filename>views/cpfields/tmpl/edit.php</filename>
+
+                        <filename>views/cpvalues/index.html</filename>
+			<filename>views/cpvalues/view.html.php</filename>
+			<filename>views/cpvalues/tmpl/index.html</filename>
+			<filename>views/cpvalues/tmpl/default.php</filename>
+			<filename>views/cpvalues/tmpl/edit.php</filename>
 
 			<filename>views/tagging/index.html</filename>
 			<filename>views/tagging/view.html.php</filename>

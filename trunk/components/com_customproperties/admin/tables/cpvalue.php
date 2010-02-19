@@ -81,20 +81,24 @@ class TableCpvalue extends JTable {
             $this->setError( JText::_("WRONG ORDER") );
             return false;
         }
-        // check if parent exists
-        $parent_field = & JTable::getInstance('cpfield', 'Table');
-        if(! $parent_field->load($this->field_id) ) {
-            $this->setError( JText::_("NO PARENT") );
-            return false;
-        }
-        // check if parent value exists
-        if($this->parent_id != null) {
-            $parent_value = & JTable::getInstance('cpvalue', 'Table');
-            if(!$parent_value->load($this->parent_id)) {
-                $this->setError(JText::_("NO PARENT VALUE"));
+
+        if ($this->field_id != 0) {
+            // check if parent exists
+            $parent_field = & JTable::getInstance('cpfield', 'Table');
+            if(! $parent_field->load($this->field_id) ) {
+                $this->setError( JText::_("NO PARENT") );
                 return false;
             }
+            // check if parent value exists
+            if($this->parent_id != null) {
+                $parent_value = & JTable::getInstance('cpvalue', 'Table');
+                if(!$parent_value->load($this->parent_id)) {
+                    $this->setError(JText::_("NO PARENT VALUE"));
+                    return false;
+                }
+            }
         }
+
         if(  !$this->_isInt($this->id) && !$this->_isInt($this->priority) ) {
             $this->setError( JText::_("WRONG PRIORITY") );
             return false;
