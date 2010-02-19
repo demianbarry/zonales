@@ -11,6 +11,7 @@ jimport( 'joomla.methods' );
             <br />
             <input id="modlgn_username" class="inputbox" alt="username" name="username" size="18" type="text" />
         </p>
+        <input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
         <input name="option" type="hidden" value="com_user" />
         <input name="task" type="hidden" value="login" />
         <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
