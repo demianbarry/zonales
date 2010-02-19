@@ -2,6 +2,9 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.methods' );
 
+$providerid = JRequest::getInt('providerid', '0', 'method');
+$externalid = JRequest::getVar('externalid', '', 'method', 'string');
+
 ?>
 
 <form id="form-login" action="<?php echo JRoute::_('index.php') ?>" method="post">
@@ -16,6 +19,8 @@ jimport( 'joomla.methods' );
         <input name="task" type="hidden" value="login" />
         <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
         <input id="mod_openid_provider" name="provider" type="hidden" value="OpenID" />
+        <input type="hidden" name="providerid" value=<?php echo $providerid ?> />
+        <input type="hidden" name="externalid" value="<?php echo urlencode($externalid) ?>" />
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
 </form>

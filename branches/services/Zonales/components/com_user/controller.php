@@ -226,7 +226,7 @@ private function logme($db,$message) {
 		{
 			// Facilitate third party login forms
 			if ( ! $return ) {
-				$return	= 'index.php?option=com_user&view=login';
+				$return	= 'index.php?option=com_user&view=zlogin';
 			}
 
 			// Redirect to a login form
@@ -641,7 +641,7 @@ private function logme($db,$message) {
 		}
 
 		$message = JText::_('PASSWORD_RESET_SUCCESS');
-		$this->setRedirect('index.php?option=com_user&view=login', $message);
+		$this->setRedirect('index.php?option=com_user&view=zlogin', $message);
 	}
 
 	/**
@@ -669,7 +669,7 @@ private function logme($db,$message) {
 		}
 
 		$message = JText::sprintf('USERNAME_REMINDER_SUCCESS', $email);
-		$this->setRedirect('index.php?option=com_user&view=login', $message);
+		$this->setRedirect('index.php?option=com_user&view=zlogin', $message);
 	}
 
 	function _sendMail(&$user, $password)
