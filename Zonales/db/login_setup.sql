@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `zonales`.`jos_protocol_types`;
 CREATE TABLE  `zonales`.`jos_protocol_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(45) NOT NULL,
-  `functionname` varchar(255) NOT NULL,
+  `function` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -26,10 +26,10 @@ CREATE TABLE  `zonales`.`jos_providers` (
   `observation` varchar(45) default NULL,
   `icon_url` varchar(255) NOT NULL,
   `module` varchar(100) default NULL,
-  `function` varchar(100) NOT NULL,
   `access` int(11) NOT NULL,
   `prefix` varchar(50) NOT NULL,
   `suffix` varchar(50) NOT NULL,
+  `required_input` varchar(255),
   PRIMARY KEY  (`id`),
 unique (`name`),
   KEY `fk_jos_providers_jos_protocol_type` (`protocol_type_id`),

@@ -84,7 +84,6 @@ $this->logme($db, 'en el plugin openid');
         }
 
         $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
-
         ################################################
 
 
