@@ -18,6 +18,7 @@ $elementsHTML = array();
 // recupera los valores de externalid y providerid si estan presentes
 // esto es en caso de que se desee registrar un nuevo alias
 $providerid = JRequest::getInt('providerid', '0', 'method');
+$userid = JRequest::getInt('userid', '0', 'method');
 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
 // parsea e interpreta la entrada requerida por cada proveedor
@@ -38,12 +39,14 @@ foreach ($providerslist as $provider) {
     }
 }
 
+JHTML::script("webtoolkit.js",'',false);
 ?>
-<script type="text/javascript" src="<?php echo DS.'modules'.DS.'mod_zlogin'.DS ?>webtoolkit.js"></script>
+<!-- <script type="text/javascript" src="webtoolkit.js"></script> -->
 <script type="text/javascript">
 //    window.onload = setIni();
 //
 //    function setIni(){
+//        document.forms[0].formlogin.click();
 //        var preselect = document.getElementById('selprovider').options[0].value;
 //        document.getElementById('provider').value = preselect;
 //    }
@@ -79,7 +82,7 @@ foreach ($providerslist as $prov) {
     <?php echo JText::_('ZONALES_PROVIDER_CONNECT_WITH') ?>
 </p>
 
-<form id="form-login" action="<?php echo JRoute::_('index.php') ?>" method="post">
+<form id="formlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
 
 <table border="0">
     <thead>
@@ -95,7 +98,7 @@ foreach ($providerslist as $prov) {
                 <select class="providers" id="selprovider" name="selprovider" >
                     <?php foreach ($providerslist as $provider): ?>
                         <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                    <option value="" onclick="function func<?php echo $provider->name ?>(){var elements = new Array(); <?php
+                    <option value="" onmouseover="function func<?php echo $provider->name ?>(){var elements = new Array(); <?php
                                                                             foreach ($inputData[$provider->name] as $input) {
                                                                                 if (!(!$user->guest && $provider->groupname == 'Guest')) {
                                                                                     echo 'elements.push(\'' . $input['name'] . '\'); ';
@@ -181,7 +184,7 @@ foreach ($providerslist as $prov) {
         <input type="hidden" name="providerid" value=<?php echo $providerid ?> />
         <input type="hidden" name="externalid" value="<?php echo urlencode($externalid) ?>" />
         <input id="provider" name="provider" type="hidden" value="OpenID" />
-        <input name="userid" type="hidden" value="0" />
+        <input name="userid" type="hidden" value="<?php echo $userid ?>" />
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
 </form>

@@ -272,15 +272,21 @@ $this->logme($db, 'la url de retorno es: ' . $process_url);
                         } else { // si el alias no existe
                             $this->logme($db, 'el alias no existe :(');
 
-                            $user =& JFactory::getUser();
-                            if ($user->guest){
-                                $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $result->getDisplayIdentifier() .
-                                '&providerid=' . $dbprovider->id);
+                            if ($credentials['userid'] == 0) {
+                                $user =& JFactory::getUser();
+                                if ($user->guest) {
+                                    $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $result->getDisplayIdentifier() .
+                                        '&providerid=' . $dbprovider->id);
+                                }
+                                else {
+                                    $token = JUtility::getToken();
+                                    $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($result->getDisplayIdentifier()) .
+                                        '&providerid=' . $dbprovider->id . '&' . $token .'=1');
+                                }
                             }
                             else {
-                                $token = JUtility::getToken();
-                                $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($result->getDisplayIdentifier()) .
-                                '&providerid=' . $dbprovider->id . '&' . $token .'=1');
+                                $credentials['providerid'] = $dbprovider->id;
+                                $credentials['identifier'] = $result->getDisplayIdentifier();
                             }
 
                             

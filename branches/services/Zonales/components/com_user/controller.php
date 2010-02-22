@@ -193,11 +193,13 @@ private function logme($db,$message) {
 
                 $options['providerid'] = JRequest::getInt('providerid', '0', 'method');
                 $options['externalid'] = JRequest::getVar('externalid', '', 'method', 'string');
+                $credentials['userid'] = JRequest::getInt('userid', '0', 'method');
 
                 ##### testing ##########
                 $db = &JFactory::getDBO();
                 $this->logme($db, 'el external id es: ' . $options['externalid']);
                 $this->logme($db, 'el provider id es: ' . $options['providerid']);
+                $this->logme($db, 'el user id es: ' . $credentials['userid']);
 
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
@@ -219,7 +221,13 @@ private function logme($db,$message) {
 //                            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
 //                            $this->insertAlias('0', $user->id, $externalid, $providerid);
 //                        }
-                        $this->aliasreg($options['providerid'],$options['externalid']);
+                        if ($credentials['userid'] == 0){
+                            $this->aliasreg($options['providerid'],$options['externalid']);
+                        }
+                        else {
+                            $this->insertAlias($block, $credentials['userid'], $credentials['identifier'], $credentials['providerid']);
+                        }
+
 
 			$mainframe->redirect( $return );
 		}
@@ -297,7 +305,7 @@ private function logme($db,$message) {
             return $variations;
 
         }
-        
+
         private function getUserId($db,$user,$username = false) {
 //            $id_query = 'SELECT u.id FROM #__users u'.
 //                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
@@ -315,8 +323,8 @@ private function logme($db,$message) {
                 ' AND u.name IN (' . $end . ')';
             $db->setQuery($id_query);
             $dbuserid = $db->loadObject();
-            
-            return ($dbuserid->id) ? $dbuserid->id : null;
+
+            return ($dbuserid) ? $dbuserid->id : null;
         }
 
         private function userExists($db,$user) {
@@ -389,11 +397,19 @@ private function logme($db,$message) {
                 //$block = ($useractivation == 1) ? '1' : '0';
                 $block = $useractivation;
 
+                 $this->logme($db, 'fecha de nacimiento: ' . $user->get('birthdate'));
+                 $this->logme($db, 'nombre completo: ' . $user->get('name'));
+                 $this->logme($db, 'nombre de usuario: ' . $user->get('username'));
+                 $this->logme($db, 'email: ' . $user->get('email'));
+                 $this->logme($db, 'email2: ' . $user->get('email2'));
+                 $this->logme($db, 'sexo: ' . $user->get('sex'));
+
                 $userid = $this->getUserId($db, $user);
                 $userExists = $this->userExists($db, $user);
                 $requestNewAlias = true;
-
+$this->logme($db, 'usuario existe: ' . $userExists);
                 if (!$userExists || $force == 1) {
+                    $this->logme($db, 'no existe o force');
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
                    // if ($password == '' && $externalid != '' && $providerid != 0){
@@ -412,29 +428,30 @@ private function logme($db,$message) {
                     $user->set('password',md5($password));
 
 
-
+$this->logme($db, 'se va a chequear activacion');
 
 
                     // If user activation is turned on, we need to set the activation information
-                    
+
                     if ($useractivation == '1') {
                         jimport('joomla.user.helper');
                         $user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
                         $user->set('block', $block);
                     }
-
+$this->logme($db, 'se lo va a guardar');
                     // If there was an error with registration, set the message and display form
                     if ( !$user->save() ) {
+                        $this->logme($db, 'no se lo pudo guardar');
                         JError::raiseWarning('', JText::_( $user->getError()));
                         $this->register();
                         return false;
                     }
-
-                    $userid = $this->getUserId($db, $user,true);
+$this->logme($db, 'se lo guardo exitosamente');
+                    $userid = $this->getUserId($db, $user);
                     $userExists = true;
 
                     // Send registration confirmation mail
-                    
+
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
                     UserController::_sendMail($user, $password);
 
@@ -442,8 +459,8 @@ private function logme($db,$message) {
                 }
 
 
+$this->logme($db, 'por el alias');
 
-		
 
 
                 ######### agregado por G2P ##############
