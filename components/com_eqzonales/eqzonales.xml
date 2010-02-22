@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="component" version="1.5.0">
-    <name>Ecualizador Zonales</name>
+    <name>eqzonales</name>
     <author>Mediabit</author>
-    <creationDate>2009</creationDate>
-    <copyright>Copyright (C) 2009 Mediabit. All rights reserved.</copyright>
+    <creationDate>2010</creationDate>
+    <copyright>Copyright (C) 2010 Mediabit. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail/>
     <authorUrl/>
     <version>0.1</version>
     <description>Ecualizador Zonales</description>
-    <!--
     <install>
         <sql>
             <file driver="mysql" charset="utf8">install.mysql.sql</file>
@@ -20,7 +19,6 @@
             <file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
         </sql>
     </uninstall>
-    -->
     <files>
         <filename>eqzonales.php</filename>
         <filename>index.html</filename>
@@ -55,16 +53,21 @@
             <menu task="listCp2TipoTag">Asociar Tipos</menu>
             <menu task="listTipoTag">Tipos de Tag</menu>
         </submenu>
+        -->
         <files folder="admin">
+            <filename>uninstall.mysql.sql</filename>
+            <filename>install.mysql.sql</filename>
+
+            <!--
             <filename>admin.zonales.php</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>helper.php</filename>
             <filename>index.html</filename>
-            <filename>install.mysql.sql</filename>
+            
             <filename>toolbar.zonales.html.php</filename>
             <filename>toolbar.zonales.php</filename>
-            <filename>uninstall.mysql.sql</filename>
+            
 
             <filename>models/basemodel.php</filename>
             <filename>models/index.html</filename>
@@ -109,10 +112,10 @@
             <filename>views/editamenu/view.html.php</filename>
 
             <filename>views/baseview.php</filename>
+            -->
         </files>
         <languages folder="admin/language">
-            <language tag="es-ES">es-ES.com_zonales.ini</language>
+            <language tag="es-ES">es-ES.com_eqzonales.ini</language>
         </languages>
-        -->
     </administration>
 </install>
