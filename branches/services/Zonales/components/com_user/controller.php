@@ -191,15 +191,13 @@ private function logme($db,$message) {
 		# agregado por G2P
 		$credentials['provider'] = JRequest::getVar('provider', null, 'method', 'string');
 
-                $providerid = JRequest::getInt('providerid', '0', 'method');
-                $externalid = JRequest::getVar('externalid', '', 'method', 'string');
-                $moieid = JRequest::getVar('moi-externalid', '', 'method', 'string');
+                $options['providerid'] = JRequest::getInt('providerid', '0', 'method');
+                $options['externalid'] = JRequest::getVar('externalid', '', 'method', 'string');
 
                 ##### testing ##########
                 $db = &JFactory::getDBO();
-                $this->logme($db, 'el external id es: ' . $externalid);
-                $this->logme($db, 'el provider id es: ' . $providerid);
-                $this->logme($db, 'el moi external id es: ' . $moieid);
+                $this->logme($db, 'el external id es: ' . $options['externalid']);
+                $this->logme($db, 'el provider id es: ' . $options['providerid']);
 
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
@@ -221,7 +219,7 @@ private function logme($db,$message) {
 //                            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
 //                            $this->insertAlias('0', $user->id, $externalid, $providerid);
 //                        }
-                        $this->aliasreg($providerid,$externalid);
+                        $this->aliasreg($options['providerid'],$options['externalid']);
 
 			$mainframe->redirect( $return );
 		}
@@ -300,7 +298,7 @@ private function logme($db,$message) {
 
         }
         
-        private function getUserId($db,$user) {
+        private function getUserId($db,$user,$username = false) {
 //            $id_query = 'SELECT u.id FROM #__users u'.
 //                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
 //                ' AND u.birthdate="' . $user->get('birthdate') . '"';
@@ -309,8 +307,11 @@ private function logme($db,$message) {
             $end = implode('","', $variations);
             $end = '"' . $end . '"';
 
+            $useUsername = ($username) ? ' AND u.username ="' . $user->get('username') . '"' : '';
+
             $id_query = 'SELECT u.id FROM #__users u'.
                 ' WHERE u.birthdate="' . $user->get('birthdate') . '"' .
+                $useUsername .
                 ' AND u.name IN (' . $end . ')';
             $db->setQuery($id_query);
             $dbuserid = $db->loadObject();
@@ -353,6 +354,7 @@ private function logme($db,$message) {
 
                 $providerid = JRequest::getInt('providerid', '0', 'method');
                 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+                $force = JRequest::getInt('force', '0', 'method');
 
                 $db = &JFactory::getDBO();
 
@@ -387,7 +389,10 @@ private function logme($db,$message) {
                 //$block = ($useractivation == 1) ? '1' : '0';
                 $block = $useractivation;
 
-                if (!$this->userExists($db, $user)) {
+                $userid = $this->getUserId($db, $user);
+                $userExists = $this->userExists($db, $user);
+
+                if (!$userExists || $force == 1) {
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
                    // if ($password == '' && $externalid != '' && $providerid != 0){
@@ -424,6 +429,9 @@ private function logme($db,$message) {
                         return false;
                     }
 
+                    $userid = $this->getUserId($db, $user,true);
+                    $userExists = true;
+
                     // Send registration confirmation mail
                     
                     $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
@@ -443,16 +451,16 @@ private function logme($db,$message) {
                 $this->logme($db, 'el external id es: ' . $externalid);
                 $this->logme($db, 'el provider id es: ' . $providerid);
 
-                if ($externalid != '' && $providerid != 0) {
+                if ($userExists && $externalid != '' && $providerid != 0) {
                 // hay que agregar un alias
 
                 $this->logme($db, 'vamos a gregar un alias');
 
-                    $userid = $this->getUserId($db, $userClone);
+                   // $userid = $this->getUserId($db, $user);
 
                     $externalid = urldecode($externalid);
 
-                    $this->insertAlias($block, $userid, $externalid,$userClone->get('providerid'));
+                    $this->insertAlias($block, $userid, $externalid,$user->get('providerid'));
 
                     $this->logme($db, 'alias agregado');
 

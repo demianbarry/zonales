@@ -44,7 +44,8 @@ foreach ($providerslist as $provider) {
 //    window.onload = setIni();
 //
 //    function setIni(){
-//        document.getElementsByTagName('select').options[0].click;
+//        var preselect = document.getElementById('selprovider').options[0].value;
+//        document.getElementById('provider').value = preselect;
 //    }
 
     function setElement(elements,provider,type) {
@@ -176,7 +177,7 @@ foreach ($providerslist as $prov) {
     <fieldset class="input">
         <input name="option" type="hidden" value="com_user" />
         <input name="task" type="hidden" value="login" />
-        <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
+        <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" /> 
         <input type="hidden" name="providerid" value=<?php echo $providerid ?> />
         <input type="hidden" name="externalid" value="<?php echo urlencode($externalid) ?>" />
         <input id="provider" name="provider" type="hidden" value="OpenID" />

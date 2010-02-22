@@ -166,5 +166,6 @@ if(isset($this->message)) {
     <input type="hidden" name="gid" value="0" />
     <input type="hidden" name="providerid" value="<?php echo $this->providerid; ?>" />
     <input type="hidden" name="externalid" value="<?php echo $this->externalid; ?>" />
+    <input type="hidden" name="force" value="<?php echo $this->force; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
