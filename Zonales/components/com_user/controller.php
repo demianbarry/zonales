@@ -391,6 +391,7 @@ private function logme($db,$message) {
 
                 $userid = $this->getUserId($db, $user);
                 $userExists = $this->userExists($db, $user);
+                $requestNewAlias = true;
 
                 if (!$userExists || $force == 1) {
                     $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
@@ -464,6 +465,8 @@ private function logme($db,$message) {
 
                     $this->logme($db, 'alias agregado');
 
+                    $requestNewAlias = false;
+
                     // Send registration confirmation mail
                     $selectpass = 'select u.password from #__users u where id=' . $userid;
                     $db->setQuery($selectpass);
@@ -474,13 +477,7 @@ private function logme($db,$message) {
                     //UserController::_sendMail($userClone, $password);
                 }
 
-
-
-
-
-
-
-
+                $return = 'index.php' . ($requestNewAlias) ? '?option=com_alias&view=alias&userid=' . $userid .'&'. JUtility::getToken() . '=1' : '';
                 ############## fin #####################
 
 
@@ -494,7 +491,7 @@ private function logme($db,$message) {
 			$message = JText::_( 'REG_COMPLETE' );
 		}
 
-		$this->setRedirect('index.php', $message);
+		$this->setRedirect($return, $message);
 	}
 
 	function activate()

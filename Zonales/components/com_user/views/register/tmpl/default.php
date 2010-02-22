@@ -114,8 +114,16 @@ if(isset($this->message)) {
             <td>
                 <div style="display: <?php echo $style ?>;">
                     <!-- CREA UNA LISTA DE PROVEEDORES CON LOS CUALES ES POSIBLE ACCEDER -->
-                    <?php foreach ($this->providerslist as $provider): ?>
-                    <a href=<?php if ($provider->protocolname == 'Tradicional'){
+                    <?php foreach ($this->providerslist as $provider):
+                    if ($provider->protocolname == 'Tradicional'): ?>
+                    <a href="#passlocation" onClick="showPass()"/>
+                    <img src="<?php echo $provider->icon_url ?>"
+                         alt="<?php echo $provider->providername ?>"
+                         title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
+                    />
+                    <?php endif ?>
+
+<!--                    <a href=<?php if ($provider->protocolname == 'Tradicional'){
                         echo '"#passlocation" onClick="showPass()"';
                     }
                     else {
@@ -129,6 +137,7 @@ if(isset($this->message)) {
                          title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
                          />
                     </a>
+-->
                     <?php endforeach ?>
                 </div>
             </td>
