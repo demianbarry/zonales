@@ -72,7 +72,7 @@ class CustompropertiesModelCpvalue extends JModel {
 	 * Retrieves the CP Value data
 	 * @return array Array of objects containing the data from the database
 	 */
-	function & getData() {
+	function & getData($id = null) {
 		// Load the data
 		if (empty ($this->_data)) {
 			$database = $this->_db;
@@ -205,11 +205,10 @@ class CustompropertiesModelCpvalue extends JModel {
 		$value->bind($array);
 		// validity check
 		if ($value->check()) {
-			// save field data
-                        echo "Paso el check";
+			// save value data
 			$value->store();
 			$this->_id = $value->id;
-			/* save values
+			//save childs values
 			if ($id > 0) { // saving values only if not a new field
 				$save_value_result = $this->_saveValues();
 				if ($save_value_result === true) {
@@ -221,7 +220,7 @@ class CustompropertiesModelCpvalue extends JModel {
 				}
 			} else {
 				return true;
-			}*/
+			}
 		} else {
 			$this->_errors = $value->getErrors();
 			return false;
@@ -234,7 +233,8 @@ class CustompropertiesModelCpvalue extends JModel {
 	 * @param int 1 , -1
 	 * @return void
 	 */
-	function orderValue($direction) {
+        
+	function orderChildValue($direction) {
 		$cid = JRequest::getVar('cid', '', '', 'array');
 		$val_id = JRequest::getVar('val_id', '', '', 'array');
 		$field_id = $cid[0];
@@ -266,13 +266,13 @@ class CustompropertiesModelCpvalue extends JModel {
 	 * @returns true if save is successful, an array of errors otherwise
 	 */
 
-	/*function _saveValues() { */
+	function _saveValues() {
 		/* parent field */
-	/*	$cid = JRequest::getVar('cid', '', '', 'array');
-		$field_id = $cid[0]; */
+		$cid = JRequest::getVar('cid', '', '', 'array');
+		$value_id = $cid[0];
 
 		/* we expect an array for every field */
-	/*	$ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
+		$ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
 		$names 		= JRequest::getVar('value_name', 	null, 	'', 'array');
 		$labels 	= JRequest::getVar('value_label', 	'', 	'', 'array');
 		$priorities	= JRequest::getVar('value_priority','', 	'', 'array');
@@ -287,7 +287,8 @@ class CustompropertiesModelCpvalue extends JModel {
 		if (!empty ($ids)) {
 			foreach ($ids as $key => $value) {
 				$array['id'] 		= $ids[$key];
-				$array['field_id'] 	= $field_id;
+                                $array['parent_id']     = $value_id;
+				$array['field_id'] 	= "0";
 				$array['name'] 		= $this->_fixName($names[$key]);
 				$array['label'] 	= $this->_fixLabel($labels[$key]);
 				$array['priority'] 	= $priorities[$key];
@@ -319,7 +320,7 @@ class CustompropertiesModelCpvalue extends JModel {
 				}
 
 			}
-			$value->reorder(" field_id = '$field_id' ");
+			$value->reorder("id = '$value_id' ");
 		}
 
 		if (count($errors)) {
@@ -327,7 +328,7 @@ class CustompropertiesModelCpvalue extends JModel {
 		} else {
 			return true;
 		}
-	}*/
+	}
 
 	/**
 	 * Method to clean field and/or value name

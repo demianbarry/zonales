@@ -22,6 +22,9 @@ JToolBarHelper::title( JText::_( 'Hierarchic Values Manager' ), 'field-add.png' 
 JToolBarHelper::deleteList(JText::_( 'WARNINGDELPROPERTIES'));
 JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
+if (isset ($this->back)) {
+    JToolBarHelper::back(JText::_('BACK'), JRoute::_('index.php?option=' . $option . '&controller=values&cid=' . $this->back));
+}
 
 ?>
 
@@ -55,7 +58,7 @@ JToolBarHelper::addNewX();
 		for ($i=0, $n=count( $this->items ); $i < $n; $i++)
 		{
 			$row =& $this->items[$i];
-			$link 	= 'index.php?option=com_customproperties&controller=values&cid='. $row->id;
+			$link 	= 'index.php?option=com_customproperties&controller=values&cid[]='. $row->id;
 
 			$checked 	= JHTML::_('grid.id',	$i, $row->id );
 			/*$img = $row->published == 1 ? 'publish_g.png' : 'publish_x.png';
@@ -127,6 +130,6 @@ JToolBarHelper::addNewX();
 <input type="hidden" name="controller" value="values" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="pid" value="<?php echo $this->items[0]->parent_id;?>" />
+<input type="hidden" name="pid" value="<?php echo $this->cid[0];?>" />
 
 </form>

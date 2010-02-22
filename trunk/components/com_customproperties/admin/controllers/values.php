@@ -24,7 +24,7 @@ jimport('joomla.application.component.controller');
  */
 class CustompropertiesControllerValues extends JController {
 
-    /**
+    /**7
      * constructor (registers additional tasks to methods)
      * @return void
      */
@@ -35,7 +35,7 @@ class CustompropertiesControllerValues extends JController {
         $this->registerTask( 'add'      , 'edit' );
         $this->registerTask( 'apply'    , 'save' );
         //$this->registerTask( 'unpublish', 'publish' );
-        //$this->registerTask( 'remove'   , 'delete' );
+        $this->registerTask( 'remove'   , 'delete' );
         $this->registerTask( 'ordvalup' , 'orderValueUp' );
         $this->registerTask( 'ordvaldn' , 'orderValueDown' );
 
@@ -59,6 +59,7 @@ class CustompropertiesControllerValues extends JController {
                 JRequest::setVar( 'hidemainmenu', 1);
                 break;
             default:
+                $view->setModel($this->getModel('cpvalue', 'CustompropertiesModel'));
         }
 
         $view->display();
@@ -95,7 +96,17 @@ class CustompropertiesControllerValues extends JController {
     }
     function save() {
         $model = & $this->getModel('Cpvalue');
-        if($model->saveValue($pid = JRequest::getVar('pid', 0, '', 'int')) === true ) {
+
+        $pid = JRequest::getVar('pid', 0, '', 'int');
+        $cid = JRequest::getVar('cid', 0, '', 'int');
+        if ($cid != 0) {
+            $newpid = JRequest::getVar('newpid', 0, '', 'int');
+            if ($pid != $newpid) {
+                $pid = $newpid;
+            }
+        }
+        
+        if($model->saveValue($pid) === true ) {
             $msg = JText::_('Value saved');
             $msg_type = "message";
             if($this->getTask() == 'save') {
@@ -120,24 +131,24 @@ class CustompropertiesControllerValues extends JController {
         $this->setRedirect($link);
     }
 
-    /*function orderValueUp() {
-        $model = & $this->getModel('Cpfield');
-        $model->orderValue(-1);
-        $link = 'index.php?option=com_customproperties&controller=fields&task=edit&cid='.$model->_id;
+    function orderValueUp() {
+        $model = & $this->getModel('Cpvalue');
+        $model->orderChildValue(-1);
+        $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id;
         $this->setRedirect($link);
     }
     function orderValueDown() {
-        $model = & $this->getModel('Cpfield');
-        $model->orderValue(1);
-        $link = 'index.php?option=com_customproperties&controller=fields&task=edit&cid='.$model->_id;
+        $model = & $this->getModel('Cpvalue');
+        $model->orderChildValue(1);
+        $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id;
         $this->setRedirect($link);
     }
 
     function deleteValue() {
-        $model = & $this->getModel('Cpfield');
+        $model = & $this->getModel('Cpvalue');
         $model->deleteValue();
-        $link = 'index.php?option=com_customproperties&controller=fields&task=edit&cid='.$model->_id;
+        $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id;
         $this->setRedirect($link);
-    }*/
+    }
 
 }
