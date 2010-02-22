@@ -122,6 +122,7 @@ class TableCpvalue extends JTable {
             return false;
         }
 
+        $dbo =& JFactory::getDBO();
         // set the value's parent as the childs one
         $query = 'UPDATE '. $dbo->nameQuote('#__custom_properties_values') . ' v'
                 .' SET '. $dbo->nameQuote('v.parent_id') .' = '. $this->parent_id

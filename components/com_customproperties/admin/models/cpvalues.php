@@ -107,6 +107,15 @@ class CustompropertiesModelCpvalues extends JModel
     return $this->_list;
   }
 
+  function getAll($cid)
+  {
+      $database =& $this->getDBO();
+      $query = "SELECT * FROM #__custom_properties_values WHERE id != $cid ORDER BY ordering ";
+      $database->setQuery($query);
+      $this->_list = $database->loadObjectList();
+      return $this->_list;
+  }
+
   function getPagination()
   {
     if (is_null($this->_list) || is_null($this->_page)) {
