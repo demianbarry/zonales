@@ -16,7 +16,7 @@ $db->setQuery($countPending);
 $dbcount = $db->loadObject();
 
 if ($dbcount->total != 0){
-	echo '<a class=pending-notice href="index.php?option=com_alias&view=alias">Posee alias pendientes de aprobacion</a>';
+	echo '<a class=pending-notice href="index.php?option=com_alias&view=alias">' . jtEXT::_('ZONALES_ALIAS_HAS_BLOCK') . '</a>';
 }
 
 ?>

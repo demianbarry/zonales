@@ -73,15 +73,9 @@ $this->logme($db, 'en el plugin openid');
         $db->setQuery($selectProvider);
         $dbprovider = $db->loadObject();
 
-        $this->logme($db, 'la url de discovery es: ###' . $dbprovider->discovery_url . '###');
-        $this->logme($db, 'el prefijo es: ###' . $dbprovider->prefix . '###');
-        $this->logme($db, 'el sufijo es: ###' . $dbprovider->suffix . '###');
-        $this->logme($db, 'el username es: ###' . $credentials['username'] . '###');
         $beginning = substr($credentials['username'], 0, strlen($dbprovider->prefix));
         $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($dbprovider->suffix));
         
-        $this->logme($db, 'el inicio es: ###' . $beginning . '###');
-        $this->logme($db, 'el fin es: ###' . $ending . '###');
         if ($beginning != $dbprovider->prefix){
             $credentials['username'] = $dbprovider->prefix . $credentials['username'];
         }
@@ -89,7 +83,6 @@ $this->logme($db, 'en el plugin openid');
             $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
         }
 
-        $this->logme($db, 'el username es: ###' . $credentials['username'] . '###');
         $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
 
         ################################################
@@ -133,14 +126,15 @@ $this->logme($db, 'en el plugin openid');
         $consumer = new Auth_OpenID_Consumer($store);
 
         if (!isset ($_SESSION['_openid_consumer_last_token'])) {
-
+$this->logme($db,'se va a iniciar el proceso');
         // Begin the OpenID authentication process.
             if (!$auth_request = $consumer->begin($discovery_url)) {
+                $this->logme($db,'no se pudo iniciar el proceso');
                 $response->type = JAUTHENTICATE_STATUS_FAILURE;
                 $response->error_message = 'Authentication error : could not connect to the openid server';
                 return false;
             }
-
+$this->logme($db,'continuamos');
             # armamos la peticion la informacion asociada al usuario
 //            $sreg_request = Auth_OpenID_SRegRequest::build(
 //                array ('email'),
@@ -179,9 +173,9 @@ $this->logme($db, 'en el plugin openid');
             $options[JUtility::getToken()] = 1;
 
             $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
-            $process_url  = (isset ($credentials['username'])) ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
+            $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
             $process_url .= '&'.JURI::buildQuery($options);
-
+$this->logme($db, 'la url de retorno es: ' . $process_url);
             $session->set('return_url', $process_url );
 
             $trust_url = $entry_url->toString(array (
@@ -191,6 +185,7 @@ $this->logme($db, 'en el plugin openid');
                 'scheme'
             ));
             $session->set('trust_url', $trust_url);
+            $this->logme($db,'tomando decisiones');
             // For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
             // form to send a POST request to the server.
             if ($auth_request->shouldSendRedirect()) {
@@ -223,7 +218,9 @@ $this->logme($db, 'en el plugin openid');
                 }
             }
         }
+        $this->logme($db,'voy a finalizar el proceso');
         $result = $consumer->complete($session->get('return_url'));
+        $this->logme($db,'se va a iniciar la interpretacion de los resultados');
         switch ($result->status) {
             case Auth_OpenID_SUCCESS : {
                             $usermode = $this->params->get('usermode', 2);

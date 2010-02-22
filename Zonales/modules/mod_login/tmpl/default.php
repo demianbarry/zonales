@@ -31,7 +31,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		$document->addScriptDeclaration( $langScript );
 		JHTML::_('script', 'openid.js');
 endif; ?>
-<form action="<?php echo JRoute::_( 'index.php', true, $params->get('usesecure')); ?>" method="post" name="login" id="form-login" >
 	<?php echo $params->get('pretext'); ?>
 	<fieldset class="input">
 	<p id="form-login-username">
@@ -48,15 +47,8 @@ endif; ?>
 		<input id="modlgn_remember" type="checkbox" name="remember" class="inputbox" value="yes" alt="Remember Me" />
 	</p>
 	<?php endif; ?>
-	<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
 	</fieldset>
 	<?php echo $params->get('posttext'); ?>
 
-	<input type="hidden" name="option" value="com_user" />
-	<input type="hidden" name="task" value="login" />
-	<input type="hidden" name="return" value="<?php echo $return; ?>" />
-        <input type="hidden" name="providerid" value=<?php echo JRequest::getInt('providerid', '0', 'method') ?> />
-        <input type="hidden" name="externalid" value="<?php echo urlencode(JRequest::getVar('externalid', '', 'method', 'string')) ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
+
 <?php endif; ?>

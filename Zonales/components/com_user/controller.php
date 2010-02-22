@@ -186,24 +186,27 @@ private function logme($db,$message) {
 
 		$credentials = array();
 		$credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
-		$credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
+		$credentials['password'] = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
 		# agregado por G2P
 		$credentials['provider'] = JRequest::getVar('provider', null, 'method', 'string');
 
                 $providerid = JRequest::getInt('providerid', '0', 'method');
                 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+                $moieid = JRequest::getVar('moi-externalid', '', 'method', 'string');
 
                 ##### testing ##########
                 $db = &JFactory::getDBO();
                 $this->logme($db, 'el external id es: ' . $externalid);
                 $this->logme($db, 'el provider id es: ' . $providerid);
+                $this->logme($db, 'el moi external id es: ' . $moieid);
 
 		//preform the login action
 		$error = $mainframe->login($credentials, $options);
 
 		if(!JError::isError($error))
 		{
+                    $this->logme($db, 'no hubo error');
 			// Redirect if the return url is not registration or login
 			if ( ! $return ) {
 				$return	= 'index.php?option=com_user';
@@ -224,6 +227,7 @@ private function logme($db,$message) {
 		}
 		else
 		{
+                    $this->logme($db, 'SI hubo error');
 			// Facilitate third party login forms
 			if ( ! $return ) {
 				$return	= 'index.php?option=com_user&view=zlogin';
