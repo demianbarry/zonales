@@ -1,11 +1,11 @@
 <?php
-jimport('joomla.application.module.helper');
 
 $db = &JFactory::getDBO();
 
-$selectProviders = 'select p.name, p.icon_url, p.module, g.name as groupname ' .
-                    'from #__providers p, #__groups g ' .
-                    'where p.access=g.id';
+// realiza la consulta a la base de datos
+$selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input, t.name as type ' .
+                    'from #__providers p, #__groups g, #__protocol_types t ' .
+                    'where p.access=g.id and t.id=p.protocol_type_id';
 $db->setQuery($selectProviders);
 $providerslist = $db->loadObjectList();
 
@@ -15,43 +15,72 @@ $userislogged = (!$user->guest);
 $elements = array();
 $elementsHTML = array();
 
+// recupera los valores de externalid y providerid si estan presentes
+// esto es en caso de que se desee registrar un nuevo alias
 $providerid = JRequest::getInt('providerid', '0', 'method');
 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
-?>
-<script type="text/javascript">
-    function setElement(id,message,provider){
-        connect = provider + 'connect';
-        if (id != 'mod_login' && id != connect){
-            document.getElementById(id + '_message').innerHTML=message;
-            document.getElementById(id + '_provider').value=provider;
-        }
-        showElement(id);
+// parsea e interpreta la entrada requerida por cada proveedor
+// se lograra crear los elementos html necesarios de entrada
+// (algo asi como armar la pantalla al vuelo ;)
+    $inputData = array();
+foreach ($providerslist as $provider) {
+    $req_inputs = explode(';', $provider->required_input);
+    $inputData[$provider->name] = array();
+    foreach ($req_inputs as $input) {
+        $data = explode(':', $input);
+        $inputData[$provider->name][] =
+            array (
+            'type' => $data[0],
+            'name' => $data[1],
+            'message' => $data[2]
+            );
     }
+}
 
-    function showElement(id) {
+?>
+<script type="text/javascript" src="<?php echo DS.'modules'.DS.'mod_zlogin'.DS ?>webtoolkit.js"></script>
+<script type="text/javascript">
+//    window.onload = setIni();
+//
+//    function setIni(){
+//        var preselect = document.getElementById('selprovider').options[0].value;
+//        document.getElementById('provider').value = preselect;
+//    }
+
+    function setElement(elements,provider,type) {
+        var fixbutton = document.getElementById('fixbutton').value;
+        document.getElementById('provider').value=provider;
+        document.getElementById('submit').value=sprintf(fixbutton,provider);
 <?php
 foreach ($providerslist as $prov) {
-    if (!(!$user->guest && $prov->groupname == 'Guest')) {
-        if ($prov->module != null) {
-            if (!isset ($elements[$prov->module])) {
-                $elements[$prov->module] = 1;
-                echo 'document.getElementById(\'' . $prov->module . '\').style.display = \'none\';';
+    foreach ($inputData[$prov->name] as $input) {
+        if (!(!$user->guest && $prov->groupname == 'Guest')) {
+            if (!isset ($elements[$input['name']])) {
+                $elements[$input['name']] = 1;
+                echo 'document.getElementById(\'' . $input['name'] . 'set\').style.display = \'none\';';
             }
-        }
-        else {
-            echo 'document.getElementById(\'' . $prov->name . 'connect\').style.display = \'none\';';
         }
     }
 }
+
 ?>
-        document.getElementById(id).style.display = 'block';
+        for(i=0 ; i < elements.length ; i++){
+                if (elements[i] != ''){
+                    var fixpart = document.getElementById(elements[i] + '-' + type + 'fixmessage').value;
+                    document.getElementById(elements[i] + 'set').style.display = 'block';
+                    document.getElementById(elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                }
+        }
     }
 </script>
 
 <p class="connect-message">
     <?php echo JText::_('ZONALES_PROVIDER_CONNECT_WITH') ?>
 </p>
+
+<form id="form-login" action="<?php echo JRoute::_('index.php') ?>" method="post">
+
 <table border="0">
     <thead>
         <tr>
@@ -63,17 +92,21 @@ foreach ($providerslist as $prov) {
         <tr>
             <td>
                 <!-- aqui va el selector de proveedores -->
-                <select class="providers" id="selprovider" name="selprovider"
-                        >
+                <select class="providers" id="selprovider" name="selprovider" >
                     <?php foreach ($providerslist as $provider): ?>
                         <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                    <option value="<?php echo ($provider->module == null) ? $provider->name.'connect' : $provider->module ?>" onclick="setElement(document.getElementById('selprovider').value,
-                            <?php echo '\''.sprintf(JText::_('ZONALES_PROVIDER_ENTER_ID'),$provider->name).'\',\''.$provider->name.'\')"' ?>
-                            "
+                    <option value="" onclick="function func<?php echo $provider->name ?>(){var elements = new Array(); <?php
+                                                                            foreach ($inputData[$provider->name] as $input) {
+                                                                                if (!(!$user->guest && $provider->groupname == 'Guest')) {
+                                                                                    echo 'elements.push(\'' . $input['name'] . '\'); ';
+                                                                                }
+                                                                            }
+
+                    ?> setElement(elements,'<?php echo $provider->name ?>','<?php echo $provider->type ?>');} func<?php echo $provider->name ?>()"
                             style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
                             class="providers-option"
                             >
-                    <?php echo $provider->name ?>
+                                                                                        <?php echo $provider->name ?>
                     </option>
                         <?php endif ?>
                     <?php endforeach ?>
@@ -86,39 +119,32 @@ foreach ($providerslist as $prov) {
                 <div>
                     <ul>
                         <li>
-                                    <?php if ($provider->module != null):
-                                        if (!isset ($elementsHTML[$provider->module])) :
-                                            $elementsHTML[$provider->module] = 1;
-                                            ?>
-                            <a name="<?php echo $provider->name ?>"></a>
-                            <div style="display: none;" id="<?php echo $provider->module ?>">
+                                    <?php    foreach ($inputData[$provider->name] as $inputElement):
+                                    $name = $inputElement['name'];
+                                                $type = $inputElement['type'];
+                                                $message = $inputElement['message'];
+                                                echo '<input type="hidden" id="'.$name . '-' . $provider->type.'fixmessage" value="'. JText::_($message) .'" />';
+                                    if (!isset ($elementsHTML[$inputElement['name']])) : ?>
+                            <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
                                                 <?php
-                                                $module = JModuleHelper::getModule($provider->module);
-                                                $html = JModuleHelper::renderModule($module);
-                                                echo $html;
+
+                                                    $elementsHTML[$name] = 1;
+
+                                                    echo '<label id="'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                    echo '<br>';
+                                                    echo '<input type="'. $type .'" name="'. $name . '" id="'. $name .'" />';
+                                                    echo '<br>';
+
                                                 ?>
                             </div>
                                         <?php endif ?>
-                                    <?php else: ?>
-                            <div style="display: none;" id="<?php echo $provider->name ?>connect">
-                                <input class="login"
-                                       type="button"
-                                       value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
-                                       name="connectbutton"
-                                       onclick="window.location.href='<?php
-                                        echo 'index.php?option=com_user&task=login&provider=' .
-                                            $provider->name . '&' . JUtility::getToken() .'=1' .
-                                            '&providerid=' . $providerid . '&externalid=' . urlencode($externalid);
-                                           ?>'" />
-                            
-                            </div>
-                                       <?php endif ?>
+                                       <?php endforeach ?>
                         </li>
                     </ul>
                 </div>
                     <?php endif ?>
                 <?php endforeach ?>
-
+<input id="submit" type="submit" name="Submit" class="button" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" />
             </td>
         </tr>
         <tr>
@@ -145,3 +171,17 @@ foreach ($providerslist as $prov) {
         </tr>
     </tbody>
 </table>
+
+    <input type="hidden" id="fixbutton" name="fixbutton" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" />
+
+    <fieldset class="input">
+        <input name="option" type="hidden" value="com_user" />
+        <input name="task" type="hidden" value="login" />
+        <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
+        <input type="hidden" name="providerid" value=<?php echo $providerid ?> />
+        <input type="hidden" name="externalid" value="<?php echo urlencode($externalid) ?>" />
+        <input id="provider" name="provider" type="hidden" value="OpenID" />
+        <input name="userid" type="hidden" value="0" />
+        <?php echo JHTML::_( 'form.token' ); ?>
+    </fieldset>
+</form>
