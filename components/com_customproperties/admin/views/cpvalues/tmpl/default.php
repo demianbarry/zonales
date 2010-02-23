@@ -59,6 +59,7 @@ if (isset ($this->back)) {
 		{
 			$row =& $this->items[$i];
 			$link 	= 'index.php?option=com_customproperties&controller=values&cid[]='. $row->id;
+                        $linkEditar = 'index.php?option=com_customproperties&controller=values&task=edit&cid[]='. $row->id.'&pid='. $this->cid[0];
 
 			$checked 	= JHTML::_('grid.id',	$i, $row->id );
 			/*$img = $row->published == 1 ? 'publish_g.png' : 'publish_x.png';
@@ -90,6 +91,11 @@ if (isset ($this->back)) {
 						<a href="<?php echo JRoute::_( $link ); ?>">
 							<?php echo htmlspecialchars($row->name, ENT_QUOTES); ?>
 						</a>
+                                            &nbsp;(
+                                                <a href="<?php echo JRoute::_( $linkEditar ); ?>">
+							Editar
+						</a>
+                                                )
 					</td>
 					<td>
 							<?php echo $row->label ?>

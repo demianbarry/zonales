@@ -110,7 +110,7 @@ class CustompropertiesModelCpvalues extends JModel
   function getAll($cid)
   {
       $database =& $this->getDBO();
-      $query = "SELECT * FROM #__custom_properties_values WHERE id != $cid ORDER BY ordering ";
+      $query = "SELECT * FROM #__custom_properties_values WHERE id != $cid ORDER BY label ";
       $database->setQuery($query);
       $this->_list = $database->loadObjectList();
       return $this->_list;
