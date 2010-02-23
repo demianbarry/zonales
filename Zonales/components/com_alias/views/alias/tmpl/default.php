@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    window.onload = function (){
+        document.getElementById('zlogin').style.display = 'block';
+    }
+</script>
+
 <?php if ($this->showAliasBlock): ?>
 <h2 class="aliastitle"><?php echo $this->titleAliasBlockAdmin ?></h2>
 <p>
@@ -7,6 +13,7 @@
     <table border="0" cellspacing="4">
         <thead>
             <tr>
+                <th></th>
                 <th><?php echo $this->titleAlias ?></th>
                 <th><?php echo $this->titleUnblock ?></th>
             </tr>
@@ -18,6 +25,11 @@
                     <img src="<?php echo $dbalias->icon_url?>" alt="<?php echo $dbalias->providername ?>"/>
                 </td>
                 <td>
+                    <label class="providername">
+                        <?php echo $dbalias->providername ?>
+                    </label>
+                </td>
+                <td>
                     <input type="checkbox" name="<?php echo 'alias'.$dbalias->id ?>"
                            <?php echo (!$dbalias->block) ? 'checked="checked"' : '' ?> />
                 </td>
@@ -26,7 +38,7 @@
         </tbody>
     </table>
 
-    <input type="submit" value="<?php echo JText::_('Accept'); ?>" name="submit" />
+    <input type="submit" value="<?php echo JText::_('ZONALES_ALIAS_ACCEPT'); ?>" name="submit" />
     <input type="hidden" name="option" value="com_alias" />
     <input type="hidden" name="task" value="unblock" />
     <?php echo JHTML::_( 'form.token' ); ?>

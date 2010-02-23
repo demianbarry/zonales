@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS zonales;
 USE zonales;
 
 ALTER TABLE `zonales`.`jos_users`
-	ADD COLUMN `email2` VARCHAR(100)  NOT NULL AFTER `email`,
+	ADD COLUMN `email2` VARCHAR(100) AFTER `email`,
 	ADD COLUMN `birthdate` date  NOT NULL AFTER `params`,
 	ADD COLUMN `sex` char(1)  NOT NULL AFTER `birthdate`;
 
