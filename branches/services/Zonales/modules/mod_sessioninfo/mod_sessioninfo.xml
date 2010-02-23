@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+     <name>Zonales Session Info</name>
+     <author>Cristian Pacheco</author>
+     <creationDate>February 2010</creationDate>
+     <copyright>(C) 2010 Cristian Pacheco. All rights reserved.</copyright>
+     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+     <authorEmail>cpacheco@lavabit.com</authorEmail>
+     <version>1.0.0</version>
+     <description>
+         Informa al usuario actual que se encuentra autenticado en el sistema
+         y le permite cerrar la sesión
+     </description>
+     <files>
+          <filename module="mod_sessioninfo"
+               >mod_sessioninfo.php</filename>
+     </files>
+</install>

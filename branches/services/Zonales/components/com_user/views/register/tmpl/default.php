@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 $elements = array();
 $elementsHTML = array();
 
-JHTML::script("webtoolkit.js",'',false);
+JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <script type="text/javascript">
     function showPass() {
@@ -110,7 +110,7 @@ if(isset($this->message)) {
                 </label>
             </td>
             <td>
-                <input type="text" id="email2" name="email2" size="40" value="<?php echo $this->escape($this->user->get( 'email2' ));?>" class="inputbox required validate-email" maxlength="100" />
+                <input type="text" id="email2" name="email2" size="40" value="<?php echo $this->escape($this->user->get( 'email2' ));?>" class="inputbox validate-email" maxlength="100" />
             </td>
         </tr>
 
@@ -123,7 +123,8 @@ if(isset($this->message)) {
                 </label>
             </td>
             <td>
-                <input class="inputbox required validate-birthdate" type="text" id="birthdate" name="birthdate" value="" size="40" /> 
+                <?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')) ?>
+               <!-- <input class="inputbox required validate-birthdate" type="text" id="birthdate" name="birthdate" value="" size="40" /> -->
             </td>
         </tr>
         <!-- agregado por G2P -->
