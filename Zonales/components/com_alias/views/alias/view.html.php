@@ -24,12 +24,6 @@ jimport( 'joomla.methods' );
 class AliasViewAlias extends JView {
 
     function display($tpl = null) {
-        $idUser = JRequest::getInt('userid','0','method');
-
-//        if ($idUser != 0){
-//            // Check for request forgeries
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//        }
 
 
         $db =& JFactory::getDBO();
@@ -79,7 +73,6 @@ class AliasViewAlias extends JView {
         $this->assignRef('moduleproviders',$htmlProviders);
         $this->assign('showAliasBlock',$showAliasBlock);
         $this->assignRef('noAliasMessage',$noAliasMessage);
-        $this->assign('userId',$idUser);
 
         parent::display($tpl);
     }

@@ -59,7 +59,7 @@ class plgAuthenticationOpenID extends JPlugin {
         $mainframe =& JFactory::getApplication();
         ###########
         $db = &JFactory::getDBO();
-$this->logme($db, 'en el plugin openid');
+        $this->logme($db, 'en el plugin openid');
 
 
         ################################################
@@ -75,11 +75,11 @@ $this->logme($db, 'en el plugin openid');
 
         $beginning = substr($credentials['username'], 0, strlen($dbprovider->prefix));
         $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($dbprovider->suffix));
-        
-        if ($beginning != $dbprovider->prefix){
+
+        if ($beginning != $dbprovider->prefix) {
             $credentials['username'] = $dbprovider->prefix . $credentials['username'];
         }
-        if ($ending != $dbprovider->suffix){
+        if ($ending != $dbprovider->suffix) {
             $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
         }
 
@@ -125,24 +125,24 @@ $this->logme($db, 'en el plugin openid');
         $consumer = new Auth_OpenID_Consumer($store);
 
         if (!isset ($_SESSION['_openid_consumer_last_token'])) {
-$this->logme($db,'se va a iniciar el proceso');
-        // Begin the OpenID authentication process.
+            $this->logme($db,'se va a iniciar el proceso');
+            // Begin the OpenID authentication process.
             if (!$auth_request = $consumer->begin($discovery_url)) {
                 $this->logme($db,'no se pudo iniciar el proceso');
                 $response->type = JAUTHENTICATE_STATUS_FAILURE;
                 $response->error_message = 'Authentication error : could not connect to the openid server';
                 return false;
             }
-$this->logme($db,'continuamos');
+            $this->logme($db,'continuamos');
             # armamos la peticion la informacion asociada al usuario
-//            $sreg_request = Auth_OpenID_SRegRequest::build(
-//                array ('email'),
-//                array ('fullname','language','timezone')
-//            );
-//
-//            if ($sreg_request) {
-//                $auth_request->addExtension($sreg_request);
-//            }
+            //            $sreg_request = Auth_OpenID_SRegRequest::build(
+            //                array ('email'),
+            //                array ('fullname','language','timezone')
+            //            );
+            //
+            //            if ($sreg_request) {
+            //                $auth_request->addExtension($sreg_request);
+            //            }
             $policy_uris = array();
             if ($this->params->get( 'phishing-resistant', 0)) {
                 $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';
@@ -174,7 +174,7 @@ $this->logme($db,'continuamos');
             $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
             $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
             $process_url .= '&'.JURI::buildQuery($options);
-$this->logme($db, 'la url de retorno es: ' . $process_url);
+            $this->logme($db, 'la url de retorno es: ' . $process_url);
             $session->set('return_url', $process_url );
 
             $trust_url = $entry_url->toString(array (
@@ -222,10 +222,10 @@ $this->logme($db, 'la url de retorno es: ' . $process_url);
         $this->logme($db,'se va a iniciar la interpretacion de los resultados');
         switch ($result->status) {
             case Auth_OpenID_SUCCESS : {
-                            $usermode = $this->params->get('usermode', 2);
+                    $usermode = $this->params->get('usermode', 2);
 
-                                $response->status = JAUTHENTICATE_STATUS_SUCCESS;
-                                $response->error_message = '';
+                    $response->status = JAUTHENTICATE_STATUS_SUCCESS;
+                    $response->error_message = '';
 
 /* in the following code, we deal with the transition from the old openid version to the new openid version
    In the old version, the username was always taken straight from the login form.  In the new version, we get a
@@ -248,6 +248,7 @@ $this->logme($db, 'la url de retorno es: ' . $process_url);
                         $query = 'SELECT u.username, a.block as aliasblocked, u.block as userblocked' .
                             ' FROM #__alias a, #__providers p, #__users u'.
                             ' WHERE a.name='.$db->Quote($result->getDisplayIdentifier()).
+                            ' OR a.name=' . $db->Quote($credentials['username']).
                             ' AND a.provider_id = p.id' .
                             ' AND u.id = a.user_id' .
                             ' AND p.name = ' . $db->Quote($provider);
@@ -284,12 +285,9 @@ $this->logme($db, 'la url de retorno es: ' . $process_url);
                                         '&providerid=' . $dbprovider->id . '&' . $token .'=1');
                                 }
                             }
-                            else {
-                                $credentials['providerid'] = $dbprovider->id;
-                                $credentials['identifier'] = $result->getDisplayIdentifier();
-                            }
 
-                            
+
+
 
                         }
                     }

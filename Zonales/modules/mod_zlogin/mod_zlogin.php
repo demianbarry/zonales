@@ -18,7 +18,6 @@ $elementsHTML = array();
 // recupera los valores de externalid y providerid si estan presentes
 // esto es en caso de que se desee registrar un nuevo alias
 $providerid = JRequest::getInt('providerid', '0', 'method');
-$userid = JRequest::getInt('userid', '0', 'method');
 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 
 // parsea e interpreta la entrada requerida por cada proveedor
@@ -184,7 +183,6 @@ foreach ($providerslist as $prov) {
         <input type="hidden" name="providerid" value=<?php echo $providerid ?> />
         <input type="hidden" name="externalid" value="<?php echo urlencode($externalid) ?>" />
         <input id="provider" name="provider" type="hidden" value="OpenID" />
-        <input name="userid" type="hidden" value="<?php echo $userid ?>" />
         <?php echo JHTML::_( 'form.token' ); ?>
     </fieldset>
 </form>

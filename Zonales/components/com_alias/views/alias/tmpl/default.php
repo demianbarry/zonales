@@ -1,10 +1,3 @@
-<!-- <script type="text/javascript">
-    window.onload = function (){
-        document.getElementById('userid').value=<?php echo $this->userId ?>;
-    }
-</script>
--->
-
 <?php if ($this->showAliasBlock): ?>
 <h2 class="aliastitle"><?php echo $this->titleAliasBlockAdmin ?></h2>
 <p>

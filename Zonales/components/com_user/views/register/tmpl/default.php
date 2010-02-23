@@ -1,5 +1,11 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+
+$elements = array();
+$elementsHTML = array();
+
+JHTML::script("webtoolkit.js",'',false);
+?>
 <script type="text/javascript">
     function showPass() {
 		document.getElementById('pwmsg').style.display = 'block';
@@ -9,10 +15,44 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 document.getElementById('password').className = 'inputbox required validate-passverify';
                 document.getElementById('password2').className = 'inputbox required validate-passverify';
             }
+    function hidePass() {
+		document.getElementById('pwmsg').style.display = 'none';
+                document.getElementById('password').style.display = 'none';
+                document.getElementById('pw2msg').style.display = 'none';
+                document.getElementById('password2').style.display = 'none';
+                document.getElementById('password').className = '';
+                document.getElementById('password2').className = '';
+            }
+
+        function hideAll(){
+            <?php
+foreach ($this->providerslist as $prov) {
+    foreach ($this->inputData[$prov->name] as $input) {
+        if (!(!$this->user->guest && $prov->groupname == 'Guest') && $prov->type != 'Tradicional') {
+            if (!isset ($elements[$input['name']])) {
+                $elements[$input['name']] = 1;
+                echo 'document.getElementById(\'' . $input['name'] . 'set\').style.display = \'none\';';
+            }
+        }
+    }
+}
+
+?>
+        }
+        function setElement(elements,provider,type) {
+        hideAll();
+        for(i=0 ; i < elements.length ; i++){
+                if (elements[i] != ''){
+                    var fixpart = document.getElementById(elements[i] + '-' + type + 'fixmessage').value;
+                    document.getElementById(elements[i] + 'set').style.display = 'block';
+                    document.getElementById('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                }
+        }
+    }
     <!--
-    Window.onDomReady(function(){
+    Window.onDomReady = function(){
         document.formvalidator.setHandler('passverify', function (value) { return ($('password').value == value); }	);
-    });
+    }
     // -->
 </script>
 
@@ -114,31 +154,78 @@ if(isset($this->message)) {
             <td>
                 <div style="display: <?php echo $style ?>;">
                     <!-- CREA UNA LISTA DE PROVEEDORES CON LOS CUALES ES POSIBLE ACCEDER -->
-                    <?php foreach ($this->providerslist as $provider):
-                    if ($provider->protocolname == 'Tradicional'): ?>
-                    <a href="#passlocation" onClick="showPass()"/>
-                    <img src="<?php echo $provider->icon_url ?>"
-                         alt="<?php echo $provider->providername ?>"
-                         title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
-                    />
-                    <?php endif ?>
 
-<!--                    <a href=<?php if ($provider->protocolname == 'Tradicional'){
-                        echo '"#passlocation" onClick="showPass()"';
-                    }
-                    else {
-                        $url = 'index.php?option=com_user&task=login&provider=' .
-                            $provider->providername . '&' . JUtility::getToken() .'=1';
-                        echo '"' . $url . '"';
-                    }
-                    ?>>
-                        <img src="<?php echo $provider->icon_url ?>"
-                         alt="<?php echo $provider->providername ?>"
-                         title="Ingrese a Zonales mediante <?php echo $provider->providername ?>"
-                         />
-                    </a>
--->
+
+
+
+<select class="providers" id="selprovider" name="selprovider" >
+                    <?php foreach ($this->providerslist as $provider): ?>
+                        <?php if (!(!$this->user->guest && $provider->groupname == 'Guest')): ?>
+                    <option value="<?php echo $provider->name ?>"
+                            style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
+                            class="providers-option"
+                            onclick="function func<?php echo $provider->name ?>(){ <?php
+                            if ($provider->type == 'Tradicional') {
+                                echo 'hideAll();';
+                                echo 'showPass();}';
+                            }else {
+                                echo 'var elements = new Array();';
+                                                                            foreach ($this->inputData[$provider->name] as $input) {
+                                                                                if (!(!$this->user->guest && $provider->groupname == 'Guest')) {
+                                                                                    echo 'elements.push(\'' . $input['name'] . '\'); ';
+                                                                                }
+                                                                            }
+                                                                            echo 'hidePass();';
+                                                                            echo 'setElement(elements,\'' . $provider->name . '\',\'' . $provider->type . '\');';
+                                                                            echo '}';
+                            }
+                            echo 'func' . $provider->name . '()';
+
+
+                    ?>"
+                            >
+                                                                                        <?php echo $provider->name ?>
+                    </option>
+                        <?php endif ?>
                     <?php endforeach ?>
+                </select>
+
+
+                                    <!-- aqui va el modulo o el boton de conexion -->
+                <?php foreach ($this->providerslist as $provider): ?>
+                    <?php if (!(!$this->user->guest && $provider->groupname == 'Guest')): ?>
+                <div>
+                    <ul>
+                        <li>
+                                    <?php    foreach ($this->inputData[$provider->name] as $inputElement):
+                                    $name = $inputElement['name'];
+                                                $type = $inputElement['type'];
+                                                $message = $inputElement['message'];
+                                                echo '<input type="hidden" id="'.$name . '-' . $provider->type.'fixmessage" value="'. JText::_($message) .'" />';
+                                    if (!isset ($elementsHTML[$inputElement['name']])) : ?>
+                            <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
+                                                <?php
+
+                                                    $elementsHTML[$name] = 1;
+
+                                                    echo '<label id="ep'. $name .'message" for="ep'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                    echo '<br>';
+                                                    echo '<input type="'. $type .'" name="ep'. $name . '" id="ep'. $name .'" />';
+                                                    echo '<br>';
+
+                                                ?>
+                            </div>
+                                        <?php endif ?>
+                                       <?php endforeach ?>
+                        </li>
+                    </ul>
+                </div>
+                    <?php endif ?>
+                <?php endforeach ?>
+
+
+
+
                 </div>
             </td>
         </tr>
@@ -170,6 +257,7 @@ if(isset($this->message)) {
         </tr>
     </table>
     <button class="button validate" type="submit"><?php echo JText::_('Register'); ?></button>
+    <input type="hidden" id="fixbutton" name="fixbutton" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" />
     <input type="hidden" name="task" value="register_save" />
     <input type="hidden" name="id" value="0" />
     <input type="hidden" name="gid" value="0" />
