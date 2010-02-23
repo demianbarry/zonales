@@ -36,18 +36,32 @@ class CustompropertiesViewCpvalues extends JView
         $this->pid = JRequest::getVar('pid', 0, '', 'int');
         switch($this->getLayout()){
           case 'edit' :
-            //$model = & JModel::getInstance('cpfield','custompropertiesModel');
+            //Get the value and your childrens
             $model = $this->getModel('cpvalue');
             $value = $model->getData();
             $childs = $model->getChilds();
             //$values = $model->getValues();
             $this->assignRef('value', $value);
             $this->assignRef('childs', $childs);
+
+            //create the parent list
+            $emptyValue = $model->getDefaultValue();
+            $emptyValue->parent_id = 0;
+            $emptyValue->label = JTEXT::_('Root_Value');
             //$this->assignRef('values', $values);
             $types = array ();
             $model =& $this->getModel('cpvalues');
             $items = $model->getAll($this->cid[0]);
+            $items[] = $emptyValue;
             $this->assignRef('items', $items);
+            
+            //create the field list
+            if ($this->pid == 0) {
+                $model =& $this->getModel('cpfields');
+                $fields = $model->getAll();
+                $this->assignRef('fields', $fields);
+            }
+
             break;
 
           default:

@@ -62,6 +62,12 @@ $priority[] = JHTML::_('select.option', '2', '2');
                         <td><?php echo JHTML::_('select.genericlist', $this->items, 'newpid', '','id', 'label', $value->parent_id) ?></td>
                     </tr>
                     <?php endif;?>
+                    <?php if($this->pid == 0):?>
+                    <tr>
+                        <td><?php echo JText::_( 'Field' )?>:</td>
+                        <td><?php echo JHTML::_('select.genericlist', $this->fields, 'field', '','id', 'label', $value->field_id) ?></td>
+                    </tr>
+                    <?php endif;?>
                 </table>
             </td>
 

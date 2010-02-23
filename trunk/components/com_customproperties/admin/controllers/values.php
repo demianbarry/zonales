@@ -49,6 +49,7 @@ class CustompropertiesControllerValues extends JController {
     function display() {
         $view = $this->getView('cpvalues', 'html');
         $view->setModel($this->getModel('cpvalues', 'CustompropertiesModel'), true);
+        $view->setModel($this->getModel('cpfields', 'CustompropertiesModel'), true);
 
         switch($this->getTask()) {
             case 'edit':
@@ -100,20 +101,29 @@ class CustompropertiesControllerValues extends JController {
         $pid = JRequest::getVar('pid', 0, '', 'int');
         $cid = JRequest::getVar('cid', 0, '', 'int');
         if ($cid != 0) {
-            $newpid = JRequest::getVar('newpid', 0, '', 'int');
-            if ($pid != $newpid) {
+            $newpid = JRequest::getVar('newpid', null, '', 'int');
+            if ($newpid != null && $pid != $newpid) {
                 $pid = $newpid;
             }
         }
+        $field = JRequest::getVar('field', 0, '', 'int');
+
+        $fatherModel = $this->getModel('Cpvalue');
+        $fatherModel->setId($pid);
+        $father = $fatherModel->getData();
+
+        if ($field == 0) {
+            $field = $father->field_id;
+        }
         
-        if($model->saveValue($pid) === true ) {
+        if($model->saveValue($pid, $field) === true ) {
             $msg = JText::_('Value saved');
             $msg_type = "message";
             if($this->getTask() == 'save') {
                 $link = 'index.php?option=com_customproperties&controller=values&cid='.$pid;
             }
             else {
-                $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id;
+                $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id.'&pid='.$pid;
             }
         }
         else {
