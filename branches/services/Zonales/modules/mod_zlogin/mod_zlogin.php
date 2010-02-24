@@ -42,13 +42,12 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <!-- <script type="text/javascript" src="webtoolkit.js"></script> -->
 <script type="text/javascript">
-    //    window.onload = setIni();
-    //
-    //    function setIni(){
-    //        document.forms[0].formlogin.click();
-    //        var preselect = document.getElementById('selprovider').options[0].value;
-    //        document.getElementById('provider').value = preselect;
-    //    }
+    window.onload = setIni();
+    
+        function setIni(){
+                var index = document.formlogin.selprovider.options.selectedIndex;
+		document.formlogin.selprovider.options[index].onclick();
+        }
 
     function setElement(elements,provider,type) {
         var fixbutton = document.getElementById('fixbutton').value;
@@ -69,7 +68,7 @@ foreach ($providerslist as $prov) {
 ?>
         for(i=0 ; i < elements.length ; i++){
             if (elements[i] != ''){
-                var fixpart = document.getElementById(elements[i] + '-' + type + 'fixmessage').value;
+                var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
                 document.getElementById(elements[i] + 'set').style.display = 'block';
                 document.getElementById(elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
             }
@@ -82,7 +81,7 @@ foreach ($providerslist as $prov) {
         <?php echo JText::_('ZONALES_PROVIDER_CONNECT_WITH') ?>
     </p>
 
-    <form id="formlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
+    <form id="formlogin" name="formlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
 
         <table border="0">
             <thead>
@@ -98,7 +97,7 @@ foreach ($providerslist as $prov) {
                         <select class="providers" id="selprovider" name="selprovider" >
                             <?php foreach ($providerslist as $provider): ?>
                                 <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                            <option value="" onmouseover="function func<?php echo $provider->name ?>(){var elements = new Array(); <?php
+                            <option value="" onclick="function func<?php echo $provider->name ?>(){var elements = new Array(); <?php
                                     foreach ($inputData[$provider->name] as $input) {
                                         if (!(!$user->guest && $provider->groupname == 'Guest')) {
                                             echo 'elements.push(\'' . $input['name'] . '\'); ';
@@ -126,7 +125,7 @@ foreach ($providerslist as $prov) {
                                                 $name = $inputElement['name'];
                                                 $type = $inputElement['type'];
                                                 $message = $inputElement['message'];
-                                                echo '<input type="hidden" id="'.$name . '-' . $provider->type.'fixmessage" value="'. JText::_($message) .'" />';
+                                                echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                                 if (!isset ($elementsHTML[$inputElement['name']])) : ?>
                                     <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
                                                         <?php
@@ -147,7 +146,13 @@ foreach ($providerslist as $prov) {
                         </div>
                             <?php endif ?>
                         <?php endforeach ?>
-                        <input id="submit" type="submit" name="Submit" class="button" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" />
+                        <input id="submit" 
+                               type="submit"
+                               name="Submit"
+                               class="button"
+                               value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
+                               onmouseover="setIni()"
+                               />
                     </td>
                 </tr>
                 <tr>
