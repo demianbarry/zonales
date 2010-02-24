@@ -216,6 +216,7 @@ class JWFComponentHandler_content  extends JWFComponentHandler{
 
 		$firstStation = reset($workflow->stations);
 
+                $_GET['ret'] = base64_encode(JURI::base().'/index.php?option=com_jwf');
 		return $itemModel->enter( $workflow->id, $firstStation->id, $entry->id, $entry->title, $entry->version );
 	}
 
