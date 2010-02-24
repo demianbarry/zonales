@@ -75,7 +75,7 @@ class JWFACLHandler_joomla extends JWFACLHandler {
         //1.5
         if( $major == 1 && $minor == 5 ) {
             $db  =& JFactory::getDBO();
-            $sql = "SELECT id,name FROM `#__core_acl_aro_groups`";
+            $sql = "SELECT id,name FROM `#__core_acl_aro_groups` LIMIT 2,999999999";
             $db->setQuery( $sql );
             $temp = $db->loadObjectList();
             $aclList = array();
