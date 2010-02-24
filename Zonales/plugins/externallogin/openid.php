@@ -248,7 +248,6 @@ class plgAuthenticationOpenID extends JPlugin {
                         $query = 'SELECT u.username, a.block as aliasblocked, u.block as userblocked' .
                             ' FROM #__alias a, #__providers p, #__users u'.
                             ' WHERE a.name='.$db->Quote($result->getDisplayIdentifier()).
-                            ' OR a.name=' . $db->Quote($credentials['username']).
                             ' AND a.provider_id = p.id' .
                             ' AND u.id = a.user_id' .
                             ' AND p.name = ' . $db->Quote($provider);
