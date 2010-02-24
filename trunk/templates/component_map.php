@@ -14,6 +14,10 @@
 
 <body>
 
+<div>
+  <jdoc:include type="modules" name="user9" style="xhtml" />
+</div><!-- END #map -->
+
 <div style="width:900px; height:560px; margin-top:80px;">
   <jdoc:include type="modules" name="index" style="xhtml" />
 </div><!-- END #map -->
