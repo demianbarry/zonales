@@ -76,6 +76,10 @@
     <fileset dir="${src_frontend_components}/com_customproperties" id="com_customproperties_files">
         <include name="**" />
     </fileset>
+    <!-- com_jwf -->
+    <fileset dir="${src_frontend_components}/com_jwf" id="com_jwf_files">
+        <include name="**" />
+    </fileset>
     <!-- com_eqzonales -->
     <fileset dir="${src_frontend_components}/com_eqzonales" id="com_eqzonales_files">
         <include name="**" />
@@ -258,6 +262,14 @@
         <echo message="Creando archivo de distribución de componente CustomProperties (fork)"/>
         <zip destfile="${src_dist_dir}/${dist.com_customproperties.file}.zip">
             <fileset refid="com_customproperties_files"/>
+        </zip>
+    </target>
+
+    <!-- componente com_jwf (fork) -->
+    <target name="dist_com_jwf" description="Crea archivo de distribución Joomla para el componente JWF (fork)">
+        <echo message="Creando archivo de distribución de componente JWF (fork)"/>
+        <zip destfile="${src_dist_dir}/${dist.com_jwf.file}.zip">
+            <fileset refid="com_jwf_files"/>
         </zip>
     </target>
 
