@@ -43,7 +43,7 @@ foreach ($this->providerslist as $prov) {
         hideAll();
         for(i=0 ; i < elements.length ; i++){
                 if (elements[i] != ''){
-                    var fixpart = document.getElementById(elements[i] + '-' + type + 'fixmessage').value;
+                    var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
                     document.getElementById(elements[i] + 'set').style.display = 'block';
                     document.getElementById('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
                 }
@@ -202,7 +202,7 @@ if(isset($this->message)) {
                                     $name = $inputElement['name'];
                                                 $type = $inputElement['type'];
                                                 $message = $inputElement['message'];
-                                                echo '<input type="hidden" id="'.$name . '-' . $provider->type.'fixmessage" value="'. JText::_($message) .'" />';
+                                                echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                     if (!isset ($elementsHTML[$inputElement['name']])) : ?>
                             <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
                                                 <?php
