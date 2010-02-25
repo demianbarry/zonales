@@ -156,6 +156,7 @@ class UserController extends JController {
 
         $status = ($statusAux) ? '0' : '1';
 
+        $this->endAuthentication();
         global $mainframe;
         $mainframe->redirect(JRoute::_('index.php?option=com_alias&view=addmessage&status=' . $status));
     }
@@ -206,6 +207,8 @@ class UserController extends JController {
         //preform the login action
         $error = $mainframe->login($credentials, $options);
 
+        $this->endAuthentication();
+
         if(!JError::isError($error)) {
             $this->logme($db, 'no hubo error');
             // Redirect if the return url is not registration or login
@@ -213,22 +216,19 @@ class UserController extends JController {
                 $return	= 'index.php?option=com_user';
             }
 
-            //                        if ($providerid != 0 && $externalid != ''){
-            //
-            //
-            //                            $user =& JFactory::getUser();
-            //
-            //                            $externalid = urldecode($externalid);
-            //                            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
-            //                            $this->insertAlias('0', $user->id, $externalid, $providerid);
-            //                        }
+            // actualiza la cantidad de veces que se ha utilizado el proveedor
+            // para ingresar al sistema
+            $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
+                $db->setQuery($selectProvider);
+                $dbprovider = $db->loadObject();
+            $insertHit = 'update #__providers p set p.hits=p.hits+1 where p.id=' . $dbprovider->id;
+            $db->setQuery($insertHit);
+            $db->query();
+
             if ($credentials['userid'] == 0) {
                 $this->aliasreg($options['providerid'],$options['externalid']);
             }
             else {
-                $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
-                $db->setQuery($selectProvider);
-                $dbprovider = $db->loadObject();
                 $session = & JFactory :: getSession();
 
                 $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
@@ -247,6 +247,11 @@ class UserController extends JController {
             // Redirect to a login form
             $mainframe->redirect( $return );
         }
+    }
+
+    private function endAuthentication() {
+        $session = & JFactory :: getSession();
+        $session->set('authenticationonprogress','false');
     }
 
     function logout() {
@@ -521,7 +526,7 @@ class UserController extends JController {
             $this->login($epUserData);
         }
 
-
+        $this->endAuthentication();
         // fin ------
 
         $this->setRedirect('index.php', $message);
