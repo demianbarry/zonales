@@ -229,8 +229,9 @@ class UserController extends JController {
                 $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
                 $db->setQuery($selectProvider);
                 $dbprovider = $db->loadObject();
+                $session = & JFactory :: getSession();
 
-                $this->insertAlias(0, $credentials['userid'], $credentials['username'], $dbprovider->id);
+                $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
             }
 
 
