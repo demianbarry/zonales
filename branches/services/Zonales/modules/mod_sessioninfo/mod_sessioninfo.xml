@@ -14,6 +14,8 @@
      <files>
           <filename module="mod_sessioninfo"
                >mod_sessioninfo.php</filename>
+          <filename>tmpl/default.php</filename>
+          <filename>tmpl/index.html</filename>
      </files>
      <params>
           <param name="profilelink" type="text" default="index.php?option=com_user&amp;task=edit"
