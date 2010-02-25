@@ -15,4 +15,10 @@
           <filename module="mod_sessioninfo"
                >mod_sessioninfo.php</filename>
      </files>
+     <params>
+          <param name="profilelink" type="text" default="index.php?option=com_user&amp;task=edit"
+               label="URL a perfil del usuario "
+               description=
+                "Permite especificar la URL interna a los datos del usuario " />
+     </params>
 </install>

@@ -226,6 +226,7 @@ class plgAuthenticationOpenID extends JPlugin {
 
                     $response->status = JAUTHENTICATE_STATUS_SUCCESS;
                     $response->error_message = '';
+                    $session->set('externalidentifier',$result->getDisplayIdentifier());
 
 /* in the following code, we deal with the transition from the old openid version to the new openid version
    In the old version, the username was always taken straight from the login form.  In the new version, we get a
