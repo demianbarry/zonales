@@ -15,9 +15,9 @@ $countPending = 'select count(*) as total from #__alias a where ' .
 $db->setQuery($countPending);
 $dbcount = $db->loadObject();
 
-if ($dbcount->total != 0){
-	echo '<a class=pending-notice href="index.php?option=com_alias&view=alias">' . jtEXT::_('ZONALES_ALIAS_HAS_BLOCK') . '</a>';
-}
+$message = JText::_('ZONALES_ALIAS_HAS_BLOCK');
+$showMessage = ($dbcount->total != 0);
+require(JModuleHelper::getLayoutPath('mod_pending'));
 
 ?>
 
