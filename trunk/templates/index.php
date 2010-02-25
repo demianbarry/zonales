@@ -4,9 +4,9 @@ $helper = new comZonalesHelper();
 
 $view = 'component.php';
 
-if(is_null($helper->getZonal()))
+if(is_null($helper->getZonal()) && !$helper->isAuthenticationOnProgress())
 {
-// si no se ha seleccionado un zonal
+// si no se ha seleccionado un zonal o no hay ninguna autenticacion en progreso
 $view = 'component_map.php';
 }
 include dirname(__FILE__) . DIRECTORY_SEPARATOR . $view;

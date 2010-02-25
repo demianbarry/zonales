@@ -236,4 +236,16 @@ class comZonalesHelper
 
 		return json_encode($response);
 	}
+
+        /**
+         * Chequea si se esta realizando alguna autenticación con algun proveedor externo
+         * 
+         * @return boolean
+         */
+        function isAuthenticationOnProgress(){
+            $session = JFactory::getSession();
+            $onProgress = $session->get('authenticationonprogress');
+            return ($onProgress == 'true');
+        }
+
 }
