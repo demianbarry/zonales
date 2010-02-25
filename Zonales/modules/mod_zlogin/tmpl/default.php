@@ -29,6 +29,7 @@
                                             }
 
                                             ?> setElement(elements,'<?php echo $provider->name ?>','<?php echo $provider->type ?>');} func<?php echo $provider->name ?>()"
+                                            onkeypress="setIni()"
                                     style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
                                     class="providers-option"
                                     >
@@ -77,6 +78,7 @@
                                class="button"
                                value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
                                onmouseover="setIni()"
+                               onfocus="setIni()"
                                />
                     </td>
                 </tr>

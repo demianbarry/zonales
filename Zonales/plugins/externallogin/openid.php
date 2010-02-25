@@ -273,6 +273,8 @@ class plgAuthenticationOpenID extends JPlugin {
                         } else { // si el alias no existe
                             $this->logme($db, 'el alias no existe :(');
 
+                            $session->set('authenticationonprogress','true');
+
                             if ($credentials['userid'] == 0) {
                                 $user =& JFactory::getUser();
                                 if ($user->guest) {
