@@ -1,10 +1,15 @@
 <!-- no tocar este display -->
-<div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>;">
+<div id="zlogin"
+     style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>;">
     <p class="connect-message">
-        <?php echo JText::_('ZONALES_PROVIDER_CONNECT_WITH') ?>
+        <?php echo $connectMessage ?>
     </p>
 
-    <form id="formlogin" name="formlogin" action="<?php echo JRoute::_('index.php') ?>" method="post">
+    <form id="formlogin"
+          name="formlogin"
+          action="<?php echo $routeAction ?>"
+          method="post"
+    >
 
         <table border="0">
             <thead>
@@ -17,7 +22,10 @@
                 <tr>
                     <td>
                         <!-- aqui va el selector de proveedores -->
-                        <select class="providers" id="selprovider" name="selprovider" >
+                        <select class="providers"
+                                id="selprovider"
+                                name="selprovider"
+                        >
                             <?php foreach ($providerslist as $provider): ?>
                                 <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                             <option value=""
@@ -29,11 +37,11 @@
                                             }
 
                                             ?> setElement(elements,'<?php echo $provider->name ?>','<?php echo $provider->type ?>');} func<?php echo $provider->name ?>()"
-                                            onkeypress="setIni()"
+                                    onkeypress="setIni()"
                                     style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
                                     class="providers-option"
                                     >
-                                                <?php echo $provider->name ?>
+                                      <?php echo $provider->name ?>
                             </option>
                                 <?php endif ?>
                             <?php endforeach ?>
@@ -53,7 +61,9 @@
                                                 echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                                 if (!isset ($elementsHTML[$inputElement['name']])) : ?>
                                     <!-- no tocar este display -->
-                                    <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
+                                    <div style="display: none;" 
+                                         id="<?php echo $inputElement['name'] . 'set' ?>"
+                                    >
                                                         <?php
 
                                                         $elementsHTML[$name] = 1;
@@ -76,29 +86,30 @@
                                type="submit"
                                name="Submit"
                                class="button"
-                               value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
+                               value="<?php echo $providerConnectMessage ?>"
                                onmouseover="setIni()"
                                onfocus="setIni()"
                                />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td colspan="2" 
+                        align="center"
+                    >
                         <ul>
                             <li>
-                                <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
-                                <?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
+                                <a href="<?php echo $routeReset ?>">
+                                <?php echo $forgotPasswordMessage ?></a>
                             </li>
                             <li>
-                                <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
-                                <?php echo JText::_('FORGOT_YOUR_USERNAME'); ?></a>
+                                <a href="<?php echo $routeRemind ?>">
+                                <?php echo $forgotUsernameMessage ?></a>
                             </li>
                             <?php
-                            $usersConfig = &JComponentHelper::getParams( 'com_users' );
-                            if ($usersConfig->get('allowUserRegistration')) : ?>
+                            if ($allowRegistration) : ?>
                             <li>
-                                <a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register' ); ?>">
-                                    <?php echo JText::_('REGISTER'); ?></a>
+                                <a href="<?php echo $routeRegister; ?>">
+                                    <?php echo $registerMessage ?></a>
                             </li>
                             <?php endif; ?>
                         </ul>
