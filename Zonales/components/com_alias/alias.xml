@@ -26,6 +26,9 @@
         <filename>views/addmessage/view.html.php</filename>
         <filename>views/addmessage/tmpl/default.php</filename>
     </files>
+    <languages folder="language">
+        <language tag="es-ES">es-ES.com_alias.ini</language>
+    </languages>
 
     <administration>
   <!-- Administration Menu Section -->
