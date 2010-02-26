@@ -21,8 +21,19 @@ require_once( JPATH_COMPONENT.DS.'helper.php' );
 require_once( JPATH_COMPONENT.DS.'controller.php' );
 
 // Create the controller
-$classname    = 'CustompropertiesController';
-$controller   = new $classname( );
+//$classname    = 'CustompropertiesController';
+//$controller   = new $classname( );
+
+$controllerName = JRequest::getWord('controller','CustompropertiesController'); // default controller
+$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_customproperties'.DS.'controllers'.DS.$controllerName.'.php';
+if(file_exists($path)){
+  require_once($path);
+  $classname    = 'CustompropertiesController'.$controllerName;
+  $controller   = new $classname( );
+}
+else{
+  JError::raiseError( 500, JText::_( 'Missing controller.' ) );
+}
 
 // Perform the Request task
 $task = JRequest::getVar( 'task' );
