@@ -135,6 +135,7 @@
                         <filename>controllers/values.php</filename>
 			<filename>controllers/utilities.php</filename>
 			<filename>controllers/tagging.php</filename>
+                        <filename>controllers/hierarchictagging.php</filename>
 
 			<filename>css/cp_admin.css</filename>
 
@@ -163,6 +164,7 @@
 
 			<filename>models/index.html</filename>
 			<filename>models/assign.php</filename>
+                        <filename>models/assignhierarchic.php</filename>
 			<filename>models/config.php</filename>
 			<filename>models/content.php</filename>
 			<filename>models/cpfield.php</filename>
@@ -211,6 +213,11 @@
 			<filename>views/tagging/view.html.php</filename>
 			<filename>views/tagging/tmpl/index.html</filename>
 			<filename>views/tagging/tmpl/default.php</filename>
+
+                        <filename>views/hierarchictagging/index.html</filename>
+			<filename>views/hierarchictagging/view.html.php</filename>
+			<filename>views/hierarchictagging/tmpl/index.html</filename>
+			<filename>views/hierarchictagging/tmpl/default.php</filename>
 
 			<filename>views/utilities/index.html</filename>
 			<filename>views/utilities/view.html.php</filename>
