@@ -1,14 +1,14 @@
 <?php
 /**
-* Custom Properties for Joomla! 1.5.x
-* @package Custom Properties
-* @subpackage Component
-* @version 1.98
-* @revision $Revision: 1.4 $
-* @author Andrea Forghieri
-* @copyright (C) Andrea Forghieri, www.solidsystem.it
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
-*/
+ * Custom Properties for Joomla! 1.5.x
+ * @package Custom Properties
+ * @subpackage Component
+ * @version 1.98
+ * @revision $Revision: 1.4 $
+ * @author Andrea Forghieri
+ * @copyright (C) Andrea Forghieri, www.solidsystem.it
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -18,111 +18,137 @@ jimport( 'joomla.application.component.model' );
 /**
  * Customproperties Fields Model - Collection of single fields
  *
-  * @package Custom Properties
-  * @version 1.90
-  * @subpackage Component
+ * @package Custom Properties
+ * @version 1.90
+ * @subpackage Component
  */
-class CustompropertiesModelCpvalues extends JModel
-{
-  /**
-  * Value id
-  *
-  * @var integer
-  */
-  var $_id;
-  /**
-   * CP Values list
-   *
-   * @var array
-   */
-  var $_list;
-  /**
-   * Pagination
-   *
-   * @var array
-   */
-  var $_page;
+class CustompropertiesModelCpvalues extends JModel {
+    /**
+     * Value id
+     *
+     * @var integer
+     */
+    var $_id;
+    /**
+     * CP Values list
+     *
+     * @var array
+     */
+    var $_list;
+    /**
+     * Pagination
+     *
+     * @var array
+     */
+    var $_page;
 
-  /**
-   * Method to set the CP Value identifier
-   *
-   * @access    public
-   * @param    int CP Value identifier
-   * @return    void
-   */
-  function setId($id)
-  {
-      // Set id and wipe data
-      $this->_id = $id;
-      $this->_list = null;
-  }
-
-  /**
-   * Retrieves the CP Value data
-   * @param boolean returns the data with pagination
-   * @return array Array of objects containing the data from the database
-   */
-  function getList($with_pagination = true, $cid = 0)
-  {
-
-    if (!empty($this->_list)) {
-      return $this->_list;
+    /**
+     * Method to set the CP Value identifier
+     *
+     * @access    public
+     * @param    int CP Value identifier
+     * @return    void
+     */
+    function setId($id) {
+        // Set id and wipe data
+        $this->_id = $id;
+        $this->_list = null;
     }
 
-    $database =& $this->getDBO();
-    global $mainframe;
+    /**
+     * Retrieves the CP Value data
+     * @param boolean returns the data with pagination
+     * @return array Array of objects containing the data from the database
+     */
+    function getList($with_pagination = true, $cid = 0) {
 
-    if($with_pagination){
-      $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-      $limitstart = $mainframe->getUserStateFromRequest( 'limitstart', 'limitstart', 0, 'int' );
+        if (!empty($this->_list)) {
+            return $this->_list;
+        }
 
-      /* count records for pagenav */
-      $query = "SELECT count(*) FROM #__custom_properties_values WHERE parent_id = $cid";
-      $database->setQuery($query);
-      $total = $database->loadResult();
-      if ($total <= $limitstart) $limitstart = 0;
+        $database =& $this->getDBO();
+        global $mainframe;
 
-      // Create the pagination object
-      jimport('joomla.html.pagination');
-      $this->_page = $pageNav =  new JPagination($total, $limitstart, $limit);
+        if($with_pagination) {
+            $limit      = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+            $limitstart = $mainframe->getUserStateFromRequest( 'limitstart', 'limitstart', 0, 'int' );
+
+            /* count records for pagenav */
+            $query = "SELECT count(*) FROM #__custom_properties_values WHERE parent_id = $cid";
+            $database->setQuery($query);
+            $total = $database->loadResult();
+            if ($total <= $limitstart) $limitstart = 0;
+
+            // Create the pagination object
+            jimport('joomla.html.pagination');
+            $this->_page = $pageNav =  new JPagination($total, $limitstart, $limit);
+        }
+
+        /* retrieve records */
+        $query = "SELECT * FROM #__custom_properties_values WHERE parent_id = $cid ORDER BY ordering ";
+        if($with_pagination) {
+            $database->setQuery($query, $pageNav->limitstart, $pageNav->limit);
+        }
+        else {
+            $database->setQuery($query);
+            $this->_page = null;
+        }
+        $this->_list = $database->loadObjectList();
+
+        // If there is a db query error, throw a HTTP 500 and exit
+        if ($database->getErrorNum()) {
+            JError::raiseError( 500, $database->stderr() );
+            return false;
+        }
+
+        return $this->_list;
     }
 
-    /* retrieve records */
-    $query = "SELECT * FROM #__custom_properties_values WHERE parent_id = $cid ORDER BY ordering ";
-    if($with_pagination){
-      $database->setQuery($query, $pageNav->limitstart, $pageNav->limit);
-    }
-    else{
-      $database->setQuery($query);
-      $this->_page = null;
-    }
-    $this->_list = $database->loadObjectList();
 
-    // If there is a db query error, throw a HTTP 500 and exit
-    if ($database->getErrorNum()) {
-      JError::raiseError( 500, $database->stderr() );
-      return false;
+
+    function getAll($cid) {
+        $database =& $this->getDBO();
+        $query = "SELECT * FROM #__custom_properties_values WHERE id != $cid ORDER BY ordering ";
+        $database->setQuery($query);
+        $this->_list = $database->loadObjectList();
+        return $this->_list;
     }
 
-    return $this->_list;
-  }
-
-  function getAll($cid)
-  {
-      $database =& $this->getDBO();
-      $query = "SELECT * FROM #__custom_properties_values WHERE id != $cid ORDER BY label ";
-      $database->setQuery($query);
-      $this->_list = $database->loadObjectList();
-      return $this->_list;
-  }
-
-  function getPagination()
-  {
-    if (is_null($this->_list) || is_null($this->_page)) {
-      $this->getList();
+    function getAllHierarchical() {
+        $database =& $this->getDBO();
+        $query = "SELECT * FROM #__custom_properties_values WHERE parent_id IS NOT NULL ORDER BY ordering ";
+        $database->setQuery($query);
+        $this->_list = $database->loadObjectList();
+        return $this->_list;
     }
-    return $this->_page;
-  }
+
+    function getCachedRoots() {
+        $cachedRoots = array();
+
+        foreach ($this->_list as $root) {
+            if($root->parent_id == 0)
+                $cachedRoots[] = $root;
+        }
+
+        return $cachedRoots;
+    }
+
+    function getCachedChildren($cid) {
+        $cachedChildren = array();
+
+        foreach ($this->_list as $child) {
+            if($child->parent_id == $cid)
+                $cachedChildren[] = $child;
+        }
+        return $cachedChildren;
+    }
+
+    function getPagination() {
+        if (is_null($this->_list) || is_null($this->_page)) {
+            $this->getList();
+        }
+        return $this->_page;
+    }
 
 }
 

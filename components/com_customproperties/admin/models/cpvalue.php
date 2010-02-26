@@ -98,7 +98,7 @@ class CustompropertiesModelCpvalue extends JModel {
     }
 
     function getDefaultValue() {
-        
+
         $data = array ();
 
         $data = new stdClass();
@@ -288,7 +288,7 @@ class CustompropertiesModelCpvalue extends JModel {
         /* parent field */
         $cid = JRequest::getVar('cid', '', '', 'array');
         $value_id = $cid[0];
-
+        
         /* we expect an array for every field */
         $ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
         $names 		= JRequest::getVar('value_name', 	null, 	'', 'array');
