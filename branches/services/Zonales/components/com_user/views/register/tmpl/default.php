@@ -83,46 +83,84 @@ if(isset($this->message)) {
     >
         <!-- SOLICITUD DE NOMBRE COMPLETO -->
         <tr>
-            <td width="30%" height="40">
-                <label id="namemsg" for="name">
+            <td width="30%" 
+                height="40"
+            >
+                <label id="namemsg" 
+                       for="name"
+                >
                     <?php echo '*' . JText::_( 'Name' ); ?>:
                 </label>
             </td>
             <td>
-                <input type="text" name="name" id="name" size="40" value="<?php echo $this->escape($this->user->get( 'name' ));?>" class="inputbox required" maxlength="50" /> 
+                <input type="text"
+                       name="name"
+                       id="name"
+                       size="40"
+                       value="<?php echo $this->escape($this->user->get( 'name' ));?>"
+                       class="inputbox required"
+                       maxlength="50"
+               />
             </td>
         </tr>
         <!-- SOLICITUD DE NOMBRE DE USUARIO -->
         <tr>
             <td height="40">
-                <label id="usernamemsg" for="username">
+                <label id="usernamemsg" 
+                       for="username"
+                >
                     <?php echo '*' . JText::_( 'User name' ); ?>:
                 </label>
             </td>
             <td>
-                <input type="text" id="username" name="username" size="40" value="<?php echo $this->escape($this->user->get( 'username' ));?>" class="inputbox required validate-username" maxlength="25" /> 
+                <input type="text"
+                       id="username"
+                       name="username"
+                       size="40"
+                       value="<?php echo $this->escape($this->user->get( 'username' ));?>"
+                       class="inputbox required validate-username"
+                       maxlength="25"
+                />
             </td>
         </tr>
         <!-- SOLICITUD DE CORREO ELECTRONICO -->
         <tr>
             <td height="40">
-                <label id="emailmsg" for="email">
+                <label id="emailmsg" 
+                       for="email"
+                >
                     <?php echo '*' . JText::_( 'Email' ); ?>:
                 </label>
             </td>
             <td>
-                <input type="text" id="email" name="email" size="40" value="<?php echo $this->escape($this->user->get( 'email' ));?>" class="inputbox required validate-email" maxlength="100" /> 
+                <input type="text"
+                       id="email"
+                       name="email"
+                       size="40"
+                       value="<?php echo $this->escape($this->user->get( 'email' ));?>"
+                       class="inputbox required validate-email"
+                       maxlength="100"
+                />
             </td>
         </tr>
         <!-- SOLICITUD DE CORREO ELECTRONICO AUXILIAR-->
         <tr>
             <td height="40">
-                <label id="email2msg" for="email2">
+                <label id="email2msg" 
+                       for="email2"
+                >
                     <?php echo '*' . JText::_( 'Backup Email' ); ?>:
                 </label>
             </td>
             <td>
-                <input type="text" id="email2" name="email2" size="40" value="<?php echo $this->escape($this->user->get( 'email2' ));?>" class="inputbox validate-email" maxlength="100" />
+                <input type="text"
+                       id="email2"
+                       name="email2"
+                       size="40"
+                       value="<?php echo $this->escape($this->user->get( 'email2' ));?>"
+                       class="inputbox validate-email"
+                       maxlength="100"
+                />
             </td>
         </tr>
 
@@ -143,14 +181,22 @@ if(isset($this->message)) {
         <!-- SOLICITUD DEL SEXO -->
         <tr>
             <td height="40">
-                <label id="sexmsg" for="sex">
+                <label id="sexmsg" 
+                       for="sex"
+                >
                     <?php echo JText::_( 'Sex' ); ?>:
                 </label>
             </td>
             <td>
                 <ul>
-                    <li><input type="radio" name="sex" value="F" /><?php echo JText::_( 'Female' ); ?></li>
-                    <li><input type="radio" name="sex" value="M" /><?php echo JText::_( 'Male' ); ?></li>
+                    <li><input type="radio"
+                               name="sex"
+                               value="F"
+                        /><?php echo JText::_( 'Female' ); ?></li>
+                    <li><input type="radio"
+                               name="sex"
+                               value="M"
+                        /><?php echo JText::_( 'Male' ); ?></li>
                 </ul>
             </td>
         </tr>
@@ -160,7 +206,9 @@ if(isset($this->message)) {
                     $style = ($provid == '') ? 'block' : 'none';
                     ?>
             <td height="40">
-                <label style="display: <?php echo $style ?>;" id="providermsg" for="provider">
+                <label style="display: <?php echo $style ?>;" 
+                       id="providermsg"
+                       for="provider">
                     <?php echo JText::_( 'Choose how to autenticate' ); ?>:
                 </label>
             </td>
@@ -171,7 +219,10 @@ if(isset($this->message)) {
 
 
 
-<select class="providers" id="selprovider" name="selprovider" >
+                <select class="providers"
+                        id="selprovider"
+                        name="selprovider"
+                >
                     <?php foreach ($this->providerslist as $provider): ?>
                         <?php if (!(!$this->user->guest && $provider->groupname == 'Guest')): ?>
                     <option value="<?php echo $provider->name ?>"
@@ -197,7 +248,7 @@ if(isset($this->message)) {
 
                     ?>"
                             >
-                                                                                        <?php echo $provider->name ?>
+                               <?php echo $provider->name ?>
                     </option>
                         <?php endif ?>
                     <?php endforeach ?>
@@ -216,7 +267,8 @@ if(isset($this->message)) {
                                                 $message = $inputElement['message'];
                                                 echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                     if (!isset ($elementsHTML[$inputElement['name']])) : ?>
-                            <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
+                            <div style="display: none;"
+                                 id="<?php echo $inputElement['name'] . 'set' ?>">
                                                 <?php
 
                                                     $elementsHTML[$name] = 1;
@@ -245,37 +297,84 @@ if(isset($this->message)) {
         <tr>
             <td height="40">
                 <a name="passlocation"></a>
-                <label style="display: none;" id="pwmsg" for="password">
+                <label style="display: none;"
+                       id="pwmsg"
+                       for="password"
+                >
                     <?php echo '*' . JText::_( 'Password' ); ?>:
                 </label>
             </td>
             <td>
-                <input style="display: none;" class="" type="password" id="password" name="password" size="40" value="" /> 
+                <input style="display: none;"
+                       class=""
+                       type="password"
+                       id="password"
+                       name="password"
+                       size="40"
+                       value=""
+                />
             </td>
         </tr>
         <tr>
             <td height="40">
-                <label style="display: none;" id="pw2msg" for="password2">
+                <label style="display: none;"
+                       id="pw2msg"
+                       for="password2"
+                >
                     <?php echo '*' . JText::_( 'Verify Password' ); ?>:
                 </label>
             </td>
             <td>
-                <input style="display: none;" class="" type="password" id="password2" name="password2" size="40" value="" /> 
+                <input style="display: none;"
+                       class=""
+                       type="password"
+                       id="password2"
+                       name="password2"
+                       size="40"
+                       value=""
+                />
             </td>
         </tr>
         <tr>
-            <td colspan="2" height="40">
+            <td colspan="2" 
+                height="40"
+            >
                 <?php echo JText::_( 'REGISTER_REQUIRED' ); ?>
             </td>
         </tr>
     </table>
-    <button class="button validate" type="submit"><?php echo JText::_('Register'); ?></button>
-    <input type="hidden" id="fixbutton" name="fixbutton" value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>" />
-    <input type="hidden" name="task" value="register_save" />
-    <input type="hidden" name="id" value="0" />
-    <input type="hidden" name="gid" value="0" />
-    <input type="hidden" name="providerid" value="<?php echo $this->providerid; ?>" />
-    <input type="hidden" name="externalid" value="<?php echo $this->externalid; ?>" />
-    <input type="hidden" name="force" value="<?php echo $this->force; ?>" />
+    <button class="button validate"
+            type="submit">
+                <?php echo JText::_('Register'); ?>
+    </button>
+    <input type="hidden" 
+           id="fixbutton"
+           name="fixbutton"
+           value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
+    />
+    <input type="hidden"
+           name="task"
+           value="register_save"
+    />
+    <input type="hidden"
+           name="id"
+           value="0"
+    />
+    <input type="hidden"
+           name="gid"
+           value="0"
+    />
+    <input type="hidden"
+           name="providerid"
+           value="<?php echo $this->providerid; ?>"
+    />
+    <input type="hidden"
+           name="externalid"
+           value="<?php echo $this->externalid; ?>"
+    />
+    <input type="hidden"
+           name="force"
+           value="<?php echo $this->force; ?>"
+    />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>

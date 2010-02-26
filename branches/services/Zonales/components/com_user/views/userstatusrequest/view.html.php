@@ -15,8 +15,11 @@ class UserViewUserStatusRequest extends JView {
         $iamuserMessage = JText::_('ZONALES_STATUS_USER');
         $notuserMessage = JText::_('ZONALES_STATUS_GUEST');
 
-        $this->assignRef('externalid', $externalid);
-	$this->assignRef('providerid',$providerid);
+        $urlLogin = 'index.php?option=com_user&view=zlogin&externalid='.urlencode($externalid). '&providerid=' . $providerid.'&' . JUtility::getToken() .'=1';
+        $urlRegister = 'index.php?option=com_user&view=register&force=1&externalid='.urlencode($externalid).'&providerid='.$providerid.'&' . JUtility::getToken() .'=1';
+
+        $this->assignRef('urlLogin', $urlLogin);
+	$this->assignRef('urlRegister',$urlRegister);
         $this->assignRef('aliasNotFoundMessage',$aliasNotFoundMessage);
         $this->assignRef('requestMessage',$requestMessage);
         $this->assignRef('userMessage',$iamuserMessage);

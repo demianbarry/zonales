@@ -39,6 +39,18 @@ foreach ($providerslist as $provider) {
     }
 }
 
+$connectMessage = JText::_('ZONALES_PROVIDER_CONNECT_WITH');
+$routeAction = JRoute::_('index.php');
+$providerConnectMessage = JText::_('ZONALES_PROVIDER_CONNECT');
+$routeReset = JRoute::_( 'index.php?option=com_user&view=reset' );
+$forgotPasswordMessage = JText::_('FORGOT_YOUR_PASSWORD');
+$routeRemind = JRoute::_( 'index.php?option=com_user&view=remind' );
+$forgotUsernameMessage = JText::_('FORGOT_YOUR_USERNAME');
+$usersConfig = &JComponentHelper::getParams( 'com_users' );
+$allowRegistration = ($usersConfig->get('allowUserRegistration')) ? true : false;
+$routeRegister = JRoute::_( 'index.php?option=com_user&view=register' );
+$registerMessage = JText::_('REGISTER');
+
 JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <!-- <script type="text/javascript" src="webtoolkit.js"></script> -->
