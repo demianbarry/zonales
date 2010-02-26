@@ -17,6 +17,10 @@ class AliasController extends JController {
         parent::display();
     }
 
+    /**
+     * Permite habilitar o deshabilitar los alias seleccionados
+     *
+     */
     function unblock() {
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
@@ -26,11 +30,14 @@ class AliasController extends JController {
         //$row =& JTable::getInstance('alias', 'Table');
         //$row = new JTableAlias($db);
 
+        // recupero los alias del usuario
         $userid = $user->id;
         $query = 'select a.id from #__alias a where user_id=' . $userid;
         $db->setQuery($query);
         $dbaliaslist = $db->loadObjectList();
-        
+
+        // a cada alias del usuario le actualizo su estado (habilitado o dehabilitado)
+        // segun lo especificado por el usuario
         foreach ($dbaliaslist as $alias) {
             $unblock = JRequest::getBool('alias'.$alias->id, false,'method');
 
