@@ -16,7 +16,18 @@ defined('_JEXEC') or die('Restricted access');
 $page = $this->page;
 $count = count($this->items);
 
-JToolBarHelper::title( JText::_( 'Hierarchic Values Manager' ), 'field-add.png' );
+if (isset ($this->back)) {
+    $backLink = JRoute::_('index.php?option=' . $option . '&controller=values&cid=' . $this->back);
+} else {
+    $backLink = JRoute::_('index.php?option=' . $option . '&controller=values&cid=0');
+}
+
+$text_name = '';
+
+for ($i=0, $n=count( $this->itemsBC ); $i < $n; $i++) {
+    $text_name = $text_name."&nbsp;<small><small>>></small></small><a href=". JRoute::_($this->itemsBC[$i]->link). "><small><small>".$this->itemsBC[$i]->name."</small></small></a>";
+}
+JToolBarHelper::title( JText::_( 'Hierarchic Values Manager' ).$text_name, 'field-add.png' );
 //JToolBarHelper::publishList();
 //JToolBarHelper::unpublishList();
 JToolBarHelper::deleteList(JText::_( 'WARNINGDELPROPERTIES'));

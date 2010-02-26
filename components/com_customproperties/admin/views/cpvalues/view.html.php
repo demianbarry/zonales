@@ -1,14 +1,14 @@
 <?php
 /**
-* Custom Properties for Joomla! 1.5.x
-* @package Custom Properties
-* @subpackage Component
-* @version 1.98
-* @revision $Revision: 1.3 $
-* @author Andrea Forghieri
-* @copyright (C) Andrea Forghieri, www.solidsystem.it
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
-*/
+ * Custom Properties for Joomla! 1.5.x
+ * @package Custom Properties
+ * @subpackage Component
+ * @version 1.98
+ * @revision $Revision: 1.3 $
+ * @author Andrea Forghieri
+ * @copyright (C) Andrea Forghieri, www.solidsystem.it
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
+ */
 
 
 // Check to ensure this file is included in Joomla!
@@ -22,62 +22,87 @@ jimport( 'joomla.application.component.view' );
  * @package    Custom Properties
  * @subpackage Components
  */
-class CustompropertiesViewCpvalues extends JView
-{
+class CustompropertiesViewCpvalues extends JView {
     /**
      * CP Values view display method
      * @return void
      **/
-    function display($tpl = null)
-    {
+    function display($tpl = null) {
         //$this->cid = JRequest::getInt('cid',0);
         //$this->pid = JRequest::getInt('pid',0);
         $this->cid = JRequest::getVar('cid', 0, '', 'array');
         $this->pid = JRequest::getVar('pid', 0, '', 'int');
-        switch($this->getLayout()){
-          case 'edit' :
+        switch($this->getLayout()) {
+            case 'edit' :
             //Get the value and your childrens
-            $model = $this->getModel('cpvalue');
-            $value = $model->getData();
-            $childs = $model->getChilds();
-            //$values = $model->getValues();
-            $this->assignRef('value', $value);
-            $this->assignRef('childs', $childs);
+                $model = $this->getModel('cpvalue');
+                $value = $model->getData();
+                $childs = $model->getChilds();
+                //$values = $model->getValues();
+                $this->assignRef('value', $value);
+                $this->assignRef('childs', $childs);
 
-            //create the parent list
-            $emptyValue = $model->getDefaultValue();
-            $emptyValue->parent_id = 0;
-            $emptyValue->label = JTEXT::_('Root_Value');
-            //$this->assignRef('values', $values);
-            $types = array ();
-            $model =& $this->getModel('cpvalues');
-            $items = $model->getAll($this->cid[0]);
-            $items[] = $emptyValue;
-            $this->assignRef('items', $items);
-            
-            //create the field list
-            if ($this->pid == 0) {
-                $model =& $this->getModel('cpfields');
-                $fields = $model->getAll();
-                $this->assignRef('fields', $fields);
-            }
+                //create the parent list
+                $emptyValue = $model->getDefaultValue();
+                $emptyValue->parent_id = 0;
+                $emptyValue->label = JTEXT::_('Root_Value');
+                //$this->assignRef('values', $values);
+                $types = array ();
+                $model =& $this->getModel('cpvalues');
+                $items = $model->getAll($this->cid[0]);
+                $items[] = $emptyValue;
+                $this->assignRef('items', $items);
 
-            break;
+                //create the field list
+                if ($this->pid == 0) {
+                    $model =& $this->getModel('cpfields');
+                    $fields = $model->getAll();
+                    $this->assignRef('fields', $fields);
+                }
 
-          default:
-            $model =& $this->getModel('cpvalues');
-            $items = $model->getList(true,$this->cid[0]);
-            $page = $model->getPagination();
+                break;
 
-            if ($this->cid[0] != 0) {
-                $pmodel = $this->getModel('cpvalue');
-                $pvalue = $pmodel->getData();
-                $this->back = $pvalue->parent_id;
-            }
+            default:
+                $model =& $this->getModel('cpvalues');
+                $items = $model->getList(true,$this->cid[0]);
+                $page = $model->getPagination();
 
-            $this->assignRef( 'items', $items );
-            $this->assignRef( 'page', $page );
-          }
+                if ($this->cid[0] != 0) {
+                    $pmodel = $this->getModel('cpvalue');
+                    $pvalue = $pmodel->getData();
+                    $this->back = $pvalue->parent_id;
+                    $this->actual = $pvalue->label;
+                } else {
+                    $this->back = 0;
+                    $this->actual = '';
+                }
+
+                $itemsBC = $this->armaPathWay($this->cid[0]);
+
+                $this->assignRef( 'itemsBC', $itemsBC );
+                $this->assignRef( 'items', $items );
+                $this->assignRef( 'page', $page );
+        }
         parent::display($tpl);
+    }
+
+    function armaPathWay($cid = 0) {
+        global $option, $mainframe;
+        //$objc =& $this->get('Data');
+
+        $items = array ();
+
+        do {
+            $model = $this->getModel('cpvalue');
+            $model->setId($cid);
+            $value = $model->getData();
+            $item = new stdClass();
+            $item->name = $value->label;
+            $item->link = JRoute::_('index.php?option=com_customproperties&controller=values&cid[]='.$cid);
+            array_unshift($items, $item);
+            $cid = $value->parent_id;
+        } while ($cid != 0);
+        
+        return $items;
     }
 }
