@@ -23,5 +23,8 @@
                description=
                 "No alertar alias que tengan mas de estos dias de antiguedad " />
      </params>
+     <languages folder="language">
+        <language tag="es-ES">es-ES.mod_pending.ini</language>
+    </languages>
 </install>
 

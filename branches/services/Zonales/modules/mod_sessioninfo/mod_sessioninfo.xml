@@ -23,4 +23,7 @@
                description=
                 "Permite especificar la URL interna a los datos del usuario " />
      </params>
+    <languages folder="language">
+        <language tag="es-ES">es-ES.mod_sessioninfo.ini</language>
+    </languages>
 </install>
