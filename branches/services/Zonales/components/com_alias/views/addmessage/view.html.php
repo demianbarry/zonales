@@ -14,12 +14,12 @@ class AliasViewAddMessage extends JView {
         switch ($status) {
             case 0:
                 $message = JText::_('ZONALES_ALIAS_ADDED_SUCCESSFULLY');
-                $class = $class . '.success';
+                $class = $class . '-success';
                 break;
 
             default:
                 $message = JText::_('ZONALES_ALIAS_NOT_ADDED');
-                $class = $class . '.error';
+                $class = $class . '-error';
                 break;
         }
 
