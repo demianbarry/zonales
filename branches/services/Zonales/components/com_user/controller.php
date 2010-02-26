@@ -216,20 +216,14 @@ class UserController extends JController {
                 $return	= 'index.php?option=com_user';
             }
 
-            // actualiza la cantidad de veces que se ha utilizado el proveedor
-            // para ingresar al sistema
-            $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
-                $db->setQuery($selectProvider);
-                $dbprovider = $db->loadObject();
-            $insertHit = 'update #__providers p set p.hits=p.hits+1 where p.id=' . $dbprovider->id;
-            $db->setQuery($insertHit);
-            $db->query();
-
             if ($credentials['userid'] == 0) {
                 $this->aliasreg($options['providerid'],$options['externalid']);
             }
             else {
                 $session = & JFactory :: getSession();
+                $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
+                $db->setQuery($selectProvider);
+                $dbprovider = $db->loadObject();
 
                 $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
             }
