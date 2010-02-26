@@ -1,8 +1,8 @@
 <?php
 /**
 * @version	$Id$
-* @package	Joomla
-* @subpackage	Users
+* @package	Zonales
+* @subpackage	Eq
 * @copyright	Copyright (C) 2005 - 2008. Mediabit. All rights reserved.
 * @license	GNU/GPL, see LICENSE.php
 *
