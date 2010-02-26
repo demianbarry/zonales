@@ -1,6 +1,6 @@
 <?php
 /**
-* @version	$Id: user.php 10381 2008-06-01 03:35:53Z pasamio $
+* @version	$Id$
 * @package	Joomla
 * @subpackage	Users
 * @copyright	Copyright (C) 2005 - 2008. Mediabit. All rights reserved.
