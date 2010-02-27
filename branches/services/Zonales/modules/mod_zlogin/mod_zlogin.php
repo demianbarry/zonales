@@ -42,13 +42,13 @@ foreach ($providerslist as $provider) {
 $connectMessage = JText::_('ZONALES_PROVIDER_CONNECT_WITH');
 $routeAction = JRoute::_('index.php');
 $providerConnectMessage = JText::_('ZONALES_PROVIDER_CONNECT');
-$routeReset = JRoute::_( 'index.php?option=com_user&view=reset' );
+$routeReset = JRoute::_( 'index.php?option=com_user&view=reset&map=0' );
 $forgotPasswordMessage = JText::_('FORGOT_YOUR_PASSWORD');
-$routeRemind = JRoute::_( 'index.php?option=com_user&view=remind' );
+$routeRemind = JRoute::_( 'index.php?option=com_user&view=remind&map=0' );
 $forgotUsernameMessage = JText::_('FORGOT_YOUR_USERNAME');
 $usersConfig = &JComponentHelper::getParams( 'com_users' );
 $allowRegistration = ($usersConfig->get('allowUserRegistration')) ? true : false;
-$routeRegister = JRoute::_( 'index.php?option=com_user&view=register' );
+$routeRegister = JRoute::_( 'index.php?option=com_user&view=register&map=0' );
 $registerMessage = JText::_('REGISTER');
 
 JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
