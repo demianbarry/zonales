@@ -248,4 +248,13 @@ class comZonalesHelper
             return ($onProgress == 'true');
         }
 
+        /**
+         * Verifica si hay que mostrar el mapa
+         * @return boolean
+         */
+        function showMap() {
+            $show = JRequest::getInt('map','1','method');
+            return ($show == 1);
+        }
+
 }

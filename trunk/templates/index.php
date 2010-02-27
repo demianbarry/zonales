@@ -4,7 +4,7 @@ $helper = new comZonalesHelper();
 
 $view = 'component.php';
 
-if(is_null($helper->getZonal()) && !$helper->isAuthenticationOnProgress())
+if(is_null($helper->getZonal()) && !$helper->isAuthenticationOnProgress() && $helper->showMap())
 {
 // si no se ha seleccionado un zonal o no hay ninguna autenticacion en progreso
 $view = 'component_map.php';
