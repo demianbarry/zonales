@@ -94,7 +94,37 @@ class UserViewRegister extends JView {
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
 
+        $nameMessage = JText::_( 'Name' );
+        $usernameMessage = JText::_( 'User name' );
+        $emailMessage = JText::_( 'Email' );
+        $backupEmailMessage = JText::_( 'ZONALES_PROFILE_BACKUP_EMAIL' );
+        $birthdateMessage = JText::_( 'ZONALES_PROFILE_BIRTHDATE' );
+        $sexMessage = JText::_( 'ZONALES_PROFILE_SEX' );
+        $femaleSexMessage = JText::_( 'ZONALES_PROFILE_SEX_FEMALE' );
+        $maleSexMessage = JText::_( 'ZONALES_PROFILE_SEX_MALE' );
+        $chooseProviderMessage = JText::_( 'ZONALES_PROVIDER_CHOOSE' );
+        $passwordMessage = JText::_( 'Password' );
+        $verifyPasswordMessage = JText::_( 'Verify Password' );
+        $registerRequiredMessage = JText::_( 'REGISTER_REQUIRED' );
+        $confirmRegisterMessage = JText::_('Register');
+        $fixPart = JText::_('ZONALES_PROVIDER_CONNECT');
+
         // enviar parametros a la plantilla
+        $this->assign('nameMessage',$nameMessage);
+        $this->assign('usernameMessage',$usernameMessage);
+        $this->assign('emailMessage',$emailMessage);
+        $this->assign('backupEmailMessage',$backupEmailMessage);
+        $this->assign('birthdateMessage',$birthdateMessage);
+        $this->assign('sexMessage',$sexMessage);
+        $this->assign('femaleSexMessage',$femaleSexMessage);
+        $this->assign('maleSexMessage',$maleSexMessage);
+        $this->assign('chooseProviderMessage',$chooseProviderMessage);
+        $this->assign('passwordMessage',$passwordMessage);
+        $this->assign('verifyPasswordMessage',$verifyPasswordMessage);
+        $this->assign('registerRequiredMessage',$registerRequiredMessage);
+        $this->assign('confirmRegisterMessage',$confirmRegisterMessage);
+        $this->assign('fixPart',$fixPart);
+
         $this->assignRef('providerslist',$providerslist);
         $this->assignRef('user', $user);
         $this->assignRef('params',$params);

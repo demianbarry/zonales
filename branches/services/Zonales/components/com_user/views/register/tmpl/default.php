@@ -89,7 +89,7 @@ if(isset($this->message)) {
                 <label id="namemsg" 
                        for="name"
                 >
-                    <?php echo '*' . JText::_( 'Name' ); ?>:
+                    <?php echo '*' . $this->nameMessage ?>:
                 </label>
             </td>
             <td>
@@ -109,7 +109,7 @@ if(isset($this->message)) {
                 <label id="usernamemsg" 
                        for="username"
                 >
-                    <?php echo '*' . JText::_( 'User name' ); ?>:
+                    <?php echo '*' . $this->usernameMessage ?>:
                 </label>
             </td>
             <td>
@@ -129,7 +129,7 @@ if(isset($this->message)) {
                 <label id="emailmsg" 
                        for="email"
                 >
-                    <?php echo '*' . JText::_( 'Email' ); ?>:
+                    <?php echo '*' . $this->emailMessage ?>:
                 </label>
             </td>
             <td>
@@ -149,7 +149,7 @@ if(isset($this->message)) {
                 <label id="email2msg" 
                        for="email2"
                 >
-                    <?php echo '*' . JText::_( 'Backup Email' ); ?>:
+                    <?php echo '*' . $this->backupEmailMessage ?>:
                 </label>
             </td>
             <td>
@@ -169,12 +169,11 @@ if(isset($this->message)) {
         <tr>
             <td>
                 <label for="birthdate">
-                    <?php echo '*' . JText::_( 'Birthdate' ); ?>:
+                    <?php echo '*' . $this->birthdateMessage ?>:
                 </label>
             </td>
             <td>
                 <?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')) ?>
-               <!-- <input class="inputbox required validate-birthdate" type="text" id="birthdate" name="birthdate" value="" size="40" /> -->
             </td>
         </tr>
         <!-- agregado por G2P -->
@@ -184,7 +183,7 @@ if(isset($this->message)) {
                 <label id="sexmsg" 
                        for="sex"
                 >
-                    <?php echo JText::_( 'Sex' ); ?>:
+                    <?php echo '*' . $this->sexMessage ?>:
                 </label>
             </td>
             <td>
@@ -192,11 +191,11 @@ if(isset($this->message)) {
                     <li><input type="radio"
                                name="sex"
                                value="F"
-                        /><?php echo JText::_( 'Female' ); ?></li>
+                        /><?php echo $this->femaleSexMessage ?></li>
                     <li><input type="radio"
                                name="sex"
                                value="M"
-                        /><?php echo JText::_( 'Male' ); ?></li>
+                        /><?php echo $this->maleSexMessage ?></li>
                 </ul>
             </td>
         </tr>
@@ -209,7 +208,7 @@ if(isset($this->message)) {
                 <label style="display: <?php echo $style ?>;" 
                        id="providermsg"
                        for="provider">
-                    <?php echo JText::_( 'Choose how to autenticate' ); ?>:
+                    <?php echo $this->chooseProviderMessage ?>:
                 </label>
             </td>
             <td>
@@ -301,7 +300,7 @@ if(isset($this->message)) {
                        id="pwmsg"
                        for="password"
                 >
-                    <?php echo '*' . JText::_( 'Password' ); ?>:
+                    <?php echo '*' . $this->passwordMessage ?>:
                 </label>
             </td>
             <td>
@@ -321,7 +320,7 @@ if(isset($this->message)) {
                        id="pw2msg"
                        for="password2"
                 >
-                    <?php echo '*' . JText::_( 'Verify Password' ); ?>:
+                    <?php echo '*' . $this->verifyPasswordMessage ?>:
                 </label>
             </td>
             <td>
@@ -339,18 +338,18 @@ if(isset($this->message)) {
             <td colspan="2" 
                 height="40"
             >
-                <?php echo JText::_( 'REGISTER_REQUIRED' ); ?>
+                <?php echo $this->registerRequiredMessage ?>
             </td>
         </tr>
     </table>
     <button class="button validate"
             type="submit">
-                <?php echo JText::_('Register'); ?>
+                <?php echo $this->confirmRegisterMessage ?>
     </button>
     <input type="hidden" 
            id="fixbutton"
            name="fixbutton"
-           value="<?php echo JText::_('ZONALES_PROVIDER_CONNECT') ?>"
+           value="<?php echo $this->fixPart ?>"
     />
     <input type="hidden"
            name="task"
