@@ -49,7 +49,7 @@ class CustompropertiesControllerAssign extends JController
 
   	$view = $this->getView('assign', 'html');
 	$view->setModel( $this->getModel( 'assign', 	'CustompropertiesModel' ), true );
-	$view->setModel( $this->getModel( 'cpfields', 	'CustompropertiesModel' ) );
+	$view->setModel( $this->getModel( 'cpfields', 	'CustompropertiesModel' ) );        
 	$view->setModel( $this->getModel( 'content', 	'CustompropertiesModel' ) );
 
 	$view->display();

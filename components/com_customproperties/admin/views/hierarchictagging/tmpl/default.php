@@ -18,6 +18,7 @@ $properties			= $this->properties;
 $ce_name			= $this->ce_name;
 $content_element	= $this->content_element;
 $jsCode			= $this->jsCode;
+$divs			= $this->divs;
 
 // incluye javascript para objeto flash
 JHTML::script('core/lang/Bs_Misc.lib.js');
@@ -34,14 +35,7 @@ JHTML::script('tree/Bs_TreeElement.class.js');
 <?php
 echo $jsCode;
 ?>
-    t = new Bs_Tree();
-    t.imageDir = '/zonales/media/system/js/tree/img/win98/';
-    t.checkboxSystemImgDir = '/zonales/media/system/js/checkbox/img/win2k_noBorder/';
-    t.useCheckboxSystem      = true;
-    t.checkboxSystemWalkTree = 3;
-    t.useAutoSequence = 0;
-    t.initByArray(a);
-    t.drawInto('cp_values');
+
 </script>
 <div class="header icon-48-assign"><?php echo JText::_('Assign tags to').': ['.htmlspecialchars($item_title).']'; ?></div>
 <div class="cp_info"><?php
@@ -62,11 +56,10 @@ echo $jsCode;
             <input type="button" class="button" value="<?php echo JText::_('Add'); ?>" onclick="this.form.task.value='add';this.form.submit();"/>
             <input type="button" class="button" value="<?php echo JText::_('Replace'); ?>" onclick="this.form.task.value='replace';this.form.submit();" />
             <input type="button" class="button" value="<?php echo JText::_('Close'); ?>" onclick="window.parent.document.getElementById('sbox-window').close();"/>
-        </div>
-
-        <div id="cp_values" class="cp_values">
-
-        </div>
+        </div>        
+        <?php
+        echo $divs;
+        ?>
 
     </form>
 </div>
