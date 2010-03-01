@@ -78,7 +78,7 @@ function plgSearchContent( $text, $phrase='', $ordering='', $areas=null )
 	}
 
 	// load plugin params info
- 	$plugin			=& JPluginHelper::getPlugin('search', 'content');
+ 	$plugin			=& JPluginHelper::getPlugin('search', 'zonalescontent');
  	$pluginParams	= new JParameter( $plugin->params );
 
 	$sContent 		= $pluginParams->get( 'search_content', 		1 );
