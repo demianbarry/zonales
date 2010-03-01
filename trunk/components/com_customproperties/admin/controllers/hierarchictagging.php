@@ -124,5 +124,4 @@ class CustompropertiesControllerHierarchictagging extends JController {
         $this->setRedirect($return_to);
 
     }
-
 }
