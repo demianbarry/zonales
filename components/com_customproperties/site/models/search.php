@@ -89,7 +89,7 @@ class CustompropertiesModelSearch extends JModel
 		$params->def( 'pageclass_sfx',			$cp_config['pageclass_sfx'] );
 		$params->def( 'show_page_title',		$cp_config['show_page_title'] );
 		$params->def( 'header',				 	$cp_config['header'] != '' ? 			$cp_config['page_title'] 		: JText::_('Search') );
-		$params->def( 'use_joomfish',			$cp_config['use_joomfish'] != "" ?		$cp_config['use_joomfish']		: '0');
+		// $params->def( 'use_joomfish',			$cp_config['use_joomfish'] != "" ?		$cp_config['use_joomfish']		: '0');
 		$params->def( 'script_position',		$cp_config['script_position'] != "" ? 	$cp_config['script_position'] 	: 'auto');
 		$params->def( 'search_unauthorized',	$cp_config['search_unauthorized']!= "" ? $cp_config['search_unauthorized'] : '1');
 		$params->def( 'search_archived',		$cp_config['search_archived'] != "" ? 	$cp_config['search_archived']	: '1');
