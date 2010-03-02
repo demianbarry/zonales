@@ -25,7 +25,7 @@ CREATE TABLE  `#__providers` (
   `access` int(11) NOT NULL,
   `prefix` varchar(50) NOT NULL,
   `suffix` varchar(50) NOT NULL,
-  `required_input` varchar(255),
+  `required_input` varchar(255) default "::",
   PRIMARY KEY  (`id`),
 unique (`name`),
   KEY `fk_#__providers_#__protocol_type` (`protocol_type_id`),
