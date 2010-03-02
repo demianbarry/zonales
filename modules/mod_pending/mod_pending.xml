@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+     <name>Alias alert</name>
+     <author>Cristian Pacheco</author>
+     <creationDate>February 2010</creationDate>
+     <copyright>(C) 2010 Cristian Pacheco. All rights reserved.</copyright>
+     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+     <authorEmail>cpacheco@lavabit.com</authorEmail>
+     <version>1.0.0</version>
+     <description>Alias Notice informara cuando haya
+     nuevos alias asociados al usuario
+     pendientes de aprobacion
+     </description>
+     <files>
+          <filename module="mod_pending"
+               >mod_pending.php</filename>
+          <filename>tmpl/default.php</filename>
+          <filename>tmpl/index.html</filename>
+     </files>
+     <params>
+          <param name="days" type="text" default="5"
+               label="Dias "
+               description=
+                "No alertar alias que tengan mas de estos dias de antiguedad " />
+     </params>
+     <languages folder="language">
+        <language tag="es-ES">es-ES.mod_pending.ini</language>
+    </languages>
+</install>
+
