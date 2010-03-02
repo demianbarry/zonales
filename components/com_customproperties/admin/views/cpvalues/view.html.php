@@ -30,7 +30,7 @@ class CustompropertiesViewCpvalues extends JView {
     function display($tpl = null) {
         global $option, $mainframe;
 
-        $this->_context     = $option . 'h_value';		// nombre del contexto
+        $this->_context = $option.'h_value';		// nombre del contexto
 
         $this->cid = JRequest::getVar('cid', 0, '', 'array');
         $this->pid = JRequest::getVar('pid', 0, '', 'int');
@@ -54,15 +54,16 @@ class CustompropertiesViewCpvalues extends JView {
                 //$this->assignRef('values', $values);
                 $types = array ();
 
-                $model =& $this->getModel('cpvalues');
+                $pmodel =& $this->getModel('cpvalues');
 
-                $pmodel = $this->getModel('cpvalue');
+                //$pmodel = $this->getModel('cpvalue');
+
                 if ($this->pid != 0) {
-                    $pmodel->setId($this->pid);
-                    $pvalue = $pmodel->getData();
-                    $items = $model->getAllFilterByField($this->cid[0], $pvalue->field_id);
+                    $model->setId($this->pid);
+                    $pvalue = $model->getData();
+                    $items = $pmodel->getAllFilterByField($this->cid[0], $pvalue->field_id);
                 } else {
-                    $items = $model->getAll($this->cid[0]);
+                    $items = $pmodel->getAll($this->cid[0]);
                 }
 
                 $items[] = $emptyValue;
@@ -70,8 +71,8 @@ class CustompropertiesViewCpvalues extends JView {
 
                 //create the field list
                 if ($this->pid == 0) {
-                    $model =& $this->getModel('cpfields');
-                    $fields = $model->getAll();
+                    $fmodel =& $this->getModel('cpfields');
+                    $fields = $fmodel->getAll();
                     $this->assignRef('fields', $fields);
                 }
 
@@ -79,21 +80,27 @@ class CustompropertiesViewCpvalues extends JView {
 
             default:
 
-                $this->_filter_field = $mainframe->getUserStateFromRequest( $this->_context.'filter_field', 'filter_field', NULL, 'int' );
+                $this->_filter_field = $mainframe->getUserStateFromRequest( $this->_context.'filter_field', 'filter_field', 0, 'int' );
+
+                $fmodel = $this->getModel('cpfield');
 
                 if ($this->pid == 0) {
                     //create the field list
                     $model =& $this->getModel('cpfields');
                     $fields = $model->getAll();
+                    $emptyValue = $fmodel->getDefaultValue();
+                    $emptyValue->label = JTEXT::_('- Field -');
+                    array_unshift($fields, $emptyValue);
 
-                    $this->_lists['field_list'] = JHTML::_('select.genericlist',  $fields, 'filter_fields', 'class="inputbox" size="1" onchange="document.adminForm.submit();" ','id','label', $this->_filter_field);
+                    $this->_lists['field_list'] = JHTML::_('select.genericlist',  $fields, 'filter_field', 'class="inputbox" size="1" onchange="document.adminForm.submit();" ','id','label', $this->_filter_field);
                 }
 
                 // filtro
                 
                 $model =& $this->getModel('cpvalues');
+
                 if ( !is_null($this->_filter_field) ) {
-                    $items = $model->getListFilterByField($this->cid[0], $this->_filter_field);
+                    $items = $model->getList(true, $this->cid[0], $this->_filter_field);
                 } else {
                     $items = $model->getList(true,$this->cid[0]);
                 }
@@ -103,7 +110,6 @@ class CustompropertiesViewCpvalues extends JView {
                 $page = $model->getPagination();
 
                 for ($i=0, $n=count( $items ); $i < $n; $i++) {
-                    $fmodel = $this->getModel('cpfield');
                     $fmodel->setId($items[$i]->field_id);
                     $field = $fmodel->getData();
                     $items[$i]->field = $field->label;

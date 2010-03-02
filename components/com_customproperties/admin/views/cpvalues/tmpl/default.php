@@ -45,14 +45,18 @@ if ($this->root != 0) {
     <div id="editcell">
 
         <?php if ($this->root == 0):?>
-        <?php echo JText::_( 'FILTERS' ); ?>:
         <table>
-            <tr>
-                <td nowrap="nowrap">
-                    <?php echo JText::_( 'FIELD_TYPE' ); ?>:
-                    <?php echo $this->_lists['field_list']; ?>
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <td colspan="2" nowrap="nowrap">
+                            <?php
+                            echo JText::_( 'FILTERS' ).": ";
+                            echo JText::_('FIELD_TYPE').": ";
+                            echo $this->_lists['field_list'];
+                            ?>
+                    </td>
+                </tr>
+            </thead>
         </table>
         <?php endif;?>
 
@@ -104,14 +108,14 @@ if ($this->root != 0) {
                 ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-    <?php echo $page->getRowOffset( $i ) ?>
+                        <?php echo $page->getRowOffset( $i ) ?>
                 </td>
                 <td>
-    <?php echo $checked ?>
+                        <?php echo $checked ?>
                 </td>
                 <td>
                     <a href="<?php echo JRoute::_( $link ); ?>">
-    <?php echo htmlspecialchars($row->name, ENT_QUOTES); ?>
+                            <?php echo htmlspecialchars($row->name, ENT_QUOTES); ?>
                     </a>
                     &nbsp;(
                     <a href="<?php echo JRoute::_( $linkEditar ); ?>">
@@ -120,10 +124,10 @@ if ($this->root != 0) {
                     )
                 </td>
                 <td>
-    <?php echo $row->label ?>
+                        <?php echo $row->label ?>
                 </td>
                 <td>
-    <?php echo $row->field ?>
+                        <?php echo $row->field ?>
                 </td>
                 <!--<td align="center">
 						<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->published ? 'unpublish' : 'publish' ?>')">
@@ -131,11 +135,11 @@ if ($this->root != 0) {
 						</a>
 					</td>
                 <td align="center" width="10%" <?php echo $color_access?>>
-    <?php echo $access;?>
+                    <?php echo $access;?>
 					</td>
                 -->
                 <td align="center">
-    <?php echo $row->id ?>
+                        <?php echo $row->id ?>
                 </td>
                 <td class="order">
                     <span><?php echo $page->orderUpIcon( $i, ($i !== 0), 'orderup', JText::_('Move Up')); ?></span>
@@ -147,7 +151,7 @@ if ($this->root != 0) {
                     <input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
                 </td>
             </tr>
-    <?php
+                <?php
                 $k = 1 - $k;
             }
             ?>
