@@ -135,55 +135,55 @@ window.addEvent('domready', function() {
 <div class="moduletable_formVecinos">
 	<h1><?php echo $module->title; ?></h1>
 	<div style="margin-left:10px; margin-right:10px;">
-		<p>Zonales nos da la posibilidad de hacer pública una noticia de su barrio o localidad.</p>
-		<p><strong>Soy corresponsal</strong> nos permite ser vecinos y periodístas. Vea las publicaciones en <strong>La voz del vecino</strong>.</p>
+		<p><?php echo JTEXT::_('INTRO');?></p>
+		<p><strong><?php echo $module->title; ?></strong> <?php echo JTEXT::_('INTRO2');?> <strong><?php echo JTEXT::_('VIEW_IN');?></strong>.</p>
 		<div class="splitter"></div>
 
 		<form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" >
 			<div id="nota">
-				<label for="partidos">Partido</label>
+				<label for="partidos"><?php echo JTEXT::_('COUNTY');?></label>
 				<?php echo $lists['partido_select']; ?>
-				<label for="localidad">Localidad</label>
+				<label for="localidad"><?php echo JTEXT::_('CITY');?></label>
 				<div id="localidad_container"><?php echo $lists['localidad_select']; ?></div>
 
 				<div class="splitter"></div>
 
-				<label for="title">Título</label>
+				<label for="title"><?php echo JTEXT::_('TITLE');?></label>
 				<input id="title" name="title" type="text" class="required" value="" />
 
-				<label for="text">Texto</label>
+				<label for="text"><?php echo JTEXT::_('TEXT');?></label>
 				<?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
 
-				<a id="siguiente" name="siguiente">Siguiente</a>
+				<a id="siguiente" name="siguiente"><?php echo JTEXT::_('NEXT');?></a>
 			</div>
 
 			<div id="corresponsal" style="display: none;">
-				<label for="nombre">Nombre y apellido <span>(no será publicado)</span></label>
+				<label for="nombre"><?php echo JTEXT::_('NAME');?><span>(<?php echo JTEXT::_('NO_PUBLIC');?>)</span></label>
 				<input id="nombre" name="nombre" type="text" class="" value="<?php if (!$user->guest) echo $user->name; ?>"/>
 
 				<?php if ($showEmail): ?>
-				<label for="email">E-Mail <span>(no será publicado)</span></label>
+				<label for="email"><?php echo JTEXT::_('MAIL');?><span>(<?php echo JTEXT::_('NO_PUBLIC');?>)</span></label>
 				<input id="email" name="email" type="text" class="" value="<?php if (!$user->guest) echo $user->email; ?>" />
 				<?php endif; ?>
 
 				<?php if ($showPhone): ?>
-				<label for="telefono">Teléfono <span>(no será publicado)</span></label>
+				<label for="telefono"><?php echo JTEXT::_('PHONE');?><span>(<?php echo JTEXT::_('NO_PUBLIC');?>)</span></label>
 				<input id="telefono" name="telefono" type="text" class="" />
 				<?php endif; ?>
 
 				<div class="splitter"></div>
-				<div id="captchaStatus" style="display: none; color:red;">Incorrecto. Otro intento.</div>
+				<div id="captchaStatus" style="display: none; color:red;"><?php echo JTEXT::_('INCORRECT');?></div>
 				<div id="recaptcha_widget" style="display:none">
 					<div id="recaptcha_image"></div>
 					<br/>
-					<span class="recaptcha_only_if_image">Escribe las 2 palabras:</span>
-					<span class="recaptcha_only_if_audio">Escribe los 8 números:</span>
+					<span class="recaptcha_only_if_image"><?php echo JTEXT::_('WORDS_CAPTCHA');?></span>
+					<span class="recaptcha_only_if_audio"><?php echo JTEXT::_('NOMBERS_CAPTCHA');?></span>
 					<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
 
-					<div><a href="javascript:Recaptcha.reload()">Obtener un nuevo reto</a></div>
-					<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Reto audible</a></div>
-					<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Reto visual</a></div>
-					<div><a href="javascript:Recaptcha.showhelp()">Ayuda</a></div>
+					<div><a href="javascript:Recaptcha.reload()"><?php echo $captchaTextNew;?></a></div>
+					<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><?php echo $captchaTextSnd;?></a></div>
+					<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><?php echo $captchaTextImg;?></a></div>
+					<div><a href="javascript:Recaptcha.showhelp()"><?php echo $captchaTextHelp;?></a></div>
 					<noscript>
 						<iframe src="http://api.recaptcha.net/noscript?k=<?php echo $captcha_publickey; ?>" height="300" width="500" frameborder="0"></iframe><br>
 						<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
@@ -203,7 +203,7 @@ window.addEvent('domready', function() {
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 
-		<p id="mensaje" title="mensaje" />
+		<div id="mensaje" title="mensaje" />
 	</div>
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->

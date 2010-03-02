@@ -19,17 +19,21 @@
 		<language tag="es-ES">es-ES.mod_soycorresponsal.ini</language>
 	</languages>
 	<params>
-		<param name="show_email" type="radio" default="0" label="SHOWEMAIL" description="TIP_SHOWEMAIL">
+		<param name="show_email" type="radio" default="1" label="SHOWEMAIL" description="TIP_SHOWEMAIL">
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>
-		<param name="show_phone" type="radio" default="0" label="SHOWPHONE" description="TIP_SHOWPHONE">
+		<param name="show_phone" type="radio" default="1" label="SHOWPHONE" description="TIP_SHOWPHONE">
 			<option value="0">NO</option>
 			<option value="1">YES</option>
 		</param>
 		<param name="category" type="category" label="Select a category" />
 		<param name="user" type="sql" default="" query="SELECT id, name FROM #__users" key_field="id" value_field="name" description="TIP_USER" />
-		<pamra name="confirmacion" type="textarea" rows="3" cols="40" label="CONFIRMACION" default="¡Gracias!  A la brevedad nos comunicaremos con usted." description="TIP_CONFIRMACION" />
-		<pamra name="error" type="textarea" rows="3" cols="40" label="ERROR" default="Un error ha ocurrido mientras se procesaba su envio." description="TIP_ERROR" />
+		<param name="confirmacion" type="textarea" rows="3" cols="40" label="CONFIRMACION" default="¡Gracias!  A la brevedad nos comunicaremos con usted." description="TIP_CONFIRMACION" />
+		<param name="error" type="textarea" rows="3" cols="40" label="ERROR" default="Un error ha ocurrido mientras se procesaba su envio." description="TIP_ERROR" />
+                <param name="captchaTextNew" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_NEW" default="Nueva Imagen" description="TIP_CAPTCHA_NEW" />
+                <param name="captchaTextSnd" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_SND" default="Escuchar" description="TIP_CAPTCHA_SND" />
+                <param name="captchaTextImg" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_IMG" default="Ver" description="TIP_CAPTCHA_IMG" />
+                <param name="captchaTextHelp" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_HELP" default="Ayuda" description="TIP_CAPTCHA_HELP" />
 	</params>
 </install>
