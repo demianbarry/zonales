@@ -116,19 +116,34 @@ class TableCpvalue extends JTable {
      * @return boolean true if check is positive, false otherwise
      */
     function delete() {
+
+
         // if the value is a root node throw an error
-        if($this->parent_id == null) {
+        /*if($this->parent_id == null) {
             $this->setError(JText::_('NO PARENT VALUE'));
+            return false;
+        }*/
+
+        $dbo =& JFactory::getDBO();
+
+        //if the value contains childrens throw an error
+        $query = 'SELECT * FROM #__custom_properties_values
+                WHERE parent_id = '.$this->id;
+	$this->_db->setQuery($query);
+        $results = $this->_db->loadObjectList();
+        if (count($results) != 0) {
+            $this->setError(JText::_('NODE NO LEAF'));
             return false;
         }
 
-        $dbo =& JFactory::getDBO();
+
         // set the value's parent as the childs one
-        $query = 'UPDATE '. $dbo->nameQuote('#__custom_properties_values') . ' v'
+        /*$query = 'UPDATE '. $dbo->nameQuote('#__custom_properties_values') . ' v'
                 .' SET '. $dbo->nameQuote('v.parent_id') .' = '. $this->parent_id
                 .' WHERE '. $dbo->nameQuote('v.parent_id') .' = '. $this->id;
 	$this->_db->setQuery($query);
         if($this->_db->query() === false) return false ;
+        */
 
         // delete value AND records from customProperties
         $query = "DELETE FROM #__custom_properties_values

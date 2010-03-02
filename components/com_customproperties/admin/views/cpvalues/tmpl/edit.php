@@ -56,12 +56,12 @@ $priority[] = JHTML::_('select.option', '2', '2');
                         <td><?php echo JText::_( 'Label' )?>:</td>
                         <td><input class="inputbox" type="text" name="label" id="title_alias" value="<?php echo  $value->label?>" size="30" maxlength="255" /></td>
                     </tr>
-                    <?php if($this->value->id != 0):?>
+                    
                     <tr>
                         <td><?php echo JText::_( 'Parent' )?>:</td>
                         <td><?php echo JHTML::_('select.genericlist', $this->items, 'newpid', '','id', 'label', $value->parent_id) ?></td>
                     </tr>
-                    <?php endif;?>
+                    
                     <?php if($this->pid == 0):?>
                     <tr>
                         <td><?php echo JText::_( 'Field' )?>:</td>
