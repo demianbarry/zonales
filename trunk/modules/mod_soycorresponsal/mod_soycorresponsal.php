@@ -21,6 +21,10 @@ require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 // parametros
 $showEmail = $params->get('show_email');
 $showPhone = $params->get('show_phone');
+$captchaTextNew = $params->get('captchaTextNew');
+$captchaTextSnd = $params->get('captchaTextSnd');
+$captchaTextImg = $params->get('captchaTextImg');
+$captchaTextHelp = $params->get('captchaTextHelp');
 
 $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
 $captcha_publickey = $zonalesParams->get('recaptcha_publickey', null);
