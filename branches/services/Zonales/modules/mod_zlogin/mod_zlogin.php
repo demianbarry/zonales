@@ -54,8 +54,8 @@ $registerMessage = JText::_('REGISTER');
 JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <!-- <script type="text/javascript" src="webtoolkit.js"></script> -->
-<script type="text/javascript">
-    window.onload = setIni();
+<script type="text/javascript" defer="defer">
+   // window.onload = setIni();
     
         function setIni(){
                 var index = document.formlogin.selprovider.options.selectedIndex;
