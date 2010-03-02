@@ -60,7 +60,7 @@ class CustompropertiesModelCpvalues extends JModel {
      * @param boolean returns the data with pagination
      * @return array Array of objects containing the data from the database
      */
-    function getList($with_pagination = true, $cid = 0) {
+    function getList($with_pagination = true, $cid = 0, $field_id = null) {
 
         if (!empty($this->_list)) {
             return $this->_list;
@@ -74,7 +74,11 @@ class CustompropertiesModelCpvalues extends JModel {
             $limitstart = $mainframe->getUserStateFromRequest( 'limitstart', 'limitstart', 0, 'int' );
 
             /* count records for pagenav */
-            $query = "SELECT count(*) FROM #__custom_properties_values WHERE parent_id = $cid";
+            if ($field_id == null) {
+                $query = "SELECT count(*) FROM #__custom_properties_values WHERE parent_id = $cid";
+            } else {
+                $query = "SELECT count(*) FROM #__custom_properties_values WHERE parent_id = $cid AND field_id = $field_id";
+            }
             $database->setQuery($query);
             $total = $database->loadResult();
             if ($total <= $limitstart) $limitstart = 0;
@@ -85,7 +89,11 @@ class CustompropertiesModelCpvalues extends JModel {
         }
 
         /* retrieve records */
-        $query = "SELECT * FROM #__custom_properties_values WHERE parent_id = $cid ORDER BY ordering ";
+        if ($field_id == null) {
+            $query = "SELECT * FROM #__custom_properties_values WHERE parent_id = $cid ORDER BY ordering ";
+        } else {
+            $query = "SELECT * FROM #__custom_properties_values WHERE parent_id = $cid AND field_id = $field_id ORDER BY ordering ";
+        }
         if($with_pagination) {
             $database->setQuery($query, $pageNav->limitstart, $pageNav->limit);
         }

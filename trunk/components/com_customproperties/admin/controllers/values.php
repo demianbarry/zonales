@@ -53,8 +53,9 @@ class CustompropertiesControllerValues extends JController {
         $view->setModel($this->getModel('cpfield', 'CustompropertiesModel'), true);
 
         switch($this->getTask()) {
-            case 'edit':
             case 'add':
+                JRequest::setVar('cid', 0);
+            case 'edit':
             case 'ordervalup':
                 $view->setModel($this->getModel('cpvalue', 'CustompropertiesModel'));
                 $view->setLayout('edit');
