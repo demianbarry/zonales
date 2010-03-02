@@ -28,8 +28,10 @@ class CustompropertiesViewCpvalues extends JView {
      * @return void
      **/
     function display($tpl = null) {
-        //$this->cid = JRequest::getInt('cid',0);
-        //$this->pid = JRequest::getInt('pid',0);
+        global $option, $mainframe;
+
+        $this->_context     = $option . 'h_value';		// nombre del contexto
+
         $this->cid = JRequest::getVar('cid', 0, '', 'array');
         $this->pid = JRequest::getVar('pid', 0, '', 'int');
         switch($this->getLayout()) {
@@ -37,6 +39,9 @@ class CustompropertiesViewCpvalues extends JView {
             //Get the value and your childrens
                 $model = $this->getModel('cpvalue');
                 $value = $model->getData();
+                if ($value->parent_id == 0) {
+                    $value->parent_id=$this->pid;
+                }
                 $childs = $model->getChilds();
                 //$values = $model->getValues();
                 $this->assignRef('value', $value);
@@ -48,8 +53,18 @@ class CustompropertiesViewCpvalues extends JView {
                 $emptyValue->label = JTEXT::_('Root_Value');
                 //$this->assignRef('values', $values);
                 $types = array ();
+
                 $model =& $this->getModel('cpvalues');
-                $items = $model->getAll($this->cid[0]);
+
+                $pmodel = $this->getModel('cpvalue');
+                if ($this->pid != 0) {
+                    $pmodel->setId($this->pid);
+                    $pvalue = $pmodel->getData();
+                    $items = $model->getAllFilterByField($this->cid[0], $pvalue->field_id);
+                } else {
+                    $items = $model->getAll($this->cid[0]);
+                }
+
                 $items[] = $emptyValue;
                 $this->assignRef('items', $items);
 
@@ -63,16 +78,45 @@ class CustompropertiesViewCpvalues extends JView {
                 break;
 
             default:
+
+                $this->_filter_field = $mainframe->getUserStateFromRequest( $this->_context.'filter_field', 'filter_field', NULL, 'int' );
+
+                if ($this->pid == 0) {
+                    //create the field list
+                    $model =& $this->getModel('cpfields');
+                    $fields = $model->getAll();
+
+                    $this->_lists['field_list'] = JHTML::_('select.genericlist',  $fields, 'filter_fields', 'class="inputbox" size="1" onchange="document.adminForm.submit();" ','id','label', $this->_filter_field);
+                }
+
+                // filtro
+                
                 $model =& $this->getModel('cpvalues');
-                $items = $model->getList(true,$this->cid[0]);
+                if ( !is_null($this->_filter_field) ) {
+                    $items = $model->getListFilterByField($this->cid[0], $this->_filter_field);
+                } else {
+                    $items = $model->getList(true,$this->cid[0]);
+                }
+
+                //$model =& $this->getModel('cpvalues');
+                //$items = $model->getList(true,$this->cid[0]);
                 $page = $model->getPagination();
+
+                for ($i=0, $n=count( $items ); $i < $n; $i++) {
+                    $fmodel = $this->getModel('cpfield');
+                    $fmodel->setId($items[$i]->field_id);
+                    $field = $fmodel->getData();
+                    $items[$i]->field = $field->label;
+                }
 
                 if ($this->cid[0] != 0) {
                     $pmodel = $this->getModel('cpvalue');
                     $pvalue = $pmodel->getData();
                     $this->back = $pvalue->parent_id;
                     $this->actual = $pvalue->label;
+                    $this->root = 1;
                 } else {
+                    $this->root = 0;
                     $this->back = 0;
                     $this->actual = '';
                 }
@@ -102,7 +146,8 @@ class CustompropertiesViewCpvalues extends JView {
             array_unshift($items, $item);
             $cid = $value->parent_id;
         } while ($cid != 0);
-        
+
         return $items;
     }
+
 }

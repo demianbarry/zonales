@@ -50,6 +50,7 @@ class CustompropertiesControllerValues extends JController {
         $view = $this->getView('cpvalues', 'html');
         $view->setModel($this->getModel('cpvalues', 'CustompropertiesModel'), true);
         $view->setModel($this->getModel('cpfields', 'CustompropertiesModel'), true);
+        $view->setModel($this->getModel('cpfield', 'CustompropertiesModel'), true);
 
         switch($this->getTask()) {
             case 'edit':
@@ -136,9 +137,16 @@ class CustompropertiesControllerValues extends JController {
     function delete() {
         $pid = JRequest::getVar('pid', 0, '', 'int');
         $model = & $this->getModel('Cpvalue');
-        $model->deleteValues();
-        $link = 'index.php?option=com_customproperties&controller=values&cid='.$pid;
-        $this->setRedirect($link);
+        if ($model->deleteValues()) {
+            $link = 'index.php?option=com_customproperties&controller=values&cid='.$pid;
+            $msg = JText::_('VALUE DELETE');
+            $msg_type = "message";
+        } else {
+            $msg = JText::_('NODE NO LEAF');
+            $msg_type = "error";
+            $link = 'index.php?option=com_customproperties&controller=values&cid='.$pid;
+        }
+        $this->setRedirect($link, $msg, $msg_type);
     }
 
     function orderValueUp() {

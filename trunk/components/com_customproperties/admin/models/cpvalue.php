@@ -189,8 +189,12 @@ class CustompropertiesModelCpvalue extends JModel {
 
         foreach ($cid as $recordID) {
             $value->load($recordID);
-            $value->delete();
+            if (!$value->delete()) {
+                return false;
+            }
         }
+
+        return true;
     }
     /**
      * Method for saving values
