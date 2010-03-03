@@ -21,6 +21,8 @@ jimport('joomla.database.database');
 jimport('joomla.user.helper');
 jimport('joomla.utilities.utility');
 
+require_once 'externalauth.php';
+
 /**
  * OpenID Authentication Plugin
  *
@@ -69,164 +71,27 @@ class plgAuthenticationOpenID extends JPlugin {
         ## asignar valor a $provider!!!!!!
         $provider = (isset($credentials['provider']) && $credentials['provider'] != null) ? $credentials['provider'] : 'OpenID';
 
-        $selectProvider = 'select p.id, p.discovery_url, p.prefix, p.suffix from #__providers p where p.name = "' . $provider . '"';
-        $db->setQuery($selectProvider);
+        $selectProtocol = 'select t.function from #__providers p, #__protocol_types t ' .
+            'where p.name = "' . $provider . '" ' . 
+            'and p.protocol_type_id=t.id';
+        $db->setQuery($selectProtocol);
         $dbprovider = $db->loadObject();
-
-        $beginning = substr($credentials['username'], 0, strlen($dbprovider->prefix));
-        $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($dbprovider->suffix));
-
-        if ($beginning != $dbprovider->prefix) {
-            $credentials['username'] = $dbprovider->prefix . $credentials['username'];
-        }
-        if ($ending != $dbprovider->suffix) {
-            $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
-        }
-
-        $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
-        ################################################
+        
+        // obtengo el nombre de la funcion
+        $function = $db->function;
+        
+        // invoco la funcion correspondiente que iniciara el proceso de autenticacion
+        $info = $function($credentials,$options);
 
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            define('Auth_OpenID_RAND_SOURCE', null);
-        } else {
-            $f = @fopen('/dev/urandom', 'r');
-            if ($f !== false) {
-                define('Auth_OpenID_RAND_SOURCE', '/dev/urandom');
-                fclose($f);
-            } else {
-                $f = @fopen('/dev/random', 'r');
-                if ($f !== false) {
-                    define('Auth_OpenID_RAND_SOURCE', '/dev/urandom');
-                    fclose($f);
-                } else {
-                    define('Auth_OpenID_RAND_SOURCE', null);
-                }
-            }
-        }
-        jimport('openid.consumer');
-        jimport('joomla.filesystem.folder');
-
-        // Access the session data
-        $session = & JFactory :: getSession();
-
-        // Create and/or start using the data store
-        $store_path = JPATH_ROOT . '/tmp/_joomla_openid_store';
-        if (!JFolder :: exists($store_path) && !JFolder :: create($store_path)) {
-            $response->type = JAUTHENTICATE_STATUS_FAILURE;
-            $response->error_message = "Could not create the FileStore directory '$store_path'. " . " Please check the effective permissions.";
-            return false;
-        }
-
-        // Create store object
-        $store = new Auth_OpenID_FileStore($store_path);
-
-        // Create a consumer object
-        $consumer = new Auth_OpenID_Consumer($store);
-
-        if (!isset ($_SESSION['_openid_consumer_last_token'])) {
-            $this->logme($db,'se va a iniciar el proceso');
-            // Begin the OpenID authentication process.
-            if (!$auth_request = $consumer->begin($discovery_url)) {
-                $this->logme($db,'no se pudo iniciar el proceso');
-                $response->type = JAUTHENTICATE_STATUS_FAILURE;
-                $response->error_message = 'Authentication error : could not connect to the openid server';
-                return false;
-            }
-            $this->logme($db,'continuamos');
-            # armamos la peticion la informacion asociada al usuario
-            //            $sreg_request = Auth_OpenID_SRegRequest::build(
-            //                array ('email'),
-            //                array ('fullname','language','timezone')
-            //            );
-            //
-            //            if ($sreg_request) {
-            //                $auth_request->addExtension($sreg_request);
-            //            }
-            $policy_uris = array();
-            if ($this->params->get( 'phishing-resistant', 0)) {
-                $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';
-            }
-
-            if ($this->params->get( 'multi-factor', 0)) {
-                $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor';
-            }
-
-            if ($this->params->get( 'multi-factor-physical', 0)) {
-                $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor-physical';
-            }
-
-            $pape_request = new Auth_OpenID_PAPE_Request($policy_uris);
-            if ($pape_request) {
-                $auth_request->addExtension($pape_request);
-            }
-
-            //Create the entry url
-            $entry_url = isset ($options['entry_url']) ? $options['entry_url'] : JURI :: base();
-            $entry_url = JURI :: getInstance($entry_url);
-
-            unset ($options['entry_url']); //We don't need this anymore
-
-            //Create the url query information
-            $options['return'] = isset($options['return']) ? base64_encode($options['return']) : base64_encode(JURI::base());
-            $options[JUtility::getToken()] = 1;
-
-            $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
-            $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
-            $process_url .= '&'.JURI::buildQuery($options);
-            $this->logme($db, 'la url de retorno es: ' . $process_url);
-            $session->set('return_url', $process_url );
-
-            $trust_url = $entry_url->toString(array (
-                'path',
-                'host',
-                'port',
-                'scheme'
-            ));
-            $session->set('trust_url', $trust_url);
-            $this->logme($db,'tomando decisiones');
-            // For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
-            // form to send a POST request to the server.
-            if ($auth_request->shouldSendRedirect()) {
-                $redirect_url = $auth_request->redirectURL($trust_url, $process_url);
-
-                // If the redirect URL can't be built, display an error
-                // message.
-                if (Auth_OpenID :: isFailure($redirect_url)) {
-                    displayError("Could not redirect to server: " . $redirect_url->message);
-                } else {
-                // Send redirect.
-                    $mainframe->redirect($redirect_url);
-                    return false;
-                }
-            } else {
-            // Generate form markup and render it.
-                $form_id = 'openid_message';
-                $form_html = $auth_request->htmlMarkup($trust_url, $process_url, false, array (
-                    'id' => $form_id
-                ));
-                // Display an error if the form markup couldn't be generated;
-                // otherwise, render the HTML.
-                if (Auth_OpenID :: isFailure($form_html)) {
-                //displayError("Could not redirect to server: " . $form_html->message);
-                } else {
-                    JResponse :: setBody($form_html);
-                    echo JResponse :: toString($mainframe->getCfg('gzip'));
-                    $mainframe->close();
-                    return false;
-                }
-            }
-        }
-        $this->logme($db,'voy a finalizar el proceso');
-        $result = $consumer->complete($session->get('return_url'));
         $this->logme($db,'se va a iniciar la interpretacion de los resultados');
-        switch ($result->status) {
-            case Auth_OpenID_SUCCESS : {
+        switch ($info[STATUS]) {
+            case Auth_SUCCESS : {
                     $usermode = $this->params->get('usermode', 2);
 
                     $response->status = JAUTHENTICATE_STATUS_SUCCESS;
                     $response->error_message = '';
-                    $session->set('externalidentifier',$result->getDisplayIdentifier());
+                    $session->set('externalidentifier',$info[EXTERNAL_ID]);
 
 /* in the following code, we deal with the transition from the old openid version to the new openid version
    In the old version, the username was always taken straight from the login form.  In the new version, we get a
@@ -243,12 +108,12 @@ class plgAuthenticationOpenID extends JPlugin {
    a yahoo.com ID.
 */
                     if ($usermode && $usermode == 1) {
-                        $response->username = $result->getDisplayIdentifier();
+                        $response->username = $info[EXTERNAL_ID];
                     } else {
 
                         $query = 'SELECT u.username, a.block as aliasblocked, u.block as userblocked' .
                             ' FROM #__alias a, #__providers p, #__users u'.
-                            ' WHERE a.name='.$db->Quote($result->getDisplayIdentifier()).
+                            ' WHERE a.name='.$db->Quote($info[EXTERNAL_ID]).
                             ' AND a.provider_id = p.id' .
                             ' AND u.id = a.user_id' .
                             ' AND p.name = ' . $db->Quote($provider);
@@ -278,12 +143,12 @@ class plgAuthenticationOpenID extends JPlugin {
                             if ($credentials['userid'] == 0) {
                                 $user =& JFactory::getUser();
                                 if ($user->guest) {
-                                    $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $result->getDisplayIdentifier() .
+                                    $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $info[EXTERNAL_ID] .
                                         '&providerid=' . $dbprovider->id);
                                 }
                                 else {
                                     $token = JUtility::getToken();
-                                    $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($result->getDisplayIdentifier()) .
+                                    $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($info[EXTERNAL_ID]) .
                                         '&providerid=' . $dbprovider->id . '&' . $token .'=1');
                                 }
                             }
@@ -297,13 +162,13 @@ class plgAuthenticationOpenID extends JPlugin {
                 }
                 break;
 
-            case Auth_OpenID_CANCEL : {
+            case Auth_CANCEL : {
                     $response->status = JAUTHENTICATE_STATUS_CANCEL;
                     $response->error_message = 'Authentication cancelled';
                 }
                 break;
 
-            case Auth_OpenID_FAILURE : {
+            case Auth_FAILURE : {
                     $response->status = JAUTHENTICATE_STATUS_FAILURE;
                     $response->error_message = 'Authentication failed';
                 }
