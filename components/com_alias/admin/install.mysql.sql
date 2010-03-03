@@ -26,6 +26,8 @@ CREATE TABLE  `#__providers` (
   `prefix` varchar(50) NOT NULL default "",
   `suffix` varchar(50) NOT NULL default "",
   `required_input` varchar(255) default "::",
+  `apikey` varchar(255) default null,
+  `secretkey` varchar(255) default null,
   PRIMARY KEY  (`id`),
 unique (`name`),
   KEY `fk_#__providers_#__protocol_type` (`protocol_type_id`),
