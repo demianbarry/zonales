@@ -62,6 +62,7 @@ class plgAuthenticationOpenID extends JPlugin {
         ###########
         $db = &JFactory::getDBO();
         $this->logme($db, 'en el plugin openid');
+        $session = & JFactory :: getSession();
 
 
         ################################################
@@ -71,15 +72,19 @@ class plgAuthenticationOpenID extends JPlugin {
         ## asignar valor a $provider!!!!!!
         $provider = (isset($credentials['provider']) && $credentials['provider'] != null) ? $credentials['provider'] : 'OpenID';
 
-        $selectProtocol = 'select t.function from #__providers p, #__protocol_types t ' .
-            'where p.name = "' . $provider . '" ' . 
+        $selectProtocol = 'select t.function as func from #__providers p, #__protocol_types t ' .
+            'where p.name = "' . $provider . '" ' .
             'and p.protocol_type_id=t.id';
         $db->setQuery($selectProtocol);
+        $dbprotocol = $db->loadObject();
+
+        $selectProvider = 'select p.id from #__providers p where p.name = "' . $provider . '"';
+        $db->setQuery($selectProvider);
         $dbprovider = $db->loadObject();
-        
+
         // obtengo el nombre de la funcion
-        $function = $db->function;
-        
+        $function = $dbprotocol->func;
+
         // invoco la funcion correspondiente que iniciara el proceso de autenticacion
         $info = $function($credentials,$options);
 

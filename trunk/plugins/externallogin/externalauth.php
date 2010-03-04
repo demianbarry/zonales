@@ -5,7 +5,7 @@ require_once 'externalloginconstants.php';
 
 function facebookconnect($credentials,$options) {
     $db = JFactory::getDBO();
-    $selectKeys = 'select p.apikey, p.secretkey from #__providers where p.name=' . $db->Quote($credentials['provider']);
+    $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
     $db->setQuery($selectKeys);
     $dbKeys = $db->loadObject();
 
@@ -23,6 +23,7 @@ function facebookconnect($credentials,$options) {
 }
 
 function openid($credentials,$options) {
+    $mainframe =& JFactory::getApplication();
     $provider = $credentials[PROVIDER];
     $db = JFactory::getDBO();
     $selectProvider = 'select p.id, p.discovery_url, p.prefix, p.suffix from #__providers p where p.name = "' . $provider . '"';
@@ -81,33 +82,33 @@ function openid($credentials,$options) {
     $consumer = new Auth_OpenID_Consumer($store);
 
     if (!isset ($_SESSION['_openid_consumer_last_token'])) {
-        $this->logme($db,'se va a iniciar el proceso');
+        logme($db,'se va a iniciar el proceso');
         // Begin the OpenID authentication process.
         if (!$auth_request = $consumer->begin($discovery_url)) {
-            $this->logme($db,'no se pudo iniciar el proceso');
+            logme($db,'no se pudo iniciar el proceso');
             $response->type = JAUTHENTICATE_STATUS_FAILURE;
             $response->error_message = 'Authentication error : could not connect to the openid server';
             return false;
         }
-        $this->logme($db,'continuamos');
+        logme($db,'continuamos');
 
-        $policy_uris = array();
-        if ($this->params->get( 'phishing-resistant', 0)) {
-            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';
-        }
-
-        if ($this->params->get( 'multi-factor', 0)) {
-            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor';
-        }
-
-        if ($this->params->get( 'multi-factor-physical', 0)) {
-            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor-physical';
-        }
-
-        $pape_request = new Auth_OpenID_PAPE_Request($policy_uris);
-        if ($pape_request) {
-            $auth_request->addExtension($pape_request);
-        }
+//        $policy_uris = array();
+//        if ($this->params->get( 'phishing-resistant', 0)) {
+//            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';
+//        }
+//
+//        if ($this->params->get( 'multi-factor', 0)) {
+//            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor';
+//        }
+//
+//        if ($this->params->get( 'multi-factor-physical', 0)) {
+//            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/multi-factor-physical';
+//        }
+//
+//        $pape_request = new Auth_OpenID_PAPE_Request($policy_uris);
+//        if ($pape_request) {
+//            $auth_request->addExtension($pape_request);
+//        }
 
         //Create the entry url
         $entry_url = isset ($options['entry_url']) ? $options['entry_url'] : JURI :: base();
@@ -122,7 +123,7 @@ function openid($credentials,$options) {
         $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
         $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
         $process_url .= '&'.JURI::buildQuery($options);
-        $this->logme($db, 'la url de retorno es: ' . $process_url);
+        logme($db, 'la url de retorno es: ' . $process_url);
         $session->set('return_url', $process_url );
 
         $trust_url = $entry_url->toString(array (
@@ -132,7 +133,7 @@ function openid($credentials,$options) {
             'scheme'
         ));
         $session->set('trust_url', $trust_url);
-        $this->logme($db,'tomando decisiones');
+        logme($db,'tomando decisiones');
         // For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
         // form to send a POST request to the server.
         if ($auth_request->shouldSendRedirect()) {
@@ -165,7 +166,7 @@ function openid($credentials,$options) {
             }
         }
     }
-    $this->logme($db,'voy a finalizar el proceso');
+    logme($db,'voy a finalizar el proceso');
     $result = $consumer->complete($session->get('return_url'));
 
     // estandarizo el formato de salida de los datos necesarios
@@ -186,4 +187,12 @@ function openid($credentials,$options) {
 
     return $info;
 }
+
+    function logme($db,$message) {
+        $query='insert into #__logs(info,timestamp) values ("' .
+            $message . '","' . date('Y-m-d h:i:s') . '")';
+        $db->setQuery($query);
+        $db->query();
+    }
+
 ?>
