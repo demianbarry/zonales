@@ -81,38 +81,38 @@
 			img="components/com_customproperties/images/customproperties.png"
 			controller="cpanel"
 			task="about">
-			Custom Properties
+			Propiedades Personalizadas <!--Custom Properties-->
 		</menu>
 		<submenu>
 			<menu
 				img="components/com_customproperties/images/editcp.png"
 				controller="fields">
-				Manage Custom Properties
+				Gestionar Propiedades Personalizadas <!--Manage Custom Properties-->
 			</menu>
                         <menu
 				img="components/com_customproperties/images/editcp.png"
 				controller="values">
-				Manage Hierarchic Values
+				Gestionar etiquetas jerárquicas <!--Manage Hierarchic Values-->
 			</menu>
 			<menu
 				img="components/com_customproperties/images/assign.png"
 				controller="assign">
-				Assign Custom Properties
+				Asignar Propiedades Personalizadas <!--Assign Custom Properties-->
 			</menu>
 			<menu img="components/com_customproperties/images/controlpanel.png"
 				controller="utilities">
-				Utilities
+				Utilidades <!--Utilities-->
 			</menu>
 			<menu img="components/com_customproperties/images/config.png"
 				controller="cpanel"
 				task="configure">
-				Config
+				Configuración <!--Config-->
 			</menu>
 			<menu
 				img="components/com_customproperties/images/customproperties.png"
 				controller="cpanel"
 				task="about">
-				About
+				Acerca de <!--About-->
 			</menu>
 		</submenu>
 
@@ -231,6 +231,7 @@
 		<!-- Administration Language File Copy Section -->
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_customproperties.ini</language>
+                        <language tag="es-ES">es-ES.com_customproperties.ini</language>
 		</languages>
 
 	</administration>
