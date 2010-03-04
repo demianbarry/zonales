@@ -80,15 +80,17 @@ function openid($credentials,$options) {
 
     // Create a consumer object
     $consumer = new Auth_OpenID_Consumer($store);
+$info = array();
 
     if (!isset ($_SESSION['_openid_consumer_last_token'])) {
         logme($db,'se va a iniciar el proceso');
         // Begin the OpenID authentication process.
         if (!$auth_request = $consumer->begin($discovery_url)) {
             logme($db,'no se pudo iniciar el proceso');
+            $info[STATUS] = Auth_FAILURE;
             $response->type = JAUTHENTICATE_STATUS_FAILURE;
             $response->error_message = 'Authentication error : could not connect to the openid server';
-            return false;
+            return $info;
         }
         logme($db,'continuamos');
 
@@ -170,7 +172,6 @@ function openid($credentials,$options) {
     $result = $consumer->complete($session->get('return_url'));
 
     // estandarizo el formato de salida de los datos necesarios
-    $info = array();
     $info[EXTERNAL_ID] = $result->getDisplayIdentifier();
 
     switch ($result->status) {
