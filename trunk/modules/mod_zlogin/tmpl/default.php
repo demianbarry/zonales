@@ -132,3 +132,6 @@
     </form>
 </div>
 
+<!-- <input type="button" onclick="FB.Connect.requireSession(); return false;" value="IR"></input> -->
+<!-- <a href="#" onClick="FB.Connect.logout(function() { refresh_page(); })">Logout of Facebook</a> -->
+
