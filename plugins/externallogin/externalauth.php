@@ -12,7 +12,12 @@ function facebookconnect($credentials,$options) {
     $apikey = $dbKeys->apikey;
     $secretkey = $dbKeys->secretkey;
     $facebook = new Facebook($apikey, $secretkey);
-    $userid = $facebook->require_login();
+    $userid = $facebook->get_loggedin_user();
+    if (!$userid){
+        $userid = $facebook->require_login();
+    }
+
+    logme($db, 'el id del usuario de fb es: ' . $userid);
 
     $info = array();
     $info[EXTERNAL_ID] = $userid;

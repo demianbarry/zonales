@@ -262,6 +262,16 @@ class UserController extends JController {
                 }
             }
 
+            //////// SACAR DE ACA!!!!!!!! /////////
+            $db = JFactory::getDBO();
+        $this->logme($db, 'en logout');
+        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
+    $db->setQuery($selectKeys);
+    $dbKeys = $db->loadObject();
+    $facebook = new Facebook($apikey, $secretkey);
+    $facebook->expire_session();
+            //////////////////////
+
             // Redirect if the return url is not registration or login
             if ( $return && !( strpos( $return, 'com_user' )) ) {
                 $mainframe->redirect( $return );
