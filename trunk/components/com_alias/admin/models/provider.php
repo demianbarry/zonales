@@ -7,16 +7,7 @@
  */
 class AliasModelProvider extends AliasModelBaseModel{
 
-    function AliasModelProvider() {
-        return $this->__construct();
-    }
-
-    function  __construct() {
-        $this->addTablePath(dirname(dirname(__FILE__)). DIRECTORY_SEPARATOR . 'tables');
-    }
-
     function _getQuery() {
-        $dbo =& JFactory::getDBO();
 
         $query =
         'SELECT p.id, p.name as provider, p.discovery_url, p.parameters, ' .
