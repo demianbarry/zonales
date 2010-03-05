@@ -1,17 +1,17 @@
 <?php
-
 /**
  * Description of ProviderModelProvider
  *
  * @author g2p
  */
-class AliasModelProtocolType extends AliasModelBaseModel{
+class AliasModelAlias extends AliasModelBaseModel{
 
     function _getQuery() {
 
         $query =
-        'SELECT t.id, t.name, t.function as func '.
-        'FROM #__protocol_types t ';
+        'SELECT a.user_id, a.id, a.name as alias, a.association_date, '.
+        'a.block, a.activation, p.name as provider '.
+        'FROM #__alias a INNER JOIN #__providers p ON a.provider_id=p.id ';
 
         return $query;
     }
@@ -21,7 +21,7 @@ class AliasModelProtocolType extends AliasModelBaseModel{
 		$query = $this->_getQuery();
 
 		if (!$customQuery) {
-			$this->setWhere('t.id = ' . $this->_id );
+			$this->setWhere('a.id = ' . $this->_id );
 		}
 		return $query . $this->getWhereClause();
 	}
@@ -37,4 +37,5 @@ class AliasModelProtocolType extends AliasModelBaseModel{
 		return true;
 	}
 }
+
 ?>
