@@ -77,7 +77,7 @@ class UserViewRegister extends JView {
         // (algo asi como armar la pantalla al vuelo ;)
         $inputData = array();
         foreach ($providerslist as $provider) {
-            $req_inputs = explode(';', $provider->required_input);
+            $req_inputs = explode('/', $provider->required_input);
             $inputData[$provider->name] = array();
             foreach ($req_inputs as $input) {
                 $data = explode(':', $input);
@@ -85,7 +85,8 @@ class UserViewRegister extends JView {
                     array (
                     'type' => $data[0],
                     'name' => $data[1],
-                    'message' => $data[2]
+                    'message' => $data[2],
+                    'callback' => $data[3]
                 );
             }
         }

@@ -184,17 +184,6 @@ class plgAuthenticationOpenID extends JPlugin {
         }
     }
 
-    function onLogoutUser($credentials,$options) {
-        $db = JFactory::getDBO();
-        $this->logme($db, 'en logout');
-        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
-    $db->setQuery($selectKeys);
-    $dbKeys = $db->loadObject();
-    $facebook = new Facebook($apikey, $secretkey);
-    $facebook->clear_cookie_state();
-    return true;
-    }
-
     //	function
 
     private function logme($db,$message) {

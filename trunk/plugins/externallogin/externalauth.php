@@ -35,17 +35,30 @@ function facebookconnect($credentials,$options) {
         $sessionData[$key] = $value;
     }
 
+    // crea una copia de los parametros recibidos sin el sig
+    $fb_params = array();
+    foreach ($sessionData as $clave => $valor) {
+        if ($clave != 'sig') {
+            $fb_params[$clave] = $valor;
+        }
+    }
+
     $apikey = $dbKeys->apikey;
     $secretkey = $dbKeys->secretkey;
     $facebook = new Facebook($apikey, $secretkey);
 
-    $facebook->set_user($sessionData['uid'], $sessionData['session_key'], $sessionData['expires'], $sessionData['secret']);
-
-    $userid = $facebook->get_loggedin_user();
-
     $info = array();
-    $info[EXTERNAL_ID] = $userid;
-    $info[STATUS] = Auth_SUCCESS;
+    // si los parametros vinieron de facebook
+    if ($facebook->verify_signature($fb_params, $sessionData['sig'])) {
+        $facebook->set_user($sessionData['uid'], $sessionData['session_key'], $sessionData['expires'], $sessionData['secret']);
+
+        $userid = $facebook->get_loggedin_user();
+        $info[EXTERNAL_ID] = $userid;
+        $info[STATUS] = Auth_SUCCESS;
+    }
+    else { //sino todo mal
+        $info[STATUS] = Auth_FAILURE;
+    }
 
     return $info;
 

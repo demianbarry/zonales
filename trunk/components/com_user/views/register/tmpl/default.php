@@ -44,8 +44,13 @@ foreach ($this->providerslist as $prov) {
         for(i=0 ; i < elements.length ; i++){
                 if (elements[i] != ''){
                     var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
-                    document.getElementById(elements[i] + 'set').style.display = 'block';
+                document.getElementById(elements[i] + 'set').style.display = 'block';
+                if (showsubmit == 'block'){
                     document.getElementById('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                }
+                else {
+                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
+                }
                 }
         }
     }
@@ -261,9 +266,11 @@ if(isset($this->message)) {
                     <ul>
                         <li>
                                     <?php    foreach ($this->inputData[$provider->name] as $inputElement):
-                                    $name = $inputElement['name'];
+                                                $name = $inputElement['name'];
                                                 $type = $inputElement['type'];
                                                 $message = $inputElement['message'];
+                                                $callback = $inputElement['callback'];
+                                                $value = '';
                                                 echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                     if (!isset ($elementsHTML[$inputElement['name']])) : ?>
                             <div style="display: none;"
@@ -272,10 +279,21 @@ if(isset($this->message)) {
 
                                                     $elementsHTML[$name] = 1;
 
-                                                    echo '<label id="ep'. $name .'message" for="ep'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
-                                                    echo '<br>';
-                                                    echo '<input type="'. $type .'" name="ep'. $name . '" id="ep'. $name .'" />';
-                                                    echo '<br>';
+                                                    $value = sprintf(JText::_($message),$provider->name);
+                                                        $show = 'none';
+
+                                                        if ($type != 'button') {
+                                                            echo '<label id="'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                            echo '<br>';
+                                                            $value = '';
+                                                            $show = 'block';
+                                                        }
+
+                                                        echo '<input type="hidden" name="'. $name .'submitshow" id="'. $name .'submitshow" value="'. $show .'" />';
+
+
+                                                        echo '<input type="'. $type .'" name="'. $name . '" id="'. $name .'" onclick="'. $callback .'" value="'.$value.'" />';
+                                                        echo '<br>';
 
                                                 ?>
                             </div>
