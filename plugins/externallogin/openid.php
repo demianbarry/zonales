@@ -72,7 +72,7 @@ class plgAuthenticationOpenID extends JPlugin {
         ## asignar valor a $provider!!!!!!
         $provider = (isset($credentials['provider']) && $credentials['provider'] != null) ? $credentials['provider'] : 'OpenID';
 
-        $selectProtocol = 'select t.function as func from #__providers p, #__protocol_types t ' .
+        $selectProtocol = 'select t.function as func, t.name from #__providers p, #__protocol_types t ' .
             'where p.name = "' . $provider . '" ' .
             'and p.protocol_type_id=t.id';
         $db->setQuery($selectProtocol);
@@ -140,6 +140,9 @@ class plgAuthenticationOpenID extends JPlugin {
                                 $response->error_message = 'The identifier is Blocked';
                                 return false;
                             }
+
+                            $session =& JFactory::getSession();
+                            $session->set('accessprotocol',$dbprotocol->name);
                         } else { // si el alias no existe
                             $this->logme($db, 'el alias no existe :(');
 

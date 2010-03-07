@@ -26,7 +26,7 @@ $externalid = JRequest::getVar('externalid', '', 'method', 'string');
 // (algo asi como armar la pantalla al vuelo ;)
 $inputData = array();
 foreach ($providerslist as $provider) {
-    $req_inputs = explode(';', $provider->required_input);
+    $req_inputs = explode('/', $provider->required_input);
     $inputData[$provider->name] = array();
     foreach ($req_inputs as $input) {
         $data = explode(':', $input);
@@ -34,7 +34,8 @@ foreach ($providerslist as $provider) {
             array (
             'type' => $data[0],
             'name' => $data[1],
-            'message' => $data[2]
+            'message' => $data[2],
+            'callback' => $data[3]
         );
     }
 }
@@ -82,8 +83,15 @@ foreach ($providerslist as $prov) {
         for(i=0 ; i < elements.length ; i++){
             if (elements[i] != ''){
                 var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
+                var showsubmit = document.getElementById(elements[i] + 'submitshow').value;
+                document.getElementById('submit').style.display = showsubmit;
                 document.getElementById(elements[i] + 'set').style.display = 'block';
-                document.getElementById(elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                if (showsubmit == 'block'){
+                    document.getElementById(elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                }
+                else {
+                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
+                }
             }
         }
     }
