@@ -58,6 +58,8 @@
                                                 $name = $inputElement['name'];
                                                 $type = $inputElement['type'];
                                                 $message = $inputElement['message'];
+                                                $callback = $inputElement['callback'];
+                                                $value = '';
                                                 echo '<input type="hidden" id="'.$name . '-' . $provider->name.'fixmessage" value="'. JText::_($message) .'" />';
                                                 if (!isset ($elementsHTML[$inputElement['name']])) : ?>
                                     <!-- no tocar este display -->
@@ -67,10 +69,20 @@
                                                         <?php
 
                                                         $elementsHTML[$name] = 1;
+                                                        $value = sprintf(JText::_($message),$provider->name);
+                                                        $show = 'none';
 
-                                                        echo '<label id="'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
-                                                        echo '<br>';
-                                                        echo '<input type="'. $type .'" name="'. $name . '" id="'. $name .'" />';
+                                                        if ($type != 'button') {
+                                                            echo '<label id="'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                            echo '<br>';
+                                                            $value = '';
+                                                            $show = 'block';
+                                                        }
+
+                                                        echo '<input type="hidden" name="'. $name .'submitshow" id="'. $name .'submitshow" value="'. $show .'" />';
+
+                                                        
+                                                        echo '<input type="'. $type .'" name="'. $name . '" id="'. $name .'" onclick="'. $callback .'" value="'.$value.'" />';
                                                         echo '<br>';
 
                                                         ?>

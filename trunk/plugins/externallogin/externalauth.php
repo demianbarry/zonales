@@ -3,21 +3,45 @@
 jimport('facebookconnect.facebook');
 require_once 'externalloginconstants.php';
 
+function tradicional() {
+    ;
+}
+
 function facebookconnect($credentials,$options) {
     $db = JFactory::getDBO();
     $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
     $db->setQuery($selectKeys);
     $dbKeys = $db->loadObject();
 
+    // se eliminan las llaves
+    $withoutBeginning = substr($credentials['session'], 1);
+    $rawString = substr($withoutBeginning, 0, strlen($withoutBeginning)-1);
+    // se recuperan las duplas
+    $rawSessionData = urldecode($rawString);
+    $sessionItems = explode(',', $rawSessionData);
+    $sessionData = array();
+    // se arman las duplas
+    foreach ($sessionItems as $item) {
+        $components = explode(':', $item);
+        list ($key,$value) = $components;
+        $datakey = explode('"',$key);
+        // la clave ya no tiene comillas
+        $key = $datakey[1];
+        // si es un string o un numero cambia donde hay que buscar
+        $i = (substr($value,0,1) == '"') ? 1 : 0;
+        $dataValue = explode('"',$value);
+        // obtengo el valor segun la posicion que corresponda
+        $value = $dataValue[$i];
+        $sessionData[$key] = $value;
+    }
+
     $apikey = $dbKeys->apikey;
     $secretkey = $dbKeys->secretkey;
     $facebook = new Facebook($apikey, $secretkey);
-    $userid = $facebook->get_loggedin_user();
-    if (!$userid){
-        $userid = $facebook->require_login();
-    }
 
-    logme($db, 'el id del usuario de fb es: ' . $userid);
+    $facebook->set_user($sessionData['uid'], $sessionData['session_key'], $sessionData['expires'], $sessionData['secret']);
+
+    $userid = $facebook->get_loggedin_user();
 
     $info = array();
     $info[EXTERNAL_ID] = $userid;

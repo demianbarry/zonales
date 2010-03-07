@@ -7,5 +7,5 @@
        value="<?php echo $sessionCloseMessage ?>"
        name="closesession"
        class="closesession"
-       onclick="window.location.href='<?php echo $logoutRoute ?>'"
+       onclick="logout()"
 />

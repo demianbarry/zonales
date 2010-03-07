@@ -170,6 +170,7 @@ class UserController extends JController {
             $credentials['provider'] = JRequest::getVar('provider', null, 'method', 'string');
             $credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
             $credentials['userid'] = JRequest::getInt('userid', '0', 'method');
+            $credentials['session'] = JRequest::getVar('session', '', 'method','string');
         }
         else {
             $credentials['provider'] = $epUserdata['epprovider'];
@@ -263,13 +264,13 @@ class UserController extends JController {
             }
 
             //////// SACAR DE ACA!!!!!!!! /////////
-            $db = JFactory::getDBO();
-        $this->logme($db, 'en logout');
-        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
-    $db->setQuery($selectKeys);
-    $dbKeys = $db->loadObject();
-    $facebook = new Facebook($apikey, $secretkey);
-    $facebook->expire_session();
+//            $db = JFactory::getDBO();
+//        $this->logme($db, 'en logout');
+//        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
+//    $db->setQuery($selectKeys);
+//    $dbKeys = $db->loadObject();
+//    $facebook = new Facebook($apikey, $secretkey);
+//    $facebook->logout(JURI::getBase());
             //////////////////////
 
             // Redirect if the return url is not registration or login
