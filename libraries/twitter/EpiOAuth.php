@@ -12,59 +12,32 @@ class EpiOAuth
   protected $token;
   protected $tokenSecret;
   protected $signatureMethod;
-  protected $useSSL = false;
-  protected $headers = array();
-  protected $userAgent = 'EpiOAuth (http://github.com/jmathai/twitter-async/tree/)';
-  protected $timeout = 30;
 
-  public function addHeader($header)
+  public function getAccessToken()
   {
-    if(is_array($header) && !empty($header))
-      $this->headers = array_merge($this->headers, $header);
-    elseif(!empty($header))
-      $this->headers[] = $header;
-  }
-
-  public function getAccessToken($params = null)
-  {
-    $resp = $this->httpRequest('GET', $this->getUrl($this->accessTokenUrl), $params);
+    $resp = $this->httpRequest('GET', $this->accessTokenUrl);
     return new EpiOAuthResponse($resp);
   }
 
-  public function getAuthenticateUrl($token = null, $params = null)
+  public function getAuthenticateUrl()
   { 
-    $token = $token ? $token : $this->getRequestToken();
-    $addlParams = empty($params) ? '' : '&'.http_build_query($params);
-    return $this->getUrl($this->authenticateUrl) . '?oauth_token=' . $token->oauth_token . $addlParams;
+    $token = $this->getRequestToken();
+    return $this->authenticateUrl . '?oauth_token=' . $token->oauth_token;
   }
 
-  public function getAuthorizeUrl($token = null)
-  {
-    return $this->getAuthorizationUrl($token);
-  }
-
-  // DEPRECATED in favor of getAuthorizeUrl()
-  public function getAuthorizationUrl($token = null)
+  public function getAuthorizationUrl()
   { 
-    $token = $token ? $token : $this->getRequestToken();
-    return $this->getUrl($this->authorizeUrl) . '?oauth_token=' . $token->oauth_token;
+    $token = $this->getRequestToken();
+    return $this->authorizeUrl . '?oauth_token=' . $token->oauth_token;
   }
 
-  public function getRequestToken($params = null)
+  public function getRequestToken()
   {
-    $resp = $this->httpRequest('GET', $this->getUrl($this->requestTokenUrl), $params);
+    $resp = $this->httpRequest('GET', $this->requestTokenUrl);
     return new EpiOAuthResponse($resp);
   }
 
-  public function getUrl($url)
-  {
-    if($this->useSSL === true)
-      return preg_replace('/^http:/', 'https:', $url);
-
-    return $url;
-  }
-
-  public function httpRequest($method = null, $url = null, $params = null, $isMultipart = false)
+  public function httpRequest($method = null, $url = null, $params = null)
   {
     if(empty($method) || empty($url))
       return false;
@@ -78,67 +51,35 @@ class EpiOAuth
         return $this->httpGet($url, $params);
         break;
       case 'POST':
-        return $this->httpPost($url, $params, $isMultipart);
+        return $this->httpPost($url, $params);
         break;
     }
   }
 
-  public function setTimeout($timeout)
-  {
-    $this->timeout = floatval($timeout);
-  }
-
   public function setToken($token = null, $secret = null)
   {
+    $params = func_get_args();
     $this->token = $token;
     $this->tokenSecret = $secret;
   } 
 
-  public function useSSL($use = false)
+  protected function encode_rfc3986($string)
   {
-    $this->useSSL = (bool)$use;
+    return str_replace('+', ' ', str_replace('%7E', '~', rawurlencode(($string))));
   }
 
-  protected function addDefaultHeaders($url, $oauthHeaders)
+  protected function addOAuthHeaders(&$ch, $url, $oauthHeaders)
   {
     $_h = array('Expect:');
     $urlParts = parse_url($url);
-    $oauth = 'Authorization: OAuth realm="' . $urlParts['scheme'] . '://' . $urlParts['host'] . $urlParts['path'] . '",';
+    $oauth = 'Authorization: OAuth realm="' . $urlParts['path'] . '",';
     foreach($oauthHeaders as $name => $value)
     {
       $oauth .= "{$name}=\"{$value}\",";
     }
     $_h[] = substr($oauth, 0, -1);
-    $_h[] = "User-Agent: {$this->userAgent}";
-    $this->addHeader($_h);
-  }
-
-  protected function buildHttpQueryRaw($params)
-  {
-    $retval = '';
-    foreach((array)$params as $key => $value)
-      $retval .= "{$key}={$value}&";
-    $retval = substr($retval, 0, -1);
-    return $retval;
-  }
-
-  protected function curlInit($url)
-  {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers); 
-    curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-    if($this->useSSL === true)
-    {
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    }
-    return $ch;
-  }
-
-  protected function encode_rfc3986($string)
-  {
-    return str_replace('+', ' ', str_replace('%7E', '~', rawurlencode(($string))));
+  
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $_h); 
   }
 
   protected function generateNonce()
@@ -149,15 +90,20 @@ class EpiOAuth
     return md5(uniqid(rand(), true));
   }
 
-  // parameters should already have been passed through prepareParameters
-  // no need to double encode
   protected function generateSignature($method = null, $url = null, $params = null)
   {
     if(empty($method) || empty($url))
       return false;
 
-    // concatenating and encode
-    $concatenatedParams = $this->encode_rfc3986($this->buildHttpQueryRaw($params));
+
+    // concatenating
+    $concatenatedParams = '';
+    foreach($params as $k => $v)
+    {
+      $v = $this->encode_rfc3986($v);
+      $concatenatedParams .= "{$k}={$v}&";
+    }
+    $concatenatedParams = $this->encode_rfc3986(substr($concatenatedParams, 0, -1));
 
     // normalize url
     $normalizedUrl = $this->encode_rfc3986($this->normalizeUrl($url));
@@ -178,24 +124,21 @@ class EpiOAuth
       }
       $url = substr($url, 0, -1);
     }
-    $this->addDefaultHeaders($url, $params['oauth']);
-    $ch = $this->curlInit($url);
+    $ch = curl_init($url);
+    $this->addOAuthHeaders($ch, $url, $params['oauth']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $resp  = $this->curl->addCurl($ch);
 
     return $resp;
   }
 
-  protected function httpPost($url, $params = null, $isMultipart)
+  protected function httpPost($url, $params = null)
   {
-    $this->addDefaultHeaders($url, $params['oauth']);
-    $ch = $this->curlInit($url);
+    $ch = curl_init($url);
+    $this->addOAuthHeaders($ch, $url, $params['oauth']);
     curl_setopt($ch, CURLOPT_POST, 1);
-    // php's curl extension automatically sets the content type
-    // based on whether the params are in string or array form
-    if($isMultipart)
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $params['request']);
-    else
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $this->buildHttpQueryRaw($params['request']));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params['request']));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $resp  = $this->curl->addCurl($ch);
     return $resp;
   }
@@ -205,13 +148,13 @@ class EpiOAuth
     $urlParts = parse_url($url);
     $scheme = strtolower($urlParts['scheme']);
     $host   = strtolower($urlParts['host']);
-    $port = isset($urlParts['port']) ? intval($urlParts['port']) : 0;
+    $port = intval($urlParts['port']);
 
-    $retval = strtolower($scheme) . '://' . strtolower($host);
-
-    if(!empty($port) && (($scheme === 'http' && $port != 80) || ($scheme === 'https' && $port != 443)))
+    $retval = "{$scheme}://{$host}";
+    if($port > 0 && ($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443))
+    {
       $retval .= ":{$port}";
-
+    }
     $retval .= $urlParts['path'];
     if(!empty($urlParts['query']))
     {
@@ -232,42 +175,18 @@ class EpiOAuth
     $oauth['oauth_timestamp'] = !isset($this->timestamp) ? time() : $this->timestamp; // for unit test
     $oauth['oauth_signature_method'] = $this->signatureMethod;
     $oauth['oauth_version'] = $this->version;
-    // encode all oauth values
-    foreach($oauth as $k => $v)
-      $oauth[$k] = $this->encode_rfc3986($v);
-    // encode all non '@' params
-    // keep sigParams for signature generation (exclude '@' params)
-    // rename '@key' to 'key'
-    $sigParams = array();
-    $hasFile = false;
-    if(is_array($params))
-    {
-      foreach($params as $k => $v)
-      {
-        if(strncmp('@',$k,1) !== 0)
-        {
-          $sigParams[$k] = $this->encode_rfc3986($v);
-          $params[$k] = $this->encode_rfc3986($v);
-        }
-        else
-        {
-          $params[substr($k, 1)] = $v;
-          unset($params[$k]);
-          $hasFile = true;
-        }
-      }
-      
-      if($hasFile === true)
-        $sigParams = array();
-    }
 
-    $sigParams = array_merge($oauth, (array)$sigParams);
+    // encoding
+    array_walk($oauth, array($this, 'encode_rfc3986'));
+    if(is_array($params))
+      array_walk($params, array($this, 'encode_rfc3986'));
+    $encodedParams = array_merge($oauth, (array)$params);
 
     // sorting
-    ksort($sigParams);
+    ksort($encodedParams);
 
     // signing
-    $oauth['oauth_signature'] = $this->encode_rfc3986($this->generateSignature($method, $url, $sigParams));
+    $oauth['oauth_signature'] = $this->encode_rfc3986($this->generateSignature($method, $url, $encodedParams));
     return array('request' => $params, 'oauth' => $oauth);
   }
 

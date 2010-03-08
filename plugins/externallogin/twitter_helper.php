@@ -117,7 +117,8 @@ class TwitterHelper {
     setcookie('oauth_token', $token->oauth_token, 0, '/' );
     setcookie('oauth_token_secret', $token->oauth_token_secret, 0, '/');
     $this->token = $token;
-    return $this->getCredentials();
+    //return $this->getCredentials();
+    return $twitterObj->get_accountVerify_credentials();
   }
 
     private function logme($db,$message) {

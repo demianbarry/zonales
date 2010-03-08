@@ -1,5 +1,5 @@
 <?php
-
+//require_once(JPATH_BASE .DS. "plugins".DS."authentication".DS."twitter_helper.php");
 $db = &JFactory::getDBO();
 
 // realiza la consulta a la base de datos
@@ -56,12 +56,12 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <!-- <script type="text/javascript" src="webtoolkit.js"></script> -->
 <script type="text/javascript" defer="defer">
-   // window.onload = setIni();
-    
-        function setIni(){
-                var index = document.formlogin.selprovider.options.selectedIndex;
-		document.formlogin.selprovider.options[index].onclick();
-        }
+    // window.onload = setIni();
+
+    function setIni(){
+        var index = document.formlogin.selprovider.options.selectedIndex;
+        document.formlogin.selprovider.options[index].onclick();
+    }
 
     function setElement(elements,provider,type) {
         var fixbutton = document.getElementById('fixbutton').value;
@@ -96,5 +96,21 @@ foreach ($providerslist as $prov) {
         }
     }
 </script>
+<!--
+<script>
+    function nothing(){
+
+    }
+    function facebookLanding(){
+        window.location.href="<?php echo JRoute::_('index.php?option=com_user&task=login&' . JUtility::getToken() . '=1&provider=Facebook&session=' . JRequest::getVar('session', '', 'method','string') . '&next=' . JRequest::getVar('next', '', 'method','string')) ?>";
+    }
+    function goTwitter(){
+        window.location.href="<?php
+$twitterHelper = new TwitterHelper();
+echo $twitterHelper->getAuthenticateUrl();
+?>"
+    }
+</script>
+-->
 
 <?php require(JModuleHelper::getLayoutPath('mod_zlogin')); ?>
