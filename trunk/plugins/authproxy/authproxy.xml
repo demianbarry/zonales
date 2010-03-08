@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install version="1.5" type="plugin" group="system">
+    <name>Authentication Proxy</name>
+    <author>Cristian Pacheco</author>
+    <creationDate>Marzo 2010</creationDate>
+    <copyright>(C) 2010 Cristian Pacheco. Todos los derechos reservados.</copyright>
+    <license>GNU/GPL</license>
+    <authorEmail>cpacheco@lavabit.com</authorEmail>
+    <version>1.0</version>
+    <description>
+        Redirecciona las confirmaciones de autenticacion
+        para que sean manejadas por los plugin de autenticacion
+    </description>
+    <files>
+        <filename plugin="authproxy">authproxy.php</filename>
+    </files>
+    <params>
+        <param 
+            name="defaultprovider"
+            type="text"
+            default="Microsoft"
+            label="Proveedor predeterminado"
+            description="Algunos proveedores no permiten que la URL de regreso tenga parametros personalizados, por lo que se debe identificar al proveedor por otro medio, pero los plugins de autenticacion requieren el nombre del proveedor."
+            />
+    </params>
+</install>
+

@@ -80,6 +80,7 @@ foreach ($providerslist as $prov) {
 }
 
 ?>
+        document.getElementById('submit').style.display = 'block';
         for(i=0 ; i < elements.length ; i++){
             if (elements[i] != ''){
                 var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
@@ -96,21 +97,6 @@ foreach ($providerslist as $prov) {
         }
     }
 </script>
-<!--
-<script>
-    function nothing(){
 
-    }
-    function facebookLanding(){
-        window.location.href="<?php echo JRoute::_('index.php?option=com_user&task=login&' . JUtility::getToken() . '=1&provider=Facebook&session=' . JRequest::getVar('session', '', 'method','string') . '&next=' . JRequest::getVar('next', '', 'method','string')) ?>";
-    }
-    function goTwitter(){
-        window.location.href="<?php
-$twitterHelper = new TwitterHelper();
-echo $twitterHelper->getAuthenticateUrl();
-?>"
-    }
-</script>
--->
 
 <?php require(JModuleHelper::getLayoutPath('mod_zlogin')); ?>
