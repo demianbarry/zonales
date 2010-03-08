@@ -171,6 +171,7 @@ class UserController extends JController {
             $credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
             $credentials['userid'] = JRequest::getInt('userid', '0', 'method');
             $credentials['session'] = JRequest::getVar('session', '', 'method','string');
+            $credentials['oauth_token'] = JRequest::getVar('oauth_token', '', 'method','string');
         }
         else {
             $credentials['provider'] = $epUserdata['epprovider'];

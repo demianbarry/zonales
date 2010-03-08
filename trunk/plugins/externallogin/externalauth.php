@@ -2,6 +2,7 @@
 
 jimport('facebookconnect.facebook');
 require_once 'externalloginconstants.php';
+require_once 'twitter_helper.php';
 
 function tradicional() {
     ;
@@ -227,6 +228,17 @@ $info = array();
             $info[STATUS] = Auth_FAILURE;
             break;
     }
+
+    return $info;
+}
+
+function twitteroauth($credentials,$options) {
+    $twitterHelper = new TwitterHelper($credentials['provider']);
+    $data = $twitterHelper->doLogin($credentials['oauth_token']);
+
+    $info = array();
+    $info[EXTERNAL_ID] = $data->id;
+    $info[STATUS] = Auth_SUCCESS;
 
     return $info;
 }
