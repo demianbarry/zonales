@@ -1,6 +1,8 @@
 <?php
 
 jimport('facebookconnect.facebook');
+jimport('twitter.EpiCurl');
+jimport('twitter.EpiTwitter');
 require_once 'externalloginconstants.php';
 require_once 'twitter_helper.php';
 
@@ -234,19 +236,26 @@ $info = array();
 
 function twitteroauth($credentials,$options) {
     $session = & JFactory :: getSession();
-    global $mainframe;
-    $twitterHelper = new TwitterHelper($credentials['provider']);
+    $mainframe =& JFactory::getApplication();
+    $db = JFactory::getDBO();
+    $db->setQuery('select p.apikey, p.secretkey as secret from #__providers p where p.name=' . $db->Quote($credentials['provider']));
+    $consumer = $db->loadObject();
+    $twitterObj = new EpiTwitter($consumer->apikey, $consumer->secret);
+
 
     // si no se ha iniciado el proceso de autenticacion
     $hasbegun = $session->get('twitterhasbegun');
     if (!isset ($hasbegun) || $hasbegun == 'false'){
         $session->set('twitterhasbegun','true');
-        $mainframe->redirect($twitterHelper->getAuthenticateUrl());
+        $mainframe->redirect($twitterObj->getAuthenticateUrl());
     }
 
     $session->set('twitterhasbegun','false');
-    
-    $data = $twitterHelper->doLogin($credentials['oauth_token']);
+
+   $twitterObj->setToken($credentials['oauth_token']);
+    $token = $twitterObj->getAccessToken();
+    $twitterObj->setToken($token->oauth_token, $token->oauth_token_secret);
+    $data = $twitterObj->get_accountVerify_credentials();
 
     $info = array();
     $info[EXTERNAL_ID] = $data->id;

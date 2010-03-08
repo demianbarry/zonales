@@ -25,7 +25,7 @@ CREATE TABLE  `#__providers` (
   `access` int(11) NOT NULL,
   `prefix` varchar(50) NOT NULL default "",
   `suffix` varchar(50) NOT NULL default "",
-  `required_input` varchar(255) default "::",
+  `required_input` varchar(255) default ":::",
   `apikey` varchar(255) default null,
   `secretkey` varchar(255) default null,
   PRIMARY KEY  (`id`),
@@ -72,17 +72,17 @@ UNLOCK TABLES;
 
 LOCK TABLES `#__providers` WRITE;
 INSERT INTO `#__providers` VALUES('name','discovery_url','parameters','protocol_type_id','description','observation','icon_url','access','prefix','suffix','required_input')
-('Google','https://www.google.com/accounts/o8/id',NULL,1,NULL,NULL,'images/login/google.png',0,'','','::'),
- ('Yahoo','me.yahoo.com',NULL,1,NULL,NULL,'images/login/yahoo.png',0,'','','::'),
- ('OpenID',NULL,NULL,1,'','','images/login/openid.png',0,'','','text:username:ZONALES_PROVIDER_ENTER_ID'),
- ('Zonales',NULL,NULL,6,NULL,'','images/login/zonales.png',3,'','','text:username:ZONALES_PROVIDER_ENTER_USERNAME;password:password:ZONALES_PROVIDER_ENTER_PASSWORD'),
- ('ClaimID',NULL,NULL,1,NULL,NULL,'images/login/claimid.png',0,'http://claimid.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('MyOpenID',NULL,NULL,1,NULL,NULL,'images/login/myopenid.png',0,'','.myopenid.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('LiveJournal',NULL,NULL,1,NULL,NULL,'images/login/livejournal.png',0,'','.livejournal.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('Flickr',NULL,NULL,1,NULL,NULL,'images/login/flickr.png',0,'www.flickr.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('MySpace',NULL,'',1,NULL,NULL,'images/login/myspace.jpg',0,'www.myspace.com/','','text:username:ZONALES_PROVIDER_ENTER_PROFILE_NAME'),
- ('Aol',NULL,NULL,1,NULL,NULL,'images/login/aol.png',0,'openid.aol.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('Orange','orange.fr',NULL,1,NULL,NULL,'images/login/orange.png',0,'','','::'),
-('Wordpress',NULL,NULL,1,NULL,NULL,'images/login/wordpress.png',0,'','.wordpress.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME'),
- ('Verisign',NULL,NULL,1,NULL,NULL,'images/login/verisign.png',0,'','.pip.verisignlabs.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME');
+('Google','https://www.google.com/accounts/o8/id',NULL,1,NULL,NULL,'images/login/google.png',0,'','',':::'),
+ ('Yahoo','me.yahoo.com',NULL,1,NULL,NULL,'images/login/yahoo.png',0,'','',':::'),
+ ('OpenID',NULL,NULL,1,'','','images/login/openid.png',0,'','','text:username:ZONALES_PROVIDER_ENTER_ID:'),
+ ('Zonales',NULL,NULL,6,NULL,'','images/login/zonales.png',3,'','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:/password:password:ZONALES_PROVIDER_ENTER_PASSWORD:'),
+ ('ClaimID',NULL,NULL,1,NULL,NULL,'images/login/claimid.png',0,'http://claimid.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('MyOpenID',NULL,NULL,1,NULL,NULL,'images/login/myopenid.png',0,'','.myopenid.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('LiveJournal',NULL,NULL,1,NULL,NULL,'images/login/livejournal.png',0,'','.livejournal.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('Flickr',NULL,NULL,1,NULL,NULL,'images/login/flickr.png',0,'www.flickr.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('MySpace',NULL,'',1,NULL,NULL,'images/login/myspace.jpg',0,'www.myspace.com/','','text:username:ZONALES_PROVIDER_ENTER_PROFILE_NAME:'),
+ ('Aol',NULL,NULL,1,NULL,NULL,'images/login/aol.png',0,'openid.aol.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('Orange','orange.fr',NULL,1,NULL,NULL,'images/login/orange.png',0,'','',':::'),
+('Wordpress',NULL,NULL,1,NULL,NULL,'images/login/wordpress.png',0,'','.wordpress.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:'),
+ ('Verisign',NULL,NULL,1,NULL,NULL,'images/login/verisign.png',0,'','.pip.verisignlabs.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:');
 UNLOCK TABLES;

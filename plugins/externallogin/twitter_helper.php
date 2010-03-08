@@ -12,9 +12,12 @@ class TwitterHelper {
 
   function __construct($provider = 'Twitter') {
     $this->db = JFactory::getDBO();
-    $this->db->setQuery('select p.apikey, p.secretkey as secret from #__providers p where p.name=' . $this->db->Quote($provider));
+    $this->db->setQuery('select p.apikey as key, p.secretkey as secret from #__providers p where p.name=' . $this->db->Quote($provider));
     $consumer = $this->db->loadObject();
     if (!$consumer) throw new Exception('ComTwitterNotInstalledOrConfigured');
+
+    $this->logme($this->db, 'el apikey es: ' . $consumer->apikey);
+    $this->logme($this->db, 'el secretkey es: ' . $consumer->secret);
     $this->consumer = $consumer;
   }
 
