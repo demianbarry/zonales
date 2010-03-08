@@ -84,12 +84,20 @@
 </div><!-- END #wrapper -->
 </center>
 
-    <script>
+
+        <script>
         function nothing(){
-            
+
         }
         function facebookLanding(){
-            window.location.href = <?php echo JRoute::_('index.php?option=com_user&task=login&' . JUtility::getToken() . '=1&provider=Facebook&session=' . JRequest::getVar('session', '', 'method','string') . '&next=' . JRequest::getVar('next', '', 'method','string')) ?>;
+            window.location.href="<?php echo JRoute::_('index.php?option=com_user&task=login&' . JUtility::getToken() . '=1&provider=Facebook&session=' . JRequest::getVar('session', '', 'method','string') . '&next=' . JRequest::getVar('next', '', 'method','string')) ?>";
+        }
+        function goTwitter(){
+            window.location.href="<?php
+            require_once(JPATH_BASE .DS. "plugins".DS."authentication".DS."twitter_helper.php");
+            $helper = new TwitterHelper();
+            echo $helper->getAuthenticateUrl();
+            ?>"
         }
     </script>
     <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA"></script>
