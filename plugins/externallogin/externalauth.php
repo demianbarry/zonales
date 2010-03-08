@@ -233,7 +233,19 @@ $info = array();
 }
 
 function twitteroauth($credentials,$options) {
+    $session = & JFactory :: getSession();
+    global $mainframe;
     $twitterHelper = new TwitterHelper($credentials['provider']);
+
+    // si no se ha iniciado el proceso de autenticacion
+    $hasbegun = $session->get('twitterhasbegun');
+    if (!isset ($hasbegun) || $hasbegun == 'false'){
+        $session->set('twitterhasbegun','true');
+        $mainframe->redirect($twitterHelper->getAuthenticateUrl());
+    }
+
+    $session->set('twitterhasbegun','false');
+    
     $data = $twitterHelper->doLogin($credentials['oauth_token']);
 
     $info = array();
