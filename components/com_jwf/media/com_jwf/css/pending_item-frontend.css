@@ -19,11 +19,10 @@ div#field-container{
 	margin-top:15px;
 }
 
-#backward-station{
-	
+#backward-station{	
 	width:30%;
 	height:50px;
-	border:1px solid black;
+	border:0px solid black;
 	float:left;
 	text-align:left;
 	padding:5px;
@@ -39,7 +38,7 @@ div#field-container{
 	width:150px;
 	padding-top:10px;
 	float:left;
-	font-size:120%;
+	font-size:100%;
 }
 
 #backward-station .stop {
@@ -53,7 +52,7 @@ div#field-container{
 	width:150px;
 	padding-top:10px;
 	float:left;
-	font-size:150%;
+	font-size:100%;
 
 }
 
@@ -61,11 +60,11 @@ div#field-container{
 	text-align:center;
 	width:30%;
 	height:50px;
-	border:1px solid black;
+	border:0px solid black;
 	float:left;
 	padding:5px;
 	font-weight:bold;
-	font-size:120%;
+	font-size:100%;
 }
 
 #current-station div.hasTip{
@@ -88,7 +87,7 @@ div#field-container{
 #next-station{
 	width:30%;
 	height:50px;
-	border:1px solid black;
+	border:0px solid black;
 	float:left;
 	text-align:right;
 	padding:5px;
@@ -106,7 +105,7 @@ div#field-container{
 	width:150px;
 	padding-top:10px;
 	float:right;
-	font-size:120%;
+	font-size:100%;
 }
 
 #next-station .stop {
@@ -119,7 +118,7 @@ div#field-container{
 	width:150px;
 	padding-top:10px;
 	float:right;
-	font-size:120%;
+	font-size:100%;
 }
 
 /* Tooltips */
