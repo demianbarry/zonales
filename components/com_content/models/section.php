@@ -397,18 +397,18 @@ class ContentModelSection extends JModel
 		return true;
 	}
 	
-	function _buildCustomPropertiesJoin()
-	{
-		$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
-
-		$helper = new comZonalesHelper();
-		$zonal = $helper->getZonal();
-		if ($zonal) {
-			$join .= ' AND p.field_id = ' . $zonal->id;
-		}
-
-		return $join;
-	}
+//	function _buildCustomPropertiesJoin()
+//	{
+//		$join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
+//
+//		$helper = new comZonalesHelper();
+//		$zonal = $helper->getZonal();
+//		if ($zonal) {
+//			$join .= ' AND p.field_id = ' . $zonal->id;
+//		}
+//
+//		return $join;
+//	}
 
 	function _buildQuery($state = 1)
 	{
@@ -424,7 +424,8 @@ class ContentModelSection extends JModel
 		$where		= $this->_buildContentWhere($state);
 		$orderby	= $this->_buildContentOrderBy($state);
 		// Custom Properties join
-		$cpjoin = $this->_buildCustomPropertiesJoin();
+		$helper = new comZonalesHelper();
+		$cpjoin = $helper->_buildCustomPropertiesJoin();
 
 		$query = 'SELECT a.id, a.title, a.alias, a.title_alias, a.introtext, a.fulltext, a.sectionid, a.state, a.catid, a.created, a.created_by, a.created_by_alias, a.modified, a.modified_by,' .
 				' a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, a.attribs, a.hits, a.images, a.urls, a.ordering, a.metakey, a.metadesc, a.access,' .
