@@ -16,11 +16,11 @@
     </files>
     <params>
         <param 
-            name="defaultprovider"
+            name="loginurl"
             type="text"
-            default="Microsoft"
-            label="Proveedor predeterminado"
-            description="Algunos proveedores no permiten que la URL de regreso tenga parametros personalizados, por lo que se debe identificar al proveedor por otro medio, pero los plugins de autenticacion requieren el nombre del proveedor."
+            default="index.php?option=com_user&amp;task=login"
+            label="URL interna de login"
+            description="Permite especificar la ruta a la accion que permite el accesso al usuario"
             />
     </params>
 </install>
