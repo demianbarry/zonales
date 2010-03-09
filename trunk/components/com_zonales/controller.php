@@ -131,11 +131,11 @@ class ZonalesController extends JController
 	 */
 	function getFieldValuesAjax() 
 	{
-		$fieldId = JRequest::getVar('fieldId', NULL, 'get', 'int');
+		$partidoId = JRequest::getVar('fieldId', NULL, 'get', 'int');
 
-		if ($fieldId) {
+		if ($partidoId) {
 			$helper = new comZonalesHelper();
-			$values = $helper->getFieldValues($fieldId);
+			$values = $helper->getLocalidadesByPartido($partidoId);
 			
 			if (sizeof($values)) {
 				echo JHTML::_('select.genericlist', $values, 'localidad', 'size="1" class="required"', 'id', 'label');

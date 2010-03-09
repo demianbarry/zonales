@@ -42,8 +42,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         $value .= $str.'[\'caption\'] = \''.$row->label.'\'; ';
         $value .= $str.'[\'id\'] = '.$row->id.';';
         $value .= $str.'[\'parent_id\'] = '.$row->parent_id.'; ';
-        $value .= $str.'[\'field_id\'] = '.$row->field_id.'; ';
-        $value .= $str.'[\'isOpen\'] = true; ';
+        $value .= $str.'[\'field_id\'] = '.$row->field_id.'; ';        
         if(in_array($row->id, $this->_cplist))
             $value .= $str.'[\'isChecked\'] = 2;';
         if(!empty($row->children)) {
