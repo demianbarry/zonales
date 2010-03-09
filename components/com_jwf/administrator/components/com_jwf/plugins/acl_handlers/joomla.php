@@ -88,7 +88,7 @@ class JWFACLHandler_joomla extends JWFACLHandler {
 					21 => 'Publisher',
 					23 => 'Manager',
 					24 => 'Administrator',
-					25 => 'Super Administrator' 
+					25 => 'Super Administrator'
 				);*/
         }
 
