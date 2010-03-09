@@ -11,7 +11,9 @@ class plgSystemAuthproxy extends JPlugin{
     }
 
     function onAfterInitialise() {
-        $provider = JRequest::getVar('provider','','method','string');
+        $get = JRequest::get('get');
+
+        if (count($get) == 0) return;
 
         $db = JFactory::getDBO();
         $selectParams = 'select p.name as provider, p.callback_parameters as params '.
@@ -19,19 +21,30 @@ class plgSystemAuthproxy extends JPlugin{
         $db->setQuery($selectParams);
         $dbProviders = $db->loadObjectList();
 
-        $url = 'index.php?option=com_user&task=login';
+        $url = '';
         foreach ($dbProviders as $provider) {
+            $url = $this->_params->get('loginurl','index.php?option=com_user&amp;task=login');
+            // bandera que indica si seguir iterando en el foreach externo
+            $continue = false;
             $params = explode(',', $provider->params);
             foreach ($params as $parameter) {
-                $valor = // hago el get
-                // chequeo que este seteado , di lo esta hago la siguiente linea
-                $url = $url . '&' . $parameter . '=' . $valor;
+                if (isset ($get[$parameter]) && !$continue){
+                    $url = $url . '&' . $parameter . '=' . $get[$parameter];
+                }
+                else $continue = true;
             }
+            if (!$continue) break;
         }
 
-        $mainframe =& JFactory::getApplication();
+        // si se le agregaron los parametros especificos
+        if ($url != '' && !$continue){
+            $url = $url . '&provider=' . $dbProviders->name;
+            $url = $url . '&' . JUtility::getToken() . '=1';
 
-        $mainframe->redirect(JRoute('index.php?option=com_user&task=login&'));
+            $mainframe =& JFactory::getApplication();
+            $mainframe->redirect(JRoute($url));
+        }
+        
     }
 
 }
