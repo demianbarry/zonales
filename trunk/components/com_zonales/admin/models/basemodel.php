@@ -310,16 +310,27 @@ abstract class ZonalesModelBaseModel extends JModel
 		$this->_id 	= NULL;
 	}
 
-	/**
-	 * Salva el contenido del modelo en la base de datos.
-	 *
-	 * @return boolean true si el registro fue guardado exitosamente
-	 */
-	function store($updateNulls = false, $use_post_data = true)
+        /**
+         * Salva el contenido del modelo en la base de datos.
+         *
+         * @param boolean $updateNulls
+         * @param boolean $use_post_data
+         * @param Array $data datos a almacenar (no tomar del post)
+         * @return boolean true si el registro fue guardado exitosamente
+         */
+	function store($updateNulls = false, $use_post_data = true, $data = null)
 	{
 		$row =& $this->getTable();
 
-		$data = $use_post_data ? JRequest::get('post') : $this->_data;
+                //$data = $use_post_data ? JRequest::get('post') : $this->_data;
+
+                if ($use_post_data) {
+                    $data = JRequest::get('post');
+                } else {
+                    if (is_null($data)) {
+                        $data = $this->_data;
+                    }
+                }
 
 		if (!$row->bind($data))
 		{
