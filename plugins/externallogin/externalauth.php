@@ -3,11 +3,14 @@
 jimport('facebookconnect.facebook');
 jimport('twitter.EpiCurl');
 jimport('twitter.EpiTwitter');
+jimport('windowsliveid.windowslivelogin');
 require_once 'externalloginconstants.php';
 require_once 'twitter_helper.php';
 
-function tradicional() {
-    ;
+function tradicional($credentials,$options) {
+    $info = array();
+    $info[STATUS] = Auth_FAILURE;
+    return $info;
 }
 
 function facebookconnect($credentials,$options) {
@@ -260,6 +263,47 @@ function twitteroauth($credentials,$options) {
     $info = array();
     $info[EXTERNAL_ID] = $data->id;
     $info[STATUS] = Auth_SUCCESS;
+
+    return $info;
+}
+
+function liveid($credentials,$options) {
+    $session = & JFactory :: getSession();
+    $mainframe =& JFactory::getApplication();
+    $db = JFactory::getDBO();
+    $db->setQuery('select p.apikey, p.secretkey, p.discovery_url as control_url, p.parameters from #__providers p where p.name=' . $db->Quote($credentials['provider']));
+    $consumer = $db->loadObject();
+    $appid = $consumer->apikey;
+    $secret = $consumer->secret;
+    $wll = new WindowsLiveLogin($appid, $secret, 'wsignin1.0');
+
+    $hasbegun = $session->get('liveidhasbegun');
+    if (isset ($hasbegun) || $hasbegun == 'false'){
+        $session->set('liveidhasbegun','true');
+        $url = $consumer->control_url . '?appid=' . $appid . '&' . $consumer->parameters;
+        $mainframe->redirect($url);
+    }
+
+    $session->set('liveidhasbegun','false');
+    $info = array();
+
+    $action = $credentials['action'];
+
+    if ($action == '' || $action == 'login'){
+        $user = $wll->processLogin($credentials);
+        if ($user) {
+            if ($user->usePersistentCookie()) {
+                $cookieTtl = time() + (10 * 365 * 24 * 60 * 60);
+                setcookie('webauthtoken', $user->getToken(), $cookieTtl);
+            }
+            else {
+                setcookie('webauthtoken', $user->getToken());
+            }
+            $info[EXTERNAL_ID] = $user->getId();
+            $info[STATUS] = Auth_SUCCESS;
+        }
+        $info[STATUS] = Auth_FAILURE;
+    }
 
     return $info;
 }
