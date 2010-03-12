@@ -180,6 +180,8 @@ class UserController extends JController {
         }
 
 
+        $credentials['provider'] = trim($credentials['provider']);
+        $credentials['username'] = trim($credentials['username']);
         global $mainframe;
 
         if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
