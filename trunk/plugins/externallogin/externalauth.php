@@ -78,17 +78,24 @@ function openid($credentials,$options) {
     $db->setQuery($selectProvider);
     $dbprovider = $db->loadObject();
 
-    $beginning = substr($credentials['username'], 0, strlen($dbprovider->prefix));
-    $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($dbprovider->suffix));
+    $prefix = trim($dbprovider->prefix);
+    $suffix = trim($dbprovider->suffix);
+    $discovery = trim($dbprovider->discovery_url);
+    $beginning = substr($credentials['username'], 0, strlen($prefix));
+    $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($suffix));
 
-    if ($beginning != $dbprovider->prefix) {
-        $credentials['username'] = $dbprovider->prefix . $credentials['username'];
+    if ($beginning != $prefix) {
+        $credentials['username'] = $prefix . $credentials['username'];
     }
-    if ($ending != $dbprovider->suffix) {
-        $credentials['username'] = $credentials['username'] . $dbprovider->suffix;
+    if ($ending != $suffix) {
+        $credentials['username'] = $credentials['username'] . $suffix;
     }
 
-    $discovery_url = (isset ($dbprovider->discovery_url)) ? $dbprovider->discovery_url : $credentials['username'];
+    $discovery_url = (isset ($discovery)) ? $discovery : $credentials['username'];
+    $discovery_url = trim($discovery_url);
+
+    logme($db,'discovery url: ' . $discovery_url);
+    logme($db,'username: ' . $credentials['username']);
     ################################################
 
 
@@ -114,12 +121,14 @@ function openid($credentials,$options) {
 
     // Access the session data
     $session = & JFactory :: getSession();
+    $info = array();
 
     // Create and/or start using the data store
     $store_path = JPATH_ROOT . '/tmp/_joomla_openid_store';
     if (!JFolder :: exists($store_path) && !JFolder :: create($store_path)) {
-        $response->type = JAUTHENTICATE_STATUS_FAILURE;
-        $response->error_message = "Could not create the FileStore directory '$store_path'. " . " Please check the effective permissions.";
+        $info[STATUS] = Auth_FAILURE;
+        //$response->type = JAUTHENTICATE_STATUS_FAILURE;
+        //$response->error_message = "Could not create the FileStore directory '$store_path'. " . " Please check the effective permissions.";
         return false;
     }
 
@@ -128,7 +137,6 @@ function openid($credentials,$options) {
 
     // Create a consumer object
     $consumer = new Auth_OpenID_Consumer($store);
-$info = array();
 
     if (!isset ($_SESSION['_openid_consumer_last_token'])) {
         logme($db,'se va a iniciar el proceso');
@@ -136,8 +144,8 @@ $info = array();
         if (!$auth_request = $consumer->begin($discovery_url)) {
             logme($db,'no se pudo iniciar el proceso');
             $info[STATUS] = Auth_FAILURE;
-            $response->type = JAUTHENTICATE_STATUS_FAILURE;
-            $response->error_message = 'Authentication error : could not connect to the openid server';
+            //$response->type = JAUTHENTICATE_STATUS_FAILURE;
+            //$response->error_message = 'Authentication error : could not connect to the openid server';
             return $info;
         }
         logme($db,'continuamos');
@@ -275,36 +283,50 @@ function liveid($credentials,$options) {
     $consumer = $db->loadObject();
     $appid = $consumer->apikey;
     $secret = $consumer->secret;
-    $wll = new WindowsLiveLogin($appid, $secret, 'wsignin1.0');
+    $policyurl = JUri::base() . '/policy.html';
+    $returnurl = JUri::base() . '/index.php';
+    $wll = new WindowsLiveLogin($appid, $secret, 'wsignin1.0', null, $policyurl, $returnurl);
 
-    $hasbegun = $session->get('liveidhasbegun');
-    if (isset ($hasbegun) || $hasbegun == 'false'){
-        $session->set('liveidhasbegun','true');
-        $url = $consumer->control_url . '?appid=' . $appid . '&' . $consumer->parameters;
-        $mainframe->redirect($url);
-    }
-
-    $session->set('liveidhasbegun','false');
     $info = array();
+    $token = @$_COOKIE['webauthtoken'];
+    $info[EXTERNAL_ID] = null;
+    $info[STATUS] = Auth_FAILURE;
 
-    $action = $credentials['action'];
-
-    if ($action == '' || $action == 'login'){
-        $user = $wll->processLogin($credentials);
+    if ($token) {
+        $user = $wll->processToken($token);
         if ($user) {
-            if ($user->usePersistentCookie()) {
-                $cookieTtl = time() + (10 * 365 * 24 * 60 * 60);
-                setcookie('webauthtoken', $user->getToken(), $cookieTtl);
-            }
-            else {
-                setcookie('webauthtoken', $user->getToken());
-            }
             $info[EXTERNAL_ID] = $user->getId();
             $info[STATUS] = Auth_SUCCESS;
         }
-        $info[STATUS] = Auth_FAILURE;
     }
+    else {
+        $hasbegun = $session->get('liveidhasbegun');
+        if (isset ($hasbegun) || $hasbegun == 'false') {
+            $session->set('liveidhasbegun','true');
+            $url = $consumer->control_url . '?appid=' . $appid . '&' . $consumer->parameters;
+            $mainframe->redirect($url);
+        }
 
+        $session->set('liveidhasbegun','false');
+
+        $action = $credentials['action'];
+
+        if ($action == '' || $action == 'login') {
+            $user = $wll->processLogin($credentials);
+            if ($user) {
+                if ($user->usePersistentCookie()) {
+                    $cookieTtl = time() + (10 * 365 * 24 * 60 * 60);
+                    setcookie('webauthtoken', $user->getToken(), $cookieTtl);
+                }
+                else {
+                    setcookie('webauthtoken', $user->getToken());
+                }
+                $info[EXTERNAL_ID] = $user->getId();
+                $info[STATUS] = Auth_SUCCESS;
+            }
+            $info[STATUS] = Auth_FAILURE;
+        }
+    }
     return $info;
 }
 

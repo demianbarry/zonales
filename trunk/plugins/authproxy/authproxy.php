@@ -7,7 +7,7 @@ class plgSystemAuthproxy extends JPlugin{
     }
 
     function onAfterInitialise() {
-        $get = JRequest::get('get');
+        $get = JRequest::get('method');
 
         if (count($get) == 0) return;
 
