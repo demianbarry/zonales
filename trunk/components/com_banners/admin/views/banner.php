@@ -217,6 +217,9 @@ class BannersViewBanner
 		BannersViewBanner::setBannerToolbar();
 		JRequest::setVar( 'hidemainmenu', 1 );
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'custombannercode' );
+                // agregado por G2P
+                $addTagsUrl = JRoute::_('index.php?option=com_customproperties&view=hierarchictagging&ce_name=banner&id='.$row->bid);
+                // fin
 		?>
 		<script language="javascript" type="text/javascript">
 		<!--
@@ -451,7 +454,15 @@ class BannersViewBanner
 							</label>
 						</td>
 						<td>
-							<textarea class="inputbox" cols="70" rows="3" name="tags" id="tags"><?php echo $row->tags;?></textarea>
+
+                                                    <!---------------- MODIFICADO POR G2P ------------------->
+							<!-- <textarea class="inputbox" cols="70" rows="3" name="tags" id="tags"><?php echo $row->tags;?></textarea> -->
+                                                    <input type="button" 
+                                                           value="agregar tags"
+                                                           name="tags"
+                                                           onclick="window.location.href=<?php echo $addTagsUrl ?>"
+                                                    />
+                                                    <!------------------------ FIN -------------------------->
 						</td>
 					</tr>
 				</tbody>
