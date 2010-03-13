@@ -4,7 +4,20 @@
  *
  * @author g2p
  */
+
+require_once 'basemodel.php';
+
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_alias' . DS .'tables' . DS . 'alias.php';
+
 class AliasModelAlias extends AliasModelBaseModel{
+
+    function AliasModelAlias() {
+        $this->__construct();
+    }
+
+    function  __construct() {
+        parent::__construct('TableAlias');
+    }
 
     function _getQuery() {
 
