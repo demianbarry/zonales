@@ -5,7 +5,20 @@
  *
  * @author g2p
  */
+
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_alias' . DS .'tables' . DS . 'protocoltypes.php';
+require_once 'basemodel.php';
+
+
 class AliasModelProtocolType extends AliasModelBaseModel{
+
+    function AliasModelProtocolType() {
+        $this->__construct();
+    }
+
+    function  __construct() {
+        parent::__construct('TableProtocoltypes');
+    }
 
     function _getQuery() {
 

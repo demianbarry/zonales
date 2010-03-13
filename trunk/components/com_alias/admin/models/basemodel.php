@@ -26,16 +26,27 @@ abstract class AliasModelBaseModel extends JModel
 	/** @var JCache */
 	var $_cache = null;
 
-	function AliasModelBaseModel()
+        var $_tableObject = null;
+
+	function AliasModelBaseModel($tableName,$id = 0)
 	{
-		$this->__construct();
+		$this->__construct($tableName,$id);
 	}
 
-	function __construct()
+	function __construct($tableClassName,$id = 0)
 	{
 		parent::__construct();
 
-		global $mainframe, $option;
+                if (!class_exists( $tableClassName )) {
+                    JError::raiseWarning( 0, "Model class $tableClassName not found in file." );
+                    return $false;
+                }
+
+                $this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');
+
+                global $mainframe, $option;
+
+                $this->_db =& JFactory::getDBO();
 
 		// obtenemos las variables para paginacion
 		$limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
@@ -47,13 +58,12 @@ abstract class AliasModelBaseModel extends JModel
 		$this->_limit = $limit;
 		$this->_limitstart = $limitstart;
 
-		$array = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$array[0]);
+		$this->setId($id);
 
-		$table =& $this->getTable();
-		$this->_table_name = $table->getTableName();
+                $this->_tableObject = new $tableClassName($this->_db);
+		$this->_table_name = $this->_tableObject->getTableName();
 
-		$this->_cache =& JFactory::getCache('com_reservas');
+		$this->_cache =& JFactory::getCache('com_alias');
 	}
 
 	/**
@@ -82,12 +92,12 @@ abstract class AliasModelBaseModel extends JModel
 		{
 			$query = $this->_buildQuery($customQuery);
 			$this->_db->setQuery($query);
-			//$this->_data = $this->_db->loadObject();
-			$this->_data = $this->_cache->get(array($this->_db, 'loadObject'), array());
+			$this->_data = $this->_db->loadObject();
+			//$this->_data = $this->_cache->get(array($this->_db, 'loadObject'), array());
 		}
 		if (!$this->_data)
 		{
-			$this->_data =& $this->getTable();
+			$this->_data =& $this->getInnerTable();
 		}
 
 		return $this->_data;
@@ -315,11 +325,11 @@ abstract class AliasModelBaseModel extends JModel
 	 *
 	 * @return boolean true si el registro fue guardado exitosamente
 	 */
-	function store($updateNulls = false, $use_post_data = true)
+	function store($data = null, $updateNulls = false)
 	{
-		$row =& $this->getTable();
+		$row =& $this->getInnerTable();
 
-		$data = $use_post_data ? JRequest::get('post') : $this->_data;
+		$data = ($data != null) ? $data : $this->_data;
 
 		if (!$row->bind($data))
 		{
@@ -327,29 +337,6 @@ abstract class AliasModelBaseModel extends JModel
 			return false;
 		}
 		$this->afterBind($row);
-
-		// Texto generado por editor
-		if (!is_null(JRequest::getVar('text',null)))
-		{
-			ContentHelper::saveContentPrep($row);
-		}
-
-		// Almancena los metadatos si estos estan presentes
-		$metadata = JRequest::getVar( 'meta', null, 'post', 'array');
-		if (is_array($metadata))
-		{
-			$txt = array();
-			foreach ($metadata as $k => $v) {
-				if ($k == 'description') {
-					$row->metadesc = $v;
-				} elseif ($k == 'keywords') {
-					$row->metakey = $v;
-				} else {
-					$txt[] = "$k=$v";
-				}
-			}
-			$row->metadata = implode("\n", $txt);
-		}
 
 
 		// Make sure the record is valid
@@ -403,22 +390,31 @@ abstract class AliasModelBaseModel extends JModel
 	 *
 	 * @return boolean true en caso de éxito, false en caso contrario
 	 */
-	function delete()
-	{
-		$cids = JRequest::getVar( 'cid', array(), '', 'array' );
+        function delete($cids) {
 
-		$row =& $this->getTable();
+            if (is_array($cids)) {
+                $row =& $this->getInnerTable();
 
-		for ($i = 0, $n = count($cids); $i < $n; $i++)
-		{
-			if (!$row->delete( $cids[$i] )) {
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-		}
+                for ($i = 0, $n = count($cids); $i < $n; $i++) {
+                    if (!$row->delete( $cids[$i] )) {
+                        $this->setError( $this->_db->getErrorMsg() );
+                        return false;
+                    }
+                }
 
-		return true;
-	}
+                return true;
+            }
+
+            if (is_int($cids)) {
+                if (!$row->delete( $cids )) {
+                    $this->setError( $this->_db->getErrorMsg() );
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+        }
 
 	/**
 	 * Incrementa el contador del modelo
@@ -432,7 +428,7 @@ abstract class AliasModelBaseModel extends JModel
 
 		if ($this->_id)
 		{
-			$tabla =& $this->getTable();
+			$tabla =& $this->getInnerTable();
 			$tabla->hit($this->_id);
 			return true;
 		}
@@ -443,4 +439,8 @@ abstract class AliasModelBaseModel extends JModel
 	{
 		return $this->_id . '-' . $this->_name;
 	}
+
+        function getInnerTable() {
+            return $this->_tableObject;
+        }
 }

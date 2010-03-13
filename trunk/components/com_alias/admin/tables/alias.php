@@ -15,8 +15,8 @@ class TableAlias extends JTable {
      * @param database A database connector object
      */
     function __construct( &$db ) {
-        $this->association_date = date('Y-m-d');
         parent::__construct( '#__alias', 'id', $db );
+        $this->association_date = date('Y-m-d');
     }
 }
 
