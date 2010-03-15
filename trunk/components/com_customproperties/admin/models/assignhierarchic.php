@@ -99,6 +99,10 @@ class CustompropertiesModelAssignhierarchic extends JModel {
 // Set ref_table
         $this->_content_element = $content_element;
     }
+
+    function getContentElement(){
+        return $this->_content_element;
+    }
     /**
      * Retrieves the Title of select content itme
      * @return String
@@ -140,7 +144,8 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             $database = $this->_db;
             $ce = $this->_content_element;
 // retrieve values
-            $selstr[] 	= "c.id ";
+           // $selstr[] 	= "c.id ";
+            $selstr[] = "c.".$ce->id;
             $fromstr[] 	= "#__$ref_table AS c";
             $wherestr	= "c.".$ce->id ." = '" . $this->_id . "'";
 
@@ -151,8 +156,8 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             }
 
             if($ce->cat_table) {
-                $selstr[] 		= "cat.".$ce->sec_table_id." AS catid ";
-                $selstr[] 		= "cat.".$ce->sec_table_title." AS category";
+                $selstr[] 		= "cat.".$ce->cat_table_id." AS catid ";
+                $selstr[] 		= "cat.".$ce->cat_table_title." AS category";
                 $fromstr[] 		= "LEFT JOIN #__".$ce->cat_table." AS cat ON(c.".$ce->catid." = cat.".$ce->cat_table_id.") ";
             }
 
@@ -162,8 +167,8 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             $database->setQuery($query);
             $row = $database->loadObject();
 
-            $properties = 	array (	'section' 	=> $row->section,
-                    'category' 	=> $row->category,
+            $properties = 	array (	'section' 	=> ($ce->sec_table) ? $row->section : '',
+                    'category' 	=> ($ce->cat_table) ? $row->category : '',
                     'content_element' => $ce->label
             );
             $this->_properties = $properties;

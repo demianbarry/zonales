@@ -95,6 +95,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         $item_title = $assign->getTitle();
         $properties = $assign->getProperties();
 
+        $this->_cplist = array();
         // Carga lista de tags asignados
         foreach ($this->getAssignedTags($ce_name, $content_id) as $value)
             $this->_cplist[] = $value->value_id;
