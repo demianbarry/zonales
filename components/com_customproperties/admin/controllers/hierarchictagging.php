@@ -80,6 +80,7 @@ class CustompropertiesControllerHierarchictagging extends JController {
 
         $this->addModelPath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS);
         $model = $this->getModel('assignhierarchic', 'CustompropertiesModel');
+        $ce_name = $model->getContentElement()->name;
 
         $content_id = JRequest::getVar('cid', 0, '', 'int');
         $database = JFactory::getDBO();
@@ -102,9 +103,9 @@ class CustompropertiesControllerHierarchictagging extends JController {
 
         $app = JFactory::getApplication();
         if ($app->isAdmin())
-            $return_to = "index.php?option=$option&controller=$controller&view=$view&tmpl=component&cid=$content_id";
+            $return_to = "index.php?option=$option&controller=$controller&view=$view&tmpl=component&cid=$content_id&ce_name=$ce_name";
         else
-            $return_to = "index.php?option=$option&controller=$controller&view=$view&tmpl=component_only&cid=$content_id";
+            $return_to = "index.php?option=$option&controller=$controller&view=$view&tmpl=component_only&cid=$content_id&ce_name=$ce_name";
 
         if ($content_id === 0) {
             $this->setRedirect($return_to, JText::_('CP_ERR_INVALID_ID'), 'error');

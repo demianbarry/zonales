@@ -51,7 +51,7 @@ echo $jsCode;
             <input type="hidden" name="controller" value="hierarchictagging"/>
             <input type="hidden" name="view" value="hierarchictagging"/>
             <input type="hidden" name="task" value=""/>
-            <input type="hidden" name="ce" value="<?php echo $ce_name; ?>" />
+            <input type="hidden" name="ce_name" value="<?php echo $ce_name; ?>" />
             <input type="hidden" name="cid" value="<?php echo $content_id; ?>" />
             <input type="button" class="button" value="<?php echo JText::_('Add'); ?>" onclick="this.form.task.value='add';this.form.submit();"/>
             <input type="button" class="button" value="<?php echo JText::_('Replace'); ?>" onclick="this.form.task.value='replace';this.form.submit();" />

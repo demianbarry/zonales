@@ -218,7 +218,17 @@ class BannersViewBanner
 		JRequest::setVar( 'hidemainmenu', 1 );
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'custombannercode' );
                 // agregado por G2P
-                $addTagsUrl = JRoute::_('index.php?option=com_customproperties&view=hierarchictagging&ce_name=banner&id='.$row->bid);
+                $addTagsUrl = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=hierarchictagging&ce_name=banner&id='.$row->bid);
+                $selectTags = 'select v.name as value from jos_custom_properties cp, jos_custom_properties_values v, jos_banner b where cp.value_id=v.id and cp.ref_table="banner" and cp.content_id=b.bid and b.bid=' . $row->bid;
+                $db = JFactory::getDBO();
+                $db->setQuery($selectTags);
+                $dbTags = $db->loadObjectList();
+
+                $aux = array();
+                foreach ($dbTags as $tag) {
+                    $aux[] = $tag->value;
+                }
+                $tags = implode(', ', $aux);
                 // fin
 		?>
 		<script language="javascript" type="text/javascript">
@@ -455,14 +465,21 @@ class BannersViewBanner
 						</td>
 						<td>
 
-                                                    <!---------------- MODIFICADO POR G2P ------------------->
-							<!-- <textarea class="inputbox" cols="70" rows="3" name="tags" id="tags"><?php echo $row->tags;?></textarea> -->
+                                                 <!-- AGREGADO POR G2P -->
+							<textarea class="inputbox" 
+                                                                  cols="70"
+                                                                  rows="3"
+                                                                  name="mytags"
+                                                                  id="mytags"
+                                                                  readonly="yes"
+                                                        ><?php echo $tags;?></textarea>
+                                                    <br>
                                                     <input type="button" 
                                                            value="agregar tags"
-                                                           name="tags"
-                                                           onclick="window.location.href=<?php echo $addTagsUrl ?>"
+                                                           name="buttontags"
+                                                           onclick="window.location.href='<?php echo $addTagsUrl ?>'"
                                                     />
-                                                    <!------------------------ FIN -------------------------->
+                                                  <!-- FIN -->
 						</td>
 					</tr>
 				</tbody>

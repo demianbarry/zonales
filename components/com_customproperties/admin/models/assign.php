@@ -140,7 +140,8 @@ class CustompropertiesModelAssign extends JModel {
 			$database = $this->_db;
 			$ce = $this->_content_element;
 			// retrieve values
-			$selstr[] 	= "c.id ";
+			// $selstr[] 	= "c.id ";
+                        $selstr[] = "c.".$ce->id;
 			$fromstr[] 	= "#__$ref_table AS c";
 			$wherestr	= "c.".$ce->id ." = '" . $this->_id . "'";
 
@@ -151,8 +152,8 @@ class CustompropertiesModelAssign extends JModel {
 			}
 
 			if($ce->cat_table){
-				$selstr[] 		= "cat.".$ce->sec_table_id." AS catid ";
-				$selstr[] 		= "cat.".$ce->sec_table_title." AS category";
+				$selstr[] 		= "cat.".$ce->cat_table_id." AS catid ";
+				$selstr[] 		= "cat.".$ce->cat_table_title." AS category";
 				$fromstr[] 		= "LEFT JOIN #__".$ce->cat_table." AS cat ON(c.".$ce->catid." = cat.".$ce->cat_table_id.") ";
 			}
 
