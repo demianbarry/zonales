@@ -84,6 +84,10 @@
     <fileset dir="${src_frontend_components}/com_eqzonales" id="com_eqzonales_files">
         <include name="**" />
     </fileset>
+    <!-- com_aapu -->
+    <fileset dir="${src_frontend_components}/com_aapu" id="com_aapu_files">
+        <include name="**" />
+    </fileset>
 
 
     <!-- ======================================================
@@ -283,4 +287,14 @@
         </zip>
     </target>
 
+    <!-- componente aapu -->
+    <target name="dist_com_aapu" description="Crea archivo de distribución Joomla para el componente A.A.P.U.">
+        <echo message="Creando archivo de distribución de componente A.A.P.U."/>
+        <zip destfile="${src_dist_dir}/${dist.com_aapu.file}.zip">
+            <fileset refid="com_aapu_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_aapu.ini" prefix="language" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_aapu.ini" prefix="admin/language" />
+        </zip>
+    </target>
+    
 </project>

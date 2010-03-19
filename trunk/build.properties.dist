@@ -6,6 +6,7 @@ dist.com_reservas.file=com_reservas
 dist.com_content.file=com_content
 dist.com_customproperties.file=com_customproperties
 dist.com_eqzonales.file=com_eqzonales
+dist.com_aapu.file=com_aapu
  
 # nombre modulo
 dist.mod_jxcomments.file=mod_jxcomments
