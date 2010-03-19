@@ -35,7 +35,7 @@ class JWFControllerItem extends JController {
         $this->registerTask( 'save'     , 'save');
         $this->registerTask( 'history'     , 'history');
         $this->registerTask( 'edit'     , 'edit');
-        $this->registerTask( 'cancel'   , 'cancel');
+        $this->registerTask( 'cancel'   , 'cancel');        
     }
 
     /**
@@ -116,14 +116,17 @@ class JWFControllerItem extends JController {
         $currentStation = $workflow->stations[$currentStep->sid];
         $nextStation    = null;
 
-        //Determine next station
-        $flag = false;
-        foreach($workflow->stations as $s) {
-            if( $flag ) {
-                $nextStation = $s;
-                break;
+        $publish     = JRequest::getInt( 'publish', 0 );
+        if(!$publish) {
+            //Determine next station
+            $flag = false;
+            foreach($workflow->stations as $s) {
+                if( $flag ) {
+                    $nextStation = $s;
+                    break;
+                }
+                if( $currentStation->id == $s->id )$flag = true;
             }
-            if( $currentStation->id == $s->id )$flag = true;
         }
 
         //Validations of the current station are invoked
@@ -143,7 +146,10 @@ class JWFControllerItem extends JController {
             $view->display($validationMsg);
             return;
         }
-
+        if($publish) {
+            $pManager->invokeMethod( 'component', 'publish',  array($workflow->component),array($iid));
+            $this->setRedirect('index.php?option=com_jwf&controller=item', JText::_('Published successfuly'));
+        }
 
         if( $nextStation == null )return;
 
@@ -370,7 +376,6 @@ class JWFControllerItem extends JController {
         // Get/Create the model
         $iModel =& $this->getModel('item');
         $items  = $iModel->search( 0, 0, $aclPairs, '', true );
-
 
         // Display the view
         $view->display($items ,$aclPairs);

@@ -21,7 +21,8 @@ class JWFValidationHandler_test  extends JWFValidationHandler {
         $query = 'SELECT id' .
                 ' FROM #__custom_properties' .
                 ' WHERE content_id = ' . (int) $currentStep->iid.
-                ' AND ref_table = "content"';
+                ' AND ref_table = "content"' .
+                ' AND field_id = (SELECT f.id FROM #__custom_properties_fields f WHERE f.name ="root_zonales")';
         $db->setQuery( $query );
         if(count($db->loadObjectList()) == 0)
             return "Debe taguear el articulo!!!";
