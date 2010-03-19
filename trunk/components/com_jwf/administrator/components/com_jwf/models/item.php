@@ -92,7 +92,6 @@ class JWFModelItem extends JModel
 			JError::raiseError( 500, $db->getErrorMsg() );
 		}
 
-
 		return true;
 	}
 	
