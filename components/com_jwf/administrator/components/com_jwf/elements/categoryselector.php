@@ -73,14 +73,19 @@ class JElementCategoryselector extends JElement {
 
         foreach( $categoryLists as $contentType => $data ) {
 
-            $output .= JHTML::_('jwf.indentedLine',"$contentType:{",4);
+            if($data) {
+                $output .= JHTML::_('jwf.indentedLine',"$contentType:{",4);
 
-            foreach( $data as $id => $obj ) {
-                $output .= JHTML::_('jwf.indentedLine',$obj->getId().' : \''.$obj->getTitle().'\',',5);
-                if( count($obj->getChildren()))$output .= $this->fetchChildren( $obj,1 );
+                foreach( $data as $id => $obj ) {
+                    $output .= JHTML::_('jwf.indentedLine',$obj->getId().' : \''.$obj->getTitle().'\',',5);
+                    if( count($obj->getChildren()))$output .= $this->fetchChildren( $obj,1 );
+                }
+
+                if (count($data))
+                    $output  = JHTML::_('jwf.trimComma', $output );
+
+                $output .= JHTML::_('jwf.indentedLine',"},",4);
             }
-            if (count($data))$output  = JHTML::_('jwf.trimComma', $output );
-            $output .= JHTML::_('jwf.indentedLine',"},",4);
         }
         $output  = JHTML::_('jwf.trimComma', $output );
         $output .= JHTML::_('jwf.indentedLine','};',3);
