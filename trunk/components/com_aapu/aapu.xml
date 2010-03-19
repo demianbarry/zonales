@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5.0">
+    <name>Aapu</name>
+    <author>Mediabit</author>
+    <creationDate>2010</creationDate>
+    <copyright>Copyright (C) 2009 Mediabit. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail/>
+    <authorUrl/>
+    <version>0.1</version>
+    <description>Administración Avanzada de Perfiles de Usuario</description>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">install.mysql.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        
+    </files>
+
+    <languages folder="site/language">
+        <language tag="es-ES">es-ES.com_aapu.ini</language>
+    </languages>
+
+    <administration>
+
+        <menu
+            controller="controller"
+            task="about">
+            Adm. Avanzada de Perfiles de Usuarios
+        </menu>
+
+        <submenu>
+            <menu
+                controller="controller"
+                task="listUsers">
+                Gestión de Usuarios
+            </menu>
+            <menu
+                controller="controller"
+                task="listTabs">
+                Gestión de Pestañas
+            </menu>
+            <menu
+                controller="controller"
+                task="listAttributes">
+                Gestión de Atributos
+            </menu>
+            <menu
+                controller="controller"
+                task="listDataTypes">
+                Gestión de Tipos de datos
+            </menu>
+            <menu
+                controller="controller"
+                task="configure">
+                Configuración
+            </menu>
+        </submenu>
+
+        <files folder="admin">
+            <filename>admin.aapu.php</filename>
+            <filename>helper.php</filename>
+            <filename>index.html</filename>
+            <filename>install.mysql.sql</filename>
+            <filename>uninstall.mysql.sql</filename>
+            <filename>toolbar.aapu.html.php</filename>
+            <filename>toolbar.aapu.php</filename>
+
+            <filename>controllers/index.html</filename>
+            <filename>controllers/controller.php</filename>
+
+            <filename>models/index.html</filename>
+            <filename>models/basemodel.php</filename>
+            <filename>models/tabs.php</filename>
+            <filename>models/attributes.php</filename>
+            <filename>models/datatypes.php</filename>
+
+            <filename>plugins/index.html</filename>
+            <filename>plugins/renders/index.html</filename>
+            <filename>plugins/validators/index.html</filename>
+
+            <filename>tables/index.html</filename>
+            <filename>tables/attributes.php</filename>
+            <filename>tables/tabs.php</filename>
+            <filename>tables/attribute_entity.php</filename>
+            <filename>tables/datatypes.php</filename>
+
+            <filename>views/baseview.php</filename>
+
+            <filename>views/listattributes/index.html</filename>
+            <filename>views/listattributes/view.html.php</filename>
+            <filename>views/listattributes/tmpl/index.html</filename>
+            <filename>views/listattributes/tmpl/default.php</filename>
+
+            <filename>views/editattribute/index.html</filename>
+            <filename>views/editattribute/view.html.php</filename>
+            <filename>views/editattribute/tmpl/index.html</filename>
+            <filename>views/editattribute/tmpl/default.php</filename>
+
+            <filename>views/listdatatypes/index.html</filename>
+            <filename>views/listdatatypes/view.html.php</filename>
+            <filename>views/listdatatypes/tmpl/index.html</filename>
+            <filename>views/listdatatypes/tmpl/default.php</filename>
+
+            <filename>views/editdatatype/index.html</filename>
+            <filename>views/editdatatype/view.html.php</filename>
+            <filename>views/editdatatype/tmpl/index.html</filename>
+            <filename>views/editdatatype/tmpl/default.php</filename>
+
+            <filename>views/listtabs/index.html</filename>
+            <filename>views/listtabs/view.html.php</filename>
+            <filename>views/listtabs/tmpl/index.html</filename>
+            <filename>views/listtabs/tmpl/default.php</filename>
+
+            <filename>views/edittab/index.html</filename>
+            <filename>views/edittab/view.html.php</filename>
+            <filename>views/edittab/tmpl/index.html</filename>
+            <filename>views/edittab/tmpl/default.php</filename>
+
+            <filename>views/listusers/index.html</filename>
+        </files>
+
+        <languages folder="admin/language">
+            <language tag="es-ES">es-ES.com_aapu.ini</language>
+        </languages>
+
+    </administration>
+    
+</install>
