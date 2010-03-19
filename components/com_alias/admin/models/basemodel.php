@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
-abstract class AliasModelBaseModel extends JModel
+abstract class AapuModelBaseModel extends JModel
 {
 	var $_id		= null;
 	var $_data 		= null;
