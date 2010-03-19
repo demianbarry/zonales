@@ -35,7 +35,7 @@ $editLink = $response[$contentType];
 
 $moveForwardLink  = JRoute::_("index.php?option=com_jwf&controller=item&task=moveForward&wid=$wid&iid=$iid&version=$version"); 
 $moveBackwardLink = JRoute::_("index.php?option=com_jwf&controller=item&task=moveBackward&wid=$wid&iid=$iid&version=$version"); 
-
+$publishLink  = JRoute::_("index.php?option=com_jwf&controller=item&task=moveForward&wid=$wid&iid=$iid&version=$version&publish=1");
 		
 
 ?>
@@ -78,7 +78,8 @@ $moveBackwardLink = JRoute::_("index.php?option=com_jwf&controller=item&task=mov
 	<div id='next-station'>
 	<?php
 		if( $this->nextStation == null ){
-			echo "<div class='stop'>".JText::_('None')."</div>";
+			echo "<div><a href='$publishLink' class='move'>".JText::_('Publish')."</a></div>";
+                        //echo "<div class='stop'>".JText::_('None')."</div>";
 		} else {
 			echo "<div class='hasTip' title='{$this->nextStation->task}'><a href='$moveForwardLink' class='move'>".JText::_('Move to').' '.stripslashes($this->nextStation->title)."</a></div>";
 		}		
