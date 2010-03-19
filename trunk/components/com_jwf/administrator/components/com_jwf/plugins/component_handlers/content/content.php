@@ -87,7 +87,13 @@ class JWFComponentHandler_content  extends JWFComponentHandler {
     }
 
     function publish( $id ) {
-
+        $db  =& JFactory::getDBO();
+        $sql = "UPDATE #__jwf_steps s SET s.current=0 WHERE s.current = 1 AND s.iid  = $id";
+        $db->setQuery( $sql );
+        $db->query();
+        $sql = "UPDATE #__content c SET c.state = 1, c.modified_by = c.checked_out, c.checked_out = 0 WHERE c.state != 1 AND c.id  = $id";
+        $db->setQuery( $sql );
+        $db->query();
     }
 
     function delete( $id ) {
