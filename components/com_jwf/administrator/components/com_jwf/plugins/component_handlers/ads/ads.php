@@ -156,7 +156,7 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
         $categoriesArray = explode(',', $workflow->category);
         $entry = $args[0];
 
-        if(!in_array($entry->catid, $categoriesArray ))return false;
+        if(!in_array($entry->cat_id, $categoriesArray ))return false;
 
         //Check to see if this a new Article or an old one being modified
         $id     = JRequest::getInt( 'id', 0, 'post' );
@@ -203,7 +203,7 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
 
         $firstStation = reset($workflow->stations);
 
-        return $itemModel->enter( $workflow->id, $firstStation->id, $entry->id, $entry->title, $entry->version );
+        return $itemModel->enter( $workflow->id, $firstStation->id, $entry->id, $entry->ad_name, 0 );
     }
 
 }
