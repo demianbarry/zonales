@@ -16,7 +16,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class comEqZonalesHelper
+class comEqZonalesHelperOld
 {
 	/** @var JCache */
 	var $_cache = null;

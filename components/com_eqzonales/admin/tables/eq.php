@@ -29,7 +29,7 @@ class TableEq extends JTable
      * @see JTable::bind
      * @since 1.5
      */
-    function bind( $from, $ignore=array() )
+    function bind( $from, $ignore = array() )
     {
         parent::bind($from, $ignore);
 

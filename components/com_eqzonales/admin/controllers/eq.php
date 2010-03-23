@@ -22,15 +22,57 @@ jimport('joomla.filesystem.file');
  * Controlador
  *
  */
-class EqZonalesControllerEq extends JController
-{
-	/**
-	 * Constructor
-	 *
-	 * @param array $default
-	 */
-	function __construct($default = array())
-	{
-		parent::__construct($default);
-	}
+class EqZonalesControllerEq extends JController {
+
+    /**
+     * Constructor
+     *
+     * @param array $default
+     */
+    function __construct($default = array()) {
+        parent::__construct($default);
+    }
+
+    function createEq() {
+        $user_id = JRequest::getVar('user_id', 0, 'post', 'int');
+        $eq_name = JRequest::getVar('eq_name', NULL, 'post', 'string');
+
+        if ($user_id != 0 && $eq_name != NULL) {
+            $this->createEqImpl($user_id, $eq_name);
+        }
+    }
+
+    /**
+     * Genera un nuevo ecualizador para el usuario indicado.
+     * 
+     * @param int $user_id id usuario
+     * @param String $eq_name nombre del ecualizador
+     */
+    function createEqImpl($user_id, $eq_name) {
+
+        // Chequea que el usuario haya iniciado sesión
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            return;
+        }
+
+        // TODO: Chequea que el no exista un ecualizador con el mismo nombre
+
+        // Crea nueva instancia del ecualizador
+        $eqData = array(
+                'nombre' => $eq_name,
+                'user_id' => $user_id
+        );
+
+        // Agrega bandas por defecto del ecualizador
+
+
+        // Almacena el ecualizador
+        $model = &$this->getModel('Menu');
+
+        if (!$model->store(false, true, $eqData)) {
+            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+            exit();
+        }
+    }
 }

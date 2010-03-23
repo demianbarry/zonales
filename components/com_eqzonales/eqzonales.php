@@ -16,15 +16,52 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-// Require the base controller
+// Controlador base
 require_once(JPATH_COMPONENT.DS.'helper.php' );
 require_once(JPATH_COMPONENT.DS.'controller.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
 
-// Create the controller
-$controller = new EqZonalesController();
+// Controlador base administrador
+//require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'controller.php' );
+//require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helper.php' );
 
-// Perform the Request task
-$controller->execute( JRequest::getCmd('task'));
+require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_zonales'.DS.'models'.DS.'basemodel.php');
+require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_zonales'.DS.'views'.DS.'baseview.php');
 
-// Redirect if set by the controller
+JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+
+$cmd = JRequest::getCmd('task', null);
+
+if (strpos($cmd, '.') != false) {
+    // Definimos un par controlador/tarea (controller/task) -- los dividimos
+    list($controllerName, $task) = explode('.', $cmd);
+
+    // Definimos el nombre del controlador y su path
+    $controllerName	= strtolower($controllerName);
+    $controllerPath	= JPATH_COMPONENT.DS.'controllers'.DS.$controllerName.'.php';
+
+    // Si el controlador existe, lo incluimos
+    if (file_exists($controllerPath)) {
+        require_once($controllerPath);
+    } else {
+        JError::raiseError(500, 'Invalid Controller');
+    }
+}
+else {
+    // Controlador base
+    $controllerName = null;
+    $task = $cmd;
+}
+
+// Instancia el controlador
+$controllerClass = 'EqZonalesController'.ucfirst($controllerName);
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass();
+} else {
+    JError::raiseError(500, 'Invalid Controller Class');
+}
+
+// ejecuta la tarea requerida
+$controller->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+$controller->execute($task);
 $controller->redirect();
