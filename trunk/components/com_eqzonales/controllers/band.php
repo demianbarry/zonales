@@ -49,7 +49,7 @@ class EqZonalesControllerBand extends JController {
         // Chequea que el usuario haya iniciado sesión
         $user =& JFactory::getUser();
         if ($user->guest) {
-            return;
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
         }
 
         // Chequea que hayan sido pasados valores para las bandas
