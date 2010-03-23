@@ -64,7 +64,7 @@ class EqZonalesControllerEq extends JController {
         // Chequea que el usuario haya iniciado sesión
         $user =& JFactory::getUser();
         if ($user->guest) {
-            return $this->helper->getEqJsonResponse('FAIL', 'Necesita iniciar sesión');;
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));;
         }
 
         $user_id = property_exists($params, 'user_id') ? $params->user_id : NULL;
@@ -72,7 +72,7 @@ class EqZonalesControllerEq extends JController {
 
         // Chequea que el usuario indicado sea valido
         if ($user_id <= 0) {
-            return $this->helper->getEqJsonResponse('FAIL', 'Usuario inválido');;
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
         }
 
         // Nombre por defecto para el ecualizador
@@ -93,10 +93,14 @@ class EqZonalesControllerEq extends JController {
         // Almacena el ecualizador
         $model = &$this->getModel('Eq');
         if (!$model->store(false, false, $eqData)) {
-            return $this->helper->getEqJsonResponse('FAIL', 'No se pudo crear ecualizador');;
+            $jtext = new JText();
+            $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
         }
 
-        return $this->helper->getEqJsonResponse('OK', 'Ecualizador creado exitosamente');;
+        $jtext = new JText();
+        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
+        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
     }
 
     /**
@@ -131,9 +135,18 @@ class EqZonalesControllerEq extends JController {
 
         // Almacena el ecualizador
         $model = &$this->getModel('Eq');
-        if (!$model->store(false, false, $eqData)) {
-            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-            exit();
+                if (!$model->store(false, false, $eqData)) {
+            $jtext = new JText();
+            $message = $jtext->sprintf('ZONALES_EQ_UPDATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
         }
+
+        $jtext = new JText();
+        $message = $jtext->sprintf('ZONALES_EQ_UPDATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
+        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
+//        if (!$model->store(false, false, $eqData)) {
+//            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+//            exit();
+//        }
     }
 }

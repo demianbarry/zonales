@@ -81,9 +81,18 @@ class EqZonalesControllerBand extends JController {
             // Almacena el ecualizador
             $model = &$this->getModel('Banda');
             if (!$model->store(false, false, $bandData)) {
-                echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-                exit();
+                $jtext = new JText();
+                $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND'));
+                return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
             }
+
+            $jtext = new JText();
+            $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND'));
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
+        //            if (!$model->store(false, false, $bandData)) {
+        //                echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+        //                exit();
+        //            }
 
         }
 
