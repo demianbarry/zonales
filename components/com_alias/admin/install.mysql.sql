@@ -28,6 +28,7 @@ CREATE TABLE  `#__providers` (
   `required_input` varchar(255) default ":::",
   `apikey` varchar(255) default null,
   `secretkey` varchar(255) default null,
+  `callback_parameters` varchar(255) default null,
   PRIMARY KEY  (`id`),
 unique (`name`),
   KEY `fk_#__providers_#__protocol_type` (`protocol_type_id`),
