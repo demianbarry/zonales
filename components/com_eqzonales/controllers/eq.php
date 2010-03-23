@@ -66,7 +66,7 @@ class EqZonalesControllerEq extends JController {
         // Chequea que el usuario haya iniciado sesión
         $user =& JFactory::getUser();
         if ($user->guest) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));;
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
         }
 
         $user_id = property_exists($params, 'user_id') ? $params->user_id : NULL;
