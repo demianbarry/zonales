@@ -39,6 +39,7 @@ class EqZonalesControllerBand extends JController {
     function modifyBand() {
         $band_params = JRequest::getVar('params', NULL, 'post', 'string');
         $params = $this->helper->getJsonParams($band_params, JText::_('ZONALES_EQ_BAND'));
+        if (!$params) return;
 
         $this->modifyBandImpl($params);
     }

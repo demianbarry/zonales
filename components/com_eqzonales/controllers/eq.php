@@ -40,6 +40,7 @@ class EqZonalesControllerEq extends JController {
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
         $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
+        if (!$params) return;
 
         echo $this->createEqImpl($params);
         return;
@@ -49,6 +50,7 @@ class EqZonalesControllerEq extends JController {
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
         $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
+        if (!$params) return;
 
         echo $this->modifyEqImpl($params);
         return;
