@@ -23,6 +23,9 @@ jimport('joomla.filesystem.file');
  *
  */
 class EqZonalesControllerBand extends JController {
+
+    var $helper = null;
+    
     /**
      * Constructor
      *
@@ -30,18 +33,14 @@ class EqZonalesControllerBand extends JController {
      */
     function __construct($default = array()) {
         parent::__construct($default);
+        $this->helper = new comEqZonalesHelper();
     }
 
     function modifyBand() {
         $band_params = JRequest::getVar('params', NULL, 'post', 'string');
-        $params = json_decode($band_params);
+        $params = $this->helper->getJsonParams($band_params, JText::_('ZONALES_EQ_BAND'));
 
-        if (is_null($params)) {
-            echo "FAILURE";
-            return;
-        }
-
-        $this->modifyBandImpl(json_decode($band_params));
+        $this->modifyBandImpl($params);
     }
 
     function modifyBandImpl($params = NULL) {

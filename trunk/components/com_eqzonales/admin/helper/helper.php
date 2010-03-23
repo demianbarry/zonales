@@ -18,11 +18,25 @@ defined('_JEXEC') or die('Restricted access');
 
 class comEqZonalesHelper
 {
+    const FAILURE = 'FAIL';
+    const SUCCESS = 'SUCCESS';
 
     function getEqJsonResponse($status, $msg)
     {
         $response = array('status' => $status, 'msg' => $msg);
         return json_encode($response);
+    }
+
+    function getJsonParams($json_params,$type) {
+        $params = json_decode($json_params);
+        $jtext = new JText();
+        
+        if (is_null($params)) {
+            echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE, $jtext->sprintf('ZONALES_JSON_READ_FAILURE',$type));
+            return;
+        }
+
+        return $params;
     }
 
 }
