@@ -33,7 +33,7 @@ class comEqZonalesHelper
         
         if (is_null($params)) {
             echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE, $jtext->sprintf('ZONALES_JSON_READ_FAILURE',$type));
-            return;
+            return false;
         }
 
         return $params;
