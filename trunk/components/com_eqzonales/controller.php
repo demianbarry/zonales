@@ -25,12 +25,26 @@ jimport('joomla.application.component.controller');
 class EqZonalesController extends JController
 {
 	/** @var class */
-	var $_zonalesHelper = null;
+//	var $_zonalesHelper = null;
 
 	function __construct($default = array())
 	{
 		parent::__construct($default);
-		$this->_zonalesHelper = new comZonalesHelper();
+//		$this->_zonalesHelper = new comZonalesHelper();
+	}
+
+        function test()
+	{
+		global $option;
+
+		$document = &JFactory::getDocument();
+		$vType = $document->getType();
+		$vName = JRequest::getCmd('view','test');
+		$vLayout = JRequest::getCmd('layout','default');
+
+		$view =& $this->getView($vName, $vType);
+		$view->setLayout($vLayout);
+		$view->display();
 	}
 
 }
