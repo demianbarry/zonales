@@ -39,12 +39,7 @@ class EqZonalesControllerEq extends JController {
     function createEq() {
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
-        $params = json_decode($eq_params);
-
-        if (is_null($params)) {
-            echo $this->helper->getEqJsonResponse('FAIL', 'Fallo lectura del Ecualizador');
-            return;
-        }
+        $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
 
         echo $this->createEqImpl($params);
         return;
@@ -53,12 +48,7 @@ class EqZonalesControllerEq extends JController {
     function modifyEq() {
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
-        $params = json_decode($eq_params);
-
-        if (is_null($params)) {
-            echo $this->helper->getEqJsonResponse('FAIL', 'Fallo lectura del Ecualizador');
-            return;
-        }
+        $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
 
         echo $this->modifyEqImpl($params);
         return;
