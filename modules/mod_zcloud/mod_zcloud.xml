@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>ZCloud</name>
+	<creationDate>2010</creationDate>
+	<author>Cristian Pacheco</author>
+	<authorEmail>cpacheco@lavabit.com</authorEmail>
+	<copyright>Copyright 2010 Cristian Pacheco. All Rights Reserved.</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0.1</version>
+	<description>
+		Modulo de nube de etiquetas que muestra las que al usuario le interesan.
+                Las que tienen mayor interés por parte del mismo son resaltadas
+	</description>
+
+	<files>
+		<filename module="mod_zcloud">mod_zcloud.php</filename>
+		<filename>index.html</filename>
+		<folder>tmpl</folder>
+	</files>
+	<params>
+    <param name="zcloud_width" type="text" default="150" label="Width" description="Ancho de la nube de etiquetas, en pixeles" />
+    <param name="zcloud_maxtags" type="text" default="16" label="Tag Count" description="Maximo numero de etiquetas" />
+    <param name="zcloud_maxsize" type="text" default="2" label="Max Font Size" description="Maximo tamaño de fuente, en em" />
+    <param name="zcloud_minpriority" type="text" default="100" label="Importancia minima" description="Minima importancia dada por el usuario para que la etiqueta sea mostrada"/>
+	</params>
+</install>
+
+<!--
+DERIVED FROM JCLOUD Copyright 2009 Jeff Channell
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0" method="upgrade">
+	<name>JCloud</name>
+	<creationDate>2009</creationDate>
+	<author>Jeff Channell</author>
+	<authorEmail>me@jeffchannell.com</authorEmail>
+	<authorUrl>http://jeffchannell.com</authorUrl>
+	<copyright>Copyright 2009 Jeff Channell. All Rights Reserved.</copyright>
+	<license>GNU/GPL</license>
+	<version>1.0.1</version>
+	<description>
+		Simple Tag Cloud module
+	</description>
+
+	<files>
+		<filename module="mod_jcloud">mod_jcloud.php</filename>
+		<filename>index.html</filename>
+		<folder>tmpl</folder>
+	</files>
+	<params>
+    <param name="jcloud_width" type="text" default="150" label="Width" description="Width of tag cloud, in px" />
+    <param name="jcloud_maxtags" type="text" default="16" label="Tag Count" description="Max number of tags" />
+    <param name="jcloud_maxsize" type="text" default="2" label="Max Font Size" description="Max font size, in em" />
+    <param name="jcloud_filter" type="radio" default="0" label="Single Tag Filter" description="Filter tags with only a single article">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+	</params>
+</install>
+-->
