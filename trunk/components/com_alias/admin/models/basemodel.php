@@ -3,7 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
-abstract class AapuModelBaseModel extends JModel
+abstract class AliasModelBaseModel extends JModel
 {
 	var $_id		= null;
 	var $_data 		= null;
@@ -442,5 +442,17 @@ abstract class AapuModelBaseModel extends JModel
 
         function getInnerTable() {
             return $this->_tableObject;
+        }
+
+        function getDependentModel($dependentName) {
+            $name = ucfirst(strtolower($dependentName));
+            $className = 'AliasModel' . $name;
+
+            if (!class_exists($className)){
+                $jerror = new JError();
+                $jerror->raiseWarning(0, "Model class $className not found in file");
+            }
+
+            return new $className();
         }
 }

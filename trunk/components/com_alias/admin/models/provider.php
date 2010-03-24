@@ -20,12 +20,7 @@ class AliasModelProvider extends AliasModelBaseModel{
 
     function _getQuery() {
 
-        $query =
-        'SELECT p.id, p.name as provider, p.discovery_url, p.parameters, ' .
-        'p.description, p.observation, p.icon_url, p.access, p.prefix, p.suffix, '.
-        'p.required_input, p.apikey, p.secretkey, t.name as protocol '.
-        'FROM #__providers p INNER JOIN #__protocol_types t '.
-        'ON p.protocol_type_id=t.id ';
+        $query = 'SELECT * FROM #__providers p ';
 
         return $query;
     }
@@ -50,5 +45,12 @@ class AliasModelProvider extends AliasModelBaseModel{
 	{
 		return true;
 	}
+
+        function getProtocolTypeModel() {
+            $model = $this->getDependentModel('protocoltype');
+            $model->setId($this->getData()->protocol_type_id);
+
+            return $model;
+        }
 }
 ?>
