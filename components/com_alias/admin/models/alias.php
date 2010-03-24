@@ -4,10 +4,9 @@
  *
  * @author g2p
  */
-
-require_once 'basemodel.php';
-
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_alias' . DS .'tables' . DS . 'alias.php';
+require_once 'provider.php';
+require_once 'basemodel.php';
 
 class AliasModelAlias extends AliasModelBaseModel{
 
@@ -21,10 +20,7 @@ class AliasModelAlias extends AliasModelBaseModel{
 
     function _getQuery() {
 
-        $query =
-        'SELECT a.user_id, a.id, a.name as alias, a.association_date, '.
-        'a.block, a.activation, p.name as provider '.
-        'FROM #__alias a INNER JOIN #__providers p ON a.provider_id=p.id ';
+        $query = 'SELECT * FROM #__alias a ';
 
         return $query;
     }
@@ -49,6 +45,14 @@ class AliasModelAlias extends AliasModelBaseModel{
 	{
 		return true;
 	}
+
+        function getProviderModel() {
+            $model = $this->getDependentModel('provider');
+            $model->setId($this->getData()->provider_id);
+
+            return $model;
+        }
+        
 }
 
 ?>

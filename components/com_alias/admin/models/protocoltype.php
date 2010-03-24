@@ -10,9 +10,9 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_a
 require_once 'basemodel.php';
 
 
-class AliasModelProtocolType extends AliasModelBaseModel{
+class AliasModelProtocoltype extends AliasModelBaseModel{
 
-    function AliasModelProtocolType() {
+    function AliasModelProtocoltype() {
         $this->__construct();
     }
 
@@ -22,9 +22,7 @@ class AliasModelProtocolType extends AliasModelBaseModel{
 
     function _getQuery() {
 
-        $query =
-        'SELECT t.id, t.name, t.function as func '.
-        'FROM #__protocol_types t ';
+        $query = 'SELECT * FROM #__protocol_types t ';
 
         return $query;
     }
