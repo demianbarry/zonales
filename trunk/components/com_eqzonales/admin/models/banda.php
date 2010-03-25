@@ -15,7 +15,7 @@ class EqZonalesModelBanda extends ZonalesModelBaseModel
                     .$dbo->nameQuote('e.peso') .','. $dbo->nameQuote('e.cp_value_id') .','
                     .$dbo->nameQuote('e.eq_id') .','. $dbo->nameQuote('e.default') .','
                     .$dbo->nameQuote('e.active')
-                    .' FROM ' . $dbo->nameQuote('#__eqzonales_eq') . ' e';
+                    .' FROM ' . $dbo->nameQuote('#__eqzonales_banda') . ' e';
 
 		return $query;
 	}
