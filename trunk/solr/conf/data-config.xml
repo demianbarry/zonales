@@ -77,28 +77,6 @@
 
 			<field column="a_state" name="published" />			
 
-                        <!--
-			<entity name="tags" 
-                		query="select jcp.content_id, jcpf.name AS f_name
-					from jos_custom_properties jcp
-					inner join jos_content a on a.id = jcp.content_id
-					inner join jos_custom_properties_fields jcpf on jcp.field_id = jcpf.id
-					where content_id = '${articulo.id}'
-					group by content_id, jcp.field_id
-					order by content_id">
-                		<field column="f_name" name="tags_names" />
-                        </entity>
-
-			<entity name="tags" 
-                		query="select jcp.content_id, jcpv.name AS v_name
-					from jos_custom_properties jcp
-					inner join jos_content a on a.id = jcp.content_id
-					inner join jos_custom_properties_values jcpv on jcp.value_id = jcpv.id
-					where content_id = '${articulo.id}'
-					order by content_id">
-                		<field column="v_name" name="tags_values" />
-                        </entity>
-                        -->
         	</entity>
     	</document>
 </dataConfig>
