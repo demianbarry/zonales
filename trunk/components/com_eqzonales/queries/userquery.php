@@ -29,18 +29,20 @@ class UserQuery implements SolrQuery {
         $eqModel->setWhere('e.user_id=' . $this->getUser()->id);
         $eqData = $eqModel->getData(true, true);
 
-        // recupero los datos de las bandas asociados al ecualizador
-        $bandaModel = new EqZonalesModelBanda();
-        $bandaModel->setWhere('e.eq_id=' . $eqData->id);
-        $customQuery = $bandaModel->_buildQuery(true);
-        $bandaModel->getDBO()->setQuery($customQuery);
-        $bandas = $bandaModel->getDBO()->loadObjectList();
+        $query = $eqData->solrquery_bq;
 
-        // armo el query
-        $query = '';
-        foreach ($bandas as $bandaActual) {
-            $query = $query . $bandaActual->valor . '^' . $bandaActual->peso . ' AND ';
-        }
+//        // recupero los datos de las bandas asociados al ecualizador
+//        $bandaModel = new EqZonalesModelBanda();
+//        $bandaModel->setWhere('e.eq_id=' . $eqData->id);
+//        $customQuery = $bandaModel->_buildQuery(true);
+//        $bandaModel->getDBO()->setQuery($customQuery);
+//        $bandas = $bandaModel->getDBO()->loadObjectList();
+//
+//        // armo el query
+//        $query = '';
+//        foreach ($bandas as $bandaActual) {
+//            $query = $query . $bandaActual->valor . '^' . $bandaActual->peso . ' AND ';
+//        }
 
         return $query;
     }
