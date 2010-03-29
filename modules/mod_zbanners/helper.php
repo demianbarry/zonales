@@ -28,17 +28,41 @@ class modZbannersHelper
 		$vars['limit']		= (int) $params->get( 'count', 1 );
 		$vars['ordering']	= $params->get( 'ordering' );
 
+                $bannersList = $model->getList( $vars );
+
 		if ($params->get( 'tag_search' ))
 		{
-			$document		=& JFactory::getDocument();
-			$keywords		=  $document->getMetaData( 'keywords' );
+                    $db =& JFactory::getDBO();
+                    $session = JFactory::getSession();
 
-			$session = JFactory::getSession();
-			$zonal_actual = $session->get('zonales_zonal_name', null);
-			$vars['tag_search'] = array($zonal_actual);
+                    $zonal_actual = $session->get('zonales_zonal_name', null);
+                    $query = 'select cp.content_id as banner_id from jos_custom_properties cp, jos_custom_properties_fields cpf, jos_custom_properties_values cpv where cp.field_id=cpf.id and cp.value_id=cpv.id and cp.ref_table="banner" and cpf.name="root_zonales" and cpv.name='. $db->Quote($zonal_actual);
+                    $db->setQuery($query);
+                    $dbBanners = $db->loadObjectList();
+
+                    $banners = array();
+                    foreach ($bannersList as $banner) {
+                        foreach ($dbBanners as $showBanner) {
+                            if ($showBanner->banner_id == $banner->id){
+                                $banners[] = $banner;
+                            }
+                        }
+                    }
+
+
+
+//			$document		=& JFactory::getDocument();
+//			$keywords		=  $document->getMetaData( 'keywords' );
+//
+//
+//
+//			$vars['tag_search'] = array($zonal_actual);
 		}
+                else {
+                    $banners = $bannersList;
+                }
 
-		$banners = $model->getList( $vars );
+		
 		$model->impress( $banners );
 
 		return $banners;
