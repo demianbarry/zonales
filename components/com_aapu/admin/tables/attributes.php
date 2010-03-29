@@ -34,6 +34,8 @@ class TableAttributes extends JTable {
     var $canceled = null;
     //Attribute Required - used when an attribute is required
     var $required = null;
+    //Attribute Validator File
+    var $validator = null;
     //Attribute Data Type - id Attribute datatype
     var $data_type_id = null;
     //Attribute Class - id Attribute class

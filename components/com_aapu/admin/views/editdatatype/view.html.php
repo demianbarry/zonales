@@ -5,7 +5,7 @@ jimport('joomla.application.component.view');
 class AapuViewEditDataType extends JView
 {
 	/** @var QuotaOptions */
-	var $_tab;
+	var $_dataType;
 
 	function display($tpl = null)
 	{

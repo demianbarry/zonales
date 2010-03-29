@@ -9,6 +9,15 @@ require_once( JApplicationHelper::getPath( 'toolbar_html' ) );
 // barra de tareas a mostrar según tarea
 switch($task) {
 
+    case 'editUser':
+    case 'addUser':
+        TOOLBAR_aapu_users::_NEW();
+        break;
+
+    case 'listUsers':
+        TOOLBAR_aapu_users::_DEFAULT();
+        break;
+
     case 'editTab':
     case 'addTab':
         TOOLBAR_aapu_tabs::_NEW();
