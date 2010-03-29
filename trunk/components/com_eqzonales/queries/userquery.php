@@ -6,13 +6,15 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_e
 
 class UserQuery implements SolrQuery {
     var $user;
+    var $environment;
 
     function UserQuery($user){
         return $this->__construct($user);
     }
 
-    function  __construct($user) {
+    function  __construct($user,$environment) {
         $this->setUser($user);
+        $this->setEnvironment($environment);
     }
 
     function getUser() {
@@ -23,13 +25,27 @@ class UserQuery implements SolrQuery {
         $this->user = $user;
     }
 
+    function getEnvironment() {
+        return $this->environment;
+    }
+
+    /**
+     *
+     * @param array $env Arreglo de arreglos con la siguiente estructura
+     * arreglo['field'] , arreglo['value'] , arreglo['boost']
+     */
+    function setEnvironment($env) {
+        if (!is_array($env)){
+            throw new Exception('The variable is not an array');
+        }
+        $this->environment = $env;
+    }
+
     function getQuery() {
         // recupero los datos del ecualizador asociado al usuario
         $eqModel = new EqZonalesModelEq();
         $eqModel->setWhere('e.user_id=' . $this->getUser()->id);
         $eqData = $eqModel->getData(true, true);
-
-        $query = $eqData->solrquery_bq;
 
 //        // recupero los datos de las bandas asociados al ecualizador
 //        $bandaModel = new EqZonalesModelBanda();
@@ -38,11 +54,17 @@ class UserQuery implements SolrQuery {
 //        $bandaModel->getDBO()->setQuery($customQuery);
 //        $bandas = $bandaModel->getDBO()->loadObjectList();
 //
-//        // armo el query
-//        $query = '';
-//        foreach ($bandas as $bandaActual) {
-//            $query = $query . $bandaActual->valor . '^' . $bandaActual->peso . ' AND ';
-//        }
+        // armo el query
+        $aux = array();
+        foreach ($this->getEnvironment() as $data) {
+            // si no esta especificado el field se usa el default
+            $fieldPart = (is_null($data[SolrQuery::FIELD])) ? '' : $data[SolrQuery::FIELD] . ':';
+
+            $boostPart = (is_null($data[SolrQuery::BOOST])) ? '' : '^' . $data[SolrQuery::BOOST];
+            $aux[] = $fieldPart . $data[SolrQuery::VALUE] . $boostPart;
+        }
+
+        $query = $eqData->solrquery_bq . ' AND ' . implode(' AND ', $aux);
 
         return $query;
     }
