@@ -11,27 +11,45 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * AAPU Data Type Table class
+ * AAPU Users Class
  *
  */
-class TableDatatypes extends JTable {
+class TableUsers extends JTable {
 
-    //Data Type ID
+    //User ID
     var $id = 0;
-    //Data Type Name
-    var $label = null;
-    //Data Type Description
-    var $description = null;
-    //Data Type Render
-    var $render = null;
+    //User Name
+    var $name = null;
+    //User Username
+    var $username = null;
+    //User email
+    var $email = null;
+    //User password
+    var $password = null;
+    //User Usertype
+    var $usertype = null;
+    //User is Blocked?
+    var $block = null;
+    //sendEmail to User?
+    var $sendEmail = null;
+    //User Gruop ID
+    var $gid = null;
+    //User RegisterDate
+    var $registerDate = null;
+    //User lastvisitDate
+    var $lastvisitDate = null;
+    //User activation
+    var $activation = null;
+    //User params
+    var $params = null;
 
     /**
      * Constructor
      *
      * @param object Database connector object
      */
-    function TableDatatypes( &$db ) {
-        parent::__construct('#__aapu_data_types', 'id', $db);
+    function TableUsers( &$db ) {
+        parent::__construct('#__users', 'id', $db);
     }
 
     /**

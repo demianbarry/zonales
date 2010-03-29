@@ -20,6 +20,14 @@ class AapuController extends JController {
     function __construct($default = array()) {
         parent::__construct($default);
 
+        $this->registerTask('listUsers', 'listUsers');
+        $this->registerTask('editUser', 'editUser');
+        $this->registerTask('addUser', 'editUser');
+        $this->registerTask('saveUser', 'saveUser');
+        $this->registerTask('applyUser', 'saveUser');
+        $this->registerTask('cancelUser', 'cancelUser');
+        $this->registerTask('removeUser', 'removeUser');
+
         $this->registerTask('listTabs', 'listTabs');
         $this->registerTask('editTab', 'editTab');
         $this->registerTask('addTab', 'editTab');
@@ -44,6 +52,71 @@ class AapuController extends JController {
         $this->registerTask('cancelDataType', 'cancelDataType');
         $this->registerTask('removeDataType', 'removeDataType');
 
+    }
+
+    /*
+         * MANAGEMENT FUNCTIONS FOR USERS
+    */
+
+    function listUsers() {
+        $this->baseDisplayTask('ListUsers', 'Users');
+    }
+
+    function editUser() {
+        $document = &JFactory::getDocument();
+
+        $vName = JRequest::getCmd('view', 'EditUser');
+        $vType = $document->getType();
+        $view = &$this->getView( $vName, $vType);
+
+        $view->setModel($this->getModel('tabs', 'AapuModel'), true);
+        $view->setModel($this->getModel('attributes', 'AapuModel'), true);
+        $view->setModel($this->getModel('datatypes', 'AapuModel'), true);
+
+        // no se ejecuta si se accede al backend
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin()) {
+            $this->baseDisplayTask($view, 'Users', 'default', 1);
+        } else {
+            $user =& JFactory::getUser();
+            $this->baseDisplayTask($view, 'Users', 'default', 1, array('userId' => $user->id));
+        }
+    }
+
+    function cancelUser() {
+        $this->baseCancelTask(JText::_('INFO_CANCEL'), 'listUsers');
+    }
+
+    function removeUser() {
+        $this->baseRemoveTask('Users', 'listUsers');
+    }
+
+    function saveUser() {
+        global $option;
+
+        $model	= &$this->getModel('Users');
+
+        if (!$model->store(false,true)) {
+            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+            exit();
+        }
+
+        $user = $model->getData();
+        $msg = JText::sprintf('INFO_SAVE', 'User');
+
+        switch ($this->_task) {
+            case 'applyUser':
+                $link = 'index.php?option=' . $option . '&task=editUser&cid[]=' . $user->id;
+                break;
+
+            case 'saveUser':
+            default:
+                $link = 'index.php?option=' . $option . '&task=listUsers';
+                break;
+        }
+
+        $this->setRedirect($link, $msg);
     }
 
     /*
@@ -136,14 +209,38 @@ class AapuController extends JController {
 
         $model	= &$this->getModel('attributes');
 
+        //usr_ prefix before the name according to design decision
+        $data->id = JRequest::getVar('id', 0, '', 'int');
+        $data->name = JRequest::getVar('name', '', '', 'string');
+        $data->label = JRequest::getVar('label', '', '', 'string');
+        $data->description = JRequest::getVar('description', '', '', 'string');
+        $data->comments = JRequest::getVar('comments', '', '', 'string');
+        $data->from = JRequest::getVar('from', '', '', 'date');
+        $data->to = JRequest::getVar('to', '', '', 'date');
+        $data->canceled = JRequest::getVar('canceled', false, '', 'boolean');
+        $data->required = JRequest::getVar('required', false, '', 'boolean');
+        $data->validator = JRequest::getVar('validator', null, 'files', 'array');
+        $data->data_type_id = JRequest::getVar('data_type_id', 0, '', 'int');
+        $data->attribute_class_id = JRequest::getVar('attribute_class_id', 0, '', 'int');
 
-        if (!$model->store(false,true)) {
-            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-            exit();
+        $filename = $this->uploadFile($data->validator, 'validators', 'php');
+
+        $msg = '';
+
+        if ($filename == '') {
+            $msg = JText::sprintf('INFO_NO_SAVE_FOR_ARCHIVE');
+            //$data->validator = JRequest::getVar('oldValidator', '', '', 'string');
+        } else {
+            $data->validator = $filename;
+            if (!$model->store(false,false,$data)) {
+                $msg = JText::sprintf('INFO_NO_SAVE', $model->getError());
+                //echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+                exit();
+            }
+
+            $attribute = $model->getData();
+            $msg = JText::sprintf('INFO_SAVE', 'Attribute');
         }
-
-        $attribute = $model->getData();
-        $msg = JText::sprintf('INFO_SAVE', 'Attribute');
 
         switch ($this->_task) {
             case 'applyAttribute':
@@ -192,19 +289,22 @@ class AapuController extends JController {
 
         $filename = $this->uploadFile($data->render, 'renders', 'php');
 
+        $msg = '';
+
         if ($filename == '') {
-            $data->render = JRequest::getVar('oldRender', '', '', 'string');
+            $msg = JText::sprintf('INFO_NO_SAVE_FOR_ARCHIVE');
+            //$data->render = JRequest::getVar('oldRender', '', '', 'string');
         } else {
             $data->render = $filename;
-        }
+            if (!$model->store(false,false,$data)) {
+                $msg = JText::sprintf('INFO_NO_SAVE', $model->getError());
+                //echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+                exit();
+            }
 
-        if (!$model->store(false,false,$data)) {
-            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-            exit();
+            $dataType = $model->getData();
+            $msg = JText::sprintf('INFO_SAVE', 'DataType');
         }
-
-        $dataType = $model->getData();
-        $msg = JText::sprintf('INFO_SAVE', 'DataType');
 
         switch ($this->_task) {
             case 'applyDataType':
@@ -250,7 +350,11 @@ class AapuController extends JController {
         $view->setLayout($vLayout);
 
         // Display the view
-        $view->display();
+        if (array_key_exists('userId', $vars)) {
+            $view->display(null, $vars['userId']);
+        } else {
+            $view->display();
+        }
     }
 
     function baseRemoveTask($model, $task) {
@@ -294,11 +398,11 @@ class AapuController extends JController {
 
             //First check if the file has the right extension, we need jpg only
             if ( strtolower(JFile::getExt($filename) ) == $extension) {
-               if ( !JFile::upload($src, $dest) ) {
-                  echo "<script> alert('No se pudo subir el archivo'); window.history.go(-1); </script>\n";
-               }
+                if ( !JFile::upload($src, $dest) ) {
+                    $filename = '';
+                }
             } else {
-               echo "<script> alert('Extensión Incorrecta'); window.history.go(-1); </script>\n";
+                $filename = '';
             }
         }
 

@@ -33,7 +33,7 @@ JHTML::_('behavior.formvalidation');
     //-->
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate" enctype="multipart/form-data">
 
     <div class="col width-60">
         <fieldset class="adminform">
@@ -97,6 +97,14 @@ JHTML::_('behavior.formvalidation');
                 </tr>
                 <tr>
                     <td class="key">
+                        <label for="validator"><?php echo JText::_( 'Validator File' ); ?>:</label>
+                    </td>
+                    <td colspan="2">
+                        <input id="inputFile" type="file" class="inputbox" name="validator"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="key">
                         <label for="attribute_class_id"><?php echo JText::_( 'Tab' ); ?>:</label>
                     </td>
                     <td colspan="2">
@@ -118,6 +126,7 @@ JHTML::_('behavior.formvalidation');
     <div class="clr"></div>
 
     <input type="hidden" name="id" value="<?php echo $this->attribute->id; ?>" />
+    <input type="hidden" name="oldValidator" value="<?php echo $this->attribute->validator; ?>" />
     <input type="hidden" name="option" value="<?php echo $option;?>" />
     <input type="hidden" name="task" value=""/>
     <?php echo JHTML::_( 'form.token' ); ?>

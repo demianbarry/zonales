@@ -23,7 +23,10 @@
     </uninstall>
 
     <files folder="site">
-        
+        <filename>aapu.php</filename>
+        <filename>views/edituser/index.html</filename>
+        <filename>views/edituser/tmpl/index.html</filename>
+        <filename>views/edituser/tmpl/default.php</filename>
     </files>
 
     <languages folder="site/language">
@@ -68,7 +71,6 @@
 
         <files folder="admin">
             <filename>admin.aapu.php</filename>
-            <filename>helper.php</filename>
             <filename>index.html</filename>
             <filename>install.mysql.sql</filename>
             <filename>uninstall.mysql.sql</filename>
@@ -83,6 +85,7 @@
             <filename>models/tabs.php</filename>
             <filename>models/attributes.php</filename>
             <filename>models/datatypes.php</filename>
+            <filename>models/users.php</filename>
 
             <filename>plugins/index.html</filename>
             <filename>plugins/renders/index.html</filename>
@@ -93,6 +96,7 @@
             <filename>tables/tabs.php</filename>
             <filename>tables/attribute_entity.php</filename>
             <filename>tables/datatypes.php</filename>
+            <filename>tables/users.php</filename>
 
             <filename>views/baseview.php</filename>
 
@@ -127,6 +131,15 @@
             <filename>views/edittab/tmpl/default.php</filename>
 
             <filename>views/listusers/index.html</filename>
+            <filename>views/listusers/view.html.php</filename>
+            <filename>views/listusers/tmpl/index.html</filename>
+            <filename>views/listusers/tmpl/default.php</filename>
+
+            <filename>views/edituser/index.html</filename>
+            <filename>views/edituser/view.html.php</filename>
+            <filename>views/edituser/tmpl/index.html</filename>
+            <filename>views/edituser/tmpl/default.php</filename>
+
         </files>
 
         <languages folder="admin/language">
@@ -134,5 +147,5 @@
         </languages>
 
     </administration>
-    
+
 </install>
