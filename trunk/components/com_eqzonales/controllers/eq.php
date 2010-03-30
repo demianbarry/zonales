@@ -17,6 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
+jimport('solr.query');
+jimport('solr.client');
+require_once JPATH_COMPONENT . DS . 'queries' . DS . 'userquery.php';
 
 /**
  * Controlador
@@ -54,6 +57,21 @@ class EqZonalesControllerEq extends JController {
 
         echo $this->modifyEqImpl($params);
         return;
+    }
+
+    function runQuery() {
+        $data = array();
+        $data[SolrQuery::VALUE] = JRequest::getString('value','','method');
+        $data[SolrQuery::FIELD] = JRequest::getString('field',null,'method');
+        $data[SolrQuery::BOOST] = JRequest::getString('boost',null,'method');
+
+        $query = new UserQuery(JFactory::getUser(),$data);
+        $client = new SolrClient();
+        $client->setHost('http://localhost/solr');
+
+        $results = $client->executeQuery($query);
+
+        print_r($results);
     }
 
     /**
