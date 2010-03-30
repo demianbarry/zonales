@@ -30,7 +30,7 @@ class SolrClient {
     function executeQuery($query) {
         if ($query instanceof SolrQuery) {
             $solrUrl = $this->getHost();
-            $serializedResult = file_get_contents($solrUrl . '/select?q=' . $query->getQuery() . '&wt=phps');
+            $serializedResult = file_get_contents($solrUrl . '/select?q=' . urlencode($query->getQuery()) . '&wt=phps');
             $result = unserialize($serializedResult);
             return $result;
         }
