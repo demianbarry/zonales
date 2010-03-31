@@ -11,7 +11,11 @@
 interface SolrQuery {
     const FIELD = 'field';
     const VALUE = 'value';
-    const BOOST = 'boost';
+    const TYPE = 'type';
+
+    const QUERY = 'q';
+    const FILTER_QUERY = 'fq';
+    const BOOST_QUERY = 'bq';
     /**
      * @return String retorna la consulta a realizar a solr
      */

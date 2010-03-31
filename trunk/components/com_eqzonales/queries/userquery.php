@@ -32,7 +32,7 @@ class UserQuery implements SolrQuery {
     /**
      *
      * @param array $env Arreglo de arreglos con la siguiente estructura
-     * arreglo['field'] , arreglo['value'] , arreglo['boost']
+     * arreglo['field'] , arreglo['value'] , arreglo['type']
      */
     function setEnvironment($env) {
         if (!is_array($env)){
@@ -47,24 +47,57 @@ class UserQuery implements SolrQuery {
         $eqModel->setWhere('e.user_id=' . $this->getUser()->id);
         $eqData = $eqModel->getData(true, true);
 
-//        // recupero los datos de las bandas asociados al ecualizador
-//        $bandaModel = new EqZonalesModelBanda();
-//        $bandaModel->setWhere('e.eq_id=' . $eqData->id);
-//        $customQuery = $bandaModel->_buildQuery(true);
-//        $bandaModel->getDBO()->setQuery($customQuery);
-//        $bandas = $bandaModel->getDBO()->loadObjectList();
-//
         // armo el query
-        $aux = array();
-        foreach ($this->getEnvironment() as $data) {
-            // si no esta especificado el field se usa el default
-            $fieldPart = (is_null($data[SolrQuery::FIELD])) ? '' : $data[SolrQuery::FIELD] . ':';
+        $auxQuery = array();
+        $auxBoostQuery = array();
+        $auxFilterQuery = array();
+        $env = $this->getEnvironment();
+        
+        foreach ($env as $data) {
+            // recupero los datos
+            $fieldPart = (is_null($data[SolrQuery::FIELD]) || !isset ($data[SolrQuery::FIELD])) ? '' : $data[SolrQuery::FIELD] . ':';
+            $part = $fieldPart . $data[SolrQuery::VALUE];
 
-            $boostPart = (is_null($data[SolrQuery::BOOST])) ? '' : '^' . $data[SolrQuery::BOOST];
-            $aux[] = $fieldPart . $data[SolrQuery::VALUE] . $boostPart;
+            // discrimino el tipo de query y lo guardo en el arreglo correspondiente
+            if ($data[SolrQuery::TYPE] == SolrQuery::QUERY){
+                $auxQuery[] = $part;
+                continue;
+            }
+
+            if ($data[SolrQuery::TYPE] == SolrQuery::FILTER_QUERY){
+                $auxFilterQuery[] = $part;
+                continue;
+            }
+
+            if ($data[SolrQuery::TYPE] == SolrQuery::BOOST_QUERY){
+                $auxBoostQuery[] = $part;
+                continue;
+            }
         }
 
-        $query = $eqData->solrquery_bq . ' AND ' . implode(' AND ', $aux);
+        $queryBoost = $eqData->solrquery_bq;
+        // si llego una query de tipo boost la adjunto al query boost interno
+        if (!empty ($auxBoostQuery)){
+            $queryBoost = $queryBoost . ' AND ' . implode(' AND ', $auxBoostQuery);
+        }
+
+        $queryFilter = implode(' AND ', $auxFilterQuery);
+        $queryQuery = implode(' AND ', $auxQuery);
+
+        // guardo los queries en donde corresponda
+        $query = array();
+
+        if (isset ($queryQuery)){
+            $query[SolrQuery::QUERY] = $queryQuery;
+        }
+
+        if (isset ($queryBoost)){
+            $query[SolrQuery::BOOST_QUERY] = $queryBoost;
+        }
+
+        if (isset ($queryFilter)){
+            $query[SolrQuery::FILTER_QUERY] = $queryFilter;
+        }
 
         return $query;
     }
