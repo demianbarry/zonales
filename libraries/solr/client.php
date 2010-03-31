@@ -30,7 +30,19 @@ class SolrClient {
     function executeQuery($query) {
         if ($query instanceof SolrQuery) {
             $solrUrl = $this->getHost();
-            $serializedResult = file_get_contents($solrUrl . '/select?q=' . urlencode($query->getQuery()) . '&wt=phps');
+            $queryData = $query->getQuery();
+
+            $file = $solrUrl . '/select?';
+            $aux = array();
+            foreach ($queryData as $queryType => $currentQuery) {
+                $aux[] = $queryType . '=' . urlencode($currentQuery);
+            }
+
+            $queryPart = implode('&', $aux);
+            $file = $file . $queryPart . '&wt=phps';
+
+            $serializedResult = file_get_contents($file);
+
             $result = unserialize($serializedResult);
             return $result;
         }
