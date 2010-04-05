@@ -67,7 +67,8 @@ class EqZonalesControllerEq extends JController {
 
         $query = new UserQuery(JFactory::getUser(),$data);
         $client = new SolrClient();
-        $client->setHost($params->get('solrurl'));
+        $componentHelper = new JComponentHelper();
+        $client->setHost($componentHelper->getParams('com_eqzonales')->get('solrurl'));
 
         $results = $client->executeQuery($query);
 

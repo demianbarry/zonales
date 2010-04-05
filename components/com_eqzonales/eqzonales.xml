@@ -46,14 +46,6 @@
     <filename>views/mapa/tmpl/default.php</filename>
     -->
     </files>
-    <params>
-        <param
-                name="solrurl"
-                type="text"
-                label="Solr Url"
-                description="Please enter the url where the Solr server is located"
-            />
-    </params>
     <languages folder="language">
         <language tag="es-ES">es-ES.com_eqzonales.ini</language>
     </languages>
@@ -90,6 +82,10 @@
             <filename>views/listaeq/tmpl/index.html</filename>
             <filename>views/listaeq/index.html</filename>
             <filename>views/listaeq/view.html.php</filename>
+            <filename>views/eqzonales/tmpl/default.php</filename>
+            <filename>views/eqzonales/tmpl/index.html</filename>
+            <filename>views/eqzonales/index.html</filename>
+            <filename>views/eqzonales/view.html.php</filename>
 
             <filename>helper/eq.php</filename>
             <filename>helper/helper.php</filename>
@@ -137,6 +133,15 @@
 
             -->
         </files>
+        <params>
+        <param
+                name="solrurl"
+                type="text"
+                label="Solr Url"
+                default="http://localhost/apache-solr-1.4.0"
+                description="Please enter the url where the Solr server is located"
+            />
+    </params>
         <languages folder="admin/language">
             <language tag="es-ES">es-ES.com_eqzonales.ini</language>
         </languages>

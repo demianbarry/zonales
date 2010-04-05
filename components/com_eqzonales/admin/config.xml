@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<params>
-		
-	</params>
+    <params>
+        <param
+                name="solrurl"
+                type="text"
+                label="Solr Url"
+                description="Please enter the url where the Solr server is located"
+        />
+    </params>
 </root>
