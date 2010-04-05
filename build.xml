@@ -84,6 +84,10 @@
     <fileset dir="${src_frontend_components}/com_eqzonales" id="com_eqzonales_files">
         <include name="**" />
     </fileset>
+    <!-- com_aardvertiser -->
+    <fileset dir="${src_frontend_components}/com_aardvertiser" id="com_aardvertiser_files">
+        <include name="**" />
+    </fileset>
     <!-- com_aapu -->
     <fileset dir="${src_frontend_components}/com_aapu" id="com_aapu_files">
         <include name="**" />
@@ -91,9 +95,9 @@
 
 
     <!-- ======================================================
-                      copia archivos instalación
-       ====================================================== -->
-  <!-- archivos i18n -->
+    copia archivos instalación
+    ====================================================== -->
+    <!-- archivos i18n -->
     <target name="inst_frontend_i18n" description="copia archivos i18n frontend en instalación development">
         <echo message="copiando archivos i18n en instalacion development"/>
         <copy todir="${dst_frontend_language_dir}/es-ES">
@@ -140,9 +144,9 @@
 
 
     <!-- ======================================================
-                        archivos distribución
-       ====================================================== -->
-  <!-- modulo seleccionazonal -->
+    archivos distribución
+    ====================================================== -->
+    <!-- modulo seleccionazonal -->
     <target name="dist_mod_seleccionazonal" description="Crea archivo de distribución Joomla para el modulo SeleccionaZonal">
         <echo message="Creando archivo de distribución de modulo SeleccionaZonal"/>
         <zip destfile="${src_dist_dir}/${dist.mod_seleccionazonal.file}.zip" >
@@ -287,6 +291,13 @@
         </zip>
     </target>
 
+    <!-- componente com_aardvertiser (fork) -->
+    <target name="dist_com_aardvertiser" description="Crea archivo de distribución Joomla para el componente Aardvertiser (fork)">
+        <echo message="Creando archivo de distribución de componente Aardvertiser (fork)"/>
+        <zip destfile="${src_dist_dir}/${dist.com_aardvertiser.file}.zip">
+            <fileset refid="com_aardvertiser_files"/>
+        </zip>
+    </target>
     <!-- componente aapu -->
     <target name="dist_com_aapu" description="Crea archivo de distribución Joomla para el componente A.A.P.U.">
         <echo message="Creando archivo de distribución de componente A.A.P.U."/>
@@ -296,5 +307,5 @@
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_aapu.ini" prefix="admin/language" />
         </zip>
     </target>
-    
+
 </project>
