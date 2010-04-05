@@ -43,7 +43,7 @@ class modZbannersHelper
                     $banners = array();
                     foreach ($bannersList as $banner) {
                         foreach ($dbBanners as $showBanner) {
-                            if ($showBanner->banner_id == $banner->id){
+                            if ($showBanner->banner_id == $banner->bid){
                                 $banners[] = $banner;
                             }
                         }
