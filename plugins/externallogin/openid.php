@@ -61,7 +61,6 @@ class plgAuthenticationOpenID extends JPlugin {
         $mainframe =& JFactory::getApplication();
         ###########
         $db = &JFactory::getDBO();
-        $this->logme($db, 'en el plugin openid');
         $session = & JFactory :: getSession();
 
 
@@ -88,8 +87,6 @@ class plgAuthenticationOpenID extends JPlugin {
         // invoco la funcion correspondiente que iniciara el proceso de autenticacion
         $info = $function($credentials,$options);
 
-
-        $this->logme($db,'se va a iniciar la interpretacion de los resultados');
         switch ($info[STATUS]) {
             case Auth_SUCCESS : {
                     $usermode = $this->params->get('usermode', 2);
@@ -125,13 +122,9 @@ class plgAuthenticationOpenID extends JPlugin {
                         $db->setQuery($query);
                         $dbresult = $db->loadObject();
 
-                        $this->logme($db, 'realizo la consulta en busca del alias');
-
                         if ($dbresult) {
                         // if so, we set our username value to the provided value
                             $response->username = $dbresult->username;
-
-                            $this->logme($db, 'el alias fue encontrado :D');
 
                             // si el alias o el usuario se encuentran bloqueados
                             // el acceso es cancelado
@@ -144,7 +137,6 @@ class plgAuthenticationOpenID extends JPlugin {
                             $session =& JFactory::getSession();
                             $session->set('accessprotocol',$dbprotocol->name);
                         } else { // si el alias no existe
-                            $this->logme($db, 'el alias no existe :(');
 
                             $session->set('authenticationonprogress','true');
 
@@ -185,13 +177,6 @@ class plgAuthenticationOpenID extends JPlugin {
     }
 
     //	function
-
-    private function logme($db,$message) {
-        $query='insert into #__logs(info,timestamp) values ("' .
-            $message . '","' . date('Y-m-d h:i:s') . '")';
-        $db->setQuery($query);
-        $db->query();
-    }
 
 }
 

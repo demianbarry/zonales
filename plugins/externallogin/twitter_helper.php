@@ -15,9 +15,6 @@ class TwitterHelper {
     $this->db->setQuery('select p.apikey as key, p.secretkey as secret from #__providers p where p.name=' . $this->db->Quote($provider));
     $consumer = $this->db->loadObject();
     if (!$consumer) throw new Exception('ComTwitterNotInstalledOrConfigured');
-
-    $this->logme($this->db, 'el apikey es: ' . $consumer->apikey);
-    $this->logme($this->db, 'el secretkey es: ' . $consumer->secret);
     $this->consumer = $consumer;
   }
 
@@ -57,7 +54,6 @@ class TwitterHelper {
           $_SESSION['com_twitter_credentials']->twitterInfo->timeout > time()
     ) {
       $twitterInfo = $_SESSION['com_twitter_credentials']->twitterInfo;
-      $this->logme($db, 'getCredentials | las credenciales ya estaban seteadas');
     } else {
       try {
         $twitterInfo = null;
@@ -124,11 +120,5 @@ class TwitterHelper {
     return $twitterObj->get_accountVerify_credentials();
   }
 
-    private function logme($db,$message) {
-        $query='insert into #__logs(info,timestamp) values ("' .
-            $message . '","' . date('Y-m-d h:i:s') . '")';
-        $db->setQuery($query);
-        $db->query();
-    }
 }
 ?>

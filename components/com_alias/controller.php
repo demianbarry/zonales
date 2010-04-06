@@ -43,9 +43,6 @@ class AliasController extends JController {
 
             $block = ($unblock) ? '0' : '1';
 
-            $this->logme($db, 'alias'.$alias->id);
-            $this->logme($db, 'el bloqueo es: ' . $block);
-
 
 //            $row->load($alias->id);
 //            $row->block = (int) $block;
@@ -59,13 +56,6 @@ class AliasController extends JController {
             $db->setQuery($update);
             $db->query();
         }
-    }
-
-    private function logme($db,$message) {
-        $query='insert into #__logs(info,timestamp) values ("' .
-            $message . '","' . date('Y-m-d h:i:s') . '")';
-        $db->setQuery($query);
-        $db->query();
     }
 
 }

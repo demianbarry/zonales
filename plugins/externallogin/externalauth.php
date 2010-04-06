@@ -94,8 +94,6 @@ function openid($credentials,$options) {
     $discovery_url = (isset ($discovery)) ? $discovery : $credentials['username'];
     $discovery_url = trim($discovery_url);
 
-    logme($db,'discovery url: ' . $discovery_url);
-    logme($db,'username: ' . $credentials['username']);
     ################################################
 
 
@@ -139,16 +137,13 @@ function openid($credentials,$options) {
     $consumer = new Auth_OpenID_Consumer($store);
 
     if (!isset ($_SESSION['_openid_consumer_last_token'])) {
-        logme($db,'se va a iniciar el proceso');
         // Begin the OpenID authentication process.
         if (!$auth_request = $consumer->begin($discovery_url)) {
-            logme($db,'no se pudo iniciar el proceso');
             $info[STATUS] = Auth_FAILURE;
             //$response->type = JAUTHENTICATE_STATUS_FAILURE;
             //$response->error_message = 'Authentication error : could not connect to the openid server';
             return $info;
         }
-        logme($db,'continuamos');
 
 //        $policy_uris = array();
 //        if ($this->params->get( 'phishing-resistant', 0)) {
@@ -181,7 +176,6 @@ function openid($credentials,$options) {
         $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
         $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
         $process_url .= '&'.JURI::buildQuery($options);
-        logme($db, 'la url de retorno es: ' . $process_url);
         $session->set('return_url', $process_url );
 
         $trust_url = $entry_url->toString(array (
@@ -191,7 +185,6 @@ function openid($credentials,$options) {
             'scheme'
         ));
         $session->set('trust_url', $trust_url);
-        logme($db,'tomando decisiones');
         // For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
         // form to send a POST request to the server.
         if ($auth_request->shouldSendRedirect()) {
@@ -224,7 +217,6 @@ function openid($credentials,$options) {
             }
         }
     }
-    logme($db,'voy a finalizar el proceso');
     $result = $consumer->complete($session->get('return_url'));
 
     // estandarizo el formato de salida de los datos necesarios
@@ -330,11 +322,5 @@ function liveid($credentials,$options) {
     return $info;
 }
 
-    function logme($db,$message) {
-        $query='insert into #__logs(info,timestamp) values ("' .
-            $message . '","' . date('Y-m-d h:i:s') . '")';
-        $db->setQuery($query);
-        $db->query();
-    }
 
 ?>

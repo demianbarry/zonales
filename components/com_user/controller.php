@@ -119,14 +119,6 @@ class UserController extends JController {
     }
 
 
-    private function logme($db,$message) {
-        $query='insert into #__logs(info,timestamp) values ("' .
-            $message . '","' . date('Y-m-d h:i:s') . '")';
-        $db->setQuery($query);
-        $db->query();
-    }
-
-
     function cancel() {
         $this->setRedirect( 'index.php' );
     }
@@ -138,7 +130,6 @@ class UserController extends JController {
             $user =& JFactory::getUser();
 
             $externalid = urldecode($externalid);
-            $this->logme($db, 'se va a crear alias. el userid es: ' . $user->id);
             $status = $this->insertAlias('0', $user->id, $externalid, $providerid);
             return $status;
         }
@@ -204,9 +195,6 @@ class UserController extends JController {
 
         ##### testing ##########
         $db = &JFactory::getDBO();
-        $this->logme($db, 'el external id es: ' . $options['externalid']);
-        $this->logme($db, 'el provider id es: ' . $options['providerid']);
-        $this->logme($db, 'el user id es: ' . $credentials['userid']);
 
         //preform the login action
         $error = $mainframe->login($credentials, $options);
@@ -214,7 +202,6 @@ class UserController extends JController {
         $this->endAuthentication();
 
         if(!JError::isError($error)) {
-            $this->logme($db, 'no hubo error');
             // Redirect if the return url is not registration or login
             if ( ! $return ) {
                 $return	= 'index.php?option=com_user';
@@ -236,7 +223,6 @@ class UserController extends JController {
             $mainframe->redirect( $return );
         }
         else {
-            $this->logme($db, 'SI hubo error');
             // Facilitate third party login forms
             if ( ! $return ) {
                 $return	= 'index.php?option=com_user&view=zlogin';
@@ -268,7 +254,6 @@ class UserController extends JController {
 
             //////// SACAR DE ACA!!!!!!!! /////////
 //            $db = JFactory::getDBO();
-//        $this->logme($db, 'en logout');
 //        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
 //    $db->setQuery($selectKeys);
 //    $dbKeys = $db->loadObject();
@@ -357,8 +342,6 @@ class UserController extends JController {
 
         $db->setQuery($insertAlias);
         if (!$db->query()) {
-            $this->logme($db, 'No se pudo insertar el alias');
-            $this->logme($db, $userid);
             return false;
         }
         return true;
@@ -407,23 +390,13 @@ class UserController extends JController {
 
         $userClone = clone($user);
         $useractivation = (int) $usersConfig->get( 'useractivation' );
-        $this->logme($db, 'user activation es: ' . $useractivation);
         //$block = ($useractivation == 1) ? '1' : '0';
         $block = $useractivation;
-
-        $this->logme($db, 'fecha de nacimiento: ' . $user->get('birthdate'));
-        $this->logme($db, 'nombre completo: ' . $user->get('name'));
-        $this->logme($db, 'nombre de usuario: ' . $user->get('username'));
-        $this->logme($db, 'email: ' . $user->get('email'));
-        $this->logme($db, 'email2: ' . $user->get('email2'));
-        $this->logme($db, 'sexo: ' . $user->get('sex'));
 
         $userid = $this->getUserId($db, $user);
         $userExists = $this->userExists($db, $user);
         $requestNewAlias = true;
-        $this->logme($db, 'usuario existe: ' . $userExists);
         if (!$userExists || $force == 1) {
-            $this->logme($db, 'no existe o force');
             $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 
             // if ($password == '' && $externalid != '' && $providerid != 0){
@@ -442,9 +415,6 @@ class UserController extends JController {
             $user->set('password',md5($password));
 
 
-            $this->logme($db, 'se va a chequear activacion');
-
-
             // If user activation is turned on, we need to set the activation information
 
             if ($useractivation == '1') {
@@ -452,15 +422,12 @@ class UserController extends JController {
                 $user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
                 $user->set('block', $block);
             }
-            $this->logme($db, 'se lo va a guardar');
             // If there was an error with registration, set the message and display form
             if ( !$user->save() ) {
-                $this->logme($db, 'no se lo pudo guardar');
                 JError::raiseWarning('', JText::_( $user->getError()));
                 $this->register();
                 return false;
             }
-            $this->logme($db, 'se lo guardo exitosamente');
             $userid = $this->getUserId($db, $user);
             $userExists = true;
 
@@ -473,28 +440,19 @@ class UserController extends JController {
         }
 
 
-        $this->logme($db, 'por el alias');
-
-
 
         ######### agregado por G2P ##############
 
         ##### testing ##########
-        $this->logme($db, 'el external id es: ' . $externalid);
-        $this->logme($db, 'el provider id es: ' . $providerid);
 
         if ($userExists && $externalid != '' && $providerid != 0) {
         // hay que agregar un alias
-
-            $this->logme($db, 'vamos a gregar un alias');
 
             // $userid = $this->getUserId($db, $user);
 
             $externalid = urldecode($externalid);
 
             $this->insertAlias($block, $userid, $externalid,$user->get('providerid'));
-
-            $this->logme($db, 'alias agregado');
 
             $requestNewAlias = false;
 
