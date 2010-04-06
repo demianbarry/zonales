@@ -60,12 +60,20 @@ class EqZonalesControllerEq extends JController {
     }
 
     function runQuery() {
+        $default = '###';
         $data = array();
-        $data[SolrQuery::VALUE] = JRequest::getString('value','','method');
-        $data[SolrQuery::FIELD] = JRequest::getString('field',null,'method');
-        $data[SolrQuery::TYPE] = JRequest::getString('type',null,'method');
+        $value = JRequest::getString('value',$default,'method');
+        $field = JRequest::getString('field',$default,'method');
+        $type = JRequest::getString('type',$default,'method');
 
-        $query = new UserQuery(JFactory::getUser(),$data);
+        $data[SolrQuery::VALUE] = ($value == $default) ? null : $value;
+        $data[SolrQuery::FIELD] = ($field == $default) ? null : $field;
+        $data[SolrQuery::TYPE] = ($type == $default) ? SolrQuery::QUERY : $type;
+
+        $dataArray = array();
+        $dataArray[] = $data;
+
+        $query = new UserQuery(JFactory::getUser(),$dataArray);
         $client = new SolrClient();
         $componentHelper = new JComponentHelper();
         $client->setHost($componentHelper->getParams('com_eqzonales')->get('solrurl'));
