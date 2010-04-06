@@ -81,21 +81,23 @@ class UserQuery implements SolrQuery {
             $queryBoost = $queryBoost . ' AND ' . implode(' AND ', $auxBoostQuery);
         }
 
-        $queryFilter = implode(' AND ', $auxFilterQuery);
-        $queryQuery = implode(' AND ', $auxQuery);
+        
+        
 
         // guardo los queries en donde corresponda
         $query = array();
 
-        if (isset ($queryQuery)){
+        if (!empty ($auxQuery)){
+            $queryQuery = implode(' AND ', $auxQuery);
             $query[SolrQuery::QUERY] = $queryQuery;
         }
 
-        if (isset ($queryBoost)){
+        if (!empty ($auxBoostQuery)){
             $query[SolrQuery::BOOST_QUERY] = $queryBoost;
         }
 
-        if (isset ($queryFilter)){
+        if (!empty ($auxFilterQuery)){
+            $queryFilter = implode(' AND ', $auxFilterQuery);
             $query[SolrQuery::FILTER_QUERY] = $queryFilter;
         }
 

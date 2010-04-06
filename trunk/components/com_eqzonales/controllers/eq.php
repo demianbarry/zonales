@@ -63,7 +63,7 @@ class EqZonalesControllerEq extends JController {
         $data = array();
         $data[SolrQuery::VALUE] = JRequest::getString('value','','method');
         $data[SolrQuery::FIELD] = JRequest::getString('field',null,'method');
-        $data[SolrQuery::BOOST] = JRequest::getString('boost',null,'method');
+        $data[SolrQuery::TYPE] = JRequest::getString('type',null,'method');
 
         $query = new UserQuery(JFactory::getUser(),$data);
         $client = new SolrClient();
