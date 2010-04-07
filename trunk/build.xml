@@ -66,6 +66,10 @@
     <fileset dir="${src_modules}/mod_pending" id="mod_pending_files">
         <include name="**" />
     </fileset>
+    <!-- mod_sessioninfo -->
+    <fileset dir="${src_modules}/mod_sessioninfo" id="mod_sessioninfo_files">
+        <include name="**" />
+    </fileset>
 
     <!-- plg_zonalescontent -->
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
@@ -246,6 +250,15 @@
         <zip destfile="${src_dist_dir}/${dist.mod_pending.file}.zip" >
             <fileset refid="mod_pending_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_pending.ini" prefix="language" />
+        </zip>
+    </target>
+
+     <!-- modulo sessioninfo -->
+    <target name="dist_mod_sessioninfo" description="Crea archivo de distribución Joomla para el modulo sessioninfo">
+        <echo message="Creando archivo de distribución de modulo sessioninfo"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_sessioninfo.file}.zip" >
+            <fileset refid="mod_sessioninfo_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_sessioninfo.ini" prefix="language" />
         </zip>
     </target>
 

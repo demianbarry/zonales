@@ -20,5 +20,6 @@ dist.mod_soycorresponsal.file=mod_soycorresponsal
 dist.mod_eq.file=mod_eq
 dist.mod_zlogin=mod_zlogin
 dist.mod_pending=mod_pending
+dist.mod_sessioninfo=mod_sessioninfo
 dist.plg_zonalescontent.file=plg_zonalescontent
 dist.plg_solrsearch.file=plg_solrsearch
