@@ -31,7 +31,7 @@ require_once 'externalauth.php';
  * @since 1.5
  */
 
-class plgAuthenticationOpenID extends JPlugin {
+class plgAuthenticationExternallogin extends JPlugin {
 /**
  * Constructor
  *
@@ -43,7 +43,7 @@ class plgAuthenticationOpenID extends JPlugin {
  * @param 	array  $config  An array that holds the plugin configuration
  * @since 1.5
  */
-    function plgAuthenticationOpenID(& $subject, $config) {
+    function plgAuthenticationExternallogin(& $subject, $config) {
         parent::__construct($subject, $config);
     }
 
@@ -143,12 +143,12 @@ class plgAuthenticationOpenID extends JPlugin {
                             if ($credentials['userid'] == 0) {
                                 $user =& JFactory::getUser();
                                 if ($user->guest) {
-                                    $mainframe->redirect('index.php?option=com_user&view=userstatusrequest&externalid=' . $info[EXTERNAL_ID] .
+                                    $mainframe->redirect($this->params->get('getstatusurl') . '&externalid=' . $info[EXTERNAL_ID] .
                                         '&providerid=' . $dbprovider->id);
                                 }
                                 else {
                                     $token = JUtility::getToken();
-                                    $mainframe->redirect('index.php?option=com_user&task=aliasregister&externalid=' . urlencode($info[EXTERNAL_ID]) .
+                                    $mainframe->redirect($this->params->get('aliasregisterurl') . '&externalid=' . urlencode($info[EXTERNAL_ID]) .
                                         '&providerid=' . $dbprovider->id . '&' . $token .'=1');
                                 }
                             }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<install version="1.5" type="plugin" group="authentication">
+    <name>External Login</name>
+    <creationDate>March 2010</creationDate>
+    <author>Cristian Pacheco</author>
+    <authorEmail>cpacheco@lavabit.com</authorEmail>
+    <copyright>(C) 2010 Cristian Pacheco. All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <version>1.0</version>
+    <description>External Login permite autenticar a los usuarios mediante
+distintos protocolos y proveedores de autenticación
+    </description>
+
+    <files>
+        <filename plugin="externallogin"
+               >externallogin.php
+        </filename>
+        <filename>externalauth.php</filename>
+        <filename>externalloginconstants.php</filename>
+        <filename>twitter_helper.php</filename>
+    </files>
+
+    <params>
+        <param name="aliasregisterurl"
+                type="text"
+                default="index.php?option=com_user&amp;task=aliasregister"
+                label="Alias Register URL"
+                description="Please enter the URL needed to call to alias register task"
+                />
+        <param name="getstatusurl"
+                type="text"
+                default="index.php?option=com_user&amp;view=userstatusrequest"
+                label="Get user status URL"
+                description="Please enter the URL where you ask the user his/her registration status"
+        />
+    </params>
+
+    <installfile>install.plg_externallogin.php</installfile>
+
+</install>

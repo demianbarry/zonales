@@ -40,6 +40,8 @@
         </sql>
     </uninstall>
 
+    <installfile>install.com_alias.php</installfile>
+
     <administration>
   <!-- Administration Menu Section -->
         <menu>Administracion de alias</menu>
