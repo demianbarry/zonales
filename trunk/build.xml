@@ -62,6 +62,10 @@
     <fileset dir="${src_modules}/mod_zlogin" id="mod_zlogin_files">
         <include name="**" />
     </fileset>
+    <!-- mod_pending -->
+    <fileset dir="${src_modules}/mod_pending" id="mod_pending_files">
+        <include name="**" />
+    </fileset>
 
     <!-- plg_zonalescontent -->
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
@@ -233,6 +237,15 @@
         <zip destfile="${src_dist_dir}/${dist.mod_zlogin.file}.zip" >
             <fileset refid="mod_zlogin_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zlogin.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo pending -->
+    <target name="dist_mod_pending" description="Crea archivo de distribución Joomla para el modulo Pending">
+        <echo message="Creando archivo de distribución de modulo Pending"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_pending.file}.zip" >
+            <fileset refid="mod_pending_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_pending.ini" prefix="language" />
         </zip>
     </target>
 
