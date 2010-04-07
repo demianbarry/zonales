@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<install type="library" version="1.5">
+    <name>G2P Utils</name>
+    <libraryname>g2p-utils</libraryname>
+    <description>Distintas utilidades necesarias de caracter general</description>
+    <packager>G2P</packager>
+    <version>1.0</version>
+    <files>
+        <file>filesystem.php</file>
+    </files>
+</install>

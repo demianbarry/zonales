@@ -17,7 +17,9 @@
     <property name="src_modules" value="${src}/modules"/>
     <!-- path plugins -->
     <property name="src_plugins" value="${src}/plugins"/>
+    <property name="src_libraries" value="${src}/libraries"/>
     <property name="src_frontend_components" value="${src}/components"/>
+    <property name="src_images" value="${src}/images"/>
 
     <!-- path devel -->
     <property name="dst" value="${zonales.base}/${src.dir}" />
@@ -75,6 +77,9 @@
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
         <include name="**" />
     </fileset>
+    <fileset dir="${src_plugins}/externallogin" id="plg_externallogin_files">
+        <include name="**" />
+    </fileset>
     <!-- plg_solrsearch -->
     <fileset dir="${src_plugins}/solrsearch" id="plg_solrsearch_files">
         <include name="**" />
@@ -108,7 +113,14 @@
     <fileset dir="${src_frontend_components}/com_aapu" id="com_aapu_files">
         <include name="**" />
     </fileset>
+    <!-- com_alias -->
+    <fileset dir="${src_frontend_components}/com_alias" id="com_alias_files">
+        <include name="**" />
+    </fileset>
 
+    <fileset dir="${src_libraries}/g2p-utils" id="lib_g2p-utils_files">
+        <include name="**" />
+    </fileset>
 
     <!-- ======================================================
     copia archivos instalación
@@ -280,6 +292,16 @@
         </zip>
     </target>
 
+    <target name="dist_plg_externallogin" description="Crea archivo de distribución Joomla para el plugin External Login">
+        <echo message="Creando archivo de distribución de plugin External Login"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_externallogin.file}.zip" >
+            <fileset refid="plg_externallogin_files"/>
+            <zipfileset dir="${src_libraries}/facebookconnect" includes="**" prefix="libraries/facebookconnect"/>
+            <zipfileset dir="${src_libraries}/twitter" includes="**" prefix="libraries/twitter"/>
+            <zipfileset dir="${src_libraries}/windowsliveid" includes="**" prefix="libraries/windowsliveid"/>
+        </zip>
+    </target>
+
     <!-- componente zonales -->
     <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
         <echo message="Creando archivo de distribución de componente UserZonales"/>
@@ -357,6 +379,24 @@
             <fileset refid="com_aapu_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_aapu.ini" prefix="language" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_aapu.ini" prefix="admin/language" />
+        </zip>
+    </target>
+
+    <!-- componente alias -->
+    <target name="dist_com_alias" description="Crea archivo de distribución Joomla para el componente Alias">
+        <echo message="Creando archivo de distribución de componente Alias"/>
+        <zip destfile="${src_dist_dir}/${dist.com_alias.file}.zip">
+            <fileset refid="com_alias_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_alias.ini" prefix="language" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_alias.ini" prefix="admin/language" />
+            <zipfileset dir="${src_images}/login" includes="**" prefix="login"/>
+        </zip>
+    </target>
+
+    <target name="dist_lib_g2p-utils" description="Crea archivo de distribución Joomla para la biblioteca G2P-utils">
+        <echo message="Creando archivo de distribución de la biblioteca g2p-utils"/>
+        <zip destfile="${src_dist_dir}/${dist.lib_g2p-utils.file}.zip">
+            <fileset refid="lib_g2p-utils_files"/>
         </zip>
     </target>
 

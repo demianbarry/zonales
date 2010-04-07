@@ -7,7 +7,8 @@ dist.com_content.file=com_content
 dist.com_customproperties.file=com_customproperties
 dist.com_eqzonales.file=com_eqzonales
 dist.com_aapu.file=com_aapu
- 
+dist.com_alias.file=com_alias
+
 # nombre modulo
 dist.mod_jxcomments.file=mod_jxcomments
 dist.mod_seleccionazonal.file=mod_seleccionazonal
@@ -18,8 +19,13 @@ dist.mod_menuzonales.file=mod_menuzonales
 dist.mod_zbanners.file=mod_zbanners
 dist.mod_soycorresponsal.file=mod_soycorresponsal
 dist.mod_eq.file=mod_eq
-dist.mod_zlogin=mod_zlogin
-dist.mod_pending=mod_pending
-dist.mod_sessioninfo=mod_sessioninfo
+dist.mod_zlogin.file=mod_zlogin
+dist.mod_pending.file=mod_pending
+dist.mod_sessioninfo.file=mod_sessioninfo
 dist.plg_zonalescontent.file=plg_zonalescontent
 dist.plg_solrsearch.file=plg_solrsearch
+
+# nombre plugin
+dist.plg_externallogin.file=plg_externallogin
+
+dist.lib_g2p-utils.file=lib_g2p-utils

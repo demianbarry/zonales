@@ -1,6 +1,9 @@
 <?php
+// ensure this file is being included by a parent file
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-function install() {
+
+function com_install() {
     $file = new JFile();
     $basePath = 'libraries' . DS . 'solr' . DS;
     $basePathClient = $basePath . 'client.php';
