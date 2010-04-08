@@ -4,11 +4,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
 /**
- * Description of tabs
+ * Description of Attribute Entity
  *
  * @author nacho
  */
-class AapuModelAttributes extends AapuModelBaseModel {
+class AapuModelAttribute_entity extends AapuModelBaseModel {
 
     function _getQuery()
 	{
@@ -16,7 +16,7 @@ class AapuModelAttributes extends AapuModelBaseModel {
 
 		$query =
 		'SELECT * '
-		.' FROM ' . $dbo->nameQuote('#__aapu_attributes') . ' a';
+		.' FROM ' . $dbo->nameQuote('#__aapu_attribute_entity') . ' ae';
 
 		return $query;
 	}
@@ -26,7 +26,7 @@ class AapuModelAttributes extends AapuModelBaseModel {
 		$query = $this->_getQuery();
 
 		if (!$customQuery) {
-			$this->setWhere('a.id = ' . $this->_id );
+			$this->setWhere('ae.id = ' . $this->_id );
 		}
 		return $query . $this->getWhereClause();
 	}
@@ -41,16 +41,5 @@ class AapuModelAttributes extends AapuModelBaseModel {
 	{
 		return true;
 	}
-
-        /**
-         * Method to publish / unpublish one ore more fields
-         * @return void
-         */
-        function publish() {
-            $cid = JRequest::getVar('cid', '', '', 'array');
-            $attr = & JTable::getInstance('attributes', 'Table');
-            $action = JRequest::getCmd('task') == 'publish' ? 1 : 0;
-            $result = $attr->publish($cid, $action);
-        }
 }
 ?>

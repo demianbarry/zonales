@@ -83,6 +83,7 @@
             <filename>models/index.html</filename>
             <filename>models/basemodel.php</filename>
             <filename>models/tabs.php</filename>
+            <filename>models/attribute_entity.php</filename>
             <filename>models/attributes.php</filename>
             <filename>models/datatypes.php</filename>
             <filename>models/users.php</filename>
