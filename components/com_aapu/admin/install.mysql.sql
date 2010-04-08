@@ -25,6 +25,7 @@ CREATE  TABLE IF NOT EXISTS `#__aapu_attributes` (
   `to` DATE NULL DEFAULT '0000-00-00' ,
   `canceled` CHAR(1) NULL DEFAULT 'F' ,
   `required` CHAR(1) NOT NULL DEFAULT 'F' ,
+  `published` CHAR(1) NOT NULL DEFAULT 'F' ,
   `validator` VARCHAR(255) NULL ,
   `data_type_id` INT NOT NULL ,
   `attribute_class_id` INT(15) UNSIGNED NOT NULL ,

@@ -97,6 +97,14 @@ JHTML::_('behavior.formvalidation');
                 </tr>
                 <tr>
                     <td class="key">
+                        <label for="published"><?php echo JText::_( 'Published?' ); ?>:</label>
+                    </td>
+                    <td colspan="2">
+                        <?php echo  JHTML::_('select.booleanlist', 'published', '', $this->attribute->published ) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="key">
                         <label for="validator"><?php echo JText::_( 'Validator File' ); ?>:</label>
                     </td>
                     <td colspan="2">

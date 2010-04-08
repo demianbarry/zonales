@@ -39,11 +39,23 @@ class AapuViewEditUser extends JView {
 
         $attributesModel = &$this->getModel('attributes');
         $datatypesModel = &$this->getModel('datatypes');
+        $attrEntityModel = &$this->getModel('attribute_entity');
 
         foreach ($types as $type) {
-            $attributesModel->setWhere(' attribute_class_id =  '. $type->id);
+            $attributesModel->setWhere(' attribute_class_id =  '. $type->id.' AND published = 1');
             $type->attributes = $attributesModel->getAll(true);
             foreach ($type->attributes as $attr) {
+                $attrEntityModel->setWhere(' attribute_id = '. $attr->id . ' AND object_id = '. $this->_user->id);
+                $attr->value = $attrEntityModel->getAll(true);
+                if ($attr->value == null) {
+                    $attr->value[0] = new stdClass();
+                    $attr->value[0]->id = 0;
+                    $attr->value[0]->value = '';
+                    $attr->value[0]->value_int = null;
+                    $attr->value[0]->value_double = null;
+                    $attr->value[0]->value_date = null;
+                    $attr->value[0]->value_boolean = null;
+                }
                 $datatypesModel->setId($attr->data_type_id);
                 $attr->datatype = $datatypesModel->getData(true);
             }

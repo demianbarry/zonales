@@ -44,6 +44,8 @@ class AapuController extends JController {
         $this->registerTask('cancelAttribute', 'cancelAttribute');
         $this->registerTask('removeAttribute', 'removeAttribute');
 
+        $this->registerTask( 'unpublish', 'publish' );
+
         $this->registerTask('listDataTypes', 'listDataTypes');
         $this->registerTask('editDataType', 'editDataType');
         $this->registerTask('addDataType', 'editDataType');
@@ -72,6 +74,7 @@ class AapuController extends JController {
         $view->setModel($this->getModel('tabs', 'AapuModel'), true);
         $view->setModel($this->getModel('attributes', 'AapuModel'), true);
         $view->setModel($this->getModel('datatypes', 'AapuModel'), true);
+        $view->setModel($this->getModel('attribute_entity', 'AapuModel'), true);
 
         // no se ejecuta si se accede al backend
         $app = JFactory::getApplication();
@@ -85,7 +88,13 @@ class AapuController extends JController {
     }
 
     function cancelUser() {
-        $this->baseCancelTask(JText::_('INFO_CANCEL'), 'listUsers');
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin()) {
+            $this->baseCancelTask(JText::_('INFO_CANCEL'), 'listUsers');
+        } else {
+            $this->setRedirect('index.php');
+        }
     }
 
     function removeUser() {
@@ -97,9 +106,30 @@ class AapuController extends JController {
 
         $model	= &$this->getModel('Users');
 
-        if (!$model->store(false,true)) {
+        $postData = JRequest::get('post');
+
+        if (!$model->store(false,false,$postData)) {
             echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
             exit();
+        }
+
+        $postData['id'] = $model->getId();
+
+        $attrEntityModel = &$this->getModel('Attribute_entity');
+
+        foreach ($postData as $clave => $valor) {
+            if (strncmp($clave,'attr_',5) == 0) {
+                $data->id = $postData['aeid_'.substr($clave, 5, 1)];
+                $data->$postData['aept_'.substr($clave, 5, 1)] = $valor;
+                $data->object_id = $postData['id'];
+                $data->object_name = '#__users';
+                $data->attribute_id = (int)substr($clave, 5, 1);
+
+                if (!$attrEntityModel->store(false,false,$data)) {
+                    echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+                    exit();
+                }
+            }
         }
 
         $user = $model->getData();
@@ -116,7 +146,13 @@ class AapuController extends JController {
                 break;
         }
 
-        $this->setRedirect($link, $msg);
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin()) {
+            $this->setRedirect($link, $msg);
+        } else {
+            $this->setRedirect('index.php', JText::_( 'User save'));
+        }
     }
 
     /*
@@ -202,6 +238,13 @@ class AapuController extends JController {
 
     function removeAttribute() {
         $this->baseRemoveTask('attributes', 'listAttributes');
+    }
+
+    function publish() {
+        $model = & $this->getModel('attributes');
+        $model->publish();
+        $link = 'index.php?option=com_aapu&controller=controller&task=listAttributes';
+        $this->setRedirect($link);
     }
 
     function saveAttribute() {

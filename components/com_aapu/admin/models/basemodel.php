@@ -66,6 +66,10 @@ abstract class AapuModelBaseModel extends JModel {
         $this->_data 	= null;
     }
 
+    function getId() {
+        return $this->_id;
+    }
+
     /**
      * Recupera los datos desde el modelo (un solo registro)
      *

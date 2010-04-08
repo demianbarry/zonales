@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  * AAPU Attribute_Entity Table class
  *
  */
-class TableAttributeEntity extends JTable {
+class TableAttribute_entity extends JTable {
 
     //AttributeEntity ID
     var $id = 0;
@@ -43,8 +43,8 @@ class TableAttributeEntity extends JTable {
      *
      * @param object Database connector object
      */
-    function TableAttributeEntity( &$db ) {
-        parent::__construct('#__com_aapu_attribute_entity', 'id', $db);
+    function TableAttribute_entity( &$db ) {
+        parent::__construct('#__aapu_attribute_entity', 'id', $db);
     }
 
     /**
@@ -67,20 +67,6 @@ class TableAttributeEntity extends JTable {
      */
     function check() {
         //Input here the validation code
-        return true;
-    }
-
-    /**
-     * Overloaded delete function. Deletes the attribute.
-     * @return boolean true if check is positive, false otherwise
-     */
-    function delete() {
-
-        $query = "DELETE FROM #__com_aapu_attribute_entity
-			WHERE id = '" . $this->id . "'" ;
-        $this->_db->setQuery($query);
-        if($this->_db->query() === false) return false ;
-
         return true;
     }
 

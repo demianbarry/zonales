@@ -46,6 +46,6 @@ switch($task) {
         break;
 
     default:
-        TOOLBAR_aapu_tabs::_DEFAULT();
+        TOOLBAR_aapu_users::_DEFAULT();
         break;
 }

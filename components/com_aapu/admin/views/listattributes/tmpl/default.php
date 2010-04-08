@@ -25,7 +25,8 @@ JHTML::_('behavior.tooltip');
 					<?php echo JHTML::_('grid.sort',   'LABEL', 'a.label', @$this->lists['order_Dir'], @$this->lists['order'], 'listAttributes' ); ?>
 				</th>
                                 <th width="25%"><?php echo JText::_( 'Name' ); ?></th>
-                                <th width="46%"><?php echo JText::_( 'Description' ); ?></th>
+                                <th width="41%"><?php echo JText::_( 'Description' ); ?></th>
+                                <th width="5%"><?php echo JText::_( 'Published' ); ?></th>
 				<th width="1%"><?php echo JText::_( 'ID' ); ?></th>
 			</tr>
 		</thead>
@@ -33,6 +34,8 @@ JHTML::_('behavior.tooltip');
 		$k = 0; $i = 0;
 		foreach ($this->attributes as $attribute) {
 			$checked = JHTML::_('grid.id', $i, $attribute->id);
+                        $img = $attribute->published == 1 ? 'publish_g.png' : 'publish_x.png';
+			$alt = $attribute->published == 1 ? JText::_('Published') : JText::_('Unpublished');
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -49,7 +52,12 @@ JHTML::_('behavior.tooltip');
                                 <td>
 					<?php echo $attribute->description; ?>
 				</td>
-				<td>
+                                <td align="center">
+                                    <a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $attribute->published ? 'unpublish' : 'publish' ?>')">
+                                        <img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+                                    </a>
+                                </td>
+                                <td>
 					<?php echo $attribute->id; ?>
 				</td>
 			</tr>
