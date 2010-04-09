@@ -91,7 +91,7 @@ function openid($credentials,$options) {
         $credentials['username'] = $credentials['username'] . $suffix;
     }
 
-    $discovery_url = (isset ($discovery)) ? $discovery : $credentials['username'];
+    $discovery_url = (isset ($discovery) && !is_null($discovery) && $discovery != '') ? $discovery : $credentials['username'];
     $discovery_url = trim($discovery_url);
 
     ################################################
