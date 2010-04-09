@@ -51,7 +51,6 @@ CREATE TABLE  `#__alias` (
 unique (`name`),
   PRIMARY KEY  USING BTREE (`id`),
   KEY `fk_#__aliases_#__providers` (`provider_id`),
-  CONSTRAINT `fk_#__aliases_#__users` FOREIGN KEY (`user_id`) REFERENCES `#__users`(`id`);
   CONSTRAINT `fk_#__aliases_#__providers` FOREIGN KEY (`provider_id`) REFERENCES `#__providers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

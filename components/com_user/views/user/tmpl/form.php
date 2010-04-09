@@ -98,6 +98,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<input type="hidden" name="task" value="save" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<a href="index.php?option=com_alias&view=alias">
-    <?php echo JText::_('Administrate your alias') ?>
+<a class="alias-admin" href="index.php?option=com_alias&view=alias">
+    <?php echo JText::_('SYSTEM_ALIAS_ADMIN_GO') ?>
 </a>
