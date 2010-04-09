@@ -5,7 +5,7 @@ $db = &JFactory::getDBO();
 // realiza la consulta a la base de datos
 $selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input, t.name as type ' .
     'from #__providers p, #__groups g, #__protocol_types t ' .
-    'where p.access=g.id and t.id=p.protocol_type_id ' .
+    'where p.access=g.id and t.id=p.protocol_type_id and p.enabled=1' .
     'order by (select count(*) from #__alias a where p.id=a.provider_id) desc, t.name  asc';
 $db->setQuery($selectProviders);
 $providerslist = $db->loadObjectList();

@@ -22,17 +22,14 @@ CREATE TABLE  `#__providers` (
   `description` varchar(45) default NULL,
   `observation` varchar(45) default NULL,
   `icon_url` varchar(255) NOT NULL,
-  `module` varchar(100) default NULL,
-  `function` varchar(100) NOT NULL,
   `access` int(11) NOT NULL,
   `prefix` varchar(50) NOT NULL,
   `suffix` varchar(50) NOT NULL,
   `required_input` varchar(255) default NULL,
-  `order` int(11) NOT NULL,
-  `hits` bigint(20) NOT NULL,
   `apikey` varchar(255) default NULL,
   `secretkey` varchar(255) default NULL,
   `callback_parameters` varchar(255) default NULL,
+  `enabled` tinyint(1) not null default 1,
   PRIMARY KEY  (`id`),
   KEY `fk_#__providers_#__protocol_type` (`protocol_type_id`),
   CONSTRAINT `fk_#__providers_#__protocol_type` FOREIGN KEY (`protocol_type_id`) REFERENCES `#__protocol_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -59,12 +56,12 @@ unique (`name`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `#__protocol_types` WRITE;
-INSERT INTO `#__protocol_types`(name,functionname) VALUES  ('OpenID',''),
- ('Twitter OAuth',''),
- ('Facebook Connect',''),
- ('Microsoft Passport',''),
+INSERT INTO `#__protocol_types`(name,functionname) VALUES  ('OpenID','openid'),
+ ('Twitter OAuth','twitterauth'),
+ ('Facebook Connect','facebookconnect'),
+ ('Microsoft Passport','liveid'),
  ('Email',''),
- ('Tradicional','');
+ ('Tradicional','tradicional');
 UNLOCK TABLES;
 
 
@@ -78,7 +75,7 @@ LOCK TABLES `#__providers` WRITE;
 INSERT INTO `#__providers` VALUES  (1,'Google','https://www.google.com/accounts/o8/id',NULL,1,NULL,NULL,'images/login/google.png',NULL,'',0,'','',':::',1,4,NULL,NULL,NULL),
  (2,'Yahoo','me.yahoo.com',NULL,1,NULL,NULL,'images/login/yahoo.png',NULL,'',0,'','',':::',2,2,NULL,NULL,NULL),
  (3,'OpenID',NULL,NULL,1,NULL,NULL,'images/login/openid.png','mod_openid','',0,'','','text:username:ZONALES_PROVIDER_ENTER_ID:',3,0,NULL,NULL,NULL),
- (4,'Zonales',NULL,NULL,7,NULL,NULL,'images/login/zonales.png','mod_login','',3,'','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:/password:password:ZONALES_PROVIDER_ENTER_PASSWORD:',4,3,NULL,NULL,NULL),
+ (4,'Zonales',NULL,NULL,6,NULL,NULL,'images/login/zonales.png','mod_login','',3,'','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:/password:password:ZONALES_PROVIDER_ENTER_PASSWORD:',4,3,NULL,NULL,NULL),
  (5,'ClaimID',NULL,NULL,1,NULL,NULL,'images/login/claimid.png','mod_openid','',0,'http://claimid.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:',5,0,NULL,NULL,NULL),
  (6,'MyOpenID',NULL,NULL,1,NULL,NULL,'images/login/myopenid.png','mod_openid','',0,'','.myopenid.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:',6,1,NULL,NULL,NULL),
  (7,'LiveJournal',NULL,NULL,1,NULL,NULL,'images/login/livejournal.png','mod_openid','',0,'','.livejournal.com','text:username:ZONALES_PROVIDER_ENTER_USERNAME:',7,0,NULL,NULL,NULL);
