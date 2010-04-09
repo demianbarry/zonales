@@ -77,6 +77,9 @@
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
         <include name="**" />
     </fileset>
+    <fileset dir="${src_plugins}/authproxy" id="plg_authproxy_files">
+        <include name="**" />
+    </fileset>
     <fileset dir="${src_plugins}/externallogin" id="plg_externallogin_files">
         <include name="**" />
     </fileset>
@@ -280,6 +283,13 @@
         <zip destfile="${src_dist_dir}/${dist.plg_zonalescontent.file}.zip" >
             <fileset refid="plg_zonalescontent_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_zonalescontent.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <target name="dist_plg_authproxy" description="Crea archivo de distribución Joomla para el plugin AuthProxy">
+        <echo message="Creando archivo de distribución de plugin AuthProxy"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_authproxy.file}.zip" >
+            <fileset refid="plg_authproxy_files"/>
         </zip>
     </target>
 
