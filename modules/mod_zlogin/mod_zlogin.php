@@ -98,5 +98,4 @@ foreach ($providerslist as $prov) {
     }
 </script>
 
-
 <?php require(JModuleHelper::getLayoutPath('mod_zlogin')); ?>
