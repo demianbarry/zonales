@@ -1,5 +1,6 @@
 /* CSS modules */
 
+@import url("mod_zlogin.css");
 @import url("mod_soycorresponsal.css");
 @import url("mod_comments_latest.css");
 
@@ -406,7 +407,7 @@ div.cp_field_label{
 	background-repeat:no-repeat;
 }
 
-/* (seleccioná tu zonal) */
+/* (seleccionï¿½ tu zonal) */
 
 #seleccionaZ{
 	margin-top:25px;
@@ -444,7 +445,7 @@ div.cp_field_label{
 	margin-bottom:10px;
 }
 
-/* botón mapa lightbox */
+/* botï¿½n mapa lightbox */
 #moduletable_zMap{
 	margin-bottom:10px;
 }
@@ -568,7 +569,7 @@ div.cp_field_label{
 	color:#295AA6;
 }
 
-.resultbox .resultbox-bg .search-results h3.search-header{ /* título de la caja */
+.resultbox .resultbox-bg .search-results h3.search-header{ /* tï¿½tulo de la caja */
 	font-weight:bold;
 	font-size:15px;
 	font-family:Georgia, "Times New Roman", Times, serif;

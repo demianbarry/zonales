@@ -69,7 +69,7 @@
 
 }
 
-.resultbox .resultbox-bg .search-results h3.search-header{ /* título de la caja */
+.resultbox .resultbox-bg .search-results h3.search-header{ /* tï¿½tulo de la caja */
 	background:#009CC9;
 }
 
@@ -82,4 +82,10 @@
 }
 .resultbox .resultbox-bg .search-results .results h3{ /* titulos */
 	color:#009CC9;
+}
+
+/* mod zlogin */
+
+.moduletable_zlogin h1{
+	background:#009CC9;
 }
