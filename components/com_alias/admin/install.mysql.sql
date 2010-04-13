@@ -64,7 +64,7 @@ unique (`name`),
 
 LOCK TABLES `#__protocol_types` WRITE;
 INSERT INTO `#__protocol_types`(name,function) VALUES  ('OpenID','openid'),
- ('Twitter OAuth','twitterauth'),
+ ('Twitter OAuth','twitteroauth'),
  ('Facebook Connect','facebookconnect'),
  ('Microsoft Passport','liveid'),
  ('Email',''),
