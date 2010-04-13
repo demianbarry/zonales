@@ -3,10 +3,10 @@
 --	WHERE COLUMN_NAME='birthdate' AND TABLE_NAME='#__users'
 --	)
 --	THEN
-		ALTER TABLE `#__users`
-                    ADD COLUMN `email2` VARCHAR(100) AFTER `email`,
-                    ADD COLUMN `birthdate` date  NOT NULL AFTER `params`,
-                    ADD COLUMN `sex` char(1)  NOT NULL AFTER `birthdate`;
+--		ALTER TABLE `#__users`
+--                    ADD COLUMN `email2` VARCHAR(100) AFTER `email`,
+--                    ADD COLUMN `birthdate` date  NOT NULL AFTER `params`,
+--                    ADD COLUMN `sex` char(1)  NOT NULL AFTER `birthdate`;
 
 -- END IF;
 

@@ -27,5 +27,6 @@ dist.plg_solrsearch.file=plg_solrsearch
 
 # nombre plugin
 dist.plg_externallogin.file=plg_externallogin
+dist.plg_authproxy.file=plg_authproxy
 
 dist.lib_g2p-utils.file=lib_g2p-utils
