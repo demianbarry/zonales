@@ -1,9 +1,19 @@
-ALTER TABLE `#__users`
-	ADD COLUMN `email2` VARCHAR(100) AFTER `email`,
-	ADD COLUMN `birthdate` date  NOT NULL AFTER `params`,
-	ADD COLUMN `sex` char(1)  NOT NULL AFTER `birthdate`;
+-- IF NOT EXISTS(
+--	SELECT * FROM information_schema.COLUMNS
+--	WHERE COLUMN_NAME='birthdate' AND TABLE_NAME='#__users'
+--	)
+--	THEN
+		ALTER TABLE `#__users`
+                    ADD COLUMN `email2` VARCHAR(100) AFTER `email`,
+                    ADD COLUMN `birthdate` date  NOT NULL AFTER `params`,
+                    ADD COLUMN `sex` char(1)  NOT NULL AFTER `birthdate`;
 
+-- END IF;
+
+DROP TABLE IF EXISTS `#__alias`;
+DROP TABLE IF EXISTS `#__providers`;
 DROP TABLE IF EXISTS `#__protocol_types`;
+
 CREATE TABLE  `#__protocol_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(45) NOT NULL,
@@ -12,7 +22,6 @@ CREATE TABLE  `#__protocol_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `#__providers`;
 CREATE TABLE  `#__providers` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(45) NOT NULL,
@@ -39,7 +48,6 @@ CREATE TABLE  `#__providers` (
 -- Definition of table `#__alias`
 --
 
-DROP TABLE IF EXISTS `#__alias`;
 CREATE TABLE  `#__alias` (
   `user_id` int(11) NOT NULL,
   `id` int(11) NOT NULL auto_increment,
@@ -55,7 +63,7 @@ unique (`name`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `#__protocol_types` WRITE;
-INSERT INTO `#__protocol_types`(name,functionname) VALUES  ('OpenID','openid'),
+INSERT INTO `#__protocol_types`(name,function) VALUES  ('OpenID','openid'),
  ('Twitter OAuth','twitterauth'),
  ('Facebook Connect','facebookconnect'),
  ('Microsoft Passport','liveid'),
@@ -66,7 +74,7 @@ UNLOCK TABLES;
 
 
 LOCK TABLES `#__groups` WRITE;
-INSERT INTO `#__groups` VALUES (3,'Guest');
+REPLACE INTO `#__groups` set id=3, name="Guest";
 UNLOCK TABLES;
 
 

@@ -40,9 +40,20 @@
         </sql>
     </uninstall>
 
-    <installfile>install.com_alias.php</installfile>
+    <!-- <installfile>install.com_alias.php</installfile> -->
 
     <administration>
+        <files folder="admin">
+            <filename>models/alias.php</filename>
+            <filename>models/basemodel.php</filename>
+            <filename>models/protocoltype.php</filename>
+            <filename>models/provider.php</filename>
+            <filename>tables/alias.php</filename>
+            <filename>tables/protocoltypes.php</filename>
+            <filename>tables/providers.php</filename>
+            <filename>install.mysql.sql</filename>
+            <filename>uninstall.mysql.sql</filename>
+        </files>
   <!-- Administration Menu Section -->
         <menu>Administracion de alias</menu>
 
