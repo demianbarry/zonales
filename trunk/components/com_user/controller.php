@@ -178,6 +178,9 @@ class UserController extends JController {
         $credentials['username'] = trim($credentials['username']);
         global $mainframe;
 
+        $user =& JFactory::getUser();
+        $registerNewAlias = (!$user->guest);
+
         if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
             $return = base64_decode($return);
             if (!JURI::isInternal($return)) {
@@ -222,11 +225,13 @@ class UserController extends JController {
                 $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
             }
 
-
-            $mainframe->redirect( $return );
+            $i18nKey = ($registerNewAlias) ? 'SYSTEM_MESSAGE_SUCCESS_ALIAS_ADDED' : 'SYSTEM_MESSAGE_SUCCESS_LOGIN';
+            $message = JText::_($i18nKey);
+            UserHelper::showMessage(SUCCESS, $message);
         }
         else {
-            $message = JText::_('SYSTEM_LOGIN_SUCCESS');
+            $i18nKey = ($registerNewAlias) ? 'SYSTEM_MESSAGE_ERROR_ALIAS_NOT_ADDED' : 'SYSTEM_MESSAGE_ERROR_LOGIN';
+            $message = JText::_($i18nKey);
             UserHelper::showMessage(ERROR, $message);
         }
     }
@@ -394,6 +399,12 @@ class UserController extends JController {
         $userid = $this->getUserId($db, $user);
         $userExists = $this->userExists($db, $user);
         $requestNewAlias = true;
+
+        if ($userExists){
+            $message = JText::_('SYSTEM_MESSAGE_ERROR_USER_EXISTS');
+            UserHelper::showMessage(ERROR, $message);
+        }
+
         if (!$userExists || $force == 1) {
             $password = JRequest::getString('passwordt', '', 'post', JREQUEST_ALLOWRAW);
             $username = JRequest::getString('usernamer','','method');
@@ -486,7 +497,7 @@ class UserController extends JController {
         // tomo los valores especificos del proveedor externo
         $epProveedor = JRequest::getVar('selprovider', '', 'method', 'string');
 
-        if ($epProveedor != 'Zonales') {
+        if ($externalid != '' && $providerid != 0) {
             $epUserData = array();
             $epUserData['epusername'] = JRequest::getVar('epusername', '', 'method', 'string');
             $epUserData['epprovider'] = $epProveedor;
