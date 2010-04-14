@@ -9,18 +9,18 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 <script type="text/javascript">
     function showPass() {
 		document.getElementById('pwmsg').style.display = 'block';
-                document.getElementById('password').style.display = 'block';
+                document.getElementById('passwordt').style.display = 'block';
                 document.getElementById('pw2msg').style.display = 'block';
                 document.getElementById('password2').style.display = 'block';
-                document.getElementById('password').className = 'inputbox required validate-passverify';
+                document.getElementById('passwordt').className = 'inputbox required validate-passverify';
                 document.getElementById('password2').className = 'inputbox required validate-passverify';
             }
     function hidePass() {
 		document.getElementById('pwmsg').style.display = 'none';
-                document.getElementById('password').style.display = 'none';
+                document.getElementById('passwordt').style.display = 'none';
                 document.getElementById('pw2msg').style.display = 'none';
                 document.getElementById('password2').style.display = 'none';
-                document.getElementById('password').className = '';
+                document.getElementById('passwordt').className = '';
                 document.getElementById('password2').className = '';
             }
 
@@ -56,7 +56,7 @@ foreach ($this->providerslist as $prov) {
     }
     <!--
     Window.onDomReady = function(){
-        document.formvalidator.setHandler('passverify', function (value) { return ($('password').value == value); }	);
+        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }	);
     }
     // -->
 </script>
@@ -119,8 +119,8 @@ if(isset($this->message)) {
             </td>
             <td>
                 <input type="text"
-                       id="username"
-                       name="username"
+                       id="usernamer"
+                       name="usernamer"
                        size="40"
                        value="<?php echo $this->escape($this->user->get( 'username' ));?>"
                        class="inputbox required validate-username"
@@ -316,7 +316,7 @@ if(isset($this->message)) {
                 <a name="passlocation"></a>
                 <label style="display: none;"
                        id="pwmsg"
-                       for="password"
+                       for="passwordt"
                 >
                     <?php echo '*' . $this->passwordMessage ?>:
                 </label>
@@ -325,8 +325,8 @@ if(isset($this->message)) {
                 <input style="display: none;"
                        class=""
                        type="password"
-                       id="password"
-                       name="password"
+                       id="passwordt"
+                       name="passwordt"
                        size="40"
                        value=""
                 />
