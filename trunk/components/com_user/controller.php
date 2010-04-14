@@ -478,6 +478,18 @@ class UserController extends JController {
             $userClone->set('activation', $passphrase);
         //UserController::_sendMail($userClone, $password);
         }
+        else {
+        // tomo los valores especificos del proveedor externo
+            $epProveedor = JRequest::getVar('selprovider', '', 'method', 'string');
+            
+            if ($epProveedor && $epProveedor != 'Zonales') {
+                $epUserData = array();
+                $epUserData['epusername'] = JRequest::getVar('epusername', '', 'method', 'string');
+                $epUserData['epprovider'] = $epProveedor;
+                $epUserData['userid'] = $userid;
+                $this->login($epUserData);
+            }
+        }
 
         //$return = 'index.php' . ($requestNewAlias) ? '?option=com_alias&view=alias&userid=' . $userid .'&'. JUtility::getToken() . '=1' : '';
         ############## fin #####################
@@ -491,18 +503,6 @@ class UserController extends JController {
             $message  = JText::_( 'REG_COMPLETE_ACTIVATE' );
         } else {
             $message = JText::_( 'REG_COMPLETE' );
-        }
-
-
-        // tomo los valores especificos del proveedor externo
-        $epProveedor = JRequest::getVar('selprovider', '', 'method', 'string');
-
-        if ($externalid != '' && $providerid != 0) {
-            $epUserData = array();
-            $epUserData['epusername'] = JRequest::getVar('epusername', '', 'method', 'string');
-            $epUserData['epprovider'] = $epProveedor;
-            $epUserData['userid'] = $userid;
-            $this->login($epUserData);
         }
 
         $this->endAuthentication();
