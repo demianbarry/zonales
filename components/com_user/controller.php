@@ -20,6 +20,9 @@ jimport('joomla.application.component.controller');
 jimport( 'joomla.utilities.utility' );
 jimport('joomla.user.helper');
 
+require_once 'views' . DS . 'message' . DS . 'constants.php';
+require_once 'helper.php';
+
 /**
  * User Component Controller
  *
@@ -223,13 +226,8 @@ class UserController extends JController {
             $mainframe->redirect( $return );
         }
         else {
-            // Facilitate third party login forms
-            if ( ! $return ) {
-                $return	= 'index.php?option=com_user&view=zlogin';
-            }
-
-            // Redirect to a login form
-            $mainframe->redirect( $return );
+            $message = JText::_('SYSTEM_LOGIN_SUCCESS');
+            UserHelper::showMessage(ERROR, $message);
         }
     }
 
@@ -397,7 +395,8 @@ class UserController extends JController {
         $userExists = $this->userExists($db, $user);
         $requestNewAlias = true;
         if (!$userExists || $force == 1) {
-            $password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+            $password = JRequest::getString('passwordt', '', 'post', JREQUEST_ALLOWRAW);
+            $username = JRequest::getString('usernamer','','method');
 
             // if ($password == '' && $externalid != '' && $providerid != 0){
             if ($password == '') {
@@ -413,6 +412,7 @@ class UserController extends JController {
             $date =& JFactory::getDate();
             $user->set('registerDate', $date->toMySQL());
             $user->set('password',md5($password));
+            $user->set('username',$username);
 
 
             // If user activation is turned on, we need to set the activation information
@@ -425,7 +425,10 @@ class UserController extends JController {
             // If there was an error with registration, set the message and display form
             if ( !$user->save() ) {
                 JError::raiseWarning('', JText::_( $user->getError()));
-                $this->register();
+
+                $message = JText::_('SYSTEM_MESSAGE_ERROR_REGISTER');
+
+                UserHelper::showMessage(ERROR, $message);
                 return false;
             }
             $userid = $this->getUserId($db, $user);
@@ -435,7 +438,6 @@ class UserController extends JController {
 
             $password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
             UserController::_sendMail($user, $password);
-
 
         }
 
@@ -494,8 +496,7 @@ class UserController extends JController {
 
         $this->endAuthentication();
         // fin ------
-
-        $this->setRedirect('index.php', $message);
+        UserHelper::showMessage(SUCCESS, $message);
     }
 
     function activate() {
