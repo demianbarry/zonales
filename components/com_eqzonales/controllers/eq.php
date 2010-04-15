@@ -59,6 +59,78 @@ class EqZonalesControllerEq extends JController {
         return;
     }
 
+    function retrieveEq() {
+        $eqId = JRequest::getInt('eq',0,'method');
+
+        if ($eqId > 0){
+            $model = &$this->getModel('Eq');
+            $model->setId($eqId);
+            $eq = $model->getData(true);
+
+            return $eq;
+        }
+    }
+
+    function retrieveUserEq() {
+        $userId = JRequest::getInt('user',0,'method');
+
+        if ($userId > 0){
+            $model = &$this->getModel('Eq');
+            $model->setWhere('user_id=' . $userId);
+            $eqs = $model->getAll(true);
+
+            return $eqs;
+        }
+    }
+
+    /*
+     *  Metodos auxiliares
+     */
+
+    function setEqName() {
+        $name = JRequest::getInt('name',null,'method');
+
+        // si no se otorgo el nombre a asignar
+        if ($name == null){
+            // indico que no se pudo hacer nada
+            return false;
+        }
+        
+        $eq = $this->retrieveEq();
+        $eq->nombre = $name;
+        
+    }
+
+    function getEqName() {
+        $eq = $this->retrieveEq();
+
+        return $eq->nombre;
+    }
+
+    function getEqDesc() {
+        $eq = $this->retrieveEq();
+
+        return $eq->descripcion;
+    }
+
+    function setEqDesc() {
+        ;
+    }
+
+    function setEqObservation() {
+        ;
+    }
+
+    function getEqObservation() {
+        $eq = $this->retrieveEq();
+
+        return $eq->observaciones;
+    }
+
+    /*
+     * Fin metodos auxiliares
+     */
+
     function runQuery() {
         $default = '###';
         $data = array();
