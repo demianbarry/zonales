@@ -120,6 +120,10 @@
     <fileset dir="${src_frontend_components}/com_alias" id="com_alias_files">
         <include name="**" />
     </fileset>
+    <!-- com_user -->
+    <fileset dir="${src_frontend_components}/com_user" id="com_user_files">
+        <include name="**" />
+    </fileset>
 
     <fileset dir="${src_libraries}/g2p-utils" id="lib_g2p-utils_files">
         <include name="**" />
@@ -400,6 +404,17 @@
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_alias.ini" prefix="language" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_alias.ini" prefix="admin/language" />
             <zipfileset dir="${src_images}/login" includes="**" prefix="login"/>
+        </zip>
+    </target>
+
+    <!-- componente user -->
+    <target name="dist_com_user" description="Crea archivo de distribución Joomla para el componente User">
+        <echo message="Creando archivo de distribución de componente User"/>
+        <zip destfile="${src_dist_dir}/${dist.com_user.file}.zip">
+            <fileset refid="com_user_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="admin/language" />
+            <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
         </zip>
     </target>
 

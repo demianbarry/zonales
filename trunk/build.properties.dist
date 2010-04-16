@@ -8,6 +8,7 @@ dist.com_customproperties.file=com_customproperties
 dist.com_eqzonales.file=com_eqzonales
 dist.com_aapu.file=com_aapu
 dist.com_alias.file=com_alias
+dist.com_user.file=com_user
 
 # nombre modulo
 dist.mod_jxcomments.file=mod_jxcomments
