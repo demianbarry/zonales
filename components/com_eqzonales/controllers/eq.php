@@ -95,7 +95,8 @@ class EqZonalesControllerEq extends JController {
         }
 
         $model = &$this->getModel('Eq');
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
+        $eq = $data->eq;
         $eq->nombre = $name;
 
         return $model->store(false,false,$eq);
@@ -103,8 +104,9 @@ class EqZonalesControllerEq extends JController {
     }
 
     function getEqName() {
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
 
+        $eq = $data->eq;
         // si no se encontro retorno NULL
         if (empty ($eq)) return null;
 
@@ -112,8 +114,9 @@ class EqZonalesControllerEq extends JController {
     }
 
     function getEqDesc() {
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
 
+        $eq = $data->eq;
         // si no se encontro retorno NULL
         if (empty ($eq)) return null;
 
@@ -130,7 +133,8 @@ class EqZonalesControllerEq extends JController {
         }
 
         $model = &$this->getModel('Eq');
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
+        $eq = $data->eq;
         $eq->descripcion = $desc;
 
         return $model->store(false,false,$eq);
@@ -146,15 +150,17 @@ class EqZonalesControllerEq extends JController {
         }
 
         $model = &$this->getModel('Eq');
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
+        $eq = $data->eq;
         $eq->observaciones = $observation;
 
         return $model->store(false,false,$eq);
     }
 
     function getEqObservation() {
-        $eq = $this->retrieveEq();
+        $data = $this->retrieveEq();
 
+        $eq = $data->eq;
         // si no se encontro retorno NULL
         if (empty ($eq)) return null;
 
