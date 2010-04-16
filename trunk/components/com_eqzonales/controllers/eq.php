@@ -62,13 +62,7 @@ class EqZonalesControllerEq extends JController {
     function retrieveEq() {
         $eqId = JRequest::getInt('eq',0,'method');
 
-        if ($eqId > 0){
-            $model = &$this->getModel('Eq');
-            $model->setId($eqId);
-            $eq = $model->getData(true);
-
-            return $eq;
-        }
+        return $this->retrieveEqImpl($eqId);
     }
 
     function retrieveUserEq() {
@@ -76,10 +70,14 @@ class EqZonalesControllerEq extends JController {
 
         if ($userId > 0){
             $model = &$this->getModel('Eq');
-            $model->setWhere('user_id=' . $userId);
-            $eqs = $model->getAll(true);
+            $eqs = $model->getUserEqs($userId);
 
-            return $eqs;
+            $data = array();
+            foreach ($eqs as $currentEq) {
+                $data[] = $this->retrieveEqImpl($currentEq->id);
+            }
+
+            return $data;
         }
     }
 
@@ -88,7 +86,7 @@ class EqZonalesControllerEq extends JController {
      */
 
     function setEqName() {
-        $name = JRequest::getInt('name',null,'method');
+        $name = JRequest::getString('name',null,'method');
 
         // si no se otorgo el nombre a asignar
         if ($name == null){
@@ -100,12 +98,15 @@ class EqZonalesControllerEq extends JController {
         $eq = $this->retrieveEq();
         $eq->nombre = $name;
 
-        $model->store(false,false,$eq);
+        return $model->store(false,false,$eq);
         
     }
 
     function getEqName() {
         $eq = $this->retrieveEq();
+
+        // si no se encontro retorno NULL
+        if (empty ($eq)) return null;
 
         return $eq->nombre;
     }
@@ -113,11 +114,14 @@ class EqZonalesControllerEq extends JController {
     function getEqDesc() {
         $eq = $this->retrieveEq();
 
+        // si no se encontro retorno NULL
+        if (empty ($eq)) return null;
+
         return $eq->descripcion;
     }
 
     function setEqDesc() {
-        $desc = JRequest::getInt('desc',null,'method');
+        $desc = JRequest::getString('desc',null,'method');
 
         // si no se otorgo el nombre a asignar
         if ($desc == null){
@@ -129,11 +133,11 @@ class EqZonalesControllerEq extends JController {
         $eq = $this->retrieveEq();
         $eq->descripcion = $desc;
 
-        $model->store(false,false,$eq);
+        return $model->store(false,false,$eq);
     }
 
     function setEqObservation() {
-        $observation = JRequest::getInt('obs',null,'method');
+        $observation = JRequest::getString('obs',null,'method');
 
         // si no se otorgo el nombre a asignar
         if ($observation == null){
@@ -143,13 +147,16 @@ class EqZonalesControllerEq extends JController {
 
         $model = &$this->getModel('Eq');
         $eq = $this->retrieveEq();
-        $eq->observacion = $observation;
+        $eq->observaciones = $observation;
 
-        $model->store(false,false,$eq);
+        return $model->store(false,false,$eq);
     }
 
     function getEqObservation() {
         $eq = $this->retrieveEq();
+
+        // si no se encontro retorno NULL
+        if (empty ($eq)) return null;
 
         return $eq->observaciones;
     }
@@ -229,6 +236,32 @@ class EqZonalesControllerEq extends JController {
         $jtext = new JText();
         $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
         return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
+    }
+
+    function retrieveEqImpl($eqId) {
+        if ($eqId > 0){
+            // recupero los datos del ecualizador solicitado
+            $model = &$this->getModel('Eq');
+            $model->setId($eqId);
+            $eq = $model->getData(true);
+
+            if (!isset ($eq->id)){
+                return array();
+            }
+
+            // recupero los datos de las bandas asociadas al ecualizador
+            $model = &$this->getModel('Banda');
+            $model->setWhere('e.eq_id = ' . $eq->id);
+            $bands = $model->getAll(true);
+
+            $data = new stdClass();
+            $data->eq = $eq;
+            $data->bands = $bands;
+
+            return $data;
+        }
+
+        return array();
     }
 
     /**

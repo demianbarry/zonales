@@ -376,6 +376,7 @@
             <fileset refid="com_eqzonales_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_eqzonales.ini" prefix="language" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_eqzonales.ini" prefix="admin/language" />
+            <zipfileset dir="${src_libraries}/solr" includes="**" prefix="libraries/solr" />
         </zip>
     </target>
 
