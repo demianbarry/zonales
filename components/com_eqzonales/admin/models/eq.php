@@ -3,6 +3,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_zonales' . DS . 'models' . DS . 'basemodel.php';
+
 class EqZonalesModelEq extends ZonalesModelBaseModel {
 
 
@@ -51,21 +53,16 @@ class EqZonalesModelEq extends ZonalesModelBaseModel {
     }
 
     /**
-     * Lista de planes de tipo parental asociados al plan actual.
      *
-     * @param int id del plan en la base de datos. si se omite se usa el id de la instancia.
-     * @return array arreglo de objetos de datos plan
+     * @param integer el id del usuario
+     * @return array lista de ecualizadores del usuario
      */
     function getUserEqs($user_id = 0)
     {
-        $dbo = $this->getDBO();
 
-        $where = ' WHERE '. $dbo->nameQuote('p.id') .' IN ('.
-                ' SELECT '. $dbo->nameQuote('ptp.plan_id_dst').
-                ' FROM '. $dbo->nameQuote('#__demo_plans2plans') .' ptp'.
-                ' WHERE '. $dbo->nameQuote('ptp.plan_id_src') .' = ' . $plan_id .
-                ' ) AND '. $dbo->nameQuote('p.type') .' = ' . $dbo->quote('parental');
+        $this->setWhere('e.user_id = ' . $user_id);
+        $eqs = $this->getAll(true);
 
-        return $this->_getList($this->_getQuery() . $where);
+        return $eqs;
     }
 }

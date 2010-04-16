@@ -30,6 +30,8 @@
         <filename>controllers/eq.php</filename>
         <filename>queries/userquery.php</filename>
         <filename>queries/bannerquery.php</filename>
+        <filename>libraries/solr/client.php</filename>
+        <filename>libraries/solr/query.php</filename>
 
         
     <filename>views/index.html</filename>
@@ -37,6 +39,7 @@
     <filename>views/test/index.html</filename>
     <filename>views/test/tmpl/index.html</filename>
     <filename>views/test/tmpl/default.php</filename>
+
     <!--
     <filename>views/mapa/view.html.php</filename>
     <filename>views/mapa/index.html</filename>

@@ -3,6 +3,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_zonales' . DS . 'models' . DS . 'basemodel.php';
+
 class EqZonalesModelBanda extends ZonalesModelBaseModel
 {
 	function _getQuery()
