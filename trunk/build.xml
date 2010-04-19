@@ -72,6 +72,10 @@
     <fileset dir="${src_modules}/mod_sessioninfo" id="mod_sessioninfo_files">
         <include name="**" />
     </fileset>
+    <!-- mod_zcloud -->
+    <fileset dir="${src_modules}/mod_zcloud" id="mod_zcloud_files">
+        <include name="**" />
+    </fileset>
 
     <!-- plg_zonalescontent -->
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
@@ -278,6 +282,14 @@
         <zip destfile="${src_dist_dir}/${dist.mod_sessioninfo.file}.zip" >
             <fileset refid="mod_sessioninfo_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_sessioninfo.ini" prefix="language" />
+        </zip>
+    </target>
+
+     <!-- modulo zcloud -->
+    <target name="dist_mod_zcloud" description="Crea archivo de distribución Joomla para el modulo zcloud">
+        <echo message="Creando archivo de distribución de modulo zcloud"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_zcloud.file}.zip" >
+            <fileset refid="mod_zcloud_files"/>
         </zip>
     </target>
 

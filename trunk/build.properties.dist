@@ -23,10 +23,11 @@ dist.mod_eq.file=mod_eq
 dist.mod_zlogin.file=mod_zlogin
 dist.mod_pending.file=mod_pending
 dist.mod_sessioninfo.file=mod_sessioninfo
-dist.plg_zonalescontent.file=plg_zonalescontent
-dist.plg_solrsearch.file=plg_solrsearch
+dist.mod_zcloud.file=mod_zcloud
 
 # nombre plugin
+dist.plg_zonalescontent.file=plg_zonalescontent
+dist.plg_solrsearch.file=plg_solrsearch
 dist.plg_externallogin.file=plg_externallogin
 dist.plg_authproxy.file=plg_authproxy
 

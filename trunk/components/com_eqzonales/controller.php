@@ -16,6 +16,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
+require_once 'hlapi.php';
+jimport('joomla.user.user');
+
 /**
  * Controlador
  *
@@ -46,5 +49,17 @@ class EqZonalesController extends JController
 		$view->setLayout($vLayout);
 		$view->display();
 	}
+
+        function testHLApi() {
+            $userid = JRequest::getInt('user',1,'get');
+            $tags = HighLevelApi::getTags($userid);
+
+            foreach ($tags as $tag) {
+                echo $tag->id;
+                echo '-';
+                echo $tag->relevance;
+                echo '<br/>';
+            }
+        }
 
 }
