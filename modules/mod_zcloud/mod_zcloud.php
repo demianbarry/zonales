@@ -33,7 +33,9 @@ if( count( $tags ) > 0 )
 {
 	
 	// range, min & max to determine size ratio
+        // obtiene el primer valor (es el mayor)
 	$max = array_sum( array_slice( $tags,  0, 1 ) );
+        // obtiene el ultimo valor (es el menor)
 	$min = array_sum( array_slice( $tags, -1, 1 ) );
 	$range = $max - $min;
 	// jumble tags
