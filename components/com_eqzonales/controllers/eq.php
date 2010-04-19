@@ -68,17 +68,7 @@ class EqZonalesControllerEq extends JController {
     function retrieveUserEq() {
         $userId = JRequest::getInt('user',0,'method');
 
-        if ($userId > 0){
-            $model = &$this->getModel('Eq');
-            $eqs = $model->getUserEqs($userId);
-
-            $data = array();
-            foreach ($eqs as $currentEq) {
-                $data[] = $this->retrieveEqImpl($currentEq->id);
-            }
-
-            return $data;
-        }
+        return $this->retrieveUserEqImpl($userId);
     }
 
     /*
@@ -268,6 +258,20 @@ class EqZonalesControllerEq extends JController {
         }
 
         return array();
+    }
+
+    function retrieveUserEqImpl($userId) {
+        if ($userId > 0){
+            $model = &$this->getModel('Eq');
+            $eqs = $model->getUserEqs($userId);
+
+            $data = array();
+            foreach ($eqs as $currentEq) {
+                $data[] = $this->retrieveEqImpl($currentEq->id);
+            }
+
+            return $data;
+        }
     }
 
     /**
