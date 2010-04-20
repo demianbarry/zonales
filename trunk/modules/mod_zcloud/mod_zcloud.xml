@@ -16,7 +16,9 @@
 	<files>
 		<filename module="mod_zcloud">mod_zcloud.php</filename>
 		<filename>index.html</filename>
-		<folder>tmpl</folder>
+                <filename>helper.php</filename>
+                <filename>tmpl/index.html</filename>
+                <filename>tmpl/default.php</filename>
 	</files>
 	<params>
     <param name="zcloud_width" type="text" default="150" label="Width" description="Ancho de la nube de etiquetas, en pixeles" />

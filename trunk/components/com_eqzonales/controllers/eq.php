@@ -19,7 +19,8 @@ jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 jimport('solr.query');
 jimport('solr.client');
-require_once JPATH_COMPONENT . DS . 'queries' . DS . 'userquery.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_eqzonales' . DS . 'queries' . DS . 'userquery.php';
+require_once JPATH_ROOT . DS . 'administrator'. DS . 'components' . DS . 'com_eqzonales' . DS . 'helper' . DS . 'helper.php';
 
 /**
  * Controlador
@@ -261,7 +262,7 @@ class EqZonalesControllerEq extends JController {
     }
 
     function retrieveUserEqImpl($userId) {
-        if ($userId > 0){
+        if ($userId >= 0){
             $model = &$this->getModel('Eq');
             $eqs = $model->getUserEqs($userId);
 
