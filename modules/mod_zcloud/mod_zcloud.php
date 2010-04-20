@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Include the syndicate functions only once
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once 'helper.php';
 
 // SORT/FILTER FUNCTIONS
 // php.net
@@ -31,12 +31,13 @@ $minPriority = $params->get('zcloud_minpriority');
 $tags = modCloudHelper::getTags($amount,$minPriority);
 if( count( $tags ) > 0 )
 {
-	
+	$relevances = $tags[modCloudHelper::RELEVANCES];
+        $labels = $tags[modCloudHelper::LABELS];
 	// range, min & max to determine size ratio
         // obtiene el primer valor (es el mayor)
-	$max = array_sum( array_slice( $tags,  0, 1 ) );
+	$max = array_sum( array_slice( $relevances,  0, 1 ) );
         // obtiene el ultimo valor (es el menor)
-	$min = array_sum( array_slice( $tags, -1, 1 ) );
+	$min = array_sum( array_slice( $relevances, -1, 1 ) );
 	$range = $max - $min;
 	// jumble tags
 	$i = 2;

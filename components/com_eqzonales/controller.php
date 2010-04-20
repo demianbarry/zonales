@@ -52,10 +52,14 @@ class EqZonalesController extends JController
 
         function testHLApi() {
             $userid = JRequest::getInt('user',1,'get');
-            $tags = HighLevelApi::getTags($userid);
+            $tags = HighLevelApi::getTags($userid,true);
 
             foreach ($tags as $tag) {
                 echo $tag->id;
+                echo '-';
+                echo $tag->name;
+                echo '-';
+                echo $tag->label;
                 echo '-';
                 echo $tag->relevance;
                 echo '<br/>';
