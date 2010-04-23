@@ -21,10 +21,10 @@
                 <filename>tmpl/default.php</filename>
 	</files>
 	<params>
-    <param name="zcloud_width" type="text" default="150" label="Width" description="Ancho de la nube de etiquetas, en pixeles" />
-    <param name="zcloud_maxtags" type="text" default="16" label="Tag Count" description="Maximo numero de etiquetas" />
-    <param name="zcloud_maxsize" type="text" default="2" label="Max Font Size" description="Maximo tamaño de fuente, en em" />
-    <param name="zcloud_minpriority" type="text" default="100" label="Importancia minima" description="Minima importancia dada por el usuario para que la etiqueta sea mostrada"/>
+    <param name="zcloud_width" type="text" default="150" label="Ancho" description="Ancho de la nube de etiquetas, en pixeles" />
+    <param name="zcloud_maxtags" type="text" default="16" label="Cantidad de tags" description="Maximo numero de etiquetas a mostrar" />
+    <param name="zcloud_maxsize" type="text" default="2" label="Tamaño maximo de fuente" description="Maximo tamaño de fuente, en em" />
+    <param name="zcloud_minpriority" type="text" default="100" label="Relevancia minima" description="Minima relevancia dada por el usuario para que la etiqueta sea mostrada"/>
 	</params>
 </install>
 

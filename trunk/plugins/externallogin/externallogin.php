@@ -67,9 +67,9 @@ class plgAuthenticationExternallogin extends JPlugin {
         ################################################
         ## modificacion para que acepte gmail y yahoo ##
         ################################################
-        $provider = $credentials['provider'];
         ## asignar valor a $provider!!!!!!
         if (isset($credentials['provider']) && $credentials['provider'] != null) {
+            $provider = $credentials['provider'];
             $selectProtocol = 'select t.function as func, t.name from #__providers p, #__protocol_types t ' .
                 'where p.name = "' . $provider . '" ' .
                 'and p.protocol_type_id=t.id';
