@@ -20,7 +20,7 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'edituser'.DS.'view.ht
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
 $controller = new AapuController(array('default_task' => 'editUser'));  // array('default_task' => 'listTabs')
-$controller->execute( JRequest::getVar( 'aapu_task' ) );
+$controller->execute( JRequest::getVar( 'task' ) );
 $controller->redirect();
 
 ?>

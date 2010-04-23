@@ -16,8 +16,11 @@ class AapuViewListTabs extends AapuBaseView
 		$this->setPagination();                         // setea la paginación
 
 		$tabs =& $this->get('All');
-		foreach ($tabs as $tab) {
-			$tab->link = JRoute::_('index.php?option=' . $option . '&cid[]=' . $tab->id . '&task=editTab');
+		foreach ($tabs as $tabkey => $tab) {
+                   $tab->link = JRoute::_('index.php?option=' . $option . '&cid[]=' . $tab->id . '&task=editTab');
+                   if ($tab->id == 1) {
+                       unset($tabs[$tabkey]);
+                   }
 		}
 
 		// Titulo

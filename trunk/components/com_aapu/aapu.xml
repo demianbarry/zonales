@@ -77,6 +77,8 @@
             <filename>toolbar.aapu.html.php</filename>
             <filename>toolbar.aapu.php</filename>
 
+            <filename>css/aapu.css</filename>
+
             <filename>controllers/index.html</filename>
             <filename>controllers/controller.php</filename>
 
@@ -90,7 +92,15 @@
 
             <filename>plugins/index.html</filename>
             <filename>plugins/renders/index.html</filename>
+            <filename>plugins/renders/render_for_BOOLEAN_data_type.php</filename>
+            <filename>plugins/renders/render_for_DATE_data_type.php</filename>
+            <filename>plugins/renders/render_for_INT_data_type.php</filename>
+            <filename>plugins/renders/render_for_MODULE_data_type.php</filename>
+            <filename>plugins/renders/render_for_SEX_data_type.php</filename>
+            <filename>plugins/renders/render_for_TEXT_data_type.php</filename>
             <filename>plugins/validators/index.html</filename>
+            <filename>plugins/validators/validator_for_DATES_attributes.php</filename>
+            <filename>plugins/validators/validator_for_SEX_attributes.php</filename>
 
             <filename>tables/index.html</filename>
             <filename>tables/attributes.php</filename>
