@@ -41,25 +41,61 @@ class AapuViewEditUser extends JView {
         $datatypesModel = &$this->getModel('datatypes');
         $attrEntityModel = &$this->getModel('attribute_entity');
 
-        foreach ($types as $type) {
+        $validArray = array("'name'","'username'","'email'");
+
+        foreach ($types as $typekey => $type) {
+
             $attributesModel->setWhere(' attribute_class_id =  '. $type->id.' AND published = 1');
-            $type->attributes = $attributesModel->getAll(true);
-            foreach ($type->attributes as $attr) {
-                $attrEntityModel->setWhere(' attribute_id = '. $attr->id . ' AND object_id = '. $this->_user->id);
-                $attr->value = $attrEntityModel->getAll(true);
-                if ($attr->value == null) {
-                    $attr->value[0] = new stdClass();
-                    $attr->value[0]->id = 0;
-                    $attr->value[0]->value = '';
-                    $attr->value[0]->value_int = null;
-                    $attr->value[0]->value_double = null;
-                    $attr->value[0]->value_date = null;
-                    $attr->value[0]->value_boolean = null;
+
+            if ($type->id != 1) {
+                $type->attributes = $attributesModel->getAll(true);
+                if ($type->attributes != null) {
+                    foreach ($type->attributes as $attr) {
+                        $validArray[] = "'attr_$attr->id'";
+                        $componentName = JRequest::getVar('option');
+                        $attrEntityModel->setWhere(' attribute_id = '. $attr->id . ' AND object_id = '. $this->_user->id);
+                        $attr->value = $attrEntityModel->getAll(true);
+                        if ($attr->value == null) {
+                            $attr->value[0] = new stdClass();
+                            $attr->value[0]->id = 0;
+                            $attr->value[0]->value = '';
+                            $attr->value[0]->value_int = null;
+                            $attr->value[0]->value_double = null;
+                            $attr->value[0]->value_date = null;
+                            $attr->value[0]->value_boolean = null;
+                        }
+                        $datatypesModel->setId($attr->data_type_id);
+                        $attr->datatype = $datatypesModel->getData(true);
+                    }
+                } else {
+                    unset($types[$typekey]);
                 }
-                $datatypesModel->setId($attr->data_type_id);
-                $attr->datatype = $datatypesModel->getData(true);
+            } else {
+                $this->_user->attributes = $attributesModel->getAll(true);
+                foreach ($this->_user->attributes as $attr) {
+                    $validArray[] = "'attr_$attr->id'";
+                    $componentName = JRequest::getVar('option');
+                    $attrEntityModel->setWhere(' attribute_id = '. $attr->id . ' AND object_id = '. $this->_user->id);
+                    $attr->value = $attrEntityModel->getAll(true);
+                    if ($attr->value == null) {
+                        $attr->value[0] = new stdClass();
+                        $attr->value[0]->id = 0;
+                        $attr->value[0]->value = '';
+                        $attr->value[0]->value_int = null;
+                        $attr->value[0]->value_double = null;
+                        $attr->value[0]->value_date = null;
+                        $attr->value[0]->value_boolean = null;
+                    }
+                    $datatypesModel->setId($attr->data_type_id);
+                    $attr->datatype = $datatypesModel->getData(true);
+                }
+                unset($types[$typekey]);
             }
+
         }
+
+        $this->_user->attrCount = count($validArray);
+        $this->_user->validString = implode(",", $validArray);
 
         // Asigna variables en la vista y la muestra
         $this->assignRef('user', $this->_user);

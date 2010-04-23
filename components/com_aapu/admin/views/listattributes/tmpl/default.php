@@ -33,15 +33,19 @@ JHTML::_('behavior.tooltip');
 		<?php
 		$k = 0; $i = 0;
 		foreach ($this->attributes as $attribute) {
-			$checked = JHTML::_('grid.id', $i, $attribute->id);
+                        if ($attribute->id > 2) {
+                            $checked = JHTML::_('grid.id', $i, $attribute->id);
+                        } else {
+                            $checked = '';
+                        }
                         $img = $attribute->published == 1 ? 'publish_g.png' : 'publish_x.png';
 			$alt = $attribute->published == 1 ? JText::_('Published') : JText::_('Unpublished');
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
-				<td><?php echo $checked; ?></td>
-				<td>
+                                <td><?php echo $checked; ?></td>
+                                <td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Attribute Edition' );?>::<?php echo $attribute->label; ?>">
 						<b><a href="<?php echo $attribute->link; ?>"> <?php echo $attribute->label; ?> </a></b>
 					</span>

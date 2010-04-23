@@ -31,13 +31,17 @@ JHTML::_('behavior.tooltip');
 		<?php
 		$k = 0; $i = 0;
 		foreach ($this->dataTypes as $dataType) {
-			$checked = JHTML::_('grid.id', $i, $dataType->id);
+                        if ($dataType->id != 4 && $dataType->id != 6) {
+                            $checked = JHTML::_('grid.id', $i, $dataType->id);
+                        } else {
+                            $checked = '';
+                        }
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
-				<td><?php echo $checked; ?></td>
-				<td>
+                                <td><?php echo $checked; ?></td>
+                                <td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Data Type Edition' );?>::<?php echo $dataType->label; ?>">
 						<b><a href="<?php echo $dataType->link; ?>"> <?php echo $dataType->label; ?> </a></b>
 					</span>

@@ -45,6 +45,7 @@ class AapuController extends JController {
         $this->registerTask('removeAttribute', 'removeAttribute');
 
         $this->registerTask( 'unpublish', 'publish' );
+        $this->registerTask( 'validateAttr', 'validateAttr' );
 
         $this->registerTask('listDataTypes', 'listDataTypes');
         $this->registerTask('editDataType', 'editDataType');
@@ -108,8 +109,12 @@ class AapuController extends JController {
 
         $postData = JRequest::get('post');
 
+        if ($postData['id'] == 0) {
+            $postData['registerDate'] = date("Y/m/d");
+        }
+
         if (!$model->store(false,false,$postData)) {
-            echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+            return $model->getError;
             exit();
         }
 
@@ -119,14 +124,26 @@ class AapuController extends JController {
 
         foreach ($postData as $clave => $valor) {
             if (strncmp($clave,'attr_',5) == 0) {
-                $data->id = $postData['aeid_'.substr($clave, 5, 1)];
-                $data->$postData['aept_'.substr($clave, 5, 1)] = $valor;
+                $attr_id = (int)substr_replace($clave,'',0,5);
+                //$attr_id = (int)substr($clave, 5, strlen($clave) - 5);
+                $data->id = $postData['aeid_'.$attr_id];
+		$data->value = null;
+                $data->value_double = null;
+                $data->value_date = null;
+                $data->value_int = null;
+                $data->value_boolean = null;
+                if ($valor != '' || $valor != null) {
+                    $data->$postData['aept_'.$attr_id] = $valor;
+                } else {
+                    $data->$postData['aept_'.$attr_id] = null;
+                }
+                $data->object_type = 'TABLE';
                 $data->object_id = $postData['id'];
                 $data->object_name = '#__users';
-                $data->attribute_id = (int)substr($clave, 5, 1);
-
+                $data->attribute_id = $attr_id;
+                
                 if (!$attrEntityModel->store(false,false,$data)) {
-                    echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
+                    return $model->getError;
                     exit();
                 }
             }
@@ -452,5 +469,20 @@ class AapuController extends JController {
         return $filename;
     }
 
+    function validateAttr() {
+        $sid = JRequest::getVar('attrId', '', '', 'String');
+        $id = (int)substr($sid, 5, strlen($sid) - 5);
+        $value = JRequest::getVar('attrValue', '', '', 'String');
+
+        $attrModel = &$this->getModel('Attributes');
+        $attrModel->setId($id);
+        $attr = $attrModel->getData(true);
+
+        require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'validators'.DS.$attr->validator );
+        $classname = substr($attr->validator, 0, -4);
+        $return = call_user_func_array( array( $classname, 'validate' ), array($value) );
+        echo $return;
+	return;
+    }
 }
 ?>
