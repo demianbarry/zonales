@@ -29,6 +29,50 @@ class CustompropertiesViewHierarchictagging extends JView {
      */
     var $_cplist;
 
+    var $_suggestList;
+
+    function setSuggestTags($documentId) {
+//        $params = &JComponentHelper::getParams( 'com_customproperties' );
+//        $url = $params->get('taganalizerurl');
+        $url = 'http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer/';
+        $req =& new HTTPRequest($url,HTTP_METH_POST);
+
+        // recupero todos los tags registrados
+        $query = 'select v.name from #__custom_properties_values v ';
+        $db = JFactory::getDBO();
+        $db->setQuery($query);
+        $tagsDb = $db->loadObjectList();
+
+        $tagsRaw = array();
+        foreach ($tagsDb as $currentTag) {
+            $tagsRaw[] = $currentTag->name;
+        }
+        $tags = implode(',', $tagsRaw);
+
+        // preparo los datos a enviar
+        $postData = array(
+            'id' => $documentId,
+            'content' => 'content',
+            'tags' => $tags
+        );
+
+        $req->setPostFields($postData);
+
+        // envio la solicitud
+        $req->send();
+
+        if ($req->getResponseCode() != 200){
+            throw new Exception('we had a comunication problem');
+        }
+
+        // recupero los tags
+        $rawResponse = $req->getResponseData();
+        $responseTags = $rawResponse['body']['tags'];
+
+        // parseo los tags y los guardo
+        $this->_suggestList = explode(',', $responseTags);
+    }
+
     function setTree(&$value, $model) {
         $value->children = $model->getCachedChildren($value->id);
         if(!empty($value->children)) {
@@ -38,13 +82,27 @@ class CustompropertiesViewHierarchictagging extends JView {
     }
 
     function setJSTree(&$value, $str, $row) {
+        define('APPLY', 2);
+        define('SUGGEST', 1);
+        define('UNASSIGNED', 0);
+
         $value .= $str. ' = new Array; ';
         $value .= $str.'[\'caption\'] = \''.$row->label.'\'; ';
         $value .= $str.'[\'id\'] = '.$row->id.';';
         $value .= $str.'[\'parent_id\'] = '.$row->parent_id.'; ';
-        $value .= $str.'[\'field_id\'] = '.$row->field_id.'; ';        
+        $value .= $str.'[\'field_id\'] = '.$row->field_id.'; ';
+
+        // si el tag se encuentra entre los sugeridos
+        // lo marco como sugerido
+        $status = UNASSIGNED;
+        if(in_array($row->id, $this->_suggestList))
+            $status = SUGGEST;
+
         if(in_array($row->id, $this->_cplist))
-            $value .= $str.'[\'isChecked\'] = 2;';
+            $status = APPLY;
+
+        $value .= $str.'[\'isChecked\'] =' . $status . "';";
+
         if(!empty($row->children)) {
             $value .= $str.'[\'children\'] = new Array;';
             $i = 0;
@@ -114,6 +172,8 @@ class CustompropertiesViewHierarchictagging extends JView {
         if(empty($content_id) ) {
             JError::raiseError( 500, JText::_( 'CP_ERR_INVALID_ID' ) );
         }
+
+        $this->setSuggestTags($content_id);
 
         // Construye el objeto PHP que genera el arbol
         foreach ($cpvalues as $root) {
