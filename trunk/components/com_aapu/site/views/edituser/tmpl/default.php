@@ -245,7 +245,6 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
         echo $panel->startPanel(JText::_( $type->label ),$type->name);?>
 
         <fieldset class="adminform">
-            <legend><?php echo JText::_( 'Details' ); ?></legend>
             <table class="admintable">
 
                 <?php
@@ -263,7 +262,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                         <!-- HASTA ACA -->
 
                     </tr>
-                    
+
                     <input type="hidden" name="aeid_<?php echo $attr->id; ?>" id="aten_<?php echo $attr->id; ?>" value="<?php echo $attr->value[0]->id; ?>" />
                     <input type="hidden" name="aept_<?php echo $attr->id; ?>" id="aten_<?php echo $attr->id; ?>" value="<?php echo $aept; ?>" />
                 <?php
@@ -290,4 +289,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
     <input type="button" class="button" value="<?php echo JText::_('Cancel'); ?>" onclick="submitbutton('cancelUser');" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+<div class="obligatorio">
+<br>
 * Campo Obligatorio
+</div>
