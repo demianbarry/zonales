@@ -18,8 +18,9 @@ class TestEq extends UnitTestCase {
     }
 
     function setUp() {
-        $this->r = new HttpRequest('http://www.zonales.com.ar:50080/', HttpRequest::METH_POST);
-        $ini_array = parse_ini_file("conf.ini");
+        $ini_array = parse_ini_file("../configuration.ini");
+        $this->cookieName = $ini_array['cookiename'];
+        $this->cookieValue = $ini_array['cookievalue'];
         $this->userhttp = $ini_array['userhttp'];
         $this->passhttp = $ini_array['passhttp'];
         $this->host = $ini_array['host'];
@@ -27,28 +28,29 @@ class TestEq extends UnitTestCase {
         $this->db = $ini_array['db'];
         $this->userdb = $ini_array['userdb'];
         $this->passdb = $ini_array['passdb'];
+
+        $this->r = new HttpRequest("http://$this->userhttp:$this->passhttp@www.zonales.com.ar:50080/", HttpRequest::METH_POST);
+        $this->r->addCookies(array("$this->cookieName" => "$this->cookieValue"));
+        $this->r->addPostFields(array('format' => 'raw'));
     }
 
     function tearDown() {
 
     }
-
+    
     function testCreaNuevoEcualizador() {
-        $json_msg = array("user_id" => 1, "nombre" => "TEST1");
+        $json_msg = array("user_id" => 63, "nombre" => "TEST1");
 
         $params = array(
                 'task' => 'eq.createeq',
-                'format' => 'raw',
                 'option' => 'com_eqzonales',
                 'params' => json_encode($json_msg)
         );
 
-        $r = new HttpRequest("http://$userhttp:$passhttp@www.zonales.com.ar:50080/", HttpRequest::METH_POST);
-        $r->addCookies(array("$cookieName" => "$cookieValue"));
-        $r->addPostFields($params);
+        $this->r->addPostFields($params);
 
         try {
-            $resp = $r->send()->getBody();
+            $resp = $this->r->send()->getBody();
             $this->assertNotNull($resp);
             $json_resp = json_decode($resp);
             if ($this->assertNotNull($json_resp)) {
@@ -69,60 +71,127 @@ class TestEq extends UnitTestCase {
                     $result = mysql_fetch_array($query);
                     $this->assertEqual(1, intval($result[0]));
                     mysql_close($con);
+                    
                 }
             }
-        } catch (HttpException $ex) { }
-    }
+        } catch (HttpException $ex) {
 
-    function testFallaCreaNuevoEcualizadorUsuarioIncorrecto() {
+        }
+    }
+    
+    function testFallaCreaNuevoEcualizadorUsuarioNoExistente() {
         $json_msg = array("user_id" => -1, "nombre" => "TEST1");
 
         $params = array(
                 'task' => 'eq.createeq',
-                'format' => 'raw',
                 'option' => 'com_eqzonales',
                 'params' => json_encode($json_msg)
         );
 
-        $r = new HttpRequest("http://$userhttp:$passhttp@www.zonales.com.ar:50080/", HttpRequest::METH_POST);
-        $r->addCookies(array("$cookieName" => "$cookieValue"));
-        $r->addPostFields($params);
+        $this->r->addPostFields($params);
 
         try {
-            $resp = $r->send()->getBody();
+            $resp = $this->r->send()->getBody();
             $this->assertNotNull($resp);
             $json_resp = json_decode($resp);
             if ($this->assertNotNull($json_resp)) {
-                $this->assertEqual("FAILURE", $json_resp->status);
+                $this->assertEqual("FAIL", $json_resp->status);
             }
-        } catch (HttpException $ex) { }
+        } catch (HttpException $ex) {
+
+        }
     }
 
-    function testFallaCreaNuevoEcualizadorUsuarioGuest() {
-        $json_msg = array("user_id" => 0, "nombre" => "TEST1");
+    /**
+     * NOTA: El usuario user_id debe existir y debe ser distinto que el usuario
+     * que ha iniciado sesión. Este test debe fallar para un usuario no adminis-
+     * trador.
+     */
+    function testFallaCreaNuevoEcualizadorOtroUsuario() {
+        $json_msg = array("user_id" => 64, "nombre" => "TEST1");
 
         $params = array(
                 'task' => 'eq.createeq',
-                'format' => 'raw',
                 'option' => 'com_eqzonales',
                 'params' => json_encode($json_msg)
         );
 
-        $r = new HttpRequest("http://$userhttp:$passhttp@www.zonales.com.ar:50080/", HttpRequest::METH_POST);
-        $r->addPostFields($params);
+        $this->r->addPostFields($params);
 
         try {
-            $resp = $r->send()->getBody();
+            $resp = $this->r->send()->getBody();
             $this->assertNotNull($resp);
             $json_resp = json_decode($resp);
             if ($this->assertNotNull($json_resp)) {
-                $this->assertEqual("FAILURE", $json_resp->status);
+                $this->assertEqual("FAIL", $json_resp->status);
             }
-        } catch (HttpException $ex) { }
+        } catch (HttpException $ex) {
+
+        }
+    }
+
+    function testFallaCreaNuevoEcualizadorUsuarioAnonimo() {
+        $json_msg = array("user_id" => 0, "nombre" => "TEST1");
+
+        $params = array(
+                'task' => 'eq.createeq',                
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
     function testModificaEcualizador() {
+        $json_msg = array("eq_id" => 1, "user_id" => 63, "nombre" => "TEST1");
 
+        $params = array(
+                'task' => 'eq.modifyeq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                if ($this->assertEqual("SUCCESS", $json_resp->status)) {
+
+                    $con = mysql_connect("$host:$port", $userdb, $passdb);
+                    if (!$con) {
+                        die('No se pudo conectar: ' . mysql_error());
+                    }
+                    mysql_select_db($db, $con);
+                    if (!$db_selected) {
+                        die ('No se puede conectar a la base de datos : ' . mysql_error());
+                    }
+                    $query = mysql_query("SELECT count(*) AS c FROM jos_eqzonales_eq t WHERE t.nombre = 'TEST1'");
+                    if (!$query) {
+                        die('Consulta inválida: ' . mysql_error());
+                    }
+                    $result = mysql_fetch_array($query);
+                    $this->assertEqual(1, intval($result[0]));
+                    mysql_close($con);
+
+                }
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
     function testFallaModificaEcualizador() {
