@@ -32,12 +32,33 @@ class TestEq extends UnitTestCase {
         $this->r = new HttpRequest("http://$this->userhttp:$this->passhttp@www.zonales.com.ar:50080/", HttpRequest::METH_POST);
         $this->r->addCookies(array("$this->cookieName" => "$this->cookieValue"));
         $this->r->addPostFields(array('format' => 'raw'));
+
+        // Agrega a la base de datos los usuarios TEST1 y TEST2 -- necesarios para las pruebas
+        $this->createTestUsers();
     }
 
     function tearDown() {
 
     }
-    
+
+    function createTestUsers() {
+        $con = mysql_connect("$host:$port", $userdb, $passdb);
+        if (!$con) {
+            die('No se pudo conectar: ' . mysql_error());
+        }
+        mysql_select_db($db, $con);
+        if (!$db_selected) {
+            die ('No se puede conectar a la base de datos : ' . mysql_error());
+        }
+        $query = mysql_query(
+                "INSERT INTO `jos_users` (`id`, `name`, `username`, `email`, `email2`, `password`, `usertype`, `block`, `sendEmail`, `gid`, `registerDate`, `lastvisitDate`, `activation`, `params`, `birthdate`, `sex`) VALUES ".
+                "(11, 'TEST2', 'TEST2', 'franpaez+test2@gmail.com', '', '8fb749b6f11b1e81c82f41facf53353f:bRItDryGITOsVMldmjPJO2SxYLuv4275', 'Registered', 0, 0, 18, '2010-04-26 19:13:57', '0000-00-00 00:00:00', '', 'admin_language=\nlanguage=\neditor=\nhelpsite=\ntimezone=-3\n\n', '0000-00-00', 'M'),".
+                "(10, 'TEST1', 'TEST1', 'franpaez+test1@gmail.com', '', '62e1e53aec0cfbbf3f180dcbf97f420f:mWdi8zU5fUrmJgFfaSf8PVL8gPsmWVT7', 'Registered', 0, 0, 18, '2010-04-26 19:12:02', '2010-04-26 23:22:43', '', 'admin_language=\nlanguage=\neditor=\nhelpsite=\ntimezone=-3\n\n', '0000-00-00', 'M') ".
+                "ON DUPLICATE KEY UPDATE name=name"
+        );
+        mysql_close($con);
+    }
+
     function testCreaNuevoEcualizador() {
         $json_msg = array("user_id" => 63, "nombre" => "TEST1");
 
@@ -71,14 +92,14 @@ class TestEq extends UnitTestCase {
                     $result = mysql_fetch_array($query);
                     $this->assertEqual(1, intval($result[0]));
                     mysql_close($con);
-                    
+
                 }
             }
         } catch (HttpException $ex) {
 
         }
     }
-    
+
     function testFallaCreaNuevoEcualizadorUsuarioNoExistente() {
         $json_msg = array("user_id" => -1, "nombre" => "TEST1");
 
@@ -134,7 +155,7 @@ class TestEq extends UnitTestCase {
         $json_msg = array("user_id" => 0, "nombre" => "TEST1");
 
         $params = array(
-                'task' => 'eq.createeq',                
+                'task' => 'eq.createeq',
                 'option' => 'com_eqzonales',
                 'params' => json_encode($json_msg)
         );
@@ -194,24 +215,164 @@ class TestEq extends UnitTestCase {
         }
     }
 
-    function testFallaModificaEcualizador() {
+    function testFallaModificaEcualizadorIdIncorrecto() {
+        $json_msg = array("eq_id" => 0, "nombre" => "TEST1");
 
+        $params = array(
+                'task' => 'eq.modifyeq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
     function testRecuperaEcualizador() {
+        $json_msg = array("eq_id" => 1);
 
+        $params = array(
+                'task' => 'eq.retrieveeq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("SUCCESS", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
-    function testFallaRecuperaEcualizador() {
+    function testFallaRecuperaEcualizadorIdIncorrecto() {
+        $json_msg = array("eq_id" => 0);
 
+        $params = array(
+                'task' => 'eq.retrieveeq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
     function testRecuperaEcualizadorUsuario() {
+        $json_msg = array("user_id" => 63);
 
+        $params = array(
+                'task' => 'eq.retrieveUserEq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("SUCCESS", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
-    function testFallaRecuperaEcualizadorUsuario() {
+    function testFallaRecuperaEcualizadorUsuarioOtroUsuario() {
+        $json_msg = array("user_id" => 64);
 
+        $params = array(
+                'task' => 'eq.retrieveUserEq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
     }
 
+    function testFallaRecuperaEcualizadorUsuarioNoExistente() {
+        $json_msg = array("user_id" => -99);
+
+        $params = array(
+                'task' => 'eq.retrieveUserEq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
+    }
+
+    function testRecuperaEcualizadorUsuarioAnonimo() {
+        $json_msg = array("user_id" => 0);
+
+        $params = array(
+                'task' => 'eq.retrieveUserEq',
+                'option' => 'com_eqzonales',
+                'params' => json_encode($json_msg)
+        );
+
+        $this->r->addPostFields($params);
+
+        try {
+            $resp = $this->r->send()->getBody();
+            $this->assertNotNull($resp);
+            $json_resp = json_decode($resp);
+            if ($this->assertNotNull($json_resp)) {
+                $this->assertEqual("FAIL", $json_resp->status);
+            }
+        } catch (HttpException $ex) {
+
+        }
+    }
 }
