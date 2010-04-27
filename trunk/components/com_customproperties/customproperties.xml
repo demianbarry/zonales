@@ -125,6 +125,7 @@
 			<filename>helper.php</filename>
 			<filename>install.sql</filename>
 			<filename>uninstall.sql</filename>
+                        <filename>config.xml</filename>
 
 			<filename>contentelements/index.html</filename>
 
@@ -179,6 +180,7 @@
 			<filename>samplece/phocacategory.xml</filename>
 			<filename>samplece/phocagallery.xml</filename>
 			<filename>samplece/weblinks.xml</filename>
+                        <filename>samplece/banner.xml</filename>
 
 			<filename>tables/index.html</filename>
 			<filename>tables/cpfield.php</filename>
@@ -234,5 +236,15 @@
                         <language tag="es-ES">es-ES.com_customproperties.ini</language>
 		</languages>
 
+
+                <params>
+                    <param
+                name="taganalizerurl"
+                type="text"
+                label="Tags Analizer Url"
+                default="http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer/"
+                description="Please enter the url where the tag analizer server is located"
+            />
+                </params>
 	</administration>
 </install>
