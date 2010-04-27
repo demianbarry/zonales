@@ -14,6 +14,11 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
+
+
+define('APPLY', 2);
+define('SUGGEST', 1);
+define('UNASSIGNED', 0);
 /**
  * Frontend tagging View
  *
@@ -31,10 +36,11 @@ class CustompropertiesViewHierarchictagging extends JView {
 
     var $_suggestList;
 
-    function setSuggestTags($documentId) {
+    function setSuggestTags($ce_name,$contentId) {
 //        $params = &JComponentHelper::getParams( 'com_customproperties' );
 //        $url = $params->get('taganalizerurl');
         $url = 'http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer/';
+
         $req =& new HTTPRequest($url,HTTP_METH_POST);
 
         // recupero todos los tags registrados
@@ -48,11 +54,14 @@ class CustompropertiesViewHierarchictagging extends JView {
             $tagsRaw[] = $currentTag->name;
         }
         $tags = implode(',', $tagsRaw);
+        $fields = 'title,intro_content,full_content';
 
         // preparo los datos a enviar
         $postData = array(
-            'id' => $documentId,
-            'content' => 'content',
+//            'id' => $contentId,
+            'id' => 201,
+            'content' => $ce_name,
+            'fields' => $fields,
             'tags' => $tags
         );
 
@@ -61,16 +70,17 @@ class CustompropertiesViewHierarchictagging extends JView {
         // envio la solicitud
         $req->send();
 
-        if ($req->getResponseCode() != 200){
-            throw new Exception('we had a comunication problem');
-        }
+//        if ($req->getResponseCode() != 200){
+//            throw new Exception('we had a comunication problem');
+//        }
 
         // recupero los tags
         $rawResponse = $req->getResponseData();
-        $responseTags = $rawResponse['body']['tags'];
+        $responseTags = $rawResponse['body'];
 
         // parseo los tags y los guardo
         $this->_suggestList = explode(',', $responseTags);
+        print_r($this->_suggestList);
     }
 
     function setTree(&$value, $model) {
@@ -82,9 +92,6 @@ class CustompropertiesViewHierarchictagging extends JView {
     }
 
     function setJSTree(&$value, $str, $row) {
-        define('APPLY', 2);
-        define('SUGGEST', 1);
-        define('UNASSIGNED', 0);
 
         $value .= $str. ' = new Array; ';
         $value .= $str.'[\'caption\'] = \''.$row->label.'\'; ';
@@ -95,13 +102,13 @@ class CustompropertiesViewHierarchictagging extends JView {
         // si el tag se encuentra entre los sugeridos
         // lo marco como sugerido
         $status = UNASSIGNED;
-        if(in_array($row->id, $this->_suggestList))
+        if(in_array($row->name, $this->_suggestList))
             $status = SUGGEST;
 
         if(in_array($row->id, $this->_cplist))
             $status = APPLY;
 
-        $value .= $str.'[\'isChecked\'] =' . $status . "';";
+        $value .= $str.'[\'isChecked\'] =' . $status . ";";
 
         if(!empty($row->children)) {
             $value .= $str.'[\'children\'] = new Array;';
@@ -173,7 +180,7 @@ class CustompropertiesViewHierarchictagging extends JView {
             JError::raiseError( 500, JText::_( 'CP_ERR_INVALID_ID' ) );
         }
 
-        $this->setSuggestTags($content_id);
+        $this->setSuggestTags($ce_name,$content_id);
 
         // Construye el objeto PHP que genera el arbol
         foreach ($cpvalues as $root) {
