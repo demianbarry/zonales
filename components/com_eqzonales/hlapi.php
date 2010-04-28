@@ -60,7 +60,7 @@ class HighLevelApi {
 
                 }
             }
-            if ($withExtraTagInfo) {
+            if ($withExtraTagInfo && count($ids) > 0) {
                 $db = JFactory::getDBO();
                 $query = 'select v.name, v.id, v.label from #__custom_properties_values v where v.id in (' .
                         implode(',', $ids) . ')';
