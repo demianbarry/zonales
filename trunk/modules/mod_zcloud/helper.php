@@ -27,7 +27,8 @@ class modCloudHelper {
 
         // recupera los tags del usuario en orden mayor relevancia a menor
         $user = JFactory::getUser();
-        $tagsRaw = HighLevelApi::getTags($user->id,true);
+        $userId = ($user->guest) ? 0 : $user->id;
+        $tagsRaw = HighLevelApi::getTags($userId,true);
 
         // averigua donde comienzan los tags no deseados
         $length = count($tagsRaw);

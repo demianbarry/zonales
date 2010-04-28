@@ -39,21 +39,25 @@ class CustompropertiesViewHierarchictagging extends JView {
     function setSuggestTags($ce_name,$contentId) {
 //        $params = &JComponentHelper::getParams( 'com_customproperties' );
 //        $url = $params->get('taganalizerurl');
-        $url = 'http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer/';
+        $url = 'http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer';
 
-        $req =& new HTTPRequest($url,HTTP_METH_POST);
+        $req = new HttpRequest($url,HttpRequest::METH_POST);
+
+        
 
         // recupero todos los tags registrados
-        $query = 'select v.name from #__custom_properties_values v ';
+        $query = 'select v.id, v.label from #__custom_properties_values v ';
         $db = JFactory::getDBO();
         $db->setQuery($query);
         $tagsDb = $db->loadObjectList();
 
         $tagsRaw = array();
         foreach ($tagsDb as $currentTag) {
-            $tagsRaw[] = $currentTag->name;
+            $tagsRaw[] = $currentTag->id;
+            $tagsRaw[] = $currentTag->label;
         }
         $tags = implode(',', $tagsRaw);
+        //$tags = 'exposicion,hola,chau,termino';
         $fields = 'title,intro_content,full_content';
 
         // preparo los datos a enviar
@@ -65,19 +69,26 @@ class CustompropertiesViewHierarchictagging extends JView {
             'tags' => $tags
         );
 
+        print_r($postData);
         $req->setPostFields($postData);
 
         // envio la solicitud
-        $req->send();
+        $rawResponse = $req->send();
 
-//        if ($req->getResponseCode() != 200){
-//            throw new Exception('we had a comunication problem');
-//        }
+        if ($rawResponse->getResponseCode() != 200){
+            throw new Exception('we had a comunication problem. ' . $rawResponse->getResponseCode());
+        }
+
+        echo '#### ' . $rawResponse->getResponseCode() . ' ####';
 
         // recupero los tags
-        $rawResponse = $req->getResponseData();
-        $responseTags = $rawResponse['body'];
+        $responseTags = $rawResponse->getBody();
 
+        $query = "insert into #__logs(info) values (concat('TAGS: ','$responseTags')) ";
+        $db = JFactory::getDBO();
+        $db->setQuery($query);
+        $db->query();
+echo '-------' . $responseTags . '------';
         // parseo los tags y los guardo
         $this->_suggestList = explode(',', $responseTags);
         print_r($this->_suggestList);
@@ -102,7 +113,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         // si el tag se encuentra entre los sugeridos
         // lo marco como sugerido
         $status = UNASSIGNED;
-        if(in_array($row->name, $this->_suggestList))
+        if(in_array($row->id, $this->_suggestList))
             $status = SUGGEST;
 
         if(in_array($row->id, $this->_cplist))
