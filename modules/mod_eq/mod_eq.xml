@@ -19,6 +19,7 @@
     <language tag="es-ES">es-ES.mod_eq.ini</language>
   </languages>
   <params>
+      <param name="description" type="textarea" rows="3" cols="40" label="eq_description" default="El Ecualizador de Interés le permite blablabla..." description="eq_description_tip" />
   </params>
   <params group="advanced">
   </params>
