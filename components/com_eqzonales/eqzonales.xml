@@ -19,7 +19,7 @@
             <file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
         </sql>
     </uninstall>
-    <installfile>install.eqzonales.php</installfile>
+    <!-- <installfile>install.eqzonales.php</installfile>-->
     <files>
         <filename>eqzonales.php</filename>
         <filename>index.html</filename>
@@ -30,8 +30,6 @@
         <filename>controllers/eq.php</filename>
         <filename>queries/userquery.php</filename>
         <filename>queries/bannerquery.php</filename>
-        <filename>libraries/solr/client.php</filename>
-        <filename>libraries/solr/query.php</filename>
         <filename>hlapi.php</filename>
 
         
