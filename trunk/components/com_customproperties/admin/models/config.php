@@ -160,6 +160,7 @@ class CustompropertiesModelConfig extends JModel
 	$cp_config['keep_aspect']='1';
 	$cp_config['image_quality']='75';
 	$cp_config['debug']='0';
+        $cp_config['tags_analizer_url']='http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer';
     return $cp_config;
   }
   /**

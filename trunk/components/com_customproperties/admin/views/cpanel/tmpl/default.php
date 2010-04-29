@@ -128,6 +128,20 @@ echo $pane->startPanel( JText::_('General'), 'general-page' );
 		<th>Description</th>
 		<th>Default</th>
 	</tr>
+        <tr>
+		<td width="20%">
+			<?php echo JText::_('SYSTEM_TAG_ANALIZER') ?>:
+		</td>
+		<td>
+			<input type="text" size="30" name="cfg_tags_analizer_url" value="<?php echo $cp_config['tags_analizer_url'];?>"/>
+		</td>
+		<td>
+			<?php echo JText::_('SYSTEM_TAG_ANALIZER_DESCRIPTION') ?>.
+		</td>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
 	<tr>
 		<td width="20%">
 			<?php echo JText::_('Page class') ?>:

@@ -37,9 +37,8 @@ class CustompropertiesViewHierarchictagging extends JView {
     var $_suggestList;
 
     function setSuggestTags($ce_name,$contentId) {
-//        $params = &JComponentHelper::getParams( 'com_customproperties' );
-//        $url = $params->get('taganalizerurl');
-        $url = 'http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer';
+        global $cp_config;
+        $url = $cp_config['tags_analizer_url'];
 
         $req = new HttpRequest($url,HttpRequest::METH_POST);
 
@@ -57,13 +56,12 @@ class CustompropertiesViewHierarchictagging extends JView {
             $tagsRaw[] = $currentTag->label;
         }
         $tags = implode(',', $tagsRaw);
-        //$tags = 'exposicion,hola,chau,termino';
+        //$tags .= ',exposicion,hola,chau,termino';
         $fields = 'title,intro_content,full_content';
 
         // preparo los datos a enviar
         $postData = array(
-//            'id' => $contentId,
-            'id' => 201,
+            'id' => $contentId,
             'content' => $ce_name,
             'fields' => $fields,
             'tags' => $tags
