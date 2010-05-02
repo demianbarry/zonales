@@ -12,7 +12,7 @@ import org.tartarus.snowball.ext.SpanishStemmer;
 
 /**
  *
- * @author juanma
+ * @author Juan Manuel Cortez <juanmanuelcortez@gmail.com>
  */
 public class TagsFilter {
 
@@ -20,7 +20,7 @@ public class TagsFilter {
      * Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho.
      * Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
      *
-     * @param tags Array de strings donde los índice impares se espera que sean ids y los pares tags
+     * @param tags Array de strings donde los índices impares se espera que sean ids y los pares tags
      * @return Mapa de tags lematizados con un set de ids donde han sido encontrados
      */
     public static HashMap<String, Set<Integer>> getSteemedTags(String[] tags) {
