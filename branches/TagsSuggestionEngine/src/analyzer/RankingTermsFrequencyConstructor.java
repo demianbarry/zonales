@@ -19,6 +19,8 @@ import org.apache.lucene.util.Version;
 
 /**
  * Constructor del ranking de frecuencias de términos.
+ *
+ * @author Juan Manuel Cortez   <juanmanuelcortez@gmail.com>
  */
 public class RankingTermsFrequencyConstructor {
 
