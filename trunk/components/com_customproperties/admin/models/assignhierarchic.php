@@ -43,6 +43,12 @@ class CustompropertiesModelAssignhierarchic extends JModel {
      * @var string
      */
     var $_title;
+     /**
+     * Content text
+     *
+     * @var string
+     */
+    var $_content;
     /**
      * CP array of associated custom properties
      *
@@ -100,11 +106,12 @@ class CustompropertiesModelAssignhierarchic extends JModel {
         $this->_content_element = $content_element;
     }
 
-    function getContentElement(){
+    function getContentElement() {
         return $this->_content_element;
     }
+
     /**
-     * Retrieves the Title of select content itme
+     * Retrieves the Title of select content item
      * @return String
      */
     function & getTitle() {
@@ -114,7 +121,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             return $this->_title;
         }
 
-// Load the data
+        // Load the data
         if (empty ($this->_title)) {
             $database = $this->_db;
             $ce = $this->_content_element;
@@ -127,13 +134,38 @@ class CustompropertiesModelAssignhierarchic extends JModel {
         }
         return $this->_title;
     }
+
+    /**
+     * Retrieves the Title of select content item
+     * @return String
+     */
+    function & getContent() {
+
+        if(empty($this->_id)) {
+            $this->_content = "";
+            return $this->_content;
+        }
+
+        // Load the data
+        if (empty ($this->_content)) {
+            $database = $this->_db;
+            $ce = $this->_content_element;
+
+            /* retrieve values */
+            $query = "SELECT " .$ce->fulltext." FROM #__". $ce->table ." WHERE " . $ce->id. " = '" . $this->_id ."'";
+
+            $database->setQuery($query);
+            $this->_content = $database->loadResult();
+        }
+        return $this->_content;
+    }
+
     /**
      * Retrieves some descriptive properties about the content items
      * @return array associative array with section, category, authour, content element label
      */
-
     function &getProperties() {
-// Load the data
+    // Load the data
         if (empty ($this->_properties)) {
 
             $database 	=& $this->_db;
@@ -144,7 +176,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             $database = $this->_db;
             $ce = $this->_content_element;
 // retrieve values
-           // $selstr[] 	= "c.id ";
+            // $selstr[] 	= "c.id ";
             $selstr[] = "c.".$ce->id;
             $fromstr[] 	= "#__$ref_table AS c";
             $wherestr	= "c.".$ce->id ." = '" . $this->_id . "'";
@@ -191,7 +223,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
         foreach ($cid as $content_id) {
 
             if ($action == 'delete' || $action == 'replace') {
-        // clean previous properties
+                // clean previous properties
                 $query = "delete FROM #__custom_properties
 					WHERE content_id = '$content_id' AND ref_table = '$ref_table' ";
 
@@ -214,5 +246,21 @@ class CustompropertiesModelAssignhierarchic extends JModel {
                 }
             }
         }
+    }
+
+    function getAssignedCustomProperties($ref_table, $content_id) {
+        $database = JFactory::getDBO();
+
+        if($content_id != 0) { // show current content's properties
+            $query = "SELECT cp.value_id as value_id
+			FROM #__custom_properties cp
+				JOIN #__custom_properties_values v
+				 ON (cp.value_id = v.id AND v.parent_id IS NOT NULL)
+			WHERE cp.ref_table = '$ref_table'
+                        AND cp.content_id = '$content_id'";
+        }
+
+        $database->setQuery($query);
+        return $database->loadObjectList();
     }
 }
