@@ -84,6 +84,64 @@ class HighLevelApi {
             }
             throw new Exception('The tags array could not be sorted');
     }
+
+    /**
+     *
+     * @param integer $userid
+     * @param string $value
+     * @return array
+     */
+    static function getAncestors($userid,$value) {
+
+        // recupero la informacion sobre el valor especificado
+        $db = JFactory::getDBO();
+        $queryId = 'select cpv.id from #__custom_properties_values cpv where cpv.name=' . $db->Quote($value);
+        $db->setQuery($queryId);
+        $valueDb = $db->loadObject();
+
+        $valueId = $valueDb->id;
+
+        // recupero los ancestros del valor especificado
+        $ancestors = array();
+        $query = 'select cpv.parent_id, cpv.name, cpv.id from #__custom_properties_values cpv where cpv.id=';
+
+        do {
+            $ancestors[$value] = $id;
+            if ($valueId == 0) break;
+            $currentQuery = $query . $valueId;
+            $db->setQuery($currentQuery);
+            $parentDB = $db->loadObject();
+            $valueId = $parentDB->parent_id;
+            $value = $parentDB->name;
+            $id = $parentDB->id;
+        }while(true);
+
+        // busco si los valores estan en las bandas del usuario especificado
+        $aInfo = $engine->retrieveUserEqImpl($userid);
+        $out = array();
+        foreach ($aInfo as $currentInfo) {
+                $bands = $currentInfo->bands;
+
+                foreach ($bands as $currentBand) {
+                    $vId = $currentBand->cp_value_id;
+                    $key = array_search($vId, $ancestors);
+                    $aux = (isset ($out[$key])) ? $out[$key] : 0;
+                    // si el valor tiene un peso asignado en el ecualizador
+                    if ($key){
+                        // acumulo el peso a los anteriores (si correspondiere)
+                        $out[$key] = $aux + $currentBand->peso;
+                    }
+                    else {
+                        // si no, lo dejo como esta
+                        $out[$key] = $aux;
+                    }
+                }
+        }
+
+        // ordeno el arreglo de salida en base a su relevancia
+        // y lo devuelvo
+        return rsort($out,SORT_NUMERIC);
+    }
 }
 
 ?>

@@ -15,9 +15,44 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_banners'.DS.'helpers'.DS.'banner.php');
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_eqzonales' . DS . 'hlapi.php';
 
 class modZbannersHelper
 {
+
+    function getBanners($userid) {
+    $db =& JFactory::getDBO();
+    $session = JFactory::getSession();
+
+    $zonal_actual = $session->get('zonales_zonal_name', null);
+
+    $tags = HighLevelApi::getAncestors($userid, $zonal_actual);
+
+    $max = max($tags);
+    $random = rand(0, $max);
+    $pieces = array_keys($tags);
+
+    $query = 'select cp.content_id as banner_id, cpv.name as tag from jos_custom_properties cp, jos_custom_properties_fields cpf, jos_custom_properties_values cpv where cp.field_id=cpf.id and cp.value_id=cpv.id and cp.ref_table="banner" and cpf.name="root_zonales" and cpv.name in (\''. implode("','", $pieces) . '\')';
+    $db->setQuery($query);
+    $dbBanners = $db->loadObjectList();
+
+    foreach ($dbBanners as $bannerTag) {
+        $tag = $bannerTag->tag;
+        $info = new stdClass();
+        $info->banner_id = $bannerTag->banner_id;
+    }
+
+    $banners = array();
+    foreach ($bannersList as $banner) {
+        foreach ($dbBanners as $showBanner) {
+            if ($showBanner->banner_id == $banner->bid) {
+                $banners[] = $banner;
+            }
+        }
+    }
+
+    return $banners;
+}
 	function getList(&$params)
 	{
 		$model		= modZbannersHelper::getModel();
@@ -32,24 +67,8 @@ class modZbannersHelper
 
 		if ($params->get( 'tag_search' ))
 		{
-                    $db =& JFactory::getDBO();
-                    $session = JFactory::getSession();
-
-                    $zonal_actual = $session->get('zonales_zonal_name', null);
-                    $query = 'select cp.content_id as banner_id from jos_custom_properties cp, jos_custom_properties_fields cpf, jos_custom_properties_values cpv where cp.field_id=cpf.id and cp.value_id=cpv.id and cp.ref_table="banner" and cpf.name="root_zonales" and cpv.name='. $db->Quote($zonal_actual);
-                    $db->setQuery($query);
-                    $dbBanners = $db->loadObjectList();
-
-                    $banners = array();
-                    foreach ($bannersList as $banner) {
-                        foreach ($dbBanners as $showBanner) {
-                            if ($showBanner->banner_id == $banner->bid){
-                                $banners[] = $banner;
-                            }
-                        }
-                    }
-
-
+                    $user =& JFactory::getUser();
+                    $banners = $this->getBanners($user->id);
 
 //			$document		=& JFactory::getDocument();
 //			$keywords		=  $document->getMetaData( 'keywords' );
