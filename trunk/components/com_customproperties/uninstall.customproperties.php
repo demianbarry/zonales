@@ -23,7 +23,8 @@ function com_uninstall() {
 		@unlink("$base_path/administrator/components/com_joomfish/contentelements/customproperties.xml");
 		@unlink("$base_path/administrator/components/com_joomfish/contentelements/translationCpfieldFilter.php");
 
-		// delete entries in JoomFish!
+                /*
+    		// delete entries in JoomFish!
 		$database->setQuery( "DELETE FROM #__jf_tableinfo WHERE joomlatablename='custom_properties_fields'");
 		$database->query();
 		$database->setQuery( "DELETE FROM #__jf_tableinfo WHERE joomlatablename='custom_properties_values'");
@@ -32,6 +33,8 @@ function com_uninstall() {
 		$database->query();
 		$database->setQuery( "DELETE FROM #__jf_content WHERE reference_table='custom_properties_fields'");
 		$database->query();
+                 * 
+                 */
 
 	}
 	return "Component successfully uninstalled.";

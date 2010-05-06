@@ -124,6 +124,11 @@ class AapuController extends JController {
 
         foreach ($postData as $clave => $valor) {
             if (strncmp($clave,'attr_',5) == 0) {
+
+                if (is_array($valor)) {
+                    $valor = implode(',', $valor);
+                }
+
                 $attr_id = (int)substr_replace($clave,'',0,5);
                 //$attr_id = (int)substr($clave, 5, strlen($clave) - 5);
                 $data->id = $postData['aeid_'.$attr_id];
@@ -282,15 +287,16 @@ class AapuController extends JController {
         $data->validator = JRequest::getVar('validator', null, 'files', 'array');
         $data->data_type_id = JRequest::getVar('data_type_id', 0, '', 'int');
         $data->attribute_class_id = JRequest::getVar('attribute_class_id', 0, '', 'int');
+        $data->values_list = JRequest::getVar('values_list', '', '', 'string');
 
         $filename = $this->uploadFile($data->validator, 'validators', 'php');
 
         $msg = '';
 
-        if ($filename == '') {
+        /*if ($filename == '') {
             $msg = JText::sprintf('INFO_NO_SAVE_FOR_ARCHIVE');
             //$data->validator = JRequest::getVar('oldValidator', '', '', 'string');
-        } else {
+        } else {*/
             $data->validator = $filename;
             if (!$model->store(false,false,$data)) {
                 $msg = JText::sprintf('INFO_NO_SAVE', $model->getError());
@@ -300,7 +306,7 @@ class AapuController extends JController {
 
             $attribute = $model->getData();
             $msg = JText::sprintf('INFO_SAVE', 'Attribute');
-        }
+        //}
 
         switch ($this->_task) {
             case 'applyAttribute':
@@ -478,9 +484,13 @@ class AapuController extends JController {
         $attrModel->setId($id);
         $attr = $attrModel->getData(true);
 
-        require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'validators'.DS.$attr->validator );
-        $classname = substr($attr->validator, 0, -4);
-        $return = call_user_func_array( array( $classname, 'validate' ), array($value) );
+        if ($attr->validator != '' || $attr->validator != null) {
+            require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'validators'.DS.$attr->validator );
+            $classname = substr($attr->validator, 0, -4);
+            $return = call_user_func_array( array( $classname, 'validate' ), array($value) );
+        } else {
+            $return = '';
+        }
         echo $return;
 	return;
     }

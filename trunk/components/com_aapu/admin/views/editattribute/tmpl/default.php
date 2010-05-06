@@ -127,6 +127,14 @@ JHTML::_('behavior.formvalidation');
                         <?php echo JHTML::_('select.genericlist', $this->dataTypes, 'data_type_id', '','id', 'label', $this->attribute->data_type_id ) ?>
                     </td>
                 </tr>
+                <tr>
+                    <td class="key">
+                        <label for="values_list"><?php echo JText::_( 'Values List' ); ?>:</label>
+                    </td>
+                    <td colspan="2">
+                        <textarea class="inputbox" cols="100" rows="3" name="values_list" id="values_list"><?php echo $this->attribute->values_list; ?></textarea>
+                    </td>
+                </tr>
             </table>
         </fieldset>
     </div>

@@ -17,15 +17,21 @@ class render_for_BOOLEAN_data_type {
         $req = $required == null ? '' : $required == 0 ? '' : 'required';
         $req == 'required' ? $reqLabel = '*' : $reqLabel = '';
         $attrib = array('class' => $req, 'onBlur' => 'validate_attr(attr_'.$id.')');
+        $checked = '';
+
+        if ($value == '1') {
+            $checked = 'checked';
+        }
 
         $return =
             '<div class="render">
                  <td class="key">
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
-                 <td colspan="2">'.
-                    JHTML::_('select.booleanlist', 'attr_'.$id, '', $value, $attrib ).
-                '</td>
+                 <td colspan="2">
+                    <input type="checkbox" name="boolean_attr" id="boolean_attr" onchange="this.form.attr_'.$id.'.value=this.checked ? 1 : 0" '.$checked.'/>
+                    <input class="'.$req.'" type="hidden" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" />
+                </td>
              </div>';
 
         return $return;

@@ -17,7 +17,7 @@ class render_for_DATE_data_type {
         $req = $required == null ? '' : $required == 0 ? '' : 'required';
         $req == 'required' ? $reqLabel = '*' : $reqLabel = '';
 
-        $attrib = array('class' => $req, 'onBlur' => 'validate_attr(attr_'.$id.')');
+        $attrib = array('class' => $req, 'onBlur' => 'validate(attr_'.$id.')');
 
         $return =
             '<div class="render">

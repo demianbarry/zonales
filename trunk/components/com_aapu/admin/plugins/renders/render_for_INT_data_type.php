@@ -23,7 +23,7 @@ class render_for_INT_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">
-                    <input class="text_area'.$req.' validate-numeric" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" onBlur="validate_attr(attr_'.$id.')" />
+                    <input class="text_area'.$req.' validate-numeric" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" />
                 </td>
              </div>';
 

@@ -15,8 +15,8 @@ class render_for_MODULE_data_type {
 
     function render($id, $value = null, $label = null, $required = null, $params = null) {
 
-        $module = JModuleHelper::getModule( strtolower('mod_'.$params) );
-        //$attribs['style'] = 'xhtml';
+        $module = JModuleHelper::getModule( strtolower($params['values_list']) );
+        $module->position = null;
 
         $return = '<td>'.JModuleHelper::renderModule($module).'</td>';
         return $return;
