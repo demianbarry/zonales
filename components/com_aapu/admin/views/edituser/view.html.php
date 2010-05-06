@@ -66,6 +66,18 @@ class AapuViewEditUser extends JView {
                         }
                         $datatypesModel->setId($attr->data_type_id);
                         $attr->datatype = $datatypesModel->getData(true);
+                        if (strpos($attr->values_list,'SELECT') !== false) {
+                            if (strpos($attr->values_list,'SELECT') == 0) {
+                                if (stripos($attr->values_list,'pass')) {
+                                    $attr->values_list = '';
+                                } else {
+                                    $dbase =& JFactory::getDBO();
+                                    $query = $attr->values_list;
+                                    $dbase->setQuery($query);
+                                    $attr->values_list = $dbase->loadRowList();
+                                }
+                            }
+                        }
                     }
                 } else {
                     unset($types[$typekey]);
@@ -88,6 +100,18 @@ class AapuViewEditUser extends JView {
                     }
                     $datatypesModel->setId($attr->data_type_id);
                     $attr->datatype = $datatypesModel->getData(true);
+                    if (strpos($attr->values_list,'SELECT') !== false) {
+                     if (strpos($attr->values_list,'SELECT') == 0) {
+                        if (stripos($attr->values_list,'pass')) {
+                            $attr->values_list = '';
+                        } else {
+                            $dbase =& JFactory::getDBO();
+                            $query = substr($attr->values_list, 1);
+                            $dbase->setQuery($query);
+                            $attr->values_list = $dbase->loadRowList();
+                        }
+                     }
+                    }
                 }
                 unset($types[$typekey]);
             }

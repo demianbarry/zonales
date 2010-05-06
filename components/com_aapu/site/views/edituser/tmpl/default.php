@@ -226,7 +226,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 
                         $classname = substr($attr->datatype->render, 0, -4);
                         $aept = call_user_func(array($classname,'getPrimitiveType'));
-                        echo call_user_func_array( array( $classname, 'render' ), array($attr->id, $attr->value[0]->$aept, $attr->label, $attr->required, $attr->name) );
+                        echo call_user_func_array( array( $classname, 'render' ), array($attr->id, $attr->value[0]->$aept, $attr->label, $attr->required, array('name' => $attr->name, 'values_list' => $attr->values_list)) );
                     ?>
                     <!-- HASTA ACA -->
 
@@ -257,7 +257,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                             require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'renders'.DS.$attr->datatype->render );
                             $classname = substr($attr->datatype->render, 0, -4);
                             $aept = call_user_func(array($classname,'getPrimitiveType'));
-                            echo call_user_func_array( array( $classname, 'render' ), array($attr->id, $attr->value[0]->$aept, $attr->label, $attr->required, $attr->name) );
+                            echo call_user_func_array( array( $classname, 'render' ), array($attr->id, $attr->value[0]->$aept, $attr->label, $attr->required, array('name' => $attr->name, 'values_list' => $attr->values_list)) );
                         ?>
                         <!-- HASTA ACA -->
 

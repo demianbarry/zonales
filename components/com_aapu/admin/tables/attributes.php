@@ -42,6 +42,8 @@ class TableAttributes extends JTable {
     var $data_type_id = null;
     //Attribute Class - id Attribute class
     var $attribute_class_id = null;
+    //Attribute values List (If data type is_list = true)
+    var $values_list = null;
 
     /**
      * Constructor

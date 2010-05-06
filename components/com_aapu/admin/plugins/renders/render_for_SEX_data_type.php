@@ -35,8 +35,8 @@ class render_for_SEX_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">
-                    <input type="radio" name="sex_'.$id.'" id="sex_'.$id.'" value="F" onBlur=validate_attr(attr_'.$id.') onclick="this.form.attr_'.$id.'.value='."'F'".';"'.$checkedF.' > Femenino
-                    <input type="radio" name="sex_'.$id.'" id="sex_'.$id.'" value="M" onBlur=validate_attr(attr_'.$id.') onclick="this.form.attr_'.$id.'.value='."'M'".';"'.$checkedM.' > Masculino
+                    <input type="radio" name="sex_'.$id.'" id="sex_'.$id.'" value="F" onBlur=validate(attr_'.$id.') onclick="this.form.attr_'.$id.'.value='."'F'".';"'.$checkedF.' > Femenino
+                    <input type="radio" name="sex_'.$id.'" id="sex_'.$id.'" value="M" onBlur=validate(attr_'.$id.') onclick="this.form.attr_'.$id.'.value='."'M'".';"'.$checkedM.' > Masculino
                     <input class="'.$req.'" type="hidden" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" />
                     <div id="valid_'.$id.'" style="float: right; color: red"></div>
                  </td>
