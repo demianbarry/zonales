@@ -24,6 +24,8 @@ dist.mod_zlogin.file=mod_zlogin
 dist.mod_pending.file=mod_pending
 dist.mod_sessioninfo.file=mod_sessioninfo
 dist.mod_zcloud.file=mod_zcloud
+dist.mod_alias.file=mod_alias
+dist.mod_message.file=mod_message
 
 # nombre plugin
 dist.plg_zonalescontent.file=plg_zonalescontent

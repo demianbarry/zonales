@@ -20,7 +20,7 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_eqzonales' . DS . 'hlapi
 class modZbannersHelper
 {
 
-    function getBanners($userid) {
+    function getBanners($userid,$bannersList) {
     $db =& JFactory::getDBO();
     $session = JFactory::getSession();
 
@@ -36,20 +36,28 @@ class modZbannersHelper
     $db->setQuery($query);
     $dbBanners = $db->loadObjectList();
 
+    $bannersW = array();
     foreach ($dbBanners as $bannerTag) {
-        $tag = $bannerTag->tag;
-        $info = new stdClass();
-        $info->banner_id = $bannerTag->banner_id;
-    }
-
-    $banners = array();
-    foreach ($bannersList as $banner) {
-        foreach ($dbBanners as $showBanner) {
-            if ($showBanner->banner_id == $banner->bid) {
-                $banners[] = $banner;
+        $currentTag = $bannerTag->tag;
+        foreach ($tags as $tag => $relevance) {
+            if ($tag == $currentTag){
+                $auxB = (isset ($bannersW[$bannerTag->banner_id])) ? $bannersW[$bannerTag->banner_id] : 0;
+                $bannersW[$bannerTag->banner_id] = $auxB + $relevance;
             }
         }
     }
+
+    $bannersM = array();
+    foreach ($bannersList as $banner) {
+        foreach ($bannersW as $bannerId => $relevanceB) {
+            if ($banner_id == $banner->bid) {
+                $bannersM[$banner_id] = $relevanceB;
+            }
+        }
+    }
+
+    $bannersSorted = arsort($bannersM, SORT_NUMERIC);
+    $banners = array_keys($bannersSorted);
 
     return $banners;
 }
@@ -68,7 +76,7 @@ class modZbannersHelper
 		if ($params->get( 'tag_search' ))
 		{
                     $user =& JFactory::getUser();
-                    $banners = $this->getBanners($user->id);
+                    $banners = $this->getBanners($user->id,$bannersList);
 
 //			$document		=& JFactory::getDocument();
 //			$keywords		=  $document->getMetaData( 'keywords' );

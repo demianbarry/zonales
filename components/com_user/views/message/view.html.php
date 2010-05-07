@@ -45,10 +45,15 @@ class UserViewMessage extends JView {
 
         $icon = 'images/message/' . $icon;
 
+        $returnURL = JRoute::_('index.php');
+        $returnMessage = JText::_('SYSTEM_RETURN_MESSAGE');
+
         $this->assign('message',$message);
         $this->assign('class',$class);
         $this->assign('icon',$icon);
         $this->assign('type',$messageType);
+        $this->assign('return',$returnURL);
+        $this->assign('returnMessage',$returnMessage);
 
         parent::display($tpl);
     }

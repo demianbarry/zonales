@@ -1,4 +1,8 @@
 <?php
+
+$moduleMessage = JModuleHelper::getModule('mod_message');
+$htmlMessage = JModuleHelper::renderModule($moduleMessage);
+
 //require_once(JPATH_BASE .DS. "plugins".DS."authentication".DS."twitter_helper.php");
 $db = &JFactory::getDBO();
 
