@@ -16,8 +16,12 @@
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
         <filename>index.html</filename>
+        <filename>constants.php</filename>
     </files>
-    <languages folder="language">
-        <language tag="es-ES">es-ES.mod_message.ini</language>
-    </languages>
+    <params>
+          <param name="icondir" type="text" default="images/message/"
+               label="Directorio de los iconos"
+               description=
+                "Permite especificar el directorio donde se encuentran alojados los iconos" />
+     </params>
 </install>
