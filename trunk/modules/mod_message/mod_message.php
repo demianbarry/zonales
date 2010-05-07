@@ -1,5 +1,7 @@
 <?php
 
+require_once 'constants.php';
+
 $status = JRequest::getInt('status', '0', 'method');
 $message = urldecode(JRequest::getString('message','','method'));
 
