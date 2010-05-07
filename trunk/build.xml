@@ -60,6 +60,14 @@
     <fileset dir="${src_modules}/mod_eq" id="mod_eq_files">
         <include name="**" />
     </fileset>
+    <!-- mod_alias -->
+    <fileset dir="${src_modules}/mod_alias" id="mod_alias_files">
+        <include name="**" />
+    </fileset>
+    <!-- mod_message -->
+    <fileset dir="${src_modules}/mod_message" id="mod_message_files">
+        <include name="**" />
+    </fileset>
     <!-- mod_zlogin -->
     <fileset dir="${src_modules}/mod_zlogin" id="mod_zlogin_files">
         <include name="**" />
@@ -255,6 +263,24 @@
         <zip destfile="${src_dist_dir}/${dist.mod_eq.file}.zip" >
             <fileset refid="mod_eq_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_eq.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo alias -->
+    <target name="dist_mod_alias" description="Crea archivo de distribución Joomla para el modulo Alias">
+        <echo message="Creando archivo de distribución de modulo Alias"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_alias.file}.zip" >
+            <fileset refid="mod_alias_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_alias.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo message -->
+    <target name="dist_mod_message" description="Crea archivo de distribución Joomla para el modulo Message">
+        <echo message="Creando archivo de distribución de modulo Message"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_message.file}.zip" >
+            <fileset refid="mod_message_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_message.ini" prefix="language" />
         </zip>
     </target>
 

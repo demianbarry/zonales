@@ -45,12 +45,12 @@ foreach ($this->providerslist as $prov) {
                 if (elements[i] != ''){
                     var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
                 document.getElementById(elements[i] + 'set').style.display = 'block';
-                if (showsubmit == 'block'){
+//                if (showsubmit == 'block'){
                     document.getElementById('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
-                }
-                else {
-                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
-                }
+//                }
+//                else {
+//                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
+//                }
                 }
         }
     }
@@ -207,17 +207,22 @@ if(isset($this->message)) {
         <tr>
             <?php
                     $provid = JRequest::getVar('providerid', '', 'get', 'string');
-                    $style = ($provid == '') ? 'block' : 'none';
+                    //$style = ($provid == '') ? 'block' : 'none';
+                    $show = ($provid == '');
                     ?>
             <td height="40">
-                <label style="display: <?php echo $style ?>;" 
+                <?php if($show): ?>
+                <label 
+                    style="display: block;"
                        id="providermsg"
                        for="provider">
                     <?php echo $this->chooseProviderMessage ?>:
                 </label>
+                <?php endif; ?>
             </td>
             <td>
-                <div style="display: <?php echo $style ?>;">
+                <?php if($show): ?>
+                <div style="display: block;">
                     <!-- CREA UNA LISTA DE PROVEEDORES CON LOS CUALES ES POSIBLE ACCEDER -->
 
 
@@ -283,7 +288,7 @@ if(isset($this->message)) {
                                                         $show = 'none';
 
                                                         if ($type != 'button') {
-                                                            echo '<label id="'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                            echo '<label id="ep'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
                                                             echo '<br>';
                                                             $value = '';
                                                             $show = 'block';
@@ -309,6 +314,7 @@ if(isset($this->message)) {
 
 
                 </div>
+                <?php endif; ?>
             </td>
         </tr>
         <tr>

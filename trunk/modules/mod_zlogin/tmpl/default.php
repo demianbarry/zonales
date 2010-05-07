@@ -16,6 +16,10 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
+<div>
+    <?php echo $htmlMessage ?>
+</div>
+
 <!-- no tocar este display -->
 <div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>;" class="moduletable_zlogin">
     <h1><?php echo $module->title; ?></h1>    
