@@ -1,5 +1,6 @@
 /* CSS modules */
 
+@import url("mod_eq.css");
 @import url("mod_zlogin.css");
 @import url("mod_soycorresponsal.css");
 @import url("mod_comments_latest.css");
@@ -15,8 +16,6 @@
 	font-size:11px;
 	color:#FFF;
 }
-
-
 
 .moduletable_menuBottom{
 	font-family:Tahoma;
