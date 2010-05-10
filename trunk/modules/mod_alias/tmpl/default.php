@@ -2,6 +2,7 @@
 <script type="text/javascript">
     window.onload = function (){
         document.getElementById('zlogin').style.display = 'block';
+        document.getElementById('submit').value = '<?php echo $submitText ?>';
     }
 </script>
 
