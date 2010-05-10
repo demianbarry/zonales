@@ -16,6 +16,8 @@
 
 <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/swfobject.js"></script>
 
+<?php JHTML::_('behavior.mootools'); ?>
+
 </head>
 
 <body>
