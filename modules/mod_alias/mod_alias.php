@@ -50,6 +50,8 @@ $moduleProviders = JModuleHelper::getModule('mod_zlogin');
 $moduleProviders->position = NULL;
 $htmlProviders = JModuleHelper::renderModule($moduleProviders);
 
+$submitText = JText::_('SYSTEM_ALIAS_LINK_NEW');
+
 require(JModuleHelper::getLayoutPath('mod_alias'));
 
 ?>

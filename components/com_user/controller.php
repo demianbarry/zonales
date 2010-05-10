@@ -20,7 +20,7 @@ jimport('joomla.application.component.controller');
 jimport( 'joomla.utilities.utility' );
 jimport('joomla.user.helper');
 
-require_once 'views' . DS . 'message' . DS . 'constants.php';
+require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
 require_once 'helper.php';
 
 /**

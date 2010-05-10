@@ -3,9 +3,9 @@
 require_once 'constants.php';
 
 $status = JRequest::getInt('status', '0', 'method');
-$message = urldecode(JRequest::getString('message','','method'));
+$messageRaw = urldecode(JRequest::getString('message','','method'));
 
-if ($message != '') {
+if ($messageRaw != '') {
     switch ($status) {
         case ERROR:
             $icon = 'error.png';
@@ -35,6 +35,8 @@ if ($message != '') {
             $messageType = 'success';
             break;
     }
+
+    $message = JText::_($messageRaw);
 
     $icon = 'images/message/' . $icon;
 

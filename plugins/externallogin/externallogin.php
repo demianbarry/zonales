@@ -22,6 +22,7 @@ jimport('joomla.user.helper');
 jimport('joomla.utilities.utility');
 
 require_once 'externalauth.php';
+require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
 
 /**
  * OpenID Authentication Plugin
@@ -135,9 +136,12 @@ class plgAuthenticationExternallogin extends JPlugin {
                             // si el alias o el usuario se encuentran bloqueados
                             // el acceso es cancelado
                             if ($dbresult->aliasblocked || $dbresult->userblocked) {
-                                $response->status = JAUTHENTICATE_STATUS_FAILURE;
-                                $response->error_message = 'The identifier is Blocked';
-                                return false;
+                                $message = ($dbresult->aliasblocked) ? 'SYSTEM_MESSAGE_ERROR_ALIAS_BLOCKED' : 'SYSTEM_MESSAGE_ERROR_USER_BLOCKED';
+                                $url = JRoute::_('?status=' . ERROR . '&message=' . urlencode($message));
+                                $mainframe->redirect($url);
+//                                $response->status = JAUTHENTICATE_STATUS_FAILURE;
+//                                $response->error_message = 'The identifier is Blocked';
+//                                return false;
                             }
 
                             $session =& JFactory::getSession();

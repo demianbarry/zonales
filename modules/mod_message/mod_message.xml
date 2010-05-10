@@ -24,4 +24,7 @@
                description=
                 "Permite especificar el directorio donde se encuentran alojados los iconos" />
      </params>
+     <languages folder="language">
+        <language tag="es-ES">es-ES.mod_message.ini</language>
+    </languages>
 </install>
