@@ -16,6 +16,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
+require_once 'test/TestMotorEqSuite.php';
 require_once 'hlapi.php';
 jimport('joomla.user.user');
 
@@ -25,30 +26,26 @@ jimport('joomla.user.user');
  * @package Zonales
  * @since 1.5
  */
-class EqZonalesController extends JController
-{
-	/** @var class */
+class EqZonalesController extends JController {
+    /** @var class */
 //	var $_zonalesHelper = null;
 
-	function __construct($default = array())
-	{
-		parent::__construct($default);
+    function __construct($default = array()) {
+        parent::__construct($default);
 //		$this->_zonalesHelper = new comZonalesHelper();
-	}
+    }
 
-        function test()
-	{
-		global $option;
+    function test() {
+        global $option;
 
-		$document = &JFactory::getDocument();
+        /*$document = &JFactory::getDocument();
 		$vType = $document->getType();
 		$vName = JRequest::getCmd('view','test');
 		$vLayout = JRequest::getCmd('layout','default');
 
 		$view =& $this->getView($vName, $vType);
 		$view->setLayout($vLayout);
-		$view->display();
-	}
+		$view->display();*/
 
         function testHLApi() {
             $userid = JRequest::getInt('user',1,'get');
@@ -65,5 +62,6 @@ class EqZonalesController extends JController
                 echo '<br/>';
             }
         }
+    }
 
 }
