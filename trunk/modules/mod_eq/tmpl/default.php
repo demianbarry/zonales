@@ -17,63 +17,20 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 
 ?>
-<style media="screen" type="text/css">
-
-    #area {
-        background: #ccc;
-        height: 20px;
-        width: 90%;
-    }
-
-    #knob {
-        height: 20px;
-        width: 20px;
-        background: #000;
-    }
-
-    #area2 {
-        background: #ccc;
-        height: 20px;
-        width: 90%;
-    }
-
-    #knob2 {
-        height: 20px;
-        width: 20px;
-        background: #000;
-    }
-
-    .slider {
-        margin-bottom:10px;
-        margin-top:10px;
-    }
-
-</style>
 <script language="javascript" type="text/javascript">
     <!--
 
+    <?php if (!is_null($eq)): ?>
     window.addEvent('domready', function() {
         /* Slider 1 */
-        var mySlide1 = new Slider($('area'), $('knob'), {
+        <?php foreach ($eq->bands as $band): ?>
+        var mySlide<?php echo $band->id;?> = new Slider($('area<?php echo $band->id;?>'), $('knob<?php echo $band->id;?>'), {
             steps: 100,
             onChange: function(step) {
-                $('upd').setHTML(step);
+                $('upd<?php echo $band->id;?>').setHTML(step);
             }
-        }).set(0);
-        /* Slider 2 */
-        var mySlide2 = new Slider($('area2'), $('knob2'), {
-            steps: 100,
-            onChange: function(step){
-                $('upd2').setHTML(step);
-            }
-        }).set(0);
-        /* Slider 3 */
-        var mySlide3 = new Slider($('area3'), $('knob3'), {
-            steps: 100,
-            onChange: function(step){
-                $('upd3').setHTML(step);
-            }
-        }).set(0);
+        }).set(<?php echo $band->peso;?>);
+        <?php endforeach;?>
 
         // Anpassung IE6
 	if(window.ie6) var heightValue='100%';
@@ -114,6 +71,7 @@ JHTML::_('behavior.formvalidation');
 		content=$$(contentName+counter);
 	}
     });
+    <?php endif; ?>
     //-->
 </script>
 <!-- form -->
@@ -123,42 +81,33 @@ JHTML::_('behavior.formvalidation');
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
 
-        <ul id="accordion">
-            <li>
-                <div class="toggler_1">Banda 1</div>
-                <div  class="collapse_1">
-                    <p id="upd">0</p>
-                    <div id="area" class="slider">
-                        <div id="knob"></div>
-                    </div>
-                </div>
-            </li>
+        <?php if (!is_null($eq)): ?>
+        <form action="index.php" method="post" id="formEq" name="formEq">
+            <ul id="accordion">
 
-            <li>
-                <div class="toggler_1">Banda 2</div>
-                <div class="collapse_1">
-                    <p id="upd2">0</p>
-                    <div id="area2" class="slider">
-                        <div id="knob2"></div>
+                <?php foreach ($eq->bands as $band): ?>
+                <li>
+                    <div class="toggler_1">Banda <?php echo $band->id;?></div>
+                    <div  class="collapse_1">
+                        <div class="slider-container">
+                            <div class="slider-value">
+                                <p id="upd<?php echo $band->id;?>">0</p>
+                            </div>
+                            <div id="area<?php echo $band->id;?>" class="slider">
+                                <div id="knob<?php echo $band->id;?>" class="knob"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+                <?php endforeach; ?>
 
-            <li>
-                <div class="toggler_1">Banda 3</div>
-                <div class="collapse_1">
-                    <p id="upd3">0</p>
-                    <div id="area3" class="slider">
-                        <div id="knob3"></div>
-                    </div>
-                </div>
-            </li>
-            
-        </ul>
+            </ul>
+            <input id="submit" type="submit" name="submit" class="button" />
+        </form>
+        <?php else: ?>
+        <p>Ud. no cuenta con un Ecualizador!</p>
+        <?php endif;?>
     </div>
-    <form action="index.php" method="post" id="formEq" name="formEq">
-        <input id="submit" type="submit" name="submit" class="button" />
-    </form>
-    <div style="clear:both;" />
+    
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->
