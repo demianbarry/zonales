@@ -187,6 +187,7 @@ class EqZonalesControllerEq extends JController {
     }
 
     /**
+     * 
      * Genera un nuevo ecualizador para el usuario indicado.
      *
      * @param int $user_id id usuario
@@ -236,6 +237,8 @@ class EqZonalesControllerEq extends JController {
     }
 
     function retrieveEqImpl($eqId) {
+        $data = null;
+
         if ($eqId > 0){
             // recupero los datos del ecualizador solicitado
             $model = &$this->getModel('Eq');
@@ -255,13 +258,14 @@ class EqZonalesControllerEq extends JController {
             $data->eq = $eq;
             $data->bands = $bands;
 
-            return $data;
         }
-
-        return array();
+        
+        return $data;
     }
 
     function retrieveUserEqImpl($userId) {
+        $data = null;
+
         if ($userId >= 0){
             $model = &$this->getModel('Eq');
             $eqs = $model->getUserEqs($userId);
@@ -270,9 +274,9 @@ class EqZonalesControllerEq extends JController {
             foreach ($eqs as $currentEq) {
                 $data[] = $this->retrieveEqImpl($currentEq->id);
             }
-
-            return $data;
         }
+
+        return $data;
     }
 
     /**
