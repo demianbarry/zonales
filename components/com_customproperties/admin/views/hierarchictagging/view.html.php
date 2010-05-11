@@ -73,9 +73,9 @@ class CustompropertiesViewHierarchictagging extends JView {
         // envio la solicitud
         $rawResponse = $req->send();
 
-        if ($rawResponse->getResponseCode() != 200){
-            throw new Exception('we had a comunication problem. ' . $rawResponse->getResponseCode());
-        }
+//        if ($rawResponse->getResponseCode() != 200){
+//            throw new Exception('we had a comunication problem. ' . $rawResponse->getResponseCode());
+//        }
 
         echo '#### ' . $rawResponse->getResponseCode() . ' ####';
 
