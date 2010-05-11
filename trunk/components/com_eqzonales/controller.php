@@ -16,7 +16,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.controller');
 
-require_once 'test/TestMotorEqSuite.php';
+//require_once 'test/TestMotorEqSuite.php';
 require_once 'hlapi.php';
 jimport('joomla.user.user');
 
@@ -46,22 +46,25 @@ class EqZonalesController extends JController {
 		$view =& $this->getView($vName, $vType);
 		$view->setLayout($vLayout);
 		$view->display();*/
-
+    }
         function testHLApi() {
             $userid = JRequest::getInt('user',1,'get');
-            $tags = HighLevelApi::getTags($userid,true);
-
-            foreach ($tags as $tag) {
-                echo $tag->id;
-                echo '-';
-                echo $tag->name;
-                echo '-';
-                echo $tag->label;
-                echo '-';
-                echo $tag->relevance;
-                echo '<br/>';
-            }
+//            $tags = HighLevelApi::getTags($userid,true);
+//
+//            foreach ($tags as $tag) {
+//                echo $tag->id;
+//                echo '-';
+//                echo $tag->name;
+//                echo '-';
+//                echo $tag->label;
+//                echo '-';
+//                echo $tag->relevance;
+//                echo '<br/>';
+//            }
+            $value = JRequest::getString('value','','get');
+            $ancestors = HighLevelApi::getAncestors($userid, $value);
+            print_r($ancestors);
         }
-    }
+    //}
 
 }

@@ -95,11 +95,12 @@ class HighLevelApi {
 
         // recupero la informacion sobre el valor especificado
         $db = JFactory::getDBO();
-        $queryId = 'select cpv.id from #__custom_properties_values cpv where cpv.name=' . $db->Quote($value);
+        $queryId = 'select cpv.id, cpv.parent_id from #__custom_properties_values cpv where cpv.name=' . $db->Quote($value);
         $db->setQuery($queryId);
         $valueDb = $db->loadObject();
 
-        $valueId = $valueDb->id;
+        $id = $valueDb->id;
+        $valueId = $valueDb->parent_id;
 
         // recupero los ancestros del valor especificado
         $ancestors = array();
@@ -117,8 +118,14 @@ class HighLevelApi {
         }while(true);
 
         // busco si los valores estan en las bandas del usuario especificado
+        $engine = new EqZonalesControllerEq();
         $aInfo = $engine->retrieveUserEqImpl($userid);
         $out = array();
+
+        foreach ($ancestors as $valueName => $value) {
+            $out[$valueName] = 0;
+        }
+
         foreach ($aInfo as $currentInfo) {
                 $bands = $currentInfo->bands;
 
@@ -126,21 +133,23 @@ class HighLevelApi {
                     $vId = $currentBand->cp_value_id;
                     $key = array_search($vId, $ancestors);
                     $aux = (isset ($out[$key])) ? $out[$key] : 0;
-                    // si el valor tiene un peso asignado en el ecualizador
-                    if ($key){
-                        // acumulo el peso a los anteriores (si correspondiere)
-                        $out[$key] = $aux + $currentBand->peso;
-                    }
-                    else {
+
+                    if ($key != '' && $key != 0 && $key === FALSE){
                         // si no, lo dejo como esta
                         $out[$key] = $aux;
+                    }
+                    else { // si el valor tiene un peso asignado en el ecualizador
+                        // acumulo el peso a los anteriores (si correspondiere)
+                        $out[$key] = $aux + $currentBand->peso;
                     }
                 }
         }
 
+        if (isset ($out[0])) unset ($out[0]);
+        $outN = arsort($out,SORT_NUMERIC);
         // ordeno el arreglo de salida en base a su relevancia
         // y lo devuelvo
-        return rsort($out,SORT_NUMERIC);
+        return $out;
     }
 }
 
