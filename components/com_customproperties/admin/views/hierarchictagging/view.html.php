@@ -220,6 +220,9 @@ class CustompropertiesViewHierarchictagging extends JView {
                     $i++;
                 }
             }
+            $imagesDir = JRoute::_('/media/system/js/tree/img/win98/');
+            $checkboxImgDir = JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/');
+
             $jsCode .= "t$j = new Bs_Tree();";
             $jsCode .= "t$j.imageDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
             $jsCode .= "t$j.checkboxSystemImgDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
