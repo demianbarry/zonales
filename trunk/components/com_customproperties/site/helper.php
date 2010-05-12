@@ -92,7 +92,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false){
 	if($params->get('frontend_tagging') == 1 && ($aid >= $params->get('editing_level'))){
 		$fe_tagging = true;
 		JHTML::_( 'behavior.modal' );
-		$link = JRoute::_('index.php?option=com_customproperties&controller=tagging&view=tagging&tmpl=component&id='.$cid);
+		$link = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=tagging&tmpl=component&id='.$cid);
 		$rel = "{handler: 'iframe', size: {x: 570, y: 400}}";
 		$result .= "<span class=\"cp_tag\"><a class=\"modal\" rel=\"$rel\" href=\"$link\">".JText::_('Edit tags')."</a></span>\n";
 	}

@@ -77,7 +77,7 @@ class CustompropertiesViewHierarchictagging extends JView {
 //            throw new Exception('we had a comunication problem. ' . $rawResponse->getResponseCode());
 //        }
 
-        echo '#### ' . $rawResponse->getResponseCode() . ' ####';
+        //echo '#### ' . $rawResponse->getResponseCode() . ' ####';
 
         // recupero los tags
         $responseTags = $rawResponse->getBody();
@@ -86,7 +86,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         $db = JFactory::getDBO();
         $db->setQuery($query);
         $db->query();
-echo '-------' . $responseTags . '------';
+        //echo '-------' . $responseTags . '------';
         // parseo los tags y los guardo
         $this->_suggestList = explode(',', $responseTags);
         print_r($this->_suggestList);
@@ -221,8 +221,8 @@ echo '-------' . $responseTags . '------';
                 }
             }
             $jsCode .= "t$j = new Bs_Tree();";
-            $jsCode .= "t$j.imageDir = '/zonales/media/system/js/tree/img/win98/';";
-            $jsCode .= "t$j.checkboxSystemImgDir = '/zonales/media/system/js/checkbox/img/win2k_noBorder/';";
+            $jsCode .= "t$j.imageDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
+            $jsCode .= "t$j.checkboxSystemImgDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
             $jsCode .= "t$j.useCheckboxSystem = true;";
             $jsCode .= "t$j.checkboxSystemWalkTree = 0;";
             $jsCode .= "t$j.useAutoSequence = false;";
@@ -250,3 +250,4 @@ echo '-------' . $responseTags . '------';
         parent::display($tpl);
     }
 }
+
