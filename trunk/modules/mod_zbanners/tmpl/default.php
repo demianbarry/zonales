@@ -6,13 +6,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<div class="bannerheader"><?php echo $headerText ?></div>
 <?php endif;
 
-foreach($list as $item) :
-
+$totalElements = count($list);
+for ($i = $totalElements - 1; $i >= 0; $i--):
+        $item = $list[$i];
 	?><div class="banneritem<?php echo $params->get( 'moduleclass_sfx' ) ?>"><?php
 	echo modZbannersHelper::renderBanner($params, $item);
 	?><div class="clr"></div>
 	</div>
-<?php endforeach; ?>
+<?php endfor; ?>
 
 <?php if ($footerText) : ?>
 	<div class="bannerfooter<?php echo $params->get( 'moduleclass_sfx' ) ?>">

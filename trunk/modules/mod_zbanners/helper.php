@@ -100,20 +100,15 @@ class modZbannersHelper {
         // suma uno a todos los elementos del array
         // para que hasta los que no tengan valor se tengan en cuenta
         foreach ($tags as $key => $t) {
-            $tags[$key] = $t + 1;
+            $auxA = ($key == $zonal_actual) ? 1 : 0;
+            $tags[$key] = $t + 1 + $auxA;
         }
-
-        echo '--TAGS#';
-        print_r($tags);
         
         $pieces = array_keys($tags);
 
         $query = 'select cp.content_id as banner_id, cpv.name as tag from #__custom_properties cp, #__custom_properties_fields cpf, #__custom_properties_values cpv where cp.field_id=cpf.id and cp.value_id=cpv.id and cp.ref_table="banner" and cpf.name="root_zonales" and cpv.name in (\''. implode("','", $pieces) . '\')';
         $db->setQuery($query);
         $dbBanners = $db->loadObjectList();
-
-        echo '--INFO DB#';
-        print_r($dbBanners);
 
         // mapeo los banners obtenidos con la relevancia correspondiente
         $bannersW = array();
@@ -127,68 +122,95 @@ class modZbannersHelper {
             }
         }
 
-        echo '--BANNERS CON RELEVANCIA#';
-        print_r($bannersW);
-
         // solo me interensan los banners que deben ser mostrados
-        $bannersM = array();
-        foreach ($bannersList as $banner) {
-            foreach ($bannersW as $bannerId => $relevanceB) {
-                if ($bannerId == $banner->bid) {
-                    $bannersM[$bannerId] = $relevanceB;
-                }
-            }
-        }
-
-        echo '--BANNERS A MOSTRAR#';
-        print_r($bannersM);
+//        $bannersM = array();
+//        foreach ($bannersList as $banner) {
+//            foreach ($bannersW as $bannerId => $relevanceB) {
+//                if ($bannerId == $banner->bid) {
+//                    $bannersM[$bannerId] = $relevanceB;
+//                }
+//            }
+//        }
+        $bannersM = $bannersW;
 
         // ordeno los banners por relevancia
         $bannersSorted = arsort($bannersM, SORT_NUMERIC);
-
-        echo '--BANNERS ORDENADOS#';
-        print_r($bannersM);
         
         /*
          *  ##################
          */
         
         // normalizo las relevancias
-        $total = array_sum($tags);
-        $contributions = array();
-        foreach ($tags as $name => $value) {
-            $contributions[$name] = ($value * modZbannersHelper::MAXTOTAL) / $total;
-        }
-
-
-        $random = rand(0, modZbannersHelper::MAXTOTAL);
-        $count = count($contributions);
-        for ($i = 0;$i < $count - 1;$i++){
-            if ($random >= $contributions[$i] && $random < $contributions[$i + 1]){
-
-            }
-        }
-
-        $max = max($tags);
-        
-        // obtengo las posiciones donde cambian los valores
-        $positions = array();
-        $positions[] = 0;
-        $count = count($contributions);
-        for ($j = 1; $j < $count;$j++){
-            if ($contributions[$j] != $contributions[$j - 1]){
-                $positions[] = $j;
-            }
-        }
+//        $total = array_sum($tags);
+//        $contributions = array();
+//        foreach ($tags as $name => $value) {
+//            $contributions[$name] = ($value * modZbannersHelper::MAXTOTAL) / $total;
+//        }
+//
+//
+//        $random = rand(0, modZbannersHelper::MAXTOTAL);
+//
+//        $max = max($tags);
+//
+//        // obtengo las posiciones donde cambian los valores
+//        $positions = array();
+//        $positions[] = 0;
+//        $count = count($contributions);
+//        for ($j = 1; $j < $count;$j++){
+//            if ($contributions[$j] != $contributions[$j - 1]){
+//                $positions[] = $j;
+//            }
+//        }
+//
+//        $countP = count($positions);
+//        for ($i = 1;$i < $countP;$i++){
+//            $pos = $positions[$i];
+//            $posPrevius = $positions[$i - 1];
+//            if ($random >= $contributions[$posPrevius] && $random < $contributions[$pos]){
+//                $showMe = $posPrevius;
+//            }
+//        }
 
         /*
          *  ###################
          */
         // elimino la relevancia. ya no es necesaria
-        $bannersIds = array_keys($bannersM);
+        $bannersIdsRaw = array_keys($bannersM);
 
-        echo '--BANNERS IDS#';
-        print_r($bannersIds);
+        $totalBanners = count($bannersIdsRaw);
+        // si tengo mas banners que los solicitados
+if ($totalBanners > $vars['limit']) {
+    // elimino los menos relevantes que sobren
+    $bannersIds = array_slice($bannersIdsRaw, 0,$vars['limit']);
+}
+else { // si no
+    $bannersIds = $bannersIdsRaw;
+    // si faltan banners
+    if ($totalBanners < $vars['limit']) {
+        // busco en la base de datos banners que no tengan zona asociada
+        // solo la cantidad que faltan
+        $totalBannersNeeded = $vars['limit'] - $totalBanners;
+        $selectNonZone = "SELECT bn.bid FROM #__banner bn where bn.bid not in
+                            (SELECT b.bid FROM #__custom_properties j,
+                                                #__banner b,
+                                                #__custom_properties_fields f
+                                          where j.ref_table='banner'
+                                                and j.content_id=b.bid
+                                                and f.name='root_zonales'
+                                                 and f.id=j.field_id
+                                                ) limit $totalBannersNeeded";
+
+        $db->setQuery($selectNonZone);
+        $noZoneBanners = $db->loadObjectList();
+
+        if ($bannersSorted) {
+            foreach ($noZoneBanners as $currentBanner) {
+                // los agrego al final porque no son relevantes
+                $bannersIds[] = $currentBanner->bid;
+            }
+        }
+    }
+}
 
         if (count($bannersIds) <= 0) return;
 
@@ -204,9 +226,6 @@ class modZbannersHelper {
 
         $db->setQuery($select);
         $banners = $db->loadObjectList();
-
-        echo '--BANNERS#';
-        print_r($banners);
 
             ##########################
 
