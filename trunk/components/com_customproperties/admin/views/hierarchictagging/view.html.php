@@ -42,7 +42,7 @@ class CustompropertiesViewHierarchictagging extends JView {
 
         $req = new HttpRequest($url,HttpRequest::METH_POST);
 
-        
+
 
         // recupero todos los tags registrados
         $query = 'select v.id, v.label from #__custom_properties_values v ';
@@ -67,7 +67,7 @@ class CustompropertiesViewHierarchictagging extends JView {
             'tags' => $tags
         );
 
-        print_r($postData);
+        // print_r($postData);
         $req->setPostFields($postData);
 
         // envio la solicitud
@@ -89,7 +89,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         //echo '-------' . $responseTags . '------';
         // parseo los tags y los guardo
         $this->_suggestList = explode(',', $responseTags);
-        print_r($this->_suggestList);
+        // print_r($this->_suggestList);
     }
 
     function setTree(&$value, $model) {
@@ -164,7 +164,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         $cp->getAllHierarchical();
         $cpvalues	= $cp->getCachedRoots();
 
-        $assign 	= $this->getModel('assignhierarchic');
+        $assign     = $this->getModel('assignhierarchic');
         $content_id = $assign->_id;
         $item_title = $assign->getTitle();
         $properties = $assign->getProperties();
@@ -220,11 +220,8 @@ class CustompropertiesViewHierarchictagging extends JView {
                     $i++;
                 }
             }
-            $imagesDir = JRoute::_('/media/system/js/tree/img/win98/');
-            $checkboxImgDir = JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/');
-
             $jsCode .= "t$j = new Bs_Tree();";
-            $jsCode .= "t$j.imageDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
+            $jsCode .= "t$j.imageDir = '".JRoute::_('/media/system/js/tree/img/win98/')."';";
             $jsCode .= "t$j.checkboxSystemImgDir = '".JRoute::_('/media/system/js/checkbox/img/win2k_noBorder/')."';";
             $jsCode .= "t$j.useCheckboxSystem = true;";
             $jsCode .= "t$j.checkboxSystemWalkTree = 0;";
