@@ -242,7 +242,7 @@
                 name="taganalizerurl"
                 type="text"
                 label="Tags Analizer Url"
-                default="http://192.168.0.29:39229/TomcatServletExample/servlet/TagsAnalizer/"
+                default="http://192.168.0.2:30080/TomcatServletExample/servlet/TagsAnalizer/"
                 description="Please enter the url where the tag analizer server is located"
             />
                 </params>
