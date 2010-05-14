@@ -18,6 +18,8 @@ class render_for_MULTI_LISTBOX_data_type {
         $req == 'required' ? $reqLabel = '*' : $reqLabel = '';
         $value = explode(',', $value);
 
+        $attrib = array('class' => "listbox $req", 'size' => "5", 'onChange' => "validate_attr(attr_$id)", 'multiple' => "multiple");
+
         if (!is_array($params['values_list'])) {
             $values = explode(',',$params['values_list']);
             foreach ($values as $k => $v) {
@@ -40,7 +42,7 @@ class render_for_MULTI_LISTBOX_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">'.
-                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id.'[]', 'multiple="multiple" class="listbox" size="5"', 'key', 'value', $value )
+                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id.'[]', $attrib, 'key', 'value', $value )
                     .'<div id="valid_'.$id.'" style="float: right; color: red"></div>
                 </td>
             </div>';

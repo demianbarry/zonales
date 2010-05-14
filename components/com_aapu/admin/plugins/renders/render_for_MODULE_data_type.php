@@ -15,10 +15,22 @@ class render_for_MODULE_data_type {
 
     function render($id, $value = null, $label = null, $required = null, $params = null) {
 
-        $module = JModuleHelper::getModule( strtolower($params['values_list']) );
-        $module->position = null;
+        $modName = $params['values_list'];
 
-        $return = '<td>'.JModuleHelper::renderModule($module).'</td>';
+        $module = JModuleHelper::getModule( strtolower($modName) );
+
+        //$return = print_r($params['values_list']);
+        //return $return;
+
+        if ($module == null) {
+            $return = '<td>'.$label.': '.JText::_('Module not exist').' - '.JText::_('Module name').': '.$modName.'</td>';
+        } else {
+            $module->position = null;
+
+            $return = '<div name="attr_'.$id.'" id="attr_'.$id.'">
+                        <td>'.JModuleHelper::renderModule($module).'</td>
+                      </div>';
+        }
         return $return;
     }
 

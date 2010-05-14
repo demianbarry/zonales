@@ -34,7 +34,8 @@ class AapuModelTabs extends AapuModelBaseModel {
 	function _buildAllQuery()
 	{
 		$query = $this->_getQuery();
-		return $query . $this->getWhereClause() . " WHERE name LIKE 'usr_%' " . $this->getOrderByClause();
+                $this->addWhere("name LIKE 'usr_%'");
+		return $query . $this->getWhereClause() . $this->getOrderByClause();
 	}
 
 

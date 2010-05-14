@@ -23,7 +23,8 @@ class render_for_TEXT_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">
-                    <input class="text_area'.$req.'" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" />
+                    <input class="text_area'.$req.'" onBlur="validate_attr(attr_'.$id.')" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" />
+                    <div id="valid_'.$id.'" style="float: right; color: red"></div>
                 </td>
             </div>';
 

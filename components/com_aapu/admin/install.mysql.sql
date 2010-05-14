@@ -63,8 +63,7 @@ INSERT INTO `#__aapu_data_types` (`id`, `label`, `description`, `render`) VALUES
 (3, 'BOOLEAN', 'Campo que permite ingresar un valor lógico', 'render_for_BOOLEAN_data_type.php'),
 (4, 'DATE', 'Fechas', 'render_for_DATE_data_type.php'),
 (5, 'MODULE', 'Muestra módulos', 'render_for_MODULE_data_type.php'),
-(6, 'SEX', 'Tipo de dato que indica el sexo de una persona', 'render_for_SEX_data_type.php'),
-(7, 'COMBOBOX', 'Tipo de dato que representa una lista de valores mostrada en un ComboBox', 'render_for_COMBOBOX_data_type.php');
+(6, 'SEX', 'Tipo de dato que indica el sexo de una persona', 'render_for_SEX_data_type.php');
 
 INSERT INTO `#__aapu_attributes` (`id`, `name`, `label`, `description`, `comments`, `from`, `to`, `canceled`, `required`, `published`, `validator`, `data_type_id`, `attribute_class_id`) VALUES
 (1, 'sex', 'Sexo', 'Sexo del usuario', '', '2010-04-08', '0000-00-00', 0, 1, 1, 'validator_for_SEX_attributes.php', 6, 1),

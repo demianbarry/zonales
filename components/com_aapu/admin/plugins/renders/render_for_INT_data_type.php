@@ -17,13 +17,16 @@ class render_for_INT_data_type {
         $req = $required == null ? '' : $required == 0 ? '' : 'required';
         $req == 'required' ? $reqLabel = '*' : $reqLabel = '';
 
+        //$attrib = array('class' => $req, 'onBlur' => 'validate_attr(attr_'.$id.')');
+
         $return =
             '<div class="render">
                  <td class="key">
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">
-                    <input class="text_area'.$req.' validate-numeric" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" />
+                    <input class="text_area'.$req.'" onBlur="validate_attr(attr_'.$id.')" type="text" name="attr_'.$id.'" id="attr_'.$id.'" value="'.$value.'" size="40" maxlength="90" title="'.JText::_( 'QUOTA_TIPTITLE' ).'" />
+                    <div id="valid_'.$id.'" style="float: right; color: red"></div>
                 </td>
              </div>';
 
