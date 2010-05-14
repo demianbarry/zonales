@@ -63,7 +63,7 @@ class EqZonalesController extends JController {
 //            }
             $value = JRequest::getString('value','','get');
             $ancestors = HighLevelApi::getAncestors($userid, $value);
-            print_r($ancestors);
+          //  print_r($ancestors);
         }
     //}
 

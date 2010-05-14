@@ -216,8 +216,7 @@ class CustompropertiesModelCpvalue extends JModel {
         $array['multiple'] 		= JRequest::getVar('multiple', '', '', 'int');
 
 
-        print_r($array);
-
+//print_r($array);
         // init db object
         $value = & JTable::getInstance('cpvalue', 'Table');
         // set ordering for new fields

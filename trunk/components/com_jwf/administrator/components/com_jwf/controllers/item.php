@@ -181,7 +181,7 @@ class JWFControllerItem extends JController {
 
         //Hooks of the destination station are invoked
         $activeHooks = unserialize(base64_decode($nextStation->activeHooks));
-        print_r($activeHooks);
+        // print_r($activeHooks);
         foreach( $activeHooks as $hookId => $hookData ) {
             $pManager->invokeMethod( 'hook', 'onArrival',  array($hookId), array($hookData,$workflow,$nextStation,$currentStep) );
         }

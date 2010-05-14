@@ -219,10 +219,14 @@ else { // si no
             $case .= "when $id then $pos ";
         }
 
+        $catId = $vars['catid'];
+        $cId = $vars['cid'];
+
         $select = "select b.bid, b.impmade, b.imptotal, b.custombannercode, b.name,
         b.imageurl, b.clickurl, b.params, case b.bid
             $case end as orden from #__banner b  where b.bid in (" .
-            implode(',', $bannersIds) . ") order by orden DESC";
+    //        implode(',', $bannersIds) . ") order by orden DESC";
+        implode(',', $bannersIds) . ") and b.catid=$catId and b.cid=$cId and b.showBanner=1 order by orden DESC";
 
         $db->setQuery($select);
         $banners = $db->loadObjectList();
