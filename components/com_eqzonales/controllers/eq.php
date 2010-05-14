@@ -183,7 +183,7 @@ class EqZonalesControllerEq extends JController {
 
         $results = $client->executeQuery($query);
 
-        print_r($results);
+       // print_r($results);
     }
 
     /**
