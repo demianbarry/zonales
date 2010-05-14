@@ -1,5 +1,5 @@
 <?php
-/*
+/* 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
 */
@@ -17,6 +17,8 @@ class render_for_COMBOBOX_data_type {
         $req = $required == null ? '' : $required == 0 ? '' : 'required';
         $req == 'required' ? $reqLabel = '*' : $reqLabel = '';
         $value = explode(',', $value);
+
+        $attrib = array('class' => $req, 'onChange' => "validate_attr(attr_$id)");
 
         if (!is_array($params['values_list'])) {
             $values = explode(',',$params['values_list']);
@@ -40,8 +42,9 @@ class render_for_COMBOBOX_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">'.
-                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id, '', 'value', 'value', $value )
-                .'</td>
+                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id, $attrib, 'value', 'value', $value ).
+                    '<div id="valid_'.$id.'" style="float: right; color: red"></div>
+                </td>
             </div>';
 
         return $return;

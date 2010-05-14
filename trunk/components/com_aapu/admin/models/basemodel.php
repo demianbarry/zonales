@@ -90,6 +90,20 @@ abstract class AapuModelBaseModel extends JModel {
         return $this->_data;
     }
 
+    function &getSelected($cids) {
+        $where = "";
+
+        foreach ($cids as $cid) {
+            $where .= "id = $cid OR ";
+        }
+        $where .= "1 = 2";
+
+        $this->setWhere($where);
+        $data = $this->getAll(true);
+
+        return $data;
+    }
+
     public function setData($_data) {
         $this->_data = $_data;
     }
@@ -388,8 +402,11 @@ abstract class AapuModelBaseModel extends JModel {
      *
      * @return boolean true en caso de éxito, false en caso contrario
      */
-    function delete() {
-        $cids = JRequest::getVar( 'cid', array(), '', 'array' );
+    function delete($cids = false) {
+
+        if (!$cids) {
+            $cids = JRequest::getVar( 'cid', array(), '', 'array' );
+        }
 
         $row =& $this->getTable();
 

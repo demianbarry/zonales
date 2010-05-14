@@ -281,4 +281,4 @@ JHTML::_('behavior.formvalidation');
     <input type="hidden" name="task" value=""/>
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-* Campo Obligatorio
+* <?php echo JText::_( 'required field' ); ?>

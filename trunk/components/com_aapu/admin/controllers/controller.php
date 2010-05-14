@@ -99,7 +99,36 @@ class AapuController extends JController {
     }
 
     function removeUser() {
-        $this->baseRemoveTask('Users', 'listUsers');
+        global $option;
+
+        $model = &$this->getModel('users');
+        $cids = $_POST['cid'];
+        $users = $model->getSelected($cids);
+        $attrEntityModel = &$this->getModel('attribute_entity');
+
+        foreach ($users as $user) {
+            $attrEntityModel->setWhere("object_id = $user->id");
+            $attrsEntity = $attrEntityModel->getAll(true);
+            foreach($attrsEntity as $attrEntity) {
+                $aeCids[] = $attrEntity->id;
+            }
+        }
+
+        if (!$attrEntityModel->delete($aeCids)) {
+            $msg = JText::_( 'ERROR_REMOVE' );
+        }
+        else {
+            $msg = JText::_( 'INFO_REMOVE' );
+        }
+
+        if (!$model->delete()) {
+            $msg = JText::_( 'ERROR_REMOVE' );
+        }
+        else {
+            $msg = JText::_( 'INFO_REMOVE' );
+        }
+
+        $this->redirectTask('listUsers', $msg);
     }
 
     function saveUser() {
@@ -194,7 +223,34 @@ class AapuController extends JController {
     }
 
     function removeTab() {
-        $this->baseRemoveTask('tabs', 'listTabs');
+        global $option;
+        $flag = true;
+
+        $model = &$this->getModel('tabs');
+        $cids = $_POST['cid'];
+        $tabs = $model->getSelected($cids);
+        $attrModel = &$this->getModel('attributes');
+
+        foreach ($tabs as $tab) {
+            $attrModel->setWhere("attribute_class_id = $tab->id");
+            $attrTab = $attrModel->getAll(true);
+            if ($attrTab != null) {
+                $flag = false;
+            }
+        }
+
+        if ($flag) {
+            if (!$model->delete()) {
+                $msg = JText::_( 'ERROR_REMOVE' );
+            }
+            else {
+                $msg = JText::_( 'INFO_REMOVE' );
+            }
+        } else {
+            $msg = JText::_( 'NO_REMOVE' );
+        }
+
+        $this->redirectTask('listTabs', $msg);
     }
 
     function saveTab() {
@@ -259,7 +315,34 @@ class AapuController extends JController {
     }
 
     function removeAttribute() {
-        $this->baseRemoveTask('attributes', 'listAttributes');
+        global $option;
+        $flag = true;
+
+        $model = &$this->getModel('attributes');
+        $cids = $_POST['cid'];
+        $attributes = $model->getSelected($cids);
+        $attrEntityModel = &$this->getModel('attribute_entity');
+
+        foreach ($attributes as $attribute) {
+            $attrEntityModel->setWhere("attribute_id = $attribute->id");
+            $attrsEntity = $attrEntityModel->getAll(true);
+            if ($attrsEntity != null) {
+                $flag = false;
+            }
+        }
+
+        if ($flag) {
+            if (!$model->delete()) {
+                $msg = JText::_( 'ERROR_REMOVE' );
+            }
+            else {
+                $msg = JText::_( 'INFO_REMOVE' );
+            }
+        } else {
+            $msg = JText::_( 'NO_REMOVE' );
+        }
+
+        $this->redirectTask('listAttributes', $msg);
     }
 
     function publish() {
@@ -339,7 +422,34 @@ class AapuController extends JController {
     }
 
     function removeDataType() {
-        $this->baseRemoveTask('datatypes', 'listDataTypes');
+        global $option;
+        $flag = true;
+
+        $model = &$this->getModel('datatypes');
+        $cids = $_POST['cid'];
+        $dataTypes = $model->getSelected($cids);
+        $attrModel = &$this->getModel('attributes');
+
+        foreach ($dataTypes as $dataType) {
+            $attrModel->setWhere("data_type_id = $dataType->id");
+            $attrDataType = $attrModel->getAll(true);
+            if ($attrDataType != null) {
+                $flag = false;
+            }
+        }
+
+        if ($flag) {
+            if (!$model->delete()) {
+                $msg = JText::_( 'ERROR_REMOVE' );
+            }
+            else {
+                $msg = JText::_( 'INFO_REMOVE' );
+            }
+        } else {
+            $msg = JText::_( 'NO_REMOVE' );
+        }
+
+        $this->redirectTask('listDataTypes', $msg);
     }
 
     function saveDataType() {
@@ -434,6 +544,13 @@ class AapuController extends JController {
         else {
             $msg = JText::_( 'INFO_REMOVE' );
         }
+
+        $redirect = 'index.php?option=' . $option . '&task=' . $task;
+        $this->setRedirect($redirect, $msg);
+    }
+
+    function redirectTask($task, $msg) {
+        global $option;
 
         $redirect = 'index.php?option=' . $option . '&task=' . $task;
         $this->setRedirect($redirect, $msg);
