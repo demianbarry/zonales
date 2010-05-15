@@ -111,7 +111,7 @@
 	</types>
 
 	<fields>
-		<field name="title_s" type="string" indexed="true" stored="false"/>
+		<field name="title_s" type="string" indexed="true" stored="false" />
 		<field name="category_s" type="string" indexed="true" stored="false"/>
 		<field name="metakey_ws" type="text" indexed="true" stored="false"/>
 
@@ -119,9 +119,9 @@
 		<field name="tags_values" type="text_ws" indexed="true" stored="true" multiValued="true"/>
 
 		<field name="id" type="integer" indexed="true" stored="true"/>
-        	<field name="title" type="text" indexed="true" stored="true"/>
-		<field name="intro_content" type="text" indexed="true" stored="true"/>
-		<field name="full_content" type="text" indexed="true" stored="true"/>
+        	<field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
+		<field name="intro_content" type="text" indexed="true" stored="true" termVectors="true"/>
+		<field name="full_content" type="text" indexed="true" stored="true" termVectors="true"/>
 		<field name="metakey" type="text" indexed="true" stored="true"/>
 		<field name="metadesc" type="text" indexed="true" stored="true"/>
 
