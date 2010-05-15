@@ -36,6 +36,20 @@ class EqZonalesControllerBand extends JController {
         $this->helper = new comEqZonalesHelper();
     }
 
+    function modifyBandAjax() {
+        $bands = JRequest::getVar('slider', NULL, 'post', 'array');
+        $eqid = JRequest::getVar('eqid', NULL, 'post', 'int');
+
+        $bandsArray = array();
+        foreach ($bands as $band) {
+            list($id, $valueId, $peso) = explode("-", $band);
+            $bandsArray[] = (object) array('id' => $id, 'cp_value_id' => $valueId, 'peso' => $peso, 'eq_id' => $eqid);
+        }
+
+        $this->modifyBandImpl($bandsArray);
+        return;
+    }
+
     function modifyBand() {
         $band_params = JRequest::getVar('params', NULL, 'post', 'string');
         $params = $this->helper->getJsonParams($band_params, JText::_('ZONALES_EQ_BAND'));
@@ -84,20 +98,18 @@ class EqZonalesControllerBand extends JController {
             if (!$model->store(false, false, $bandData)) {
                 $jtext = new JText();
                 $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND'));
-                return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
+                echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);
+                return;
             }
-
-            $jtext = new JText();
-            $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND'));
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
-        //            if (!$model->store(false, false, $bandData)) {
-        //                echo "<script> alert('".$model->getError()."'); window.history.go(-1); </script>\n";
-        //                exit();
-        //            }
-
+            
         }
 
-        var_dump($band);
-        var_dump($bandData);
+        $jtext = new JText();
+        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND'));
+        echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);
+        return;
+
+        //var_dump($band);
+        //var_dump($bandData);
     }
 }

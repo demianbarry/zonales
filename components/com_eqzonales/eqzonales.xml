@@ -28,6 +28,7 @@
 
         <filename>controllers/band.php</filename>
         <filename>controllers/eq.php</filename>
+        <filename>controllers/hierarchictagging.php</filename>
         <filename>queries/userquery.php</filename>
         <filename>queries/bannerquery.php</filename>
         <filename>hlapi.php</filename>
@@ -38,6 +39,11 @@
     <filename>views/test/index.html</filename>
     <filename>views/test/tmpl/index.html</filename>
     <filename>views/test/tmpl/default.php</filename>
+
+    <filename>views/hierarchictagging/view.html.php</filename>
+    <filename>views/hierarchictagging/index.html</filename>
+    <filename>views/hierarchictagging/tmpl/index.html</filename>
+    <filename>views/hierarchictagging/tmpl/default.php</filename>
 
     <!--
     <filename>views/mapa/view.html.php</filename>

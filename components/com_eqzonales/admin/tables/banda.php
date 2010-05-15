@@ -33,9 +33,7 @@ class TableBanda extends JTable
      */
     function bind( $from, $ignore=array() )
     {
-        parent::bind($from, $ignore);
-
-        return true;
+        return parent::bind($from, $ignore);
     }
 
 }
