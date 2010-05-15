@@ -17,10 +17,13 @@ class EqZonalesModelBanda extends ZonalesModelBaseModel
                     .$dbo->nameQuote('e.peso') .','. $dbo->nameQuote('e.cp_value_id') .','
                     .$dbo->nameQuote('e.eq_id') .','. $dbo->nameQuote('e.default') .','
                     .$dbo->nameQuote('e.active') .','. $dbo->nameQuote('cpv.parent_id') .','
-                    .$dbo->nameQuote('cpv.field_id')
+                    .$dbo->nameQuote('cpv.field_id') .','. $dbo->nameQuote('cpv.label') .' AS band_label,'
+                    .$dbo->nameQuote('cpf.label') .' AS group_label'
                     .' FROM ' . $dbo->nameQuote('#__eqzonales_banda') . ' e'
                     .' INNER JOIN ' . $dbo->nameQuote('#__custom_properties_values') . ' cpv'
-                    .' ON ' . $dbo->nameQuote('cpv.id') .' = '. $dbo->nameQuote('e.cp_value_id');
+                    .' ON ' . $dbo->nameQuote('cpv.id') .' = '. $dbo->nameQuote('e.cp_value_id')
+                    .' INNER JOIN ' . $dbo->nameQuote('#__custom_properties_fields') . ' cpf'
+                    .' ON ' . $dbo->nameQuote('cpv.field_id') .' = '. $dbo->nameQuote('cpf.id');
 
 		return $query;
 	}
