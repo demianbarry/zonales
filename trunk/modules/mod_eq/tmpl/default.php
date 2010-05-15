@@ -20,35 +20,37 @@ JHTML::_('behavior.formvalidation');
 <script language="javascript" type="text/javascript">
     <!--
 
-    <?php if (!is_null($eq)): ?>
     window.addEvent('domready', function() {
+        <?php if (!is_null($eq)): ?>
         /* Slider 1 */
-        <?php foreach ($eq->bands as $band): ?>
+        <?php foreach ($eq->fields as $group): ?>
+        <?php foreach ($group->bands as $band): ?>
         var mySlide<?php echo $band->id;?> = new Slider($('area<?php echo $band->id;?>'), $('knob<?php echo $band->id;?>'), {
             steps: 100,
             onChange: function(step) {
                 $('upd<?php echo $band->id;?>').setHTML(step);
+                $('<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>').value = '<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>-' + step;
             }
         }).set(<?php echo $band->peso;?>);
         <?php endforeach;?>
+        <?php endforeach;?>
 
-        // Anpassung IE6
+        // En caso IE6
 	if(window.ie6) var heightValue='100%';
 	else var heightValue='';
 
-	// Selektoren der Container für Schalter und Inhalt
+        // Divs para el título (toggler) y los contenedores (collapse)
 	var togglerName='div.toggler_';
 	var contentName='div.collapse_';
 
-
-	// Selektoren setzen
+        // Recuperamos divs toggler y collapse
 	var counter=1;
 	var toggler=$$(togglerName+counter);
 	var content=$$(contentName+counter);
 
 	while(toggler.length>0)
 	{
-		// Accordion anwenden
+                // Acordeon
 		new Accordion(toggler, content, {
 			opacity: false,
 			display: -1,
@@ -70,8 +72,21 @@ JHTML::_('behavior.formvalidation');
 		toggler=$$(togglerName+counter);
 		content=$$(contentName+counter);
 	}
+        <?php endif; ?>
+
+        $('formEq').addEvent('submit', function(e) {
+            new Event(e).stop();
+            this.send({
+                onSuccess: function(response) {
+                    var resp = Json.evaluate(response);
+                    if (resp.status == 'SUCCESS') {
+                        
+                    }
+                    $('respuesta').setHTML(resp.msg);
+                }
+            });
+        });
     });
-    <?php endif; ?>
     //-->
 </script>
 <!-- form -->
@@ -80,32 +95,52 @@ JHTML::_('behavior.formvalidation');
     <div style="margin-left:10px; margin-right:10px; margin-bottom:10px;">
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
-
+        <div id="respuesta" title="respuesta"></div>
         <?php if (!is_null($eq)): ?>
         <form action="index.php" method="post" id="formEq" name="formEq">
             <ul id="accordion">
-
-                <?php foreach ($eq->bands as $band): ?>
+                <?php foreach ($eq->fields as $group): ?>
                 <li>
-                    <div class="toggler_1">Banda <?php echo $band->id;?></div>
+                    <div class="toggler_1"><?php echo $group->label;?></div>
                     <div  class="collapse_1">
+                        <?php foreach ($group->bands as $band): ?>
                         <div class="slider-container">
+                            <div class="slider-title">
+                                <p><?php echo $band->band_label;?></p>
+                            </div>
                             <div class="slider-value">
                                 <p id="upd<?php echo $band->id;?>">0</p>
                             </div>
                             <div id="area<?php echo $band->id;?>" class="slider">
                                 <div id="knob<?php echo $band->id;?>" class="knob"></div>
                             </div>
+                            <!-- <input type="hidden" id="<?php echo $band->id.'-'.$band->cp_value_id; ?>"
+                                   name="<?php echo $band->id.'-'.$band->cp_value_id; ?>" value="" /> -->
+                            <input type="hidden" id="<?php echo $band->id.'-'.$band->cp_value_id; ?>"
+                                   name="slider[]" value="" />
                         </div>
+                        <?php endforeach; ?>
                     </div>
                 </li>
                 <?php endforeach; ?>
-
             </ul>
+            
+            <input id="eqid" name="eqid" type="hidden" value="<?php echo $eq->eq->id; ?>" />
+
+            <input type="hidden" name="task" value="band.modifyBandAjax" />
+            <input type="hidden" name="option" value="com_eqzonales" />
+            <input type="hidden" name="format" value="raw" />
+            <?php echo JHTML::_('form.token'); ?>
+
             <input id="submit" type="submit" name="submit" class="button" />
         </form>
+        <input type="button"
+                                                           value="agregar tags"
+                                                           name="buttontags"
+                                                           onclick="window.location.href='<?php echo $addTagsUrl ?>'"
+                                                    />
         <?php else: ?>
-        <p>Ud. no cuenta con un Ecualizador!</p>
+        <p><?php echo $error_no_eq; ?></p>
         <?php endif;?>
     </div>
     
