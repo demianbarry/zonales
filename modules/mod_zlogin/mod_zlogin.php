@@ -6,13 +6,21 @@ $htmlMessage = JModuleHelper::renderModule($moduleMessage);
 //require_once(JPATH_BASE .DS. "plugins".DS."authentication".DS."twitter_helper.php");
 $db = &JFactory::getDBO();
 
+$selectProvider = new stdClass();
+$selectProvider->name = JText::_('ZLOGIN_CHOOSE_PROVIDER');
+$selectProvider->required_input = ':::';
+$selectProvider->groupname = 'Guest';
+$providerslist = array($selectProvider);
+
 // realiza la consulta a la base de datos
-$selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input, t.name as type ' .
-    'from #__providers p, #__groups g, #__protocol_types t ' .
-    'where p.access=g.id and t.id=p.protocol_type_id and p.enabled=1 ' .
-    'order by (select count(*) from #__alias a where p.id=a.provider_id) desc, t.name  asc';
+$selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input '.
+        'from #__providers p, #__groups g '.
+        'where p.access=g.id and p.enabled=1 '.
+        'order by (select count(*) from #__alias a where p.id=a.provider_id) desc ';
 $db->setQuery($selectProviders);
-$providerslist = $db->loadObjectList();
+$providers = $db->loadObjectList();
+$providerslist = array_merge($providerslist,$providers);
+
 
 $user =& JFactory::getUser();
 $userislogged = (!$user->guest);
@@ -35,16 +43,17 @@ foreach ($providerslist as $provider) {
     foreach ($req_inputs as $input) {
         $data = explode(':', $input);
         $inputData[$provider->name][] =
-            array (
-            'type' => $data[0],
-            'name' => $data[1],
-            'message' => $data[2],
-            'callback' => $data[3]
+                array (
+                'type' => $data[0],
+                'name' => $data[1],
+                'message' => $data[2],
+                'callback' => $data[3]
         );
     }
 }
 
 $connectMessage = JText::_('ZONALES_PROVIDER_CONNECT_WITH');
+$buttonMessage = JText::_('ZONALES_PROVIDER_CONNECT');
 $routeAction = JRoute::_('index.php');
 $providerConnectMessage = JText::_('ZONALES_PROVIDER_CONNECT');
 $routeReset = JRoute::_( 'index.php?option=com_user&view=reset&map=0' );
@@ -59,47 +68,96 @@ $registerMessage = JText::_('REGISTER');
 JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 
-<script type="text/javascript" defer="defer">
-    // window.onload = setIni();
+<script type="text/javascript">
+    var index;
+    var providers = new Array();
 
-    function setIni(){
-        var index = document.formlogin.selprovider.options.selectedIndex;
-        document.formlogin.selprovider.options[index].onclick();
+    window.addEvent('domready', function() {
+
+<?php foreach ($providerslist as $provider) {
+    echo "providers.push({
+            name: '$provider->name',
+            inputs: [";
+    $first = true;
+    foreach($inputData[$provider->name] as $input) {
+        if($first) {
+            $first = false;
+        } else {
+            echo ',';
+        }
+        echo "  {
+                    type: '".$input['type']."',
+                    name: '".$input['name']."',
+                    message: '".JText::_($input['message'])."',
+                    callback: '".$input['callback']."'
+                 }";
+    }
+    echo "]";
+    echo "});";
+} ?>
+
+    });
+
+    function setSelectedIndex() {
+        index = $('selprovider').selectedIndex;
     }
 
-    function setElement(elements,provider,type) {
-        var fixbutton = document.getElementById('fixbutton').value;
-        document.getElementById('provider').value=provider;
-        document.getElementById('submit').value=sprintf(fixbutton,provider);
+    function onFocus(element) {
+        if(element.className.indexOf('inactive') != -1) {
+            element.value = '';
+            element.removeClass('inactive');
+        }
+    }
+
+    function onBlur(element) {
+        if(element.value == '') {
+            var provider = providers[index];
+            var inputs = provider.inputs;
+            for(i=0 ; i < inputs.length ; i++){
+                if (inputs[i].name == element.name ){
+                    $(inputs[i].name).value=sprintf(inputs[i].message,provider.name);
+                    element.addClass('inactive');
+                }
+            }
+        }
+    }
+
+    function setElements() {
+        setSelectedIndex();
+        var provider = providers[index];
+        $('provider').value=provider.name;
+        $('submit').value=sprintf(<?php echo "'$buttonMessage'"?>,provider.name);
+        var elements = provider.inputs;
 <?php
 foreach ($providerslist as $prov) {
     foreach ($inputData[$prov->name] as $input) {
         if (!(!$user->guest && $prov->groupname == 'Guest')) {
-            if (!isset ($elements[$input['name']])) {
+            if (!isset ($elements[$input['name']]) && strlen($input['name']) > 0) {
                 $elements[$input['name']] = 1;
-                echo 'document.getElementById(\'' . $input['name'] . 'set\').style.display = \'none\';';
+                echo '$(\'' . $input['name'] . 'set\').setStyle(\'display\',\'none\');';
             }
         }
     }
 }
 
 ?>
-        document.getElementById('submit').style.display = 'block';
+        $('submit').setStyle('display', 'block');
         for(i=0 ; i < elements.length ; i++){
-            if (elements[i] != ''){
-                var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
-                var showsubmit = document.getElementById(elements[i] + 'submitshow').value;
-                document.getElementById('submit').style.display = showsubmit;
-                document.getElementById(elements[i] + 'set').style.display = 'block';
-                if (showsubmit == 'block'){
-                    document.getElementById(elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+            if (elements[i].name != '' ){
+                var fixpart = elements[i].message;
+                $('submit').setStyle('display', elements[i].type != 'button' ? 'block' : 'none');
+                $(elements[i].name + 'set').setStyle('display','block');
+                if (elements[i].type != 'button'){
+                    $(elements[i].name).value=sprintf(fixpart,provider.name);
+                    $(elements[i].name).addClass('inactive');
                 }
                 else {
-                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
+                    $(elements[i].name).innerHTML=sprintf(fixpart,provider.name);
                 }
             }
         }
     }
+
 </script>
 
 <?php require(JModuleHelper::getLayoutPath('mod_zlogin')); ?>
