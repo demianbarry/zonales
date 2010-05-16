@@ -16,6 +16,7 @@
                >mod_zlogin.php
         </filename>
         <filename>tmpl/default.php</filename>
+        <filename>tmpl/default_map.php</filename>
         <filename>tmpl/index.html</filename>
     </files>
     <installfile>install.mod_zlogin.php</installfile>

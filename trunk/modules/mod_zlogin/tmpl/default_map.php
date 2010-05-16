@@ -1,6 +1,6 @@
 <?php
 /**
- * @version	$Id$
+ * @version	$Id: default.php 524 2010-05-07 00:04:43Z laykondash $
  * @package	Zonales
  * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
  * @license	GNU/GPL, see LICENSE.php
@@ -22,7 +22,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
 <!-- no tocar este display -->
 <div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>;" class="moduletable_zlogin">
-    <h1><?php echo $module->title; ?></h1>    
+    <h1><?php echo $module->title; ?></h1>
     <form id="formzlogin" name="formzlogin" action="<?php echo $routeAction ?>" method="post">
 
         <div style="margin-left:10px; margin-right:10px; margin-bottom: 10px">
@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <p class="connect-message"><?php echo $connectMessage ?></p>
 
             <!-- aqui va el selector de proveedores -->
-            <select class="providers" id="selprovider" name="selprovider" style="width: 100%;" onchange="setElements();">
+            <select class="providers" id="selprovider" name="selprovider" style="width: 100%; margin-bottom:10px;" onchange="setElements();">
                 <?php foreach ($providerslist as $provider): ?>
                     <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                 <option value="" style="background-image: url(<?php if(isset($provider->icon_url)) echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                         $value = '';
                         if (!isset ($elementsHTML[$inputElement['name']]) && strlen($inputElement['name']) > 0) : ?>
             <!-- no tocar este display -->
-            <div style="display: none; margin-top: 10px;" id="<?php echo $inputElement['name'] . 'set' ?>">
+            <div style="display: none;" id="<?php echo $inputElement['name'] . 'set' ?>">
                                 <?php
 
                                 $elementsHTML[$name] = 1;
@@ -85,7 +85,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                 <?php endif ?>
             <?php endforeach ?>
             <input id="submit" type="submit" name="Submit" class="button" value="<?php echo $providerConnectMessage ?>" />
-        </div>        
+        </div>
 
         <fieldset class="input">
             <input name="option" type="hidden" value="com_user" />
