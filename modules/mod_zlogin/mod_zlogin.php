@@ -73,6 +73,9 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     var providers = new Array();
 
     window.addEvent('domready', function() {
+        
+        $('formzlogin_submit').setStyle('display', 'none');
+        
 
 <?php foreach ($providerslist as $provider) {
     echo "providers.push({
@@ -99,11 +102,11 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     });
 
     function setSelectedIndex() {
-        index = $('selprovider').selectedIndex;
+        index = $('formzlogin_selprovider').selectedIndex;
     }
 
     function onFocus(element) {
-        if(element.className.indexOf('inactive') != -1) {
+        if(element.hasClass('inactive')) {
             element.value = '';
             element.removeClass('inactive');
         }
@@ -115,7 +118,7 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
             var inputs = provider.inputs;
             for(i=0 ; i < inputs.length ; i++){
                 if (inputs[i].name == element.name ){
-                    $(inputs[i].name).value=sprintf(inputs[i].message,provider.name);
+                    $('formzlogin_'+inputs[i].name).value=sprintf(inputs[i].message,provider.name);
                     element.addClass('inactive');
                 }
             }
@@ -125,8 +128,8 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     function setElements() {
         setSelectedIndex();
         var provider = providers[index];
-        $('provider').value=provider.name;
-        $('submit').value=sprintf(<?php echo "'$buttonMessage'"?>,provider.name);
+        $('formzlogin_provider').value=provider.name;
+        $('formzlogin_submit').value=sprintf(<?php echo "'$buttonMessage'"?>,provider.name);
         var elements = provider.inputs;
 <?php
 foreach ($providerslist as $prov) {
@@ -134,25 +137,25 @@ foreach ($providerslist as $prov) {
         if (!(!$user->guest && $prov->groupname == 'Guest')) {
             if (!isset ($elements[$input['name']]) && strlen($input['name']) > 0) {
                 $elements[$input['name']] = 1;
-                echo '$(\'' . $input['name'] . 'set\').setStyle(\'display\',\'none\');';
+                echo '$(\'formzlogin_'. $input['name'] . 'set\').setStyle(\'display\',\'none\');';
             }
         }
     }
 }
 
 ?>
-        $('submit').setStyle('display', 'block');
+        $('formzlogin_submit').setStyle('display', index != 0 ? 'block' : 'none');
         for(i=0 ; i < elements.length ; i++){
             if (elements[i].name != '' ){
                 var fixpart = elements[i].message;
-                $('submit').setStyle('display', elements[i].type != 'button' ? 'block' : 'none');
-                $(elements[i].name + 'set').setStyle('display','block');
+                $('formzlogin_submit').setStyle('display', elements[i].type != 'button' ? 'block' : 'none');
+                $('formzlogin_'+elements[i].name + 'set').setStyle('display','block');
                 if (elements[i].type != 'button'){
-                    $(elements[i].name).value=sprintf(fixpart,provider.name);
-                    $(elements[i].name).addClass('inactive');
+                    $('formzlogin_'+elements[i].name).value=sprintf(fixpart,provider.name);
+                    $('formzlogin_'+elements[i].name).addClass('inactive');
                 }
                 else {
-                    $(elements[i].name).innerHTML=sprintf(fixpart,provider.name);
+                    $('formzlogin_'+elements[i].name).innerHTML=sprintf(fixpart,provider.name);
                 }
             }
         }

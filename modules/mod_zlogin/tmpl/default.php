@@ -21,7 +21,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </div>
 
 <!-- no tocar este display -->
-<div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>;" class="moduletable_zlogin">
+<div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>; float: left;" class="moduletable_zlogin">
     <h1><?php echo $module->title; ?></h1>    
     <form id="formzlogin" name="formzlogin" action="<?php echo $routeAction ?>" method="post">
 
@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <p class="connect-message"><?php echo $connectMessage ?></p>
 
             <!-- aqui va el selector de proveedores -->
-            <select class="providers" id="selprovider" name="selprovider" style="width: 100%;" onchange="setElements();">
+            <select class="providers" id="formzlogin_selprovider" name="selprovider" style="width: 100%;" onchange="setElements();">
                 <?php foreach ($providerslist as $provider): ?>
                     <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                 <option value="" style="background-image: url(<?php if(isset($provider->icon_url)) echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                         $value = '';
                         if (!isset ($elementsHTML[$inputElement['name']]) && strlen($inputElement['name']) > 0) : ?>
             <!-- no tocar este display -->
-            <div style="display: none; margin-top: 10px;" id="<?php echo $inputElement['name'] . 'set' ?>">
+            <div style="display: none; margin-top: 10px;" id="formzlogin_<?php echo $inputElement['name']?>set">
                                 <?php
 
                                 $elementsHTML[$name] = 1;
@@ -65,12 +65,12 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                                     $show = 'block';
                                 }
 
-                                echo '<input type="'. $type .'" name="'. $name . '" id="'. $name .'" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="'. $callback .'" value="'.$value.'" style="width: 100%;"/>';
+                                echo '<input type="'. $type .'" name="'. $name . '" id="formzlogin_'. $name .'" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="'. $callback .'" value="'.$value.'" style="width: 100%;"/>';
 
                                 ?>
 
                                 <?php if (strcasecmp($inputElement['name'], 'password') == 0): ?>
-                                <div id="useroptions" >
+                                <div id="formzlogin_useroptions" >
                                     <a href="<?php echo $routeReset ?>"><?php echo $forgotPasswordMessage ?></a>
                                     <a href="<?php echo $routeRemind ?>"><?php echo $forgotUsernameMessage ?></a>
                                     <?php if ($allowRegistration) : ?>
@@ -84,7 +84,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
                 <?php endif ?>
             <?php endforeach ?>
-            <input id="submit" type="submit" name="Submit" class="button" value="<?php echo $providerConnectMessage ?>" />
+            <input id="formzlogin_submit" type="submit" name="Submit" class="button" value="<?php echo $providerConnectMessage ?>" />
         </div>        
 
         <fieldset class="input">
@@ -93,7 +93,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
             <input name="providerid" type="hidden" value=<?php echo $providerid ?> />
             <input name="externalid" type="hidden"  value="<?php echo urlencode($externalid) ?>" />
-            <input name="provider" type="hidden" value="OpenID" id="provider"/>
+            <input name="provider" type="hidden" value="OpenID" id="formzlogin_provider"/>
             <?php echo JHTML::_( 'form.token' ); ?>
         </fieldset>
     </form>
