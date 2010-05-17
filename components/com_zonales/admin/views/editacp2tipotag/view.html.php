@@ -43,11 +43,9 @@ class ZonalesViewEditaCp2TipoTag extends JView
 	{
 		// opción nula
 		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'tipo');
-
 		// tipos de tags
 		$tipotagmodel =& JModel::getInstance('TipoTag', 'ZonalesModel');
 		$tipotags =& $tipotagmodel->getAll();
-
 		// genera select html
 		$tipo_list = array_merge($blank_option, $tipotags);
 		$lists['tipo_lst'] = JHTML::_('select.genericlist', $tipo_list, 'tipo_id',
@@ -56,7 +54,6 @@ class ZonalesViewEditaCp2TipoTag extends JView
 		// fields de CP tags
 		$helper = new comZonalesAdminHelper();
 		$fields = $helper->getCpFields();
-
 		// opción nula
 		unset ($blank_option);
 		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'label');
