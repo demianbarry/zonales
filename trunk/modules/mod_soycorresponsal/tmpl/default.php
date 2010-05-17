@@ -143,8 +143,11 @@ window.addEvent('domready', function() {
 			<div id="nota">
 				<label for="partidos"><?php echo JTEXT::_('COUNTY');?></label>
 				<?php echo $lists['partido_select']; ?>
-				<label for="localidad"><?php echo JTEXT::_('CITY');?></label>
-				<div id="localidad_container"><?php echo $lists['localidad_select']; ?></div>
+
+                                <label id="loc_label" for="localidad" style="display:none;"><?php echo JTEXT::_('CITY');?></label>
+                                <div id="localidad_container" style="display:none;">
+                                    <?php echo $lists['localidad_select']; ?>
+                                </div>
 
 				<div class="splitter"></div>
 
