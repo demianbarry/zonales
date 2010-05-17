@@ -44,7 +44,7 @@ function validateForm(frm) {
 			<table class="admintable">
 				<tr>
 					<td class="key">
-						<label for="title"><?php echo JText::_( 'Tag' ); ?>:</label>
+						<label for="title"><?php echo JText::_( 'Tipo de Tag' ); ?>:</label>
 					</td>
 					<td colspan="2">
 						<?echo $this->lists['tipo_lst']; ?>
