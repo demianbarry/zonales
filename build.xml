@@ -96,7 +96,7 @@
         <include name="**" />
     </fileset>
     <!-- plg_solrsearch -->
-    <fileset dir="${src_plugins}/solrsearch" id="plg_solrsearch_files">
+    <fileset dir="${src_plugins}/phpsolrsearch" id="plg_solrsearch_files">
         <include name="**" />
     </fileset>
 
@@ -407,7 +407,7 @@
         </zip>
     </target>
 
-    <!-- componente reservas -->
+    <!-- componente eq_zonales -->
     <target name="dist_com_eqzonales" description="Crea archivo de distribución Joomla para el componente Ecualizador Zonales">
         <echo message="Creando archivo de distribución de componente Ecualizador Zonales"/>
         <zip destfile="${src_dist_dir}/${dist.com_eqzonales.file}.zip">
@@ -425,6 +425,7 @@
             <fileset refid="com_aardvertiser_files"/>
         </zip>
     </target>
+    
     <!-- componente aapu -->
     <target name="dist_com_aapu" description="Crea archivo de distribución Joomla para el componente A.A.P.U.">
         <echo message="Creando archivo de distribución de componente A.A.P.U."/>
