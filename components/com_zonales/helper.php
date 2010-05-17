@@ -122,13 +122,22 @@ class comZonalesHelper {
     /**
      * Recupera fields de CP según el tipo de tag asociado.
      *
+     * El query recupera todos los values que esten asociados al field
+     * 'root_zonales', y cuyos nombres comienzen con el prefijo 'bue_'. Este
+     * es por ahora un compromiso para recuperar unicamente aquellos
+     * values que puedan ser asociados al mapa flash.
+     *
      * @param object información del tipo asociado
      * @return array lista de fields recuperados
      */
     function getValuesZonales() {
 
         $dbo	= & JFactory::getDBO();
-        $query = 'SELECT v.id, v.name, v.label FROM #__custom_properties_values v WHERE v.field_id = (SELECT f.id FROM #__custom_properties_fields f WHERE f.name = "root_zonales") AND v.name LIKE "bue\_%"';
+        $query = 'SELECT v.id, v.name, v.label'
+                .' FROM #__custom_properties_values v '
+                .' WHERE v.field_id = '
+                .' (SELECT f.id FROM #__custom_properties_fields f'
+                .' WHERE f.name = "root_zonales") AND v.name LIKE "bue\_%"';
         $dbo->setQuery($query);
 
         return  $this->_cache->get(array($dbo, 'loadObjectList'), array());

@@ -45,7 +45,6 @@ class ZonalesViewEditaMenu extends JView
 
 		// opción nula
 		$blank_option[] = JHTML::_('select.option', '0', JText::_('Seleccione una opcion'), 'id', 'label');
-
 		// fields asociados con un tipoo menu
 		$fields = $helper->getCpMenuFields();
 		// genera select html
