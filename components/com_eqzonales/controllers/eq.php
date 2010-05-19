@@ -20,8 +20,8 @@ jimport('joomla.filesystem.file');
 jimport('solr.query');
 jimport('solr.client');
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_eqzonales' . DS . 'queries' . DS . 'userquery.php';
-require_once JPATH_ROOT . DS . 'administrator'. DS . 'components' . DS . 'com_eqzonales' . DS . 'helper' . DS . 'helper.php';
+require_once(JPATH_ROOT.DS.'components'.DS.'com_eqzonales'.DS.'queries'.DS.'userquery.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
 
 /**
  * Controlador Motor de Ecualización - Ecualizador
