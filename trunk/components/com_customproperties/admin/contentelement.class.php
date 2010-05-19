@@ -332,10 +332,10 @@ function loadContentElements($load_inactive=false) {
 		// sort by ce_ordering
 		JArrayHelper::sortObjects($result,'ce_ordering');
 	}
-	else{
+	//else{
 		// return the load the standard content element
 		$result['content'] =& new cpContentElement();
-	}
+	//}
 	return $result;
 }
 /** function that returns all available content elements in dir 'samplece'
