@@ -279,9 +279,7 @@ abstract class ZonalesModelBaseModel extends JModel {
     abstract function _buildAllQuery();
 
     /**
-     * Resetea los datos y los parametros del modelo.
-     *
-     * @return void
+     * Resetea datos y parametros del modelo
      */
     function clear() {
         $this->_where 	= array();
