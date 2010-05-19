@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="search">
+<install version="1.5" type="plugin" group="user">
     <name>User - Zonales Eq Creation</name>
     <author>Mediabit</author>
     <creationDate>Mayo 2010</creationDate>
