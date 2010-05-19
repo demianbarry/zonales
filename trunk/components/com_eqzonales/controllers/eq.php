@@ -82,7 +82,7 @@ class EqZonalesControllerEq extends JController {
         }
 
         // intenta crear el ecualizador
-        if($this->createEqImpl($params)) {
+        if(!$this->createEqImpl($params)) {
             return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
                     $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
         } else {

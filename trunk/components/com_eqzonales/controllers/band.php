@@ -85,7 +85,7 @@ class EqZonalesControllerBand extends JController {
          * Crea/modifica las bandas del ecualizador según la configuración
          * especificada.
          */
-        if($this->modifyBandImpl($bandsArray)) {
+        if(!$this->modifyBandImpl($bandsArray)) {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
             $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND')));
         } else {
