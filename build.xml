@@ -99,6 +99,10 @@
     <fileset dir="${src_plugins}/phpsolrsearch" id="plg_solrsearch_files">
         <include name="**" />
     </fileset>
+    <!-- plg_eqevents -->
+    <fileset dir="${src_plugins}/eqevents" id="plg_eqevents_files">
+        <include name="**" />
+    </fileset>
 
     <!-- com_zonales -->
     <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -341,6 +345,15 @@
         <zip destfile="${src_dist_dir}/${dist.plg_solrsearch.file}.zip" >
             <fileset refid="plg_solrsearch_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_solrsearch.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- plugin eqevents -->
+    <target name="dist_plg_eqevents" description="Crea archivo de distribución Joomla para el plugin EqEvents">
+        <echo message="Creando archivo de distribución de plugin EqEvents"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_eqevents.file}.zip" >
+            <fileset refid="plg_eqevents_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_user_eqevents.ini" prefix="language" />
         </zip>
     </target>
 
