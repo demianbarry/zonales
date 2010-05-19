@@ -253,11 +253,6 @@ class EqZonalesControllerEq extends JController {
      * @return El id en la bd del ecualizador o FALSE si no se pudo crear.
      */
     function createEqImpl($params = NULL) {
-        // Chequea que el usuario haya iniciado sesión
-//        $user =& JFactory::getUser();
-//        if ($user->guest) {
-//            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
-//        }
         if (is_null($params)) {
             return FALSE;
         }
@@ -267,8 +262,6 @@ class EqZonalesControllerEq extends JController {
 
         // Chequea que el usuario indicado sea valido
         if ($user_id <= 0) {
-            //return $this->helper->getEqJsonResponse(
-            //        comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
             return FALSE;
         }
 
@@ -292,16 +285,9 @@ class EqZonalesControllerEq extends JController {
         $model = &$this->getModel('Eq');
         if (!$model->store(false, false, $eqData)) {
             return FALSE;
-//            $jtext = new JText();
-//            $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
-//            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
         }
 
-//        $jtext = new JText();
-//        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
-//        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
-        //return true;
-        return $model->getId();
+        return $model->getData()->id;
     }
 
     function retrieveEqImpl($eqId) {
