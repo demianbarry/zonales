@@ -49,7 +49,8 @@ class comEqZonalesHelper
         $jtext = new JText();
         
         if (is_null($params)) {
-            echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE, $jtext->sprintf('ZONALES_JSON_READ_FAILURE', $type));
+            echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                    $jtext->sprintf('ZONALES_JSON_READ_FAILURE', $type));
             return false;
         }
 
