@@ -221,36 +221,11 @@ class EqZonalesControllerEq extends JController {
      * Fin metodos auxiliares
      */
 
-    function runQuery() {
-        $default = '###';
-        $data = array();
-        $value = JRequest::getString('value',$default,'method');
-        $field = JRequest::getString('field',$default,'method');
-        $type = JRequest::getString('type',$default,'method');
-
-        $data[SolrQuery::VALUE] = ($value == $default) ? null : $value;
-        $data[SolrQuery::FIELD] = ($field == $default) ? null : $field;
-        $data[SolrQuery::TYPE] = ($type == $default) ? SolrQuery::QUERY : $type;
-
-        $dataArray = array();
-        $dataArray[] = $data;
-
-        $query = new UserQuery(JFactory::getUser(),$dataArray);
-        $client = new SolrClient();
-        $componentHelper = new JComponentHelper();
-        $client->setHost($componentHelper->getParams('com_eqzonales')->get('solrurl'));
-
-        $results = $client->executeQuery($query);
-
-       // print_r($results);
-    }
-
     /**
-     * Genera un nuevo ecualizador para el usuario indicado.
+     * Crea un nuevo ecualizador a partir de los parametros especificados.
      *
-     * @param int $user_id id usuario
-     * @param String $eq_name nombre del ecualizador
-     * @return El id en la bd del ecualizador o FALSE si no se pudo crear.
+     * @param stdClass $params Objeto con parametros del ecualizador.
+     * @return El ID del ecualizador en la BD o FALSE si fallo la creación.
      */
     function createEqImpl($params = NULL) {
         if (is_null($params)) {
