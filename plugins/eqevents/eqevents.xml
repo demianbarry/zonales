@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="search">
+    <name>User - Zonales Eq Creation</name>
+    <author>Mediabit</author>
+    <creationDate>Mayo 2010</creationDate>
+    <copyright>Copyright (C) 2010 Mediabit. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>admin@mediabit.com.ar</authorEmail>
+    <authorUrl>www.mediabit.com.ar</authorUrl>
+    <version>0.1</version>
+    <description>Crea, elimina o modifica Ecualizadores según eventos en el Workflow de Usuarios (creación, modificación, etc)</description>
+    <files>
+        <filename plugin="eqevents">eqevents.php</filename>
+    </files>
+    <languages folder="language">
+        <language tag="es-ES">es-ES.plg_user_eqevents.ini</language>
+    </languages>
+    <params>
+    </params>
+</install>
