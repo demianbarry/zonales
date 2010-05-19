@@ -57,7 +57,7 @@ abstract class ZonalesModelBaseModel extends JModel {
      * Setea el identificador único
      *
      * @access public
-     * @param $id int identificador del modelo
+     * @param int $id identificador del modelo
      */
     function setId($id) {
         // Set id and wipe data
@@ -67,6 +67,7 @@ abstract class ZonalesModelBaseModel extends JModel {
 
     /**
      * Recupera el Id en la BD del registro que este modelo representa.
+     * 
      * @return Int Identificador único del registro en la BD
      */
     function getId() {
@@ -289,18 +290,22 @@ abstract class ZonalesModelBaseModel extends JModel {
     }
 
     /**
-     * Salva el contenido del modelo en la base de datos.
+     * Persiste el contenido del modelo en la base de datos.
      *
-     * @param boolean $updateNulls
-     * @param boolean $use_post_data
-     * @param Array $data datos a almacenar (no tomar del post)
-     * @return boolean true si el registro fue guardado exitosamente
+     * @param boolean $updateNulls FALSE para no actualizar campos que contengan NULL
+     * @param boolean $use_post_data TRUE para recuperar datos desde POST
+     * @param Array $data Si $use_post_data es FALSE, especifica los datos a persistir
+     * @return boolean TRUE si el registro fue guardado exitosamente
      */
     function store($updateNulls = false, $use_post_data = true, $data = null) {
         $row =& $this->getTable();
 
-        //$data = $use_post_data ? JRequest::get('post') : $this->_data;
-
+        /**
+         * Decide de donde recuperar la información a persistir. Esta puede
+         * provenir de las variables POST, ser los datos ya contenidos en el
+         * modelo ($this->_data) o ser especificada por medio del parametro
+         * $data.
+         */
         if ($use_post_data) {
             $data = JRequest::get('post');
         } else {
@@ -311,6 +316,11 @@ abstract class ZonalesModelBaseModel extends JModel {
             }
         }
 
+        /**
+         * Realiza el binding de los datos a persistir con el objeto JTable, y
+         * ejecuta a continuación el método afterBind(). Este último metodo
+         * debe ser sobrecargado en los modelos que extiendan BaseModel.
+         */
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -339,15 +349,19 @@ abstract class ZonalesModelBaseModel extends JModel {
         }
 
 
-        // Make sure the record is valid
+        /**
+         * Realiza el chequeo de los datos a persistir. En caso de éxito pasa
+         * a ejecutar el metodo afterCheck() el cual debe ser sobrecargado en
+         * los modelos que extiendan BaseModel para ofrecer chequeos especificos
+         * para cada caso.
+         */
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
         $this->afterCheck($row);
 
-        // Store the table to the database
-        //if (!$row->store($updateNulls)) {
+        // Persiste el modelo en la base de datos
         if (JError::isError($row->store($updateNulls))) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -360,9 +374,9 @@ abstract class ZonalesModelBaseModel extends JModel {
     }
 
     /**
-     * Acciones a realizar luego del binding.
-     * Los modelos que extiendan esta BaseModel pueden sobreescribir este método
-     * para realizar acciones extras luego del binding.
+     * Acciones a realizar luego del binding. Los modelos que extiendan esta
+     * BaseModel pueden sobreescribir este método para realizar acciones extras
+     * luego del binding.
      *
      * @param JTable $row referencia al objeto JTable del modelo
      * @return boolean true en caso de no haber errores, false en contrario
@@ -372,9 +386,9 @@ abstract class ZonalesModelBaseModel extends JModel {
     }
 
     /**
-     * Acciones a realizar luego del chequeo.
-     * Los modelos que extiendan esta BaseModel pueden sobreescribir este método
-     * para realizar acciones extras luego del chequeo.
+     * Acciones a realizar luego del chequeo. Los modelos que extiendan esta
+     * BaseModel pueden sobreescribir este método para realizar acciones extras
+     * luego del chequeo.
      *
      * @param JTable $row referencia al objeto JTable del modelo
      * @return boolean true en caso de no haber errores, false en contrario
