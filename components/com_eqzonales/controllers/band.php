@@ -31,7 +31,7 @@ class EqZonalesControllerBand extends JController {
      * @var comEqZonalesHelper
      */
     var $helper = null;
-    
+
     /**
      * Constructor
      *
@@ -42,20 +42,64 @@ class EqZonalesControllerBand extends JController {
         $this->helper = new comEqZonalesHelper();
     }
 
+    /**
+     * Crea o modifica un conjunto de bandas. La función esta pensada para ser
+     * invocada mediante Ajax desde el frontend. Espera recuperar como variable
+     * POST un mensaje JSON con los datos necesarios para la creación del nuevo
+     * ecualizador.
+     *
+     * Debido a que esta pensando para ejecutarse por medio de AJAX agrega
+     * chequeos de cuestiones de seguridad, tales como si el usuario esta
+     * registrado e inicio sesión.
+     *
+     * @return JSON con información acerca del resultado de la operación.
+     */
     function modifyBandAjax() {
+        // Controla que el request haya sido enviado por un usuario registrado.
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+            return;
+        }
+
+        $jtext = new JText();
+
+        /**
+         * Recupera los parametros desde POST
+         */
         $bands = JRequest::getVar('slider', NULL, 'post', 'array');
         $eqid = JRequest::getVar('eqid', NULL, 'post', 'int');
 
+        /**
+         * Genera un arreglo (bandsArray) con instancias de stdClass que
+         * contienen los parametros necesarios para las bandas.
+         */
         $bandsArray = array();
         foreach ($bands as $band) {
             list($id, $valueId, $peso) = explode("-", $band);
             $bandsArray[] = (object) array('id' => $id, 'cp_value_id' => $valueId, 'peso' => $peso, 'eq_id' => $eqid);
         }
 
-        $this->modifyBandImpl($bandsArray);
+        /**
+         * Crea/modifica las bandas del ecualizador según la configuración
+         * especificada.
+         */
+        if($this->modifyBandImpl($bandsArray)) {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+            $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND')));
+        } else {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
+            $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND')));
+        }
+
         return;
     }
 
+    /**
+     *
+     * @return <type>
+     */
     function modifyBand() {
         $band_params = JRequest::getVar('params', NULL, 'post', 'string');
         $params = $this->helper->getJsonParams($band_params, JText::_('ZONALES_EQ_BAND'));
@@ -64,17 +108,46 @@ class EqZonalesControllerBand extends JController {
         $this->modifyBandImpl($params);
     }
 
-    function modifyBandImpl($params = NULL) {
-
-        // Chequea que el usuario haya iniciado sesión
-        $user =& JFactory::getUser();
-        if ($user->guest) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+    /**
+     *
+     */
+    function createDefaultBands($eqid = null) {
+        if (is_null($eqid)) {
+            return false;
         }
+
+        $params = array ();
+
+        $banda = new stdClass();
+        $banda->valor = 'Valor';
+        $banda->peso = '50';
+        $banda->cp_value_id = '123';
+        $banda->eq_id = '';
+        $banda->default = '0';
+        $banda->active = '0';
+        
+        $params[] = $banda;
+
+        /**
+         * Crea/modifica las bandas del ecualizador según la configuración
+         * especificada.
+         */
+        if($this->modifyBandImpl($params)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param <type> $params
+     * @return <type>
+     */
+    function modifyBandImpl($params = NULL) {
 
         // Chequea que hayan sido pasados valores para las bandas
         if (is_null($params)) {
-            return;
+            return false;
         }
 
         // Va guardando cada banda
@@ -92,30 +165,20 @@ class EqZonalesControllerBand extends JController {
             );
 
             if (is_null($bandData['eq_id'])) {
-                return;
+                return false;
             }
 
             if (is_null($bandData['cp_value_id'])) {
-                return;
+                return false;
             }
 
             // Almacena el ecualizador
             $model = &$this->getModel('Banda');
             if (!$model->store(false, false, $bandData)) {
-                $jtext = new JText();
-                $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND'));
-                echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);
-                return;
+                return false;
             }
-            
         }
 
-        $jtext = new JText();
-        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND'));
-        echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);
-        return;
-
-        //var_dump($band);
-        //var_dump($bandData);
+        return true;
     }
 }

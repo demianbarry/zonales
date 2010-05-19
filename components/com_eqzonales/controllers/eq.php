@@ -250,6 +250,7 @@ class EqZonalesControllerEq extends JController {
      *
      * @param int $user_id id usuario
      * @param String $eq_name nombre del ecualizador
+     * @return El id en la bd del ecualizador o FALSE si no se pudo crear.
      */
     function createEqImpl($params = NULL) {
         // Chequea que el usuario haya iniciado sesión
@@ -258,7 +259,7 @@ class EqZonalesControllerEq extends JController {
 //            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
 //        }
         if (is_null($params)) {
-            return false;
+            return FALSE;
         }
 
         $user_id = property_exists($params, 'user_id') ? $params->user_id : NULL;
@@ -266,8 +267,9 @@ class EqZonalesControllerEq extends JController {
 
         // Chequea que el usuario indicado sea valido
         if ($user_id <= 0) {
-            return $this->helper->getEqJsonResponse(
-                    comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
+            //return $this->helper->getEqJsonResponse(
+            //        comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
+            return FALSE;
         }
 
         // Nombre por defecto para el ecualizador
@@ -289,7 +291,7 @@ class EqZonalesControllerEq extends JController {
         // Almacena el ecualizador
         $model = &$this->getModel('Eq');
         if (!$model->store(false, false, $eqData)) {
-            return false;
+            return FALSE;
 //            $jtext = new JText();
 //            $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
 //            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
@@ -298,7 +300,8 @@ class EqZonalesControllerEq extends JController {
 //        $jtext = new JText();
 //        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
 //        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
-        return true;
+        //return true;
+        return $model->getId();
     }
 
     function retrieveEqImpl($eqId) {
