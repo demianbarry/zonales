@@ -122,7 +122,7 @@ class EqZonalesControllerBand extends JController {
         $banda->valor = 'Valor';
         $banda->peso = '50';
         $banda->cp_value_id = '123';
-        $banda->eq_id = '';
+        $banda->eq_id = $eqid;
         $banda->default = '0';
         $banda->active = '0';
         
