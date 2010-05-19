@@ -19,15 +19,22 @@ jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 jimport('solr.query');
 jimport('solr.client');
+
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_eqzonales' . DS . 'queries' . DS . 'userquery.php';
 require_once JPATH_ROOT . DS . 'administrator'. DS . 'components' . DS . 'com_eqzonales' . DS . 'helper' . DS . 'helper.php';
 
 /**
- * Controlador
+ * Controlador Motor de Ecualización - Ecualizador
  *
+ * El presente controlador contiene todos los métodos necesarios para crear
+ * nuevos ecualizadores así como para modificarlos, y otros métodos auxiliares.
  */
 class EqZonalesControllerEq extends JController {
 
+    /**
+     * Helper de Zonales
+     * @var comEqZonalesHelper
+     */
     var $helper = null;
 
     /**
@@ -40,16 +47,70 @@ class EqZonalesControllerEq extends JController {
         $this->helper = new comEqZonalesHelper();
     }
 
-    function createEq() {
+    /**
+     * Crea un nuevo Ecualizador. Esta función esta pensanda para ser invocada
+     * mediante Ajax desde el frontend. Espera recuperar como variable POST
+     * un mensaje JSON con los datos necesarios para la creación del nuevo
+     * ecualizador.
+     *
+     * Debido a que esta pensando para ejecutarse por medio de AJAX agrega
+     * chequeos de cuestiones de seguridad, tales como si el usuario esta
+     * registrado e inicio sesión.
+     *
+     * @return JSON con información acerca del resultado de la operación.
+     */
+    function createEqAjax() {
+        $jtext = new JText();
+
+        // Controla que el request haya sido enviado por un usuario registrado.
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                        JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+        }
+
+        // recupera parametro JSON desde POST
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
+        // parsea el request JSON
         $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
-        if (!$params) return;
 
-        echo $this->createEqImpl($params);
-        return;
+        // falla si no se han pasado parametros para el ecualizador
+        if (!$params) {
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
+        }
+
+        // intenta crear el ecualizador
+        if($this->createEqImpl($params)) {
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
+        } else {
+            return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS', JText::_('ZONALES_EQ_EQ')));
+        }
     }
 
+    /**
+     * Crea un nuevo Ecualizador. Esta función esta pensanda para ser invocada
+     * directamente en el backend, durante el procesamiento del request.
+     *
+     * @param StdClass $params información para el nuevo ecualizador
+     * @return boolean true en caso de que pueda crearse el ecualizador
+     */
+    function createEq($params) {
+        // falla si no se han pasado parametros para el ecualizador
+        if (!$params) {
+            return false;
+        }
+        
+        return $this->createEqImpl($params);
+    }
+
+    /**
+     * TODO: comentar!!!
+     * @return <type>
+     */
     function modifyEq() {
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
@@ -72,10 +133,9 @@ class EqZonalesControllerEq extends JController {
         return $this->retrieveUserEqImpl($userId);
     }
 
-    /*
+    /**
      *  Metodos auxiliares
      */
-
     function setEqName() {
         $name = JRequest::getString('name',null,'method');
 
@@ -91,7 +151,6 @@ class EqZonalesControllerEq extends JController {
         $eq->nombre = $name;
 
         return $model->store(false,false,$eq);
-        
     }
 
     function getEqName() {
@@ -187,7 +246,6 @@ class EqZonalesControllerEq extends JController {
     }
 
     /**
-     * 
      * Genera un nuevo ecualizador para el usuario indicado.
      *
      * @param int $user_id id usuario
@@ -195,9 +253,12 @@ class EqZonalesControllerEq extends JController {
      */
     function createEqImpl($params = NULL) {
         // Chequea que el usuario haya iniciado sesión
-        $user =& JFactory::getUser();
-        if ($user->guest) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+//        $user =& JFactory::getUser();
+//        if ($user->guest) {
+//            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+//        }
+        if (is_null($params)) {
+            return false;
         }
 
         $user_id = property_exists($params, 'user_id') ? $params->user_id : NULL;
@@ -205,7 +266,8 @@ class EqZonalesControllerEq extends JController {
 
         // Chequea que el usuario indicado sea valido
         if ($user_id <= 0) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
+            return $this->helper->getEqJsonResponse(
+                    comEqZonalesHelper::FAILURE, JText::_('ZONALES_EQ_INVALID_USER'));;
         }
 
         // Nombre por defecto para el ecualizador
@@ -222,18 +284,21 @@ class EqZonalesControllerEq extends JController {
         );
 
         // Agrega bandas por defecto del ecualizador
+        // TODO: Incorporar generación de bandas por default
 
         // Almacena el ecualizador
         $model = &$this->getModel('Eq');
         if (!$model->store(false, false, $eqData)) {
-            $jtext = new JText();
-            $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
+            return false;
+//            $jtext = new JText();
+//            $message = $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_EQ'));
+//            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE, $message);;
         }
 
-        $jtext = new JText();
-        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
-        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
+//        $jtext = new JText();
+//        $message = $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_EQ'));
+//        return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS, $message);;
+        return true;
     }
 
     function retrieveEqImpl($eqId) {

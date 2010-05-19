@@ -19,11 +19,17 @@ jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
 /**
- * Controlador
+ * Controlador Motor de Ecualización - Bandas
  *
+ * El presente controlador contiene todos los métodos necesarios para crear
+ * nueva bandas así como para modificarlas, y otros métodos auxiliares.
  */
 class EqZonalesControllerBand extends JController {
 
+    /**
+     * Helper de Zonales
+     * @var comEqZonalesHelper
+     */
     var $helper = null;
     
     /**

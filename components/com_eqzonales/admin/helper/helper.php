@@ -16,23 +16,40 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Funciones de apoyo para los controladores de EqZonales.
+ */
 class comEqZonalesHelper
 {
     const FAILURE = 'FAIL';
     const SUCCESS = 'SUCCESS';
 
+    /**
+     * Serializa los parametros como un cadena JSON.
+     *
+     * @param String $status Resultado de la operación
+     * @param String $msg Detalle del resultado de la operación
+     * @return String Una cadena JSON con los parametros serializados
+     */
     function getEqJsonResponse($status, $msg)
     {
         $response = array('status' => $status, 'msg' => $msg);
         return json_encode($response);
     }
 
+    /**
+     * Recupera de una cadena JSON un arreglo de parámetros.
+     *
+     * @param String $json_params Cadena JSON que contiene el parametro a extraer
+     * @param String $type Mensaje de error a retornar si falla el parseo
+     * @return StdObject El parametro recuperado
+     */
     function getJsonParams($json_params,$type) {
         $params = json_decode($json_params);
         $jtext = new JText();
         
         if (is_null($params)) {
-            echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE, $jtext->sprintf('ZONALES_JSON_READ_FAILURE',$type));
+            echo $this->getEqJsonResponse(comEqZonalesHelper::FAILURE, $jtext->sprintf('ZONALES_JSON_READ_FAILURE', $type));
             return false;
         }
 
