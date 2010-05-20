@@ -109,7 +109,12 @@ class EqZonalesControllerBand extends JController {
     }
 
     /**
+     * Genera un conjunto de bandas por defecto para un ecualizador dado. Este
+     * método esta pensando principalmente para ser invocado durante la creación
+     * de un ecualizador por defecto para un nuevo usuario.
      *
+     * @param int $eqid id del ecualizador al cual asignar las bandas.
+     * @return boolean TRUE al agregar con exito las bandas al ecualizador.
      */
     function createDefaultBands($eqid = null) {
         if (is_null($eqid)) {
