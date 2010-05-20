@@ -65,8 +65,9 @@ class EqZonalesControllerEq extends JController {
         // Controla que el request haya sido enviado por un usuario registrado.
         $user =& JFactory::getUser();
         if ($user->guest) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
                         JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+            return;
         }
 
         // recupera parametro JSON desde POST
@@ -77,18 +78,21 @@ class EqZonalesControllerEq extends JController {
 
         // falla si no se han pasado parametros para el ecualizador
         if (!$params) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
                     $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
+            return;
         }
 
         // intenta crear el ecualizador
         if(!$this->createEqImpl($params)) {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
                     $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
         } else {
-            return $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
                     $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS', JText::_('ZONALES_EQ_EQ')));
         }
+        
+        return;
     }
 
     /**
@@ -105,6 +109,54 @@ class EqZonalesControllerEq extends JController {
         }
         
         return $this->createEqImpl($params);
+    }
+
+    /**
+     * Modifica un Ecualizador. Esta función esta pensanda para ser invocada
+     * mediante Ajax desde el frontend. Espera recuperar como variable POST
+     * un mensaje JSON con los datos necesarios para la creación del nuevo
+     * ecualizador.
+     *
+     * Debido a que esta pensando para ejecutarse por medio de AJAX agrega
+     * chequeos de cuestiones de seguridad, tales como si el usuario esta
+     * registrado e inicio sesión.
+     *
+     * @return JSON con información acerca del resultado de la operación.
+     */
+    function modifyEqAjax() {
+        $jtext = new JText();
+
+        // Controla que el request haya sido enviado por un usuario registrado.
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                        JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+            return;
+        }
+
+        // recupera parametro JSON desde POST
+        $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
+
+        // parsea el request JSON
+        $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
+
+        // falla si no se han pasado parametros para el ecualizador
+        if (!$params) {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
+            return;
+        }
+
+        // modifica el ecualizador
+        if(!$this->modifyEqImpl($params)) {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_EQ')));
+        } else {
+            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
+                    $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS', JText::_('ZONALES_EQ_EQ')));
+        }
+        
+        return;
     }
 
     /**
