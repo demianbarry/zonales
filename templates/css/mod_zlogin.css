@@ -80,3 +80,8 @@
 .moduletable_zlogin #recaptcha_image img{
 	width:270px !important;
 }
+
+input.inactive {
+    font-style: italic;
+    font-weight: bold;
+}
