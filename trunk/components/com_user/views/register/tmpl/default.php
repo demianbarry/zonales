@@ -282,6 +282,7 @@ if(isset($this->message)) {
                                  id="<?php echo $inputElement['name'] . 'set' ?>">
                                                 <?php
 
+                                                if ($type == 'password') continue;
                                                     $elementsHTML[$name] = 1;
 
                                                     $value = sprintf(JText::_($message),$provider->name);
@@ -293,6 +294,7 @@ if(isset($this->message)) {
                                                             $value = '';
                                                             $show = 'block';
                                                         }
+
 
                                                         echo '<input type="hidden" name="'. $name .'submitshow" id="'. $name .'submitshow" value="'. $show .'" />';
 
