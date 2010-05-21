@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
+jimport('joomla.html.pane');
 
 class AapuViewEditUser extends JView {
     /** @var QuotaOptions */

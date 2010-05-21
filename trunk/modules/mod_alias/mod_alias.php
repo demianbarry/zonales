@@ -20,6 +20,7 @@ else {
     $db->setQuery($query);
     $dbaliaslist = $db->loadObjectList();
 
+
     // si el usuario no tiene alias registrados
     // no muestra la seccion de habilitacion/deshabilitacion de alias
     if (count($dbaliaslist) == 0) {

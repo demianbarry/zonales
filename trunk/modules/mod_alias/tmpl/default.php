@@ -4,6 +4,10 @@
         document.getElementById('zlogin').style.display = 'block';
         document.getElementById('submit').value = '<?php echo $submitText ?>';
     }
+
+    function changeStatus() {
+        for ()
+    }
 </script>
 
 <?php # verifica si hay que mostrar la seccion de habilitacion/deshabilitacion de alias ?>
@@ -58,9 +62,10 @@
         </tbody>
     </table>
 
-    <input type="submit"
+    <input type="button"
            value="<?php echo JText::_('ZONALES_ALIAS_ACCEPT'); ?>"
-           name="submit"
+           name="submitChanges"
+           onclick=""
     />
     <input type="hidden"
            name="option"

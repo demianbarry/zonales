@@ -164,9 +164,10 @@ class CustompropertiesControllerValues extends JController {
     }
 
     function deleteValue() {
+        $pid = JRequest::getVar('pid', 0, '', 'int');
         $model = & $this->getModel('Cpvalue');
         $model->deleteValue();
-        $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id;
+        $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id.'&pid='.$pid;
         $this->setRedirect($link);
     }
 
