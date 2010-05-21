@@ -61,6 +61,8 @@ foreach ($this->providerslist as $prov) {
     // -->
 </script>
 
+<script src="register.js" type="text/javascript"></script>
+
 <?php
 if(isset($this->message)) {
     $this->display('message');
@@ -204,6 +206,24 @@ if(isset($this->message)) {
                 </ul>
             </td>
         </tr>
+
+        <!-- SOLICITUD DEL ZONAL -->
+
+        <tr>
+            <td>
+                <label for="zonal">
+                    <?php echo '*' . $this->zonalMessage ?>:
+                </label>
+            </td>
+            <td>
+                <!-- <input type="button" onclick="showmap();" name="zonal" value="<?php echo $this->zonalCurrent ?>"/> -->
+                <label id="lblZonal"><?php echo $this->zonalMessage ?></label>
+                <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
+                    <!-- <img src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_zonales.gif" /> -->
+                </a>
+            </td>
+        </tr>
+
         <tr>
             <?php
                     $provid = JRequest::getVar('providerid', '', 'get', 'string');

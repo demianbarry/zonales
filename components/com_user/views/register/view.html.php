@@ -16,6 +16,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php';
 
 /**
  * HTML View class for the Registration component
@@ -91,6 +92,14 @@ class UserViewRegister extends JView {
             }
         }
 
+        // averiguamos el zonal actual
+        $zActual = comZonalesHelper::getZonalActual();
+        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zActual;
+        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+        $width = $zonalesParams->get('width_mapa_flash', '');
+        $height = $zonalesParams->get('height_mapa_flash', '');
+
+
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
@@ -133,6 +142,9 @@ class UserViewRegister extends JView {
         $this->assign('externalid',$externalid);
         $this->assign('force',$force);
         $this->assignRef('inputData',$inputData);
+        $this->assign('zonalMessage',$zonalCurrentMessage);
+        $this->assign('width',$width);
+        $this->assign('height',$height);
         parent::display($tpl);
     }
 }
