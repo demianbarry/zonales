@@ -13,7 +13,11 @@ endif
  ?>
 <script text="text/javascript">
     function logout(){
-        <?php echo ($protocol == 'Facebook Connect') ? 'FB.Connect.logout(function() {  });' : '' ?>
+        <?php 
+        $session =& JFactory::getSession();
+        $protocol = $session->get('accessprotocol');
+        $logoutRoute = JRoute::_('index.php?option=com_user&task=logout');
+        echo ($protocol == 'Facebook Connect') ? 'FB.Connect.logout(function() {  });' : '' ?>
         window.location.href='<?php echo $logoutRoute ?>';
     }
 </script>
