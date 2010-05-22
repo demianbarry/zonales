@@ -509,9 +509,18 @@ class UserController extends JController {
 //            );
 
             $attributesEntityModel = new AapuModelAttribute_entity();
-            $attributesEntityModel->store(false, false, $dataSex);
-            $attributesEntityModel->store(false, false, $dataBirthday);
-            $attributesEntityModel->store(false, false, $dataZonal);
+            // If there was an error with registration, set the message and display form
+            if ( !$attributesEntityModel->store(false, false, $dataSex) ||
+                !$attributesEntityModel->store(false, false, $dataBirthday) ||
+                !$attributesEntityModel->store(false, false, $dataZonal)) {
+                
+                JError::raiseWarning('', JText::_( $user->getError()));
+
+                $message = JText::_('SYSTEM_MESSAGE_ERROR_REGISTER');
+
+                UserHelper::showMessage(ERROR, $message);
+                return false;
+            }
 
             // Send registration confirmation mail
 
