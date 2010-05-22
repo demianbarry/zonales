@@ -9,14 +9,14 @@ $db = &JFactory::getDBO();
 $selectProvider = new stdClass();
 $selectProvider->name = JText::_('ZLOGIN_CHOOSE_PROVIDER');
 $selectProvider->required_input = ':::';
-$selectProvider->groupname = 'Guest';
+$selectProvider->groupname = 'Public';
 $providerslist = array($selectProvider);
 
 // realiza la consulta a la base de datos
-$selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input '.
-        'from #__providers p, #__groups g '.
-        'where p.access=g.id and p.enabled=1 '.
-        'order by (select count(*) from #__alias a where p.id=a.provider_id) desc ';
+$selectProviders = 'SELECT p.name, p.icon_url, g.name as groupname, p.required_input '.
+                    'FROM #__providers p, #__groups g '.
+                    'WHERE p.access=g.id AND p.enabled=1 '.
+                    'ORDER BY p.name';
 $db->setQuery($selectProviders);
 $providers = $db->loadObjectList();
 $providerslist = array_merge($providerslist,$providers);
@@ -73,9 +73,9 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     var providers = new Array();
 
     window.addEvent('domready', function() {
-        
+
         $('formzlogin_submit').setStyle('display', 'none');
-        
+
 
 <?php foreach ($providerslist as $provider) {
     echo "providers.push({
@@ -83,17 +83,19 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
             inputs: [";
     $first = true;
     foreach($inputData[$provider->name] as $input) {
-        if($first) {
-            $first = false;
-        } else {
-            echo ',';
-        }
-        echo "  {
+        if (!(!$user->guest && $provider->groupname == 'Guest')) {
+            if($first) {
+                $first = false;
+            } else {
+                echo ',';
+            }
+            echo "  {
                     type: '".$input['type']."',
                     name: '".$input['name']."',
                     message: '".JText::_($input['message'])."',
                     callback: '".$input['callback']."'
                  }";
+        }
     }
     echo "]";
     echo "});";
