@@ -5,9 +5,9 @@ defined('_JEXEC') or die('Restricted access');
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 $helper = new comZonalesHelper();
 
-// menues
+// recupera los menus configurados
 $menues = $helper->getMenus();
-// submenues
+// recupera los submenús y los asocia el menú correspondiente
 foreach ($menues as $menu) {
 	if ($menu->link) {
 		$menu->link .= '&Itemid=' . $menu->itemid;
