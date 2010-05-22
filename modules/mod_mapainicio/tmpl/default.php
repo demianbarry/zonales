@@ -3,7 +3,7 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
-<div id="map">
+<div id="map" style="float: left;">
 	No se puede cargar la pel&iacute;cula.
 </div><!-- END #map -->
 
