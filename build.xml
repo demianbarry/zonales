@@ -394,11 +394,11 @@
             <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
         </zip>
     </target>
-
+    
     <!-- componente mod_jxcomments_comment (modificaciones) -->
-    <target name="dist_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
+    <target name="inst_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
         <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_jxcomments.file}.zip">
+        <zip destfile="${src_dist_dir}/${inst.mod_jxcomments.file}.zip">
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
         </zip>
