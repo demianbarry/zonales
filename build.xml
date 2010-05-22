@@ -18,6 +18,7 @@
     <!-- path plugins -->
     <property name="src_plugins" value="${src}/plugins"/>
     <property name="src_libraries" value="${src}/libraries"/>
+    <property name="src_templates" value="${src}/templates"/>
     <property name="src_frontend_components" value="${src}/components"/>
     <property name="src_images" value="${src}/images"/>
 
@@ -141,59 +142,16 @@
         <include name="**" />
     </fileset>
 
+    <!-- tmpl_z1 -->
+    <fileset dir="${src_templates}/tmpl_z1" id="tmpl_z1_files">
+        <include name="**" />
+    </fileset>
+
     <fileset dir="${src_libraries}/g2p-utils" id="lib_g2p-utils_files">
         <include name="**" />
     </fileset>
 
-    <!-- ======================================================
-    copia archivos instalación
-    ====================================================== -->
-    <!-- archivos i18n -->
-    <target name="inst_frontend_i18n" description="copia archivos i18n frontend en instalación development">
-        <echo message="copiando archivos i18n en instalacion development"/>
-        <copy todir="${dst_frontend_language_dir}/es-ES">
-            <fileset dir="${src_i18n_dir}/frontend/es-ES" />
-        </copy>
-    </target>
-
-    <!-- modulo seleccionazonal -->
-    <target name="inst_mod_seleccionazonal" description="copia modulo seleccionazonal a dev">
-        <echo message="copiando modulo seleccionazonal en instalacion development"/>
-        <copy todir="${dst_modules_dir}/mod_seleccionazonal">
-            <fileset dir="${src_modules}/mod_seleccionazonal" />
-        </copy>
-    </target>
-
-    <!-- componente content (modificado) -->
-    <target name="inst_com_content" description="copia componente content a dev">
-        <echo message="copiando componente content en instalacion development"/>
-        <copy todir="${dst_frontend_components_dir}/com_content">
-            <fileset dir="${src_frontend_components}/com_content" />
-        </copy>
-    </target>
-
-    <!-- componente userzonales -->
-    <target name="inst_com_zonales" description="copia componente userzonales a dev">
-        <echo message="copiando componente userzonales en instalacion development"/>
-        <copy todir="${dst_frontend_components_dir}/com_zonales">
-            <fileset dir="${src_frontend_components}/com_zonales">
-                <exclude name="admin/**" />
-            </fileset>
-        </copy>
-    </target>
-
-    <!-- componente reservas -->
-    <target name="inst_com_reservas" description="copia componente reservas a dev">
-        <echo message="copiando componente reservas en instalacion development"/>
-        <copy todir="${dst_frontend_components_dir}/com_reservas">
-            <fileset dir="${src_frontend_components}/com_reservas">
-                <exclude name="admin/**" />
-            </fileset>
-        </copy>
-    </target>
-
-
-
+   
     <!-- ======================================================
     archivos distribución
     ====================================================== -->
@@ -387,15 +345,15 @@
         </zip>
     </target>
 
-    <!-- componente com_content (modificaciones) -->
-    <target name="dist_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
+    <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
+    <target name="inst_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
         <echo message="Creando archivos de distribución de componente content"/>
-        <zip destfile="${src_dist_dir}/${dist.com_content.file}.zip">
+        <zip destfile="${src_dist_dir}/${inst.com_content.file}.zip">
             <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
         </zip>
     </target>
     
-    <!-- componente mod_jxcomments_comment (modificaciones) -->
+    <!-- componente mod_jxcomments_comment (modificaciones)DESCOMPRIMIR EN RAIZ DE JOOMLA -->
     <target name="inst_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
         <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
         <zip destfile="${src_dist_dir}/${inst.mod_jxcomments.file}.zip">
@@ -431,7 +389,7 @@
         </zip>
     </target>
 
-    <!-- componente com_aardvertiser (fork) -->
+    <!-- componente com_aardvertiser (fork) CLASIFICADOS -->
     <target name="dist_com_aardvertiser" description="Crea archivo de distribución Joomla para el componente Aardvertiser (fork)">
         <echo message="Creando archivo de distribución de componente Aardvertiser (fork)"/>
         <zip destfile="${src_dist_dir}/${dist.com_aardvertiser.file}.zip">
@@ -470,6 +428,15 @@
             <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
         </zip>
     </target>
+
+    <!-- template z1 -->
+    <target name="dist_tmpl_z1" description="Crea archivo de distribución Joomla para el template z1">
+        <echo message="Creando archivo de distribución de template z1"/>
+        <zip destfile="${src_dist_dir}/${dist.tmpl_z1.file}.zip">
+            <fileset refid="tmpl_z1_files"/>
+        </zip>
+    </target>
+
 
     <target name="dist_lib_g2p-utils" description="Crea archivo de distribución Joomla para la biblioteca G2P-utils">
         <echo message="Creando archivo de distribución de la biblioteca g2p-utils"/>
