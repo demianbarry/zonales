@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
+<install version="1.5" type="template">
+    <name>Z1</name>
+    <creationDate>15 de Enero de 2009</creationDate>
+    <author>Mediabit</author>
+    <authorEmail>sschipa@mediabit.com.ar</authorEmail>
+    <authorUrl>http://www.mediabit.com.ar</authorUrl>
+    <version>1.0.0</version>
+    <description>Este es el primer template para Zonales.</description>
+
+    <files>
+        <file>component_edit.php</file>
+        <file>component_map.php</file>
+        <file>component_only.php</file>
+        <file>component.php</file>
+        <file>favicon.ico</file>
+        <file>index.php</file>
+        <file>index.html</file>
+        <file>params.ini</file>
+        <file>raw.php</file>
+        <file>templateDetails.xml</file>
+        <file>template_thumbnail.png</file>
+        <file>css/_azul.css</file>
+        <file>css/content.css</file>
+        <file>css/glassnav.css</file>
+        <file>css/main.css</file>
+        <file>css/mod_comments_latest.css</file>
+        <file>css/mod_eq.css</file>
+        <file>css/mod_soycorresponsal.css</file>
+        <file>css/modules.css</file>
+        <file>css/mod_zlogin.css</file>
+        <file>css/reset.css</file>
+        <file>css/_violeta.css</file>
+        <file>css/index.html</file>
+        <file>html/index.html</file>
+        <file>html/com_search/index.html</file>
+        <file>html/com_search/search/default.php</file>
+        <file>html/com_search/search/index.html</file>
+        <file>html/com_search/search/yoosearch.php</file>
+        <file>html/mod_comments_latest/default.php</file>
+        <file>html/mod_comments_latest/index.html</file>
+        <file>images/index.html</file>
+        <file>images/icon_accordion_closed.png</file>
+        <file>images/icon_accordion_open.png</file>
+        <file>images/back-dotted-v.gif</file>
+        <file>images/back_lastComm.gif</file>
+        <file>images/back-wrapp.gif</file>
+        <file>images/base_buscador.jpg</file>
+        <file>images/bg-glass1.gif</file>
+        <file>images/bg_img.gif</file>
+        <file>images/bg_map_inicio.jpg</file>
+        <file>images/bg_top.gif</file>
+        <file>images/bg_top_slider.jpg</file>
+        <file>images/bot_search_orange.gif</file>
+        <file>images/bot_sent.gif</file>
+        <file>images/bot_zonales.gif</file>
+        <file>images/bulletpoint.gif</file>
+        <file>images/globo_comment.jpg</file>
+        <file>images/input_serach.jpg</file>
+        <file>images/linea_03.gif</file>
+        <file>images/logo_bottom.gif</file>
+        <file>images/logo_construccion.gif</file>
+        <file>images/logo_top.jpg</file>
+        <file>images/logozonal_bue_almirante_bro.gif</file>
+        <file>images/logozonal_bue_avellaneda.gif</file>
+        <file>images/logozonal_bue_berazategui.gif</file>
+        <file>images/logozonal_bue_esteban_echeverria.gif</file>
+        <file>images/logozonal_bue_ezeiza.gif</file>
+        <file>images/logozonal_bue_florencio_varela.gif</file>
+        <file>images/logozonal_bue_lanus.gif</file>
+        <file>images/logozonal_bue_lomas_de_zamora.gif</file>
+        <file>images/logozonal_bue_quilmes.gif</file>
+        <file>images/mediabit.gif</file>
+        <file>images/rss.gif</file>
+        <file>images/w3c_css.gif</file>
+        <file>images/w3c_xhtml_01.gif</file>
+        <file>images/_violeta/index.html</file>
+        <file>images/_violeta/back-dotted-v.gif</file>
+        <file>images/_violeta/back_lastComm.gif</file>
+        <file>images/_violeta/back-wrapp.gif</file>
+        <file>images/_violeta/base_buscador.jpg</file>
+        <file>images/_violeta/bg-glass1.gif</file>
+        <file>images/_violeta/bg_header.jpg</file>
+        <file>images/_violeta/bg_img.gif</file>
+        <file>images/_violeta/bg_map_inicio.jpg</file>
+        <file>images/_violeta/bg_top.gif</file>
+        <file>images/_violeta/bg_top_slider.jpg</file>
+        <file>images/_violeta/bot_next.gif</file>
+        <file>images/_violeta/bot_search_orange.gif</file>
+        <file>images/_violeta/bot_sent.gif</file>
+        <file>images/_violeta/bot_zonales.gif</file>
+        <file>images/_violeta/bulletpoint.gif</file>
+        <file>images/_violeta/globo_comment.jpg</file>
+        <file>images/_violeta/input_serach.jpg</file>
+        <file>images/_violeta/linea_03.gif</file>
+        <file>images/_violeta/logo_bottom.gif</file>
+        <file>images/_violeta/logo_top.jpg</file>
+        <file>images/_violeta/logozonal_bue_almirante_brown.gif</file>
+        <file>images/_violeta/logozonal_bue_avellaneda.gif</file>
+        <file>images/_violeta/logozonal_bue_berazategui.gif</file>
+        <file>images/_violeta/logozonal_bue_esteban_echeverria.gif</file>
+        <file>images/_violeta/logozonal_bue_ezeiza.gif</file>
+        <file>images/_violeta/logozonal_bue_florencio_varela.gif</file>
+        <file>images/_violeta/logozonal_bue_lanus.gif</file>
+        <file>images/_violeta/logozonal_bue_lomas_de_zamora.gif</file>
+        <file>images/_violeta/logozonal_bue_quilmes.gif</file>
+        <file>images/_violeta/mediabit.gif</file>
+        <file>images/_violeta/rss.gif</file>
+        <file>images/_violeta/title_inicio.gif</file>
+        <file>images/_violeta/w3c_css.gif</file>
+        <file>images/_violeta/w3c_xhtml_01.gif</file>
+        <file>javafx/index.html</file>
+        <file>javafx/ReservasJavaFX_browser.jnlp</file>
+        <file>javafx/ReservasJavaFX.jar</file>
+        <file>javafx/ReservasJavaFX.jnlp</file>
+        <file>js/index.html</file>
+        <file>js/glassnav.js</file>
+        <file>js/swfobject.js</file>
+        <file>swf/index.html</file>
+        <file>swf/inicio.swf</file>
+        <file>swf/mapa.swf</file>
+        <file>swf/topnav.swf</file>
+    </files>
+
+    <positions>
+        <position>topsearch</position>
+        <position>top</position>
+        <position>other</position>
+        <position>right</position>
+        <position>main</position>
+        <position>bottom</position>
+        <position>cols</position>
+    </positions>
+
+    <params>
+        <param name="mainColor" type="list" default="naranja" label="Color principal del template" description="Colores disponibles para usar en el template.">
+            <option value="azul">Azul</option>
+            <option value="violeta">Violeta</option>
+        </param>
+    </params>
+
+</install>
