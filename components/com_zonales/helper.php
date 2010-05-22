@@ -202,6 +202,12 @@ class comZonalesHelper {
             return null;
         }
 
+        /**
+         * El query a realizar opera de la siguiente manera:
+         * 1) Recupera los fields cuyo tipo asociados es 'menu'. Esto se realiza
+         *      mediante el INNER JOIN con cp2tipotag.
+         * 2) Recupera el menú asociado con la tupla field/value.
+         */
         $dbo	= & JFactory::getDBO();
         $query = 'SELECT '. $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '
                 . $dbo->nameQuote('f.label') .', '. $dbo->nameQuote('m.id') .' as itemid, '
