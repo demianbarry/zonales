@@ -1,0 +1,47 @@
+/* CSS del módulo 'Últimos comentarios' */
+
+.moduletable h3{
+	margin:0;
+	padding:10px;
+	background:#FF9900;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:16px;
+	color:#FFFFFF;
+	font-weight:bold;
+	letter-spacing:-1px;
+}
+
+.comments-list{
+	margin:0;
+	background:#F8F8F1;
+}
+
+.comments-list li{
+	padding-left:10px;
+	padding-right:10px;}
+
+.comments-list h4{
+	margin:0; padding:0;
+}
+
+.comments-list a{
+	color:#FF9900;
+	font-size:11px;
+	text-decoration:none;
+}
+
+.comments-list small{
+	margin:0; padding:0;
+	font-size:11px;
+	color:#999999;
+}
+
+.comments-list p.excerpt{
+	font-size:11px;
+	color:#666666;
+	
+	padding-bottom:10px;
+	
+	border-bottom:1px solid #ECECD9;
+	
+}
