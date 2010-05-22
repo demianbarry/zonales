@@ -107,7 +107,7 @@ class AapuViewEditUser extends JView {
                             $attr->values_list = '';
                         } else {
                             $dbase =& JFactory::getDBO();
-                            $query = substr($attr->values_list, 1);
+                            $query = substr($attr->values_list, 0);
                             $dbase->setQuery($query);
                             $attr->values_list = $dbase->loadRowList();
                         }

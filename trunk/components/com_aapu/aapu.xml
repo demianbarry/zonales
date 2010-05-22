@@ -101,9 +101,11 @@
             <filename>plugins/renders/render_for_COMBOBOX_data_type.php</filename>
             <filename>plugins/renders/render_for_LISTBOX_data_type.php</filename>
             <filename>plugins/renders/render_for_MULTI_LISTBOX_data_type.php</filename>
+            <filename>plugins/renders/render_for_DOUBLE_data_type.php</filename>
             <filename>plugins/validators/index.html</filename>
             <filename>plugins/validators/validator_for_DATES_attributes.php</filename>
             <filename>plugins/validators/validator_for_SEX_attributes.php</filename>
+            <filename>plugins/validators/validator_for_DOUBLES_attributes.php</filename>
 
             <filename>tables/index.html</filename>
             <filename>tables/attributes.php</filename>

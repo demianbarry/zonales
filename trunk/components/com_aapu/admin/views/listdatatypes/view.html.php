@@ -17,7 +17,11 @@ class AapuViewListDataTypes extends AapuBaseView
 
 		$dataTypes =& $this->get('All');
 		foreach ($dataTypes as $dataType) {
+                    if ($dataType->id != 4 && $dataType->id != 6 && $dataType->id != 8) {
 			$dataType->link = JRoute::_('index.php?option=' . $option . '&cid[]=' . $dataType->id . '&task=editDataType');
+                    } else {
+                        $dataType->link = JRoute::_('index.php?option=' . $option . '&task=listDataTypes');
+                    }
 		}
 
 		// Titulo

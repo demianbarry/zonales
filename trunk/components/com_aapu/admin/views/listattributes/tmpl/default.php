@@ -33,7 +33,7 @@ JHTML::_('behavior.tooltip');
 		<?php
 		$k = 0; $i = 0;
 		foreach ($this->attributes as $attribute) {
-                        if ($attribute->id > 2) {
+                        if ($attribute->id > 3) {
                             $checked = JHTML::_('grid.id', $i, $attribute->id);
                         } else {
                             $checked = '';
@@ -47,7 +47,7 @@ JHTML::_('behavior.tooltip');
                                 <td><?php echo $checked; ?></td>
                                 <td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Attribute Edition' );?>::<?php echo $attribute->label; ?>">
-						<b><a href="<?php echo $attribute->link; ?>"> <?php echo $attribute->label; ?> </a></b>
+                                                <b><a href="<?php echo $attribute->link; ?>"> <?php echo $attribute->label; ?> </a></b>
 					</span>
 				</td>
                                 <td>
