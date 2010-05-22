@@ -29,7 +29,8 @@ class ZonalesViewMapa extends JView
 		// si debe retornarse una respuesta mediante ajax
 		$this->ajax = JRequest::getBool('ajax');
 		$this->task = JRequest::getBool('ajax') ? 'setZonalAjax' : 'setZonal';
-		$this->zonal = $helper->getZonal()->name;
+                $zName = $helper->getZonal();
+		$this->zonal = (is_object($zName)) ? $zName->name : $zName;
 
 		// parametros - alto y ancho
 		$zonalesParams = &JComponentHelper::getParams( 'com_zonales' );

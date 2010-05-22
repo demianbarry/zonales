@@ -61,7 +61,35 @@ foreach ($this->providerslist as $prov) {
     // -->
 </script>
 
-<script src="register.js" type="text/javascript"></script>
+<script type="text/javascript">
+    
+    // <![CDATA[
+    window.addEvent('domready', function() {
+        Shadowbox.init({
+            skipSetup: true,
+            text: {
+                cancel:     'Cancelar',
+                loading:    'Cargando...',
+                close:      '<span class="shortcut">C</span>errar',
+                next:       '<span class="shortcut">S</span>iguiente',
+                prev:       '<span class="shortcut">A</span>nterior',
+                errors:     {
+                    single: 'Usted debe instalar el plugin <a href="{0}">{1}</a> para poder ver el contenido.',
+                    shared: 'Usted debe instalar <a href="{0}">{1}</a> y <a href="{2}">{3}</a> para poder visualizar el contenido.',
+                    either: 'Usted debe instalar <a href="{0}">{1}</a> o <a href="{2}">{3}</a> para poder visualizar el contenido.'
+                }
+            }
+        });
+
+Shadowbox.setup($('zonal'), {
+            onClose:function() {
+                var cookie = Cookie.set('username', 'Harald');
+            }
+        });
+    });
+
+    // ]]>
+</script>
 
 <?php
 if(isset($this->message)) {
@@ -212,15 +240,18 @@ if(isset($this->message)) {
         <tr>
             <td>
                 <label for="zonal">
-                    <?php echo '*' . $this->zonalMessage ?>:
+                    <?php echo '*' . $this->zonalUserMessage ?>:
                 </label>
             </td>
             <td>
-                <!-- <input type="button" onclick="showmap();" name="zonal" value="<?php echo $this->zonalCurrent ?>"/> -->
-                <label id="lblZonal"><?php echo $this->zonalMessage ?></label>
-                <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
-                    <!-- <img src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_zonales.gif" /> -->
-                </a>
+                <div>
+                    <!-- <input type="button" onclick="showmap();" name="zonal" value="<?php echo $this->zonalCurrent ?>"/> -->
+                    
+                    <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
+                        <!-- <img src="templates/<?php //echo $template; ?>/images/<?php //echo $mainColor; ?>/bot_zonales.gif" /> -->
+                        <?php echo $this->zonalMessage ?>
+                    </a>
+                </div>
             </td>
         </tr>
 
