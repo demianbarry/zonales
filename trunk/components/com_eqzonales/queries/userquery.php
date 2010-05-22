@@ -35,7 +35,7 @@ class UserQuery implements SolrQuery {
      * arreglo['field'] , arreglo['value'] , arreglo['type']
      */
     function setEnvironment($env) {
-        if (!is_array($env)){
+        if (!is_array($env)) {
             throw new Exception('The variable is not an array');
         }
         $this->environment = $env;
@@ -80,9 +80,6 @@ class UserQuery implements SolrQuery {
         if (!empty ($auxBoostQuery)){
             $queryBoost = $queryBoost . ' AND ' . implode(' AND ', $auxBoostQuery);
         }
-
-        
-        
 
         // guardo los queries en donde corresponda
         $query = array();
