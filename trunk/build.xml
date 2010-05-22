@@ -345,23 +345,6 @@
         </zip>
     </target>
 
-    <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
-    <target name="inst_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
-        <echo message="Creando archivos de distribución de componente content"/>
-        <zip destfile="${src_dist_dir}/${inst.com_content.file}.zip">
-            <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
-        </zip>
-    </target>
-    
-    <!-- componente mod_jxcomments_comment (modificaciones)DESCOMPRIMIR EN RAIZ DE JOOMLA -->
-    <target name="inst_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
-        <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
-        <zip destfile="${src_dist_dir}/${inst.mod_jxcomments.file}.zip">
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
-        </zip>
-    </target>
-
     <!-- componente com_customproperties (fork) -->
     <target name="dist_com_customproperties" description="Crea archivo de distribución Joomla para el componente CustomProperties (fork)">
         <echo message="Creando archivo de distribución de componente CustomProperties (fork)"/>
@@ -378,6 +361,7 @@
         </zip>
     </target>
 
+  
     <!-- componente eq_zonales -->
     <target name="dist_com_eqzonales" description="Crea archivo de distribución Joomla para el componente Ecualizador Zonales">
         <echo message="Creando archivo de distribución de componente Ecualizador Zonales"/>
@@ -418,13 +402,30 @@
         </zip>
     </target>
 
-    <!-- componente user -->
-    <target name="dist_com_user" description="Crea archivo de distribución Joomla para el componente User">
+      <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
+    <target name="inst_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
+        <echo message="Creando archivos de distribución de componente content"/>
+        <zip destfile="${src_dist_dir}/${inst.com_content.file}.zip">
+            <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
+        </zip>
+    </target>
+
+    <!-- componente mod_jxcomments_comment (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA -->
+    <target name="inst_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
+        <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
+        <zip destfile="${src_dist_dir}/${inst.mod_jxcomments.file}.zip">
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
+        </zip>
+    </target>
+
+    <!-- componente user DESCOMPRIMIR EN RAIZ DE JOOMLA -->
+    <target name="inst_com_user" description="Crea archivo de distribución Joomla para el componente User">
         <echo message="Creando archivo de distribución de componente User"/>
-        <zip destfile="${src_dist_dir}/${dist.com_user.file}.zip">
-            <fileset refid="com_user_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="admin/language" />
+        <zip destfile="${src_dist_dir}/${inst.com_user.file}.zip">
+            <zipfileset dir="${src_frontend_components}" includes="com_user/**" prefix="components" />
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language/es-ES" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="administrator/language/es-ES" />
             <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
         </zip>
     </target>
