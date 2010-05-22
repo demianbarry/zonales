@@ -47,6 +47,8 @@ abstract class AapuModelBaseModel extends JModel {
         $array = JRequest::getVar('cid',  0, '', 'array');
         $this->setId((int)$array[0]);
 
+        $path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'tables';
+        $this->addTablePath($path);
         $table =& $this->getTable();
         $this->_table_name = $table->getTableName();
 
@@ -63,10 +65,6 @@ abstract class AapuModelBaseModel extends JModel {
         // Set id and wipe data
         $this->_id      = (int) $id;
         $this->_data 	= null;
-    }
-
-    function getId() {
-        return $this->_id;
     }
 
     /**
