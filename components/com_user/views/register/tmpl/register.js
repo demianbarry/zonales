@@ -17,6 +17,11 @@
             }
         });
 
+Shadowbox.setup($('zonal'), {
+            onClose:function() {
+                var kris = Cookie.set('username', 'Harald');
+            }
+        });
     });
 
     // ]]>

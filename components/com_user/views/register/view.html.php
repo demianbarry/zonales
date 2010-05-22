@@ -93,11 +93,14 @@ class UserViewRegister extends JView {
         }
 
         // averiguamos el zonal actual
-        $zActual = comZonalesHelper::getZonalActual();
-        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zActual;
+        $helper = new comZonalesHelper();
+        $zActual = $helper->getZonalActual();
+        $zName = $helper->getZonal($zActual);
+        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zName->label;
         $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
         $width = $zonalesParams->get('width_mapa_flash', '');
         $height = $zonalesParams->get('height_mapa_flash', '');
+        $zonalUserMessage = JText::_('SYSTEM_ZONAL_CURRENT_MESSAGE');
 
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
@@ -145,6 +148,7 @@ class UserViewRegister extends JView {
         $this->assign('zonalMessage',$zonalCurrentMessage);
         $this->assign('width',$width);
         $this->assign('height',$height);
+        $this->assign('zonalUserMessage',$zonalUserMessage);
         parent::display($tpl);
     }
 }
