@@ -51,7 +51,8 @@
       
     </div><!-- END #container-l -->
 </div>
-
+http://www.zonales.com.ar:50081/administrator/index.php?option=com_customproperties&controller=hierarchictagging&view=hierarchictagging&tmpl=component_only&id=403
+{handler: 'iframe', size: {x: 570, y: 400}}
     <div id="container-r">
       <div id="bannersContent">
         <jdoc:include type="modules" name="right" style="xhtml" />
