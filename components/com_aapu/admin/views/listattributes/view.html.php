@@ -17,7 +17,11 @@ class AapuViewListAttributes extends AapuBaseView
 
 		$attributes =& $this->get('All');
 		foreach ($attributes as $attribute) {
+                    if ($attribute->id > 3) {
 			$attribute->link = JRoute::_('index.php?option=' . $option . '&cid[]=' . $attribute->id . '&task=editAttribute');
+                    } else {
+                        $attribute->link = JRoute::_('index.php?option=' . $option . '&task=listAttributes');
+                    }
 		}
 
 		// Titulo
