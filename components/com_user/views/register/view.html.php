@@ -17,6 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php';
 
 /**
  * HTML View class for the Registration component
@@ -95,12 +96,16 @@ class UserViewRegister extends JView {
         // averiguamos el zonal actual
         $helper = new comZonalesHelper();
         $zActual = $helper->getZonalActual();
-        $zName = $helper->getZonal($zActual);
-        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zName->label;
-        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
-        $width = $zonalesParams->get('width_mapa_flash', '');
-        $height = $zonalesParams->get('height_mapa_flash', '');
+//        $zName = $helper->getZonal($zActual);
+//        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zName->label;
+//        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+//        $width = $zonalesParams->get('width_mapa_flash', '');
+//        $height = $zonalesParams->get('height_mapa_flash', '');
         $zonalUserMessage = JText::_('SYSTEM_ZONAL_CURRENT_MESSAGE');
+        $chooseZonalMessage = JText::_('SYSTEM_ZONAL_CHOOSE');
+        $chooseZonal = UserHelper::ZONAL_NOT_DEFINED;
+
+        $zonas = $helper->getValuesZonales();
 
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
@@ -145,10 +150,14 @@ class UserViewRegister extends JView {
         $this->assign('externalid',$externalid);
         $this->assign('force',$force);
         $this->assignRef('inputData',$inputData);
-        $this->assign('zonalMessage',$zonalCurrentMessage);
-        $this->assign('width',$width);
-        $this->assign('height',$height);
+//        $this->assign('zonalMessage',$zonalCurrentMessage);
+//        $this->assign('width',$width);
+//        $this->assign('height',$height);
         $this->assign('zonalUserMessage',$zonalUserMessage);
+        $this->assignRef('zonas', $zonas);
+        $this->assign('zActual',$zActual);
+        $this->assign('chooseZonalMessage',$chooseZonalMessage);
+        $this->assign('chooseZonal',$chooseZonal);
         parent::display($tpl);
     }
 }

@@ -3,12 +3,20 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
+require_once 'basemodel.php';
+
 /**
  * Description of tabs
  *
  * @author nacho
  */
 class AapuModelAttributes extends AapuModelBaseModel {
+
+    function __construct() {
+        $path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'tables';
+        $this->addTablePath($path);
+        parent::__construct();
+    }
 
     function _getQuery()
 	{

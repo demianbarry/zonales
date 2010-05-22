@@ -22,6 +22,8 @@ jimport('joomla.user.helper');
 
 require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
 require_once 'helper.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'models' . DS . 'attributes.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'models' . DS . 'attribute_entity.php';
 
 /**
  * User Component Controller
@@ -363,6 +365,17 @@ class UserController extends JController {
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
+        $zonalId = JRequest::getInt('zonal',UserHelper::ZONAL_NOT_DEFINED,'method');
+        $email2 = JRequest::getString('email2','','method');
+        $birthday = JRequest::getString('birthdate','','method');
+        $sex = JRequest::getString('sex','M','method');
+
+        if ($zonalId == UserHelper::ZONAL_NOT_DEFINED){
+            $notZonalMessage = JText::_('SYSTEM_ZONAL_NOT_DEFINED');
+            $baseUrl = "option=com_user&view=register&map=0";
+            UserHelper::showMessage(ERROR, $notZonalMessage, $baseUrl);
+            return;
+        }
 
         $db = &JFactory::getDBO();
 
@@ -444,6 +457,61 @@ class UserController extends JController {
             }
             $userid = $this->getUserId($db, $user);
             $userExists = true;
+
+            // registramos los datos extras en la tabla de com_aapu
+
+            // pbtenemos el id del atributo sexo
+            $atributesModel = new AapuModelAttributes();
+            $atributesModel->setWhere("a.name='sex'");
+            $sexData = $atributesModel->getData(true, true);
+            $sexId = $sexData->id;
+
+            // obtenemos el id del atributo birthday
+            $atributesModel->setWhere("a.name='birthday'");
+            $birthdayData = $atributesModel->getData(true, true);
+            $birthdayId = $birthdayData->id;
+
+            // obtenemos el id del atributo zonal
+            $atributesModel->setWhere("a.name='zonal'");
+            $zonalData = $atributesModel->getData(true, true);
+            $zonaId = $zonalData->id;
+
+            $dataSex = array(
+                'value' => $sex,
+                'object_id' => $userid,
+                'object_type' => 'TABLE',
+                'object_name' => '#__users',
+                'attribute_id' => $sexId
+            );
+
+            $dataBirthday = array(
+                'value_date' => $birthday,
+                'object_id' => $userid,
+                'object_type' => 'TABLE',
+                'object_name' => '#__users',
+                'attribute_id' => $birthdayId
+            );
+
+            $dataZonal = array(
+                'value_int' => $zonalId,
+                'object_id' => $userid,
+                'object_type' => 'TABLE',
+                'object_name' => '#__users',
+                'attribute_id' => $zonaId
+            );
+
+//            $dataEmail2 = array(
+//                'value' => $email2,
+//                'object_id' => $userid,
+//                'object_type' => 'TABLE',
+//                'object_name' => '#__users',
+//                'attribute_id' => $emailId
+//            );
+
+            $attributesEntityModel = new AapuModelAttribute_entity();
+            $attributesEntityModel->store(false, false, $dataSex);
+            $attributesEntityModel->store(false, false, $dataBirthday);
+            $attributesEntityModel->store(false, false, $dataZonal);
 
             // Send registration confirmation mail
 

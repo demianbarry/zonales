@@ -5,8 +5,9 @@ $elements = array();
 $elementsHTML = array();
 
 JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
+//JHTML::script('cookies.js',JRoute::_('media/system/js/'),false);
 ?>
-<script type="text/javascript">
+<script type="text/javascript" language="javascript">
     function showPass() {
 		document.getElementById('pwmsg').style.display = 'block';
                 document.getElementById('passwordt').style.display = 'block';
@@ -61,7 +62,7 @@ foreach ($this->providerslist as $prov) {
     // -->
 </script>
 
-<script type="text/javascript">
+<script type="text/javascript" language="javascript">
     
     // <![CDATA[
     window.addEvent('domready', function() {
@@ -81,12 +82,18 @@ foreach ($this->providerslist as $prov) {
             }
         });
 
-Shadowbox.setup($('zonal'), {
-            onClose:function() {
-                var cookie = Cookie.set('username', 'Harald');
-            }
-        });
-    });
+//Shadowbox.setup($('zonal'), {
+//            onClose:function() {
+//               // var cookie = Cookie.set('nombre', 'Harald');
+//               Set_Cookie('nombre', 'Harald');
+//            }
+//        });
+//
+//        function ver(){
+//            // Cookie.get('nombre');
+//            document.getElementById('valorcookie').value = Get_Cookie('nombre');
+//        }
+//    });
 
     // ]]>
 </script>
@@ -103,7 +110,7 @@ if(isset($this->message)) {
       name="josForm"
       class="form-validate"
 >
-
+    <input type="hidden" id="valorcookie" value=""/>
     <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
     <div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
     <?php echo $this->escape($this->params->get('page_title')); ?>
@@ -247,10 +254,20 @@ if(isset($this->message)) {
                 <div>
                     <!-- <input type="button" onclick="showmap();" name="zonal" value="<?php echo $this->zonalCurrent ?>"/> -->
                     
-                    <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
-                        <!-- <img src="templates/<?php //echo $template; ?>/images/<?php //echo $mainColor; ?>/bot_zonales.gif" /> -->
+                    <!-- <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
+                         <img src="templates/<?php //echo $template; ?>/images/<?php //echo $mainColor; ?>/bot_zonales.gif" /> 
                         <?php echo $this->zonalMessage ?>
-                    </a>
+                    </a> -->
+
+
+                    <select class="required" id="selZonal" name="zonal">
+                        <option value="<?php echo $this->chooseZonal ?>"><?php echo $this->chooseZonalMessage ?></option>
+                        <?php foreach ($this->zonas as $zona): ?>
+                        <option value="<?php echo $zona->id ?>" <?php echo ($zona->name == $this->zActual) ? "selected='selected'" : ""?>>
+                                <?php echo $zona->label ?>
+                        </option>
+                        <?php endforeach ?>
+                    </select>
                 </div>
             </td>
         </tr>
@@ -382,7 +399,7 @@ if(isset($this->message)) {
             </td>
             <td>
                 <input style="display: none;"
-                       class=""
+                       class="inputbox required validate-password"
                        type="password"
                        id="passwordt"
                        name="passwordt"
@@ -402,7 +419,7 @@ if(isset($this->message)) {
             </td>
             <td>
                 <input style="display: none;"
-                       class=""
+                       class="inputbox required validate-password"
                        type="password"
                        id="password2"
                        name="password2"
