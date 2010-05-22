@@ -19,7 +19,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 				$(layer).setStyle('display', 'block');
 			}.pass(el.id));
 		});
-
 	});
 	// ]]>
 </script>
