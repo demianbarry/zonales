@@ -58,7 +58,6 @@ abstract class AapuModelBaseModel extends JModel {
      *
      * @access public
      * @param $id int identificador del modelo
-     * @return void
      */
     function setId($id) {
         // Set id and wipe data
@@ -66,6 +65,14 @@ abstract class AapuModelBaseModel extends JModel {
         $this->_data 	= null;
     }
 
+    function getId() {
+        return $this->_id;
+    }
+
+    /**
+     * Recupera el Id en la BD del registro que este modelo representa.
+     * @return Int Identificador único del registro en la BD
+     */
     function getId() {
         return $this->_id;
     }
@@ -304,13 +311,14 @@ abstract class AapuModelBaseModel extends JModel {
         $this->_id 	= NULL;
     }
 
-    /* Salva el contenido del modelo en la base de datos.
-         *
-         * @param boolean $updateNulls
-         * @param boolean $use_post_data
-         * @param Array $data datos a almacenar (no tomar del post)
-         * @return boolean true si el registro fue guardado exitosamente
-    */
+    /**
+     * Salva el contenido del modelo en la base de datos.
+     *
+     * @param boolean $updateNulls
+     * @param boolean $use_post_data
+     * @param Array $data datos a almacenar (no tomar del post)
+     * @return boolean true si el registro fue guardado exitosamente
+     */
     function store($updateNulls = false, $use_post_data = true, $data = null) {
         $row =& $this->getTable();
 
@@ -321,6 +329,8 @@ abstract class AapuModelBaseModel extends JModel {
         } else {
             if (is_null($data)) {
                 $data = $this->_data;
+            } else {
+                $this->_data = $data;
             }
         }
 
