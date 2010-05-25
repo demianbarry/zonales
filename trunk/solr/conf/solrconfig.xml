@@ -436,13 +436,13 @@
 
      <!-- query fields -->
      <str name="qf">
-        intro_content^0.7 full_content^0.5 title^1.0
+        introtext^0.7 fulltext^0.5 title^1.0
      </str>
      <int name="qs">1</int>
 
      <!-- phrase boosting -->
      <str name="pf">
-        intro_content^1.0 full_content^1.0 title^1.5
+        introtext^1.0 fulltext^1.0 title^1.5
      </str>
      <int name="ps">0</int>
      
@@ -452,7 +452,7 @@
      </str> -->
 
      <str name="fl">
-	intro_content,full_content,title,id,score,publishUpDate
+	introtext,fulltext,title,id,score,publishUpDate
      </str>
 
      <!-- min-should-match, a feature which describes how many clauses
@@ -466,7 +466,7 @@
 
      <str name="hl">true</str>
      <!-- comma separated list of fields that will be highlighted -->
-     <str name="hl.fl">intro_content full_content title</str>
+     <str name="hl.fl">introtext fulltext title</str>
      <str name="hl.usePhraseHighlighter">true</str>
      <str name="hl.highlightMultiTerm">true</str>
 
@@ -477,8 +477,8 @@
 
      <str name="f.intro_content.hl.fragsize">350</str>
      <str name="f.full_content.hl.fragsize">350</str>
-     <str name="f.intro_content.hl.alternateField">intro_content</str>
-     <str name="f.full_content.hl.alternateField">full_content</str>
+     <str name="f.intro_content.hl.alternateField">introtext</str>
+     <str name="f.full_content.hl.alternateField">fulltext</str>
      <str name="f.intro_content.hl.maxAlternateFieldLength">350</str>
      <str name="f.full_content.hl.maxAlternateFieldLength">350</str>
 
