@@ -20,21 +20,36 @@
         <document name="contenido">
             	<entity name="articulo" pk="a.id" datasource="jdbc"
 
-			query="select a.id, a.title, a.introtext, a.`fulltext`, a.metakey, a.metadesc, 
-				s.title as section, cat.title as category, a.sectionid, a.catid,
+			query="select 
+                                a.id, a.title, a.alias, a.title_alias, a.introtext, a.`fulltext`,
+                                a.sectionid, a.state, a.catid,
+                                a.created, a.created_by, a.created_by_alias,
+                                a.modified, a.modified_by, a.checked_out, a.checked_out_time,
+                                a.publish_up, a.publish_down, a.attribs, a.hits,
+                                a.images, a.urls, a.ordering, a.metakey, a.metadesc,
+                                a.access
+
+                                CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(':', a.id, a.alias) ELSE a.id END as slug,
+                                CASE WHEN CHAR_LENGTH(cat.alias) THEN CONCAT_WS(':', cat.id, cat.alias) ELSE cat.id END as catslug,
+                                CHAR_LENGTH( a.`fulltext` ) AS readmore, 
+                                
+                                u.name AS author, u.usertype, u.email as author_email,
+                                g.name AS groups,
+                                
+				cat.title as category, s.title as section,
 				s.published as s_published, cat.published as cat_published,
 
-				a.access as a_access, s.access as s_access, cat.access as cat_access,
-				a.created, a.modified, a.publish_up, a.publish_down, a.state as a_state, a.hits,
+				s.access as s_access, cat.access as cat_access,
 				
-				if(a.publish_up, true, false) as has_publish_up,
-				if(a.publish_down, true, false) as has_publish_down,
+				if(a.publish_up, true, false) as hasPublishUpDate,
+				if(a.publish_down, true, false) as hasPublishDownDate,
 
                                 group_concat(distinct jcpf.name) as tfields,
                                 group_concat(distinct jcpv.name) as tvalues
 
 				from jos_content a 
-				inner join jos_users u on u.id = a.created_by
+				left join jos_users u on u.id = a.created_by
+                                left join jos_groups AS g ON a.access = g.id
 				left join jos_sections s on s.id = a.sectionid
 				left join jos_categories cat on cat.id = a.catid
 
@@ -46,36 +61,36 @@
                 	deltaQuery="select a.id from jos_content_dos a where a.modified > '${dataimporter.last_index_time}'
 				or a.created > '${dataimporter.last_index_time}'" >
 				
-            		<field column="id" name="id" />
+            		<!--<field column="id" name="id" />
             		<field column="title" name="title" />
             		<field column="introtext" name="intro_content" />
 			<field column="fulltext" name="full_content" />
 			<field column="metakey" name="metakey" />
-			<field column="metadesc" name="metadesc" />
+			<field column="metadesc" name="metadesc" />-->
 
-			<field column="section" name="section" />
+			<!--<field column="section" name="section" />
 			<field column="category" name="category" />
 			<field column="catid" name="category_id" />
-			<field column="sectionid" name="section_id" />
+			<field column="sectionid" name="section_id" />-->
 			<field column="s_published" name="section_published" />
 			<field column="cat_published" name="category_published" />
 
-			<field column="a_access" name="a_access" />
+			<!--<field column="access" name="access" />-->
 			<field column="s_access" name="section_access" />
 			<field column="cat_access" name="category_access" />
 
-			<field column="created" name="creationDate" />
+			<!--<field column="created" name="creationDate" />
 			<field column="modified" name="modifiedDate" />
 			<field column="has_publish_up" name="hasPublishUpDate" />
 			<field column="has_publish_down" name="hasPublishDownDate" />
 			<field column="publish_up" name="publishUpDate" />
 			<field column="publish_down" name="publishDownDate" />
-			<field column="hits" name="hits" />
+			<field column="hits" name="hits" />-->
 
                         <field column="tfields" name="tags_names" />
                         <field column="tvalues" name="tags_values" />
 
-			<field column="a_state" name="published" />			
+			<!--<field column="state" name="published" />-->
 
         	</entity>
     	</document>
