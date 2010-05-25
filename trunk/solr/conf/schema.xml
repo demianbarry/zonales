@@ -224,7 +224,7 @@
     <copyField source="fulltext" dest="fulltext_f" />
     <copyField source="title" dest="title_f"/>
 
-    <copyField source="title" dest="title_s"/>
+    <!-- <copyField source="title" dest="title_s"/> -->
     <copyField source="category" dest="category_s"/>
     <copyField source="metakey" dest="metakey_ws"/>
 
