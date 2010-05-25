@@ -154,7 +154,6 @@
         <field name="category_published" type="boolean" indexed="true" stored="true" />
         <field name="section_published" type="boolean" indexed="true" stored="true" />
 
-        <field name="access" type="integer" indexed="true" stored="true"/>
         <field name="section_access" type="integer" indexed="true" stored="true"/>
         <field name="category_access" type="integer" indexed="true" stored="true"/>
 
