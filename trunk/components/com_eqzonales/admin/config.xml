@@ -7,5 +7,8 @@
                 label="Solr Url"
                 description="Please enter the url where the Solr server is located"
         />
+        <param name="solr_url" type="text" size="20" default="" label="Solr Url" description="solr_url_tip" />
+        <param name="solr_port" type="text" size="6" default="" label="Solr Port" description="solr_port_tip" />
+        <param name="solr_webapp" type="text" size="20" default="" label="Solr Webapp" description="solr_webapp_tip" />
     </params>
 </root>
