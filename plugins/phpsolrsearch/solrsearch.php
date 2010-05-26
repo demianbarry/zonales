@@ -75,10 +75,10 @@ class plgSearchSolrsearch extends JPlugin {
         $sContent = $pluginParams->get( 'search_content', 1 );
         $sUncategorised = $pluginParams->get( 'search_uncategorised', 1 );
         $sArchived = $pluginParams->get( 'search_archived', 1 );
-        $limit = $pluginParams->def( 'search_limit', 50 );
-        $solr_url = $pluginParams->def( 'solr_url', null );
-        $solr_port = $pluginParams->def( 'solr_port', null );
-        $solr_webapp = $pluginParams->def( 'solr_webapp', null );
+        $limit = $pluginParams->get( 'search_limit', 50 );
+        $solr_url = $pluginParams->get( 'solr_url', null );
+        $solr_port = $pluginParams->get( 'solr_port', null );
+        $solr_webapp = $pluginParams->get( 'solr_webapp', null );
 
         // No se especifico la url de solr
         if ($solr_url == null) {
