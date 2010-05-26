@@ -160,10 +160,21 @@ class EqZonalesControllerEq extends JController {
     }
 
     /**
-     * TODO: comentar!!!
+     * Modifica un Ecualizador. Esta función esta pensanda para ser invocada
+     * directamente en el backend, durante el procesamiento del request.
+     *
+     * TODO: Modificar recuperación de parametros (usar argumentos). Se debe
+     * también modificar la función modifyEqImpl().
+     *
+     * @param StdClass $params información para el nuevo ecualizador
      * @return <type>
      */
-    function modifyEq() {
+    function modifyEq($params) {
+        // falla si no se han pasado parametros para el ecualizador
+        if (!$params) {
+            return false;
+        }
+
         $eq_params = JRequest::getVar('params', NULL, 'post', 'string');
 
         $params = $this->helper->getJsonParams($eq_params, JText::_('ZONALES_EQ_EQ'));
@@ -173,16 +184,64 @@ class EqZonalesControllerEq extends JController {
         return;
     }
 
-    function retrieveEq() {
+    /**
+     * Recupera un Ecualizador de Usuario. Esta función esta pensanda para ser 
+     * invocada mediante Ajax desde el frontend. Espera recuperar como variable 
+     * POST un mensaje JSON con los datos necesarios para la creación del nuevo
+     * ecualizador.
+     * 
+     * TODO: Este metodo aún no se utiliza. Modificar recuperación de parametros
+     * dede POST.
+     *
+     * @return String JSON con información acerca del resultado de la operación.
+     */
+    function retrieveEqAjax() {
         $eqId = JRequest::getInt('eq',0,'method');
 
         return $this->retrieveEqImpl($eqId);
     }
 
-    function retrieveUserEq() {
+    /**
+     * Recupera un ecualizador de usuario.
+     * 
+     * @param int $id Identificador del Ecualizador
+     * @return stdClass Ecualizador de Usuario
+     */
+    function retrieveEq($id = null) {
+        if (is_null($id)) {
+            return null;
+        }
+
+        return $this->retrieveEqImpl($eqId);
+    }
+
+    /**
+     * Recupera los ecualizadores del usuario actual. Este metodo debe ser
+     * invocado por medio de un request AJAX.
+     *
+     * TODO: Modificar valor de retorno a un string JSON.
+     *
+     * @return Array arreglo con ecualizadores del usuario.
+     */
+    function retrieveUserEqAjax() {
         $userId = JRequest::getInt('user',0,'method');
 
         return $this->retrieveUserEqImpl($userId);
+    }
+
+    /**
+     * Recupera los ecualizadores del usuario actual.
+     *
+     * @return Array arreglo con ecualizadores del usuario.
+     */
+    function retrieveUserEq() {
+        // Controla que el request haya sido enviado por un usuario registrado.
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            return;
+        }
+
+        return $this->retrieveUserEqImpl($user->id);
     }
 
     /**
@@ -347,7 +406,7 @@ class EqZonalesControllerEq extends JController {
     function retrieveUserEqImpl($userId) {
         $data = null;
 
-        if ($userId >= 0){
+        if ($userId >= 0) {
             $model = &$this->getModel('Eq');
             $eqs = $model->getUserEqs($userId);
 
