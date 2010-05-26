@@ -476,6 +476,10 @@ class UserController extends JController {
             $zonalData = $atributesModel->getData(true, true);
             $zonaId = $zonalData->id;
 
+            $atributesModel->setWhere("a.name='email2'");
+            $emailData = $atributesModel->getData(true, true);
+            $emailId = $emailData->id;
+
             $dataSex = array(
                 'value' => $sex,
                 'object_id' => $userid,
@@ -500,13 +504,13 @@ class UserController extends JController {
                 'attribute_id' => $zonaId
             );
 
-//            $dataEmail2 = array(
-//                'value' => $email2,
-//                'object_id' => $userid,
-//                'object_type' => 'TABLE',
-//                'object_name' => '#__users',
-//                'attribute_id' => $emailId
-//            );
+            $dataEmail2 = array(
+                'value' => $email2,
+                'object_id' => $userid,
+                'object_type' => 'TABLE',
+                'object_name' => '#__users',
+                'attribute_id' => $emailId
+            );
 
             $attributesEntityModel = new AapuModelAttribute_entity();
             // If there was an error with registration, set the message and display form
