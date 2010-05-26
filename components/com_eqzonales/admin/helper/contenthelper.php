@@ -25,9 +25,9 @@ class comEqZonalesContentHelper {
     function getContent($limit = 0, $limitstart = 0) {
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
-        $solr_url = $pluginParams->get( 'solr_url', null );
-        $solr_port = $pluginParams->get( 'solr_port', null );
-        $solr_webapp = $pluginParams->get( 'solr_webapp', null );
+        $solr_url = $zonalesParams->get( 'solr_url', null );
+        $solr_port = $zonalesParams->get( 'solr_port', null );
+        $solr_webapp = $zonalesParams->get( 'solr_webapp', null );
 
         // No se especifico la url de solr
         if ($solr_url == null) {
@@ -65,7 +65,7 @@ class comEqZonalesContentHelper {
             return array();
         }
 
-        return $results;
+        return $results->response->docs;
     }
 
     function getFieldList() {
@@ -75,6 +75,8 @@ class comEqZonalesContentHelper {
                 "checked_out,checked_out_time,publish_up,publish_down,attribs,hits,".
                 "images,urls,ordering,metakey,metadesc,access,slug,catslug,readmore,".
                 "author,usertype,groups,author_email";
+        
+        return $fieldList;
     }
 
     function getOrder() {
@@ -97,7 +99,7 @@ class comEqZonalesContentHelper {
         // Get the page/component configuration
         $params = &$mainframe->getParams();
         $noauth = !$params->get('show_noauth');
-        $nullDate = $this->_db->getNullDate();
+        //$nullDate = $this->_db->getNullDate();
 
         $where = "";
 
