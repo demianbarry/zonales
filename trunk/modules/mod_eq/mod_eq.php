@@ -15,7 +15,7 @@ $helper = new comEqZonalesHelper();
 $ctrlEq = new EqZonalesControllerEq();
 $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
 $ctrlBand = new EqZonalesControllerBand();
-$ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+$ctrlBand->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
 
 // template
 $app =& JFactory::getApplication();
@@ -33,6 +33,7 @@ $eq = null;
 if (!$user->guest) {
     // recupera ecualizador del usuario
     $result = $ctrlEq->retrieveUserEqImpl($user->id);
+
     if (!is_null($result) && !empty($result)) {
         $eqtmp = $result[0];
 
