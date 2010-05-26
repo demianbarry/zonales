@@ -87,10 +87,10 @@ class EqZonalesControllerBand extends JController {
          */
         if(!$this->modifyBandImpl($bandsArray)) {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
-            $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE',JText::_('ZONALES_EQ_BAND')));
+            $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_BAND')));
         } else {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
-            $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS',JText::_('ZONALES_EQ_BAND')));
+            $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS', JText::_('ZONALES_EQ_BAND')));
         }
 
         return;
@@ -120,6 +120,8 @@ class EqZonalesControllerBand extends JController {
         if (is_null($eqid)) {
             return false;
         }
+
+        // TODO: Generar bandas desde Ecualizador 0 (por defecto)
 
         $params = array ();
 
