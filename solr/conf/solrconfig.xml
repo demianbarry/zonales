@@ -452,7 +452,7 @@
      </str> -->
 
      <str name="fl">
-	introtext,fulltext,title,id,score,publishUpDate
+	introtext,fulltext,title,id,score,publish_up
      </str>
 
      <!-- min-should-match, a feature which describes how many clauses
