@@ -58,7 +58,7 @@
                                 inner join jos_custom_properties_values jcpv on jcpv.id = jcp.value_id
                                 group by a.id"
 
-                	deltaQuery="select a.id from jos_content_dos a where a.modified > '${dataimporter.last_index_time}'
+                	deltaQuery="select a.id from jos_content a where a.modified > '${dataimporter.last_index_time}'
 				or a.created > '${dataimporter.last_index_time}'" >
 				
             		<!--<field column="id" name="id" />
