@@ -334,7 +334,7 @@ class ContentModelCategory extends JModel
                         // Resultados desde Solr
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
-                        $Arows = $contenthelper->getContent($limit, $limitstart);
+                        $Arows = $contenthelper->getContent($limitstart, $limit);
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;
