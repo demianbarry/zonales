@@ -328,8 +328,13 @@ class ContentModelCategory extends JModel
 			$limit		= JRequest::getVar('limit', 0, '', 'int');
 			$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 
-			$query = $this->_buildQuery();
-			$Arows = $this->_getList($query, $limitstart, $limit);
+			//$query = $this->_buildQuery();
+			//$Arows = $this->_getList($query, $limitstart, $limit);
+
+                        // Resultados desde Solr
+                        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
+                        $contenthelper = new comEqZonalesContentHelper();
+                        $Arows = $contenthelper->getContent($limit, $limitstart);
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;
