@@ -8,7 +8,7 @@
     <authorEmail/>
     <authorUrl/>
     <version>0.1</version>
-    <description>Ecualizador Zonales</description>
+    <description>El componente EqZonales provee la funcionalidad necesaria para la administración de Ecualizadores de Interés.</description>
     <install>
         <sql>
             <file driver="mysql" charset="utf8">install.mysql.sql</file>
