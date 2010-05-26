@@ -57,6 +57,7 @@ class comEqZonalesContentHelper {
         $params['fq'] = $this->getWhere();
         $params['sort'] = $this->getOrder();
         $params['fl'] = $this->getFieldList();
+        $params['bq'] = $this->getEqPreferences();
 
         try {
             $results = $solr->search("*:*", $limitstart, $limit, $params);
@@ -126,9 +127,12 @@ class comEqZonalesContentHelper {
         $where .= "+tags_names:$zonal->name";
 
         return $where;
-        }
+    }
 
-        public getEqPreferences() {
+    function getEqPreferences() {
+
+        // recupera el usuario
+        $user =& JFactory::getUser();
 
         if (!$user->guest) {
             // recupera ecualizador del usuario
@@ -140,19 +144,15 @@ class comEqZonalesContentHelper {
                 $bq = "";
 
                 foreach ($eq->bands as $band) {
-                    $bq .= ""
+                    $bq .= "+tags_values:$band->band_name^$band->peso";
                 }
-
-                $eq->eq = $eqtmp->eq;
-
-                // segmentamos por fields (grupos de bandas)
-                foreach ($eqtmp->bands as $band) {
-                    $eq->fields[$band->field_id]->id = $band->field_id;
-                    $eq->fields[$band->field_id]->label = $band->group_label;
-                    $eq->fields[$band->field_id]->bands[] = $band;
-                }
+                
             }
+
+            return $bq;
         }
 
+        return "";
     }
+
 }
