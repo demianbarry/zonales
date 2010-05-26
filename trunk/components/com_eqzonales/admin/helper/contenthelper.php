@@ -75,7 +75,7 @@ class comEqZonalesContentHelper {
                 "checked_out,checked_out_time,publish_up,publish_down,attribs,hits,".
                 "images,urls,ordering,metakey,metadesc,access,slug,catslug,readmore,".
                 "author,usertype,groups,author_email";
-        
+
         return $fieldList;
     }
 
@@ -113,8 +113,8 @@ class comEqZonalesContentHelper {
         }
         else {
             $where .= '+state:[1 TO 1]';
-            $where .= '+(hasPublishUpDate:false OR publishUpDate:[* TO NOW])';
-            $where .= '+(hasPublishDownDate:false OR publishDownDate:[NOW TO *])';
+            $where .= '+(hasPublishUpDate:false OR publish_up:[* TO NOW])';
+            $where .= '+(hasPublishDownDate:false OR publish_down:[NOW TO *])';
         }
 
         // Zonal
@@ -126,5 +126,33 @@ class comEqZonalesContentHelper {
         $where .= "+tags_names:$zonal->name";
 
         return $where;
+        }
+
+        public getEqPreferences() {
+
+        if (!$user->guest) {
+            // recupera ecualizador del usuario
+            $result = $ctrlEq->retrieveUserEqImpl($user->id);
+
+            if (!is_null($result) && !empty($result)) {
+                $eq = $result[0];
+
+                $bq = "";
+
+                foreach ($eq->bands as $band) {
+                    $bq .= ""
+                }
+
+                $eq->eq = $eqtmp->eq;
+
+                // segmentamos por fields (grupos de bandas)
+                foreach ($eqtmp->bands as $band) {
+                    $eq->fields[$band->field_id]->id = $band->field_id;
+                    $eq->fields[$band->field_id]->label = $band->group_label;
+                    $eq->fields[$band->field_id]->bands[] = $band;
+                }
+            }
+        }
+
     }
 }
