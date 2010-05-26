@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class comEqZonalesContentHelper {
 
-    function getContent($limit = 0, $limitstart = 0) {
+    function getContent($limit = 0, $limitstart = 0, $queryParams = 'null') {
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
         $solr_url = $zonalesParams->get( 'solr_url', null );
@@ -52,15 +52,15 @@ class comEqZonalesContentHelper {
         // path (all defaults in this example)
         $solr = new Apache_Solr_Service($solr_url, $solr_port, $solr_webapp);
 
-        $params = array ();
+        $queryParams = array ();
 
-        $params['fq'] = $this->getWhere();
-        $params['sort'] = $this->getOrder();
-        $params['fl'] = $this->getFieldList();
-        $params['bq'] = $this->getEqPreferences();
+        $queryParams['fq'] = $this->getWhere();
+        $queryParams['sort'] = $this->getOrder();
+        $queryParams['fl'] = $this->getFieldList();
+        $queryParams['bq'] = $this->getEqPreferences();
 
         try {
-            $results = $solr->search("*:*", $limitstart, $limit, $params);
+            $results = $solr->search("*:*", $limitstart, $limit, $queryParams);
         }
         catch (Exception $e) {
             return array();
@@ -86,7 +86,7 @@ class comEqZonalesContentHelper {
         return $orderby;
     }
 
-    function getWhere() {
+    function getWhere($addionalParams = '') {
         global $mainframe;
 
         // usuario
@@ -125,6 +125,8 @@ class comEqZonalesContentHelper {
         $zonal = $helper->getZonal();
 
         $where .= "+tags_names:$zonal->name";
+
+        $where .= $addionalParams;
 
         return $where;
     }
