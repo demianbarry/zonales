@@ -121,7 +121,7 @@ class comEqZonalesContentHelper {
         $helper = new comZonalesHelper();
         $zonal = $helper->getZonal();
 
-        $where .= "+tags_values:$zonal->name";
+        $where .= "+tags_names:$zonal->name";
 
         return $where;
     }
