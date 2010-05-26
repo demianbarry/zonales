@@ -67,10 +67,10 @@ class comEqZonalesContentHelper {
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
-        $queryParams['qt'] = "dismax";
+        $queryParams['qt'] = "zonalesContent";
 
         try {
-            $results = $solr->search("*:*", $limitstart, $limit, $queryParams);
+            $results = $solr->search("", $limitstart, $limit, $queryParams);
         }
         catch (Exception $e) {
             return array();
@@ -162,6 +162,13 @@ class comEqZonalesContentHelper {
      * @return <type>
      */
     function getEqPreferences() {
+
+        require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
+        JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+        // controladores
+        $ctrlEq = new EqZonalesControllerEq();
+        $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+
 
         // recupera el usuario
         $user =& JFactory::getUser();
