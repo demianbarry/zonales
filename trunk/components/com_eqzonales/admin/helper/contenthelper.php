@@ -70,42 +70,42 @@ class comEqZonalesContentHelper {
 
     function getFieldList() {
         $fieldList =
-            "category,id,title,alias,title_alias,introtext,fulltext,sectionid,".
-            "state,catid,created,created_by,created_by_alias,modified,modified_by,".
-            "checked_out,checked_out_time,publish_up,publish_down,attribs,hits,".
-            "images,urls,ordering,metakey,metadesc,access,slug,catslug,readmore,".
-            "author,usertype,groups,author_email";
+                "category,id,title,alias,title_alias,introtext,fulltext,sectionid,".
+                "state,catid,created,created_by,created_by_alias,modified,modified_by,".
+                "checked_out,checked_out_time,publish_up,publish_down,attribs,hits,".
+                "images,urls,ordering,metakey,metadesc,access,slug,catslug,readmore,".
+                "author,usertype,groups,author_email";
     }
-    
+
     function getOrder() {
         // Get the page/component configuration
         $orderby = "score desc, created desc";
         return $orderby;
     }
-    
+
     function getWhere() {
         global $mainframe;
-        
+
         // usuario
         $user =& JFactory::getUser();
         $gid = $user->get('aid', 0);
-        
+
         // fecha
         $jnow =& JFactory::getDate();
         $now = $jnow->toMySQL();
-        
+
         // Get the page/component configuration
         $params = &$mainframe->getParams();
         $noauth = !$params->get('show_noauth');
         $nullDate = $this->_db->getNullDate();
-        
+
         $where = "";
-        
+
         // Does the user have access to view the items?
         if ($noauth) {
             $where .= "+access:[* TO $gid]";
         }
-        
+
         if ($user->authorize('com_content', 'edit', 'content', 'all')) {
             $where .= "+state:[0 TO *]";
         }
@@ -114,7 +114,15 @@ class comEqZonalesContentHelper {
             $where .= '+(hasPublishUpDate:false OR publishUpDate:[* TO NOW])';
             $where .= '+(hasPublishDownDate:false OR publishDownDate:[NOW TO *])';
         }
-        
+
+        // Zonal
+        // lista de zonales, zonal actualmente seleccionado
+        require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+        $helper = new comZonalesHelper();
+        $zonal = $helper->getZonal();
+
+        $where .= "+tags_values:$zonal->name";
+
         return $where;
     }
 }
