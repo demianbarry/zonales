@@ -97,10 +97,17 @@ class EqZonalesControllerBand extends JController {
     }
 
     /**
+     * Crea o modifica un conjunto de bandas. Esta función esta pensanda para
+     * ser invocada directamente en el backend, durante el procesamiento del
+     * request.
      *
-     * @return <type>
+     * TODO: Se debe modificar este modulo para utilizar lo datos pasados en el
+     * argumento.
+     *
+     * @param Array $params Arreglo de stdClass con datos a modificar.
+     * @return Boolean TRUE en caso de poder modificar exitosamente las bandas.
      */
-    function modifyBand() {
+    function modifyBand($params) {
         $band_params = JRequest::getVar('params', NULL, 'post', 'string');
         $params = $this->helper->getJsonParams($band_params, JText::_('ZONALES_EQ_BAND'));
         if (!$params) return;
@@ -146,9 +153,10 @@ class EqZonalesControllerBand extends JController {
     }
 
     /**
+     * Modifica las bandas especificadas.
      *
-     * @param <type> $params
-     * @return <type>
+     * @param Array $params Arreglo de stdClass con información para cada banda.
+     * @return Boolean TRUE en caso de éxito en la modificación de todas las bandas.
      */
     function modifyBandImpl($params = NULL) {
 
