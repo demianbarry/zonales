@@ -9,12 +9,12 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <script type="text/javascript" language="javascript">
     function showPass() {
-		document.getElementById('pwmsg').style.display = 'block';
-                document.getElementById('passwordt').style.display = 'block';
-                document.getElementById('pw2msg').style.display = 'block';
-                document.getElementById('password2').style.display = 'block';
-                document.getElementById('passwordt').className = 'inputbox required validate-passverify';
-                document.getElementById('password2').className = 'inputbox required validate-passverify';
+		$('pwmsg').style.display = 'block';
+                $('passwordt').style.display = 'block';
+                $('pw2msg').style.display = 'block';
+                $('password2').style.display = 'block';
+                $('passwordt').className = 'inputbox required validate-passverify';
+                $('password2').className = 'inputbox required validate-passverify';
             }
     function hidePass() {
 		document.getElementById('pwmsg').style.display = 'none';
@@ -32,7 +32,7 @@ foreach ($this->providerslist as $prov) {
         if (!(!$this->user->guest && $prov->groupname == 'Guest') && $prov->type != 'Tradicional') {
             if (!isset ($elements[$input['name']])) {
                 $elements[$input['name']] = 1;
-                echo 'document.getElementById(\'' . $input['name'] . 'set\').style.display = \'none\';';
+                echo '$(\'' . $input['name'] . 'set\').setStyle(\'display\',\'none\');';
             }
         }
     }
@@ -44,10 +44,10 @@ foreach ($this->providerslist as $prov) {
         hideAll();
         for(i=0 ; i < elements.length ; i++){
                 if (elements[i] != ''){
-                    var fixpart = document.getElementById(elements[i] + '-' + provider + 'fixmessage').value;
-                document.getElementById(elements[i] + 'set').style.display = 'block';
+                    var fixpart = $(elements[i] + '-' + provider + 'fixmessage').value;
+                $(elements[i] + 'set').setStyle('display','block');
 //                if (showsubmit == 'block'){
-                    document.getElementById('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
+                    $('ep' + elements[i] + 'message').innerHTML=sprintf(fixpart,provider);
 //                }
 //                else {
 //                    document.getElementById(elements[i]).innerHTML=sprintf(fixpart,provider);
@@ -60,42 +60,6 @@ foreach ($this->providerslist as $prov) {
         document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }	);
     }
     // -->
-</script>
-
-<script type="text/javascript" language="javascript">
-    
-    // <![CDATA[
-    window.addEvent('domready', function() {
-        Shadowbox.init({
-            skipSetup: true,
-            text: {
-                cancel:     'Cancelar',
-                loading:    'Cargando...',
-                close:      '<span class="shortcut">C</span>errar',
-                next:       '<span class="shortcut">S</span>iguiente',
-                prev:       '<span class="shortcut">A</span>nterior',
-                errors:     {
-                    single: 'Usted debe instalar el plugin <a href="{0}">{1}</a> para poder ver el contenido.',
-                    shared: 'Usted debe instalar <a href="{0}">{1}</a> y <a href="{2}">{3}</a> para poder visualizar el contenido.',
-                    either: 'Usted debe instalar <a href="{0}">{1}</a> o <a href="{2}">{3}</a> para poder visualizar el contenido.'
-                }
-            }
-        });
-
-//Shadowbox.setup($('zonal'), {
-//            onClose:function() {
-//               // var cookie = Cookie.set('nombre', 'Harald');
-//               Set_Cookie('nombre', 'Harald');
-//            }
-//        });
-//
-//        function ver(){
-//            // Cookie.get('nombre');
-//            document.getElementById('valorcookie').value = Get_Cookie('nombre');
-//        }
-//    });
-
-    // ]]>
 </script>
 
 <?php
