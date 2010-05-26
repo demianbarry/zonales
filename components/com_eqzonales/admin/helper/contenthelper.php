@@ -22,9 +22,18 @@ defined('_JEXEC') or die('Restricted access');
  */
 class comEqZonalesContentHelper {
 
-    function getContent($limit = 0, $limitstart = 0, $queryParams = 'null') {
+    /**
+     *
+     * @param <type> $limit
+     * @param <type> $limitstart
+     * @param <type> $queryParams
+     * @return <type> 
+     */
+    function getContent($limit = 0, $limitstart = 0, $queryParams = '') {
+        
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
+        // recupera parametros
         $solr_url = $zonalesParams->get( 'solr_url', null );
         $solr_port = $zonalesParams->get( 'solr_port', null );
         $solr_webapp = $zonalesParams->get( 'solr_webapp', null );
@@ -43,7 +52,7 @@ class comEqZonalesContentHelper {
         }
 
         // The Apache Solr Client library should be on the include path
-        // which is usually most easily accomplished by placing in the
+        // which is usuaPlly most easily accomplished by placing in the
         // same directory as this script ( . or current directory is a default
         // php include path entry in the php.ini)
         jimport('SolrPhpClient.Apache.Solr.Service');
@@ -58,6 +67,7 @@ class comEqZonalesContentHelper {
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
+        $queryParams['qt'] = "dismax";
 
         try {
             $results = $solr->search("*:*", $limitstart, $limit, $queryParams);
@@ -69,6 +79,11 @@ class comEqZonalesContentHelper {
         return $results->response->docs;
     }
 
+    /**
+     *
+     *
+     * @return <type>
+     */
     function getFieldList() {
         $fieldList =
                 "category,id,title,alias,title_alias,introtext,fulltext,sectionid,".
@@ -80,13 +95,24 @@ class comEqZonalesContentHelper {
         return $fieldList;
     }
 
+    /**
+     * 
+     *
+     * @return <type>
+     */
     function getOrder() {
         // Get the page/component configuration
         $orderby = "score desc, created desc";
         return $orderby;
     }
 
-    function getWhere($addionalParams = '') {
+    /**
+     *
+     * @global <type> $mainframe
+     * @param <type> $additionalParams
+     * @return <type>
+     */
+    function getWhere($additionalParams = '') {
         global $mainframe;
 
         // usuario
@@ -126,11 +152,15 @@ class comEqZonalesContentHelper {
 
         $where .= "+tags_names:$zonal->name";
 
-        $where .= $addionalParams;
+        $where .= $additionalParams;
 
         return $where;
     }
 
+    /**
+     *
+     * @return <type>
+     */
     function getEqPreferences() {
 
         // recupera el usuario
@@ -146,7 +176,7 @@ class comEqZonalesContentHelper {
                 $bq = "";
 
                 foreach ($eq->bands as $band) {
-                    $bq .= "+tags_values:$band->band_name^$band->peso";
+                    $bq .= "tags_values:$band->band_name^$band->peso ";
                 }
                 
             }
