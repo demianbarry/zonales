@@ -131,6 +131,8 @@
         <position>main</position>
         <position>bottom</position>
         <position>cols</position>
+        <position>index</position>
+        <position>user9</position>
     </positions>
 
     <params>

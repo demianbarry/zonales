@@ -106,6 +106,7 @@
             <filename>plugins/validators/validator_for_DATES_attributes.php</filename>
             <filename>plugins/validators/validator_for_SEX_attributes.php</filename>
             <filename>plugins/validators/validator_for_DOUBLES_attributes.php</filename>
+            <filename>plugins/validators/validator_for_MAILS_attributes.php</filename>
 
             <filename>tables/index.html</filename>
             <filename>tables/attributes.php</filename>

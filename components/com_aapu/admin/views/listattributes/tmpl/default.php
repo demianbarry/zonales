@@ -33,7 +33,7 @@ JHTML::_('behavior.tooltip');
 		<?php
 		$k = 0; $i = 0;
 		foreach ($this->attributes as $attribute) {
-                        if ($attribute->id > 3) {
+                        if ($attribute->id > 4) {
                             $checked = JHTML::_('grid.id', $i, $attribute->id);
                         } else {
                             $checked = '';

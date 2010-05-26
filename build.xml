@@ -398,7 +398,6 @@
             <fileset refid="com_alias_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_alias.ini" prefix="language" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_alias.ini" prefix="admin/language" />
-            <zipfileset dir="${src_images}/login" includes="**" prefix="login"/>
         </zip>
     </target>
 
@@ -427,6 +426,20 @@
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language/es-ES" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="administrator/language/es-ES" />
             <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
+        </zip>
+    </target>
+
+      <!-- Librerías e imágenes para zLogin DESCOMPRIMIR EN RAIZ DE JOOMLA-->
+    <target name="inst_lib_zlogin" description="Crea archivo de distribución con librerías y imágenes para zLogin">
+        <echo message="Creando archivos de distribución de librerías para zLogin"/>
+        <zip destfile="${src_dist_dir}/${inst.lib_zlogin.file}.zip">
+            <zipfileset dir="${src_libraries}" includes="facebookconnect/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="twitter/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="windowsliveid/**" prefix="libraries" />
+            <zipfileset dir="${src_images}" includes="login/**" prefix="images" />
+            <zipfileset dir="${src_images}" includes="message/**" prefix="images" />
+            <zipfileset dir="${src}" includes="xd_receiver.htm" prefix="" />
+            <zipfileset dir="${src_modules}/mod_zlogin" includes="webtoolkit.js" prefix="media/system/js" />
         </zip>
     </target>
 
