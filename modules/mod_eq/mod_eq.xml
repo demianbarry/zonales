@@ -8,7 +8,7 @@
   <authorEmail/>
   <authorUrl>http://www.mediabit.com.ar</authorUrl>
   <version>0.1</version>
-  <description>MOD_EQ_DESC</description>
+  <description>Mod Eq Desc</description>
   <files>
     <filename module="mod_eq">mod_eq.php</filename>
     <filename>index.html</filename>
@@ -19,8 +19,8 @@
     <language tag="es-ES">es-ES.mod_eq.ini</language>
   </languages>
   <params>
-      <param name="description" type="textarea" rows="3" cols="40" label="eq_description" default="El Ecualizador de Interés le permite blablabla..." description="eq_description_tip" />
-      <param name="error_no_eq" type="textarea" rows="3" cols="40" label="eq_description" default="No se ha podido recuperar el ecualizador." description="error_no_eq_tip" />
+      <param name="description" type="textarea" rows="3" cols="40" label="eq_description" default="El Ecualizador de Interés le permite personalizar los contenidos que el portal le ofrece." description="eq_description_tip" />
+      <param name="error_no_eq" type="textarea" rows="3" cols="40" label="error_no_eq" default="No se ha podido recuperar el ecualizador." description="error_no_eq_tip" />
   </params>
   <params group="advanced">
   </params>
