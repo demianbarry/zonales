@@ -31,7 +31,7 @@ JHTML::_('behavior.tooltip');
 		<?php
 		$k = 0; $i = 0;
 		foreach ($this->dataTypes as $dataType) {
-                        if ($dataType->id != 4 && $dataType->id != 6 && $dataType->id != 8) {
+                        if ($dataType->id != 4 && $dataType->id != 6 && $dataType->id != 8 && $dataType->id != 1) {
                             $checked = JHTML::_('grid.id', $i, $dataType->id);
                         } else {
                             $checked = '';
