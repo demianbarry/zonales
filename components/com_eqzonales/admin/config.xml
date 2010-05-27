@@ -10,5 +10,7 @@
         <param name="solr_url" type="text" size="20" default="" label="Solr Url" description="solr_url_tip" />
         <param name="solr_port" type="text" size="6" default="" label="Solr Port" description="solr_port_tip" />
         <param name="solr_webapp" type="text" size="20" default="" label="Solr Webapp" description="solr_webapp_tip" />
+        <param name="@spacer" type="spacer" default="" label="" description="" />
+        <param name="noticias_field" type="sql" default="" query="SELECT id, label FROM #__custom_properties_fields" key_field="id" value_field="name" description="tip_noticias_field" />
     </params>
 </root>

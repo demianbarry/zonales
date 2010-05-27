@@ -128,25 +128,51 @@ class EqZonalesControllerBand extends JController {
             return false;
         }
 
+        $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
+        // recupera parametros
+        $noticias_field = $zonalesParams->get( 'noticias_field', null );
+
+        // No se especifico la url de solr
+        if ($noticias_field == null) {
+            return false;
+        }
+
+        // Get a database object
+        $db =& JFactory::getDBO();
+
+        $query = "SELECT id AS cp_value_id, label AS valor FROM `#__custom_properties_values`".
+            " WHERE `parent_id` = 0 AND `field_id` = $noticias_field LIMIT 0 , 30";
+        
+        $db->setQuery($query);
+        
+        $rows = $db->loadObjectList();
+
+        foreach ($rows as $row) {
+            $row->peso = 50;
+            $row->eq_id = $eqid;
+            $row->default = 0;
+            $row->active = 0;
+        }
+
         // TODO: Generar bandas desde Ecualizador 0 (por defecto)
 
-        $params = array ();
-
-        $banda = new stdClass();
-        $banda->valor = 'Valor';
-        $banda->peso = '50';
-        $banda->cp_value_id = '123';
-        $banda->eq_id = $eqid;
-        $banda->default = '0';
-        $banda->active = '0';
-        
-        $params[] = $banda;
+//        $params = array ();
+//
+//        $banda = new stdClass();
+//        $banda->valor = 'Valor';
+//        $banda->peso = '50';
+//        $banda->cp_value_id = '123';
+//        $banda->eq_id = $eqid;
+//        $banda->default = '0';
+//        $banda->active = '0';
+//
+//        $params[] = $banda;
 
         /**
          * Crea/modifica las bandas del ecualizador según la configuración
          * especificada.
          */
-        if($this->modifyBandImpl($params)) {
+        if($this->modifyBandImpl($rows)) {
             return true;
         }
         return false;
