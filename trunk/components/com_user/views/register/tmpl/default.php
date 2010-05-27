@@ -9,28 +9,20 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 ?>
 <script type="text/javascript" language="javascript">
     function showPass() {
-		$('pwmsg').setStyle('display','block');
-                $('passwordt').setStyle('display','block');
-                $('pw2msg').setStyle('display','block');
-                $('password2').setStyle('display','block');
-                $('passwordt').addClass('inputbox');
-                $('passwordt').addClass('required');
-                $('passwordt').addClass('validate-passverify');
-                $('password2').addClass('inputbox');
-                $('password2').addClass('required');
-                $('password2').addClass('validate-passverify');
+                $('pwmsg').style.display = 'block';
+                $('passwordt').style.display = 'block';
+                $('pw2msg').style.display = 'block';
+                $('password2').style.display = 'block';
+                $('passwordt').className = 'inputbox required validate-passverify';
+                $('password2').className = 'inputbox required validate-passverify';
             }
     function hidePass() {
-		$('pwmsg').setStyle('display','none');
-                $('passwordt').setStyle('display','none');
-                $('pw2msg').setStyle('display','none');
-                $('password2').setStyle('display','none');
-                $('passwordt').removeClass('inputbox');
-                $('passwordt').removeClass('required');
-                $('passwordt').removeClass('validate-passverify');
-                $('password2').removeClass('inputbox');
-                $('password2').removeClass('required');
-                $('password2').removeClass('validate-passverify');
+                document.getElementById('pwmsg').style.display = 'none';
+                document.getElementById('passwordt').style.display = 'none';
+                document.getElementById('pw2msg').style.display = 'none';
+                document.getElementById('password2').style.display = 'none';
+                document.getElementById('passwordt').className = '';
+                document.getElementById('password2').className = '';
             }
 
         function hideAll(){
@@ -64,9 +56,8 @@ foreach ($this->providerslist as $prov) {
         }
     }
     <!--
-    window.addEvent('domready', function(){
-        var validator = new FormCheck('formular');
-        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }	);
+    Window.onDomReady = function(){
+        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }    );
     }
     // -->
 </script>
