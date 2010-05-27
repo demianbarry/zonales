@@ -31,24 +31,44 @@ $captcha_publickey = $zonalesParams->get('recaptcha_publickey', null);
 
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
+<<<<<<< .mine
+$selection = new stdClass();
+
+=======
 $selection = new stdClass();
 $selection->id = 0;
 $selection->label = "Seleccione un partido";
+>>>>>>> .r670
 $zonales =& $helper->getZonales();
 array_unshift($zonales, $selection);
 $zonal = $helper->getZonal();
-$localidades = $helper->getFieldValues($zonal->id);
+$selectedOption = 0;
+$localidades = array();
+
+if(!$zonal || $zonal->id == 0) {
+    $selection->id = 0;
+    $selection->label = "Seleccione un partido";
+    array_unshift($zonales, $selection);
+} else {
+    $localidades = $helper->getFieldValues($zonal->id);
+    $selectedOption = $zonal->id;
+}
+
 
 // crea select de zonales disponibles
 $lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
+<<<<<<< .mine
+        'size="1" class="required"', 'id', 'label', $selectedOption);
+=======
 	'size="1" class="required" onchange="this.options[0].value == 0 ? this.remove(0): null; 
                                              $(\'localidad_container\').setStyle(\'display\',\'\');
                                              $(\'loc_label\').setStyle(\'display\',\'\');
                                             "', 'id', 'label', $selection);
+>>>>>>> .r670
 
 // crea select de zonales disponibles
 $lists['localidad_select'] = JHTML::_('select.genericlist', $localidades, 'localidad',
-	'size="1" class="required"', 'id', 'label');
+        'size="1" class="required"', 'id', 'label');
 
 // template
 $app =& JFactory::getApplication();
@@ -57,16 +77,16 @@ $template = $app->getTemplate();
 // editor
 $editor =& JFactory::getEditor();
 $editorParams = array ( 
-		'theme' => 'simple',
-		'toolbar' => 'top'
-	);
+        'theme' => 'simple',
+        'toolbar' => 'top'
+);
 
 // info de usuario
 $user =& JFactory::getUser();
 
 // valores para los parametros del template
 $tparams = new JParameter(JFile::read(JPATH_BASE.DS.'templates'.DS.
-		$template.DS.'params.ini'));
+        $template.DS.'params.ini'));
 
 $mainColor = $tparams->get('mainColor', null);
 if ($mainColor) $mainColor = '_' . $mainColor;
