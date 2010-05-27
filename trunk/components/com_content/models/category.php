@@ -145,7 +145,7 @@ class ContentModelCategory extends JModel
                         // Resultados desde Solr
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
-                        $this->_total[$state] = $contenthelper->getTotal(0);
+                        $this->_total[$state] = $contenthelper->getTotal(0,100);
 		}
 
 		return $this->_total[$state];
