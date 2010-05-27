@@ -27,10 +27,10 @@ class comEqZonalesContentHelper {
      * @param <type> $limit
      * @param <type> $limitstart
      * @param <type> $queryParams
-     * @return <type> 
+     * @return <type>
      */
     function getContent($limit = 0, $limitstart = 0, $queryParams = '') {
-        
+
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
         // recupera parametros
@@ -96,7 +96,7 @@ class comEqZonalesContentHelper {
     }
 
     /**
-     * 
+     *
      *
      * @return <type>
      */
@@ -173,6 +173,8 @@ class comEqZonalesContentHelper {
         // recupera el usuario
         $user =& JFactory::getUser();
 
+        $bq = "";
+
         if (!$user->guest) {
             // recupera ecualizador del usuario
             $result = $ctrlEq->retrieveUserEqImpl($user->id);
@@ -180,18 +182,14 @@ class comEqZonalesContentHelper {
             if (!is_null($result) && !empty($result)) {
                 $eq = $result[0];
 
-                $bq = "";
-
                 foreach ($eq->bands as $band) {
                     $bq .= "tags_values:$band->band_name^$band->peso ";
                 }
-                
             }
-
-            return $bq;
         }
 
-        return "";
+        return $bq;
+
     }
 
 }
