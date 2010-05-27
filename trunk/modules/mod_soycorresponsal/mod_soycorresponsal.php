@@ -31,16 +31,9 @@ $captcha_publickey = $zonalesParams->get('recaptcha_publickey', null);
 
 // lista de zonales, zonal actualmente seleccionado
 $helper = new comZonalesHelper();
-<<<<<<< .mine
 $selection = new stdClass();
 
-=======
-$selection = new stdClass();
-$selection->id = 0;
-$selection->label = "Seleccione un partido";
->>>>>>> .r670
 $zonales =& $helper->getZonales();
-array_unshift($zonales, $selection);
 $zonal = $helper->getZonal();
 $selectedOption = 0;
 $localidades = array();
@@ -57,14 +50,7 @@ if(!$zonal || $zonal->id == 0) {
 
 // crea select de zonales disponibles
 $lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
-<<<<<<< .mine
         'size="1" class="required"', 'id', 'label', $selectedOption);
-=======
-	'size="1" class="required" onchange="this.options[0].value == 0 ? this.remove(0): null; 
-                                             $(\'localidad_container\').setStyle(\'display\',\'\');
-                                             $(\'loc_label\').setStyle(\'display\',\'\');
-                                            "', 'id', 'label', $selection);
->>>>>>> .r670
 
 // crea select de zonales disponibles
 $lists['localidad_select'] = JHTML::_('select.genericlist', $localidades, 'localidad',
@@ -76,7 +62,7 @@ $template = $app->getTemplate();
 
 // editor
 $editor =& JFactory::getEditor();
-$editorParams = array ( 
+$editorParams = array (
         'theme' => 'simple',
         'toolbar' => 'top'
 );
