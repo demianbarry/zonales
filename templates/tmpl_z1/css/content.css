@@ -1,4 +1,7 @@
 /* CSS Document */
+#mainContent .adminForm img{
+        width: auto;
+}
 #mainContent, #otherContent{
         font-family:"trebuchet MS"; /* contenido principal */
         color:#555555;
@@ -17,7 +20,7 @@
         text-decoration:none;
 }
 
-#mainContent img{
+.mceContentBody img{
         margin-bottom:5px;
         padding:0px;
         width: 100%;
