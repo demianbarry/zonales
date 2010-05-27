@@ -13,5 +13,5 @@ getfiles.sh <directorio/de/la/extensión/joomla>
 
 El script es el siguiente:
 {{{
-cd $1 && tree -f -i | cut -c '3-' | grep -v '^$' | grep -v 'director' | awk '{printf("<filename>%s</filename>\n",$0)}'
+cd $1 && tree -f -i -F | cut -c '3-' | grep -v '^$' | grep -v 'director' | grep -v '/$' | awk '{printf("<filename>%s</filename>\n",$0)}'
 }}}
