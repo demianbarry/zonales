@@ -130,7 +130,8 @@ class EqZonalesControllerBand extends JController {
 
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
         // recupera parametros
-        $noticias_field = $zonalesParams->get( 'noticias_field', null );
+        $noticias_field = $zonalesParams->get('noticias_field', null);
+        $peso = $zonalesParams->get('peso', 50);
 
         // No se especifico la url de solr
         if ($noticias_field == null) {
@@ -148,7 +149,7 @@ class EqZonalesControllerBand extends JController {
         $rows = $db->loadObjectList();
 
         foreach ($rows as $row) {
-            $row->peso = 50;
+            $row->peso = $peso;
             $row->eq_id = $eqid;
             $row->default = 0;
             $row->active = 0;
