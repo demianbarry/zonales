@@ -23,13 +23,47 @@ defined('_JEXEC') or die('Restricted access');
 class comEqZonalesContentHelper {
 
     /**
+     * Recupera el total de resultados.
+     * 
+     * @param <type> $limit
+     * @param <type> $limitstart
+     * @param <type> $queryParams 
+     */
+    function getTotal($limit = 0, $limitstart = 0, $additionalParams = '') {
+        $results = $this->getSolrResults($limit, $limitstart, $additionalParams);
+
+        if (!is_null($results)) {
+            return $results->response->numFound;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      *
      * @param <type> $limit
      * @param <type> $limitstart
      * @param <type> $queryParams
      * @return <type>
      */
-    function getContent($limit = 0, $limitstart = 0, $queryParams = '') {
+    function getContent($limit = 0, $limitstart = 0, $additionalParams = '') {
+        $results = $this->getSolrResults($limit, $limitstart, $additionalParams);
+
+        if (!is_null($results)) {
+            return $results->response->docs;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     *
+     * @param <type> $limit
+     * @param <type> $limitstart
+     * @param <type> $queryParams
+     * @return <type>
+     */
+    function getSolrResults($limit = 0, $limitstart = 0, $additionalParams = '') {
 
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
@@ -40,15 +74,15 @@ class comEqZonalesContentHelper {
 
         // No se especifico la url de solr
         if ($solr_url == null) {
-            return array();
+            return null;
         }
         // No se especifico el puerto de solr
         if ($solr_port == null) {
-            return array();
+            return null;
         }
         // No se especifico el puerto de webapp
         if ($solr_webapp == null) {
-            return array();
+            return null;
         }
 
         // The Apache Solr Client library should be on the include path
@@ -63,7 +97,7 @@ class comEqZonalesContentHelper {
 
         $queryParams = array ();
 
-        $queryParams['fq'] = $this->getWhere();
+        $queryParams['fq'] = $this->getWhere($add);
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
@@ -73,10 +107,10 @@ class comEqZonalesContentHelper {
             $results = $solr->search("", $limitstart, $limit, $queryParams);
         }
         catch (Exception $e) {
-            return array();
+            return null;
         }
 
-        return $results->response->docs;
+        return $results;
     }
 
     /**
