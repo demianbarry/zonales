@@ -61,8 +61,7 @@ class plgUserEqevents extends JPlugin {
         global $mainframe;
 
         /**
-         * Si $isnew == true, significa que un nuevo usuario ha sido
-         * creado en la base de datos.
+         * Si el nuevo usuario ha sido creado en la base de datos...
          */
         if ($isnew) {
             /**
@@ -92,7 +91,7 @@ class plgUserEqevents extends JPlugin {
             $ctrlEq = new EqZonalesControllerEq();
             $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
             $ctrlBand = new EqZonalesControllerBand();
-            $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+            $ctrlBand->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
 
             /**
              * Crea el ecualizador con los datos del nuevo usuario.
