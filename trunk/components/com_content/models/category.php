@@ -140,8 +140,12 @@ class ContentModelCategory extends JModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_total))
 		{
-			$query = $this->_buildQuery($state);
-			$this->_total[$state] = $this->_getListCount($query);
+			//$query = $this->_buildQuery($state);
+			//$this->_total[$state] = $this->_getListCount($query);
+                        // Resultados desde Solr
+                        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
+                        $contenthelper = new comEqZonalesContentHelper();
+                        $this->_total[$state] = $contenthelper->getTotal(0);
 		}
 
 		return $this->_total[$state];
