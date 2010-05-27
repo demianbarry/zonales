@@ -29,8 +29,8 @@ class comEqZonalesContentHelper {
      * @param <type> $limitstart
      * @param <type> $queryParams 
      */
-    function getTotal($limit = 0, $limitstart = 0, $additionalParams = '') {
-        $results = $this->getSolrResults($limit, $limitstart, $additionalParams);
+    function getTotal($limitstart = 0, $limit = 0, $additionalParams = '') {
+        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
             return $results->response->numFound;
@@ -46,8 +46,8 @@ class comEqZonalesContentHelper {
      * @param <type> $queryParams
      * @return <type>
      */
-    function getContent($limit = 0, $limitstart = 0, $additionalParams = '') {
-        $results = $this->getSolrResults($limit, $limitstart, $additionalParams);
+    function getContent($limitstart = 0, $limit = 0, $additionalParams = '') {
+        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
             return $results->response->docs;
@@ -63,7 +63,7 @@ class comEqZonalesContentHelper {
      * @param <type> $queryParams
      * @return <type>
      */
-    function getSolrResults($limit = 0, $limitstart = 0, $additionalParams = '') {
+    function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = '') {
 
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
@@ -97,7 +97,7 @@ class comEqZonalesContentHelper {
 
         $queryParams = array ();
 
-        $queryParams['fq'] = $this->getWhere($additionalParams);
+        $queryParams['fq'] = $this->getWhere();
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
