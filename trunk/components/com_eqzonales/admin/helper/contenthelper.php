@@ -97,10 +97,15 @@ class comEqZonalesContentHelper {
 
         $queryParams = array ();
 
-        $queryParams['fq'] = Array(
-            $this->getWhere(),
-            $additionalParams
+        if (strlen($additionalParams) > 0) {
+            $queryParams['fq'] = Array(
+                $this->getWhere(),
+                $additionalParams
             );
+        } else {
+            $queryParams['fq'] = $this->getWhere();
+        }
+
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
@@ -190,12 +195,13 @@ class comEqZonalesContentHelper {
 
 
         $localidadesList = array();
-        foreach($localidades as $localidad)
+        foreach($localidades as $localidad) {
             $localidadesList[] = $localidad->name;
+        }
 
         $where .= '+tags_values:('.implode(" ",$localidadesList).')';
 
-        $where .= $additionalParams;
+        //$where .= $additionalParams;
 
         return $where;
     }
@@ -211,7 +217,6 @@ class comEqZonalesContentHelper {
         // controladores
         $ctrlEq = new EqZonalesControllerEq();
         $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
-
 
         // recupera el usuario
         $user =& JFactory::getUser();
