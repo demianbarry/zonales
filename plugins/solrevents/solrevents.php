@@ -84,10 +84,9 @@ class plgContentSolrEvents extends JPlugin {
             return;
         }
 
+        // Se construye el request
         $http = new HttpRequest("$solr_url:$solr_port/$solr_webapp/$solr_dataimport?command=$solr_deltaimport", HttpRequest::METH_GET);
         $http->send();
-
-        echo "$solr_url:$solr_port/$solr_webapp/$solr_dataimport?command=$solr_deltaimport";
 
         return true;
     }

@@ -137,7 +137,7 @@ class comEqZonalesContentHelper {
                 "state,catid,created,created_by,created_by_alias,modified,modified_by,".
                 "checked_out,checked_out_time,publish_up,publish_down,attribs,hits,".
                 "images,urls,ordering,metakey,metadesc,access,slug,catslug,readmore,".
-                "author,usertype,groups,author_email";
+                "author,usertype,groups,author_email,catalias";
 
         return $fieldList;
     }
