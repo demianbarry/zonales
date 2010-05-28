@@ -36,7 +36,7 @@
                                 u.name AS author, u.usertype, u.email as author_email,
                                 g.name AS groups,
                                 
-				cat.title as category, s.title as section,
+				cat.title as category, s.title as section, cat.alias as catalias,
 				s.published as s_published, cat.published as cat_published,
 
 				s.access as s_access, cat.access as cat_access,

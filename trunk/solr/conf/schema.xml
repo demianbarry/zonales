@@ -121,6 +121,7 @@
         <field name="sectionid" type="integer" indexed="true" stored="true" />
         <field name="state" type="integer" indexed="true" stored="true" />
         <field name="catid" type="integer" indexed="true" stored="true" />
+        <field name="catalias" type="text" indexed="false" stored="true" />
         <field name="created" type="date" indexed="true" stored="true" />
         <field name="created_by" type="integer" indexed="true" stored="true" />
         <field name="created_by_alias" type="string" indexed="true" stored="true" />
@@ -139,8 +140,8 @@
         <field name="metadesc" type="text" indexed="true" stored="true" />
         <field name="access" type="integer" indexed="true" stored="true" />
 
-        <field name="slug" type="string" indexed="true" stored="true" />
-        <field name="catslug" type="string" indexed="true" stored="true" />
+        <field name="slug" type="string" indexed="false" stored="true" />
+        <field name="catslug" type="string" indexed="false" stored="true" />
         <field name="readmore" type="integer" indexed="true" stored="true" />
 
         <field name="author" type="string" indexed="true" stored="true" />
