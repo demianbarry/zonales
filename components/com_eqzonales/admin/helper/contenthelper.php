@@ -107,7 +107,7 @@ class comEqZonalesContentHelper {
 
         $menu = $this->getMenuValue();
         if ($menu) {
-            $fqParams[] = $menu;
+            $fqParams[] = "tag_values:$menu";
         }
 
         $queryParams['fq'] = $fqParams;
@@ -245,13 +245,20 @@ class comEqZonalesContentHelper {
 
     }
 
+    /**
+     * Recupera el tag_value asociado al menu actual.
+     *
+     * @return String
+     */
     function getMenuValue() {
-        $menuId = JRequest::getVar('menuId', NULL, 'get', 'string');
+        // recupero el id del menu actual
+        $menuId = JSite::getMenu()->getActive()->id;
 
         if ($menuId) {
             // Get a database object
             $db =& JFactory::getDBO();
 
+            // obtengo el tag_value asociado con el menu
             $query = "SELECT v.name FROM `#__zonales_menu` m".
                     " INNER JOIN #__custom_properties_values v ON v.id = m.value_id".
                     " WHERE m.menu_id = $menuId";
