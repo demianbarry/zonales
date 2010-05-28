@@ -11,6 +11,10 @@
         <param name="solr_port" type="text" size="6" default="" label="Solr Port" description="solr_port_tip" />
         <param name="solr_webapp" type="text" size="20" default="" label="Solr Webapp" description="solr_webapp_tip" />
         <param name="@spacer" type="spacer" default="" label="" description="" />
+        <param name="solr_dataimport" type="text" size="20" default="dataimporter" label="Data Importer" description="Data Importer Tip" />
+        <param name="solr_fullimport" type="text" size="20" default="full-import" label="Full Import Command" description="Full Import Command Tip" />
+        <param name="solr_deltaimport" type="text" size="20" default="delta-import" label="Delta Import Command" description="Delta Import Command Tip" />
+        <param name="@spacer" type="spacer" default="" label="" description="" />
         <param name="noticias_field" type="sql" default="" query="SELECT id, label FROM #__custom_properties_fields" key_field="id" value_field="label" description="noticias_field_tip" />
         <param name="peso_default" type="text" size="3" default="50" label="Peso" description="peso_tip" />
     </params>
