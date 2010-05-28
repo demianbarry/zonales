@@ -18,11 +18,9 @@
 	</languages>
 	<params>
 		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
-                <param name="solr_url" type="text" size="20" default="" label="Solr Url" description="solr_url_tip" />
-                <param name="solr_port" type="text" size="6" default="" label="Solr Port" description="solr_port_tip" />
-                <param name="solr_webapp" type="text" size="20" default="" label="Solr Webapp" description="solr_webapp_tip" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="search_content" type="radio" default="1" label="Content Items" description="Search Content Items?">
+		<!--
+                <param name="search_content" type="radio" default="1" label="Content Items" description="Search Content Items?">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
@@ -34,5 +32,6 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+                -->
 	</params>
 </install>
