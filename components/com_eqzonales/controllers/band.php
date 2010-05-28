@@ -131,7 +131,7 @@ class EqZonalesControllerBand extends JController {
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
         // recupera parametros
         $noticias_field = $zonalesParams->get('noticias_field', null);
-        $peso = $zonalesParams->get('peso', 50);
+        $peso_default = $zonalesParams->get('peso_default', 50);
 
         // No se especifico la url de solr
         if ($noticias_field == null) {
@@ -149,25 +149,11 @@ class EqZonalesControllerBand extends JController {
         $rows = $db->loadObjectList();
 
         foreach ($rows as $row) {
-            $row->peso = $peso;
+            $row->peso = $peso_default;
             $row->eq_id = $eqid;
             $row->default = 0;
             $row->active = 0;
         }
-
-        // TODO: Generar bandas desde Ecualizador 0 (por defecto)
-
-//        $params = array ();
-//
-//        $banda = new stdClass();
-//        $banda->valor = 'Valor';
-//        $banda->peso = '50';
-//        $banda->cp_value_id = '123';
-//        $banda->eq_id = $eqid;
-//        $banda->default = '0';
-//        $banda->active = '0';
-//
-//        $params[] = $banda;
 
         /**
          * Crea/modifica las bandas del ecualizador según la configuración
