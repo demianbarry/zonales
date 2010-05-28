@@ -97,7 +97,10 @@ class comEqZonalesContentHelper {
 
         $queryParams = array ();
 
-        $queryParams['fq'] = $this->getWhere();
+        $queryParams['fq'] = Array(
+            $this->getWhere(),
+            $additionalParams
+            );
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
