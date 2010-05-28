@@ -33,7 +33,7 @@ class comEqZonalesContentHelper {
         $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
-            return $results->response->numFound;
+            return count($results->response->docs);
         } else {
             return 0;
         }
@@ -136,7 +136,7 @@ class comEqZonalesContentHelper {
      */
     function getOrder() {
         // Get the page/component configuration
-        $orderby = "score desc, created desc";
+        $orderby = "score desc,created desc";
         return $orderby;
     }
 
@@ -190,7 +190,7 @@ class comEqZonalesContentHelper {
         foreach($localidades as $localidad)
             $localidadesList[] = $localidad->name;
 
-        $where .= '+tags_values:('.implode(",",$localidadesList).')';
+        $where .= '+tags_values:('.implode(" ",$localidadesList).')';
 
         $where .= $additionalParams;
 
@@ -223,7 +223,7 @@ class comEqZonalesContentHelper {
                 $eq = $result[0];
 
                 foreach ($eq->bands as $band) {
-                    $bq .= "tags_values:$band->band_name^$band->peso ";
+                    $bq .= " tags_values:$band->band_name^$band->peso";
                 }
             }
         }
