@@ -196,7 +196,9 @@ class comEqZonalesContentHelper {
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
         $helper = new comZonalesHelper();
         $zonal = $helper->getZonal();
-        $localidades = $helper->getLocalidadesByPartido($zonal->id);
+        if ($zonal->id) {
+            $localidades = $helper->getLocalidadesByPartido($zonal->id);
+        }
 
 
         $localidadesList = array();
