@@ -24,10 +24,10 @@ class comEqZonalesContentHelper {
 
     /**
      * Recupera el total de resultados.
-     * 
+     *
      * @param <type> $limit
      * @param <type> $limitstart
-     * @param <type> $queryParams 
+     * @param <type> $queryParams
      */
     function getTotal($limitstart = 0, $limit = 0, $additionalParams = '') {
         $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
@@ -95,17 +95,22 @@ class comEqZonalesContentHelper {
         // path (all defaults in this example)
         $solr = new Apache_Solr_Service($solr_url, $solr_port, $solr_webapp);
 
-        $queryParams = array ();
+        $queryParams = array();
+
+        $fqParams = array();
+
+        $fqParams[] = $this->getWhere();
 
         if (strlen($additionalParams) > 0) {
-            $queryParams['fq'] = Array(
-                $this->getWhere(),
-                $additionalParams
-            );
-        } else {
-            $queryParams['fq'] = $this->getWhere();
+            $fqParams[] = $additionalParams;
         }
 
+        $menu = $this->getMenuValue();
+        if ($menu) {
+            $fqParams[] = $menu;
+        }
+
+        $queryParams['fq'] = $fqParams;
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
@@ -154,7 +159,7 @@ class comEqZonalesContentHelper {
      * @param <type> $additionalParams
      * @return <type>
      */
-    function getWhere($additionalParams = '') {
+    function getWhere() {
         global $mainframe;
 
         // usuario
@@ -238,6 +243,25 @@ class comEqZonalesContentHelper {
 
         return $bq;
 
+    }
+
+    function getMenuValue() {
+        $menuId = JRequest::getVar('menuId', NULL, 'get', 'string');
+
+        if ($menuId) {
+            // Get a database object
+            $db =& JFactory::getDBO();
+
+            $query = "SELECT v.name FROM `#__zonales_menu` m".
+                    " INNER JOIN #__custom_properties_values v ON v.id = m.value_id".
+                    " WHERE m.menu_id = $menuId";
+
+            $db->setQuery($query);
+
+            return $db->loadResult();
+        }
+
+        return null;
     }
 
 }
