@@ -322,14 +322,21 @@ class UserController extends JController {
 
         $useUsername = ($username) ? ' AND u.username ="' . $user->get('username') . '"' : '';
 
-        $id_query = 'SELECT u.id FROM #__users u'.
-            ' WHERE u.birthdate="' . $user->get('birthdate') . '"' .
-            $useUsername .
+        $id_query = 'SELECT u.id FROM #__users u, #__aapu_attribute_entity ae '.
+            ' WHERE ae.value_date="' . $user->get('birthdate') . '"' .
+            $useUsername . " AND ae.object_id=u.id AND ae.object_type='TABLE' AND ae.object_name='#__users'" .
             ' AND u.name IN (' . $end . ')';
         $db->setQuery($id_query);
         $dbuserid = $db->loadObject();
 
         return ($dbuserid) ? $dbuserid->id : null;
+    }
+
+    function getRUserId($db,$username) {
+        $id_query = "SELECT u.id FROM #__users u WHERE u.username='$username'";
+        $db->setQuery($id_query);
+        $dbuserid = $db->loadObject();
+        return $dbuserid->id;
     }
 
     private function userExists($db,$user) {
@@ -369,6 +376,7 @@ class UserController extends JController {
         $email2 = JRequest::getString('email2','','method');
         $birthday = JRequest::getString('birthdate','','method');
         $sex = JRequest::getString('sex','M','method');
+        $username = JRequest::getString('usernamer','','method');
 
         if ($zonalId == UserHelper::ZONAL_NOT_DEFINED){
             $notZonalMessage = JText::_('SYSTEM_ZONAL_NOT_DEFINED');
@@ -455,7 +463,7 @@ class UserController extends JController {
                 UserHelper::showMessage(ERROR, $message);
                 return false;
             }
-            $userid = $this->getUserId($db, $user);
+            $userid = $this->getRUserId($db, $user->get('username'));
             $userExists = true;
 
             // registramos los datos extras en la tabla de com_aapu
@@ -516,7 +524,8 @@ class UserController extends JController {
             // If there was an error with registration, set the message and display form
             if ( !$attributesEntityModel->store(false, false, $dataSex) ||
                 !$attributesEntityModel->store(false, false, $dataBirthday) ||
-                !$attributesEntityModel->store(false, false, $dataZonal)) {
+                !$attributesEntityModel->store(false, false, $dataZonal) ||
+                    !$attributesEntityModel->store(false, false, $dataEmail2)) {
                 
                 JError::raiseWarning('', JText::_( $user->getError()));
 
