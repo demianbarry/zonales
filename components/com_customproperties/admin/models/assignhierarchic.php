@@ -43,7 +43,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
      * @var string
      */
     var $_title;
-     /**
+    /**
      * Content text
      *
      * @var string
@@ -121,7 +121,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             return $this->_title;
         }
 
-        // Load the data
+// Load the data
         if (empty ($this->_title)) {
             $database = $this->_db;
             $ce = $this->_content_element;
@@ -146,7 +146,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             return $this->_content;
         }
 
-        // Load the data
+// Load the data
         if (empty ($this->_content)) {
             $database = $this->_db;
             $ce = $this->_content_element;
@@ -165,7 +165,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
      * @return array associative array with section, category, authour, content element label
      */
     function &getProperties() {
-    // Load the data
+// Load the data
         if (empty ($this->_properties)) {
 
             $database 	=& $this->_db;
@@ -176,7 +176,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             $database = $this->_db;
             $ce = $this->_content_element;
 // retrieve values
-            // $selstr[] 	= "c.id ";
+// $selstr[] 	= "c.id ";
             $selstr[] = "c.".$ce->id;
             $fromstr[] 	= "#__$ref_table AS c";
             $wherestr	= "c.".$ce->id ." = '" . $this->_id . "'";
@@ -219,16 +219,19 @@ class CustompropertiesModelAssignhierarchic extends JModel {
         $ce = $this->_content_element;
         $ref_table = $ce->table;
 
+        $i = 0;
         // retrieve cp_fields id
         foreach ($cid as $content_id) {
 
             if ($action == 'delete' || $action == 'replace') {
                 // clean previous properties
                 $query = "delete FROM #__custom_properties
-					WHERE content_id = '$content_id' AND ref_table = '$ref_table' ";
+                                        WHERE content_id = '$content_id' AND ref_table = '$ref_table' ";
 
                 $database->setQuery($query);
                 $database->query();
+
+                $i++;
             }
 
             if ($action == "add" || $action == "replace") {
@@ -244,7 +247,12 @@ class CustompropertiesModelAssignhierarchic extends JModel {
                         $database->query();
                     }
                 }
+                $i++;
             }
+        }
+        if($i != 0) {
+            $dispatcher =& JDispatcher::getInstance();
+            $dispatcher->trigger('onAfterContentSave');
         }
     }
 
