@@ -58,6 +58,47 @@
                                 inner join jos_custom_properties_values jcpv on jcpv.id = jcp.value_id
                                 group by a.id"
 
+                         deltaImportQuery="select
+                                a.id, a.title, a.alias, a.title_alias, a.introtext, a.`fulltext`,
+                                a.sectionid, a.state, a.catid,
+                                a.created, a.created_by, a.created_by_alias,
+                                a.modified, a.modified_by, a.checked_out, a.checked_out_time,
+                                a.publish_up, a.publish_down, a.attribs, a.hits,
+                                a.images, a.urls, a.ordering, a.metakey, a.metadesc,
+                                a.access,
+
+                                CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(':', a.id, a.alias) ELSE a.id END as slug,
+                                CASE WHEN CHAR_LENGTH(cat.alias) THEN CONCAT_WS(':', cat.id, cat.alias) ELSE cat.id END as catslug,
+                                CHAR_LENGTH( a.`fulltext` ) AS readmore,
+
+                                u.name AS author, u.usertype, u.email as author_email,
+                                g.name AS groups,
+
+				cat.title as category, s.title as section,
+				s.published as s_published, cat.published as cat_published,
+
+				s.access as s_access, cat.access as cat_access,
+
+				if(a.publish_up, true, false) as hasPublishUpDate,
+				if(a.publish_down, true, false) as hasPublishDownDate,
+
+                                group_concat(distinct jcpf.name) as tfields,
+                                group_concat(distinct jcpv.name) as tvalues
+
+				from jos_content a
+				left join jos_users u on u.id = a.created_by
+                                left join jos_groups AS g ON a.access = g.id
+				left join jos_sections s on s.id = a.sectionid
+				left join jos_categories cat on cat.id = a.catid
+
+                                inner join jos_custom_properties jcp on jcp.content_id = a.id
+                                inner join jos_custom_properties_fields jcpf on jcpf.id = jcp.field_id
+                                inner join jos_custom_properties_values jcpv on jcpv.id = jcp.value_id
+
+                                where a.id == '${dataimporter.delta.id}
+
+                                group by a.id"
+
                 	deltaQuery="select a.id from jos_content a where a.modified > '${dataimporter.last_index_time}'
 				or a.created > '${dataimporter.last_index_time}'" >
 				
