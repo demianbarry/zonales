@@ -311,7 +311,7 @@
         <echo message="Creando archivo de distribución de plugin EqEvents"/>
         <zip destfile="${src_dist_dir}/${dist.plg_eqevents.file}.zip" >
             <fileset refid="plg_eqevents_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_user_eqevents.ini" prefix="language" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_user_eqevents.ini" prefix="language" />
         </zip>
     </target>
 
