@@ -162,10 +162,11 @@ class plgUserEqevents extends JPlugin {
         if ($eqId === FALSE) {
             return;
         } else {
+            $params->id = $eqId;
             /**
              * Instancia las bandas por defecto para el ecualizador.
              */
-            $this->_ctrlBand->createDefaultBands($eqId);
+            $this->_ctrlBand->createDefaultBands($params);
         }
     }
 }

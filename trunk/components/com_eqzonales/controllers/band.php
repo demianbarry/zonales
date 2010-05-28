@@ -120,11 +120,11 @@ class EqZonalesControllerBand extends JController {
      * método esta pensando principalmente para ser invocado durante la creación
      * de un ecualizador por defecto para un nuevo usuario.
      *
-     * @param int $eqid id del ecualizador al cual asignar las bandas.
+     * @param int $eq stdclass con datos del ecualizador al cual asignar las bandas.
      * @return boolean TRUE al agregar con exito las bandas al ecualizador.
      */
-    function createDefaultBands($eqid = null) {
-        if (is_null($eqid)) {
+    function createDefaultBands($eq = null) {
+        if (is_null($eq)) {
             return false;
         }
 
@@ -143,17 +143,33 @@ class EqZonalesControllerBand extends JController {
 
         $query = "SELECT id AS cp_value_id, label AS valor FROM `#__custom_properties_values`".
             " WHERE `parent_id` = 0 AND `field_id` = $noticias_field LIMIT 0 , 30";
-        
         $db->setQuery($query);
-        
-        $rows = $db->loadObjectList();
+        $rows1 = $db->loadObjectList();
 
-        foreach ($rows as $row) {
+        foreach ($rows1 as $row) {
             $row->peso = $peso_default;
-            $row->eq_id = $eqid;
+            $row->eq_id = $eq->id;
             $row->default = 0;
             $row->active = 0;
         }
+
+        // Zonales por defecto
+        $query = "SELECT e.value AS cp_value_id, v.label AS valor".
+            " FROM #__aapu_attribute_entity e".
+            " INNER JOIN #__custom_properties_values v ON v.id = e.value".
+            " WHERE e.object_type = 'TABLE' AND e.object_name = '#__users'".
+            " AND e.attribute_id = 3 AND e.object_id = $eq->user_id";
+        $db->setQuery($query);
+        $rows2 = $db->loadObjectList();
+
+        foreach ($rows2 as $row) {
+            $row->peso = 100;
+            $row->eq_id = $eq->id;
+            $row->default = 0;
+            $row->active = 0;
+        }
+
+        $rows = array_merge($rows1, $rows2);
 
         /**
          * Crea/modifica las bandas del ecualizador según la configuración
