@@ -42,7 +42,7 @@ class render_for_COMBOBOX_data_type {
                     <label>'.$label.' '.$reqLabel.'</label>
                  </td>
                  <td colspan="2">'.
-                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id, $attrib, 'value', 'value', $value ).
+                    JHTML::_('select.genericlist', $valuesList, 'attr_'.$id, $attrib, 'key', 'value', $value ).
                     '<div id="valid_'.$id.'" style="float: right; color: red"></div>
                 </td>
             </div>';
