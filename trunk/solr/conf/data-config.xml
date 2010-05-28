@@ -95,7 +95,7 @@
                                 inner join jos_custom_properties_fields jcpf on jcpf.id = jcp.field_id
                                 inner join jos_custom_properties_values jcpv on jcpv.id = jcp.value_id
 
-                                where a.id == '${dataimporter.delta.id}
+                                where a.id = '${dataimporter.delta.id}'
 
                                 group by a.id"
 
