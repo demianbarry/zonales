@@ -4,9 +4,23 @@ define('APPLY', 2);
 define('SUGGEST', 1);
 define('UNASSIGNED', 0);
 
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
+            'com_customproperties' . DS . 'models' . DS . 'assignhierarchic.php';
+
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
+            'com_customproperties' . DS . 'models' . DS . 'cpvalues.php';
+
+require_once JPATH_ROOT . DS .'components' . DS . 'com_eqzonales' . DS . 'controllers' . DS . 'eq.php';
+
 class ModuleTagger {
     var $eq;
     var $_cplist;
+
+    function getModel($modelName) {
+        $name = ucfirst(strtolower($modelName));
+        $className = "CustompropertiesModel$name";
+        return new $className;
+    }
 
     function getBands() {
     $controller = new EqZonalesControllerEq();
@@ -71,22 +85,25 @@ class ModuleTagger {
         $cp->getAllHierarchical();
         $cpvalues	= $cp->getCachedRoots();
 
-        $assign     = $this->getModel('assignhierarchic');
-        $content_id = $assign->_id;
-        $item_title = $assign->getTitle();
-        $properties = $assign->getProperties();
+//        $assign     = $this->getModel('assignhierarchic');
+//        $content_id = $assign->_id;
+//        $item_title = $assign->getTitle();
+//        $properties = $assign->getProperties();
 
         $this->_cplist = array();
         // Carga lista de tags asignados
         $userBands = $this->getBands();
+        if ($userBands == NULL){
+            return array('message' => 'NO HAY INFORMACION ASOCIADA');
+        }
+
         foreach ($userBands as $value){
             $this->eq = $value->eq->id;
-            foreach ($value->band as $band) {
+            foreach ($value->bands as $band) {
                 $this->_cplist[] = $band->cp_value_id;
             }
 
         }
-        $this->assignRef('_cplist',		$this->_cplist);
 
 
         $user = & JFactory::getUser();
@@ -143,7 +160,8 @@ class ModuleTagger {
         $out = array(
             'eqId' => $this->eq,
             'jsCode' => $jsCode,
-            'divs' => $divs
+            'divs' => $divs,
+            '_cplist' => $this->_cplist
         );
         return $out;
     }

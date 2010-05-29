@@ -70,7 +70,8 @@ class plgAuthenticationExternallogin extends JPlugin {
         ################################################
         ## asignar valor a $provider!!!!!!
         if (isset($credentials['provider']) && $credentials['provider'] != null) {
-            $provider = $credentials['provider'];
+            $providerRaw = explode("/", $credentials['provider']);
+            $provider = $providerRaw[0];
             $selectProtocol = 'select t.function as func, t.name from #__providers p, #__protocol_types t ' .
                 'where p.name = "' . $provider . '" ' .
                 'and p.protocol_type_id=t.id';

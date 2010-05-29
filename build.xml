@@ -65,6 +65,10 @@
     <fileset dir="${src_modules}/mod_alias" id="mod_alias_files">
         <include name="**" />
     </fileset>
+    <!-- mod_tagger -->
+    <fileset dir="${src_modules}/mod_tagger" id="mod_tagger_files">
+        <include name="**" />
+    </fileset>
     <!-- mod_message -->
     <fileset dir="${src_modules}/mod_message" id="mod_message_files">
         <include name="**" />
@@ -202,6 +206,15 @@
         <zip destfile="${src_dist_dir}/${dist.mod_mapainicio.file}.zip" >
             <fileset refid="mod_mapainicio_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapainicio.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo tagger -->
+    <target name="dist_mod_tagger" description="Crea archivo de distribución Joomla para el modulo Tagger">
+        <echo message="Creando archivo de distribución de modulo Tagger"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_tagger.file}.zip" >
+            <fileset refid="mod_tagger_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_tagger.ini" prefix="language" />
         </zip>
     </target>
 
