@@ -100,7 +100,7 @@ class plgSearchSolrsearch extends JPlugin {
                 }
 
                 $item->created = $doc->created;
-                $item->text = $doc->intro_content;
+                $item->text = $doc->introtext;
                 $item->browsernav = '';
                 $return[] = $item;
             }
