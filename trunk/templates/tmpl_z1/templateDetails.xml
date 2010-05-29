@@ -38,6 +38,8 @@
         <file>html/com_search/search/default.php</file>
         <file>html/com_search/search/index.html</file>
         <file>html/com_search/search/yoosearch.php</file>
+        <file>html/com_search/search/default_form.php</file>
+        <file>html/com_search/search/default_results.php</file>
         <file>html/mod_comments_latest/default.php</file>
         <file>html/mod_comments_latest/index.html</file>
         <file>images/index.html</file>
