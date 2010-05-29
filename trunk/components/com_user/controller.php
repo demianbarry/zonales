@@ -162,7 +162,7 @@ class UserController extends JController {
         $options = array();
         if ($epUserdata == null) {
         // Check for request forgeries
-            JRequest::checkToken('request') or jexit( 'Invalid Token' );
+            //JRequest::checkToken('request') or jexit( 'Invalid Token' );
             $credentials['provider'] = JRequest::getVar('provider', null, 'method', 'string');
             $credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
             $credentials['userid'] = JRequest::getInt('userid', '0', 'method');

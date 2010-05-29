@@ -1,9 +1,15 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+if (isset ($data['nessage'])){
+    echo $data['nessage'];
+    die();
+}
+
 $eqId = $data['eqId'];
 $jsCode = $data['jsCode'];
 $divs = $data['divs'];
+$_cplist = $data['_cplist'];
 
 // incluye javascript para objeto flash
 JHTML::script('core/lang/Bs_Misc.lib.js');
@@ -21,25 +27,42 @@ JHTML::script('tree/Bs_TreeElement.class.js');
 echo $jsCode;
 ?>
 
-window.addEvent('domready', function() {
-    $('adminForm').addEvent('submit', function(e) {
+    window.addEvent('domready', function() {
+        $('adminForm').addEvent('submit', function(e) {
             new Event(e).stop();
+            for (i=0;i < $('adminForm').elements.length;i++){
+                var key = $('adminForm').elements[i].name;
+                var beg = key.substr(0,3);
+                // si el elemento corresponde a un tag seleccionado
+                if (beg == 'cp_' && $('adminForm').elements[i] == 2){
+                    // obtengo los datos (el value)
+                    var fieldValue = key.substr(3);
+                    var separatorIndex = fieldValue.indexOf('_');
+                    //var field = fieldValue.substr(0,separatorIndex);
+                    var value = fieldValue.substr(separatorIndex + 1);
+
+                    // creo los elementos slider
+                    // eso espera la funcion en el servidor
+                    var slider = document.createElement('input');
+                    slider.setAttribute("type", "hidden");
+                    // el id del elemento es IDBanda-IDValue-Peso
+                    // no se especifica IDBanda porque hay que agregar la banda
+                    slider.setAttribute("id","-" + value + "-50");
+                    slider.setAttribute("name", "slider[]");
+                    $('adminForm').appendChild(slider);
+                }
+            }
             this.send({
                 onSuccess: function(response) {
                     var resp = Json.evaluate(response);
                     if (resp.status == 'SUCCESS') {
-                        for (i=0;i < $('adminForm').elements.length;i++){
-                            var subString = $('adminForm').elements[i].name.substring(3,0);
-                            if ((subString == 'cp_')_&& ($('adminForm').elements[i].value == 2)){
 
-                            }
-                        }
                     }
                     $('respuesta').setHTML(resp.msg);
                 }
             });
         });
-}
+    }
 </script>
 <!-- genero id-value_id-peso llamados slider-->
 <div class="cp_add_tag">
@@ -49,8 +72,8 @@ window.addEvent('domready', function() {
             <input type="hidden" name="task" value="band.modifyBandAjax"/>
             <input type="hidden" name="eqid" value="<?php echo $eqId ?>" />
             <input type="hidden" name="format" value="raw" />
-            <input type="button" class="button" value="<?php echo JText::_('Add'); ?>" onclick="this.form.submit();"/>
-            <input type="button" class="button" value="<?php echo JText::_('Close'); ?>" onclick="window.parent.document.getElementById('sbox-window').close();"/>
+            <input type="button" class="button" value="<?php echo JText::_('SYSTEM_EQ_BAND_ADD'); ?>" onclick="this.form.submit();"/>
+            <input type="button" class="button" value="<?php echo JText::_('SYSTEM_WINDOW_CLOSE'); ?>" onclick="window.parent.document.getElementById('sbox-window').close();"/>
         </div>
         <?php
         echo $divs;
