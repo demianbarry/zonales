@@ -7,7 +7,7 @@
 	border-bottom:1px dotted #CCCCCC;
 }
 
-.moduletable_zlogin p {
+.moduletable_sessioninfo p {
         display:inline;
 	line-height:13px;
 	font-family:"trebuchet MS";
@@ -16,7 +16,7 @@
 	margin-bottom:7px;
 }
 
-.moduletable_zlogin p strong{
+.moduletable_sessioninfo p strong{
         display:inline;
 	font-weight:bold;
 }
