@@ -1,0 +1,22 @@
+/* CSS del módulo 'Session Info' */
+
+.moduletable_sessioninfo {
+	width:160px;
+	margin-bottom:10px;
+	background:#F8F8F1;
+	border-bottom:1px dotted #CCCCCC;
+}
+
+.moduletable_zlogin p {
+        display:inline;
+	line-height:13px;
+	font-family:"trebuchet MS";
+	font-size:11px;
+	color:#666666;
+	margin-bottom:7px;
+}
+
+.moduletable_zlogin p strong{
+        display:inline;
+	font-weight:bold;
+}
