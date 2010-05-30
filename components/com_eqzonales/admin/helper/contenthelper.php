@@ -107,7 +107,7 @@ class comEqZonalesContentHelper {
 
         $menu = $this->getMenuValue();
         if ($menu) {
-            $fqParams[] = "tag_values:$menu";
+            $fqParams[] = "tags_values:$menu";
         }
 
         $queryParams['fq'] = $fqParams;
