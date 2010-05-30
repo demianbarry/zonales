@@ -253,8 +253,12 @@ class comEqZonalesContentHelper {
      * @return String
      */
     function getMenuValue() {
+        $menuId = null;
+
         // recupero el id del menu actual
-        $menuId = JSite::getMenu()->getActive()->id;
+        if (JSIte::getMenu()->getActive()) {
+            $menuId = JSite::getMenu()->getActive()->id;
+        }
 
         if ($menuId) {
             // Get a database object
