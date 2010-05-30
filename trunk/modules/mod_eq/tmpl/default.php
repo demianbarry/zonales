@@ -91,7 +91,7 @@ JHTML::_('behavior.formvalidation');
 </script>
 <!-- form -->
 <div class="moduletable_formEq">
-    <h1><?php echo $module->title; ?></h1>
+    <h1><?php echo $use_module_title ? $module->title : $title; ?></h1>
     <div style="margin-left:10px; margin-right:10px; margin-bottom:10px;">
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>

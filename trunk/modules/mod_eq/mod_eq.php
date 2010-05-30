@@ -24,6 +24,8 @@ $template = $app->getTemplate();
 // parametros
 $description = $params->get('description');
 $error_no_eq = $params->get('error_no_eq');
+$use_module_title = $params->get('use_module_title');
+$title = $params->get('title');
 
 // recupera el usuario
 $user =& JFactory::getUser();
