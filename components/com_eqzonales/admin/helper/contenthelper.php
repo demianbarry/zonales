@@ -196,19 +196,19 @@ class comEqZonalesContentHelper {
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
         $helper = new comZonalesHelper();
         $zonal = $helper->getZonal();
+
+        // Si se recupera correctamente el zonal actual, se compone la lista
+        // de zonales de preferencia para el usuario
         if ($zonal->id) {
             $localidades = $helper->getLocalidadesByPartido($zonal->id);
+
+            $localidadesList = array();
+            foreach($localidades as $localidad) {
+                $localidadesList[] = $localidad->name;
+            }
+
+            $where .= '+tags_values:('.implode(" ",$localidadesList).')';
         }
-
-
-        $localidadesList = array();
-        foreach($localidades as $localidad) {
-            $localidadesList[] = $localidad->name;
-        }
-
-        $where .= '+tags_values:('.implode(" ",$localidadesList).')';
-
-        //$where .= $additionalParams;
 
         return $where;
     }
