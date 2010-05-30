@@ -95,7 +95,7 @@ JHTML::_('behavior.formvalidation');
     <div style="margin-left:10px; margin-right:10px; margin-bottom:10px;">
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
-        <div id="respuesta" title="respuesta"></div>
+        <p id="respuesta"></p>
         <?php if (!is_null($eq)): ?>
         <form action="index.php" method="post" id="formEq" name="formEq">
             <ul id="accordion">
