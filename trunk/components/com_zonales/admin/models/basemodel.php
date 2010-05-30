@@ -4,17 +4,60 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model' );
 
 abstract class ZonalesModelBaseModel extends JModel {
+    /**
+     * Id del registro, utilizado para recuperar un solo dato.
+     * @var int
+     */
     var $_id		= null;
+    /**
+     * Datos del rgistros recuperado.
+     * @var stdClass
+     */
     var $_data 		= null;
+    /**
+     * Arreglo de stdClass, utilizado para recuperar múltiples registros.
+     * @var array
+     */
     var $_all 		= null;
-
-    var $_total 		= null;
+    /**
+     * Número de registros recuperados.
+     * @var int
+     */
+    var $_total         = null;
+    /**
+     * Instancia de JPagination para este modelo.
+     * @var JPagination
+     */
     var $_pagination 	= null;
+    /**
+     * Recupera registros a partir de este offset.
+     * @var int
+     */
     var $_limitstart 	= 0;
-    var $_limit 		= 0;
-
+    /**
+     * Número de registros a recuperar de la base de datos.
+     * @var int
+     */
+    var $_limit 	= 0;
+    /**
+     * Utilizar límite para el número de resultados.
+     * @var boolean
+     */
+    var $_use_limit = true;
+    /**
+     * Sentencia WHERE a utilizar
+     * @var string
+     */
     var $_where 		= array();
+    /**
+     * Sentencia GROUP BY
+     * @var string
+     */
     var $_group 		= array();
+    /**
+     * Sentencia ORDER BY
+     * @var array
+     */
     var $_orderby 		= array();
 
     var $_orderby_filter_order 	= null;
