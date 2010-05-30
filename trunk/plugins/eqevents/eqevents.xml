@@ -16,9 +16,5 @@
         <language tag="es-ES">es-ES.plg_user_eqevents.ini</language>
     </languages>
     <params>
-        <param name="create_eq" type="radio" default="1" label="CREATE_EQ_IF_NOT_EXISTS" description="CREATE_EQ_IF_NOT_EXISTS_TIP">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </param>
     </params>
 </install>
