@@ -381,18 +381,20 @@ class EqZonalesControllerEq extends JController {
 
         if ($eqId > 0){
             // recupero los datos del ecualizador solicitado
-            $model = &$this->getModel('Eq');
-            $model->setId($eqId);
-            $eq = $model->getData(true);
+            $eqModel = &$this->getModel('Eq');
+            $eqModel->setId($eqId);
+            $eq = $eqModel->getData(true);
 
             if (!isset ($eq->id)){
                 return array();
             }
 
             // recupero los datos de las bandas asociadas al ecualizador
-            $model = &$this->getModel('Banda');
-            $model->setWhere('e.eq_id = ' . $eq->id);
-            $bands = $model->getAll(true);
+            $bandModel = &$this->getModel('Banda');
+            $bandModel->setWhere('e.eq_id = ' . $eq->id);
+            $bandModel->setLimitStart(0);
+            $bandModel->setLimit(0);
+            $bands = $bandModel->getAll(true);
 
             $data = new stdClass();
             $data->eq = $eq;
