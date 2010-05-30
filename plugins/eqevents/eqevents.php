@@ -76,9 +76,8 @@ class plgUserEqevents extends JPlugin {
     }
 
     /**
-     * Verifica que un usuario cuente con un Ecualizador, y en caso de no contar
-     * con uno lo genera dinámicamente. Este chequeo puede ser desactivado
-     * desde la configuración del plugin.
+     * Genera el Ecualizador por defecto para el usuario. Este método también
+     * reconstruye el ecualizador del usuario en caso de que haya si borrado.
      *
      * @param Array $user Arreglo con información del usuario.
      * @param Array $options Arreglo con opciones varias.
@@ -86,17 +85,13 @@ class plgUserEqevents extends JPlugin {
      *              modulo correspondiente mostrará un mensaje de error.
      */
     function onLoginUser($user, $options) {
-        $create_eq = $this->params->get('create_eq', true);
-
-        // No chequear existencia de un ecualizador
-        if (!$create_eq) {
+        // No ejecutar si se accede al backend administrativo
+        $app = JFactory::getApplication();
+        if ($app->isAdmin()) {
             return true;
         }
 
-        // no se ejecuta si se accede al backend
-        $app = JFactory::getApplication();
-        if ($app->isAdmin()) return true;
-
+        // Recupera información del usuario
         jimport('joomla.user.helper');
         $instance = new JUser();
         $id = intval(JUserHelper::getUserId($user['username']));
@@ -104,37 +99,14 @@ class plgUserEqevents extends JPlugin {
             $instance->load($id);
         }
 
+        // Arreglo con datos del usuario relevantes
         $userTmp['id'] = intval($instance->get('id'));
         $userTmp['name'] = $instance->get('name');
 
-        // Crear un ecualizador si el usuario no cuenta con uno
+        // Si el usuario no cuenta con un ecualizador, se lo genera
         $userEq = $this->_ctrlEq->retrieveUserEqImpl($id);
-
         if (is_null($userEq) || empty($userEq)) {
             $this->_createNewDefaultEq($userTmp);
-        }
-
-        return true;
-    }
-
-    /**
-     * Luego de que un nuevo usuario es creado en la base de datos, este
-     * método se encarga de generar un nuevo ecualizador asociado al nuevo
-     * usuario, tomando como base un ecualizador por defecto.
-     *
-     * @param array     holds the new user data
-     * @param boolean   true if a new user is stored
-     * @param boolean   true if user was succesfully stored in the database
-     * @param string    message
-     */
-    function onAfterStoreUser($user, $isnew, $success, $msg) {
-        global $mainframe;
-
-        /**
-         * Si es un nuevo usuario, creamos el ecualizador.
-         */
-        if ($isnew) {
-            $this->_createNewDefaultEq($user);
         }
 
         return true;
