@@ -13,7 +13,10 @@ foreach ($menues as $menu) {
 		$menu->link .= '&Itemid=' . $menu->itemid;
 	}
 
-	$menu->submenus = $helper->getMenuValues($menu->id, true);
+        // recupera el usuario
+        $user =& JFactory::getUser();
+
+        $menu->submenus = $helper->getMenuValues($menu->id, !$user->guest);
 	foreach ($menu->submenus as $submenu) {
 		$submenu->link = $submenu->link . '&Itemid=' . $submenu->menu_id;
 	}
