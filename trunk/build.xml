@@ -444,6 +444,14 @@
         </zip>
     </target>
 
+    <!-- componente com_search (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA -->
+    <target name="inst_com_search" description="Crea archivo de distribución con modificaciones hechas en com_search">
+        <echo message="Creando archivos de distribución de modificaciones a com_search"/>
+        <zip destfile="${src_dist_dir}/${inst.com_search.file}.zip">
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_search.ini" prefix="language/es-ES" />
+        </zip>
+    </target>
+
     <!-- componente user DESCOMPRIMIR EN RAIZ DE JOOMLA -->
     <target name="inst_com_user" description="Crea archivo de distribución Joomla para el componente User">
         <echo message="Creando archivo de distribución de componente User"/>
