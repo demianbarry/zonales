@@ -15,6 +15,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+// helper ContentHelperRoute
+require_once(JPATH_BASE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
+
 // helper zonales
 require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
 
@@ -24,24 +27,29 @@ $helper = new comEqZonalesContentHelper();
 /*
  * Ejecuto una búsqueda Solr de los artículos publicados como soy corresponsal.
 */
-$limit = 0;
+$limit = 100;
 $results = array();
 try {
-    $results = $helper->getContent(0, $limit, "+tags_values:la_voz_del_vecino");
+    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino");
 }
 catch (Exception $e) {
     print_r($e->getMessage());
 }
-$return = array();
+$articles = array();
+$moreArticles = array();
+$cantArticles = 0;
 // display results
 if ($results) {
 
-    $total = (int) $results->response->numFound;
+    // parametros
+    $cantArticles = $params->get('cant_articles');
+
+    $total = (int) count($results);
     $start = min(1, $total);
     $end = min($limit, $total);
 
     // iterate result documents
-    foreach ($results->response->docs as $doc) {
+    foreach ($results as $key => $doc) {
         $item = new stdClass();
         $item->href = ContentHelperRoute::getArticleRoute($doc->id);
         $item->title = $doc->title;
@@ -53,9 +61,13 @@ if ($results) {
         }
 
         $item->created = $doc->created;
-        $item->text = $doc->introtext;
+        $item->introtext = $doc->introtext;
+        $item->text = $doc->fulltext;
         $item->browsernav = '';
-        $return[] = $item;
+        if($key < $cantArticles)
+            $articles[] = $item;
+        else
+            $moreArticles[] = $item;
     }
 
 }
