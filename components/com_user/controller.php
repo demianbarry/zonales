@@ -690,11 +690,11 @@ class UserController extends JController {
         // Request a reset
         if ($model->requestReset($email) === false) {
             $message = JText::sprintf('PASSWORD_RESET_REQUEST_FAILED', $model->getError());
-            $this->setRedirect('index.php?option=com_user&view=reset', $message);
+            $this->setRedirect('index.php?option=com_user&view=reset&map=0', $message);
             return false;
         }
 
-        $this->setRedirect('index.php?option=com_user&view=reset&layout=confirm');
+        $this->setRedirect('index.php?option=com_user&view=reset&layout=confirm&map=0');
     }
 
     /**
@@ -715,11 +715,11 @@ class UserController extends JController {
         // Verify the token
         if ($model->confirmReset($token) === false) {
             $message = JText::sprintf('PASSWORD_RESET_CONFIRMATION_FAILED', $model->getError());
-            $this->setRedirect('index.php?option=com_user&view=reset&layout=confirm', $message);
+            $this->setRedirect('index.php?option=com_user&view=reset&layout=confirm&map=0', $message);
             return false;
         }
 
-        $this->setRedirect('index.php?option=com_user&view=reset&layout=complete');
+        $this->setRedirect('index.php?option=com_user&view=reset&layout=complete&map=0');
     }
 
     /**
@@ -741,7 +741,7 @@ class UserController extends JController {
         // Reset the password
         if ($model->completeReset($password1, $password2) === false) {
             $message = JText::sprintf('PASSWORD_RESET_FAILED', $model->getError());
-            $this->setRedirect('index.php?option=com_user&view=reset&layout=complete', $message);
+            $this->setRedirect('index.php?option=com_user&view=reset&layout=complete&map=0', $message);
             return false;
         }
 
@@ -767,7 +767,7 @@ class UserController extends JController {
         // Send the reminder
         if ($model->remindUsername($email) === false) {
             $message = JText::sprintf('USERNAME_REMINDER_FAILED', $model->getError());
-            $this->setRedirect('index.php?option=com_user&view=remind', $message);
+            $this->setRedirect('index.php?option=com_user&view=remind&map=0', $message);
             return false;
         }
 
