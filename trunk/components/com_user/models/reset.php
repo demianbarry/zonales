@@ -16,6 +16,8 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
+require_once JPATH_COMPONENT . DS . 'helper.php';
+require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
 
 /**
  * User Component Reset Model
@@ -54,7 +56,9 @@ class UserModelReset extends JModel
 		// Make sure the e-mail address is valid
 		if (!JMailHelper::isEmailAddress($email))
 		{
-			$this->setError(JText::_('INVALID_EMAIL_ADDRESS'));
+                        $message = JText::_('INVALID_EMAIL_ADDRESS');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -68,7 +72,9 @@ class UserModelReset extends JModel
 		// Check the results
 		if (!($id = $db->loadResult()))
 		{
-			$this->setError(JText::_('COULD_NOT_FIND_USER'));
+                        $message = JText::_('COULD_NOT_FIND_USER');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -85,7 +91,9 @@ class UserModelReset extends JModel
 		// Save the token
 		if (!$db->query())
 		{
-			$this->setError(JText::_('DATABASE_ERROR'));
+			$message = JText::_('DATABASE_ERROR');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -122,7 +130,9 @@ class UserModelReset extends JModel
 		// Verify the token
 		if (!($id = $db->loadResult()))
 		{
-			$this->setError(JText::_('INVALID_TOKEN'));
+                        $message = JText::_('INVALID_TOKEN');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -152,14 +162,18 @@ class UserModelReset extends JModel
 		// Make sure that we have a pasword
 		if ( ! $password1 )
 		{
-			$this->setError(JText::_('MUST_SUPPLY_PASSWORD'));
+                        $message = JText::_('MUST_SUPPLY_PASSWORD');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
 		// Verify that the passwords match
 		if ($password1 != $password2)
 		{
-			$this->setError(JText::_('PASSWORDS_DO_NOT_MATCH_LOW'));
+                        $message = JText::_('PASSWORDS_DO_NOT_MATCH_LOW');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -192,7 +206,9 @@ class UserModelReset extends JModel
 		// Save the password
 		if (!$result = $db->query())
 		{
-			$this->setError(JText::_('DATABASE_ERROR'));
+                        $message = JText::_('DATABASE_ERROR');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -236,7 +252,9 @@ class UserModelReset extends JModel
 		// Send the e-mail
 		if (!JUtility::sendMail($from, $fromname, $email, $subject, $body))
 		{
-			$this->setError('ERROR_SENDING_CONFIRMATION_EMAIL');
+                    $message = JText::_('ERROR_SENDING_CONFIRMATION_EMAIL');
+                    $this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
