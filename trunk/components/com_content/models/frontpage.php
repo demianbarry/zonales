@@ -143,6 +143,7 @@ class ContentModelFrontpage extends JModel
 
 		$query = ' SELECT a.id, a.title, a.alias, a.title_alias, a.introtext, a.fulltext, a.sectionid, a.state, a.catid, a.created, a.created_by, a.created_by_alias, a.modified, a.modified_by,' .
 			' a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, a.images, a.attribs, a.urls, a.metakey, a.metadesc, a.access,' .
+			' (select count(id) from jos_like_tb group by content_id limit 0,1) as orderByLike ,' .
 			' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug,'.
 			' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug,'.
 			' CHAR_LENGTH( a.`fulltext` ) AS readmore,' .
@@ -167,7 +168,9 @@ class ContentModelFrontpage extends JModel
 	function _buildContentOrderBy()
 	{
 		global $mainframe;
-		// Get the page/component configuration
+		$user		=& JFactory::getUser();
+		
+	// Get the page/component configuration
 		$params = &$mainframe->getParams();
 		if (!is_object($params)) {
 			$params = &JComponentHelper::getParams('com_content');
@@ -178,8 +181,11 @@ class ContentModelFrontpage extends JModel
 		$secondary		= ContentHelperQuery::orderbySecondary($orderby_sec);
 		$primary		= ContentHelperQuery::orderbyPrimary($orderby_pri);
 
-		$orderby = ' ORDER BY '.$primary.' '.$secondary;
-
+		if($user->id)
+			$orderby = ' ORDER BY '.$primary.' '.$secondary;
+		else
+			$orderby = ' ORDER BY orderByLike';
+		
 		return $orderby;
 	}
 
