@@ -31,6 +31,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <?php echo $greetingMessage ?>
         </a>
     </p>
+    <br/>
     <input type="button"
            value="<?php echo $sessionCloseMessage ?>"
            name="closesession"
