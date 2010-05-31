@@ -19,7 +19,7 @@
     </files>
     <params>
         <param name="zonales_session_close" type="text" label="zonales_session_close_button_text"
-               default="ZONALES_SESSION_CLOSE" description="zonales_session_close_button_text_tip" />
+               default="Salir" description="zonales_session_close_button_text_tip" />
         <param name="profilelink" type="text" default="index.php?option=com_user&amp;task=edit"
                label="URL a perfil del usuario "
                description=
