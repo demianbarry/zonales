@@ -93,6 +93,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <?php echo JHTML::_( 'form.token' ); ?>
         </fieldset>
     </form>
-    &nsub;
-    <?php echo $htmlMessage ?>
+    <div>
+        <?php echo $htmlMessage ?>
+    </div>
 </div>
