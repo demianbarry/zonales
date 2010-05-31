@@ -746,7 +746,7 @@ class UserController extends JController {
         }
 
         $message = JText::_('PASSWORD_RESET_SUCCESS');
-        $this->setRedirect('index.php?option=com_user&view=zlogin', $message);
+        $this->setRedirect('index.php?option=com_user&view=zlogin&map=0', $message);
     }
 
     /**
@@ -772,7 +772,7 @@ class UserController extends JController {
         }
 
         $message = JText::sprintf('USERNAME_REMINDER_SUCCESS', $email);
-        $this->setRedirect('index.php?option=com_user&view=zlogin', $message);
+        $this->setRedirect('index.php?option=com_user&view=zlogin&map=0', $message);
     }
 
     function _sendMail(&$user, $password) {
