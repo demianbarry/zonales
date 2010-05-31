@@ -2,8 +2,7 @@
 
 .moduletable_sessioninfo {
 	width:160px;
-	margin-bottom:10px;
-	background:#F8F8F1;
+        margin-bottom:10px;
 	border-bottom:1px dotted #CCCCCC;
 }
 
@@ -13,10 +12,19 @@
 	font-family:"trebuchet MS";
 	font-size:11px;
 	color:#666666;
-	margin-bottom:7px;
+	margin-bottom:10px;
 }
 
-.moduletable_sessioninfo p strong{
+.moduletable_sessioninfo p strong {
         display:inline;
 	font-weight:bold;
+}
+
+.moduletable_sessioninfo input {
+	border:1px solid #CCCCCC;
+        margin:10px 0px;
+        padding:0;
+	font-family:"trebuchet MS";
+	font-size:11px;
+	color:#666666;        
 }
