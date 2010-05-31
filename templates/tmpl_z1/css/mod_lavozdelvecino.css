@@ -1,9 +1,10 @@
 /* CSS del m�dulo 'Soy corresponsal' */
 
-.moduletable_lavozdelvecino{
-    width:300px;
-    background:#F8F8F1;
-    border-bottom:1px dotted #CCCCCC;
+.moduletable_lavozdelvecino {
+        margin-bottom:20px;
+        padding:20px;
+        background:#FCFCFC;
+        border:1px solid #F1F1F1;
 }
 
 .moduletable_lavozdelvecino_bodyDiv {
@@ -22,6 +23,26 @@
     color:#FFFFFF;
     font-weight:bold;
     letter-spacing:-1px;
+}
+
+.moduletable_lavozdelvecino strong{
+        display:block;
+        margin-bottom:10px;
+        color:#FF9900;
+        font-weight:bold;
+}
+
+.moduletable_lavozdelvecino li{
+        line-height:16px;
+}
+
+.moduletable_lavozdelvecino li a{
+        color:#666666;
+        text-decoration:none;
+}
+
+.moduletable_lavozdelvecino li a:hover{
+        text-decoration:underline;
 }
 
 .moduletable_lavozdelvecino p{
