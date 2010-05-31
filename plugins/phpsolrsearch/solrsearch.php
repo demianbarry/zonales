@@ -78,7 +78,7 @@ class plgSearchSolrsearch extends JPlugin {
         $sArchived = $pluginParams->get( 'search_archived', 1 );
         $limit = $pluginParams->get( 'search_limit', 50 );
        
-        $results = $this->getSolrResults(0, $limit);
+        $results = $this->getSolrResults($text, 0, $limit);
 
         // display results
         if ($results) {
@@ -117,7 +117,7 @@ class plgSearchSolrsearch extends JPlugin {
      * @param <type> $queryParams
      * @return <type>
      */
-    function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = '') {
+    function getSolrResults($text = '', $limitstart = 0, $limit = 0, $additionalParams = '') {
 
         $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
@@ -166,7 +166,7 @@ class plgSearchSolrsearch extends JPlugin {
         $queryParams['qt'] = "zonalesContent";
 
         try {
-            $results = $solr->search("", $limitstart, $limit, $queryParams);
+            $results = $solr->search($text, $limitstart, $limit, $queryParams);
         }
         catch (Exception $e) {
             return null;

@@ -19,7 +19,7 @@
 }
 
 .moduletable_zlogin p {
-        display:inline;
+        display:block;
 	line-height:13px;
 	font-family:"trebuchet MS";
 	font-size:11px;
@@ -42,6 +42,7 @@
 
 .moduletable_zlogin #formzlogin{
 	width:160px;
+        border-bottom:1px solid lightGrey;
 }
 
 .moduletable_zlogin label, .moduletable_zlogin a{
