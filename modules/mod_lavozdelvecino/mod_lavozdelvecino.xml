@@ -1,42 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0">
-	<name>La Voz del Vecino</name>
-	<author>Mediabit</author>
-	<creationDate>Julio 2009</creationDate>
-	<copyright/>
-	<license/>
-	<authorEmail/>
-	<authorUrl>http://www.mediabit.com.ar</authorUrl>
-	<version>0.1</version>
-	<description>MOD_LAVOZDELVECINO_DESC</description>
-	<files>
-		<filename module="mod_lavozdelvecino">mod_lavozdelvecino.php</filename>
-		<filename>index.html</filename>
-		<filename>tmpl/default.php</filename>
-		<filename>tmpl/index.html</filename>
-	</files>
-	<languages folder="language">
-		<language tag="es-ES">es-ES.mod_lavozdelvecino.ini</language>
-	</languages>
-	<params>
-		<!--<param name="show_email" type="radio" default="1" label="SHOWEMAIL" description="TIP_SHOWEMAIL">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
-		</param>
-		<param name="show_phone" type="radio" default="1" label="SHOWPHONE" description="TIP_SHOWPHONE">
-			<option value="0">NO</option>
-			<option value="1">YES</option>
-		</param>
-		<param name="category" type="category" label="Select a category" />
-		<param name="user" type="sql" default="" query="SELECT id, name FROM #__users" key_field="id" value_field="name" description="TIP_USER" />
-		<param name="confirmacion" type="textarea" rows="3" cols="40" label="CONFIRMACION" default="¡Gracias!  A la brevedad nos comunicaremos con usted." description="TIP_CONFIRMACION" />
-		<param name="error" type="textarea" rows="3" cols="40" label="ERROR" default="Un error ha ocurrido mientras se procesaba su envio." description="TIP_ERROR" />
-                <param name="captchaTextNew" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_NEW" default="Nueva Imagen" description="TIP_CAPTCHA_NEW" />
-                <param name="captchaTextSnd" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_SND" default="Escuchar" description="TIP_CAPTCHA_SND" />
-                <param name="captchaTextImg" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_IMG" default="Ver" description="TIP_CAPTCHA_IMG" />
-                <param name="captchaTextHelp" type="textarea" rows="2" cols="40" label="TEXT_CAPTCHA_HELP" default="Ayuda" description="TIP_CAPTCHA_HELP" />-->
-                <param name="solr_url" type="text" label="TEXT_SOLR_URL" default="192.168.0.2" description="TIP_SOLR_URL" />
-                <param name="solr_port" type="text" label="TEXT_SOLR_PORT" default="30080" description="TIP_SOLR_PORT" />
-                <param name="solr_webapp" type="text" label="TEXT_SOLR_WEBAPP" default="/apache-solr-1.4.0/" description="TIP_SOLR_WEBAPP" />
-	</params>
+    <name>La Voz del Vecino</name>
+    <author>Mediabit</author>
+    <creationDate>Julio 2009</creationDate>
+    <copyright/>
+    <license/>
+    <authorEmail/>
+    <authorUrl>http://www.mediabit.com.ar</authorUrl>
+    <version>0.1</version>
+    <description>MOD_LAVOZDELVECINO_DESC</description>
+    <files>
+        <filename module="mod_lavozdelvecino">mod_lavozdelvecino.php</filename>
+        <filename>index.html</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+    </files>
+    <languages folder="language">
+        <language tag="es-ES">es-ES.mod_lavozdelvecino.ini</language>
+    </languages>
+    <params>
+        <param name="cant_articles" type="text" default="5" label="CANTARTICLES" description="TIP_CANTARTICLES" />
+    </params>
 </install>
