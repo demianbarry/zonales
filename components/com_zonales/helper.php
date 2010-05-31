@@ -247,7 +247,7 @@ class comZonalesHelper {
      * @param int id identificador del tag
      * @return array Arreglo de objetos value
      */
-    function getMenuValues($id) {
+    function getMenuValues($id, $eq = false) {
         if (is_null($id)) {
             return null;
         }
@@ -256,12 +256,42 @@ class comZonalesHelper {
         $query = 'SELECT '. $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
                 .$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link') .', '
                 .$dbo->nameQuote('zm.menu_id')
+                .($eq ? ', b.peso' : '')
                 .' FROM '. $dbo->nameQuote('#__custom_properties_values') . ' v'
                 .' INNER JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
                 .' ON '. $dbo->nameQuote('zm.value_id') .' = '. $dbo->nameQuote('v.id')
                 .' INNER JOIN '. $dbo->nameQuote('#__menu') . ' jm'
-                .' ON '. $dbo->nameQuote('jm.id') .' = '. $dbo->nameQuote('zm.menu_id')
-                .' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+                .' ON '. $dbo->nameQuote('jm.id') .' = '. $dbo->nameQuote('zm.menu_id');
+
+        // ecualiza
+        if ($eq) {
+            require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
+            JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+
+            $ctrlEq = new EqZonalesControllerEq();
+            $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+
+            // recupera ecualizador del usuario
+            $user =& JFactory::getUser();
+            $result = $ctrlEq->retrieveUserEqImpl($user->id);
+
+            if (!is_null($result) && !empty($result)) {
+                $eq = $result[0];
+
+                $query .= ' LEFT JOIN '. $dbo->nameQuote('#__eqzonales_banda') . ' b'
+                        .' ON '. $dbo->nameQuote('v.id') .' = '. $dbo->nameQuote('b.cp_value_id')
+                        .' AND '. $dbo->nameQuote('b.eq_id') .' = '. $eq->eq->id;
+            }
+        }
+
+        // where
+        $query .= ' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+
+        // ordena según ecualización
+        if ($eq) {
+            $query .= ' ORDER BY b.peso DESC';
+        }
+
         $dbo->setQuery($query);
 
         return $this->_cache->get(array($dbo, 'loadObjectList'), array());
