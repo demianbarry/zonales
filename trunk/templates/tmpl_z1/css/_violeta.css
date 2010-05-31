@@ -35,6 +35,16 @@
 	background:#009CC9 !important;
 }	
 
+/* mod la voz del vecino */
+
+.moduletable_lavozdelvecino h1{
+	background:#009CC9;
+}
+
+.moduletable_lavozdelvecino strong{
+        color:#009CC9;
+}
+
 /* mod soy corresponsal */
 
 .moduletable_formVecinos h1{
