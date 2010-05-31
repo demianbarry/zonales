@@ -1,0 +1,30 @@
+/* 
+    Document   : mod_message
+    Created on : 31/05/2010, 16:07:59
+    Author     : nacho
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.error{
+    display:block;
+    line-height:13px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    text-align: justify;
+    color:#666666;
+    margin-bottom:10px;
+}
+
+.image{
+    width: 12px;
+}

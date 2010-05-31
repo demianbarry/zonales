@@ -16,10 +16,6 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
-<div>
-    <?php echo $htmlMessage ?>
-</div>
-
 <!-- no tocar este display -->
 <div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>; float: left;" class="moduletable_zlogin">
     <h1><?php echo $module->title; ?></h1>    
@@ -97,4 +93,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <?php echo JHTML::_( 'form.token' ); ?>
         </fieldset>
     </form>
+    &nsub;
+    <?php echo $htmlMessage ?>
 </div>

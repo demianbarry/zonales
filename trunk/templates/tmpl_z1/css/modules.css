@@ -5,6 +5,7 @@
 @import url("mod_sessioninfo.css");
 @import url("mod_soycorresponsal.css");
 @import url("mod_comments_latest.css");
+@import url("mod_message.css");
 
 .moduletable_menuTop{
 	font-family:Tahoma;
