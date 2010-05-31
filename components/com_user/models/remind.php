@@ -52,7 +52,9 @@ class UserModelRemind extends JModel
 		// Validate the e-mail address
 		if (!JMailHelper::isEmailAddress($email))
 		{
-			$this->setError(JText::_('INVALID_EMAIL_ADDRESS'));
+			$message = JText::_('INVALID_EMAIL_ADDRESS');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -62,7 +64,9 @@ class UserModelRemind extends JModel
 		// Get the username
 		if (!($username = $db->loadResult()))
 		{
-			$this->setError(JText::_('COULD_NOT_FIND_EMAIL'));
+                        $message = JText::_('COULD_NOT_FIND_EMAIL');
+			$this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
@@ -100,7 +104,9 @@ class UserModelRemind extends JModel
 
 		if (!JUtility::sendMail($from, $fromname, $email, $subject, $body))
 		{
-			$this->setError('ERROR_SENDING_REMINDER_EMAIL');
+                    $message = JText::_('ERROR_SENDING_REMINDER_EMAIL');
+                    $this->setError($message);
+                        UserHelper::showMessage(ERROR, $message);
 			return false;
 		}
 
