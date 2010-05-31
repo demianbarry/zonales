@@ -2,8 +2,7 @@
 
 .moduletable_lavozdelvecino {
         margin-bottom:20px;
-        padding:20px;
-        background:#FCFCFC;
+        background:#F8F8F1;
         border:1px solid #F1F1F1;
 }
 
@@ -30,6 +29,10 @@
         margin-bottom:10px;
         color:#FF9900;
         font-weight:bold;
+}
+
+.morearticles_lavozdelvecino {
+    margin-top: 10px;
 }
 
 .moduletable_lavozdelvecino li{
