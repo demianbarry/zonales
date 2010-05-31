@@ -19,8 +19,9 @@ $user =& JFactory::getUser();
 $session =& JFactory::getSession();
 
 $profileLink = $params->get('profilelink');
-$greetingMessage = sprintf(JText::_('ZONALES_SESSION_GREETING'),$user->get('name'));
-$sessionCloseMessage = JText::_('ZONALES_SESSION_CLOSE');
+$greetingMessage = sprintf(JText::_('ZONALES_SESSION_GREETING'), $user->get('name'));
+//$sessionCloseMessage = JText::_('ZONALES_SESSION_CLOSE');
+$sessionCloseMessage = $params->get('zonales_session_close');
 $logoutRoute = JRoute::_('index.php?option=com_user&task=logout');
 $protocol = $session->get('accessprotocol');
 
