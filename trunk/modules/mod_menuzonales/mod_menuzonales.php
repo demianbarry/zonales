@@ -13,7 +13,7 @@ foreach ($menues as $menu) {
 		$menu->link .= '&Itemid=' . $menu->itemid;
 	}
 
-	$menu->submenus = $helper->getMenuValues($menu->id);
+	$menu->submenus = $helper->getMenuValues($menu->id, true);
 	foreach ($menu->submenus as $submenu) {
 		$submenu->link = $submenu->link . '&Itemid=' . $submenu->menu_id;
 	}
