@@ -29,6 +29,7 @@
         <file>css/mod_sessioninfo.css</file>
         <file>css/mod_eq.css</file>
         <file>css/mod_soycorresponsal.css</file>
+        <file>css/mod_lavozdelvecino.css</file>
         <file>css/mod_message.css</file>
         <file>css/modules.css</file>
         <file>css/mod_zlogin.css</file>
@@ -53,6 +54,7 @@
         <file>images/base_buscador.jpg</file>
         <file>images/bg-glass1.gif</file>
         <file>images/bg_img.gif</file>
+        <file>images/bg_split_img.gif</file>
         <file>images/bg_map_inicio.jpg</file>
         <file>images/bg_top.gif</file>
         <file>images/bg_top_slider.jpg</file>
@@ -87,6 +89,7 @@
         <file>images/_violeta/bg-glass1.gif</file>
         <file>images/_violeta/bg_header.jpg</file>
         <file>images/_violeta/bg_img.gif</file>
+        <file>images/_violeta/bg_split_img.gif</file>
         <file>images/_violeta/bg_map_inicio.jpg</file>
         <file>images/_violeta/bg_top.gif</file>
         <file>images/_violeta/bg_top_slider.jpg</file>
