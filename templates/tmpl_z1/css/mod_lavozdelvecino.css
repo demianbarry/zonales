@@ -1,0 +1,119 @@
+/* CSS del m�dulo 'Soy corresponsal' */
+
+.moduletable_lavozdelvecino{
+    width:300px;
+    background:#F8F8F1;
+    border-bottom:1px dotted #CCCCCC;
+}
+
+.moduletable_lavozdelvecino_bodyDiv {
+    width:100%;
+    background:#F8F8F1;
+    border-bottom:1px dotted #CCCCCC;
+    margin-top: 10px;
+}
+
+.moduletable_lavozdelvecino h1{
+    display:block;
+    padding:10px;
+    background:#FF9900;
+    font-family:Georgia, "Times New Roman", Times, serif;
+    font-size:16px;
+    color:#FFFFFF;
+    font-weight:bold;
+    letter-spacing:-1px;
+}
+
+.moduletable_lavozdelvecino p{
+    line-height:13px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    margin-bottom:7px;
+}
+
+.moduletable_lavozdelvecino p strong{
+    font-weight:bold;
+}
+
+.moduletable_lavozdelvecino .splitter, .moduletable_lavozdelvecino #lavozdelvecino .splitter{
+    display:block;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-top:1px solid #ECECD9;
+    border-bottom:1px solid #FFFFFF;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino{
+    width:280px;
+}
+
+.moduletable_lavozdelvecino label{
+    display:block;
+    margin-top:10px;
+    margin-bottom:4px;
+
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_lavozdelvecino label span{
+    color:#999999;}
+
+.moduletable_lavozdelvecino #lavozdelvecino input, .moduletable_lavozdelvecino #lavozdelvecino select, .moduletable_lavozdelvecino #lavozdelvecino textarea{
+    border:1px solid #CCCCCC;margin:0;padding:0;
+
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #nombre{
+    width:220px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #email{
+    width:220px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #telefono{
+    width:220px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #partido{
+    width:220px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #localidad{
+    width:220px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #titulo{
+    width:280px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #texto{
+    width:280px;
+    height:200px;
+}
+
+.moduletable_lavozdelvecino #lavozdelvecino #enviar{
+    border:0;margin:0;padding:0;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+#enviar_soycorresponsal {
+    cursor: pointer;
+}
+
+/* recaptcha */
+
+.moduletable_lavozdelvecino #recaptcha_image{
+    width:270px !important;
+}
+
+.moduletable_lavozdelvecino #recaptcha_image img{
+    width:270px !important;
+}
