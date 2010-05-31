@@ -1,15 +1,21 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php
+defined('_JEXEC') or die('Restricted access');
+
+$this->pagination =& $this->get('Pagination');
+
+?>
 
 <table class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-	<tr>
+    <?php
+    $k = 0; $i = 0;
+    foreach( $this->results as $result ) : ?>
+	<tr class="<?php echo "row$k"; ?>">
 		<td>
-		<?php
-		foreach( $this->results as $result ) : ?>
                     <table class="contentpaneopen">
                         <tbody>
                             <tr>
                                 <td width="100%" class="contentheading">
-					<?php echo $this->escape($result->title); ?>
+					<?php echo $result->title; ?>
                                 </td>
                             </tr>
                         </tbody>
@@ -38,53 +44,17 @@
                         </tbody>
                     </table>
                     <span class="article_separator"> &nbsp; </span>
-                <?php endforeach; ?>
                 </td>
 	</tr>
+        <?php
+        $k = 1 - $k;
+        $i++;
+        endforeach; ?>
 	<tr>
-		<td colspan="3">
+		<td colspan="7">
 			<div align="center">
 				<?php echo $this->pagination->getPagesLinks( ); ?>
 			</div>
 		</td>
 	</tr>
 </table>
-
-
- <!--
-			<fieldset>
-				<div>
-					<span class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-						<?php echo $this->pagination->limitstart + $result->count.'. ';?>
-					</span>
-					<?php if ( $result->href ) :
-						if ($result->browsernav == 1 ) : ?>
-							<a href="<?php echo JRoute::_($result->href); ?>" target="_blank">
-						<?php else : ?>
-							<a href="<?php echo JRoute::_($result->href); ?>">
-						<?php endif;
-
-						echo $this->escape($result->title);
-
-						if ( $result->href ) : ?>
-							</a>
-						<?php endif;
-						if ( $result->section ) : ?>
-							<br />
-							<span class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-								(<?php echo $this->escape($result->section); ?>)
-							</span>
-						<?php endif; ?>
-					<?php endif; ?>
-				</div>
-				<div>
-					<?php echo $result->text; ?>
-				</div>
-				<?php
-					if ( $this->params->get( 'show_date' )) : ?>
-				<div class="small<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
-					<?php echo $result->created; ?>
-				</div>
-				<?php endif; ?>
-			</fieldset>
-                    -->
