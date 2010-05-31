@@ -242,7 +242,7 @@ class CustompropertiesModelAssignhierarchic extends JModel {
 
                         $query = "  REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
                                         VALUES ('$ref_table',$content_id,$field,$value)";
-
+                        
                         $database->setQuery($query);
                         $database->query();
                     }
@@ -251,8 +251,9 @@ class CustompropertiesModelAssignhierarchic extends JModel {
             }
         }
         if($i != 0) {
+            $article  =& JTable::getInstance('content');
             $dispatcher =& JDispatcher::getInstance();
-            $dispatcher->trigger('onAfterContentSave');
+            $dispatcher->trigger('onAfterContentSave', array(&$article,($article->id < 1)));
         }
     }
 
