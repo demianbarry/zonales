@@ -208,7 +208,7 @@ class ZonalesController extends JController
 				$row = & JTable::getInstance('content');
 
 				if ($catid == 0) {
-					jexit( getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
+					jexit($helper->getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
 				} else {
 					$category =& JTable::getInstance('category');
 					$category->load($catid);
@@ -272,7 +272,8 @@ class ZonalesController extends JController
 					SELECT 'content','$row->id',v.field_id AS field, v.id AS value
 					FROM #__custom_properties_values v 
                                         WHERE v.parent_id = $partidoId
-					AND v.id = $zonaId ";
+					AND v.id = $zonaId 
+                                        OR v.name = 'la_voz_del_vecino'";
 				$database = JFactory::getDBO();
 				$database->setQuery($query);
 				$database->query();
