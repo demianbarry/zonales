@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </script>
 
 <div class="moduletable_sessioninfo">
-    <p class="greeting">
+    <p>
         <a href="<?php echo $profileLink ?>">
             <?php echo $greetingMessage ?>
         </a>
@@ -36,4 +36,5 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
            name="closesession"
            class="closesession"
            onclick="logout()" />
+    <br/>
 </div>
