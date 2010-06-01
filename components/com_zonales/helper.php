@@ -386,7 +386,7 @@ class comZonalesHelper {
 
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
         $query = "SELECT id, label FROM `#__custom_properties_values`".
-                " WHERE `parent_id` = $id LIMIT 0, 30";
+                " WHERE `parent_id` = $id LIMIT 0, 100";
         
         $dbo->setQuery($query);
         $rows = $dbo->loadObjectList();
