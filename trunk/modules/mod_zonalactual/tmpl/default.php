@@ -21,5 +21,10 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	<p><?php echo $labelText; ?></p>
 	<?php endif; ?>
 	<img alt="<?php echo $zonalName; ?>" class="zonalactual" title="<?php echo $zonalName; ?>"
-	     src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/logozonal_<?php echo $zonal->name; ?>.gif" />
+	     src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/logozonal.gif" />
+        <div style="position: relative; top: -43px; left: 12px;">
+            <p style="color: white; font-family: fantasy; font: bold; font-size: 12px; text-transform: uppercase;">
+                <?php echo $zonalName; ?>
+            </p>
+        </div>
 </div>
