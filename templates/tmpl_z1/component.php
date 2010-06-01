@@ -6,7 +6,7 @@
 <script language="JavaScript">
 
 window.moveTo(0,0);
-window.resizeTo(screen.width,screen.height);
+window.resizeTo(screen.width * 0.99,screen.height * 0.99);
 
 </script>
     <head>

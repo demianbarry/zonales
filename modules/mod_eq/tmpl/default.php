@@ -134,11 +134,12 @@ JHTML::_('behavior.formvalidation');
 
             <input id="submit" type="submit" name="submit" class="button" />
         </form>
-        <input type="button"
+        <!-- <input type="button"
                                                            value="agregar tags"
                                                            name="buttontags"
-                                                           onclick="window.location.href='<?php echo $addTagsUrl ?>'"
+                                                           onclick="window.location.href='<?php //echo $addTagsUrl ?>'"
                                                     />
+        -->
         <?php else: ?>
         <p><?php echo $error_no_eq; ?></p>
         <?php endif;?>
