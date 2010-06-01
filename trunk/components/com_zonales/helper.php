@@ -374,4 +374,24 @@ class comZonalesHelper {
         return $join;
     }
 
+    /**
+     * Recupera los tags jerarquicos que tengan como padre a un cierto identificador.
+     * Utilizado por modulo mod_combozona.
+     *
+     * @param int $id identificador del value padre
+     * @return array con hijos directos del identificador padre
+     */
+    function getItems($id) {
+        $dbo =& JFactory::getDBO();
+
+        // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
+        $query = "SELECT id, label FROM `#__custom_properties_values`".
+                " WHERE `parent_id` = $id LIMIT 0, 30";
+        
+        $dbo->setQuery($query);
+        $rows = $dbo->loadObjectList();
+
+        return $rows;
+    }
+
 }
