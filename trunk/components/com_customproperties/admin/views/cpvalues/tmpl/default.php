@@ -162,7 +162,7 @@ if ($this->root != 0) {
     <input type="hidden" name="controller" value="values" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <!--input type="hidden" name="cid" value="<?php echo $this->cid[0];?>" /-->
+    <input type="hidden" name="cid" value="<?php echo $this->cid[0];?>" />
     <input type="hidden" name="pid" value="<?php echo $this->cid[0];?>" />
 
 </form>
