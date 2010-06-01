@@ -30,7 +30,7 @@ $helper = new comEqZonalesContentHelper();
 $limit = 100;
 $results = array();
 try {
-    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino");
+    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino AND published:true");
 }
 catch (Exception $e) {
     print_r($e->getMessage());
