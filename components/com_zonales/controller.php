@@ -143,7 +143,7 @@ class ZonalesController extends JController {
         if ($usemap) {
             echo "result=$result&message=$message";
         }
-        
+
         return;
     }
 
@@ -216,96 +216,96 @@ class ZonalesController extends JController {
             $response = JRequest::getVar('recaptcha_response_field', NULL, 'post', 'string' );
             $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $challenge, $response);
 
-				if ($catid == 0) {
-					jexit($helper->getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
-				} else {
-					$category =& JTable::getInstance('category');
-					$category->load($catid);
-					$sectionid = $category->section;
-				}
+            if ($catid == 0) {
+                jexit($helper->getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
+            } else {
+                $category =& JTable::getInstance('category');
+                $category->load($catid);
+                $sectionid = $category->section;
+            }
 
-                $nullDate = $db->getNullDate();
+            $nullDate = $db->getNullDate();
 
-                // tabla de contenidos joomla
-                $row = & JTable::getInstance('content');
+            // tabla de contenidos joomla
+            $row = & JTable::getInstance('content');
 
-                if ($catid == 0) {
-                    jexit( getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
-                } else {
-                    $category =& JTable::getInstance('category');
-                    $category->load($catid);
-                    $sectionid = $category->section;
-                }
+            if ($catid == 0) {
+                jexit( getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
+            } else {
+                $category =& JTable::getInstance('category');
+                $category->load($catid);
+                $sectionid = $category->section;
+            }
 
-                $createdate =& JFactory::getDate();
+            $createdate =& JFactory::getDate();
 
-                $row->title = JRequest::getVar('title', NULL, 'post', 'string');
-                $row->sectionid = $sectionid;
-                $row->catid = $catid;
-                $row->version = 0;
-                $row->state = 0;
-                $row->ordering = 0;
-                $row->images = array ();
-                $row->publish_down = $nullDate;
-                $row->created_by = $user->get('id');
-                $row->modified = $nullDate;
+            $row->title = JRequest::getVar('title', NULL, 'post', 'string');
+            $row->sectionid = $sectionid;
+            $row->catid = $catid;
+            $row->version = 0;
+            $row->state = 0;
+            $row->ordering = 0;
+            $row->images = array ();
+            $row->publish_down = $nullDate;
+            $row->created_by = $user->get('id');
+            $row->modified = $nullDate;
 
-                // corrección de la fecha
-                $config =& JFactory::getConfig();
-                $tzoffset = $config->getValue('config.offset');
-                $date =& JFactory::getDate('now', $tzoffset);
-                $row->created = $date->toMySQL();
-                $row->publish_up = $date->toMysQL();
+            // corrección de la fecha
+            $config =& JFactory::getConfig();
+            $tzoffset = $config->getValue('config.offset');
+            $date =& JFactory::getDate('now', $tzoffset);
+            $row->created = $date->toMySQL();
+            $row->publish_up = $date->toMysQL();
 
-                // se redondea timestamp de creación
-                if ($row->created && strlen(trim( $row->created )) <= 10) {
-                    $row->created 	.= ' 00:00:00';
-                }
+            // se redondea timestamp de creación
+            if ($row->created && strlen(trim( $row->created )) <= 10) {
+                $row->created 	.= ' 00:00:00';
+            }
 
-                // Prepare the content for saving to the database
-                require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
-                ContentHelper::saveContentPrep( $row );
+            // Prepare the content for saving to the database
+            require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php');
+            ContentHelper::saveContentPrep( $row );
 
-                // Se agregan nombre de usuario, correo y telefono
-                $enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
-                $enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
-                $enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
-                $row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
+            // Se agregan nombre de usuario, correo y telefono
+            $enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
+            $enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
+            $enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
+            $row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
 
-                // Make sure the data is valid
-                if (!$row->check()) {
-                    JError::raiseError( 500, $db->stderr() );
-                }
+            // Make sure the data is valid
+            if (!$row->check()) {
+                JError::raiseError( 500, $db->stderr() );
+            }
 
-                // Store the content to the database
-                if (!$row->store()) {
-                    JError::raiseError( 500, $db->stderr() );
-                }
+            // Store the content to the database
+            if (!$row->store()) {
+                JError::raiseError( 500, $db->stderr() );
+            }
 
-                // Check the article and update item order
-                $row->checkin();
-                $row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
+            // Check the article and update item order
+            $row->checkin();
+            $row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
 
-                // Asignamos los tags de Custom Properties según los valores de zonal y localidad
-                $partidoId = JRequest::getVar('partidos', NULL, 'post', 'int');
-                $zonaId = JRequest::getVar('localidad', NULL, 'post', 'int');
+            // Asignamos los tags de Custom Properties según los valores de zonal y localidad
+            $partidoId = JRequest::getVar('partidos', NULL, 'post', 'int');
+            $zonaId = JRequest::getVar('localidad', NULL, 'post', 'int');
 
-                $query = "REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
+            $query = "REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
 					SELECT 'content','$row->id',v.field_id AS field, v.id AS value
 					FROM #__custom_properties_values v 
                                         WHERE v.parent_id = $partidoId
 					AND v.id = $zonaId 
                                         OR v.name = 'la_voz_del_vecino'";
-                $database = JFactory::getDBO();
-                $database->setQuery($query);
-                $database->query();
+            $database = JFactory::getDBO();
+            $database->setQuery($query);
+            $database->query();
 
-                // Todo ok, enviamos confirmación
-                echo $helper->getJsonResponse('success', $modparams->get('confirmacion'));
-                return;
-            }
+            // Todo ok, enviamos confirmación
+            echo $helper->getJsonResponse('success', $modparams->get('confirmacion'));
+            return;
         }
     }
+    
 
     /**
      * Genera un select html listando todos los values que sean hijos directos
@@ -327,7 +327,7 @@ class ZonalesController extends JController {
         $parents = $helper->getItems($id);
 
         echo JHTML::_('select.genericlist', $parents, $name,
-            'size="1" class="required"', 'id', 'label');
+        'size="1" class="required"', 'id', 'label');
         return;
     }
 }
