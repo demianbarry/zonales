@@ -25,6 +25,6 @@ $root = $params->get('root_value');
 // crea select de zonales disponibles
 $parents = $helper->getItems($root);
 $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'provincias',
-        'size="1" class="required"', 'id', 'label');
+        'size="1" class="provincias_select required"', 'id', 'label');
 
 require(JModuleHelper::getLayoutPath('mod_combozona'));
