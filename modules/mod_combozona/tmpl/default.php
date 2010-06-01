@@ -35,8 +35,8 @@ defined('_JEXEC') or die('Restricted access');
     //-->
 </script>
 
-<div id="mod_combozonal">
-    <form action="index.php" method="post" id="formComboZona" name="formComboZona">
+<div id="mod_combozonal" class="moduletable_combozonal">
+    <form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form">
         <div id="z_provincias_container">
             <p><label class="combo_zonal_label">Provincia</label></p>
             <?php echo $lists['provincias_select']; ?>
