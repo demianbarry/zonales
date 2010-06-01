@@ -1,0 +1,10 @@
+/* CSS del modulo KRSS */
+
+.moduletable .modkrss p{
+	font-family:Tahoma;
+	font-size:10px;
+}
+
+.moduletable .modkrss p b{
+	font-weight:bold;
+}
