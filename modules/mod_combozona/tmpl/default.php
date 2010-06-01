@@ -38,13 +38,13 @@ defined('_JEXEC') or die('Restricted access');
 <div id="mod_combozonal">
     <form action="index.php" method="post" id="formComboZona" name="formComboZona">
         <div id="z_provincias_container">
-            <p><label>Provincia</label></p>
+            <p><label class="combo_zonal_label">Provincia</label></p>
             <?php echo $lists['provincias_select']; ?>
         </div>
         <div id="municipio_container" style="display: none;">
-            <p><label>Municipio</label></p>
+            <p><label class="combo_zonal_label">Municipio</label></p>
             <div id="z_localidad_container"></div>
-            <input type="submit" value="Cambiar Zonal" id="changeZonal" name="changeZonal" />
+            <input class="combo_zonal_button" type="submit" value="Cambiar Zonal" id="changeZonal" name="changeZonal" />
         <br/>
         </div>
 
