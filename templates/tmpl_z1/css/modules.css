@@ -9,6 +9,8 @@
 @import url("mod_message.css");
 @import url("mod_combozona.css");
 @import url("mod_krss.css");
+@import url("mod_zonalactual.css");
+
 
 .moduletable_menuTop{
 	font-family:Tahoma;
@@ -55,7 +57,7 @@
 #lastedCol2{
 	float:right;
 	width:369px;
-	
+
 	background:url(../images/back-dotted-v.gif);
 	background-repeat:repeat-y;
 }
@@ -119,7 +121,7 @@
 	padding-top:25px;
 	padding-bottom:25px;
 	padding-left:25px;
-	
+
 	margin-bottom:10px;
 }
 
@@ -128,7 +130,7 @@
 	padding-top:10px;
 	padding-bottom:10px;
 	padding-left:10px;
-	
+
 	margin-bottom:10px;
 }
 
@@ -146,7 +148,7 @@
 
 /* banners 468 */
 .moduletable_banners468{
-	
+
 }
 
 /* Breves */
@@ -194,11 +196,11 @@ a.contentpagetitle_flashNews{
 	background-image:url(../images/back_lastComm.gif);
 	background-repeat:no-repeat;
 	background-position:right;
-	
+
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:11px;
 	color:#666;
-	
+
 	text-decoration:none;
 }
 
@@ -278,7 +280,7 @@ div.cp_tags .cp_tag{
 div.cp_tags .cp_tag a{
 	color:#999999;
 	padding:2px;
-	
+
 }
 
 div.cp_tags a:hover{
@@ -377,7 +379,7 @@ div.cp_field_label{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:11px;
 	color:#333333;
-	
+
 	background:#F1F2F3;
 	border:1px solid #CCCCCC;
 }
@@ -429,7 +431,7 @@ div.cp_field_label{
 #seleccionaZ .cmb{
 	width:200px;
 	border:1px solid #CCCCCC;
-	
+
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:11px;
 	color:#666666;
@@ -538,9 +540,9 @@ div.cp_field_label{
 	margin:0;
 	padding:0;
 	border:0;
-	
+
 	width:155px;
-	
+
 	font-family:Tahoma;
 	font-size:11px;
 	color:#666666;
