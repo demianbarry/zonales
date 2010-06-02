@@ -376,11 +376,26 @@ class EqZonalesControllerEq extends JController {
         return $model->getData()->id;
     }
 
+    /**
+     *
+     * @param <type> $eqId
+     * @return <type> 
+     */
     function retrieveEqImpl($eqId) {
         $data = null;
 
-        if ($eqId > 0){
-            // recupero los datos del ecualizador solicitado
+        $user =& JFactory::getUser();
+        if ($user->guest) {
+            $session =& JFactory::getSession();
+            if ($session->has('eq')) {
+                return $session->get('eq');
+            } else {
+                $eqId = 0;
+            }
+        }
+
+        if ($eqId >= 0) {
+            // datos del ecualizador solicitado
             $eqModel = &$this->getModel('Eq');
             $eqModel->setId($eqId);
             $eq = $eqModel->getData(true);
@@ -389,7 +404,7 @@ class EqZonalesControllerEq extends JController {
                 return array();
             }
 
-            // recupero los datos de las bandas asociadas al ecualizador
+            // datos de las bandas asociadas al ecualizador
             $bandModel = &$this->getModel('Banda');
             $bandModel->setWhere('e.eq_id = ' . $eq->id);
             $bandModel->setLimitStart(0);
@@ -399,7 +414,10 @@ class EqZonalesControllerEq extends JController {
             $data = new stdClass();
             $data->eq = $eq;
             $data->bands = $bands;
+        }
 
+        if ($eqId == 0) {
+            $session->set('eq', $data);
         }
         
         return $data;

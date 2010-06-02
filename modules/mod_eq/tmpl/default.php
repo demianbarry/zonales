@@ -17,6 +17,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 
 ?>
+<?php if (!is_null($eq)): ?>
 <script language="javascript" type="text/javascript">
     <!--
 
@@ -89,6 +90,7 @@ JHTML::_('behavior.formvalidation');
     });
     //-->
 </script>
+<?php endif;?>
 <!-- form -->
 <div class="moduletable_formEq">
     <h1><?php echo $use_module_title ? $module->title : $title; ?></h1>
