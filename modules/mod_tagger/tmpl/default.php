@@ -28,24 +28,57 @@ echo $jsCode;
 ?>
     </script>
 <script type="text/javascript">
-function exists(array, element){
+function indexOf(array, element){
     var i;
     for (i = 0; i < array.length;i++){
-        if (array[i] == element){
-            return true;
+        if (array[i].valueId == element){
+            return i;
         }
     }
-    return false;
+    return -1;
+}
+
+function prepareData(operation,currentBands,form,key){
+    // obtengo los datos (el value)
+                            var fieldValue = key.substr(3);
+                            var separatorIndex = fieldValue.indexOf('_');
+                            //var field = fieldValue.substr(0,separatorIndex);
+                            var value = fieldValue.substr(separatorIndex + 1);
+                            var bandIndex = indexOf(currentBands, value);
+
+                            // si era una banda existente no la agrego nada
+                            if (bandIndex != -1 && operation == 'ADD') return;
+                            // si se quiere eliminar una banda que no estaba, no se hace nada
+                            if (bandIndex == -1 && operation == 'REM') return;
+
+                            var bandId = (operation == 'REM') ? currentBands[bandIndex].id : '';
+
+                            // creo los elementos slider
+                            // eso espera la funcion en el servidor
+                            var slider = document.createElement('input');
+                            slider.setAttribute("type", "hidden");
+                            // el id del elemento es IDBanda-IDValue-Peso
+                            // no se especifica IDBanda porque hay que agregar la banda
+                            slider.setAttribute("id","-" + value + "-50");
+                            slider.setAttribute("name", "slider[]");
+                            slider.setAttribute("value", bandId + "-" + value + "-50-" + operation);
+                            form.appendChild(slider);
 }
 
     function submitForm() {
         var currentBands = new Array();
         var i;
         var form = $('adminForm');
+        var band;
 
         <?php
         foreach ($_cplist as $selectedBand) {
-            echo "currentBands.push('$selectedBand');";
+            $bandId = $selectedBand->id;
+            $valueId = $selectedBand->cp_value_id;
+            echo "band = new Object();";
+            echo "band.id='$bandId';";
+            echo "band.valueId='$valueId';";
+            echo "currentBands.push(band);";
         }
         ?>
 
@@ -56,29 +89,12 @@ function exists(array, element){
 
                         // si el elemento corresponde a un tag seleccionado
                         if (beg == 'cp_' && form.elements[i].value == 2){
-                            // obtengo los datos (el value)
-                            var fieldValue = key.substr(3);
-                            var separatorIndex = fieldValue.indexOf('_');
-                            //var field = fieldValue.substr(0,separatorIndex);
-                            var value = fieldValue.substr(separatorIndex + 1);
-
-                            alert('tengo el value' + value);
-
-                            // si era una banda existente no la agrego nada
-                            if (exists(currentBands, value)) continue;
-
-                            alert('no es una banda existente, la vamos a agregar');
-
-                            // creo los elementos slider
-                            // eso espera la funcion en el servidor
-                            var slider = document.createElement('input');
-                            slider.setAttribute("type", "hidden");
-                            // el id del elemento es IDBanda-IDValue-Peso
-                            // no se especifica IDBanda porque hay que agregar la banda
-                            slider.setAttribute("id","-" + value + "-50");
-                            slider.setAttribute("name", "slider[]");
-                            slider.setAttribute("value", "-" + value + "-50");
-                            form.appendChild(slider);
+                            prepareData('ADD', currentBands, form, key);
+                        }
+                        else {
+                            if (beg == 'cp_' && form.elements[i].value == 0){
+                                prepareData('REM', currentBands, form, key);
+                            }
                         }
                     }
                     var url = 'index.php';
