@@ -1,4 +1,17 @@
 <?php
+/**
+ * @version	$Id$
+ * @package	Zonales
+ * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
+ * @license	GNU/GPL, see LICENSE.php
+ *
+ * Zonales is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -32,21 +45,19 @@ $user =& JFactory::getUser();
 
 $eq = null;
 
-if (!$user->guest) {
-    // recupera ecualizador del usuario
-    $result = $ctrlEq->retrieveUserEqImpl($user->id);
+// recupera ecualizador del usuario
+$result = $ctrlEq->retrieveUserEqImpl($user->id);
 
-    if (!is_null($result) && !empty($result)) {
-        $eqtmp = $result[0];
+if (!is_null($result) && !empty($result)) {
+    $eqtmp = $result[0];
 
-        $eq->eq = $eqtmp->eq;
+    $eq->eq = $eqtmp->eq;
 
-        // segmentamos por fields (grupos de bandas)
-        foreach ($eqtmp->bands as $band) {
-            $eq->fields[$band->field_id]->id = $band->field_id;
-            $eq->fields[$band->field_id]->label = $band->group_label;
-            $eq->fields[$band->field_id]->bands[] = $band;
-        }
+    // segmentamos por fields (grupos de bandas)
+    foreach ($eqtmp->bands as $band) {
+        $eq->fields[$band->field_id]->id = $band->field_id;
+        $eq->fields[$band->field_id]->label = $band->group_label;
+        $eq->fields[$band->field_id]->bands[] = $band;
     }
 }
 
