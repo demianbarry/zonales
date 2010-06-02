@@ -319,19 +319,22 @@ class ZonalesController extends JController {
      * @param string $name id y nombre del select html
      * @return String select html
      */
-    function getItemsAjax($id = null, $name = null) {
+    function getItemsAjax($id = null, $name = null, $selected = null) {
         if(is_null($id)) {
             $id = JRequest::getVar('id', NULL, 'get', 'int');
         }
         if(is_null($name)) {
             $name = JRequest::getVar('name', NULL, 'get', 'string');
         }
+        if(is_null($selected)) {
+            $selected = JRequest::getVar('selected', NULL, 'get', 'string');
+        }
 
         $helper = new comZonalesHelper();
         $parents = $helper->getItems($id);
 
         echo JHTML::_('select.genericlist', $parents, $name,
-        'size="1" class="item_ajax_select required"', 'id', 'label');
+        'size="1" class="item_ajax_select required"', 'id', 'label', $selected);
         return;
     }
 }
