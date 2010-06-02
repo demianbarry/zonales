@@ -94,10 +94,15 @@ class ModuleTagger {
             return array('message' => 'NO HAY INFORMACION ASOCIADA');
         }
 
+        $currentBands = array();
         foreach ($userBands as $value){
             $this->eq = $value->eq->id;
             foreach ($value->bands as $band) {
                 $this->_cplist[] = $band->cp_value_id;
+                $obj = new stdClass();
+                $obj->cp_value_id = $band->cp_value_id;
+                $obj->id = $band->id;
+                $currentBands[] = $obj;
             }
 
         }
@@ -162,7 +167,7 @@ class ModuleTagger {
             'eqId' => $this->eq,
             'jsCode' => $jsCode,
             'divs' => $divs,
-            '_cplist' => $this->_cplist
+            '_cplist' => $currentBands
         );
         return $out;
     }
