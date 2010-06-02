@@ -30,7 +30,7 @@ JHTML::_('behavior.formvalidation');
             steps: 100,
             onChange: function(step) {
                 $('upd<?php echo $band->id;?>').setHTML(step);
-                $('<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>').value = '<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>-' + step;
+                $('<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>').value = '<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>-' + step +'-MOD';
             }
         }).set(<?php echo $band->peso;?>);
         <?php endforeach;?>

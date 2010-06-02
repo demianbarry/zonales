@@ -21,6 +21,7 @@ jimport('joomla.filesystem.file');
 // operaciones sobre las bandas
 define('REMOVE', 'REM');
 define('ADD', 'ADD');
+define('MOD', 'MOD');
 
 /**
  * Controlador Motor de Ecualización - Bandas
@@ -61,11 +62,11 @@ class EqZonalesControllerBand extends JController {
     function modifyBandAjax() {
         // Controla que el request haya sido enviado por un usuario registrado.
         $user =& JFactory::getUser();
-        if ($user->guest) {
-            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
-            JText::_('ZONALES_EQ_SESSION_REQUIRED'));
-            return;
-        }
+//        if ($user->guest) {
+//            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
+//            JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+//            return;
+//        }
 
         $jtext = new JText();
 
@@ -89,7 +90,10 @@ class EqZonalesControllerBand extends JController {
          * Crea/modifica las bandas del ecualizador según la configuración
          * especificada.
          */
-        if(!$this->modifyBandImpl($bandsArray)) {
+        $result = $user->guest ? $this->modifyBandAnonImpl($bandsArray) : $this->modifyBandImpl($bandsArray);
+
+        //if(!$this->modifyBandImpl($bandsArray)) {
+        if(!$result) {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
             $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_BAND')));
         } else {
@@ -206,7 +210,7 @@ class EqZonalesControllerBand extends JController {
         // Va guardando cada banda
         foreach ($params as $band) {
             // elimina la banda en caso de estar marcada como REMOVE
-            if (isset ($band['operation']) && $band['operation'] == REMOVE) {
+            if (property_exists($band, 'operation') && $band->operation == REMOVE) {
                 if (!$table->delete($band->id)) {
                     return false;
                 }
@@ -235,6 +239,38 @@ class EqZonalesControllerBand extends JController {
             $model = &$this->getModel('Banda');
             if (!$model->store(false, false, $bandData)) {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Modifica las bandas especificadas -- ecualizador de usuario anonimo.
+     *
+     * @param Array $params Arreglo de stdClass con información para cada banda.
+     * @return Boolean TRUE en caso de éxito en la modificación de todas las bandas.
+     */
+    function modifyBandAnonImpl($params = null) {
+        $session =& JFactory::getSession();
+        if (!$session->has('eq')) {
+            return FALSE;
+        }
+
+        $eq = $session->get('eq');
+
+        if (!is_null($eq) && !empty($eq)) {
+            $eqtmp = $eq;
+
+            // actualizamos los valores del ecualizador
+            foreach ($eqtmp->bands as $band) {
+                foreach ($params as $param) {
+                    if (property_exists($param, 'id')) {
+                        if ($param->id == $band->id) {
+                            $band->peso = $param->peso;
+                        }
+                    }
+                }
             }
         }
 
