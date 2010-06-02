@@ -5,9 +5,6 @@ define('SUGGEST', 1);
 define('UNASSIGNED', 0);
 
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
-            'com_customproperties' . DS . 'models' . DS . 'assignhierarchic.php';
-
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
             'com_customproperties' . DS . 'models' . DS . 'cpvalues.php';
 
 require_once JPATH_ROOT . DS .'components' . DS . 'com_eqzonales' . DS . 'controllers' . DS . 'eq.php';
@@ -105,6 +102,10 @@ class ModuleTagger {
 
         }
 
+        if ($this->eq == NULL){
+            return array('message' => 'NO HAY INFORMACION ASOCIADA');
+        }
+
 
         $user = & JFactory::getUser();
         $aid = $user->get('aid',0);
@@ -169,5 +170,7 @@ class ModuleTagger {
 
 $m = new ModuleTagger();
 $data = $m->display();
+
+require(JModuleHelper::getLayoutPath('mod_tagger'));
 
 ?>

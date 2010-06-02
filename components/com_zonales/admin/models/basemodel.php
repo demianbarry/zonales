@@ -104,6 +104,10 @@ abstract class ZonalesModelBaseModel extends JModel {
         $array = JRequest::getVar('cid',  0, '', 'array');
         $this->setId((int)$array[0]);
 
+        $path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_zonales' . DS . 'tables';
+        $this->addTablePath($path);
+        $path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_eqzonales' . DS . 'tables';
+        $this->addTablePath($path);
         $table =& $this->getTable();
         $this->_table_name = $table->getTableName();
 
