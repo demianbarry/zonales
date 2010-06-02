@@ -100,15 +100,20 @@ function prepareData(operation,currentBands,form,key){
                     var url = 'index.php';
                     new Ajax(url, {
                 method: 'post',
-                data: form
+                data: form,
+                onComplete: function(response) {
+                    var resp = Json.evaluate(response);
+                    if (resp.status == 'SUCCESS') {
+
+                    }
+                    $('response').addClass(resp.status);
+                    $('response').setHTML(resp.msg);
+                }
             }).request();
 
 
                 };
 
-//window.addEvent('domready', function() {
-//    $('btnadd').addEvent('click', clickme);
-//            });
 </script>
 <!-- genero id-value_id-peso llamados slider-->
 <div class="cp_add_tag">
@@ -121,6 +126,7 @@ function prepareData(operation,currentBands,form,key){
             <input type="button" class="button" value="<?php echo JText::_('SYSTEM_EQ_BAND_ADD'); ?>" id="btnadd" onclick="submitForm();"/>
             <input type="button" class="button" value="<?php echo JText::_('SYSTEM_WINDOW_CLOSE'); ?>" onclick="window.parent.document.getElementById('sbox-window').close();"/>
         </div>
+        <div id="response"></div>
         <?php
         echo $divs;
         ?>
