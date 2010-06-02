@@ -46,6 +46,7 @@
 
 .moduletable_formVecinos #formVecinos{
     width:280px;
+    margin-bottom: 10px;
 }
 
 .moduletable_formVecinos label{
