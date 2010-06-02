@@ -77,13 +77,14 @@ JHTML::_('behavior.formvalidation');
 
         $('formEq').addEvent('submit', function(e) {
             new Event(e).stop();
+            $('respuesta').empty().addClass('ajax-loading');
             this.send({
                 onSuccess: function(response) {
                     var resp = Json.evaluate(response);
                     if (resp.status == 'SUCCESS') {
                         
                     }
-                    $('respuesta').setHTML(resp.msg);
+                    $('respuesta').removeClass('ajax-loading').setHTML(resp.msg);
                 }
             });
         });
@@ -97,7 +98,6 @@ JHTML::_('behavior.formvalidation');
     <div style="margin-left:10px; margin-right:10px; margin-bottom:10px;">
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
-        <p id="respuesta"></p>
         <?php if (!is_null($eq)): ?>
         <form action="index.php" method="post" id="formEq" name="formEq">
             <ul id="accordion">
@@ -145,6 +145,8 @@ JHTML::_('behavior.formvalidation');
         <?php else: ?>
         <p><?php echo $error_no_eq; ?></p>
         <?php endif;?>
+        <br/>
+        <p id="respuesta"></p>
     </div>
     
 </div><!-- end #moduletable_formVecinos -->
