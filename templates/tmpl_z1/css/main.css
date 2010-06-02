@@ -115,3 +115,7 @@
     font-size:10px;
     color:#999999;
 }
+
+ajax-loading {
+    background: url(../images/ajax-loader1.gif) no-repeat center;
+}
