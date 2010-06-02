@@ -97,7 +97,7 @@ window.resizeTo(screen.width * 0.99,screen.height * 0.99);
         if ($user->guest):
             ?>
         <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA"></script>
-    <script type="text/javascript">  FB.init("91778705a13235cd3efe59d31e4d31bf","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
+    <script type="text/javascript">FB.init("91778705a13235cd3efe59d31e4d31bf","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
         <?php endif ?>
     </body>
 </html>
