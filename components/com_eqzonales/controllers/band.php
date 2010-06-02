@@ -18,6 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
+// operaciones sobre las bandas
 define('REMOVE', 'REM');
 define('ADD', 'ADD');
 
@@ -62,7 +63,7 @@ class EqZonalesControllerBand extends JController {
         $user =& JFactory::getUser();
         if ($user->guest) {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
-                JText::_('ZONALES_EQ_SESSION_REQUIRED'));
+            JText::_('ZONALES_EQ_SESSION_REQUIRED'));
             return;
         }
 
@@ -146,7 +147,7 @@ class EqZonalesControllerBand extends JController {
 
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
         $query = "SELECT id AS cp_value_id, label AS valor FROM `#__custom_properties_values`".
-            " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `defualt` = 1";
+                " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `defualt` = 1";
         $db->setQuery($query);
         $rows1 = $db->loadObjectList();
 
@@ -160,10 +161,10 @@ class EqZonalesControllerBand extends JController {
 
         // Recupera los zonales por defecto especificados por el usuario
         $query = "SELECT e.value AS cp_value_id, v.label AS valor".
-            " FROM #__aapu_attribute_entity e".
-            " INNER JOIN #__custom_properties_values v ON v.id = e.value".
-            " WHERE e.object_type = 'TABLE' AND e.object_name = '#__users'".
-            " AND e.attribute_id = 3 AND e.object_id = $eq->user_id";
+                " FROM #__aapu_attribute_entity e".
+                " INNER JOIN #__custom_properties_values v ON v.id = e.value".
+                " WHERE e.object_type = 'TABLE' AND e.object_name = '#__users'".
+                " AND e.attribute_id = 3 AND e.object_id = $eq->user_id";
         $db->setQuery($query);
         $rows2 = $db->loadObjectList();
 
@@ -198,17 +199,18 @@ class EqZonalesControllerBand extends JController {
         if (is_null($params)) {
             return false;
         }
-        
+
         $model = &$this->getModel('Banda');
         $table = $model->getTable();
 
         // Va guardando cada banda
         foreach ($params as $band) {
-            if (isset ($band['operation']) && $band['operation'] == REMOVE){
-            if (!$table->delete($band->id)) {
-                return false;
+            // elimina la banda en caso de estar marcada como REMOVE
+            if (isset ($band['operation']) && $band['operation'] == REMOVE) {
+                if (!$table->delete($band->id)) {
+                    return false;
+                }
             }
-        }
 
             // Crea nueva instancia del ecualizador
             $bandData = array(
