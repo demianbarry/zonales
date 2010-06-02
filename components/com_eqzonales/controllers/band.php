@@ -18,6 +18,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
+define('REMOVE', 'REM');
+define('ADD', 'ADD');
+
 /**
  * Controlador Motor de Ecualización - Bandas
  *
@@ -77,8 +80,8 @@ class EqZonalesControllerBand extends JController {
          */
         $bandsArray = array();
         foreach ($bands as $band) {
-            list($id, $valueId, $peso) = explode("-", $band);
-            $bandsArray[] = (object) array('id' => $id, 'cp_value_id' => $valueId, 'peso' => $peso, 'eq_id' => $eqid);
+            list($id, $valueId, $peso, $operation) = explode("-", $band);
+            $bandsArray[] = (object) array('id' => $id, 'cp_value_id' => $valueId, 'peso' => $peso, 'eq_id' => $eqid, 'operation' => $operation);
         }
 
         /**
@@ -195,9 +198,17 @@ class EqZonalesControllerBand extends JController {
         if (is_null($params)) {
             return false;
         }
+        
+        $model = &$this->getModel('Banda');
+        $table = $model->getTable();
 
         // Va guardando cada banda
         foreach ($params as $band) {
+            if (isset ($band['operation']) && $band['operation'] == REMOVE){
+            if (!$table->delete($band->id)) {
+                return false;
+            }
+        }
 
             // Crea nueva instancia del ecualizador
             $bandData = array(
