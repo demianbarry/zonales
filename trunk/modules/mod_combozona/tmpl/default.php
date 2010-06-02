@@ -22,7 +22,14 @@ defined('_JEXEC') or die('Restricted access');
 
     window.addEvent('domready', function() {
         $('provincias').addEvent('change', function(value) {
-            var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid';
+            loadMunicipios('');
+        });
+
+        loadMunicipios(<?php echo $selectedOption?>);
+    });
+
+    function loadMunicipios(selected){
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
             new Ajax(url, {
                 method: 'get',
                 onComplete: function(response) {
@@ -30,8 +37,7 @@ defined('_JEXEC') or die('Restricted access');
                     $('municipio_container').setStyle('display','block');
                 }
             }).request();
-        });
-    });
+    }
     //-->
 </script>
 

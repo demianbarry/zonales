@@ -17,7 +17,25 @@ defined('_JEXEC') or die('Restricted access');
 
 // helper zonales
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+//require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'controller.php');
+//$zController = new ZonalesController();
 $helper = new comZonalesHelper();
+$selection = new stdClass();
+
+$zonal = $helper->getZonal();
+$selectedOption = 0;
+$localidades = array();
+
+if(!$zonal || $zonal->id == 0) {
+    $selection->id = 0;
+    $selection->label = "Seleccione un partido";
+    array_unshift($zonales, $selection);
+} else {
+    //$localidades = $helper->getFieldValues($zonal->id);
+    $selectedOption = $zonal->id;
+}
+
+$selectedParent = $zonal->parent_id;
 
 // parametros
 $root = $params->get('root_value');
@@ -25,6 +43,8 @@ $root = $params->get('root_value');
 // crea select de zonales disponibles
 $parents = $helper->getItems($root);
 $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'provincias',
-        'size="1" class="provincias_select required"', 'id', 'label');
+        'size="1" class="provincias_select required"', 'id', 'label', $selectedParent);
+
+//$lists['municipios_select'] = $zController->getItemsAjax($selectedParent, 'zonalid', $selectedOption);
 
 require(JModuleHelper::getLayoutPath('mod_combozona'));
