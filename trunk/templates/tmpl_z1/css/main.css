@@ -116,7 +116,7 @@
     color:#999999;
 }
 
-ajax-loading {
+.ajax-loading {
     height: 20px;
     background: url(../images/ajax-loader1.gif) no-repeat center;
 }
