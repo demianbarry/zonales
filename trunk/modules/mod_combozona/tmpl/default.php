@@ -29,11 +29,12 @@ defined('_JEXEC') or die('Restricted access');
     });
 
     function loadMunicipios(selected){
+        $('z_localidad_container').empty().addClass('ajax-loading');
         var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
             new Ajax(url, {
                 method: 'get',
                 onComplete: function(response) {
-                    $('z_localidad_container').setHTML(response);
+                    $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
                     $('municipio_container').setStyle('display','block');
                 }
             }).request();
