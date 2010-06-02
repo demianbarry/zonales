@@ -26,6 +26,8 @@ JHTML::script('Bs_TreeElement.class.js',JRoute::_('media/system/js/tree/'),false
 <?php
 echo $jsCode;
 ?>
+    </script>
+<script type="text/javascript">
 function exists(array, element){
     var i;
     for (i = 0; i < array.length;i++){
@@ -36,9 +38,7 @@ function exists(array, element){
     return false;
 }
 
-window.addEvent('domready', function() {
-    $('btnadd').addEvent('click', function(e) {
-        new Event(e).stop();
+    function submitForm() {
         var currentBands = new Array();
         var i;
         var form = $('adminForm');
@@ -55,15 +55,19 @@ window.addEvent('domready', function() {
 
 
                         // si el elemento corresponde a un tag seleccionado
-                        if (beg == 'cp_' && form.elements[i] == 2){
+                        if (beg == 'cp_' && form.elements[i].value == 2){
                             // obtengo los datos (el value)
                             var fieldValue = key.substr(3);
                             var separatorIndex = fieldValue.indexOf('_');
                             //var field = fieldValue.substr(0,separatorIndex);
                             var value = fieldValue.substr(separatorIndex + 1);
 
+                            alert('tengo el value' + value);
+
                             // si era una banda existente no la agrego nada
                             if (exists(currentBands, value)) continue;
+
+                            alert('no es una banda existente, la vamos a agregar');
 
                             // creo los elementos slider
                             // eso espera la funcion en el servidor
@@ -79,13 +83,16 @@ window.addEvent('domready', function() {
                     }
                     var url = 'index.php';
                     new Ajax(url, {
-                method: 'get',
+                method: 'post',
                 data: form
             }).request();
 
-                    
-                });
-            });
+
+                };
+
+//window.addEvent('domready', function() {
+//    $('btnadd').addEvent('click', clickme);
+//            });
 </script>
 <!-- genero id-value_id-peso llamados slider-->
 <div class="cp_add_tag">
@@ -95,7 +102,7 @@ window.addEvent('domready', function() {
             <input type="hidden" name="task" value="band.modifyBandAjax"/>
             <input type="hidden" name="eqid" value="<?php echo $eqId ?>" />
             <input type="hidden" name="format" value="raw" />
-            <input type="button" class="button" value="<?php echo JText::_('SYSTEM_EQ_BAND_ADD'); ?>" id="btnadd"/>
+            <input type="button" class="button" value="<?php echo JText::_('SYSTEM_EQ_BAND_ADD'); ?>" id="btnadd" onclick="submitForm();"/>
             <input type="button" class="button" value="<?php echo JText::_('SYSTEM_WINDOW_CLOSE'); ?>" onclick="window.parent.document.getElementById('sbox-window').close();"/>
         </div>
         <?php
