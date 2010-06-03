@@ -24,7 +24,7 @@ require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'views'.DS.'basevie
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
-$cmd = JRequest::getCmd('task', null);
+$cmd = JRequest::getCmd('task', 'listaEq');
 
 if (strpos($cmd, '.') != false) {
     // Definimos un par controlador/tarea (controller/task) -- los dividimos

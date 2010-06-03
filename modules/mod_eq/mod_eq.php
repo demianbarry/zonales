@@ -51,13 +51,15 @@ $result = $ctrlEq->retrieveUserEqImpl($user->id);
 if (!is_null($result) && !empty($result)) {
     $eqtmp = $result[0];
 
-    $eq->eq = $eqtmp->eq;
+    if (!empty($eqtmp)) {
+        $eq->eq = $eqtmp->eq;
 
-    // segmentamos por fields (grupos de bandas)
-    foreach ($eqtmp->bands as $band) {
-        $eq->fields[$band->field_id]->id = $band->field_id;
-        $eq->fields[$band->field_id]->label = $band->group_label;
-        $eq->fields[$band->field_id]->bands[] = $band;
+        // segmentamos por fields (grupos de bandas)
+        foreach ($eqtmp->bands as $band) {
+            $eq->fields[$band->field_id]->id = $band->field_id;
+            $eq->fields[$band->field_id]->label = $band->group_label;
+            $eq->fields[$band->field_id]->bands[] = $band;
+        }
     }
 }
 

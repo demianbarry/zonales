@@ -14,3 +14,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
+?>
+
+<form action="index.php?option=com_eqzonales" method="post" name="adminForm" id="adminForm">
+	<input type="hidden" name="task" value="listaEq" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+</form>
