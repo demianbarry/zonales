@@ -12,6 +12,7 @@ dist.com_user.file=com_user
 dist.com_alias.file=com_alias
 dist.com_eqzonales.file=com_eqzonales
 dist.com_aardvertiser.file=com_aardvertiser
+dist.com_jwf.file=com_jwf
 
 # nombre modulo
 dist.mod_jxcomments.file=mod_jxcomments
@@ -35,6 +36,7 @@ dist.mod_pending.file=mod_pending
 dist.mod_sessioninfo.file=mod_sessioninfo
 dist.mod_zcloud.file=mod_zcloud
 dist.mod_zlogin.file=mod_zlogin
+dist.mod_lavozdelvecino.file=mod_lavozdelvecino
 
 # nombre plugin
 dist.plg_zonalescontent.file=plg_zonalescontent
@@ -44,6 +46,8 @@ dist.plg_authproxy.file=plg_authproxy
 dist.plg_eqevents.file=plg_eqevents
 dist.plg_authproxy.file=plg_authproxy
 dist.plg_externallogin.file=plg_externallogin
+dist.plg_cptags.file=plg_cptags
+dist.plg_cptags_btn.file=plg_cptags_btn
 
 dist.lib_g2p-utils.file=lib_g2p-utils
 inst.mod_jxcomments.file=inst_mod_jxcomments
