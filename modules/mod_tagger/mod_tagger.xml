@@ -17,6 +17,10 @@
         <filename>tmpl/index.html</filename>
 
     </files>
+    <params>
+        <param name="register_url" type="text" label="URL de la pantalla de registro"
+               default="index.php?option=com_user&amp;view=register" description="Ingrese la URL interna a la pantalla de registro de usuarios" />
+    </params>
     <languages folder="language">
         <language tag="es-ES">es-ES.mod_tagger.ini</language>
     </languages>

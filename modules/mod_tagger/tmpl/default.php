@@ -1,6 +1,13 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+if (isset ($data['url']) && isset ($data['urlmessage'])){
+    $msg = $data['urlmessage'];
+    $urlR = $data['url'];
+    echo "<a href='$urlR'>$msg</a>";
+    die();
+}
+
 if (isset ($data['message'])){
     echo $data['message'];
     die();
