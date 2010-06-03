@@ -156,6 +156,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 <form action="index.php" method="post" name="adminForm" id="adminForm" >
 
     <?php
+    
     $panel =& JPANE::getInstance('Tabs');
 
     echo $panel->startPane('panel');
@@ -284,8 +285,8 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
     <input type="hidden" name="option" value="<?php echo $option;?>" />
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="aapu_task" value=""/>
-    <input type="button" class="button" value="<?php echo JText::_('Save'); ?>" onclick="submitbutton('saveUser');"/>
-    <input type="button" class="button" value="<?php echo JText::_('Cancel'); ?>" onclick="submitbutton('cancelUser');" />
+    <input type="button" class="aapu_button" value="<?php echo JText::_('Save'); ?>" onclick="submitbutton('saveUser');"/>
+    <input type="button" class="aapu_button" value="<?php echo JText::_('Cancel'); ?>" onclick="submitbutton('cancelUser');" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <div class="obligatorio">
