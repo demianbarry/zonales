@@ -1,10 +1,11 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-//JHTML::_('behavior.formvalidation');
+JHTML::_('behavior.formvalidation');
 JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 ?>
 
 <!-- Validacion -->
+<script src="/includes/js/joomla.javascript.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
     <!--
     var ret;
@@ -41,11 +42,13 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                     $('valid_'+attr.id).innerHTML = "";
                 }
             }
-            if(!Validate_Email_Address($('email').value)) {
-                $('valid_email').innerHTML = "Email invalido";
-                return false;
-            } else {
-                $('valid_email').innerHTML = "";
+            if (attr.id == 'email') {
+                if(!Validate_Email_Address($('email').value)) {
+                    $('valid_email').innerHTML = "Email invalido";
+                    return false;
+                } else {
+                    $('valid_email').innerHTML = "";
+                }
             }
         } else {
 
@@ -153,7 +156,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
     //-->
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm" >
+<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate">
 
     <?php
     
@@ -182,7 +185,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                     <label for="username"><?php echo JText::_( 'Username' ); ?> *:</label>
                 </td>
                 <td colspan="2">
-                     <input class="text_area required" type="text" name="username" id="username"
+                    <input class="text_area required" type="text" name="username" id="username"
                            value="<?php echo $this->user->username; ?>" size="40" maxlength="90"
                            title="<?php echo JText::_( 'QUOTA_TIPTITLE' ); ?>"
                            onblur="validate_attr($('username'))"/>
@@ -201,6 +204,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                     <div id="valid_email" style="float: right; color: red"></div>
                 </td>
             </tr>
+            <?php if ($this->user->id != 0): ?>
             <tr>
                 <td class="key">
                     <label for="registerDate"><?php echo JText::_( 'Register Date' ); ?>:</label>
@@ -217,6 +221,33 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                     <label><?php echo $this->user->lastvisitDate; ?>:</label>
                 </td>
             </tr>
+
+            <?php else: ?>
+                <tr>
+                    <td class="key">
+                        <label for="passwordt"><?php echo JText::_( 'Password' ); ?> *:</label>
+                    </td>
+                    <td colspan="2">
+                        <input class="imputbox required" type="password" name="passwordt" id="passwordt"
+                               value=""
+                               title="<?php echo JText::_( 'QUOTA_TIPTITLE' ); ?>"
+                        />
+                        <div id="valid_passwordt" style="float: right; color: red"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="key">
+                        <label for="password2"><?php echo JText::_( 'Password Repeat' ); ?> *:</label>
+                    </td>
+                    <td colspan="2">
+                        <input class="imputbox required validate-passverify" type="password" name="password2" id="password2"
+                               value=""
+                               title="<?php echo JText::_( 'QUOTA_TIPTITLE' ); ?>"
+                        />
+                        <div id="valid_password2" style="float: right; color: red"></div>
+                    </td>
+                </tr>
+            <?php endif; ?>
 
             <?php foreach ($this->user->attributes as $attr) { ?>
                 <tr>
