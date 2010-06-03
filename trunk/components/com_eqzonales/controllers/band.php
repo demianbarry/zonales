@@ -151,7 +151,7 @@ class EqZonalesControllerBand extends JController {
 
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
         $query = "SELECT id AS cp_value_id, label AS valor FROM `#__custom_properties_values`".
-                " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `defualt` = 1";
+            " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `default` = 1";
         $db->setQuery($query);
         $rows1 = $db->loadObjectList();
 
