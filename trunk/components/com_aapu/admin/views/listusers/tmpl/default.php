@@ -21,20 +21,23 @@ JHTML::_('behavior.tooltip');
 				<th width="2%"><input type="checkbox" name="toggle" value=""
 					onclick="checkAll(<?php echo count( $this->users ); ?>);" />
 				</th>
-				<th width="25%" class="title">
+				<th width="20%" class="title">
 					<?php echo JHTML::_('grid.sort',   'NAME', 'a.name', @$this->lists['order_Dir'], @$this->lists['order'], 'listUsers' ); ?>
 				</th>
                                 <th width="15%"><?php echo JText::_( 'Username' ); ?></th>
                                 <th width="18%"><?php echo JText::_( 'Group' ); ?></th>
                                 <th width="20%"><?php echo JText::_( 'Email' ); ?></th>
                                 <th width="18%"><?php echo JText::_( 'Last Visit' ); ?></th>
+                                <th width="5%"><?php echo JText::_( 'Active' ); ?></th>
 				<th width="1%"><?php echo JText::_( 'ID' ); ?></th>
 			</tr>
 		</thead>
 		<?php
 		$k = 0; $i = 0;
-		foreach ($this->users as $user) {
+                foreach ($this->users as $user) {
 			$checked = JHTML::_('grid.id', $i, $user->id);
+                        $img = $user->block == 1 ? 'images/publish_x.png' : 'images/tick.png';
+                        $alt = $user->block == 1 ? JText::_('Block') : JText::_('Active');
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -59,6 +62,11 @@ JHTML::_('behavior.tooltip');
                                 <td>
 					<?php echo $user->lastvisitDate; ?>
 				</td>
+                                <td align="center">
+                                    <a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $user->block ? 'unblock' : 'block' ?>')">
+                                        <img src="<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+                                    </a>
+                                </td>
 				<td>
 					<?php echo $user->id; ?>
 				</td>

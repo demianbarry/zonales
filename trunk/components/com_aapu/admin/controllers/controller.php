@@ -4,6 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
+jimport('joomla.application.component.helper'); // include libraries/application/component/helper.php
+
 
 /**
  * Description of controller
@@ -44,7 +46,10 @@ class AapuController extends JController {
         $this->registerTask('cancelAttribute', 'cancelAttribute');
         $this->registerTask('removeAttribute', 'removeAttribute');
 
+        $this->registerTask( 'publish', 'publish' );
         $this->registerTask( 'unpublish', 'publish' );
+        $this->registerTask( 'block', 'block' );
+        $this->registerTask( 'unblock', 'block' );
         $this->registerTask( 'validateAttr', 'validateAttr' );
 
         $this->registerTask('listDataTypes', 'listDataTypes');
@@ -134,61 +139,99 @@ class AapuController extends JController {
     function saveUser() {
         global $option;
 
-        $model	= &$this->getModel('Users');
-
         $postData = JRequest::get('post');
+        
+        // get the ACL
+        $acl =& JFactory::getACL();
+
+        $userData = array();
+        $usersParams = &JComponentHelper::getParams( 'com_users' ); // load the Params
+
+        // get the default usertype
+        $usertype = $usersParams->get( 'new_usertype' );
+        if (!$usertype) {
+            $usertype = 'Registered';
+        }      
 
         if ($postData['id'] == 0) {
-            $postData['registerDate'] = date("Y/m/d");
+            $user = JFactory::getUser(0); // it's important to set the "0" otherwise your admin user information will be loaded
+            $userData['id'] = $postData['id'];
+            $userData['email'] = $postData['email'];
+            $userData['name'] = $postData['name'];
+            $userData['username'] = $postData['username'];
+            $userData['password'] = $postData['passwordt'];
+            $userData['password2'] = $postData['password2'];
+            $userData['registerDate'] = date("Y/m/d");
+            $userData['lastvisitDate'] = date("Y/m/d");
+            $userData['gid'] = $acl->get_group_id( '', $usertype, 'ARO' );  // generate the gid from the usertype
+            $userData['sendEmail'] = 1; // should the user receive system mails?
+            $useractivation = $usersParams->get( 'useractivation' ); // in this example, we load the config-setting
+            if ($useractivation == 1) { // yeah we want an activation
+                jimport('joomla.user.helper'); // include libraries/user/helper.php
+                $userData['block'] = 1; // block the User
+                $userData['activation'] = JUtility::getHash( JUserHelper::genRandomPassword()); // set activation hash (don't forget to send an activation email)
+            } else {
+                $userData['block'] = 0; // dont't block the User
+            }
+            if (!$user->bind($userData)) { // now bind the data to the JUser Object, if it not works....
+                $msg = JText::_( $user->getError()); // ...raise an Warning
+            }
+        } else {
+            $user = JFactory::getUser($postData['id']); // it's important to set the "0" otherwise your admin user information will be loaded
+            $user->set('name', $postData['name']);
+            $user->set('username', $postData['username']);
+            $user->set('email', $postData['email']);
         }
 
-        if (!$model->store(false,false,$postData)) {
-            return $model->getError;
-            exit();
-        }
+        if (!$user->save()) { // if the user is NOT saved...
+            $msg = JText::_( $user->getError()); // ...raise an Warning
+        } else {
+            $db = &JFactory::getDBO();
 
-        $postData['id'] = $model->getId();
+            $postData['id'] = $this->getUserId($db, $user->username);
 
-        $attrEntityModel = &$this->getModel('Attribute_entity');
+            $attrEntityModel = &$this->getModel('Attribute_entity');
 
-        foreach ($postData as $clave => $valor) {
-            if (strncmp($clave,'attr_',5) == 0) {
+            foreach ($postData as $clave => $valor) {
+                if (strncmp($clave,'attr_',5) == 0) {
 
-                if (is_array($valor)) {
-                    $valor = implode(',', $valor);
-                }
+                    if (is_array($valor)) {
+                        $valor = implode(',', $valor);
+                    }
 
-                $attr_id = (int)substr_replace($clave,'',0,5);
-                //$attr_id = (int)substr($clave, 5, strlen($clave) - 5);
-                $data->id = $postData['aeid_'.$attr_id];
-		$data->value = null;
-                $data->value_double = null;
-                $data->value_date = null;
-                $data->value_int = null;
-                $data->value_boolean = null;
-                if ($valor != '' || $valor != null) {
-                    $data->$postData['aept_'.$attr_id] = $valor;
-                } else {
-                    $data->$postData['aept_'.$attr_id] = null;
-                }
-                $data->object_type = 'TABLE';
-                $data->object_id = $postData['id'];
-                $data->object_name = '#__users';
-                $data->attribute_id = $attr_id;
-                
-                if (!$attrEntityModel->store(false,false,$data)) {
-                    return $model->getError;
-                    exit();
+                    $attr_id = (int)substr_replace($clave,'',0,5);
+                    //$attr_id = (int)substr($clave, 5, strlen($clave) - 5);
+                    $data = new stdClass();
+                    $data->id = $postData['aeid_'.$attr_id];
+                    $data->value = null;
+                    $data->value_double = null;
+                    $data->value_date = null;
+                    $data->value_int = null;
+                    $data->value_boolean = null;
+                    if ($valor != '' || $valor != null) {
+                        $data->$postData['aept_'.$attr_id] = $valor;
+                    } else {
+                        $data->$postData['aept_'.$attr_id] = null;
+                    }
+                    $data->object_type = 'TABLE';
+                    $data->object_id = $postData['id'];
+                    $data->object_name = '#__users';
+                    $data->attribute_id = $attr_id;
+
+                    if (!$attrEntityModel->store(false,false,$data)) {
+                        $msg = $model->getError;
+                    } else {
+                        $msg = JText::sprintf('INFO_SAVE', 'User');
+                    }
                 }
             }
         }
 
-        $user = $model->getData();
-        $msg = JText::sprintf('INFO_SAVE', 'User');
+        //$user = $model->getData();
 
         switch ($this->_task) {
             case 'applyUser':
-                $link = 'index.php?option=' . $option . '&task=editUser&cid[]=' . $user->id;
+                $link = 'index.php?option=' . $option . '&task=editUser&cid[]=' . $postData['id'];
                 break;
 
             case 'saveUser':
@@ -349,6 +392,20 @@ class AapuController extends JController {
         $model = & $this->getModel('attributes');
         $model->publish();
         $link = 'index.php?option=com_aapu&controller=controller&task=listAttributes';
+        $this->setRedirect($link);
+    }
+
+    function block() {
+        $usersId = $_POST['cid'];
+        $user = JFactory::getUser($usersId[0]);
+        $isBlock = $user->get('block');
+        if ($isBlock) {
+            $user->set('block', 0);
+        } else {
+            $user->set('block', 1);
+        }
+        $user->save();
+        $link = 'index.php?option=com_aapu&controller=controller&task=listUsers';
         $this->setRedirect($link);
     }
 
@@ -611,5 +668,13 @@ class AapuController extends JController {
         echo $return;
 	return;
     }
+
+    function getUserId($db, $username) {
+        $id_query = "SELECT u.id FROM #__users u WHERE u.username='$username'";
+        $db->setQuery($id_query);
+        $dbuserid = $db->loadObject();
+        return $dbuserid->id;
+    }
+
 }
 ?>
