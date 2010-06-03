@@ -53,6 +53,7 @@ if (!is_null($result) && !empty($result)) {
 
     if (!empty($eqtmp)) {
         $eq->eq = $eqtmp->eq;
+    $eq->fields = array();
 
         // segmentamos por fields (grupos de bandas)
         foreach ($eqtmp->bands as $band) {
