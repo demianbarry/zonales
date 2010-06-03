@@ -39,4 +39,5 @@ $cp_config['keep_aspect']='1';
 $cp_config['image_quality']='75';
 $cp_config['debug']='0';
 $cp_config['tags_analizer_url']='http://192.168.0.2:30080/TomcatServletExample/servlet/TagsAnalizer';
+$cp_config['tags_analizer_fields']='title,introtext,fulltext';
 ?>

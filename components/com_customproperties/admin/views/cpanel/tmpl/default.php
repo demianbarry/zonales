@@ -142,6 +142,20 @@ echo $pane->startPanel( JText::_('General'), 'general-page' );
 			&nbsp;
 		</td>
 	</tr>
+                <tr>
+		<td width="20%">
+			<?php echo JText::_('SYSTEM_TAG_ANALIZER_FIELDS') ?>:
+		</td>
+		<td>
+			<input type="text" size="30" name="cfg_tags_analizer_fields" value="<?php echo $cp_config['tags_analizer_fields'];?>"/>
+		</td>
+		<td>
+			<?php echo JText::_('SYSTEM_TAG_ANALIZER_FIELDS_DESCRIPTION') ?>.
+		</td>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
 	<tr>
 		<td width="20%">
 			<?php echo JText::_('Page class') ?>:
