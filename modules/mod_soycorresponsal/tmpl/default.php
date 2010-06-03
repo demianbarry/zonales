@@ -81,15 +81,30 @@ JHTML::_('behavior.formvalidation');
         }
 
         $('siguiente').addEvent('click', function() {
-            if (validate($('formVecinos'), validateNota)) {
-                $('nota').setStyle('display', 'none');
-                $('nombre').addClass('required');
-                $('email').addClass('required validate-email');
-                $('telefono').addClass('required');
-                $('corresponsal').setStyle('display', '');
-                return true;
+            if($('nota').getStyle('display') != 'none') {
+                if (validate($('formVecinos'), validateNota)) {
+                    $('nota').setStyle('display', 'none');
+                    $('siguiente').setStyle('display','none');
+                    $('nombre').addClass('required');
+                    $('email').addClass('required validate-email');
+                    $('telefono').addClass('required');
+                    $('corresponsal').setStyle('display', '');
+                    return true;
+                }
+                return false;
+            } else {
+                $('mensaje').empty();
+                $('nota').setStyle('display', 'block');
             }
-            return false;
+        });
+
+        $('volver').addEvent('click', function() {
+            $('nota').setStyle('display', 'block');
+            $('siguiente').setStyle('display','block');
+            $('corresponsal').setStyle('display', 'none');
+            $('nombre').removeClass('required');
+            $('email').removeClass('required validate-email');
+            $('telefono').removeClass('required');
         });
 
         // al cambiar el partido, recupero las localidades
@@ -105,7 +120,7 @@ JHTML::_('behavior.formvalidation');
             if (validate(this, validateForm) == false) {
                 return false;
             }
-
+            $('corresponsal').setStyle('display','none');
             $('mensaje').empty().addClass('ajax-loading').setStyle('display', ''),
             this.send({
                 onSuccess: function(response) {
@@ -113,9 +128,10 @@ JHTML::_('behavior.formvalidation');
                     if (resp.result == 'captcha-failure') {
                         $('captchaStatus').setStyle('display','');
                         Recaptcha.reload();
+                        $('corresponsal').setStyle('display','block');
                     }
                     if (resp.result == 'success') {
-                        $('formVecinos').setStyle('display','none');
+                        $('siguiente').setStyle('display', 'block');
                     }
                     $('mensaje').removeClass('ajax-loading').setHTML(resp.msg);
                 }
@@ -190,14 +206,12 @@ JHTML::_('behavior.formvalidation');
                 <div class="splitter"></div>
 
                 <label for="title"><?php echo JText::_('TITLE');?></label>
-                <input id="title" name="title" type="text" class="required" value="" />
+                <input id="title" name="title" type="text" class="required" value="" size="55px"/>
 
                 <label for="text"><?php echo JText::_('TEXT');?></label>
                 <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
-
-                <a id="siguiente" name="siguiente"><?php echo JText::_('NEXT');?></a>
             </div>
-
+            <a id="siguiente" name="siguiente"><?php echo JText::_('NEXT');?></a>
             <div id="corresponsal" style="display: none;">
                 <label for="nombre"><?php echo JText::_('NAME');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
                 <input id="nombre" name="nombre" type="text" class="" value="<?php if (!$user->guest) echo $user->name; ?>"/>
@@ -235,6 +249,7 @@ JHTML::_('behavior.formvalidation');
                 <div class="splitter"></div>
 
                 <input id="enviar" name="enviar" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
+                <a id="volver" name="volver"></a>
             </div>
 
             <input type="hidden" name="task" value="saveCorresponsalContent" />
