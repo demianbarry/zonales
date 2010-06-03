@@ -1,16 +1,14 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-if (isset ($data['url']) && isset ($data['urlmessage'])){
+if (isset ($data['url']) && isset ($data['urlmessage'])):
     $msg = $data['urlmessage'];
     $urlR = $data['url'];
     echo "<a href='$urlR'>$msg</a>";
-    die();
-}
+else:
 
 if (isset ($data['message'])){
     echo $data['message'];
-    die();
 }
 
 $eqId = $data['eqId'];
@@ -140,3 +138,4 @@ function prepareData(operation,currentBands,form,key){
 
     </form>
 </div>
+<?php endif; ?>

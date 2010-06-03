@@ -79,11 +79,11 @@ class ModuleTagger {
 
         $user =& JFactory::getUser();
         if ($user->guest){
-            $url = $params->get("register_url");
+            //$url = $params->get("register_url");
             $urlMessage = JText::_('SYSTEM_REGISTER_MESSAGE');
 
             $out = array(
-                'url' => $url,
+                //'url' => $url,
                 'urlmessage' => $urlMessage
             );
             return $out;
@@ -187,6 +187,7 @@ class ModuleTagger {
 
 $m = new ModuleTagger();
 $data = $m->display();
+$data['url'] = $params->get("register_url");
 
 require(JModuleHelper::getLayoutPath('mod_tagger'));
 
