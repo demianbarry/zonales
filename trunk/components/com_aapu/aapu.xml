@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="component" version="1.5.0">
-    <name>Aapu</name>
-    <author>Mediabit</author>
+    <name>aapu</name>
+    <author>Luis Ignacio Aita</author>
     <creationDate>2010</creationDate>
     <copyright>Copyright (C) 2009 Mediabit. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <authorEmail/>
+    <authorEmail>ignacioaita@gmail.com</authorEmail>
     <authorUrl/>
-    <version>0.1</version>
+    <version>1.0.14</version>
     <description>Administración Avanzada de Perfiles de Usuario</description>
 
     <install>
