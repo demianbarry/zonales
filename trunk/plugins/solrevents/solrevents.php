@@ -51,7 +51,7 @@ class plgContentSolrEvents extends JPlugin {
      * @param 	bool		If the content is just about to be created
      * @return	void
      */
-    function onAfterContentSave( &$article, $isNew ) {
+    function onAfterContentSave( &$article = null, $isNew = null) {
         global $mainframe;
 
        $eqzParams = &JComponentHelper::getParams( 'com_eqzonales' );
