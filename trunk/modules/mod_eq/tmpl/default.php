@@ -22,74 +22,72 @@ JHTML::_('behavior.formvalidation');
     <!--
 
     window.addEvent('domready', function() {
-        <?php if (!is_null($eq)): ?>
         /* Slider 1 */
-        <?php foreach ($eq->fields as $group): ?>
+    <?php foreach ($eq->fields as $group): ?>
         <?php foreach ($group->bands as $band): ?>
-        var mySlide<?php echo $band->id;?> = new Slider($('area<?php echo $band->id;?>'), $('knob<?php echo $band->id;?>'), {
-            steps: 100,
-            onChange: function(step) {
-                $('upd<?php echo $band->id;?>').setHTML(step);
-                $('<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>').value = '<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>-' + step +'-MOD';
-            }
-        }).set(<?php echo $band->peso;?>);
+                    var mySlide<?php echo $band->id;?> = new Slider($('area<?php echo $band->id;?>'), $('knob<?php echo $band->id;?>'), {
+                        steps: 100,
+                        onChange: function(step) {
+                            $('upd<?php echo $band->id;?>').setHTML(step);
+                            $('<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>').value = '<?php echo $band->id;?>-<?php echo $band->cp_value_id;?>-' + step +'-MOD';
+                        }
+                    }).set(<?php echo $band->peso;?>);
         <?php endforeach;?>
-        <?php endforeach;?>
+    <?php endforeach;?>
 
-        // En caso IE6
-	if(window.ie6) var heightValue='100%';
-	else var heightValue='';
+                // En caso IE6
+                if(window.ie6) var heightValue='100%';
+                else var heightValue='';
 
-        // Divs para el título (toggler) y los contenedores (collapse)
-	var togglerName='div.toggler_';
-	var contentName='div.collapse_';
+                // Divs para el título (toggler) y los contenedores (collapse)
+                var togglerName='div.toggler_';
+                var contentName='div.collapse_';
 
-        // Recuperamos divs toggler y collapse
-	var counter=1;
-	var toggler=$$(togglerName+counter);
-	var content=$$(contentName+counter);
+                // Recuperamos divs toggler y collapse
+                var counter=1;
+                var toggler=$$(togglerName+counter);
+                var content=$$(contentName+counter);
 
-	while(toggler.length>0)
-	{
-                // Acordeon
-		new Accordion(toggler, content, {
-			opacity: false,
-			display: -1,
-			alwaysHide: true,
-			onComplete: function() {
-				var element=$(this.elements[this.previous]);
-				if(element && element.offsetHeight>0) element.setStyle('height', heightValue);
-			},
-			onActive: function(toggler, content) {
-				toggler.addClass('open');
-			},
-			onBackground: function(toggler, content) {
-				toggler.removeClass('open');
-			}
-		});
+                while(toggler.length>0)
+                {
+                    // Acordeon
+                    new Accordion(toggler, content, {
+                        opacity: false,
+                        display: -1,
+                        alwaysHide: true,
+                        onComplete: function() {
+                            var element=$(this.elements[this.previous]);
+                            if(element && element.offsetHeight>0) element.setStyle('height', heightValue);
+                        },
+                        onActive: function(toggler, content) {
+                            toggler.addClass('open');
+                        },
+                        onBackground: function(toggler, content) {
+                            toggler.removeClass('open');
+                        }
+                    });
 
-		// Selektoren für nächstes Level setzen
-		counter++;
-		toggler=$$(togglerName+counter);
-		content=$$(contentName+counter);
-	}
-        <?php endif; ?>
-
-        $('formEq').addEvent('submit', function(e) {
-            new Event(e).stop();
-            $('respuesta').empty().addClass('ajax-loading');
-            this.send({
-                onSuccess: function(response) {
-                    var resp = Json.evaluate(response);
-                    if (resp.status == 'SUCCESS') {
-                        
-                    }
-                    $('respuesta').removeClass('ajax-loading').setHTML(resp.msg);
+                    // Selektoren für nächstes Level setzen
+                    counter++;
+                    toggler=$$(togglerName+counter);
+                    content=$$(contentName+counter);
                 }
+
+                $('formEq').addEvent('submit', function(e) {
+                    new Event(e).stop();
+                    $('respuesta').empty().addClass('ajax-loading');
+                    this.send({
+                        onSuccess: function(response) {
+                            var resp = Json.evaluate(response);
+                            if (resp.status == 'SUCCESS') {
+
+                            }
+                            $('respuesta').removeClass('ajax-loading').setHTML(resp.msg);
+                        }
+                    });
+                });
             });
-        });
-    });
-    //-->
+            //-->
 </script>
 <?php endif;?>
 <!-- form -->
@@ -98,14 +96,15 @@ JHTML::_('behavior.formvalidation');
     <div style="margin-left:10px; margin-right:10px; margin-bottom:10px;">
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
-        <?php if (!is_null($eq)): ?>
+
         <form action="index.php" method="post" id="formEq" name="formEq">
+            <?php if (!is_null($eq)): ?>
             <ul id="accordion">
-                <?php foreach ($eq->fields as $group): ?>
+                    <?php foreach ($eq->fields as $group): ?>
                 <li>
                     <div class="toggler_1"><?php echo $group->label;?></div>
                     <div  class="collapse_1">
-                        <?php foreach ($group->bands as $band): ?>
+                                <?php foreach ($group->bands as $band): ?>
                         <div class="slider-container">
                             <div class="slider-title">
                                 <p><?php echo $band->band_label;?></p>
@@ -121,20 +120,23 @@ JHTML::_('behavior.formvalidation');
                             <input type="hidden" id="<?php echo $band->id.'-'.$band->cp_value_id; ?>"
                                    name="slider[]" value="" />
                         </div>
-                        <?php endforeach; ?>
+                                <?php endforeach; ?>
                     </div>
                 </li>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
             </ul>
-            
+
             <input id="eqid" name="eqid" type="hidden" value="<?php echo $eq->eq->id; ?>" />
 
             <input type="hidden" name="task" value="band.modifyBandAjax" />
             <input type="hidden" name="option" value="com_eqzonales" />
             <input type="hidden" name="format" value="raw" />
-            <?php echo JHTML::_('form.token'); ?>
+                <?php echo JHTML::_('form.token'); ?>
 
             <input id="submit" type="submit" name="submit" class="button" />
+            <?php else: ?>
+            <p><?php echo $error_no_eq; ?></p>
+            <?php endif;?>
         </form>
         <!-- <input type="button"
                                                            value="agregar tags"
@@ -142,12 +144,10 @@ JHTML::_('behavior.formvalidation');
                                                            onclick="window.location.href='<?php //echo $addTagsUrl ?>'"
                                                     />
         -->
-        <?php else: ?>
-        <p><?php echo $error_no_eq; ?></p>
-        <?php endif;?>
+
         <br/>
         <p id="respuesta"></p>
     </div>
-    
+
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->
