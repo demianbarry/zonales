@@ -1,0 +1,33 @@
+<!--
+/**
+ * @version	$Id$
+ * @package	Zonales
+ * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
+ * @license	GNU/GPL, see LICENSE.php
+ *
+ * Zonales is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+ -->
+<dataConfig>
+	<dataSource driver="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://<host>:<port>/<db>?zeroDateTimeBehavior=convertToNull"
+            user="user" password="password" batchSize="-1"/>
+
+        <document name="contenido">
+            	<entity name="articulo" pk="a.id" datasource="jdbc"
+
+			query="select 
+                                a.id, a.title, a.alias, a.title_alias, a.introtext, a.`fulltext`,
+                                a.sectionid, a.state, a.catid,
+                                a.created, a.created_by, a.created_by_alias,
+                                a.modified, a.modified_by, a.checked_out, a.checked_out_time,
+                                a.publish_up, a.publish_down, a.attribs, a.hits,
+                                a.images, a.urls, a.ordering, a.metakey, a.metadesc, a.access
+				from jos_content a group by a.id">
+        	</entity>
+    	</document>
+</dataConfig>
