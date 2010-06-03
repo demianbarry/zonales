@@ -17,5 +17,8 @@
         <param name="@spacer" type="spacer" default="" label="" description="" />
         <param name="noticias_field" type="sql" default="" query="SELECT id, label FROM #__custom_properties_fields" key_field="id" value_field="label" description="noticias_field_tip" />
         <param name="peso_default" type="text" size="3" default="50" label="Peso" description="peso_tip" />
+        <param name="@spacer" type="spacer" default="" label="" description="" />
+        <param name="eq_anon_id" type="text" size="3" default="1" label="Anonymous Eq Id" description="Anonymous Eq Id Tip" />
+        <param name="eq_anon_name" type="text" size="20" default="Ecualizador Anónimo" label="Anonymous Eq Name" description="Anonymous Eq Name Tip" />
     </params>
 </root>
