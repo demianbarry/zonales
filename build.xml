@@ -57,6 +57,10 @@
     <fileset dir="${src_modules}/mod_soycorresponsal" id="mod_soycorresponsal_files">
         <include name="**" />
     </fileset>
+    <!-- mod_lavozdelvecino -->
+    <fileset dir="${src_modules}/mod_lavozdelvecino" id="mod_lavozdelvecino_files">
+        <include name="**" />
+    </fileset>
     <!-- mod_eq -->
     <fileset dir="${src_modules}/mod_eq" id="mod_eq_files">
         <include name="**" />
@@ -106,6 +110,14 @@
     </fileset>
     <!-- plg_solrsearch -->
     <fileset dir="${src_plugins}/phpsolrsearch" id="plg_solrsearch_files">
+        <include name="**" />
+    </fileset>
+    <!-- plg_cptags -->
+    <fileset dir="${src_plugins}/plg_cptags" id="plg_cptags_files">
+        <include name="**" />
+    </fileset>
+    <!-- plg_cptags_btn -->
+    <fileset dir="${src_plugins}/plg_cptags_btn" id="plg_cptags_btn_files">
         <include name="**" />
     </fileset>
     <!-- plg_eqevents -->
@@ -163,7 +175,7 @@
         <include name="**" />
     </fileset>
 
-   
+
     <!-- ======================================================
     archivos distribución
     ====================================================== -->
@@ -240,6 +252,15 @@
         </zip>
     </target>
 
+    <!-- modulo lavozdelvecino -->
+    <target name="dist_mod_lavozdelvecino" description="Crea archivo de distribución Joomla para el modulo LaVozDelVecino">
+        <echo message="Creando archivo de distribución de modulo LaVozDelVecino"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_lavozdelvecino.file}.zip" >
+            <fileset refid="mod_lavozdelvecino_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_lavozdelvecino.ini" prefix="language" />
+        </zip>
+    </target>
+
     <!-- modulo eq -->
     <target name="dist_mod_eq" description="Crea archivo de distribución Joomla para el modulo Ecualizador de Interés">
         <echo message="Creando archivo de distribución de modulo Ecualizador de Interés"/>
@@ -285,7 +306,7 @@
         </zip>
     </target>
 
-     <!-- modulo sessioninfo -->
+    <!-- modulo sessioninfo -->
     <target name="dist_mod_sessioninfo" description="Crea archivo de distribución Joomla para el modulo sessioninfo">
         <echo message="Creando archivo de distribución de modulo sessioninfo"/>
         <zip destfile="${src_dist_dir}/${dist.mod_sessioninfo.file}.zip" >
@@ -294,7 +315,7 @@
         </zip>
     </target>
 
-     <!-- modulo zcloud -->
+    <!-- modulo zcloud -->
     <target name="dist_mod_zcloud" description="Crea archivo de distribución Joomla para el modulo zcloud">
         <echo message="Creando archivo de distribución de modulo zcloud"/>
         <zip destfile="${src_dist_dir}/${dist.mod_zcloud.file}.zip" >
@@ -364,6 +385,24 @@
         </zip>
     </target>
 
+    <!-- plugin plg_cptags -->
+    <target name="dist_plg_cptags" description="Crea archivo de distribución Joomla para el plugin CPTags">
+        <echo message="Creando archivo de distribución de plugin CPTags"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_cptags.file}.zip" >
+            <fileset refid="plg_cptags_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- plugin plg_cptags -->
+    <target name="dist_plg_cptags_btn" description="Crea archivo de distribución Joomla para el plugin CPTags_btn">
+        <echo message="Creando archivo de distribución de plugin CPTags_btn"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_cptags_btn.file}.zip" >
+            <fileset refid="plg_cptags_btn_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" />
+        </zip>
+    </target>
+
     <!-- componente zonales -->
     <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
         <echo message="Creando archivo de distribución de componente UserZonales"/>
@@ -400,7 +439,7 @@
         </zip>
     </target>
 
-  
+
     <!-- componente eq_zonales -->
     <target name="dist_com_eqzonales" description="Crea archivo de distribución Joomla para el componente Ecualizador Zonales">
         <echo message="Creando archivo de distribución de componente Ecualizador Zonales"/>
@@ -419,7 +458,7 @@
             <fileset refid="com_aardvertiser_files"/>
         </zip>
     </target>
-    
+
     <!-- componente aapu -->
     <target name="dist_com_aapu" description="Crea archivo de distribución Joomla para el componente A.A.P.U.">
         <echo message="Creando archivo de distribución de componente A.A.P.U."/>
@@ -440,7 +479,7 @@
         </zip>
     </target>
 
-      <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
+    <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
     <target name="inst_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
         <echo message="Creando archivos de distribución de componente content"/>
         <zip destfile="${src_dist_dir}/${inst.com_content.file}.zip">
@@ -476,7 +515,7 @@
         </zip>
     </target>
 
-      <!-- Librerías e imágenes para zLogin DESCOMPRIMIR EN RAIZ DE JOOMLA-->
+    <!-- Librerías e imágenes para zLogin DESCOMPRIMIR EN RAIZ DE JOOMLA-->
     <target name="inst_lib_zlogin" description="Crea archivo de distribución con librerías y imágenes para zLogin">
         <echo message="Creando archivos de distribución de librerías para zLogin"/>
         <zip destfile="${src_dist_dir}/${inst.lib_zlogin.file}.zip">
