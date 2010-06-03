@@ -236,7 +236,7 @@ class ZonalesController extends JController {
                     $category->load($catid);
                     $sectionid = $category->section;
                 }
-                
+
                 $nullDate = $db->getNullDate();
 
                 // tabla de contenidos joomla
@@ -335,6 +335,30 @@ class ZonalesController extends JController {
 
         echo JHTML::_('select.genericlist', $parents, $name,
         'size="1" class="item_ajax_select required"', 'id', 'label', $selected);
+        return;
+    }
+
+    /**
+     * Chequea la disponibilidad del nombre de usuario suministrado por el usuario cuando intenta registrarse.
+     *
+     * @param string $username Nombre de usuario a chequear
+     * @return String Mensaje de error si corresponde
+     */
+    function getUsernameDisponibility() {
+        $username = JRequest::getVar('username', NULL, 'get', 'string');
+
+        $r = 0;
+        if(!is_null($username)) {
+            $dbo	= & JFactory::getDBO();
+            $query =    'SELECT count(*) '
+                    .' FROM ' . $dbo->nameQuote('#__users') . ' u'
+                    .' WHERE ' . $dbo->nameQuote('u.username') .' = \''. $username.'\'';
+            $dbo->setQuery($query);
+            $r = $dbo->loadResult();
+        }
+
+        if($r > 0)
+            echo JText::_('USERNAME_ERROR_MESSAGE');
         return;
     }
 }
