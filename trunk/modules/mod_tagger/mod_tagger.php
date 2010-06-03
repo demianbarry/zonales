@@ -77,6 +77,18 @@ class ModuleTagger {
 
         global $mainframe;
 
+        $user =& JFactory::getUser();
+        if ($user->guest){
+            $url = $params->get("register_url");
+            $urlMessage = JText::_('SYSTEM_REGISTER_MESSAGE');
+
+            $out = array(
+                'url' => $url,
+                'urlmessage' => $urlMessage
+            );
+            return $out;
+        }
+
         // CP fields
         $cp 		= $this->getModel('cpvalues');
         $cp->getAllHierarchical();
