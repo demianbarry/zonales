@@ -30,7 +30,7 @@ JHTML::_('behavior.formvalidation');
 
     function validate_attr(attr) {
 
-        if (attr.id == 'name' || attr.id == 'username' || attr.id == 'email') {
+        if (attr.id == 'name' || attr.id == 'username' || attr.id == 'email' || attr.id == 'passwordt' || attr.id == 'password2') {
             ret--;
             if (attr.hasClass('required')) {
                 if (!attr.getValue()) {
@@ -40,11 +40,13 @@ JHTML::_('behavior.formvalidation');
                     $('valid_'+attr.id).innerHTML = "";
                 }
             }
-            if(!Validate_Email_Address($('email').value)) {
-                $('valid_email').innerHTML = "Email invalido";
-                return false;
-            } else {
-                $('valid_email').innerHTML = "";
+            if (attr.id == 'email') {
+                if(!Validate_Email_Address($('email').value)) {
+                    $('valid_email').innerHTML = "Email invalido";
+                    return false;
+                } else {
+                    $('valid_email').innerHTML = "";
+                }
             }
         } else {
 
@@ -149,6 +151,16 @@ JHTML::_('behavior.formvalidation');
          }
 
 
+    Window.onDomReady = function(){
+        document.formvalidator.setHandler('passverify', function (value) {
+            var valid = $('passwordt').value == value;
+            if (!valid) {
+                $('valid_passwordt').innerHTML = "Las contraseñas no coinciden";
+            }
+            return (valid);
+        });
+    }
+
     //-->
 </script>
 
@@ -199,6 +211,7 @@ JHTML::_('behavior.formvalidation');
                     <div id="valid_email" style="float: right; color: red"></div>
                 </td>
             </tr>
+            <?php if ($this->user->id != 0): ?>
             <tr>
                 <td class="key">
                     <label for="registerDate"><?php echo JText::_( 'Register Date' ); ?>:</label>
@@ -215,6 +228,33 @@ JHTML::_('behavior.formvalidation');
                     <label><?php echo $this->user->lastvisitDate; ?>:</label>
                 </td>
             </tr>
+
+            <?php else: ?>
+                <tr>
+                    <td class="key">
+                        <label for="passwordt"><?php echo JText::_( 'Password' ); ?> *:</label>
+                    </td>
+                    <td colspan="2">
+                        <input class="imputbox required" type="password" name="passwordt" id="passwordt"
+                               value=""
+                               title="<?php echo JText::_( 'QUOTA_TIPTITLE' ); ?>"
+                        />
+                        <div id="valid_passwordt" style="float: right; color: red"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="key">
+                        <label for="password2"><?php echo JText::_( 'Password Repeat' ); ?> *:</label>
+                    </td>
+                    <td colspan="2">
+                        <input class="imputbox required validate-passverify" type="password" name="password2" id="password2"
+                               value=""
+                               title="<?php echo JText::_( 'QUOTA_TIPTITLE' ); ?>"
+                        />
+                        <div id="valid_password2" style="float: right; color: red"></div>
+                    </td>
+                </tr>
+            <?php endif; ?>
 
             <?php foreach ($this->user->attributes as $attr) { ?>
                 <tr>
