@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 
 ?>
-<?php if (!is_null($eq)): ?>
+<?php if (!is_null($eq) && !empty ($eq->fields)): ?>
 <script language="javascript" type="text/javascript">
     <!--
 
@@ -98,7 +98,7 @@ JHTML::_('behavior.formvalidation');
         <div class="splitter"></div>
 
         <form action="index.php" method="post" id="formEq" name="formEq">
-            <?php if (!is_null($eq)): ?>
+            <?php if (!is_null($eq) && !empty ($eq->fields)): ?>
             <ul id="accordion">
                     <?php foreach ($eq->fields as $group): ?>
                 <li>
