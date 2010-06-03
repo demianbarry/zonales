@@ -57,7 +57,7 @@ class CustompropertiesViewHierarchictagging extends JView {
         }
         $tags = implode(',', $tagsRaw);
         //$tags .= ',exposicion,hola,chau,termino';
-        $fields = 'title,intro_content,full_content';
+        $fields = $cp_config['tags_analizer_fields'];
 
         // preparo los datos a enviar
         $postData = array(
