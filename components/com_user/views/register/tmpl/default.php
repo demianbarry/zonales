@@ -61,7 +61,7 @@ foreach ($this->providerslist as $prov) {
     }
 
     /**
-     * Recupera mediante una llamada Ajax la lista de localidades, de acuerdo al partido seleccionado.
+     * Recupera mediante una llamada Ajax la disponibilidad de username indicado.
      */
     function checkUsernameDisponibility(username) {
         if(username != null && username.length > 0 ) {
