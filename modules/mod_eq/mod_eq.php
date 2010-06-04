@@ -64,16 +64,4 @@ if (!is_null($result) && !empty($result)) {
     }
 }
 
-$addTagsUrl = JRoute::_('index.php?option=com_eqzonales&task=hierarchictagging.display');
-$selectTags = 'select v.name as value from jos_custom_properties cp, jos_custom_properties_values v where cp.value_id=v.id';
-$db = JFactory::getDBO();
-$db->setQuery($selectTags);
-$dbTags = $db->loadObjectList();
-
-$aux = array();
-foreach ($dbTags as $tag) {
-    $aux[] = $tag->value;
-}
-$tags = implode(', ', $aux);
-
 require(JModuleHelper::getLayoutPath('mod_eq'));
