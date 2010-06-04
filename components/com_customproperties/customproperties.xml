@@ -181,6 +181,7 @@
 			<filename>samplece/phocagallery.xml</filename>
 			<filename>samplece/weblinks.xml</filename>
                         <filename>samplece/banner.xml</filename>
+                        <filename>samplece/menu.xml</filename>
 
 			<filename>tables/index.html</filename>
 			<filename>tables/cpfield.php</filename>
