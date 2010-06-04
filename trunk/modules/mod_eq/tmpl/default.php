@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 
 ?>
-<?php if (!is_null($eq) && !empty ($eq->fields)): ?>
+<?php if (!is_null($eq)): ?>
 <script language="javascript" type="text/javascript">
     <!--
 
@@ -98,7 +98,7 @@ JHTML::_('behavior.formvalidation');
         <div class="splitter"></div>
 
         <form action="index.php" method="post" id="formEq" name="formEq">
-            <?php if (!is_null($eq) && !empty ($eq->fields)): ?>
+            <?php if (!is_null($eq)): ?>
             <ul id="accordion">
                     <?php foreach ($eq->fields as $group): ?>
                 <li>
@@ -138,12 +138,6 @@ JHTML::_('behavior.formvalidation');
             <p><?php echo $error_no_eq; ?></p>
             <?php endif;?>
         </form>
-        <!-- <input type="button"
-                                                           value="agregar tags"
-                                                           name="buttontags"
-                                                           onclick="window.location.href='<?php //echo $addTagsUrl ?>'"
-                                                    />
-        -->
 
         <br/>
         <p id="respuesta"></p>
