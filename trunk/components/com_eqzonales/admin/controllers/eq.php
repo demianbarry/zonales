@@ -22,7 +22,7 @@ jimport('joomla.filesystem.file');
  * Controlador
  *
  */
-class EqZonalesControllerEq extends JController {
+class EqZonalesControllerEq1 extends JController {
 
     /**
      * Constructor

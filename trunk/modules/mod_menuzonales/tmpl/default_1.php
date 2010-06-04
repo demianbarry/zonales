@@ -27,17 +27,17 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <div id="navigation">
 	<ul id="mymenu">
 		<li id="s0"><a href="<?php echo JURI::base(); ?>"><?php echo JText::_('Inicio'); ?></a></li>
-		<?php foreach ($eq->fields as $field): ?>
-		<li id="s<?php echo $field->id; ?>"><a href="<?php echo($field->link ? $field->link : '#'); ?>"><?php echo $field->label; ?></a></li>
+		<?php foreach ($menues as $menu): ?>
+		<li id="s<?php echo $menu->id; ?>"><a href="<?php echo($menu->link ? $menu->link : '#'); ?>"><?php echo $menu->label; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 </div>
 <div id="sublinks">
 	<ul id="s0_m"><li /></ul>
-	<?php foreach ($eq->fields as $field): ?>
-	<ul id="s<?php echo $field->id; ?>_m">
-		<?php foreach ($field->bands as $band): ?>
-		<li><a href="<?php echo $band->link; ?>"><?php echo $band->band_label; ?></a></li>
+	<?php foreach ($menues as $menu): ?>
+	<ul id="s<?php echo $menu->id; ?>_m">
+		<?php foreach ($menu->submenus as $submenu): ?>
+		<li><a href="<?php echo $submenu->link; ?>"><?php echo $submenu->label; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>

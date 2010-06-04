@@ -39,10 +39,10 @@ class EqZonalesController extends JController {
         /**
          * Realiza el include de los controladores del componente EqZonales
          */
-        require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
-        require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'band.php');
-        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
-        JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+//        require_once(JPATH_COMPONENT.DS.'controllers'.DS.'eq.php');
+//        require_once(JPATH_COMPONENT.DS.'controllers'.DS.'band.php');
+        //require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
+        //JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
 
         /**
          * Crea instancias de los controladores del componente EqZonales,

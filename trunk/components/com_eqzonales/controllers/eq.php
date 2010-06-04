@@ -409,6 +409,7 @@ class EqZonalesControllerEq extends JController {
             $bandModel->setWhere('e.eq_id = ' . $eq->id);
             $bandModel->setLimitStart(0);
             $bandModel->setLimit(0);
+            $bandModel->setOrderBy('peso desc');
             $bands = $bandModel->getAll(true);
 
             $data = new stdClass();
