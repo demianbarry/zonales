@@ -255,26 +255,9 @@ class comEqZonalesContentHelper {
     function getMenuValue() {
         $menuId = null;
 
-        // recupero el id del menu actual
-        if (JSIte::getMenu()->getActive()) {
-            $menuId = JSite::getMenu()->getActive()->id;
-        }
+        $banda = JRequest::getString('banda', NULL, 'get');
 
-        if ($menuId) {
-            // Get a database object
-            $db =& JFactory::getDBO();
-
-            // obtengo el tag_value asociado con el menu
-            $query = "SELECT v.name FROM `#__zonales_menu` m".
-                    " INNER JOIN #__custom_properties_values v ON v.id = m.value_id".
-                    " WHERE m.menu_id = $menuId";
-
-            $db->setQuery($query);
-
-            return $db->loadResult();
-        }
-
-        return null;
+        return $banda;
     }
 
 }

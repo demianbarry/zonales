@@ -128,7 +128,7 @@ abstract class ZonalesModelBaseModel extends JModel {
 
     /**
      * Recupera el Id en la BD del registro que este modelo representa.
-     * 
+     *
      * @return Int Identificador único del registro en la BD
      */
     function getId() {
@@ -231,14 +231,22 @@ abstract class ZonalesModelBaseModel extends JModel {
      * @return string claúsula SQL ORDER BY
      */
     function getOrderByClause() {
+//        $order_by = null;
+//
+//        if (!is_null($this->_orderby_filter_order)) {
+//            $order_by = ' ORDER BY ' . $this->_orderby_filter_order . ' ' . $this->_orderby_filter_order_dir;
+//
+//            if (count($this->_orderby) > 0) {
+//                $order_by .= ', ' . implode( ' ,', $this->_orderby );
+//            }
+//        }
+//
+//        return $order_by;
         $order_by = null;
 
-        if (!is_null($this->_orderby_filter_order)) {
-            $order_by = ' ORDER BY ' . $this->_orderby_filter_order . ' ' . $this->_orderby_filter_order_dir;
-
-            if (count($this->_orderby) > 0) {
-                $order_by .= ', ' . implode( ' ,', $this->_orderby );
-            }
+        if (count($this->_orderby) > 0) {
+            $order_by = ' ORDER BY ';
+            $order_by .= implode(' ,', $this->_orderby);
         }
 
         return $order_by;
