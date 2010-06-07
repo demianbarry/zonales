@@ -219,7 +219,7 @@ class BannersViewBanner
 		JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'custombannercode' );
                 // agregado por G2P
                 $addTagsUrl = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=hierarchictagging&ce_name=banner&id='.$row->bid);
-                $selectTags = 'select v.name as value from jos_custom_properties cp, jos_custom_properties_values v, jos_banner b where cp.value_id=v.id and cp.ref_table="banner" and cp.content_id=b.bid and b.bid=' . $row->bid;
+                $selectTags = 'select v.name as value from #__custom_properties cp, #__custom_properties_values v, #__banner b where cp.value_id=v.id and cp.ref_table="banner" and cp.content_id=b.bid and b.bid=' . $row->bid;
                 $db = JFactory::getDBO();
                 $db->setQuery($selectTags);
                 $dbTags = $db->loadObjectList();
