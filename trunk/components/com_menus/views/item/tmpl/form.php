@@ -150,10 +150,23 @@ function submitbutton(pressbutton) {
                                                                                                             <?php echo JText::_( 'On Click, Open in' ); ?>:
                             </td>
                             <td>
-                                                                                                            <?php echo MenusHelper::Target( $this->item ); ?>
+                                                                                                                                                                                                                                                        <?php echo MenusHelper::Target( $this->item ); ?>
                             </td>
                         </tr>
-                                                                                                <?php endif; ?>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <textarea class="inputbox"
+                                                                  cols="70"
+                                                                  rows="3"
+                                                                  name="mytags"
+                                                                  id="mytags"
+                                                                  readonly="yes"
+                                                        ><?php echo $this->tags;?></textarea>
+                                <input type="button" onclick="window.location.href='<?php echo $this->addTagUrl ?>'" name="buttontags" value="SYSTEM_TAG_ADD"/>
+                            </td>
+                        </tr>
+                                                                                                                                                                                                                                            <?php endif; ?>
                     </table>
                 </fieldset>
             </td>
@@ -192,10 +205,6 @@ function submitbutton(pressbutton) {
                                                                                         echo $this->pane->endPane();
                                                                                         ?>
             </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="button" onclick="window.location.href='index.php?option=com_customproperties&amp;controller=hierarchictagging&amp;view=hierarchictagging&amp;ce_name=menu&amp;id=<?php echo $this->item->id ?>'" name="buttontags" value="SYSTEM_TAG_ADD"/></td>
         </tr>
     </table>
 

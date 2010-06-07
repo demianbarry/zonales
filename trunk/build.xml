@@ -165,6 +165,10 @@
     <fileset dir="${src_frontend_components}/com_user" id="com_user_files">
         <include name="**" />
     </fileset>
+    <!-- com_menus -->
+    <fileset dir="${src_frontend_components}/com_menus" id="com_menus_files">
+        <include name="**" />
+    </fileset>
 
     <!-- tmpl_z1 -->
     <fileset dir="${src_templates}/tmpl_z1" id="tmpl_z1_files">
@@ -512,6 +516,15 @@
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language/es-ES" />
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="administrator/language/es-ES" />
             <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
+        </zip>
+    </target>
+
+    <!-- componente menus DESCOMPRIMIR EN RAIZ DE JOOMLA -->
+    <target name="inst_com_menus" description="Crea archivo de distribución Joomla para el componente Menus">
+        <echo message="Creando archivo de distribución de componente Menus"/>
+        <zip destfile="${src_dist_dir}/${inst.com_menus.file}.zip">
+            <zipfileset dir="${src_frontend_components}" includes="com_menus/**" prefix="administrator/components" />
+            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_menus.ini" prefix="administrator/language/es-ES" />
         </zip>
     </target>
 
