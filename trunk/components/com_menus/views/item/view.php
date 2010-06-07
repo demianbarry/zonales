@@ -119,7 +119,7 @@ class MenusViewItem extends JView
 
                 // AGREGADO POR G2P
                 $addTagsUrl = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=hierarchictagging&ce_name=menu&id='.$item->id);
-                $selectTags = 'select v.name as value from #__custom_properties cp, #__custom_properties_values v, #__menus m where cp.value_id=v.id and cp.ref_table="menu" and cp.content_id=m.id and m.id=' . $item->id;
+                $selectTags = 'select v.name as value from #__custom_properties cp, #__custom_properties_values v, #__menu m where cp.value_id=v.id and cp.ref_table="menu" and cp.content_id=m.id and m.id=' . $item->id;
                 $db = JFactory::getDBO();
                 $db->setQuery($selectTags);
                 $dbTags = $db->loadObjectList();
