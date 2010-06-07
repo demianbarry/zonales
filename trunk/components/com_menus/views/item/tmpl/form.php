@@ -154,7 +154,9 @@ function submitbutton(pressbutton) {
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td class="key" valign="top" align="right">
+                                <?php echo JText::_('SYSTEM_TAG_MESSAGE'); ?>
+                            </td>
                             <td>
                                 <textarea class="inputbox"
                                                                   cols="70"
@@ -163,7 +165,7 @@ function submitbutton(pressbutton) {
                                                                   id="mytags"
                                                                   readonly="yes"
                                                         ><?php echo $this->tags;?></textarea>
-                                <input type="button" onclick="window.location.href='<?php echo $this->addTagUrl ?>'" name="buttontags" value="SYSTEM_TAG_ADD"/>
+                                <input type="button" onclick="window.location.href='<?php echo $this->addTagUrl ?>'" name="buttontags" value="<?php echo JText::_('SYSTEM_TAG_ADD'); ?>"/>
                             </td>
                         </tr>
                                                                                                                                                                                                                                             <?php endif; ?>
