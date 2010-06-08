@@ -390,11 +390,12 @@ class EqZonalesControllerEq extends JController {
             if ($session->has('eq')) {
                 return $session->get('eq');
             } else {
-                $eqId = 0;
+                $eqZonalesParams =& JComponentHelper::getParams('com_eqzonales');
+                $eqId = $eqZonalesParams->get('eq_anon_id', 1);
             }
         }
 
-        if ($eqId >= 0) {
+        if ($eqId > 0) {
             // datos del ecualizador solicitado
             $eqModel = &$this->getModel('Eq');
             $eqModel->setId($eqId);
@@ -417,7 +418,8 @@ class EqZonalesControllerEq extends JController {
             $data->bands = $bands;
         }
 
-        if ($eqId == 0) {
+        // almaceno en sesión el eq si el usuario es anónimo
+        if ($user->guest) {
             $session->set('eq', $data);
         }
         

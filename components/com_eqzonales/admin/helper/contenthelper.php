@@ -65,12 +65,13 @@ class comEqZonalesContentHelper {
      */
     function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = '') {
 
-        $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
+        $eqZonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
         // recupera parametros
-        $solr_url = $zonalesParams->get( 'solr_url', null );
-        $solr_port = $zonalesParams->get( 'solr_port', null );
-        $solr_webapp = $zonalesParams->get( 'solr_webapp', null );
+        $solr_url = $eqZonalesParams->get( 'solr_url', null );
+        $solr_port = $eqZonalesParams->get( 'solr_port', null );
+        $solr_webapp = $eqZonalesParams->get( 'solr_webapp', null );
+        $solr_querytype = $eqZonalesParams->get( 'solr_querytype', null );
 
         // No se especifico la url de solr
         if ($solr_url == null) {
@@ -82,6 +83,10 @@ class comEqZonalesContentHelper {
         }
         // No se especifico el puerto de webapp
         if ($solr_webapp == null) {
+            return null;
+        }
+        // No se especifico un QueryType apropiado
+        if ($solr_querytype == null) {
             return null;
         }
 
@@ -114,7 +119,7 @@ class comEqZonalesContentHelper {
         $queryParams['sort'] = $this->getOrder();
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
-        $queryParams['qt'] = "zonalesContent";
+        $queryParams['qt'] = $solr_querytype;
 
         try {
             $results = $solr->search("", $limitstart, $limit, $queryParams);
@@ -230,16 +235,14 @@ class comEqZonalesContentHelper {
 
         $bq = "";
 
-        if (!$user->guest) {
-            // recupera ecualizador del usuario
-            $result = $ctrlEq->retrieveUserEqImpl($user->id);
+        // recupera ecualizador del usuario
+        $result = $ctrlEq->retrieveUserEqImpl($user->id);
 
-            if (!is_null($result) && !empty($result)) {
-                $eq = $result[0];
+        if (!is_null($result) && !empty($result)) {
+            $eq = $result[0];
 
-                foreach ($eq->bands as $band) {
-                    $bq .= " tags_values:$band->band_name^$band->peso";
-                }
+            foreach ($eq->bands as $band) {
+                $bq .= " tags_values:$band->band_name^$band->peso";
             }
         }
 

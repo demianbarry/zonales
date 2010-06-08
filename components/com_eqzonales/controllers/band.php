@@ -272,8 +272,28 @@ class EqZonalesControllerBand extends JController {
                     }
                 }
             }
+
+            // ordenamos bandas de mayor a menor según el peso
+            usort($eqtmp->bands, array('EqZonalesControllerBand', 'ordenaBandasPorPeso'));
         }
+
+        
 
         return true;
     }
+
+    /**
+     * Compara dos bandas según el peso asignado a las mismas.
+     *
+     * @param stdClass $bandaA
+     * @param stdClass $bandaB
+     * @return 0 si son identicas, 1 si bandaA < bandaB, -1 si bandaA > bandaB
+     */
+    function ordenaBandasPorPeso($bandaA, $bandaB) {
+        if ($bandaA->peso == $bandaB->peso) {
+            return 0;
+        }
+        return ($bandaA->peso < $bandaB->peso) ? 1 : -1;
+    }
+
 }
