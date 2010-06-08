@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <params>
-        <param
-                name="solrurl"
-                type="text"
-                label="Solr Url"
-                description="Please enter the url where the Solr server is located"
-        />
         <param name="solr_url" type="text" size="20" default="" label="Solr Url" description="solr_url_tip" />
         <param name="solr_port" type="text" size="6" default="" label="Solr Port" description="solr_port_tip" />
         <param name="solr_webapp" type="text" size="20" default="" label="Solr Webapp" description="solr_webapp_tip" />
         <param name="@spacer" type="spacer" default="" label="" description="" />
+        <param name="solr_querytype" type="text" size="20" deafult="zonalesContent" label="Solr Query Type" description="Solr Query Type Tip" />
         <param name="solr_dataimport" type="text" size="20" default="dataimporter" label="Data Importer" description="Data Importer Tip" />
         <param name="solr_fullimport" type="text" size="20" default="full-import" label="Full Import Command" description="Full Import Command Tip" />
         <param name="solr_deltaimport" type="text" size="20" default="delta-import" label="Delta Import Command" description="Delta Import Command Tip" />
