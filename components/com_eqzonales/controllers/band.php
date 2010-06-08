@@ -62,11 +62,6 @@ class EqZonalesControllerBand extends JController {
     function modifyBandAjax() {
         // Controla que el request haya sido enviado por un usuario registrado.
         $user =& JFactory::getUser();
-//        if ($user->guest) {
-//            echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
-//            JText::_('ZONALES_EQ_SESSION_REQUIRED'));
-//            return;
-//        }
 
         $jtext = new JText();
 
@@ -92,13 +87,25 @@ class EqZonalesControllerBand extends JController {
          */
         $result = $user->guest ? $this->modifyBandAnonImpl($bandsArray) : $this->modifyBandImpl($bandsArray);
 
-        //if(!$this->modifyBandImpl($bandsArray)) {
+        // Según la operación selecciona el tipo de mensaje de respuesta - ver com_eqzonales.ini
+        switch ($operation) {
+            case REMOVE:
+                $op = 'DEL';
+                break;
+            case ADD:
+                $op = 'CREATE';
+                break;
+            case MOD:
+                $op = 'UPDATE';
+                break;
+        }
+
         if(!$result) {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::FAILURE,
-            $jtext->sprintf('ZONALES_EQ_CREATE_FAILURE', JText::_('ZONALES_EQ_BAND')));
+            $jtext->sprintf('ZONALES_EQ_'.$op.'_FAILURE', JText::_('ZONALES_EQ_BAND')));
         } else {
             echo $this->helper->getEqJsonResponse(comEqZonalesHelper::SUCCESS,
-            $jtext->sprintf('ZONALES_EQ_CREATE_SUCCESS', JText::_('ZONALES_EQ_BAND')));
+            $jtext->sprintf('ZONALES_EQ_'.$op.'_SUCCESS', JText::_('ZONALES_EQ_BAND')));
         }
 
         return;
