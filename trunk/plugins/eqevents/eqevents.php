@@ -57,6 +57,12 @@ class plgUserEqevents extends JPlugin {
     function plgUserEqevents(& $subject, $config) {
         parent::__construct($subject, $config);
 
+        // No ejecutar si se accede al backend administrativo
+        $app = JFactory::getApplication();
+        if ($app->isAdmin()) {
+            return true;
+        }
+        
         /**
          * Realiza el include de los controladores del componente EqZonales
          */
