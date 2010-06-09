@@ -12,6 +12,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+JHTML::_('behavior.tooltip');
 
 $page = $this->page;
 $count = count($this->items);
@@ -69,6 +70,7 @@ if ($this->root != 0) {
                     <th align="left"><?php echo JText::_( 'Label' ); ?></th>
                     <th align="left"><?php echo JText::_( 'Field' ); ?></th>
                     <th>ID</th>
+                    <th width="5%"align="center" colspan="2"><?php echo JText::_( 'Del/Edit' ); ?></th>
                     <th colspan="2" align="center" width="5%"><?php echo JText::_( 'Reorder' ); ?></th>
                     <th width="1%"><a href="javascript: saveorder( <?php echo ($count - 1)?> )"><img src="images/filesave.png" border="0" width="16" height="16" alt="<?php echo JText::_('Save Order')?>" /></a></th>
                 </tr>
@@ -84,27 +86,12 @@ if ($this->root != 0) {
             $k = 0;
             for ($i=0, $n=count( $this->items ); $i < $n; $i++) {
                 $row =& $this->items[$i];
-                $link 	= 'index.php?option=com_customproperties&controller=values&cids[]='. $row->id;
-                $linkEditar = 'index.php?option=com_customproperties&controller=values&task=edit&cids[]='. $row->id.'&pid='. $this->cid[0];
-                $linkBorrar = 'index.php?option=com_customproperties&controller=values&task=remove&cids[]='. $row->id.'&pid='. $this->cid[0];
+                $link 	= 'index.php?option=com_customproperties&controller=values&cid[]='. $row->id;
+                $linkEditar = 'index.php?option=com_customproperties&controller=values&task=edit&cid[]='. $row->id.'&pid='. $this->cid[0];
+                $linkBorrar = 'index.php?option=com_customproperties&controller=values&task=remove&cid[]='. $row->id.'&pid='. $this->cid[0];
+                $linkBorrar = 'index.php?option=com_customproperties&controller=values&task=remove&cid[]='. $row->id.'&pid='. $this->cid[0];
 
                 $checked 	= JHTML::_('grid.id',	$i, $row->id );
-                /*$img = $row->published == 1 ? 'publish_g.png' : 'publish_x.png';
-			$alt = $row->published == 1 ? JText::_('Published') : JText::_('Unpublished');
-			switch($row->access){
-			case 1:
-				$access ="Registered";
-				$color_access = 'style="color: green;"';
-				break;
-			case 2:
-				$access ="Special";
-				$color_access = 'style="color: black;"';
-				break;
-			case 0:
-			default:
-				$access ="Public";
-				$color_access = 'style="color: green;"';
-		}*/
 
                 ?>
             <tr class="<?php echo "row$k"; ?>">
@@ -118,6 +105,7 @@ if ($this->root != 0) {
                     <a href="<?php echo JRoute::_( $link ); ?>">
                             <?php echo htmlspecialchars($row->name, ENT_QUOTES); ?>
                     </a>
+                    <!--
                     &nbsp;(
                     <a href="<?php echo JRoute::_( $linkEditar ); ?>">
 							Editar
@@ -127,6 +115,7 @@ if ($this->root != 0) {
 							Borrar
                     </a>
                     )
+                    -->
                 </td>
                 <td>
                         <?php echo $row->label ?>
@@ -134,17 +123,18 @@ if ($this->root != 0) {
                 <td>
                         <?php echo $row->field ?>
                 </td>
-                <!--<td align="center">
-						<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->published ? 'unpublish' : 'publish' ?>')">
-                                <img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
-						</a>
-					</td>
-                <td align="center" width="10%" <?php echo $color_access?>>
-                    <?php echo $access;?>
-					</td>
-                -->
                 <td align="center">
                         <?php echo $row->id ?>
+                </td>
+                <td align="center">
+                    <a href="<?php echo JRoute::_($linkEditar); ?>">
+                        <img src="images/addedit.png" width="16" height="16" border="0" alt="Editar" />
+                    </a>
+                </td>
+                <td align="center">
+                    <a href="<?php echo JRoute::_($linkBorrar); ?>">
+                        <img src="images/publish_x.png" width="16" height="16" border="0" alt="Eliminar" />
+                    </a>
                 </td>
                 <td class="order">
                     <span><?php echo $page->orderUpIcon( $i, ($i !== 0), 'orderup', JText::_('Move Up')); ?></span>

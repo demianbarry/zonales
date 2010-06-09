@@ -32,7 +32,7 @@ class CustompropertiesViewCpvalues extends JView {
 
         $this->_context = $option.'h_value';		// nombre del contexto
 
-        $this->cid = JRequest::getVar('cids', 0, '', 'array');
+        $this->cid = JRequest::getVar('cid', 0, '', 'array');
         $this->pid = JRequest::getVar('pid', 0, '', 'int');
         switch($this->getLayout()) {
             case 'edit' :
