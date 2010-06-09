@@ -31,8 +31,8 @@ for ($i=0, $n=count( $this->itemsBC ); $i < $n; $i++) {
 JToolBarHelper::title($pageTitle.$text_name, 'field-add.png' );
 //JToolBarHelper::publishList();
 //JToolBarHelper::unpublishList();
-JToolBarHelper::deleteList(JText::_( 'WARNINGDELPROPERTIES'));
-JToolBarHelper::editListX();
+//JToolBarHelper::deleteList(JText::_( 'WARNINGDELPROPERTIES'));
+//JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 if ($this->root != 0) {
     JToolBarHelper::back(JText::_('BACK'), JRoute::_('index.php?option=' . $option . '&controller=values&cid=' . $this->back));
@@ -84,8 +84,9 @@ if ($this->root != 0) {
             $k = 0;
             for ($i=0, $n=count( $this->items ); $i < $n; $i++) {
                 $row =& $this->items[$i];
-                $link 	= 'index.php?option=com_customproperties&controller=values&cid[]='. $row->id;
-                $linkEditar = 'index.php?option=com_customproperties&controller=values&task=edit&cid[]='. $row->id.'&pid='. $this->cid[0];
+                $link 	= 'index.php?option=com_customproperties&controller=values&cids[]='. $row->id;
+                $linkEditar = 'index.php?option=com_customproperties&controller=values&task=edit&cids[]='. $row->id.'&pid='. $this->cid[0];
+                $linkBorrar = 'index.php?option=com_customproperties&controller=values&task=remove&cids[]='. $row->id.'&pid='. $this->cid[0];
 
                 $checked 	= JHTML::_('grid.id',	$i, $row->id );
                 /*$img = $row->published == 1 ? 'publish_g.png' : 'publish_x.png';
@@ -120,6 +121,10 @@ if ($this->root != 0) {
                     &nbsp;(
                     <a href="<?php echo JRoute::_( $linkEditar ); ?>">
 							Editar
+                    </a>
+                    ) &nbsp;(
+                    <a href="<?php echo JRoute::_( $linkBorrar ); ?>">
+							Borrar
                     </a>
                     )
                 </td>
