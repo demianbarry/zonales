@@ -22,8 +22,8 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'helper.php' );
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'models'.DS.'basemodel.php');
 require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'views'.DS.'baseview.php');
 
-require_once(JPATH_COMPONENT.DS.'controllers'.DS.'eq.php');
-require_once(JPATH_COMPONENT.DS.'controllers'.DS.'band.php');
+require_once (JPATH_COMPONENT_SITE.DS.'controllers'.DS.'eq.php');
+require_once (JPATH_COMPONENT_SITE.DS.'controllers'.DS.'band.php');
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
