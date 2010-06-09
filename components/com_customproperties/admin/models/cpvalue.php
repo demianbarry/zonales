@@ -303,7 +303,7 @@ class CustompropertiesModelCpvalue extends JModel {
         $new_ordering = max(array_values($orders)) + 1;
         $errors = array ();
         $array = array ();
-        $got_default = false;
+        //$got_default = false;
 
         if (!empty ($ids)) {
             foreach ($ids as $key => $value) {
@@ -313,10 +313,11 @@ class CustompropertiesModelCpvalue extends JModel {
                 $array['name'] 		= $this->_fixName($names[$key]);
                 $array['label'] 	= $this->_fixLabel($labels[$key]);
                 $array['priority'] 	= $priorities[$key];
+                //$array['default']       = $defaults[$key];
 
-                if ($got_default == false && $defaults[$key] == 1) { // only one can be a default value
+                if (array_key_exists($key, $defaults)) {
                     $array['default'] = 1;
-                    $got_default = true;
+                    //$got_default = true;
                 } else {
                     $array['default'] = 0;
                 }
