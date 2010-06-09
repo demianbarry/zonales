@@ -144,9 +144,9 @@ class EqZonalesControllerBand extends JController {
         }
 
         // Parametros grupo de etiquetas noticias y peso por default
-        $zonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
-        $noticias_field = $zonalesParams->get('noticias_field', null);
-        $peso_default = $zonalesParams->get('peso_default', 50);
+        $paramsEq =& JComponentHelper::getParams('com_eqzonales');
+        $noticias_field = $paramsEq->get('noticias_field', null);
+        $peso_default = $paramsEq->get('peso_default', 50);
 
         // No se especifico la url de solr
         if ($noticias_field == null) {
@@ -283,8 +283,6 @@ class EqZonalesControllerBand extends JController {
             // ordenamos bandas de mayor a menor según el peso
             usort($eqtmp->bands, array('EqZonalesControllerBand', 'ordenaBandasPorPeso'));
         }
-
-        
 
         return true;
     }

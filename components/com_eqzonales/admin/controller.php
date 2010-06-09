@@ -8,7 +8,6 @@ jimport('joomla.filesystem.file');
 
 /**
  * Controlador
- *
  */
 class EqZonalesController extends JController {
     /**
@@ -27,22 +26,20 @@ class EqZonalesController extends JController {
     function addAnonDefaultEq() {
         global $option;
 
-        $params = &JComponentHelper::getParams( 'com_eqzonales' );
-        $eq_anon_id = $params->get( 'eq_anon_id', null );
-        $eq_anon_name = $params->get( 'eq_anon_name', null );
+        // Según valor de retorno el estilo de msg será de exito o error
+        $return = false;
+
+        $link = 'index.php?option=' . $option;
+
+        $paramsEq = &JComponentHelper::getParams( 'com_eqzonales' );
+        $eq_anon_id = $paramsEq->get( 'eq_anon_id', null );
+        $eq_anon_name = $paramsEq->get( 'eq_anon_name', null );
 
         if (is_null($eq_anon_id)) {
-            echo "<script> alert('No se especifico un id para el Ecualizador Anónimo'); window.history.go(-1); </script>\n";
-            exit();
+            $msg = 'No se especifico un id para el Ecualizador Anónimo';
+            $this->setRedirect($link, $msg);
+            return $return;
         }
-
-        /**
-         * Realiza el include de los controladores del componente EqZonales
-         */
-//        require_once(JPATH_COMPONENT.DS.'controllers'.DS.'eq.php');
-//        require_once(JPATH_COMPONENT.DS.'controllers'.DS.'band.php');
-        //require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
-        //JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
 
         /**
          * Crea instancias de los controladores del componente EqZonales,
@@ -62,23 +59,39 @@ class EqZonalesController extends JController {
 
         /**
          * Crea el ecualizador con los datos del nuevo usuario.
+         * ----
+         * NOTA: Al especificar id en $params, JTable realiza un update
+         * sobre la base de datos. Como no se encontro forma de evitar este
+         * comportamiento se decidió interactuar directamente con la base de
+         * datos.
          */
-        $eqId = $ctrlEq->createEq($params);
-        if ($eqId === FALSE) {
-            echo "<script> alert('Error al crear el Ecualizador Anónimo'); window.history.go(-1); </script>\n";
-            exit();
+        //$eqId = $ctrlEq->createEq($params);
+        $eqRow =& JTable::getInstance('eq', 'Table');
+        if ($eqRow->load($eq_anon_id)) {
+            $msg = 'Error al crear el Ecualizador Anónimo - El ID especificado ya existe';
         } else {
-            $params->id = $eqId;
-            /**
-             * Instancia las bandas por defecto para el ecualizador.
-             */
-            $ctrlBand->createDefaultBands($params);
+            // Insertamos el EQ anonimo
+            $db =& JFactory::getDBO();
+            $query = "INSERT INTO #__eqzonales_eq (id,user_id,nombre,descripcion,observaciones)".
+                    " VALUES ($params->id, $params->user_id, '$params->nombre', '$params->descripcion', '$params->observaciones')";
+            $db->setQuery($query);
+            $result = $db->query();
+
+            //if ($eqId === FALSE) {
+            if ($result === FALSE) {
+                $msg = 'Error al crear el Ecualizador Anónimo - No se pudo almacenar en la BD';
+            } else {
+                /**
+                 * Instancia las bandas por defecto para el ecualizador.
+                 */
+                $ctrlBand->createDefaultBands($params);
+                $msg = 'Ecualizador Anónimo creado exitosamente';
+                $return = true;
+            }
         }
 
-        $link = 'index.php?option=' . $option;
-        $msg = 'Ecualizador Anónimo creado exitosamente';
-
         $this->setRedirect($link, $msg);
+        return $return;
     }
 
     function baseDisplayTask($view, $modelName, $layout = 'default', $hidemainmenu = 0, $vars = array()) {

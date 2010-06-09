@@ -347,7 +347,7 @@ class EqZonalesControllerEq extends JController {
         $eq_name = property_exists($params, 'nombre') ? $params->nombre : NULL;
 
         // Chequea que el usuario indicado sea valido
-        if ($user_id <= 0) {
+        if ($user_id < 0) {
             return FALSE;
         }
 
@@ -358,6 +358,7 @@ class EqZonalesControllerEq extends JController {
 
         // Crea nueva instancia del ecualizador
         $eqData = array(
+                'id' => property_exists($params, 'id') ? $params->id : NULL,
                 'nombre' => $eq_name,
                 'descripcion' => property_exists($params, 'descripcion') ? $params->descripcion : NULL,
                 'observaciones' => property_exists($params, 'observaciones') ? $params->observaciones : NULL,
@@ -401,12 +402,12 @@ class EqZonalesControllerEq extends JController {
             $eqModel->setId($eqId);
             $eq = $eqModel->getData(true);
 
-            if (!isset ($eq->id)){
+            if (!isset($eq->id)) {
                 return array();
             }
 
             // datos de las bandas asociadas al ecualizador
-            $bandModel = &$this->getModel('Banda');
+            $bandModel =& $this->getModel('Banda');
             $bandModel->setWhere('e.eq_id = ' . $eq->id);
             $bandModel->setLimitStart(0);
             $bandModel->setLimit(0);
