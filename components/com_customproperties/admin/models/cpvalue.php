@@ -51,7 +51,7 @@ class CustompropertiesModelCpvalue extends JModel {
     function __construct() {
         parent::__construct();
 
-        $array = JRequest::getVar('cid', 0, '', 'array');
+        $array = JRequest::getVar('cids', 0, '', 'array');
         $this->setId((int) $array[0]);
     }
 
@@ -150,7 +150,7 @@ class CustompropertiesModelCpvalue extends JModel {
      * @return void
      */
     function saveValuesOrder() {
-        $cid = JRequest::getVar('cid', '', '', 'array');
+        $cid = JRequest::getVar('cids', '', '', 'array');
         $total = count($cid);
         $order = JRequest::getVar('order', '', '', 'array');
         $value = & JTable::getInstance('cpvalue', 'Table');
@@ -173,7 +173,7 @@ class CustompropertiesModelCpvalue extends JModel {
      * @return void
      */
     function publishValues() {
-        $cid = JRequest::getVar('cid', '', '', 'array');
+        $cid = JRequest::getVar('cids', '', '', 'array');
         $value = & JTable::getInstance('cpvalue', 'Table');
         $action = JRequest::getCmd('task') == 'publish' ? 1 : 0;
         $result = $value->publish($cid, $action);
@@ -184,7 +184,7 @@ class CustompropertiesModelCpvalue extends JModel {
      * @return void
      */
     function deleteValues() {
-        $cid = JRequest::getVar('cid', '', '', 'array');
+        $cid = JRequest::getVar('cids', '', '', 'array');
         $value = & JTable::getInstance('cpvalue', 'Table');
 
         foreach ($cid as $recordID) {
@@ -256,7 +256,7 @@ class CustompropertiesModelCpvalue extends JModel {
      */
 
     function orderChildValue($direction) {
-        $cid = JRequest::getVar('cid', '', '', 'array');
+        $cid = JRequest::getVar('cids', '', '', 'array');
         $val_id = JRequest::getVar('val_id', '', '', 'array');
         $field_id = $cid[0];
         $value_id = $val_id[0];
@@ -289,7 +289,7 @@ class CustompropertiesModelCpvalue extends JModel {
 
     function _saveValues($field_id = 0) {
         /* parent field */
-        $cid = JRequest::getVar('cid', '', '', 'array');
+        $cid = JRequest::getVar('cids', '', '', 'array');
         $value_id = $cid[0];
         
         /* we expect an array for every field */
