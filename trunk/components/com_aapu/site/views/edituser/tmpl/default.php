@@ -60,7 +60,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                     }
             }
 
-            var url="administrator/index.php?option=com_aapu&format=raw&task=validateAttr&attrId="+attr.id+"&attrValue="+attr.value;
+            var url="index.php?option=com_aapu&format=raw&task=validateAttr&attrId="+attr.id+"&attrValue="+attr.value;
 
             new Ajax(url, {
                 method: 'get',
