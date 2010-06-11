@@ -87,6 +87,20 @@ class plgSearchSolrsearch extends JPlugin {
             $start = min(1, $total);
             $end = min($limit, $total);
 
+            $ce_file                = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_customproperties' . DS . 'contentelement.class.php';
+            $helper_file            = JPATH_ROOT . DS . 'components' . DS . 'com_customproperties' . DS . 'helper.php';
+            if (!file_exists($helper_file) || !file_exists($ce_file)) {
+                    echo "<span class=\"alert\">Fatal Error: the component <b>com_customproperties</b> is not/badly installed. " . "Get it at <a href=\"http://www.solidsystem.it\">www.solidsystem.it</a></span>";
+                    return true;
+            } else {
+                    require_once $helper_file;
+                    require_once $ce_file;
+            }
+            $ce = new cpContentElement();
+            $plugin = & JPluginHelper::getPlugin('content', 'cptags');
+            $params = new JParameter($plugin->params);
+            $params->def('linked_tags', '1');
+
             // iterate result documents
             foreach ($results->response->docs as $doc) {
                 $item = new stdClass();
@@ -98,9 +112,10 @@ class plgSearchSolrsearch extends JPlugin {
                 } else {
                     $item->section = JText::_('Uncategorised Content');
                 }
-
+                
+                $item->tags = showTags($ce, $doc->id, $params);
                 $item->created = $doc->created;
-                $item->text = $doc->introtext;
+                $item->introtext = $doc->introtext;
                 $item->browsernav = '';
                 $return[] = $item;
             }

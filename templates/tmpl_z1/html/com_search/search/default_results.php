@@ -8,6 +8,7 @@ $this->pagination =& $this->get('Pagination');
 <table class="contentpaneopen<?php echo $this->params->get( 'pageclass_sfx' ); ?>">
     <?php
     $k = 0; $i = 0;
+    
     foreach( $this->results as $result ) : ?>
 	<tr class="<?php echo "row$k"; ?>">
 		<td>
@@ -15,7 +16,9 @@ $this->pagination =& $this->get('Pagination');
                         <tbody>
                             <tr>
                                 <td width="100%" class="contentheading">
-					<?php echo $result->title; ?>
+					<a href="<?php echo $result->href; ?>">
+                                            <?php echo $result->title; ?>
+                                        </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -24,21 +27,16 @@ $this->pagination =& $this->get('Pagination');
                     <table class="contentpaneopen">
                         <tbody>
                             <tr>
-                                <td width="70%" valign="top" colspan="2">
-                                    <span class="samll"><?php echo JText::_('Section').': '.$result->section; ?> </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="createdate" valign="top" colspan="2"> <?php echo JText::_('Created').': '.$result->created; ?> </td>
+                                <td class="createdate" valign="top" colspan="2"> <?php echo $result->created; ?> </td>
                             </tr>
                             <tr>
                                 <td valign="top" colspan="2">
-                                    <p> <?php echo $result->text; ?> </p>
+                                    <p> <?php echo $result->introtext; ?> </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td valign="top" colspan="2">
-                                    <a class="readon" href="<?php echo $result->href; ?>"> <?php echo JText::_('Read More'); ?> </a>
+                                    <p> <?php echo $result->tags; ?> </p>
                                 </td>
                             </tr>
                         </tbody>
