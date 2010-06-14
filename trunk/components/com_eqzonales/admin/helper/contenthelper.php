@@ -23,6 +23,21 @@ defined('_JEXEC') or die('Restricted access');
 class comEqZonalesContentHelper {
 
     /**
+     * Controlador ecualizador
+     * @var EqZonalesControllerEq
+     */
+    var $_ctrlEq = null;
+
+    function __construct() {
+        require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
+        JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+
+        // controladores
+        $this->_ctrlEq = new EqZonalesControllerEq();
+        $this->_ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+    }
+
+    /**
      * Recupera el total de resultados.
      *
      * @param int $limit
@@ -114,6 +129,11 @@ class comEqZonalesContentHelper {
         $menu = $this->getMenuValue();
         if ($menu) {
             $fqParams[] = "tags_values:$menu";
+        }
+
+        $disabledBands = $this->getDisabledBands();
+        if (strlen($disabledBands) > 0) {
+            $fqParams[] = $disabledBands;
         }
 
         $queryParams['fq'] = $fqParams;
@@ -224,31 +244,51 @@ class comEqZonalesContentHelper {
      * @return <type>
      */
     function getEqPreferences() {
-
-        require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
-        JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
-        // controladores
-        $ctrlEq = new EqZonalesControllerEq();
-        $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
-
         // recupera el usuario
         $user =& JFactory::getUser();
 
         $bq = "";
 
         // recupera ecualizador del usuario
-        $result = $ctrlEq->retrieveUserEqImpl($user->id);
+        $result = $this->_ctrlEq->retrieveUserEqImpl($user->id);
 
         if (!is_null($result) && !empty($result)) {
             $eq = $result[0];
 
             foreach ($eq->bands as $band) {
-                $bq .= " tags_values:$band->band_name^$band->peso";
+                if ($band->peso > 0) {
+                    $bq .= " tags_values:$band->band_name^$band->peso";
+                }
             }
         }
 
         return $bq;
+    }
 
+    /**
+     * Construye un filter query con las bandas de valor 0
+     */
+    function getDisabledBands() {
+        // recupera el usuario
+        $user =& JFactory::getUser();
+
+        $fq = "";
+
+        // recupera ecualizador del usuario
+        $result = $this->_ctrlEq->retrieveUserEqImpl($user->id);
+
+        if (!is_null($result) && !empty($result)) {
+            $eq = $result[0];
+
+            foreach ($eq->bands as $band) {
+                if ($band->peso == 0) {
+                    //$fq .= " tags_values:$band->band_name^$band->peso";
+                    $fq .= " -tags_values:$band->band_name";
+                }
+            }
+        }
+
+        return $fq;
     }
 
     /**
@@ -257,10 +297,7 @@ class comEqZonalesContentHelper {
      * @return String
      */
     function getMenuValue() {
-        $menuId = null;
-
         $banda = JRequest::getString('banda', NULL, 'get');
-
         return $banda;
     }
 
