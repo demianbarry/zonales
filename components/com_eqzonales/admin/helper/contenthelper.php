@@ -56,6 +56,7 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Recupera artículos del indice de solr.
      *
      * @param int $limit
      * @param int $limitstart
@@ -73,6 +74,8 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Realiza un query en Solr, aplicando la configuración estándar especificada
+     * en Joomla y los parámetros adicionales indicados.
      *
      * @param int $limit
      * @param int $limitstart
@@ -153,9 +156,9 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Lista de fields a recuperar como resultado de la búsqueda en Solr.
      *
-     *
-     * @return <type>
+     * @return String lista de fields a recuperar
      */
     function getFieldList() {
         $fieldList =
@@ -169,9 +172,10 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Especifica sobre que campos se utilizarán para ordenar el contenido,
+     * y la dirección del ordenamiento.
      *
-     *
-     * @return <type>
+     * @return String query con parámetros solr para la búsqueda
      */
     function getOrder() {
         // Get the page/component configuration
@@ -180,10 +184,11 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Genera los parámetros necesarios para recuperar los contenidos de acuerdo
+     * a la configuración de Joomla: artículos publicados, nivel de acceso, etc.
      *
-     * @global <type> $mainframe
-     * @param <type> $additionalParams
-     * @return <type>
+     * @global $mainframe
+     * @return String query con parámetros solr para la búsqueda
      */
     function getWhere() {
         global $mainframe;
@@ -217,8 +222,7 @@ class comEqZonalesContentHelper {
             $where .= '+(hasPublishDownDate:false OR publish_down:[NOW TO *])';
         }
 
-        // Zonal
-        // lista de zonales, zonal actualmente seleccionado
+        // Zonal - lista de zonales, zonal actualmente seleccionado
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
         $helper = new comZonalesHelper();
         $zonal = $helper->getZonal();
@@ -240,8 +244,10 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Genera opciones de búsqueda para recuperar contenido de acuerdo a los
+     * pesos indicados en el ecualizador de interés.
      *
-     * @return <type>
+     * @return String parametros solr para el query.
      */
     function getEqPreferences() {
         // recupera el usuario
@@ -266,7 +272,10 @@ class comEqZonalesContentHelper {
     }
 
     /**
-     * Construye un filter query con las bandas de valor 0
+     * Construye parámetros para filter query que excluye las bandas que
+     * cuentan con un peso igual a cero.
+     *
+     * @return String parámetros de solr para la búsqueda.
      */
     function getDisabledBands() {
         // recupera el usuario
