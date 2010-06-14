@@ -25,9 +25,10 @@ class comEqZonalesContentHelper {
     /**
      * Recupera el total de resultados.
      *
-     * @param <type> $limit
-     * @param <type> $limitstart
-     * @param <type> $queryParams
+     * @param int $limit
+     * @param int $limitstart
+     * @param string $queryParams
+     * @return Array
      */
     function getTotal($limitstart = 0, $limit = 0, $additionalParams = '') {
         $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
@@ -41,10 +42,10 @@ class comEqZonalesContentHelper {
 
     /**
      *
-     * @param <type> $limit
-     * @param <type> $limitstart
-     * @param <type> $queryParams
-     * @return <type>
+     * @param int $limit
+     * @param int $limitstart
+     * @param string $queryParams
+     * @return Array
      */
     function getContent($limitstart = 0, $limit = 0, $additionalParams = '') {
         $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
@@ -58,10 +59,10 @@ class comEqZonalesContentHelper {
 
     /**
      *
-     * @param <type> $limit
-     * @param <type> $limitstart
-     * @param <type> $queryParams
-     * @return <type>
+     * @param int $limit
+     * @param int $limitstart
+     * @param string $queryParams
+     * @return Array
      */
     function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = '') {
 
@@ -91,7 +92,7 @@ class comEqZonalesContentHelper {
         }
 
         // The Apache Solr Client library should be on the include path
-        // which is usuaPlly most easily accomplished by placing in the
+        // which is usually most easily accomplished by placing in the
         // same directory as this script ( . or current directory is a default
         // php include path entry in the php.ini)
         jimport('SolrPhpClient.Apache.Solr.Service');
