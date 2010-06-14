@@ -52,11 +52,13 @@ if (!is_null($result) && !empty($result)) {
 
         // segmentamos por fields (grupos de bandas)
         foreach ($eqtmp->bands as $band) {
-            $band->link = $menu_joomla .'&banda='.$band->band_name;
-            $eq->fields[$band->field_id]->id = $band->field_id;
-            $eq->fields[$band->field_id]->label = $band->group_label;
-            $eq->fields[$band->field_id]->link = $menu_joomla;
-            $eq->fields[$band->field_id]->bands[] = $band;
+            if ($band->peso > 0) {
+                $band->link = $menu_joomla .'&banda='.$band->band_name;
+                $eq->fields[$band->field_id]->id = $band->field_id;
+                $eq->fields[$band->field_id]->label = $band->group_label;
+                $eq->fields[$band->field_id]->link = $menu_joomla;
+                $eq->fields[$band->field_id]->bands[] = $band;
+            }
         }
     }
 }
