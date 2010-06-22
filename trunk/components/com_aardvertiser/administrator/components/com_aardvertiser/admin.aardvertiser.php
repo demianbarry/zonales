@@ -471,6 +471,11 @@ function removeClassifieds($option) {
         if (!$db->query()) {
             echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
         }
+        $query = "DELETE FROM #__jwf_steps WHERE iid IN ($cids)";
+        $db->setQuery($query);
+        if (!$db->query()) {
+            echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
+        }
     }
     $mainframe->redirect( 'index.php?option=' . $option );
 }

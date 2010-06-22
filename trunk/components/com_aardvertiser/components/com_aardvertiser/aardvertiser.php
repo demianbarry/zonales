@@ -306,10 +306,10 @@ function editAd($option) {
     $aryReturnedCategories = $objD->loadObjectList('id');
 
     foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->cat_name , $objCat->id );
+        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
     }
 
-    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
+    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_id', 'class="inputbox"', 'value', 'text' , 0 );
     $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
     $user =& JFactory::getUser();
     $user_id = $user->get( 'id' );
@@ -536,7 +536,9 @@ function save() {
         echo "<string> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
         exit();
     }
-
+    
+    $dispatcher =& JDispatcher::getInstance();
+    $dispatcher->trigger('onAfterAdSave', array(&$row, true));
     $mainframe->redirect('index.php?option=com_aardvertiser', 'Advertisement Saved');
 }
 function myAds($option) {
@@ -560,10 +562,20 @@ function myAds($option) {
     $query = "SELECT * FROM #__aard_ads WHERE user_id = '" . $user_id . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
+
     if ($db->getErrorNum()) {
         echo $db->stderr();
         return false;
     }
+
+    if(count($rows))
+        for($i =0; count($rows) > $i; $i++) {
+            $query = 'SELECT cat_name FROM #__aard_cats WHERE id = '.$rows[$i]->cat_id;
+            $db->setQuery($query);
+            $cat = $db->loadObjectList();
+            $rows[$i]->cat_name = $cat[0]->cat_name;
+        }
+
     $query = "SELECT name FROM #__users WHERE id = '" . $user_id . "'";
     $db->setQuery($query);
     $names = $db->loadObjectList();
