@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `jos_aard_ads` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `published` tinyint(1) NOT NULL,
   `emailed` smallint(1) NOT NULL DEFAULT '0',
+  `checkout` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
