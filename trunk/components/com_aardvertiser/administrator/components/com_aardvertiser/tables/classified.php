@@ -19,7 +19,9 @@ class TableClassified extends JTable
 	var $contact_name = null;
 	var $contact_tel = null;
 	var $contact_email = null;
+        var $contact_address = null;
 	var $date_created = null;
+        var $date_expiration = null;
 	var $published = null;
 		function __construct(&$db)
 	{

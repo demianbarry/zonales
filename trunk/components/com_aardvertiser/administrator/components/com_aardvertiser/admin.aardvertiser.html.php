@@ -172,7 +172,7 @@ class HTML_classifieds
 		</form>
 		<?php 
 	}
-	function editClassified($row, $lists, $option, $currency)
+	function editClassified($row, $lists, $option, $currency,$data)
 	{
 		$editor =& JFactory::getEditor();
 		?>
@@ -200,7 +200,7 @@ class HTML_classifieds
 					<?php echo JText::_('SYSTEM_AD_DATE_EXPIRATION') . ':'; ?>
 					</td>
 					<td>
-					<?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')); ?>
+					<?php echo JHTML::calendar($data['expirationdate'],'date_expiration','date_expiration','%Y-%m-%d',array('class' => 'date')); ?>
 				</tr>
                                 <tr>
 					<td width="100" align="right" class="key">
@@ -277,7 +277,7 @@ class HTML_classifieds
 				</tr>
                                 <tr>
 					<td width="100" align="right" class="key">
-					<?php JText::_('SYSTEM_AD_CONTACT_ADDRESS') . ':'; ?>
+					<?php echo JText::_('SYSTEM_AD_CONTACT_ADDRESS') . ':'; ?>
 					</td>
 					<td>
 					<input class="text_area" type="text" name="contact_address" id="contact_address" size="65" maxlength="255" value="<?php echo $row->contact_address; ?>" />
@@ -297,7 +297,19 @@ class HTML_classifieds
 					</td><td>
 					<?php echo $lists['published']; ?>
 					</td>
-				</tr>				</table>
+				</tr>	
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php echo JText::_('SYSTEM_AD_TAGS') . ':';?>
+					</td>
+                                        <td>
+                                            <span>
+                                                <label><?php echo $data['tags']; ?></label>
+                                                <input type="button" onclick="window.location.href='<?php echo $data['addtagsurl'] ?>'" value="<?php echo JText::_('SYSTEM_AD_TAGS_ADD'); ?>"/>
+                                            </span>
+					</td>
+				</tr>
+                                </table>
 			</fieldset>
 			<?php $date =& JFactory::getDate(); ?>
 			
