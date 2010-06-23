@@ -28,6 +28,7 @@ switch($task) {
         break;
 }
 function showPublishedCategories($option) {
+
     $query = "SELECT * FROM #__aard_config WHERE id ='1'";
     $db =& JFactory::getDBO();
     $db->setQuery($query);
@@ -72,12 +73,12 @@ function showPublishedCategories($option) {
         HTML_classifieds::showCategories($rows, $option, $today);
     }
     $db =& JFactory::getDBO();
-    $result = $db->setQuery("SELECT * FROM jos_aard_ads WHERE published = '1' AND date_created > '" . $today . "' AND emailed = '0'");
+    $result = $db->setQuery("SELECT * FROM #__aard_ads WHERE published = '1' AND date_created > '" . $today . "' AND emailed = '0'");
     $rows = $db->loadObjectList();
     $number = count($rows);
     if ($mailconf == 1 & $number > 0) {
         $db =& JFactory::getDBO();
-        $result = mysql_query("SELECT * FROM jos_aard_ads WHERE published = '1' AND date_created > '" . $today . "' AND emailed = '0'");
+        $result = mysql_query("SELECT * FROM #__aard_ads WHERE published = '1' AND date_created > '" . $today . "' AND emailed = '0'");
         $count = 0;
         //if row's date_created + days_shown - 1 = today
         //then send mail
@@ -165,7 +166,7 @@ function showPublishedCategories($option) {
     }
 }
 function viewAds($option) {
-    $cat_id = JRequest::getVar('cat_id', 0);
+    $cat_name = JRequest::getVar('cat_name', 0);
 
     $query = "SELECT * FROM #__aard_config WHERE id ='1'";
     $db =& JFactory::getDBO();
@@ -190,10 +191,11 @@ function viewAds($option) {
     foreach ($rows as $row) {
         $dayy = $row->days_shown;
         $currency = $row->currency;
+        $catimg = $row->catimg;
     }
 
     $today = date("Y-m-d H:i:s", mktime(date('H'),date('i'),date('s'),date('m'),date('d')-$dayy,date('y')));
-    $query = "SELECT * FROM #__aard_ads WHERE cat_id = " . $cat_id . " AND date_created > '" . $today . "'";
+    $query = "SELECT * FROM #__aard_ads WHERE cat_name = '" . $cat_name . "' AND date_created > '" . $today . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -206,8 +208,8 @@ function viewAds($option) {
         echo '<div class="componentheading">Please Log in to view this page.</div>';
     }
     else {
-        echo '<div class="componentheading">' . $cat_id . '</div>';
-        HTML_classifieds::showAds($rows, $option, $currency);
+        echo '<div class="componentheading">' . $cat_name . '</div>';
+        HTML_classifieds::showAds($rows, $option, $currency, $catimg);
     }
 
 }
@@ -239,7 +241,6 @@ function viewAd($option) {
         $detail_color = $row->ad_detail_font;
         $state_color = $row->ad_state_font;
         $find = $row->distance;
-        $googapi = $row->googapi;
         $map = $row->map;
     }
 
@@ -254,7 +255,7 @@ function viewAd($option) {
         echo '<div class="componentheading">Please Log in to view this page.</div>';
     }
     else {
-        HTML_classifieds::showAd($row, $option, $currency, $font, $state_color, $detail_color, $find, $googapi, $map);
+        HTML_classifieds::showAd($row, $option, $currency, $font, $state_color, $detail_color, $find, $map);
     }
 }
 function removeAd($option) {
@@ -273,7 +274,36 @@ function removeAd($option) {
     }
     $mainframe->redirect( 'index.php?option=' . $option . '&task=myads');
 }
+function paid($option) {
+    global $mainframe;
+    $cid = JRequest::getVar( 'id', array(0), '', 'array' );
+    $db =& JFactory::getDBO();
+
+
+    $user =& JFactory::getUser();
+    $user_id = $user->get( 'id' );
+    if(count($cid)) {
+        $cids = implode(',', $cid );
+        $query = "UPDATE #__aard_ads SET paid = 1, date_created = '" . date("Y-m-d H:i:s") . "' WHERE id IN ($cids)";
+        $db->setQuery($query);
+        if (!$db->query()) {
+            echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
+        }
+    }
+
+    $mainframe->redirect( 'index.php?option=' . $option , "Advertisement Saved");
+
+
+
+}
 function editAd($option) {
+    $user =& JFactory::getUser();
+    $user_id = $user->get( 'id' );
+    if ($user_id == 0) {
+        echo 'Please <a href="index.php?option=com_user&view=zlogin">log in</a> to submit an ad.';
+        return ;
+    }
+
     $query =  "SELECT * FROM #__aard_config WHERE id ='1'";
     $db	=& JFactory::getDBO();
     $db->setQuery($query);
@@ -306,17 +336,13 @@ function editAd($option) {
     $aryReturnedCategories = $objD->loadObjectList('id');
 
     foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
+        $arySelectOptions[] = JHTML::_('select.option', $objCat->cat_name , $objCat->cat_name );
     }
 
-    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_id', 'class="inputbox"', 'value', 'text' , 0 );
+    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
     $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
-    $user =& JFactory::getUser();
-    $user_id = $user->get( 'id' );
-    if ($user_id == 0) {
-        echo 'Please <a href="index.php?option=com_user&view=login">log in</a> to submit an ad.';
-    }
-    elseif ($user_id == $row->user_id) {
+    
+    if ($user_id == $row->user_id) {
         HTML_classifieds::editAd($row, $lists, $option, $currency);
     }
     elseif ($row->user_id == "") {
@@ -338,6 +364,7 @@ function getExtension($str) {
     return $ext;
 }
 function save() {
+    //submit but set paid to 0
     global $mainframe;
     $row =& JTable::getInstance('classified', 'Table');
     if (!$row->bind(JRequest::get('post'))) {
@@ -536,10 +563,9 @@ function save() {
         echo "<string> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
         exit();
     }
-    
-    $dispatcher =& JDispatcher::getInstance();
-    $dispatcher->trigger('onAfterAdSave', array(&$row, true));
-    $mainframe->redirect('index.php?option=com_aardvertiser', 'Advertisement Saved');
+
+
+    $mainframe->redirect('index.php?option=com_aardvertiser', 'Ad Saved');
 }
 function myAds($option) {
     $query = "SELECT * FROM #__aard_config WHERE id ='1'";
@@ -555,27 +581,17 @@ function myAds($option) {
         $currency = $row->currency;
     }
 
-    $cat_name = JRequest::getVar('cat_id', 0);
+    $cat_name = JRequest::getVar('cat_name', 0);
 
     $user =& JFactory::getUser();
     $user_id = $user->get( 'id' );
     $query = "SELECT * FROM #__aard_ads WHERE user_id = '" . $user_id . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
-
     if ($db->getErrorNum()) {
         echo $db->stderr();
         return false;
     }
-
-    if(count($rows))
-        for($i =0; count($rows) > $i; $i++) {
-            $query = 'SELECT cat_name FROM #__aard_cats WHERE id = '.$rows[$i]->cat_id;
-            $db->setQuery($query);
-            $cat = $db->loadObjectList();
-            $rows[$i]->cat_name = $cat[0]->cat_name;
-        }
-
     $query = "SELECT name FROM #__users WHERE id = '" . $user_id . "'";
     $db->setQuery($query);
     $names = $db->loadObjectList();
