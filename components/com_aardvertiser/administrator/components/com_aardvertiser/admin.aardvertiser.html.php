@@ -2,6 +2,7 @@
 defined ('_JEXEC') or die ('Restricted Access');
 class HTML_classifieds
 {
+	
 	function showcss($file, $option)
 	{
 		$file = stripslashes($file);
@@ -95,15 +96,13 @@ class HTML_classifieds
 				<td>
 				<?php 
 					echo $lists['distance'];
-					?> <i>(Required for Google Maps to work)</i></td>
+					?> </td>
 			</tr>			
 			<tr>	<td width="200" align="right" class="key">Google Map Directions: </td>
-			<td><?php echo $lists['map']; ?> <i><a target="_blank" href="http://code.google.com/apis/maps/signup.html">(Google map API Key Required)</a></i></td>
-			</tr>
-			<tr> <td width="200" align="right" class="key">
-			Google Map API Key: </td><td><input class="text_area" type="text" name="googapi" id="googapi" size="100" value="<?php echo $row->googapi; ?>" />
+			<td><?php echo $lists['map']; ?>
 			</td>
 			</tr>
+			
 			<tr>
 				<td width="200" align="right" class="key">
 				Email users 1 day before ad expires: 
@@ -113,6 +112,17 @@ class HTML_classifieds
 					echo $lists['emailusers'];
 					?> <i>(Use email Settings to configure options)</i></td>
 			</tr>
+<tr>
+				<td width="200" align="right" class="key">
+				Show images in Category View: 
+				</td>
+				<td>
+				<?php 
+					echo $lists['catimg'];
+					?> 
+					</td>
+			</tr>
+
 			</table>
 		</fieldset>	
 		<input type="hidden" name="id" value="1" />
@@ -178,6 +188,21 @@ class HTML_classifieds
 					<input class="text_area" type="text" name="ad_name" id="ad_name" size="100" maxlength="250" value="<?php echo $row->ad_name; ?>" />
 					</td>
 				</tr><tr>
+					<td width="100" align="right" class="key">
+					Date Created: 
+					</td>
+					<td>
+					<input class="text_area" type="text" name="date_created" id="date_created" size="100" maxlength="50" value="<?php echo $row->date_created; ?>" />
+					 YYYY-MM-DD 24H-Min-Sec</td>
+				</tr>
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php echo JText::_('SYSTEM_AD_DATE_EXPIRATION') . ':'; ?>
+					</td>
+					<td>
+					<?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')); ?>
+				</tr>
+                                <tr>
 					<td width="100" align="right" class="key">
 					Category: 
 					</td>
@@ -249,7 +274,16 @@ class HTML_classifieds
 					<td>
 					<input class="text_area" type="text" name="contact_email" id="contact_email" size="65" maxlength="255" value="<?php echo $row->contact_email; ?>" />
 					</td>
-				</tr><tr>
+				</tr>
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php JText::_('SYSTEM_AD_CONTACT_ADDRESS') . ':'; ?>
+					</td>
+					<td>
+					<input class="text_area" type="text" name="contact_address" id="contact_address" size="65" maxlength="255" value="<?php echo $row->contact_address; ?>" />
+					</td>
+				</tr>
+                                <tr>
 					<td width="153" align="right" class="key">
 					Images:
 					</td>
@@ -263,8 +297,7 @@ class HTML_classifieds
 					</td><td>
 					<?php echo $lists['published']; ?>
 					</td>
-				</tr>
-				</table>
+				</tr>				</table>
 			</fieldset>
 			<?php $date =& JFactory::getDate(); ?>
 			
@@ -304,6 +337,7 @@ function tableOrdering( order, dir, task )
 				<th width="10%"><?php echo JHTML::_('grid.sort',   'State', 'ad_state', $lists['order_Dir'], $lists['order'] ); ?></th>
 				<th width="10%"><?php echo JHTML::_('grid.sort',   'Contact Name', 'contact_name', $lists['order_Dir'], $lists['order'] ); ?></th>
 				<th width="10%"><?php echo JHTML::_('grid.sort',   'Date Created', 'date_created', $lists['order_Dir'], $lists['order'] ); ?></th>
+				<th width="5%"><?php echo JHTML::_('grid.sort',   'Published', 'published', $lists['order_Dir'], $lists['order'] ); ?></th>
 				<th width="10%">User Name</th>
 			</tr>
 		</thead>
@@ -330,7 +364,7 @@ function tableOrdering( order, dir, task )
 					<?php echo $row->ad_name; ?></a>
 				</td>
 				<td>
-					<?php echo $row->cat_id; ?>
+					<?php echo $row->cat_name; ?>
 				</td>
 				<td>
 					<?php echo $row->ad_state; ?>
@@ -341,7 +375,14 @@ function tableOrdering( order, dir, task )
 				<td>
 					<?php echo $row->date_created; ?>
 				</td>
-				<td align="center">
+				<td>
+					<?php $publish = $row->published; 
+					if ($publish == 1) {
+					echo '<img src="images/tick.png" />'; }
+					else {
+		echo '<img src="images/publish_x.png" />';}?>
+				</td>
+								<td align="center">
 					<?php echo $name; ?>
 				</td>
 			</tr>
@@ -350,7 +391,7 @@ function tableOrdering( order, dir, task )
 		}
 		?>
 	<tr>
-		<td colspan="7"><center><?php echo $pageNav->getListFooter(); ?></center></td>
+		<td colspan="8"><center><?php echo $pageNav->getListFooter(); ?></center></td>
 	</tr>
 	</table>
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
@@ -412,7 +453,7 @@ function tableOrdering( order, dir, task )
 					<td width="100" align="right" class="key">
 					Name:
 					</td><td>
-					<input class="text_area" type="text" name="cat_name" id="cat_name" size="50" maxlength="100"
+					<input class="text_area" type="text" name="cat_name" id="cat_name" size="50" maxlength="100" 
 					value="<?php echo $row->cat_name; ?>" /></td>
 				</tr><tr>
 					<td width="100" align="right" class="key">

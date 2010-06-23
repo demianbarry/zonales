@@ -133,12 +133,15 @@ function conf($option) {
             '0' => array('value' => '1', 'text' => 'Public (Guest)'),
             '1' => array('value' => '0', 'text' => 'Registered'),
     );
+    $catimg[] = JHTML::_( 'select.option', '0', 'No' );
+    $catimg[] = JHTML::_( 'select.option', '1', 'Yes' );
     $map[] = JHTML::_( 'select.option', '0', 'Off' );
     $map[] = JHTML::_( 'select.option', '1', 'On' );
     $distance[] = JHTML::_( 'select.option', '0', 'Off' );
     $distance[] = JHTML::_( 'select.option', '1', 'On' );
     $emailusers[] = JHTML::_( 'select.option', '0', 'Off' );
     $emailusers[] = JHTML::_( 'select.option', '1', 'On' );
+    $lists['catimg'] = JHTML::_('select.radioList', $catimg, 'catimg', 'class="inputbox"' . '', 'value', 'text', $row->catimg );
     $lists['map'] = JHTML::_('select.radioList', $map, 'map', 'class="inputbox"' . '', 'value', 'text', $row->map );
     $lists['currency'] = JHTML::_('select.genericList', $currency, 'currency', 'class="inputbox"'. '', 'value', 'text', $row->currency );
     $lists['distance'] = JHTML::_('select.radioList', $distance, 'distance', 'class="inputbox"'. '', 'value', 'text', $row->distance );
@@ -197,16 +200,16 @@ function editClassified($option) {
             '0' => array('value' => 'For Sale', 'text' => 'For Sale'),
             '1' => array('value' => 'Wanted', 'text' => 'Wanted'),
     );
+
     $query = "SELECT id, cat_name FROM #__aard_cats";
     $objD = &JFactory::getDBO();
     $objD->setQuery($query);
     $aryReturnedCategories = $objD->loadObjectList('id');
 
     foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
+        $arySelectOptions[] = JHTML::_('select.option', $objCat->cat_name , $objCat->cat_name );
     }
-
-    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_id', 'class="inputbox"', 'value', 'text' , $row->cat_id );
+    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
     $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
     $lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $row->published);
     HTML_classifieds::editClassified($row, $lists, $option, $currency);
@@ -237,7 +240,8 @@ function saveClassified($option, $task) {
 
     $errors=0;
     $userid = $row->user_id;
-    if ($_FILES['img1']) {
+
+    if (isset($_FILES['img1'])) {
         if ($_FILES['img2']['size'] == 0) {
             $imageno = 1;
         } else {
@@ -415,11 +419,19 @@ function saveClassified($option, $task) {
         $row->ad_desc = JRequest::getVar( 'ad_desc', '', 'post', 'string', JREQUEST_ALLOWRAW );
 
         $img1array = JRequest::getVar( 'img1', '', 'FILES', 'array');
-        $row->ad_img1 = $img1array["name"];
-        $row->ad_img1small = "thumb-".$img1array["name"];
+        if ($img1array["name"] == '') {
+
+        } else {
+            $row->ad_img1 = $img1array["name"];
+            $row->ad_img1small = "thumb-".$img1array["name"];
+        }
+
         $img2array = JRequest::getVar( 'img2', '', 'FILES', 'array');
-        $row->ad_img2 = $img2array["name"];
-        $row->ad_img2small = "thumb-".$img2array["name"];
+        if ($img2array["name"] == '') {
+        } else {
+            $row->ad_img2 = $img2array["name"];
+            $row->ad_img2small = "thumb-".$img2array["name"];
+        }
     }
 
 
@@ -427,8 +439,6 @@ function saveClassified($option, $task) {
         echo "<string> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
         exit();
     }
-    $dispatcher =& JDispatcher::getInstance();
-    $dispatcher->trigger('onAfterAdSave', array(&$row, true));
     $mainframe->redirect('index.php?option=' . $option, 'Ads Saved');
 }
 function showClassifieds($option) {
@@ -467,11 +477,6 @@ function removeClassifieds($option) {
     if(count($cid)) {
         $cids = implode(',', $cid );
         $query = "DELETE FROM #__aard_ads WHERE id IN ($cids)";
-        $db->setQuery($query);
-        if (!$db->query()) {
-            echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";
-        }
-        $query = "DELETE FROM #__jwf_steps WHERE iid IN ($cids)";
         $db->setQuery($query);
         if (!$db->query()) {
             echo "<script> alert('".$db->getErrorMsg()."'); window.history.go(-1); </script>\n";

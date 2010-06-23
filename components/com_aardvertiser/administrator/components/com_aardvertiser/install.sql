@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS `jos_aard_ads` (
+CREATE TABLE IF NOT EXISTS `#__aard_ads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cat_id` varchar(255) NOT NULL,
+  `cat_name` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   `ad_name` varchar(255) NOT NULL,
   `ad_img1` varchar(255) NOT NULL DEFAULT '',
@@ -16,21 +16,22 @@ CREATE TABLE IF NOT EXISTS `jos_aard_ads` (
   `contact_name` varchar(255) NOT NULL,
   `contact_tel` varchar(30) NOT NULL,
   `contact_email` varchar(255) NOT NULL,
+  `contact_address` varchar(255) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_expiration` date NOT NULL,
   `published` tinyint(1) NOT NULL,
   `emailed` smallint(1) NOT NULL DEFAULT '0',
-  `checkout` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
-INSERT INTO `#__aard_ads` (`id`, `cat_id`, `user_id`, `ad_name`, `ad_img1`, `ad_img1small`, `ad_img2`, `ad_img2small`, `ad_desc`, `ad_state`, `ad_price`, `ad_location`, `ad_post`, `ad_delivery`, `contact_name`, `contact_tel`, `contact_email`, `date_created`, `published`, `emailed`) VALUES
-(1, 1, 62, 'Brown Sofa', 'dk_brown_sofa_1159917538.jpg', 'thumb-dk_brown_sofa_1159917538.jpg', 'JL-sofa.jpg', 'thumb-JL-sofa.jpg', '<p>A contemporary leather-faced sofa with faux leather back and side foam-filled seated cushions and fibre-filled back and arm cushions. With black plastic feet. Suitable for everyday home use.<br /><br /><br /> * Size (H)92, (W)157, (D)90cm.<br /><br /> * Weight 46kg.<br /><br /> * Width of seat between arms 121cm.<br /><br /> * Floor to seat height 48cm.<br /><br /> * Depth of seat 56cm.<br /><br /> * Seat back height 54cm.<br /><br /> * Professional clean only.<br /><br /> * Self assembly: 1 person recommended for assembly of legs.</p>', 'For Sale', 250, 'Essex, UK', 'CO15 6FG', 'Pickup or delivery', 'Jeremy', '0123456789', 'jeremy@email.com', '2010-02-16 14:10:22', 1, 0),
-(2, 2, 62, 'Lamborghini Gallardo', 'lamborghini_gallardo.jpg', 'thumb-lamborghini_gallardo.jpg', 'Lamborghini_Gallardo_Superleggera.jpg', 'thumb-Lamborghini_Gallardo_Superleggera.jpg', 'Manufacturer Lamborghini Parent company Audi AG Production 2003', 'Wanted', 150000, 'Devon, UK', 'EX14 7KL', 'Pickup Only', 'Joe Bloggs', '0123456789', 'email@email.co.uk', '2010-02-18 12:26:55', 1, 0),
-(3, 3, 62, 'Desktop PC', 'acer-aspire-ie-3450-desktop-pc-1.jpg', 'thumb-acer-aspire-ie-3450-desktop-pc-1.jpg', 'compaq-desktop-computers.jpg', 'thumb-compaq-desktop-computers.jpg', 'A desktop in as good as new condition\r\nSpecs\r\n3Ghz AMD X4 CPU 4GB RAM 1GB Graphics card Gigabit ethernet NIC Windows 7 Premium Included (Note: No Internet Browser included with Windows 7)', 'For Sale', 399, 'Manchester, UK', 'OL6 7HJ', 'Pickup Only', 'Geoff', '0123456789', 'email@email.co.uk', '2010-02-18 12:27:03', 1, 0),
-(4, 3, 62, 'Laptop', 'laptop.jpg', 'thumb-laptop.jpg', 'toshiba_satellite_a105_s4284_laptop.jpg', 'thumb-toshiba_satellite_a105_s4284_laptop.jpg', 'A brand new laptop\r\n2Ghz CPU 2GB RAM 512Mb Graphics 1GB Ethernet', 'For Sale', 499, 'London, UK', 'SE23 1NK', 'Pickup or delivery', 'Joe Bloggs', '0845 123456', 'email@email.com', '2010-02-18 12:27:11', 1, 0),
-(5, 2, 62, 'Ferrari F430', 'ferrari-f430-spider-1.jpg', 'thumb-ferrari-f430-spider-1.jpg', '6-novitec-ferrari-f430.jpg', 'thumb-6-novitec-ferrari-f430.jpg', 'Manufacturer Ferrari Parent company Fiat Group Production 2004-present Predecessor Ferrari 360 Successor Ferrari 458 Italia (expected 2010) Class Sports car Body style(s) 2-seat Berlinetta 2-seat Spider Layout Rear mid-engine, rear-wheel drive Engine(s) 4.3 L V8 Transmission(s) 6-speed manual 6-speed ''F1'' electrohydraulic shift Wheelbase 2,600 mm (102.4 in) Length 4,512 mm (177.6 in) Width 1,923 mm (75.7 in) Height 1,214 mm (47.8 in) Curb weight  1,450 kg (3,197 lb)', 'For Sale', 120000, 'Bournemouth, UK', 'BH12 7DS', 'Pickup or delivery', 'Simon', '0123456789', 'email@fake.com', '2010-02-18 12:27:19', 1, 0),
-(6, 1, 62, 'Ice Age 2 DVD', 'IceAge2TheMeltdownThe39784_f.jpg', 'thumb-IceAge2TheMeltdownThe39784_f.jpg', 'Ice-Age-Chec-Cd-Cover-26279.jpg', 'thumb-Ice-Age-Chec-Cd-Cover-26279.jpg', 'They came... they thawed... they conquered the hearts of audiences everywhere in the coolest animated adventure of all time! Heading south to avoid a bad case of global frostbite, a group of migrating misfit creatures embark on a hilarious quest to reunite a human baby with his tribe. Featuring an all-star voice cast, including Ray Romano, John Leguizamo and Denis Leary, ICE AGE is "a pure delight" (New York Daily News) for all ages!', 'For Sale', 15, 'Somerset, UK', 'BS18 7CD', 'Pickup Only', 'Joe', '0123456789', 'joe@email.com', '2010-02-18 12:27:26', 1, 0);
+INSERT INTO `#__aard_ads` (`id`, `cat_name`, `user_id`, `ad_name`, `ad_img1`, `ad_img1small`, `ad_img2`, `ad_img2small`, `ad_desc`, `ad_state`, `ad_price`, `ad_location`, `ad_post`, `ad_delivery`, `contact_name`, `contact_tel`, `contact_email`, `date_created`, `published`, `emailed`) VALUES
+(1, 'Equipment', 62, 'Brown Sofa', 'dk_brown_sofa_1159917538.jpg', 'thumb-dk_brown_sofa_1159917538.jpg', 'JL-sofa.jpg', 'thumb-JL-sofa.jpg', '<p>A contemporary leather-faced sofa with faux leather back and side foam-filled seated cushions and fibre-filled back and arm cushions. With black plastic feet. Suitable for everyday home use.<br /><br /><br /> * Size (H)92, (W)157, (D)90cm.<br /><br /> * Weight 46kg.<br /><br /> * Width of seat between arms 121cm.<br /><br /> * Floor to seat height 48cm.<br /><br /> * Depth of seat 56cm.<br /><br /> * Seat back height 54cm.<br /><br /> * Professional clean only.<br /><br /> * Self assembly: 1 person recommended for assembly of legs.</p>', 'For Sale', 250, 'Essex, UK', 'CO15 6FG', 'Pickup or delivery', 'Jeremy', '0123456789', 'jeremy@email.com', '2010-04-09 10:10:22', 1, 0),
+(2, 'Vehicles', 62, 'Lamborghini Gallardo', 'lamborghini_gallardo.jpg', 'thumb-lamborghini_gallardo.jpg', 'Lamborghini_Gallardo_Superleggera.jpg', 'thumb-Lamborghini_Gallardo_Superleggera.jpg', 'Manufacturer Lamborghini Parent company Audi AG Production 2003', 'Wanted', 150000, 'Devon, UK', 'EX14 7KL', 'Pickup Only', 'Joe Bloggs', '0123456789', 'email@email.co.uk', '2010-04-09 10:26:55', 1, 0),
+(3, 'Electronics', 62, 'Desktop PC', 'acer-aspire-ie-3450-desktop-pc-1.jpg', 'thumb-acer-aspire-ie-3450-desktop-pc-1.jpg', 'compaq-desktop-computers.jpg', 'thumb-compaq-desktop-computers.jpg', 'A desktop in as good as new condition\r\nSpecs\r\n3Ghz AMD X4 CPU 4GB RAM 1GB Graphics card Gigabit ethernet NIC Windows 7 Premium Included (Note: No Internet Browser included with Windows 7)', 'For Sale', 399, 'Manchester, UK', 'OL6 7HJ', 'Pickup Only', 'Geoff', '0123456789', 'email@email.co.uk', '2010-04-09 10:27:03', 1, 0),
+(4, 'Electronics', 62, 'Laptop', 'laptop.jpg', 'thumb-laptop.jpg', 'toshiba_satellite_a105_s4284_laptop.jpg', 'thumb-toshiba_satellite_a105_s4284_laptop.jpg', 'A brand new laptop\r\n2Ghz CPU 2GB RAM 512Mb Graphics 1GB Ethernet', 'For Sale', 499, 'London, UK', 'SE23 1NK', 'Pickup or delivery', 'Joe Bloggs', '0845 123456', 'email@email.com', '2010-04-09 10:27:11', 1, 0),
+(5, 'Vehicles', 62, 'Ferrari F430', 'ferrari-f430-spider-1.jpg', 'thumb-ferrari-f430-spider-1.jpg', '6-novitec-ferrari-f430.jpg', 'thumb-6-novitec-ferrari-f430.jpg', 'Manufacturer Ferrari Parent company Fiat Group Production 2004-present Predecessor Ferrari 360 Successor Ferrari 458 Italia (expected 2010) Class Sports car Body style(s) 2-seat Berlinetta 2-seat Spider Layout Rear mid-engine, rear-wheel drive Engine(s) 4.3 L V8 Transmission(s) 6-speed manual 6-speed ''F1'' electrohydraulic shift Wheelbase 2,600 mm (102.4 in) Length 4,512 mm (177.6 in) Width 1,923 mm (75.7 in) Height 1,214 mm (47.8 in) Curb weight  1,450 kg (3,197 lb)', 'For Sale', 120000, 'Bournemouth, UK', 'BH12 7DS', 'Pickup or delivery', 'Simon', '0123456789', 'email@fake.com', '2010-04-09 10:27:19', 1, 0),
+(6, 'Equipment', 62, 'Ice Age 2 DVD', 'IceAge2TheMeltdownThe39784_f.jpg', 'thumb-IceAge2TheMeltdownThe39784_f.jpg', 'Ice-Age-Chec-Cd-Cover-26279.jpg', 'thumb-Ice-Age-Chec-Cd-Cover-26279.jpg', 'They came... they thawed... they conquered the hearts of audiences everywhere in the coolest animated adventure of all time! Heading south to avoid a bad case of global frostbite, a group of migrating misfit creatures embark on a hilarious quest to reunite a human baby with his tribe. Featuring an all-star voice cast, including Ray Romano, John Leguizamo and Denis Leary, ICE AGE is "a pure delight" (New York Daily News) for all ages!', 'For Sale', 15, 'Somerset, UK', 'BS18 7CD', 'Pickup Only', 'Joe', '0123456789', 'joe@email.com', '2010-04-09 10:27:26', 1, 0);
 
 CREATE TABLE IF NOT EXISTS `#__aard_cats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -63,19 +64,19 @@ CREATE TABLE IF NOT EXISTS `#__aard_config` (
   `days_shown` int(3) NOT NULL,
   `prune` int(11) NOT NULL DEFAULT '60',
   `font_color` varchar(7) NOT NULL,
-  `currency` varchar(10) NOT NULL,
-  `distance` smallint(1) NOT NULL DEFAULT '1',
+  `currency` varchar(10) NOT NULL DEFAULT '&pound;',
+  `distance` smallint(1) NOT NULL DEFAULT '0',
   `ad_state_font` varchar(7) NOT NULL,
   `ad_detail_font` varchar(7) NOT NULL,
   `access` smallint(1) NOT NULL DEFAULT '1',
-  `googapi` varchar(255) NOT NULL,
-  `map` smallint(1) NOT NULL DEFAULT '1',
+  `map` smallint(1) NOT NULL DEFAULT '0',
   `emailusers` int(1) NOT NULL DEFAULT '0',
+  `catimg` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
-INSERT INTO `#__aard_config` (`id`, `days_shown`, `prune`, `font_color`, `currency`, `distance`, `ad_state_font`, `ad_detail_font`, `access`, `googapi`, `map`, `emailusers`) VALUES
-(1, 15, 60, '#0c3a6d', '�', 1, '#0c3a6d', '#0c3a6d', 1, '', 1, 0);
+INSERT INTO `#__aard_config` (`id`, `days_shown`, `prune`, `font_color`, `currency`, `distance`, `ad_state_font`, `ad_detail_font`, `access`, `map`, `emailusers`, `catimg`) VALUES
+(1, 7, 60, '#0c3a6d', '&pound;', 0, '#0c3a6d', '#0c3a6d', 1, 1, 0, 1);
 
 CREATE TABLE IF NOT EXISTS `#__aard_post` (
   `postcode` varchar(5) NOT NULL DEFAULT '',

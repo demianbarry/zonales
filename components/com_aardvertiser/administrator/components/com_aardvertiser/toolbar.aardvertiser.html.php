@@ -2,8 +2,8 @@
 defined('_JEXEC') or die ('Restricted Access');
 class TOOLBAR_aardvertiser {
 	function _NEW() {
+		JToolBarHelper::title(JText::_('Edit Advert'), 'generic.png');
 		JToolBarHelper::save();
-		JToolBarHelper::apply();
 		JToolBarHelper::cancel();
 	}
 	function _DEFAULT() {
@@ -12,6 +12,7 @@ class TOOLBAR_aardvertiser {
 		JToolBarHelper::editList();
 		JToolBarHelper::deleteList();
 		JToolBarHelper::custom('prune', 'archive.png', 'archive.png', 'Prune', false, false);
+		JToolBarHelper::custom('payment', 'config.png', 'config.png', 'Payment Config', false, false);
 		JToolBarHelper::custom('conf', 'config.png', 'config.png', 'Config', false, false);
 	}
 	function _CONF() {
@@ -34,6 +35,7 @@ class TOOLBAR_aardvertiser {
 }
 class TOOLBAR_aardvertiser_categories {
 	function _NEW() {
+		JToolBarHelper::title(JText::_('New Category'), 'generic.png');
 		JToolBarHelper::save('savecategory');
 		JToolBarHelper::cancel('categories');
 	}
