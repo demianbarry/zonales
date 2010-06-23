@@ -204,15 +204,38 @@ function editClassified($option) {
     $query = "SELECT id, cat_name FROM #__aard_cats";
     $objD = &JFactory::getDBO();
     $objD->setQuery($query);
-    $aryReturnedCategories = $objD->loadObjectList('id');
+    $aryReturnedCategories = $objD->loadObjectList();
 
     foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->cat_name , $objCat->cat_name );
+        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
     }
-    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
+    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_id', 'class="inputbox"', 'value', 'text' , 0 );
     $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
     $lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $row->published);
-    HTML_classifieds::editClassified($row, $lists, $option, $currency);
+
+    // agregado por G2P
+    $expiration_date = (!$row->date_expiration) ? date('Y-m-d') : $row->date_expiration;
+
+    $addTagsUrl = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=hierarchictagging&ce_name=ad&id='.$row->id);
+    $selectTags = 'select v.name as value from #__custom_properties cp, #__custom_properties_values v, #__aard_ads a where cp.value_id=v.id and cp.ref_table="ad" and cp.content_id=a.id and a.id=' . $row->id;
+    $db = JFactory::getDBO();
+    $db->setQuery($selectTags);
+    $dbTags = $db->loadObjectList();
+
+    $aux = array();
+    foreach ($dbTags as $tag) {
+        $aux[] = $tag->value;
+    }
+    $tags = implode(', ', $aux);
+
+    $data = array(
+        'tags' => $tags,
+        'addtagsurl' => $addTagsUrl,
+        'expirationdate' => $expiration_date
+    );
+    // fin
+
+    HTML_classifieds::editClassified($row, $lists, $option, $currency,$data);
 }
 function getExtension($str) {
 
@@ -456,7 +479,7 @@ function showClassifieds($option) {
     $query = "SELECT count(*) FROM #__aard_ads";
     $db->setQuery($query);
     $total = $db->loadResult();
-    $query = 'SELECT * FROM #__aard_ads' . $order . ' ';
+    $query = 'SELECT a.id, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, c.cat_name FROM #__aard_ads a, #__aard_cats c WHERE a.cat_id=c.id' . $order . ' ';
     $db->setQuery($query, $limitstart, $limit);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
