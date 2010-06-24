@@ -120,3 +120,8 @@
     height: 20px;
     background: url(../images/ajax-loader1.gif) no-repeat center;
 }
+
+.selected {
+    background-color: #0080FF;
+    color: white;
+}
