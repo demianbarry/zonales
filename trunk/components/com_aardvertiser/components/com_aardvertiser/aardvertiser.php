@@ -195,7 +195,7 @@ function viewAds($option) {
     }
 
     $today = date("Y-m-d H:i:s", mktime(date('H'),date('i'),date('s'),date('m'),date('d')-$dayy,date('y')));
-    $query = "SELECT * FROM #__aard_ads WHERE cat_name = '" . $cat_name . "' AND date_created > '" . $today . "'";
+    $query = "SELECT a.id, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, a.ad_img2small, a.ad_img1small, a.ad_price, a.ad_location, c.cat_name FROM #__aard_ads a, #__aard_cats c WHERE a.cat_id=c.id AND c.cat_name = '" . $cat_name . "' AND date_created > '" . $today . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -255,7 +255,16 @@ function viewAd($option) {
         echo '<div class="componentheading">Please Log in to view this page.</div>';
     }
     else {
-        HTML_classifieds::showAd($row, $option, $currency, $font, $state_color, $detail_color, $find, $map);
+        $query = "SELECT cat_name FROM #__aard_cats WHERE id=" . $row->cat_id;
+        $db->setQuery($query);
+        $db_cat_name = $db->loadObject();
+        
+        // update impressions
+        $impressions = $row->impressions + 1;
+        $update = "UPDATE #__aard_ads SET impressions=$impressions WHERE id=". $row->id;
+        $db->setQuery($update);
+        $db->query();
+        HTML_classifieds::showAd($row, $db_cat_name->cat_name,$option, $currency, $font, $state_color, $detail_color, $find, $map);
     }
 }
 function removeAd($option) {
@@ -336,17 +345,36 @@ function editAd($option) {
     $aryReturnedCategories = $objD->loadObjectList('id');
 
     foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->cat_name , $objCat->cat_name );
+        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
     }
 
     $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
     $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
-    
+
+    // type of ad
+    $query = "select v.id, v.label as value, v.default from jos_custom_properties_values v, jos_custom_properties_fields f, (select vl.id, vl.name from jos_custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='tipo' and vp.id=v.parent_id";
+    $objD->setQuery($query);
+    $dbTypes = $objD->loadObjectList();
+    $ad_type_options = array();
+    $default = null;
+    foreach ($dbTypes as $type) {
+        if ($type->default){
+            $default = $type->value;
+        }
+        $ad_type_options[] = JHTML::_('select.option', $type->id , $type->value );
+    }
+    $lists['ad_type'] = JHTML::_('select.genericList', $ad_type_options, 'ad_type', 'class="inputbox"'. '', 'value', 'text', $default );
+
+    $expiration_date = (!$row->date_expiration) ? date('Y-m-d') : $row->date_expiration;
+    $data = array(
+        'expirationdate' => $expiration_date
+    );
+
     if ($user_id == $row->user_id) {
-        HTML_classifieds::editAd($row, $lists, $option, $currency);
+        HTML_classifieds::editAd($row, $lists, $option, $currency,$data);
     }
     elseif ($row->user_id == "") {
-        HTML_classifieds::editAd($row, $lists, $option, $currency);
+        HTML_classifieds::editAd($row, $lists, $option, $currency,$data);
     }
     else {
         echo 'Invalid User';
@@ -585,7 +613,7 @@ function myAds($option) {
 
     $user =& JFactory::getUser();
     $user_id = $user->get( 'id' );
-    $query = "SELECT * FROM #__aard_ads WHERE user_id = '" . $user_id . "'";
+    $query = "SELECT a.id, a.impressions, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, a.ad_img2small, a.ad_img1small, a.ad_price, a.ad_location, c.cat_name FROM #__aard_ads a, #__aard_cats c WHERE a.cat_id=c.id AND user_id = '" . $user_id . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
