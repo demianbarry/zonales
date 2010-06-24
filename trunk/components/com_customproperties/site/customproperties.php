@@ -24,7 +24,7 @@ require_once( JPATH_COMPONENT.DS.'controller.php' );
 //$classname    = 'CustompropertiesController';
 //$controller   = new $classname( );
 
-$controllerName = JRequest::getWord('controller','CustompropertiesController'); // default controller
+$controllerName = JRequest::getWord('controller','controller'); // default controller
 $path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_customproperties'.DS.'controllers'.DS.$controllerName.'.php';
 if(file_exists($path)) {
     require_once($path);

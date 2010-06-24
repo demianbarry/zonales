@@ -157,6 +157,7 @@
 
 			<filename>includes/index.html</filename>
 			<filename>includes/customproperties.js</filename>
+                        <filename>includes/customproperties_ext.js</filename>
 
 			<filename>jfcontentelements/index.html</filename>
 			<filename>jfcontentelements/custom_properties_fields.xml</filename>
