@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__aard_ads` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_expiration` date NOT NULL,
   `published` tinyint(1) NOT NULL,
+  `impressions` int(11) NOT NULL DEFAULT 0,
   `emailed` smallint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)

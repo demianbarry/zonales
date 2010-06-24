@@ -43,7 +43,7 @@ foreach($rows as $row)
 {
 		$db =& JFactory::getDBO();
 		//$query = "SELECT * FROM #__aard_ads WHERE cat_name = '".$row->cat_name."' AND paid = '1'";
-	$query = "SELECT * FROM #__aard_ads WHERE cat_name = '" . $row->cat_name . "' AND date_created > '" . $today . "'";
+	$query = "SELECT * FROM #__aard_ads WHERE cat_id =" . $row->id . " AND date_created >= '" . $today . "'";
 		$db->setQuery($query);
 	$nums = $db->loadObjectList();
 	$link = JRoute::_('index.php?option=' . $option . '&cat_name=' . $row->cat_name . '&task=view');
@@ -147,7 +147,7 @@ JHTML::stylesheet("aardvertiser.css","components/com_aardvertiser/")
 	<?php 
 	include 'footer.php';
 }
-function showAd($row, $option, $currency, $font, $state_color, $detail_color, $find, $map)
+function showAd($row, $cat_name, $option, $currency, $font, $state_color, $detail_color, $find, $map)
 {
 	//Cloak the email address
 global $mainframe;
@@ -163,7 +163,7 @@ plgContentEmailCloak($row2,$pluginParams);
 $row->contact_email = $row2->text;
 //End cloaking
 	$postlink = 'index.php?option=' . $option . '&id=' . $row->id . '&task=viewad';
-	$link = 'index.php?option=' . $option . '&cat_name=' . $row->cat_name . '&task=view';
+	$link = 'index.php?option=' . $option . '&cat_name=' . $cat_name . '&task=view';
 	JHTML::stylesheet("aardvertiser.css","components/com_aardvertiser/")
 	?>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
@@ -523,7 +523,7 @@ else {
 	<?php 	
 	include 'footer.php';
 }
-function editAd($row, $lists, $option, $currency)
+function editAd($row, $lists, $option, $currency,$data)
 	{
 		$editor =& JFactory::getEditor();
 		?>
@@ -610,7 +610,22 @@ with (thisform)
 					echo $lists['cat_name'];
 					?>
 					</td>
-				</tr><tr>
+				</tr>
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php echo JText::_('SYSTEM_AD_DATE_EXPIRATION') . ':'; ?>
+					</td>
+					<td>
+					<?php echo JHTML::calendar($data['expirationdate'],'date_expiration','date_expiration','%Y-%m-%d',array('class' => 'date')); ?>
+				</tr>
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php echo JText::_('SYSTEM_AD_TYPE') . ':'; ?>
+					</td>
+					<td>
+					<?php echo $lists['ad_type']; ?>
+				</tr>
+                                <tr>
 					<td width="153" align="right" class="key">
 					Description: 
 					</td>
@@ -673,7 +688,16 @@ with (thisform)
 					<td>
 					<input class="text_area" type="text" name="contact_email" id="contact_email" size="40" maxlength="255" value="<?php echo $row->contact_email; ?>" />
 					</td>
-				</tr><tr>
+				</tr>
+                                <tr>
+					<td width="100" align="right" class="key">
+					<?php echo JText::_('SYSTEM_AD_CONTACT_ADDRESS') . ':'; ?>
+					</td>
+					<td>
+					<input class="text_area" type="text" name="contact_address" id="contact_address" size="65" maxlength="255" value="<?php echo $row->contact_address; ?>" />
+					</td>
+				</tr>
+                                <tr>
 					<td width="153" align="right" class="key">
 					Images:
 					</td>
@@ -737,7 +761,8 @@ include 'footer.php';
 	echo '<table width="100%">
 	<tr bgcolor="#CCCCCC"><td><b>Ad Name</b></td><td><b>Category</b></td>
 	<td><b>Sale / Wanted</b></td><td><strong>Price</strong></td><td>
-	<strong>Date Submitted</strong></td><td><b>Remove?</b></td></tr>';
+	<strong>Date Submitted</strong></td><td><strong>It has been saw</strong></td>
+        <td><b>Remove?</b></td></tr>';
 	foreach ($rows as $row)
 	{
 	$link = JFilterOutput::ampReplace('index.php?option=' . $option . '&task=edit&cid[]=' . $row->id);
@@ -763,6 +788,7 @@ return confirm("Are you sure you want to delete this record?");
 		 ' . $row->ad_state . '</td><td>'
 		  . $currency . $row->ad_price . '</td><td>
 		 ' . $row->date_created . '</td><td>
+                     ' . $row->impressions . '</td><td>
 		 
 		 <a onclick="return show_confirm()" href="' . $linkdel . '"><img height="20px" width="20px" src="images/cancel_f2.png" /></a></td></tr>';
 	}
