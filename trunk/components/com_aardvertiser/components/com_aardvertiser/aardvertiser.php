@@ -329,41 +329,12 @@ function editAd($option) {
     $id = $cid[0];
     $row->load($id);
     $lists = array();
-    $ad_delivery = array (
-            '0' => array('value' => 'Pickup Only', 'text' => 'Pickup Only'),
-            '1' => array('value' => 'Delivery Only', 'text' => 'Delivery'),
-            '2' => array('value' => 'Pickup or delivery', 'text' => 'Pickup or delivery'),
-    );
-    $lists['ad_delivery'] = JHTML::_('select.genericList', $ad_delivery, 'ad_delivery', 'class="inputbox"'. '', 'value', 'text', $row->ad_delivery );
-    $ad_state = array (
-            '0' => array('value' => 'For Sale', 'text' => 'For Sale'),
-            '1' => array('value' => 'Wanted', 'text' => 'Wanted'),
-    );
-    $query = 'SELECT id, cat_name FROM #__aard_cats';
     $objD = &JFactory::getDBO();
-    $objD->setQuery($query);
-    $aryReturnedCategories = $objD->loadObjectList('id');
 
-    foreach ($aryReturnedCategories as $objCat) {
-        $arySelectOptions[] = JHTML::_('select.option', $objCat->id , $objCat->cat_name );
-    }
-
-    $lists['cat_name'] = JHTML::_('select.genericlist', $arySelectOptions , 'cat_name', 'class="inputbox"', 'value', 'text' , 0 );
-    $lists['ad_state'] = JHTML::_('select.genericList', $ad_state, 'ad_state', 'class="inputbox"'. '', 'value', 'text', $row->ad_state );
-
-    // type of ad
-    $query = "select v.id, v.label as value, v.default from jos_custom_properties_values v, jos_custom_properties_fields f, (select vl.id, vl.name from jos_custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='tipo' and vp.id=v.parent_id";
-    $objD->setQuery($query);
-    $dbTypes = $objD->loadObjectList();
-    $ad_type_options = array();
-    $default = null;
-    foreach ($dbTypes as $type) {
-        if ($type->default){
-            $default = $type->value;
-        }
-        $ad_type_options[] = JHTML::_('select.option', $type->id , $type->value );
-    }
-    $lists['ad_type'] = JHTML::_('select.genericList', $ad_type_options, 'ad_type', 'class="inputbox"'. '', 'value', 'text', $default );
+    $lists['ad_delivery'] = getHTMLList('entrega', 'ad_delivery');
+    $lists['ad_state'] = getHTMLList('intencion', 'ad_state');
+    $lists['cat_name'] = getHTMLList('rubro', 'cat_name');
+    $lists['ad_type'] = getHTMLList('tipo', 'ad_type');
 
     $expiration_date = (!$row->date_expiration) ? date('Y-m-d') : $row->date_expiration;
     $data = array(
@@ -380,6 +351,25 @@ function editAd($option) {
         echo 'Invalid User';
     }
 }
+
+function getHTMLList($type,$name,$default = null){
+    $objD = &JFactory::getDBO();
+        $query = "select v.id, v.label, v.default from #__custom_properties_values v, jos_custom_properties_fields f, (select vl.id, vl.name from jos_custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='$type' and vp.id=v.parent_id";
+    $objD->setQuery($query);
+    $dbTypes = $objD->loadObjectList();
+    $options = array();
+    foreach ($dbTypes as $type) {
+        if ($type->default){
+            $default = $type->label;
+        }
+        if ($default && $type->default == $default){
+            $default = $type->label;
+        }
+        $options[] = JHTML::_('select.option', $type->id , $type->label );
+    }
+    return JHTML::_('select.genericList', $options, $name, 'class="inputbox"'. '', 'value', 'text', $default );
+}
+
 function getExtension($str) {
 
     $i = strrpos($str,".");

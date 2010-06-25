@@ -589,6 +589,16 @@ with (thisform)
     {email.focus();return false;}
   }
 }
+
+contFileInputs = 1;
+function addfileinput(){
+    contFileInputs = contFileInputs + 1;
+    var fileInput = document.createElement('input');
+    var placeHolder = $('files');
+    fileInput.setAttribute("type", "file");
+    fileInput.setAttribute("name", "imag-" + contFileInputs);
+    placeHolder.appendChild(fileInput);
+}
 </script>
 		<form action="index.php?option=com_aardvertiser&task=save" enctype="multipart/form-data" onsubmit="return validate_form(this);" method="post" name="adminForm" id="adminForm">
 			<fieldset class="adminForm">
@@ -702,16 +712,15 @@ with (thisform)
 					Images:
 					</td>
 					<td>
-					<input size="25" name="<?php if ($row->id > 0) {
+                                        <div id="files">
+                                            <input size="25" name="<?php if ($row->id > 0) {
 					echo "";
 	} else {
 	echo "img1";
 	}?>" type="file" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt" class="box"/>
-			  		<input size="25" name="<?php if ($row->id > 0) {
-					echo "";
-	} else {
-	echo "img2";
-	}?>" type="file" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt" class="box"/><br />If resubmitting but not changing images leave fields blank
+                                        </div>
+                                        <button value="<?php echo JText::_('SYSTEM_AD_IMAGE_ADD'); ?>" onclick="addfileinput();"></button>
+                                        <br />If resubmitting but not changing images leave fields blank
 					</td>
 				</tr><tr>
 					<td width="153" align="right" class="key">
