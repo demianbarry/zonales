@@ -290,7 +290,7 @@ class ZonalesController extends JController {
                 $row->reorder('catid = '.(int) $row->catid.' AND state >= 0');
 
                 // Asignamos los tags de Custom Properties según los valores de zonal y localidad
-                $partidoId = JRequest::getVar('partidos', NULL, 'post', 'int');
+                $partidoId = JRequest::getVar('provincias_sc', NULL, 'post', 'int');
                 $zonaId = JRequest::getVar('localidad', NULL, 'post', 'int');
 
                 $query = "REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)

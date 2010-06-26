@@ -17,10 +17,7 @@ function loadTagsArray(id) {
                 searchTags(null, id);
             }
         }
-    }).send({
-        'name': 'John',
-        'lastName': 'Doe'
-    });
+    }).send();
 }
 
 function deleteTag(value_id, field_id, content_table, content_id) {
@@ -80,11 +77,8 @@ function searchTags(event, id) {
             return;
     }
 
-    /*if(tagsArray == null || tagsArray.length == 0) {
-        loadTagsArray(id);
-    }*/
-        
-    var value = $('tagsSearchField'+id).value;
+    var tagsSearchField = $('tagsSearchField'+id)
+    var value = tagsSearchField.value;
 
     if(value.length < 3) {
         tagsSearchResults.empty()
@@ -157,7 +151,7 @@ function searchTags(event, id) {
                     'type': "checkbox",
                     'events': {
                         'click': function() {
-                            $('tagsSearchField'+id).focus();
+                            tagsSearchField.focus();
                         },
                         'change': function() {
                             this.value = (this.checked ? 2 : 0);
@@ -191,7 +185,7 @@ function searchTags(event, id) {
         tagsSearchResults.setHTML('Indique al menos tres caracteres para la búsqueda.');
         tagsSearchResults.empty();
     }
-    $('tagsSearchField'+id).focus();
+    tagsSearchField.focus();
 }
 
 function showAddTagsDiv(id) {

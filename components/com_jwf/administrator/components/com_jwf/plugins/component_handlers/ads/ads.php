@@ -66,7 +66,13 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
     }
 
     function publish( $id ) {
-
+        $db  =& JFactory::getDBO();
+        $sql = "UPDATE #__jwf_steps s SET s.current=0 WHERE s.current = 1 AND s.iid  = $id";
+        $db->setQuery( $sql );
+        $db->query();
+        $sql = "UPDATE #__aards_ads a SET a.published = 1 WHERE a.id  = $id";
+        $db->setQuery( $sql );
+        $db->query();
     }
 
     function delete( $id ) {
@@ -126,10 +132,12 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
     }
 
     function lock( $id, $aclSystemId ) {
-
         $pManager =& getPluginManager();
         $pManager->loadPlugins('acl');
         //Todo: Actual lock implementation
+        $db  =& JFactory::getDBO();
+        $sql = "UPDATE #__aard_";
+        $db->setQuery( $sql );
     }
 
     function unlock( $id, $aclSystemId, $gid ) {
@@ -155,6 +163,8 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
 
         $categoriesArray = explode(',', $workflow->category);
         $entry = $args[0];
+
+        
 
         if(!in_array($entry->cat_id, $categoriesArray ))return false;
 
@@ -202,6 +212,11 @@ class JWFComponentHandler_ads  extends JWFComponentHandler {
 
 
         $firstStation = reset($workflow->stations);
+
+        $db  =& JFactory::getDBO();
+        $sql = "UPDATE #__aards_ads a SET a.published=0 WHERE a.id  = $id";
+        $db->setQuery( $sql );
+        $db->query();
 
         return $itemModel->enter( $workflow->id, $firstStation->id, $entry->id, $entry->ad_name, 0 );
     }

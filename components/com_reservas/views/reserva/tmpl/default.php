@@ -4,7 +4,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
 // incluye javascript para objeto flash
 JHTML::script('dtfx.js');
-JHTML::script('mootools.js');
+JHTML::script('mootools-uncompressed.js');
 ?>
 
 <!--<div id="map_content">
