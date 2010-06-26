@@ -268,8 +268,8 @@ class CustompropertiesController extends JController {
             if($i != 0 && $ref_table == 'content') {
                 $article  =& JTable::getInstance('content');
                 $query =    " UPDATE #__content ".
-                            " SET modified = '".gmdate('Y-m-d H:i:s')."'".
-                            " WHERE id = $content_id";
+                        " SET modified = '".gmdate('Y-m-d H:i:s')."'".
+                        " WHERE id = $content_id";
 
                 $database->setQuery($query);
                 $database->query();
@@ -296,11 +296,12 @@ class CustompropertiesController extends JController {
         $search_exp = JRequest::getVar('exp', '', '', 'string');
         $selectedIds = JRequest::getVar('selectedIds', '', '', 'string');
 
-        $query = "SELECT v.id AS value_id, v.label AS value, f.id AS field_id, f.label AS field, p.label AS parent "
-                    ." FROM #__custom_properties_values v "
-                    ." JOIN #__custom_properties_fields f ON (f.id = v.field_id)"
-                    ." LEFT JOIN #__custom_properties_values p ON (p.id = v.parent_id)"
-                    ." WHERE v.parent_id IS NOT NULL";
+        $query = "SELECT MIN(v.id) AS value_id, v.label AS value, f.id AS field_id, f.label AS field, p.label AS parent "
+                ." FROM #__custom_properties_values v "
+                ." JOIN #__custom_properties_fields f ON (f.id = v.field_id)"
+                ." LEFT JOIN #__custom_properties_values p ON (p.id = v.parent_id)"
+                ." WHERE v.parent_id IS NOT NULL"
+                ." GROUP BY value";
 
         $database->setQuery($query);
         $tags = $database->loadObjectList();
