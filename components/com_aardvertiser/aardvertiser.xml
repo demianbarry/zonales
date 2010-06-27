@@ -13,6 +13,7 @@
 <files folder="components/com_aardvertiser">
 <filename>aardvertiser.html.php</filename>
 <filename>aardvertiser.php</filename>
+<filename>helper.php</filename>
 <filename>aardvertiser.css</filename>
 <filename>aardmap.php</filename>
 <filename>aardmapv2.php</filename>
@@ -92,7 +93,7 @@
 <filename>tables/category.php</filename>
 <filename>tables/classified.php</filename>
 <filename>tables/config.php</filename>
-<filename>tables/postcode.php</filename>
+<filename>tables/image.php</filename>
 <filename>tables/email.php</filename>
 <filename>install.sql</filename>
 <filename>uninstall.sql</filename>

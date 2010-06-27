@@ -46,37 +46,15 @@ foreach($rows as $row)
 	$query = "SELECT * FROM #__aard_ads WHERE cat_id =" . $row->id . " AND date_created >= '" . $today . "'";
 		$db->setQuery($query);
 	$nums = $db->loadObjectList();
-	$link = JRoute::_('index.php?option=' . $option . '&cat_name=' . $row->cat_name . '&task=view');
-	if ($row->cat_img == '') {
+	$link = JRoute::_('index.php?option=' . $option . '&cat_name=' . $row->name . '&task=view');
 	echo
 	' <div id="catrow">
 	    <div id="catcol" style="width:100%;">
         <h4 style="margin-top:5px; margin-bottom:3px;" >
-          <a href="' . $link . '">' . $row->cat_name . '</a> - (' . count($nums) . ')
+          <a href="' . $link . '">' . $row->label . '</a> - (' . count($nums) . ')
         </h4>
-        <div class="catdesctext">
-          ' . $row->cat_desc . '
-        </div>
 	    </div>
    </div>';
-	}
-	else
-	{
-		echo
-	' <div>
-	    <div style="width:1%;">
-        <img src="' . $row->cat_img . '" class="catimg"></img>
-      </div>
-      <div>
-        <h3 style="margin-top:5px; margin-bottom:3px;" >
-          <a href="' . $link . '">' . $row->cat_name . '</a> - (' . count($nums) . ')
-        </h3>
-        <div class="catdesctext">
-          ' . $row->cat_desc . '
-        </div>
-	    </div>
-    </div>';
-	}
 	
 }
 ?></div></div><br /><br clear="all" />
@@ -597,6 +575,8 @@ function addfileinput(){
     var placeHolder = $('files');
     fileInput.setAttribute("type", "file");
     fileInput.setAttribute("name", "imag-" + contFileInputs);
+    fileInput.setAttribute("size", "25");
+    fileInput.setAttribute("style", "font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt");
     placeHolder.appendChild(fileInput);
 }
 </script>
@@ -673,12 +653,6 @@ function addfileinput(){
 					</td>
 				</tr><tr>
 					<td width="153" align="right" class="key">
-					Location Postcode: <br></td>
-					<td>
-					<input class="text_area" type="text" name="ad_post" id="ad_post" size="10" maxlength="10" value="<?php echo $row->ad_post; ?>" /> <i>Format : XX11 1XX or XX1 1XX (UK Only)</i>
-					</td>
-				</tr><tr>
-					<td width="153" align="right" class="key">
 					Contact Name: 
 					</td>
 					<td>
@@ -716,10 +690,10 @@ function addfileinput(){
                                             <input size="25" name="<?php if ($row->id > 0) {
 					echo "";
 	} else {
-	echo "img1";
+	echo "imag-1";
 	}?>" type="file" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt" class="box"/>
                                         </div>
-                                        <button value="<?php echo JText::_('SYSTEM_AD_IMAGE_ADD'); ?>" onclick="addfileinput();"></button>
+                                            <input value="<?php echo JText::_('SYSTEM_AD_IMAGE_ADD'); ?>" onclick="addfileinput();" type="button"/>
                                         <br />If resubmitting but not changing images leave fields blank
 					</td>
 				</tr><tr>
@@ -742,6 +716,8 @@ function addfileinput(){
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="published" value="1" />
+                        <input type="hidden" name="ad_latitude" />
+                        <input type="hidden" name="ad_longitud" />
 				
 			<?php 
 			$user =& JFactory::getUser();

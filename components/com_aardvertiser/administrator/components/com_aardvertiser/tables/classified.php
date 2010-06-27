@@ -14,7 +14,8 @@ class TableClassified extends JTable
 	var $ad_state = null;
 	var $ad_price = null;
 	var $ad_location = null;
-	var $ad_post = null;
+	var $ad_latitude = null;
+        var $ad_longitude = null;
 	var $ad_delivery = null;
 	var $contact_name = null;
 	var $contact_tel = null;
