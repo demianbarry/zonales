@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.application.helper');
+require_once 'helper.php';
 require_once(JApplicationHelper::getPath( 'html' ) );
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables');
 switch($task) {
@@ -57,7 +58,8 @@ function showPublishedCategories($option) {
 
     $today = date("Y-m-d H:i:s", mktime(date('H'),date('i'),date('s'),date('m'),date('d')-$dayy,date('y')));
 
-    $query = "SELECT * FROM #__aard_cats WHERE published = '1' ORDER BY ordering, cat_name";
+    //$query = "SELECT * FROM #__aard_cats WHERE published = '1' ORDER BY ordering, cat_name";
+    $query = "select v.id, v.label, v.name, v.default from #__custom_properties_values v, #__custom_properties_fields f, (select vl.id, vl.name from #__custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='rubro' and vp.id=v.parent_id";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -195,7 +197,7 @@ function viewAds($option) {
     }
 
     $today = date("Y-m-d H:i:s", mktime(date('H'),date('i'),date('s'),date('m'),date('d')-$dayy,date('y')));
-    $query = "SELECT a.id, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, a.ad_img2small, a.ad_img1small, a.ad_price, a.ad_location, c.cat_name FROM #__aard_ads a, #__aard_cats c WHERE a.cat_id=c.id AND c.cat_name = '" . $cat_name . "' AND date_created > '" . $today . "'";
+    $query = "SELECT a.id, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, a.ad_img2small, a.ad_img1small, a.ad_price, a.ad_location, v.name AS cat_name FROM #__aard_ads a, #__custom_properties cp, #__custom_properties_values v WHERE a.cat_id=cp.content_id AND cp.value_id=v.id AND cp.value_id=v.id AND v.name = '" . $cat_name . "' AND cp.ref_table='aard_ads' AND date_created > '" . $today . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -333,7 +335,7 @@ function editAd($option) {
 
     $lists['ad_delivery'] = getHTMLList('entrega', 'ad_delivery');
     $lists['ad_state'] = getHTMLList('intencion', 'ad_state');
-    $lists['cat_name'] = getHTMLList('rubro', 'cat_name');
+    $lists['cat_name'] = getHTMLList('rubro', 'cat_id');
     $lists['ad_type'] = getHTMLList('tipo', 'ad_type');
 
     $expiration_date = (!$row->date_expiration) ? date('Y-m-d') : $row->date_expiration;
@@ -352,35 +354,6 @@ function editAd($option) {
     }
 }
 
-function getHTMLList($type,$name,$default = null){
-    $objD = &JFactory::getDBO();
-        $query = "select v.id, v.label, v.default from #__custom_properties_values v, jos_custom_properties_fields f, (select vl.id, vl.name from jos_custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='$type' and vp.id=v.parent_id";
-    $objD->setQuery($query);
-    $dbTypes = $objD->loadObjectList();
-    $options = array();
-    foreach ($dbTypes as $type) {
-        if ($type->default){
-            $default = $type->label;
-        }
-        if ($default && $type->default == $default){
-            $default = $type->label;
-        }
-        $options[] = JHTML::_('select.option', $type->id , $type->label );
-    }
-    return JHTML::_('select.genericList', $options, $name, 'class="inputbox"'. '', 'value', 'text', $default );
-}
-
-function getExtension($str) {
-
-    $i = strrpos($str,".");
-    if (!$i) {
-        return "";
-    }
-
-    $l = strlen($str) - $i;
-    $ext = substr($str,$i+1,$l);
-    return $ext;
-}
 function save() {
     //submit but set paid to 0
     global $mainframe;
@@ -392,195 +365,100 @@ function save() {
     //start image
 
 
-
-    define ("MAX_SIZE","1024");
+    define ("MAX_SIZE","1048576");
 
     $errors=0;
     $userid = $row->user_id;
-    if ($_FILES['img1']) {
-        if ($_FILES['img2']['size'] == 0) {
-            $imageno = 1;
-        } else {
-            $imageno = count($_FILES);
-        }
-
-        if ($imageno == 2) {
-            $image =$_FILES["img1"]["name"];
-            $uploadedfile = $_FILES['img1']['tmp_name'];
-            $image2 =$_FILES["img2"]["name"];
-            $uploadedfile2 = $_FILES['img2']['tmp_name'];
-            if ($image && $image2) {
-                $filename = stripslashes($_FILES['img1']['name']);
-                $filename2 = stripslashes($_FILES['img2']['name']);
-                $extension = getExtension($filename);
-                $extension2 = getExtension($filename2);
-                $extension = strtolower($extension);
-                $extension2 = strtolower($extension2);
-                if (($extension != "jpg") && ($extension != "jpeg") && ($extension != "png") && ($extension != "gif")) {
-                    echo ' Unknown Image extension ';
-                    $errors=1;
-                }
-                elseif (($extension2 != "jpg") && ($extension2 != "jpeg") && ($extension2 != "png") && ($extension2 != "gif")) {
-                    echo ' Unknown Image extension ';
-                    $errors=1;
-                }
-                else {
-                    $size=filesize($_FILES['img1']['tmp_name']);
-                    $size2=filesize($_FILES['img2']['tmp_name']);
-
-                    if ($size > MAX_SIZE*1024 & $size2 > MAX_SIZE*1024) {
-                        echo "You have exceeded the size limit";
-                        $errors=1;
-                    }
-
-                    if($extension=="jpg" || $extension=="jpeg" ) {
-                        $uploadedfile = $_FILES['img1']['tmp_name'];
-                        $src = imagecreatefromjpeg($uploadedfile);
-                    }
-                    else if($extension=="png") {
-                        $uploadedfile = $_FILES['img1']['tmp_name'];
-                        $src = imagecreatefrompng($uploadedfile);
-                    }
-                    else {
-                        $src = imagecreatefromgif($uploadedfile);
-                    }
-                    if($extension2=="jpg" || $extension2=="jpeg" ) {
-                        $uploadedfile2 = $_FILES['img2']['tmp_name'];
-                        $src2 = imagecreatefromjpeg($uploadedfile2);
-                    }
-                    else if($extension2=="png") {
-                        $uploadedfile2 = $_FILES['img2']['tmp_name'];
-                        $src2 = imagecreatefrompng($uploadedfile2);
-                    }
-                    else {
-                        $src2 = imagecreatefromgif($uploadedfile2);
-                    }
-                    list($width,$height)=getimagesize($uploadedfile);
-
-                    list($width2,$height2)=getimagesize($uploadedfile2);
-                    $newwidth=150;
-                    $newheight = 100;
-
-                    $tmp=imagecreatetruecolor($newwidth,$newheight);
-                    $tmp2=imagecreatetruecolor($newwidth,$newheight);
-
-                    imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
-                    imagecopyresampled($tmp2,$src2,0,0,0,0,$newwidth,$newheight,$width2,$height2);
-
-                    $thisdir = getcwd();
-                    $dir = ("/components/com_aardvertiser/images/users");
-                    $dir1 = ("/components/com_aardvertiser/images/users/$userid");
-
-                    if (!file_exists($thisdir.$dir)) {
-                        mkdir($thisdir . $dir, 0777);
-                    }
-                    if (!file_exists($thisdir.$dir1)) {
-                        mkdir($thisdir . $dir1, 0777);
-                    }
 
 
-
-                    $filename = "components/com_aardvertiser/images/users/".$userid."/thumb-".$_FILES['img1']['name']; //thumb
-                    $filename1 = "components/com_aardvertiser/images/users/".$userid."/".$_FILES['img1']['name']; //src
-                    $filename2 = "components/com_aardvertiser/images/users/".$userid."/thumb-".$_FILES['img2']['name']; //thumb
-                    $filename12 = "components/com_aardvertiser/images/users/".$userid."/".$_FILES['img2']['name']; //src
-
-
-                    imagejpeg($tmp,$filename,100);
-                    imagejpeg($src,$filename1,100);
-
-                    imagejpeg($tmp2,$filename2,100);
-                    imagejpeg($src2,$filename12,100);
-
-                    imagedestroy($src);
-                    imagedestroy($tmp);
-                    imagedestroy($src2);
-                    imagedestroy($tmp2);
-
-                }
-            }
-        } else {
-            $image =$_FILES["img1"]["name"];
-            $uploadedfile = $_FILES['img1']['tmp_name'];
-
-
-            $filename = stripslashes($_FILES['img1']['name']);
-            $extension = getExtension($filename);
-            $extension = strtolower($extension);
-            if (($extension != "jpg") && ($extension != "jpeg") && ($extension != "png") && ($extension != "gif")) {
-                echo ' Unknown Image extension ';
-                $errors=1;
-            }
-            else {
-                $size=filesize($_FILES['img1']['tmp_name']);
-
-                if ($size > MAX_SIZE*1024) {
-                    echo "You have exceeded the size limit";
-                    $errors=1;
-                }
-
-                if($extension=="jpg" || $extension=="jpeg" ) {
-                    $uploadedfile = $_FILES['img1']['tmp_name'];
-                    $src = imagecreatefromjpeg($uploadedfile);
-                }
-                else if($extension=="png") {
-                    $uploadedfile = $_FILES['img1']['tmp_name'];
-                    $src = imagecreatefrompng($uploadedfile);
-                }
-                else {
-                    $src = imagecreatefromgif($uploadedfile);
-                }
-
-                list($width,$height)=getimagesize($uploadedfile);
-
-                $newwidth=150;
-                $newheight=100;
-                $tmp=imagecreatetruecolor($newwidth,$newheight);
-
-                imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
-
-                $thisdir = getcwd();
-                $dir = ("/components/com_aardvertiser/images/users");
-                $dir1 = ("/components/com_aardvertiser/images/users/$userid");
-
-
-                if (!file_exists($thisdir.$dir)) {
-                    mkdir($thisdir . $dir, 0777);
-                }
-                elseif (!file_exists($thisdir.$dir1)) {
-                    mkdir($thisdir . $dir1, 0777);
-                }
-
-
-                $filename = "components/com_aardvertiser/images/users/".$userid."/thumb-".$_FILES['img1']['name']; //thumb
-                $filename1 = "components/com_aardvertiser/images/users/".$userid."/".$_FILES['img1']['name']; //src
-
-
-
-                imagejpeg($tmp,$filename,100);
-                imagejpeg($src,$filename1,100);
-
-                imagedestroy($src);
-                imagedestroy($tmp);
-            }
-        }
-
-
-
-        //end image
-        $row->ad_desc = JRequest::getVar( 'ad_desc', '', 'post', 'string', JREQUEST_ALLOWRAW );
-
-        $img1array = JRequest::getVar( 'img1', '', 'FILES', 'array');
-        $row->ad_img1 = $img1array["name"];
-        $row->ad_img1small = "thumb-".$img1array["name"];
-        $img2array = JRequest::getVar( 'img2', '', 'FILES', 'array');
-        $row->ad_img2 = $img2array["name"];
-        $row->ad_img2small = "thumb-".$img2array["name"];
-    }
+    $row->ad_desc = JRequest::getVar( 'ad_desc', '', 'post', 'string', JREQUEST_ALLOWRAW );
     if (!$row->store()) {
         echo "<string> alert('".$row->getError()."'); window.history.go(-1); </script>\n";
         exit();
     }
+
+    /*
+     * Modified by G2P
+     */
+
+    $catId = JRequest::getInt('cat_id',0,'post');
+    $adTypeId = JRequest::getInt('ad_type',0,'post');
+    $adStateId = JRequest::getInt('ad_state',0,'post');
+    $adDelivery = JRequest::getInt('ad_delivery',0,'post');
+
+    $adId = getAdId($row->ad_name);
+
+    applyTag($catId, $adId);
+    applyTag($adTypeId, $adId);
+    applyTag($adStateId, $adId);
+    applyTag($adDelivery, $adId);
+
+        ##############
+    $i = 0;
+    $allowedExtensions = array(
+        'jpg' => 'jpeg',
+        'jpeg' => 'jpeg',
+        'gif' => 'gif',
+        'png' => 'png'
+    );
+
+    for ($i = 1;$_FILES["imag-$i"]["name"];$i++) {
+        echo "a procesar las imagenes";
+        die('Entro al bucle');
+        $input = "imag-$i";
+        $filename = stripslashes($_FILES[$input]["name"]);
+        $extension = getExtension($filename);
+        $extension = strtolower($extension);
+        // si la extension no pertenece a algunas de las permitidas
+        if (array_key_exists($extension, $allowedExtensions)) {
+            echo 'Unknown Image extension';
+            continue;
+        }
+        $uploadedfile = $_FILES[$input]['tmp_name'];
+        $size = filesize($filename);
+        if ($size > MAX_SIZE) {
+            echo "You have exceeded the size limit";
+            continue;
+        }
+        // indico que funcion creara la imagen dependiendo de la extension
+        $func = "imagecreatefrom" . $allowedExtensions[$extension];
+        $src = $func();
+
+        list($width,$height)=getimagesize($uploadedfile);
+        $newwidth=150;
+        $newheight = 100;
+        $tmp=imagecreatetruecolor($newwidth,$newheight);
+        imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
+
+        $thisdir = getcwd();
+        $imagesDir = (DS."components".DS."com_aardvertiser".DS."images".DS."users");
+        $userDir = ($imagesDir . DS . $userid);
+
+        if (!file_exists($thisdir.$imagesDir)) {
+            mkdir($thisdir . $imagesDir, 0777);
+        }
+        if (!file_exists($thisdir.$userDir)) {
+            mkdir($thisdir . $userDir, 0777);
+        }
+
+        $thumbFilename = $userDir.DS."thumb-".$filename; //thumb
+        $originalFilename = $userDir.DS.$filename; //src
+
+        imagejpeg($tmp,$thumbFilename,100);
+        imagejpeg($src,$originalFilename,100);
+
+        imagedestroy($src);
+        imagedestroy($tmp);
+
+        $imageRow =& JTable::getInstance('image', 'Table');
+        registerImage($imageRow,$thumbFilename, $adId,true);
+        registerImage($imageRow,$originalFilename, $adId);
+    }
+    ###############
+
+    /*
+     * End modification
+     */
 
 
     $mainframe->redirect('index.php?option=com_aardvertiser', 'Ad Saved');
