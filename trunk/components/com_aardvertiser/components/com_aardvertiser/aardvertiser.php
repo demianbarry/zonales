@@ -3,7 +3,11 @@ defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.application.helper');
 require_once 'helper.php';
 require_once(JApplicationHelper::getPath( 'html' ) );
+require_once 'uploadexception.php';
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables');
+
+define ("MAX_SIZE","1048576");
+
 switch($task) {
     case 'remove':
         removeAd($option);
@@ -371,9 +375,6 @@ function save() {
     }
     //start image
 
-
-    define ("MAX_SIZE","1048576");
-
     $errors=0;
     $userid = $row->user_id;
 
@@ -401,7 +402,7 @@ function save() {
     applyTag($adDelivery, $adId);
 
         ##############
-    $i = 0;
+    // extension => format
     $allowedExtensions = array(
         'jpg' => 'jpeg',
         'jpeg' => 'jpeg',
@@ -409,64 +410,85 @@ function save() {
         'png' => 'png'
     );
 
-    for ($i = 1;$_FILES["imag-$i"]["name"];$i++) {
-        echo "a procesar las imagenes";
-        die('Entro al bucle');
-        $input = "imag-$i";
-        $filename = stripslashes($_FILES[$input]["name"]);
-        $extension = getExtension($filename);
-        $extension = strtolower($extension);
-        // si la extension no pertenece a algunas de las permitidas
-        if (array_key_exists($extension, $allowedExtensions)) {
-            echo 'Unknown Image extension';
-            continue;
+    foreach ($_FILES["imag"]["name"] as $key => $filename) {
+        echo "entro al bucle\n";
+
+        // Use
+        if ($_FILES['file']['error'][$key] === UPLOAD_ERR_OK) {
+            $filename = stripslashes($filename);
+            $extension = getExtension($filename);
+            $extension = strtolower($extension);
+            // si la extension no pertenece a algunas de las permitidas
+            echo "inicialize los datos\n";
+            echo "nombre: $filename\n";
+            echo "extension: $extension\n";
+            if (!array_key_exists($extension, $allowedExtensions)) {
+                echo 'Unknown Image extension';
+                continue;
+            }
+            $uploadedfile = $_FILES["imag"]['tmp_name'][$key];
+            $size = $_FILES["imag"]['size'][$key];
+            echo "tamanio: $size\n";
+            if ($size > MAX_SIZE) {
+                echo "You have exceeded the size limit";
+                continue;
+            }
+            echo "PASO EL CHEQUEO DE TAMANIO\n";
+            // indico que funcion creara la imagen dependiendo de la extension
+            $func = "imagecreatefrom" . $allowedExtensions[$extension];
+            $src = $func($uploadedfile);
+
+            list($width,$height)=getimagesize($uploadedfile);
+            echo "ancho: $width\n";
+            echo "alto: $height\n";
+            $newwidth=150;
+            $newheight = 100;
+            $tmp=imagecreatetruecolor($newwidth,$newheight);
+            imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
+
+            $thisdir = getcwd();
+            $imagesDir = (DS."components".DS."com_aardvertiser".DS."images".DS."users");
+            $userDir = ($imagesDir . DS . $userid);
+
+            echo "dir imagenes: $imagesDir\n";
+            echo "dir usuario: $userDir\n";
+
+            if (!file_exists($thisdir.$imagesDir)) {
+                mkdir($thisdir . $imagesDir, 0777);
+            }
+            if (!file_exists($thisdir.$userDir)) {
+                mkdir($thisdir . $userDir, 0777);
+            }
+
+            echo "paso el chequeo y creacion de directorios\n";
+
+            $originalFilename = JPATH_ROOT.$userDir.DS.$filename . ".jpg"; //src
+
+            echo "ruta destino: $originalFilename\n";
+
+            imagejpeg($tmp,$originalFilename,100);
+
+            echo "imagen guardada\n";
+
+            imagedestroy($src);
+            imagedestroy($tmp);
+
+            echo "recursos liberados\n";
+
+            $imageRow =& JTable::getInstance('image', 'Table');
+            $result = registerImage($imageRow,$originalFilename, $adId);
+            echo ($result) ? "se guardo exitosamente en la bd\n" : "fallo el registro en la bd\n";
+        } else {
+            throw new UploadException($_FILES['file']['error'][$key]);
         }
-        $uploadedfile = $_FILES[$input]['tmp_name'];
-        $size = filesize($filename);
-        if ($size > MAX_SIZE) {
-            echo "You have exceeded the size limit";
-            continue;
-        }
-        // indico que funcion creara la imagen dependiendo de la extension
-        $func = "imagecreatefrom" . $allowedExtensions[$extension];
-        $src = $func();
 
-        list($width,$height)=getimagesize($uploadedfile);
-        $newwidth=150;
-        $newheight = 100;
-        $tmp=imagecreatetruecolor($newwidth,$newheight);
-        imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
-
-        $thisdir = getcwd();
-        $imagesDir = (DS."components".DS."com_aardvertiser".DS."images".DS."users");
-        $userDir = ($imagesDir . DS . $userid);
-
-        if (!file_exists($thisdir.$imagesDir)) {
-            mkdir($thisdir . $imagesDir, 0777);
-        }
-        if (!file_exists($thisdir.$userDir)) {
-            mkdir($thisdir . $userDir, 0777);
-        }
-
-        //$thumbFilename = $userDir.DS."thumb-".$filename; //thumb
-        $originalFilename = $userDir.DS.$filename; //src
-
-        //imagejpeg($tmp,$thumbFilename,100);
-        imagejpeg($tmp,$originalFilename,100);
-
-        imagedestroy($src);
-        imagedestroy($tmp);
-
-        $imageRow =& JTable::getInstance('image', 'Table');
-        //registerImage($imageRow,$thumbFilename, $adId,true);
-        registerImage($imageRow,$originalFilename, $adId);
+        
     }
     ###############
 
     /*
      * End modification
      */
-
 
     $mainframe->redirect('index.php?option=com_aardvertiser', 'Ad Saved');
 }
