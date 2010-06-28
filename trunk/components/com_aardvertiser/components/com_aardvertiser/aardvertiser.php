@@ -200,6 +200,13 @@ function viewAds($option) {
     $query = "SELECT a.id, a.ad_name, a.user_id, a.ad_state, a.contact_name, a.published, a.date_created, a.ad_img2small, a.ad_img1small, a.ad_price, a.ad_location, v.name AS cat_name FROM #__aard_ads a, #__custom_properties cp, #__custom_properties_values v WHERE a.cat_id=cp.content_id AND cp.value_id=v.id AND cp.value_id=v.id AND v.name = '" . $cat_name . "' AND cp.ref_table='aard_ads' AND date_created > '" . $today . "'";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
+
+    foreach ($rows as $row) {
+        $query = "SELECT img.src FROM #__aard_ads_images img WHERE img.ad_id = $row->id";
+        $db->setQuery($query);
+        $row->images = $db->loadObjectList();
+    }
+
     if ($db->getErrorNum()) {
         echo $db->stderr();
         return false;
@@ -441,17 +448,17 @@ function save() {
             mkdir($thisdir . $userDir, 0777);
         }
 
-        $thumbFilename = $userDir.DS."thumb-".$filename; //thumb
+        //$thumbFilename = $userDir.DS."thumb-".$filename; //thumb
         $originalFilename = $userDir.DS.$filename; //src
 
-        imagejpeg($tmp,$thumbFilename,100);
-        imagejpeg($src,$originalFilename,100);
+        //imagejpeg($tmp,$thumbFilename,100);
+        imagejpeg($tmp,$originalFilename,100);
 
         imagedestroy($src);
         imagedestroy($tmp);
 
         $imageRow =& JTable::getInstance('image', 'Table');
-        registerImage($imageRow,$thumbFilename, $adId,true);
+        //registerImage($imageRow,$thumbFilename, $adId,true);
         registerImage($imageRow,$originalFilename, $adId);
     }
     ###############
