@@ -613,24 +613,22 @@ class HTML_classifieds {
                                 }
                             }
 
-                            contFileInputs = 1;
-                            function addfileinput(){
-                                contFileInputs = contFileInputs + 1;
-                                var fileInput = document.createElement('input');
-                                var placeHolder = $('files');
-                                fileInput.setAttribute("type", "file");
-                                fileInput.setAttribute("name", "imag-" + contFileInputs);
-                                fileInput.setAttribute("size", "25");
-                                fileInput.setAttribute("style", "font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt");
-                                placeHolder.appendChild(fileInput);
-                            }
-                        </script>
-                        <form action="index.php?option=com_aardvertiser&task=save" enctype="multipart/form-data" onsubmit="return validate_form(this);" method="post" name="adminForm" id="adminForm">
-                            <fieldset class="adminForm">
-                                <legend>Ad Details</legend>
-                                <table class="admintable">
-                                    <tr>
-                                        <td width="153" align="right" class="key">
+function addfileinput(){
+    var fileInput = document.createElement('input');
+    var placeHolder = $('files');
+    fileInput.setAttribute("type", "file");
+    fileInput.setAttribute("name", "imag[]");
+    fileInput.setAttribute("size", "25");
+    fileInput.setAttribute("style", "font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt");
+    placeHolder.appendChild(fileInput);
+}
+</script>
+		<form action="index.php?option=com_aardvertiser&task=save" enctype="multipart/form-data" onsubmit="return validate_form(this);" method="post" name="adminForm" id="adminForm">
+			<fieldset class="adminForm">
+				<legend>Ad Details</legend>
+				<table class="admintable">
+				<tr>
+					<td width="153" align="right" class="key">
 					Ad Title: 
                                         </td>
                                         <td width="334">
@@ -729,15 +727,16 @@ class HTML_classifieds {
                                     <tr>
                                         <td width="153" align="right" class="key">
 					Images:
-                                        </td>
-                                        <td>
-                                            <div id="files">
-                                                <input size="25" name="<?php if ($row->id > 0) {
-                                                            echo "";
-                                                        } else {
-                                                            echo "imag-1";
-                                                               }?>" type="file" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt" class="box"/>
-                                            </div>
+					</td>
+					<td>
+                                        <div id="files">
+                                            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_SIZE ?>" />
+                                            <input size="25" name="<?php if ($row->id > 0) {
+					echo "";
+	} else {
+	echo "imag[]";
+	}?>" type="file" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt" class="box"/>
+                                        </div>
                                             <input value="<?php echo JText::_('SYSTEM_AD_IMAGE_ADD'); ?>" onclick="addfileinput();" type="button"/>
                                             <br />If resubmitting but not changing images leave fields blank
                                         </td>
