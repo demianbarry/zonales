@@ -24,8 +24,8 @@ class TableClassified extends JTable
 	var $date_created = null;
         var $date_expiration = null;
 	var $published = null;
-        var $impressions = null;
-        
+        var $impressions = null;        
+
 		function __construct(&$db)
 	{
 		parent::__construct('#__aard_ads', 'id', $db);
