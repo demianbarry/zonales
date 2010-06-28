@@ -410,37 +410,33 @@ function save() {
         'png' => 'png'
     );
 
-    foreach ($_FILES["imag"]["name"] as $key => $filename) {
-        echo "entro al bucle\n";
+    $files = "imag";
+
+    foreach ($_FILES[$files]["name"] as $key => $filename) {
 
         // Use
-        if ($_FILES['file']['error'][$key] === UPLOAD_ERR_OK) {
+        if ($_FILES[$files]['error'][$key] === UPLOAD_ERR_OK) {
             $filename = stripslashes($filename);
             $extension = getExtension($filename);
             $extension = strtolower($extension);
             // si la extension no pertenece a algunas de las permitidas
-            echo "inicialize los datos\n";
-            echo "nombre: $filename\n";
-            echo "extension: $extension\n";
             if (!array_key_exists($extension, $allowedExtensions)) {
                 echo 'Unknown Image extension';
                 continue;
             }
-            $uploadedfile = $_FILES["imag"]['tmp_name'][$key];
-            $size = $_FILES["imag"]['size'][$key];
-            echo "tamanio: $size\n";
+            $uploadedfile = $_FILES[$files]['tmp_name'][$key];
+            $size = $_FILES[$files]['size'][$key];
+
             if ($size > MAX_SIZE) {
                 echo "You have exceeded the size limit";
                 continue;
             }
-            echo "PASO EL CHEQUEO DE TAMANIO\n";
+
             // indico que funcion creara la imagen dependiendo de la extension
             $func = "imagecreatefrom" . $allowedExtensions[$extension];
             $src = $func($uploadedfile);
 
             list($width,$height)=getimagesize($uploadedfile);
-            echo "ancho: $width\n";
-            echo "alto: $height\n";
             $newwidth=150;
             $newheight = 100;
             $tmp=imagecreatetruecolor($newwidth,$newheight);
@@ -450,9 +446,6 @@ function save() {
             $imagesDir = (DS."components".DS."com_aardvertiser".DS."images".DS."users");
             $userDir = ($imagesDir . DS . $userid);
 
-            echo "dir imagenes: $imagesDir\n";
-            echo "dir usuario: $userDir\n";
-
             if (!file_exists($thisdir.$imagesDir)) {
                 mkdir($thisdir . $imagesDir, 0777);
             }
@@ -460,26 +453,17 @@ function save() {
                 mkdir($thisdir . $userDir, 0777);
             }
 
-            echo "paso el chequeo y creacion de directorios\n";
-
             $originalFilename = JPATH_ROOT.$userDir.DS.$filename . ".jpg"; //src
 
-            echo "ruta destino: $originalFilename\n";
-
             imagejpeg($tmp,$originalFilename,100);
-
-            echo "imagen guardada\n";
 
             imagedestroy($src);
             imagedestroy($tmp);
 
-            echo "recursos liberados\n";
-
             $imageRow =& JTable::getInstance('image', 'Table');
             $result = registerImage($imageRow,$originalFilename, $adId);
-            echo ($result) ? "se guardo exitosamente en la bd\n" : "fallo el registro en la bd\n";
         } else {
-            throw new UploadException($_FILES['file']['error'][$key]);
+            throw new UploadException($_FILES[$files]['error'][$key]);
         }
 
         
