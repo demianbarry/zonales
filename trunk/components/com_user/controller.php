@@ -227,6 +227,9 @@ class UserController extends JController {
                 $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
             }
 
+            $zonal = UserHelper::getZonal();
+            UserHelper::setZonal($zonal);
+
             $i18nKey = ($registerNewAlias) ? 'SYSTEM_MESSAGE_SUCCESS_ALIAS_ADDED' : 'SYSTEM_MESSAGE_SUCCESS_LOGIN';
             $message = JText::_($i18nKey);
             UserHelper::showMessage(SUCCESS, $message);

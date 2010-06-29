@@ -367,6 +367,11 @@ function editAd($option) {
 
 function save() {
     //submit but set paid to 0
+    $query =  "SELECT * FROM #__aard_config WHERE id ='1'";
+    $db	=& JFactory::getDBO();
+    $db->setQuery($query);
+    $rowConfig = $db->loadObject();
+
     global $mainframe;
     $row =& JTable::getInstance('classified', 'Table');
     if (!$row->bind(JRequest::get('post'))) {
@@ -437,8 +442,8 @@ function save() {
             $src = $func($uploadedfile);
 
             list($width,$height)=getimagesize($uploadedfile);
-            $newwidth=150;
-            $newheight = 100;
+            $newwidth= $rowConfig->default_image_width;
+            $newheight = $rowConfig->default_image_height;
             $tmp=imagecreatetruecolor($newwidth,$newheight);
             imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
 
