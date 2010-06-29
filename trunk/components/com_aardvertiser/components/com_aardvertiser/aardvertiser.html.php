@@ -760,8 +760,8 @@ function addfileinput(){
                             <input type="hidden" name="option" value="<?php echo $option; ?>" />
                             <input type="hidden" name="task" value="" />
                             <input type="hidden" name="published" value="1" />
-                            <input type="hidden" name="ad_latitude" />
-                            <input type="hidden" name="ad_longitud" />
+                            <input type="hidden" name="ad_latitude" id="ad_latitude"/>
+                            <input type="hidden" name="ad_longitud" id="ad_longitud"/>
 
                                     <?php
                                     $user =& JFactory::getUser();
