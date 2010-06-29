@@ -63,7 +63,7 @@ function showPublishedCategories($option) {
     $today = date("Y-m-d H:i:s", mktime(date('H'),date('i'),date('s'),date('m'),date('d')-$dayy,date('y')));
 
     //$query = "SELECT * FROM #__aard_cats WHERE published = '1' ORDER BY ordering, cat_name";
-    $query = "select v.id, v.label, v.name, v.default from #__custom_properties_values v, #__custom_properties_fields f, (select vl.id, vl.name from #__custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='rubro' and vp.id=v.parent_id";
+    $query = "select v.id, v.label, v.name, v.default, cp.field_id from #__custom_properties_values v, #__custom_properties_fields f, (select vl.id, vl.name from #__custom_properties_values vl) vp where v.field_id=f.id and f.name='root_clasificados' and vp.name='rubro' and vp.id=v.parent_id";
     $db->setQuery($query);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {

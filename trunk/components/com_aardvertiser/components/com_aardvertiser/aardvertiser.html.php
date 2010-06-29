@@ -40,7 +40,7 @@ class HTML_classifieds {
                 foreach($rows as $row) {
                     $db =& JFactory::getDBO();
                     //$query = "SELECT * FROM #__aard_ads WHERE cat_name = '".$row->cat_name."' AND paid = '1'";
-                    $query = "SELECT * FROM #__aard_ads WHERE cat_id =" . $row->id . " AND date_created >= '" . $today . "'";
+                    $query = "SELECT * FROM #__aard_ads a, #__custom_properties cp WHERE a.id=cp.conten_id AND cp.value_id =" . $row->id . " AND cp.field_id=".$row->field_id." AND date_created >= '" . $today . "'";
                     $db->setQuery($query);
                     $nums = $db->loadObjectList();
                     $link = JRoute::_('index.php?option=' . $option . '&cat_name=' . $row->name . '&task=view');
