@@ -12,6 +12,7 @@
     <files>
         <file>component_edit.php</file>
         <file>component_map.php</file>
+        <file>component_home.php</file>
         <file>component_only.php</file>
         <file>component.php</file>
         <file>favicon.ico</file>
@@ -25,6 +26,7 @@
         <file>css/content.css</file>
         <file>css/glassnav.css</file>
         <file>css/main.css</file>
+        <file>css/home.css</file>
         <file>css/mod_comments_latest.css</file>
         <file>css/mod_sessioninfo.css</file>
         <file>css/mod_eq.css</file>
@@ -144,8 +146,8 @@
         <position>main</position>
         <position>bottom</position>
         <position>cols</position>
-        <position>index</position>
-        <position>user9</position>
+        <position>home_zona</position>
+        <position>home_login</position>
     </positions>
 
     <params>

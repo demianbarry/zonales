@@ -1,0 +1,59 @@
+/* CSS Home */
+
+#home_top{
+    width: 978px;
+    height: 170px;
+    background: url(../images/_violeta/bg_header.jpg);
+    background-repeat: no-repeat;
+}
+
+#home_zona{
+    width: 978px;
+}
+
+#home_login{
+    width: 978px;
+}
+
+#home_zona_text{
+    float: left;
+    width: 788px;
+    height: 300px;
+    padding-left: 10px;
+    font-family: "trebuchet MS";
+    font-size: 36px;
+    color: #666666;
+    text-align: left;
+}
+
+#home_login_text{
+    float: left;
+    width: 788px;
+    height: 300px;
+    padding-left: 10px;
+    font-family: "trebuchet MS";
+    font-size: 36px;
+    color: #666666;
+    text-align: left;
+}
+
+#home_zona_mod{
+    float: right;
+    padding-right: 10px;
+    width: 160px;
+    height: 300px;
+}
+
+#home_login_mod{
+    float: right;
+    padding-right: 10px;
+    width: 160px;
+    height: 300px;
+}
+
+#copy{
+    float: left;
+    padding-left: 10px;
+    border: none;
+}
+

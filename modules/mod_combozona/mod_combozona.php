@@ -25,17 +25,14 @@ $selection = new stdClass();
 $zonal = $helper->getZonal();
 $selectedOption = 0;
 $localidades = array();
+$selectedParent = 0;
 
-if(!$zonal || $zonal->id == 0) {
-    $selection->id = 0;
-    $selection->label = "Seleccione un partido";
-    array_unshift($zonales, $selection);
-} else {
-    //$localidades = $helper->getFieldValues($zonal->id);
-    $selectedOption = $zonal->id;
+if ($zonal != null) {
+    if($zonal || $zonal->id != 0) {
+        $selectedOption = $zonal->id;
+    }
+    $selectedParent = $zonal->parent_id;
 }
-
-$selectedParent = $zonal->parent_id;
 
 // parametros
 $root = $params->get('root_value');
