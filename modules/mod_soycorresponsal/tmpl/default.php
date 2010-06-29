@@ -17,6 +17,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 ?>
 
+<?php if(!$user->guest) :?>
 <!-- Validacion -->
 <script language="javascript" type="text/javascript">
     <!--
@@ -28,7 +29,7 @@ JHTML::_('behavior.formvalidation');
     }
 
     function validateNota(form) {
-        if (form.partidos.hasClass('invalid')) {
+        if (form.provincias_sc.hasClass('invalid')) {
             alert("<?php echo JText::_( 'SC_PARTIDO_WARNING', true ); ?>");
         }
         else if (form.localidad.hasClass('invalid')) {
@@ -41,7 +42,7 @@ JHTML::_('behavior.formvalidation');
     }
 
     function validateForm(form) {
-        if (form.partidos.hasClass('invalid')) {
+        if (form.provincias_sc.hasClass('invalid')) {
             alert("<?php echo JText::_( 'SC_PARTIDO_WARNING', true ); ?>");
         }
         else if (form.localidad.hasClass('invalid')) {
@@ -108,7 +109,7 @@ JHTML::_('behavior.formvalidation');
         });
 
         // al cambiar el partido, recupero las localidades
-        $('partidos').addEvent('change', function() {
+        $('provincias_sc').addEvent('change', function() {
             loadLocalidades(this.value);
         });
 
@@ -145,7 +146,6 @@ JHTML::_('behavior.formvalidation');
 
         // clickeando en el título muestro u oculto el formulario
         $('enviar_soycorresponsal').addEvent('click', function(e) {
-            myLaVozDelVecinoSlider.toggle();
             mySoyCorresponsalSlider.toggle();
             if($('enviar_soycorresponsal').innerHTML == '<?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?>') {
                 $('enviar_soycorresponsal').setHTML('<?php echo JText::_('MOD_SOYCORRESPONSAL_VER_NOTICIAS');?>');
@@ -156,15 +156,15 @@ JHTML::_('behavior.formvalidation');
         });
 
         // cargo las localidades de acuerdo al partido que esté seleccionado al cargar la página
-        loadLocalidades($('partidos').value);
+        loadLocalidades(<?php echo $selectedOption?>);
     });
 
     /**
      * Recupera mediante una llamada Ajax la lista de localidades, de acuerdo al partido seleccionado.
      */
-    function loadLocalidades(id) {
+    function loadLocalidades(selected) {
         $('localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getFieldValuesAjax&fieldId='+id;
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias_sc').value+'&name=localidad&selected='+selected;
         new Ajax(url, {
             method: 'get',
             onComplete: function(response) {
@@ -180,27 +180,32 @@ JHTML::_('behavior.formvalidation');
             }
         }).request();
     }
-
     //-->
 </script>
+<?php endif?>
 
 <!-- form -->
 <div class="moduletable_formVecinos">
-    <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>    
+    <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>
+    <?php if($user->guest): ?>
+    <div style="margin:10px;" class="moduletable_formVecinos_bodyDiv">
+            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION');?>
+        <a href=""><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
+    </div>
+    <?php else : ?>
     <a id="enviar_soycorresponsal" href="#" style="display: none;"><?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?></a>
-    <div id="mod_soycorresponsal_main_div" style="margin-left:10px; margin-right:10px;" class="moduletable_formVecinos_bodyDiv">
+    <div id="mod_soycorresponsal_main_div" class="moduletable_formVecinos_bodyDiv">
         <p><?php echo JText::_('INTRO');?></p>
         <p><strong><?php echo $module->title; ?></strong> <?php echo JText::_('INTRO2');?> <strong><?php echo JText::_('VIEW_IN');?></strong>.</p>
         <div class="splitter"></div>
 
         <form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" >
             <div id="nota">
-                <label for="partidos"><?php echo JText::_('COUNTY');?></label>
-                <?php echo $lists['partido_select']; ?>
+                <label for="provincias_sc"><?php echo JText::_('COUNTY');?></label>
+                    <?php echo $lists['provincias_select']; ?>
 
                 <label id="loc_label" for="localidad" style="display:block;"><?php echo JText::_('CITY');?></label>
                 <div id="localidad_container" style="display:block;">
-                    <?php echo $lists['localidad_select']; ?>
                 </div>
 
                 <div class="splitter"></div>
@@ -209,22 +214,22 @@ JHTML::_('behavior.formvalidation');
                 <input id="title" name="title" type="text" class="required" value="" size="55px"/>
 
                 <label for="text"><?php echo JText::_('TEXT');?></label>
-                <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
+                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
             </div>
             <a id="siguiente" name="siguiente"><?php echo JText::_('NEXT');?></a>
             <div id="corresponsal" style="display: none;">
                 <label for="nombre"><?php echo JText::_('NAME');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="nombre" name="nombre" type="text" class="" value="<?php if (!$user->guest) echo $user->name; ?>"/>
+                <input id="nombre" name="nombre" type="text" class="" value="<?php echo $user->name; ?>" disabled="true"/>
 
-                <?php if ($showEmail): ?>
+                    <?php if ($showEmail): ?>
                 <label for="email"><?php echo JText::_('MAIL');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="email" name="email" type="text" class="" value="<?php if (!$user->guest) echo $user->email; ?>" />
-                <?php endif; ?>
+                <input id="email" name="email" type="text" class="" value="<?php echo $user->email; ?>" disabled="true"/>
+                    <?php endif; ?>
 
-                <?php if ($showPhone): ?>
-                <label for="telefono"><?php echo JText::_('PHONE');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="telefono" name="telefono" type="text" class="" />
-                <?php endif; ?>
+                    <?php if ($showPhone): ?>
+                <!--<label for="telefono"><?php //echo JText::_('PHONE');?><span>(<?php //echo JText::_('NO_PUBLIC');?>)</span></label>
+                <input id="telefono" name="telefono" type="text" class="" value="<?php //echo $user->telephone; ?>" disabled="true"/>-->
+                    <?php endif; ?>
 
                 <div class="splitter"></div>
                 <div id="captchaStatus" style="display: none; color:red;"><?php echo JText::_('INCORRECT');?></div>
@@ -256,10 +261,11 @@ JHTML::_('behavior.formvalidation');
             <input type="hidden" name="option" value="com_zonales" />
             <input type="hidden" name="format" value="raw" />
             <input type="hidden" name="module" value="<?php echo $module->title; ?>" />
-            <?php echo JHTML::_('form.token'); ?>
+                <?php echo JHTML::_('form.token'); ?>
         </form>
 
         <div id="mensaje" title="mensaje" />
     </div>
+    <?php endif?>
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->
