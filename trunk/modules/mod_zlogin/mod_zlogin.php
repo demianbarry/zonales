@@ -100,7 +100,7 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     echo "]";
     echo "});";
 } ?>
-
+    setElements();
     });
 
     function setSelectedIndex() {
@@ -161,6 +161,7 @@ foreach ($providerslist as $prov) {
                 }
             }
         }
+
     }
 
 </script>
