@@ -75,6 +75,8 @@ CREATE TABLE IF NOT EXISTS `#__aard_config` (
   `map` smallint(1) NOT NULL DEFAULT '0',
   `emailusers` int(1) NOT NULL DEFAULT '0',
   `catimg` int(1) NOT NULL DEFAULT '1',
+  `default_image_width` int(3) NOT NULL DEFAULT '500',
+  `default_image_height` int(3) NOT NULL DEFAULT '500',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
