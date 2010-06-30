@@ -188,9 +188,12 @@ JHTML::_('behavior.formvalidation');
 <div class="moduletable_formVecinos">
     <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>
     <?php if($user->guest): ?>
-    <div style="margin:10px;" class="moduletable_formVecinos_bodyDiv">
-            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION');?>
-        <a href=""><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
+    <div class="moduletable_formVecinos_bodyDiv">
+            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_PRE');?>
+        <a href="index.php?option=com_user&view=zlogin"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_LOGED');?></a>
+            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_INTER');?>
+        <a href="index.php?option=com_user&view=register&map=0"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
+            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_POS');?>
     </div>
     <?php else : ?>
     <a id="enviar_soycorresponsal" href="#" style="display: none;"><?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?></a>
