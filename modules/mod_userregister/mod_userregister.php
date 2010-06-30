@@ -105,6 +105,26 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
         $chooseZonal = UserHelper::ZONAL_NOT_DEFINED;
 
         $zonas = $helper->getValuesZonales();
+        
+        $zonal = $helper->getZonal();
+        $selectedOption = 0;
+        $localidades = array();
+        $selectedParent = 0;
+
+        if ($zonal != null) {
+            if($zonal || $zonal->id != 0) {
+                $selectedOption = $zonal->id;
+            }
+            $selectedParent = $zonal->parent_id;
+        }
+
+        // parametros
+        $root = $helper->getRoot();
+
+        // crea select de zonales disponibles
+        $parents = $helper->getItems($root);
+        $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'reg_provincias',
+                'size="1" class="reg_provincias_select required"', 'id', 'label', $selectedParent);
 
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
