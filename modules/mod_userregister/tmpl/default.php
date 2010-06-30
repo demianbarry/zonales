@@ -91,7 +91,7 @@ foreach ($providerslist as $prov) {
 
     function regLoadMunicipios(selected){
         $('reg_z_localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('reg_provincias').value+'&name=zonal&selected='+selected+'&class="reg_item_ajax_select"';
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('reg_provincias').value+'&name=zonal&selected='+selected+'&class=reg_item_ajax_select';
             new Ajax(url, {
                 method: 'get',
                 onComplete: function(response) {
@@ -103,7 +103,7 @@ foreach ($providerslist as $prov) {
     // -->
 </script>
 
-
+<div class="moduletable_userreg">
 <form action="<?php echo JRoute::_( 'index.php?option=com_user' ); ?>"
       method="post"
       id="josForm"
@@ -124,23 +124,24 @@ foreach ($providerslist as $prov) {
            border="0"
            width="100%"
            class="contentpane"
+           id="userRegTable"
            >
         <!-- SOLICITUD DE NOMBRE COMPLETO -->
         <tr>
             <td width="30%"
-                height="40"
+                height="15"
+                colspan="2"
                 >
                 <label id="namemsg"
                        for="name"
                        >
                     <?php echo '*' . $nameMessage ?>:
                 </label>
-            </td>
-            <td>
+                <br>
                 <input type="text"
                        name="name"
                        id="name"
-                       size="40"
+                       size="15"
                        value="<?php echo  $user->get( 'name' );?>"
                        class="inputbox required"
                        maxlength="50"
@@ -149,18 +150,17 @@ foreach ($providerslist as $prov) {
         </tr>
         <!-- SOLICITUD DE NOMBRE DE USUARIO -->
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <label id="usernamemsg"
                        for="username"
                        >
                     <?php echo '*' . $usernameMessage ?>:
                 </label>
-            </td>
-            <td>
+                <br>
                 <input type="text"
                        id="usernamer"
                        name="usernamer"
-                       size="40"
+                       size="15"
                        value="<?php echo $user->get( 'username' );?>"
                        class="inputbox required validate-username"
                        maxlength="25"
@@ -171,18 +171,17 @@ foreach ($providerslist as $prov) {
         </tr>
         <!-- SOLICITUD DE CORREO ELECTRONICO -->
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <label id="emailmsg"
                        for="email"
                        >
                     <?php echo '*' . $emailMessage ?>:
                 </label>
-            </td>
-            <td>
+                <br>
                 <input type="text"
                        id="email"
                        name="email"
-                       size="40"
+                       size="15"
                        value="<?php echo $user->get( 'email' );?>"
                        class="inputbox required validate-email"
                        maxlength="100"
@@ -191,18 +190,17 @@ foreach ($providerslist as $prov) {
         </tr>
         <!-- SOLICITUD DE CORREO ELECTRONICO AUXILIAR-->
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <label id="email2msg"
                        for="email2"
                        >
-                    <?php echo '*' . $backupEmailMessage ?>:
+                    <?php echo $backupEmailMessage ?>:
                 </label>
-            </td>
-            <td>
+                <br>
                 <input type="text"
                        id="email2"
                        name="email2"
-                       size="40"
+                       size="15"
                        value="<?php echo $user->get( 'email2' );?>"
                        class="inputbox validate-email"
                        maxlength="100"
@@ -213,48 +211,37 @@ foreach ($providerslist as $prov) {
         <!-- SOLICITUD DE FECHA DE NACIMIENTO -->
         <!-- agregado por G2P -->
         <tr>
-            <td>
+            <td colspan="2">
                 <label for="birthdate">
                     <?php echo '*' . $birthdateMessage ?>:
                 </label>
-            </td>
-            <td>
                 <?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')) ?>
             </td>
         </tr>
         <!-- agregado por G2P -->
         <!-- SOLICITUD DEL SEXO -->
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <label id="sexmsg"
                        for="sex"
                        >
                     <?php echo '*' . $sexMessage ?>:
                 </label>
-            </td>
-            <td>
-                <ul>
-                    <li><input type="radio"
+                <input type="radio"
                                name="sex"
                                value="F"
-                               /><?php echo $femaleSexMessage ?></li>
-                    <li><input type="radio"
+                               /><?php echo $femaleSexMessage ?>
+                <input type="radio"
                                name="sex"
                                value="M"
-                               /><?php echo $maleSexMessage ?></li>
-                </ul>
+                               /><?php echo $maleSexMessage ?>
             </td>
         </tr>
 
         <!-- SOLICITUD DEL ZONAL -->
 
         <tr>
-            <td>
-                <label for="zonal">
-                    <?php echo '*' . $zonalUserMessage ?>:
-                </label>
-            </td>
-            <td>
+            <td colspan="2">
                 <div>
                     <div id="reg_z_provincias_container">
                         <p><label class="reg_combo_zonal_label">Provincia</label></p>
@@ -263,7 +250,6 @@ foreach ($providerslist as $prov) {
                     <div id="reg_municipio_container" style="display: none;">
                         <p><label class="reg_combo_zonal_label">Municipio</label></p>
                         <div id="reg_z_localidad_container"></div>
-                    <br/>
                     </div>
                 </div>
             </td>
@@ -275,7 +261,7 @@ foreach ($providerslist as $prov) {
             //$style = ($provid == '') ? 'block' : 'none';
             $show = ($provid == '');
             ?>
-            <td height="40">
+            <td height="15" colspan="2">
                 <?php if($show): ?>
                 <label
                     style="display: block;"
@@ -284,8 +270,6 @@ foreach ($providerslist as $prov) {
                         <?php echo $chooseProviderMessage ?>:
                 </label>
                 <?php endif; ?>
-            </td>
-            <td>
                 <?php if($show): ?>
                 <div style="display: block;">
                     <!-- CREA UNA LISTA DE PROVEEDORES CON LOS CUALES ES POSIBLE ACCEDER -->
@@ -385,7 +369,7 @@ foreach ($providerslist as $prov) {
             </td>
         </tr>
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <a name="passlocation"></a>
                 <label style="display: none;"
                        id="pwmsg"
@@ -393,47 +377,45 @@ foreach ($providerslist as $prov) {
                        >
                     <?php echo '*' . $passwordMessage ?>:
                 </label>
-            </td>
-            <td>
                 <input style="display: none;"
                        class=""
                        type="password"
                        id="passwordt"
                        name="passwordt"
-                       size="40"
+                       size="15"
                        value=""
                        />
             </td>
         </tr>
         <tr>
-            <td height="40">
+            <td height="15" colspan="2">
                 <label style="display: none;"
                        id="pw2msg"
                        for="password2"
                        >
                     <?php echo '*' . $verifyPasswordMessage ?>:
                 </label>
-            </td>
-            <td>
                 <input style="display: none;"
                        class=""
                        type="password"
                        id="password2"
                        name="password2"
-                       size="40"
+                       size="15"
                        value=""
                        />
             </td>
         </tr>
         <tr>
             <td colspan="2"
-                height="40"
+                height="15"
                 >
+                <br>
                     <?php echo $registerRequiredMessage ?>
             </td>
         </tr>
     </table>
-    <button class="button validate"
+    <br>
+    <button class="reg_button validate"
             type="submit">
                 <?php echo $confirmRegisterMessage ?>
     </button>
@@ -468,3 +450,4 @@ foreach ($providerslist as $prov) {
            />
            <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+</div>

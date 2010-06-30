@@ -1,0 +1,82 @@
+/* CSS del módulo 'ComboZona' */
+
+.moduletable_userreg{
+    display: block;
+    float: left;
+    width:160px;
+    margin-bottom:10px;
+    background:#F8F8F1;
+    border-bottom:1px dotted #CCCCCC;
+}
+
+#userRegTable 
+    tr, td {
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    width: 100%;
+}
+
+.reg_button {
+    display:block;
+    width: 100%;
+    border:1px solid #CCCCCC;margin:0;padding:0;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.reg_provincias_select {
+    border:1px solid #CCCCCC;
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    width: 100%;
+}
+
+.reg_item_ajax_select {
+    border:1px solid #CCCCCC;
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    width: 100%;
+}
+
+.providers {
+    border:1px solid #CCCCCC;
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    width: 100%;
+}
+
+.date {
+    border:1px solid #CCCCCC;
+    margin:0;
+    padding:0;
+    margin-bottom: 10px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    width: 85%;
+}
+
+#birthdate_img {
+    position: absolute;
+}
+
+#josForm {
+    margin: 10px;
+}
