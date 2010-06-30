@@ -19,7 +19,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <script language="javascript" type="text/javascript">
 <!--
     function logout(){
-        <?php echo ($protocol == 'Facebook Connect') ? 'FB.Connect.logout(function() {  });' : '' ?>
         window.location.href='<?php echo $logoutRoute ?>';
     }
 //-->
