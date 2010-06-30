@@ -295,10 +295,25 @@ class EqZonalesControllerBand extends JController {
      * @return 0 si son identicas, 1 si bandaA < bandaB, -1 si bandaA > bandaB
      */
     function ordenaBandasPorPeso($bandaA, $bandaB) {
-        if ($bandaA->peso == $bandaB->peso) {
-            return 0;
+        // Parametros grupo de etiquetas noticias y peso por default
+        $paramsEq =& JComponentHelper::getParams('com_eqzonales');
+        $order_field = $paramsEq->get('eq_order_by', NULL);
+        $order_dir = $paramsEq->get('eq_order', 'asc');
+        $order = 1;
+
+        if (strcasecmp($order_field, "desc") == 0) {
+            $order = -1;
         }
-        return ($bandaA->peso < $bandaB->peso) ? 1 : -1;
+
+        if (strcasecmp($order_field, "band_label") == 0) {
+            return strcasecmp($bandaA->band_label, $bandaB->band_label) * $order;
+        }
+        else {
+            if ($bandaA->peso == $bandaB->peso) {
+                return 0;
+            }
+            return (($bandaA->peso > $bandaB->peso) ? 1 : -1) * $order;
+        }
     }
 
 }

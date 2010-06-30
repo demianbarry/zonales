@@ -384,14 +384,16 @@ class EqZonalesControllerEq extends JController {
      */
     function retrieveEqImpl($eqId) {
         $data = null;
+        $eqZonalesParams =& JComponentHelper::getParams('com_eqzonales');
 
         $user =& JFactory::getUser();
         if ($user->guest) {
             $session =& JFactory::getSession();
             if ($session->has('eq')) {
-                return $session->get('eq');
+                $eqtemp = $session->get('eq');
+                //usort($eqtmp->bands, array('EqZonalesControllerBand', 'ordenaBandasPorPeso'));
+                return $eqtemp;
             } else {
-                $eqZonalesParams =& JComponentHelper::getParams('com_eqzonales');
                 $eqId = $eqZonalesParams->get('eq_anon_id', 1);
             }
         }
@@ -411,7 +413,9 @@ class EqZonalesControllerEq extends JController {
             $bandModel->setWhere('e.eq_id = ' . $eq->id);
             $bandModel->setLimitStart(0);
             $bandModel->setLimit(0);
-            $bandModel->setOrderBy('peso desc');
+            $bandModel->setOrderBy(
+                    $eqZonalesParams->get('eq_order_by', 'band_label') . ' ' .
+                    $eqZonalesParams->get('eq_order', 'asc'));
             $bands = $bandModel->getAll(true);
 
             $data = new stdClass();
