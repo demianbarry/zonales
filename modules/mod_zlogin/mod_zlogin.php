@@ -13,13 +13,20 @@ $selectProvider->groupname = 'Public';
 $providerslist = array($selectProvider);
 
 // realiza la consulta a la base de datos
-$selectProviders = 'SELECT p.name, p.icon_url, g.name as groupname, p.required_input '.
+$selectProviders = 'SELECT p.name, p.icon_url, g.name as groupname, p.required_input, p.default '.
                     'FROM #__providers p, #__groups g '.
                     'WHERE p.access=g.id AND p.enabled=1 '.
                     'ORDER BY p.name';
 $db->setQuery($selectProviders);
 $providers = $db->loadObjectList();
 $providerslist = array_merge($providerslist,$providers);
+
+
+foreach ($providers as $cprov) {
+    if ($cprov->default){
+        $defaultProvider = $cprov->name;
+    }
+}
 
 
 $user =& JFactory::getUser();
@@ -106,6 +113,21 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     function setSelectedIndex() {
         index = $('formzlogin_selprovider').selectedIndex;
     }
+
+    function setDefaultProvider(){
+        var select = $("formzlogin_selprovider");
+        var i = -1;
+
+        for (coption in select){
+            i++;
+            if (coption.innerHTML == '<?php echo $defaultProvider ?>'){
+                select.options[i].click();
+                break;
+            }
+        }
+    }
+
+    window.addEvent('domready', setDefaultProvider());
 
     function onFocus(element) {
         if(element.hasClass('inactive')) {
