@@ -4,12 +4,21 @@
  */
 package org.hrtsim.dfltmodelview.impl;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.SortedList;
+import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventTableModel;
+import java.util.Comparator;
 import java.util.logging.Logger;
+import org.hrtsim.basemodel.api.BaseModel;
+import org.hrtsim.rttaskdef.PeriodicTaskDef;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 //import org.openide.util.ImageUtilities;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.util.Lookup;
 import org.openide.windows.CloneableTopComponent;
 
 /**
@@ -26,6 +35,15 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
     private static final String PREFERRED_ID = "DfltModelViewTopComponent";
 
     public DfltModelViewTopComponent() {
+        BaseModel baseModel = Lookup.getDefault().lookup(BaseModel.class);
+        EventList<PeriodicTaskDef> tasksDefs = new BasicEventList<PeriodicTaskDef>();
+        //tasksDefs.addAll(baseModel.getPeriodicTasks());
+        tasksDefs.addAll(baseModel.getRtsSystem().getPeriodicTaskDefs());
+        SortedList<PeriodicTaskDef> sortedTaskDefs = new SortedList<PeriodicTaskDef>(tasksDefs, new IssueComparator());
+        this.taskDefTableModel =
+                new EventTableModel<PeriodicTaskDef>(tasksDefs, new IssueTableFormat());
+        System.out.println(taskDefTableModel);
+
         initComponents();
         setName(NbBundle.getMessage(DfltModelViewTopComponent.class, "CTL_DfltModelViewTopComponent"));
         setToolTipText(NbBundle.getMessage(DfltModelViewTopComponent.class, "HINT_DfltModelViewTopComponent"));
@@ -43,8 +61,17 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(taskDefTableModel);
+        jScrollPane1.setViewportView(jTable1);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(DfltModelViewTopComponent.class, "DfltModelViewTopComponent.jLabel1.text")); // NOI18N
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -55,7 +82,9 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable2);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(DfltModelViewTopComponent.class, "DfltModelViewTopComponent.jLabel2.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -63,21 +92,37 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only,
@@ -149,5 +194,73 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
     protected String preferredID() {
         return PREFERRED_ID;
     }
-    
+
+    private EventTableModel<PeriodicTaskDef> taskDefTableModel;
+    public void setTaskDefTableModel(EventTableModel<PeriodicTaskDef> taskDefTableModel) {
+        this.taskDefTableModel = taskDefTableModel;
+    }
+
+    public class IssueComparator implements Comparator<PeriodicTaskDef> {
+
+        public int compare(PeriodicTaskDef o1, PeriodicTaskDef o2) {
+            // periodos
+            double p1 = o1.getPeriod();
+            double p2 = o2.getPeriod();
+            // ids
+            int id1 = o1.getId();
+            int id2 = o2.getId();
+
+            if (p1 < p2) {
+                return -1;
+            } else if (p1 > p2) {
+                return 1;
+            }
+            if (id1 < id2) {
+                return -1;
+            } else if (id1 > id2) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    public class IssueTableFormat implements TableFormat<PeriodicTaskDef> {
+
+        public int getColumnCount() {
+            return 5;
+        }
+
+        public String getColumnName(int column) {
+            if (column == 0) {
+                return "ID";
+            } else if (column == 1) {
+                return "C";
+            } else if (column == 2) {
+                return "T";
+            } else if (column == 3) {
+                return "D";
+            } else if (column == 4) {
+                return "Slack";
+            }
+
+            throw new IllegalStateException();
+        }
+
+        public Object getColumnValue(PeriodicTaskDef task, int column) {
+
+            if (column == 0) {
+                return task.getId();
+            } else if (column == 1) {
+                return task.getRuntime();
+            } else if (column == 2) {
+                return task.getPeriod();
+            } else if (column == 3) {
+                return task.getDeadline();
+            } else if (column == 4) {
+                return 1;
+            }
+
+            throw new IllegalStateException();
+        }
+    }
 }

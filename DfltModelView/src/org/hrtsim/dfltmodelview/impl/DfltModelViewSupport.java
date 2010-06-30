@@ -19,7 +19,7 @@ public class DfltModelViewSupport extends OpenSupport implements OpenCookie, Clo
     @Override
     protected CloneableTopComponent createCloneableTopComponent() {
         DfltModelViewTopComponent tc = new DfltModelViewTopComponent();
-        tc.setDisplayName("Default");
+        tc.setDisplayName("Sistema de Tiempo Real");
         return tc;
     }
     
