@@ -64,7 +64,7 @@ class comEqZonalesContentHelper {
      * @return Array
      */
     function getTotalArray($limitstart = 0, $limit = 0, $additionalParams = array()) {
-        $results = $this->getSolrResults($limitstart, $limit, array());
+        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
             return count($results->response->docs);
@@ -162,18 +162,9 @@ class comEqZonalesContentHelper {
 
         $fqParams[] = $this->getWhere();
 
-        /*if (strlen($additionalParams) > 0) {
-            $fqParams[] = $additionalParams;
-        }*/
-
-        foreach ($additionalParams as $param) {
+         foreach ($additionalParams as $param) {
             $fqParams[] = $param;
         }
-
-        /*$menu = $this->getMenuValue();
-        if ($menu) {
-            $fqParams[] = "tags_values:$menu";
-        }*/
 
         $disabledBands = $this->getDisabledBands();
         if (strlen($disabledBands) > 0) {

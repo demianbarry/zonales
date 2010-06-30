@@ -146,12 +146,12 @@ class ContentModelCategory extends JModel
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
 
-                        $params = array ("!tags_values:la_voz_del_vecino");
-
+                        $params = array();
                         $menu = JRequest::getString('banda', NULL, 'get');
                         if ($menu) {
                             $params[] = "tags_values:$menu";
                         }
+                        $params[] = "!tags_values:la_voz_del_vecino";
 
                         $this->_total[$state] = $contenthelper->getTotal(0,100,$params);
 		}
@@ -347,14 +347,17 @@ class ContentModelCategory extends JModel
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
 
-                        $params = array ("!tags_values:la_voz_del_vecino");
-
+                        $params = array();
                         $menu = JRequest::getString('banda', NULL, 'get');
                         if ($menu) {
                             $params[] = "tags_values:$menu";
                         }
+                        $params[] = "!tags_values:la_voz_del_vecino";
 
                         $Arows = $contenthelper->getContentArray($limitstart, $limit, $params);
+
+                        print_r($Arows);
+                        exit(0);
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;
