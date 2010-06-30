@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
     <!--
 
     window.addEvent('domready', function() {
-        $('provincias').addEvent('change', function(value) {
+        $('provincias').addEvent('change', function() {
             loadMunicipios('');
         });
 
