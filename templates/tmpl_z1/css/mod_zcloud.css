@@ -1,0 +1,130 @@
+/* CSS del m�dulo 'Soy corresponsal' */
+
+.moduletable_formZcloud{
+    margin-bottom:10px;
+    background:#F8F8F1;
+    border:1px solid #F1F1F1;
+}
+
+.moduletable_formZcloud_bodyDiv {
+    background:none repeat scroll 0 0 #F8F8F1;
+    border-bottom:1px dotted #CCCCCC;
+    font-size:11px;
+    line-height:16px;
+    padding:10px;
+    text-align:justify;
+    margin-bottom: 10px;
+}
+
+.moduletable_formZcloud h1{
+    display:block;
+    padding:10px;
+    background:#FF9900;
+    font-family:Georgia, "Times New Roman", Times, serif;
+    font-size:16px;
+    color:#FFFFFF;
+    font-weight:bold;
+    cursor: pointer;
+}
+
+.moduletable_formZcloud p{
+    line-height:13px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+    margin-bottom:7px;
+}
+
+.moduletable_formZcloud p strong{
+    font-weight:bold;
+}
+
+.moduletable_formZcloud .splitter, .moduletable_formZcloud #formZcloud .splitter{
+    display:block;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-top:1px solid #ECECD9;
+    border-bottom:1px solid #FFFFFF;
+}
+
+.moduletable_formZcloud #formZcloud{
+    margin-bottom: 10px;
+}
+
+.moduletable_formZcloud label{
+    display:block;
+    margin-top:10px;
+    margin-bottom:4px;
+
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_formZcloud label span{
+    color:#999999;}
+
+.moduletable_formZcloud #formZcloud input, .moduletable_formZcloud #formZcloud select, .moduletable_formZcloud #formZcloud textarea{
+    border:1px solid #CCCCCC;margin:0;padding:0;
+
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_formZcloud #formZcloud #nombre{
+    width:220px;
+}
+
+.moduletable_formZcloud #formZcloud #email{
+    width:220px;
+}
+
+.moduletable_formZcloud #formZcloud #telefono{
+    width:220px;
+}
+
+.moduletable_formZcloud #formZcloud #partido{
+    width:220px;
+}
+
+.moduletable_formZcloud #formZcloud #localidad{
+    width:220px;
+}
+
+.moduletable_formZcloud #formZcloud #titulo{
+    width:280px;
+}
+
+.moduletable_formZcloud #formZcloud #texto{
+    width:280px;
+    height:200px;
+}
+
+.moduletable_formZcloud #formZcloud #enviar{
+    border:0;margin:0;padding:0;
+    margin-top:10px;
+    margin-bottom:10px;
+    float: right;
+}
+
+.moduletable_formZcloud #formZcloud #volver{
+    border:0;margin:0;padding:0;
+    margin-top:10px;
+    margin-bottom:10px;
+    float: right;
+}
+
+#enviar_soycorresponsal {
+    cursor: pointer;
+}
+
+/* recaptcha */
+
+.moduletable_formZcloud #recaptcha_image{
+    width:270px !important;
+}
+
+.moduletable_formZcloud #recaptcha_image img{
+    width:270px !important;
+}
