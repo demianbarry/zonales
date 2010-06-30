@@ -102,6 +102,7 @@
 .resultbox .resultbox-bl .resultbox-br .resultbox-b{
 	background:#97bf0d;
 }
+
 .resultbox .resultbox-bg .search-results .results h3{ /* titulos */
 	color:#009CC9;
 }
@@ -113,5 +114,10 @@
 
 /* mod_eq */
 .moduletable_formEq h1 {
+    background:#009CC9;
+}
+
+/* mod_zcloud */
+.moduletable_formZcloud h1 {
     background:#009CC9;
 }
