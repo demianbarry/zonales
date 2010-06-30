@@ -81,7 +81,7 @@ foreach ($providerslist as $prov) {
     }
 
     window.addEvent('domready', function() {
-        $('reg_provincias').addEvent('change', function(value) {
+        $('reg_provincias').addEvent('change', function() {
             regLoadMunicipios('');
         });
 
@@ -103,8 +103,9 @@ foreach ($providerslist as $prov) {
     // -->
 </script>
 
-<div id="registrationform" class="moduletable_userreg">
-    <form action="<?php echo JRoute::_( 'index.php?option=com_user' ); ?>"
+<div class="moduletable_userreg">
+    <h1><?php echo $module->title; ?></h1>
+<form action="<?php echo JRoute::_( 'index.php?option=com_user' ); ?>"
       method="post"
       id="josForm"
       name="josForm"
