@@ -84,6 +84,7 @@
         <file>images/logozonal_bue_lanus.gif</file>
         <file>images/logozonal_bue_lomas_de_zamora.gif</file>
         <file>images/logozonal_bue_quilmes.gif</file>
+        <file>images/zonales_home.jpg</file>
         <file>images/mediabit.gif</file>
         <file>images/rss.gif</file>
         <file>images/w3c_css.gif</file>
@@ -133,6 +134,7 @@
         <file>js/index.html</file>
         <file>js/glassnav.js</file>
         <file>js/swfobject.js</file>
+        <file>js/window.js</file>
         <file>swf/index.html</file>
         <file>swf/inicio.swf</file>
         <file>swf/mapa.swf</file>
