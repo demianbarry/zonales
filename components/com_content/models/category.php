@@ -341,7 +341,7 @@ class ContentModelCategory extends JModel
 
                         $params = array ("!tags_values:la_voz_del_vecino");
 
-                        $menu = JRequest::getString('banda', 'a', 'get');
+                        $menu = JRequest::getString('banda', NULL, 'get');
                         if ($menu) {
                             $params[] = "tags_values:$menu";
                         }
