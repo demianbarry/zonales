@@ -107,6 +107,7 @@ class UserViewRegister extends JView {
 
         $zonas = $helper->getValuesZonales();
 
+        $zonal = $helper->getZonal();
         $selectedOption = 0;
         $localidades = array();
         $selectedParent = 0;
@@ -177,6 +178,8 @@ class UserViewRegister extends JView {
         $this->assign('zActual',$zActual);
         $this->assign('chooseZonalMessage',$chooseZonalMessage);
         $this->assign('chooseZonal',$chooseZonal);
+        $this->assignRef('lists', $lists);
+        $this->assignRef('selectedOption', $selectedOption);
         parent::display($tpl);
     }
 }
