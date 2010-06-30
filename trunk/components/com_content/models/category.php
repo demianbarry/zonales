@@ -153,7 +153,7 @@ class ContentModelCategory extends JModel
                         }
                         $params[] = "!tags_values:la_voz_del_vecino";
 
-                        $this->_total[$state] = $contenthelper->getTotal(0,100,$params);
+                        $this->_total[$state] = $contenthelper->getTotalArray(0,100,$params);
 		}
 
 		return $this->_total[$state];
@@ -355,9 +355,6 @@ class ContentModelCategory extends JModel
                         $params[] = "!tags_values:la_voz_del_vecino";
 
                         $Arows = $contenthelper->getContentArray($limitstart, $limit, $params);
-
-                        print_r($Arows);
-                        exit(0);
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;
