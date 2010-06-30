@@ -86,8 +86,8 @@ foreach ($this->providerslist as $prov) {
             loadMunicipios('');
         });
 
-        loadMunicipios(<?php echo $selectedOption?>);
-        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value);
+        loadMunicipios(<?php echo $this->selectedOption?>);
+        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }    );
     });
 
     function loadMunicipios(selected){
@@ -262,7 +262,7 @@ if(isset($this->message)) {
                 <div>
                     <div id="z_provincias_container">
                         <p><label class="combo_zonal_label">Provincia</label></p>
-                        <?php echo $lists['provincias_select']; ?>
+                        <?php echo $this->lists['provincias_select']; ?>
                     </div>
                     <div id="municipio_container" style="display: none;">
                         <p><label class="combo_zonal_label">Municipio</label></p>
