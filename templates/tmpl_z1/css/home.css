@@ -52,6 +52,7 @@
 }
 
 #copy{
+    border: none;
     width: 978px;
     padding-left: 10px;
 }
