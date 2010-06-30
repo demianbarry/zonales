@@ -107,6 +107,25 @@ class UserViewRegister extends JView {
 
         $zonas = $helper->getValuesZonales();
 
+        $selectedOption = 0;
+        $localidades = array();
+        $selectedParent = 0;
+
+        if ($zonal != null) {
+            if($zonal || $zonal->id != 0) {
+                $selectedOption = $zonal->id;
+            }
+            $selectedParent = $zonal->parent_id;
+        }
+
+        // parametros
+        $root = $helper->getRoot();
+
+        // crea select de zonales disponibles
+        $parents = $helper->getItems($root);
+        $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'provincias',
+                'size="1" class="provincias_select required"', 'id', 'label', $selectedParent);
+
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');

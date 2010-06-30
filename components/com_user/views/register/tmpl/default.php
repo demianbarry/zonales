@@ -56,9 +56,7 @@ foreach ($this->providerslist as $prov) {
         }
     }
     <!--
-    Window.onDomReady = function(){
-        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }    );
-    }
+
 
     /**
      * Recupera mediante una llamada Ajax la disponibilidad de username indicado.
@@ -81,6 +79,27 @@ foreach ($this->providerslist as $prov) {
         } else {
             $('user_message').empty();
         }
+    }
+
+    window.addEvent('domready', function() {
+        $('provincias').addEvent('change', function(value) {
+            loadMunicipios('');
+        });
+
+        loadMunicipios(<?php echo $selectedOption?>);
+        document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value);
+    });
+
+    function loadMunicipios(selected){
+        $('z_localidad_container').empty().addClass('ajax-loading');
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonal&selected='+selected;
+            new Ajax(url, {
+                method: 'get',
+                onComplete: function(response) {
+                    $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
+                    $('municipio_container').setStyle('display','block');
+                }
+            }).request();
     }
     // -->
 </script>
@@ -241,22 +260,15 @@ if(isset($this->message)) {
             </td>
             <td>
                 <div>
-                    <!-- <input type="button" onclick="showmap();" name="zonal" value="<?php echo $this->zonalCurrent ?>"/> -->
-
-                    <!-- <a id="zonal"  rel="lightbox;width=<?php echo $this->width; ?>;height=<?php echo $this->height; ?>" href="index.php?option=com_zonales&view=mapa&ajax=true&register=1&tmpl=component_only">
-                         <img src="templates/<?php //echo $template; ?>/images/<?php //echo $mainColor; ?>/bot_zonales.gif" />
-                    <?php echo $this->zonalMessage ?>
-                    </a> -->
-
-
-                    <select class="required" id="selZonal" name="zonal">
-                        <option value="<?php echo $this->chooseZonal ?>"><?php echo $this->chooseZonalMessage ?></option>
-                        <?php foreach ($this->zonas as $zona): ?>
-                        <option value="<?php echo $zona->id ?>" <?php echo ($zona->name == $this->zActual) ? "selected='selected'" : ""?>>
-                                <?php echo $zona->label ?>
-                        </option>
-                        <?php endforeach ?>
-                    </select>
+                    <div id="z_provincias_container">
+                        <p><label class="combo_zonal_label">Provincia</label></p>
+                        <?php echo $lists['provincias_select']; ?>
+                    </div>
+                    <div id="municipio_container" style="display: none;">
+                        <p><label class="combo_zonal_label">Municipio</label></p>
+                        <div id="z_localidad_container"></div>
+                    <br/>
+                    </div>
                 </div>
             </td>
         </tr>
