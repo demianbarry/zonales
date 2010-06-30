@@ -56,6 +56,24 @@ class comEqZonalesContentHelper {
     }
 
     /**
+     * Recupera el total de resultados.
+     *
+     * @param int $limit
+     * @param int $limitstart
+     * @param string $queryParams
+     * @return Array
+     */
+    function getTotalArray($limitstart = 0, $limit = 0, $additionalParams = array()) {
+        $results = $this->getSolrResults($limitstart, $limit, array());
+
+        if (!is_null($results)) {
+            return count($results->response->docs);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Recupera artículos del indice de solr.
      *
      * @param int $limit
