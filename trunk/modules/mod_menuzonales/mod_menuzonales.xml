@@ -19,7 +19,6 @@
     <language tag="es-ES">es-ES.mod_menuzonales.ini</language>
   </languages>
   <params>
-    <param name="custom_menu_prefix" type="text" default="" label="CUSTOM_MENUTAGPREFIX" description="TIP_CUSTOM_MENUTAGPREFIX" />
-    <param name="menu_joomla" type="sql" default="" query="SELECT link, name FROM #__menu" key_field="link" value_field="name" description="menu_joomla_tip" />
+    <param name="menu_joomla" type="sql" default="" query="SELECT id, name FROM #__menu WHERE published > 0" key_field="id" value_field="name" description="menu_joomla_tip" />
   </params>
 </install>
