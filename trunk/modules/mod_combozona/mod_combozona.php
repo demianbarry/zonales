@@ -35,7 +35,7 @@ if ($zonal != null) {
 }
 
 // parametros
-$root = $params->get('root_value');
+$root = $helper->getRoot();
 
 // crea select de zonales disponibles
 $parents = $helper->getItems($root);

@@ -394,4 +394,13 @@ class comZonalesHelper {
         return $rows;
     }
 
+    /**
+     * Retorna el parámetro Root value para la selección de zonas
+     */
+    function getRoot() {
+        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+        $root = $zonalesParams->get('root_value');
+        return $root;
+    }
+
 }

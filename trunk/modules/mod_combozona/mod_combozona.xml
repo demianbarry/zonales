@@ -18,7 +18,4 @@
     <languages folder="language">
         <language tag="es-ES">es-ES.mod_combozona.ini</language>
     </languages>
-    <params>
-        <param name="root_value" type="sql" default="" query="SELECT id, label FROM #__custom_properties_values WHERE parent_id = 0" key_field="id" value_field="label" description="root_value_tip" />
-    </params>
 </install>
