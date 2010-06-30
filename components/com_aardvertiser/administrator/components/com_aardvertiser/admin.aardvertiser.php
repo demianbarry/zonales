@@ -125,7 +125,7 @@ function conf($option) {
     $lists = array();
     $currency = array (
             '0' => array('value' => '&pound;', 'text' => 'GBP'),
-            '1' => array('value' => '$', 'text' => 'USD'),
+            '1' => array('value' => '$', 'text' => 'ARG'),
             '2' => array('value' => '&euro;', 'text' => 'EUR'),
             '3' => array('value' => '&yen;', 'text' => 'JPY'),
     );
