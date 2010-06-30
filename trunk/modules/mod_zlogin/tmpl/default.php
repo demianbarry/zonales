@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                 <?php foreach ($providerslist as $provider): ?>
                     <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                 <option value="" style="background-image: url(<?php if(isset($provider->icon_url)) echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
-                        class="providers-option" <?php if($provider->name == "Zonales") echo 'selected' ?>>
+                        class="providers-option" <?php if($provider->name == "Zonales") echo "selected='selected'" ?>>
                                     <?php echo $provider->name ?>
                 </option>
                     <?php endif ?>
