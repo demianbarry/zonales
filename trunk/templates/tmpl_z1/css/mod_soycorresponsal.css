@@ -1,7 +1,7 @@
 /* CSS del m�dulo 'Soy corresponsal' */
 
 .moduletable_formVecinos{
-    margin-bottom:20px;
+    margin-bottom:10px;
     background:#F8F8F1;
     border:1px solid #F1F1F1;
 }
@@ -12,8 +12,7 @@
     font-size:11px;
     line-height:16px;
     padding:10px;
-    text-align:justify;
-    margin-bottom: 10px;
+    text-align:justify;    
 }
 
 .moduletable_formVecinos h1{
@@ -24,7 +23,7 @@
     font-size:16px;
     color:#FFFFFF;
     font-weight:bold;
-    letter-spacing:-1px;
+    cursor: pointer;
 }
 
 .moduletable_formVecinos p{
