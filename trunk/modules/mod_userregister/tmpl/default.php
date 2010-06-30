@@ -103,8 +103,8 @@ foreach ($providerslist as $prov) {
     // -->
 </script>
 
-<div class="moduletable_userreg">
-<form action="<?php echo JRoute::_( 'index.php?option=com_user' ); ?>"
+<div id="registrationform" class="moduletable_userreg">
+    <form action="<?php echo JRoute::_( 'index.php?option=com_user' ); ?>"
       method="post"
       id="josForm"
       name="josForm"
