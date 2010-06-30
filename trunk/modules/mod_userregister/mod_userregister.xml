@@ -2,7 +2,7 @@
 <install type="module" version="1.5.0">
     <name>Registro de usuarios</name>
     <author>Cristian Pacheco</author>
-    <creationDate>February 2010</creationDate>
+    <creationDate>June 2010</creationDate>
     <copyright>(C) 2010 Cristian Pacheco. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>cpacheco@lavabit.com</authorEmail>
