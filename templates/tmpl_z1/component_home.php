@@ -23,7 +23,7 @@
 
             <div id="home_zona">
                 <div id="home_zona_text">
-                    Aca va texto, efectos, imágenes, etc. referidos a la zona
+                    <img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/zonales_home.jpg" />
                 </div>
                 <div id="home_zona_mod">
                     <jdoc:include type="modules" name="home_zona" style="xhtml" />
@@ -33,7 +33,6 @@
 
             <div id="home_login">
                 <div id="home_login_text">
-                    Sumate a zonales!!. Textos, imágenes, efectos referidos invitando a los usuarios a Zonales
                 </div>
                 <div id="home_login_mod">
                     <jdoc:include type="modules" name="home_login" style="xhtml" />
