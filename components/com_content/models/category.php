@@ -145,7 +145,15 @@ class ContentModelCategory extends JModel
                         // Resultados desde Solr
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
-                        $this->_total[$state] = $contenthelper->getTotal(0,100);
+
+                        $params = array ("!tags_values:la_voz_del_vecino");
+
+                        $menu = JRequest::getString('banda', NULL, 'get');
+                        if ($menu) {
+                            $params[] = "tags_values:$menu";
+                        }
+
+                        $this->_total[$state] = $contenthelper->getTotal(0,100,$params);
 		}
 
 		return $this->_total[$state];
