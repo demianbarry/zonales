@@ -31,13 +31,13 @@ defined('_JEXEC') or die('Restricted access');
     function loadMunicipios(selected){
         $('z_localidad_container').empty().addClass('ajax-loading');
         var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
-            new Ajax(url, {
-                method: 'get',
-                onComplete: function(response) {
-                    $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
-                    $('municipio_container').setStyle('display','block');
-                }
-            }).request();
+        new Ajax(url, {
+            method: 'get',
+            onComplete: function(response) {
+                $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
+                $('municipio_container').setStyle('display','block');
+            }
+        }).request();
     }
     //-->
 </script>
@@ -51,8 +51,8 @@ defined('_JEXEC') or die('Restricted access');
         <div id="municipio_container" style="display: none;">
             <p><label class="combo_zonal_label">Municipio</label></p>
             <div id="z_localidad_container"></div>
-            <input class="combo_zonal_button" type="submit" value="Cambiar Zonal" id="changeZonal" name="changeZonal" />
-        <br/>
+            <input class="combo_zonal_button" type="submit" value="<?php if($zonal) echo JText::_('MOD_COMBOZONA_CHANGE_ZONAL'); else echo JText::_('MOD_COMBOZONA_CHOOSE_ZONAL')?>" id="changeZonal" name="changeZonal" />
+            <br/>
         </div>
 
         <input type="hidden" name="task" value="setZonalById" />
