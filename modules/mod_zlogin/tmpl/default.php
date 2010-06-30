@@ -67,10 +67,10 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
                                 <?php if (strcasecmp($inputElement['name'], 'password') == 0): ?>
                                 <div id="formzlogin_useroptions" >
-                                    <a href="<?php echo $routeReset ?>"><?php echo $forgotPasswordMessage ?></a>
-                                    <a href="<?php echo $routeRemind ?>"><?php echo $forgotUsernameMessage ?></a>
+                                    <a id="forgotpass" href="<?php echo $routeReset ?>"><?php echo $forgotPasswordMessage ?></a>
+                                    <a id="forgotusername" href="<?php echo $routeRemind ?>"><?php echo $forgotUsernameMessage ?></a>
                                     <?php if ($allowRegistration) : ?>
-                                    <a href="<?php echo $routeRegister; ?>"><?php echo $registerMessage ?></a>
+                                    <a id="registeruser" href="<?php echo $routeRegister; ?>"><?php echo $registerMessage ?></a>
                                     <?php endif; ?>
                                 </div>
                                 <?php endif; ?>
