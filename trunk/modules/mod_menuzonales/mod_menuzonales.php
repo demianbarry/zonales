@@ -34,9 +34,7 @@ $app =& JFactory::getApplication();
 $template = $app->getTemplate();
 
 // parametros
-$menu_joomla = $params->get('menu_joomla');
-
-$menu_item = JFactory::getApplication()->getMenu()->getItem($menu_joomla);
+$menu_item = JFactory::getApplication()->getMenu()->getItem($params->get('menu_joomla'));
 
 // recupera el usuario
 $user =& JFactory::getUser();
