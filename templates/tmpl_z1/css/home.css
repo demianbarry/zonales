@@ -18,7 +18,7 @@
 #home_zona_text{
     float: left;
     width: 788px;
-    height: 300px;
+    height: 200px;
     padding-left: 10px;
     font-family: "trebuchet MS";
     font-size: 36px;
@@ -41,7 +41,7 @@
     float: right;
     padding-right: 10px;
     width: 160px;
-    height: 300px;
+    height: 200px;
 }
 
 #home_login_mod{
