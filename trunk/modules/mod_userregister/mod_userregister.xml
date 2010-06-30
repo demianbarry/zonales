@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+    <name>Registro de usuarios</name>
+    <author>Cristian Pacheco</author>
+    <creationDate>February 2010</creationDate>
+    <copyright>(C) 2010 Cristian Pacheco. All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>cpacheco@lavabit.com</authorEmail>
+    <version>1.0.0</version>
+    <description>Permite el registro de usuarios
+    </description>
+    <files>
+        <filename module="mod_userregister"
+               >mod_userregister.php
+        </filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+        <filename>index.html</filename>
+    </files>
+    <languages folder="language">
+        <language tag="es-ES">es-ES.mod_userregister.ini</language>
+    </languages>
+</install>
