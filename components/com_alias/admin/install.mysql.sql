@@ -39,6 +39,7 @@ CREATE TABLE  `#__providers` (
   `secretkey` varchar(255) default NULL,
   `callback_parameters` varchar(255) default NULL,
   `enabled` tinyint(1) not null default 1,
+  `default` tinyint(1) not null default 0,
   PRIMARY KEY  (`id`),
   KEY `fk_#__providers_#__protocol_type` (`protocol_type_id`),
   CONSTRAINT `fk_#__providers_#__protocol_type` FOREIGN KEY (`protocol_type_id`) REFERENCES `#__protocol_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
