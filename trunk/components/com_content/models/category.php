@@ -338,7 +338,12 @@ class ContentModelCategory extends JModel
                         // Resultados desde Solr
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
-                        $Arows = $contenthelper->getContent($limitstart, $limit, '!tags_values:la_voz_del_vecino');
+
+                        $menu = JRequest::getString('banda', NULL, 'get');
+
+                        $params = array ("tags_values:$menu", "!tags_values:la_voz_del_vecino");
+
+                        $Arows = $contenthelper->getContentArray($limitstart, $limit, $params);
 
 			// special handling required as Uncategorized content does not have a section / category id linkage
 			$i = $limitstart;

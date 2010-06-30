@@ -46,7 +46,7 @@ class comEqZonalesContentHelper {
      * @return Array
      */
     function getTotal($limitstart = 0, $limit = 0, $additionalParams = '') {
-        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
+        $results = $this->getSolrResults($limitstart, $limit, array($additionalParams));
 
         if (!is_null($results)) {
             return count($results->response->docs);
@@ -64,6 +64,25 @@ class comEqZonalesContentHelper {
      * @return Array
      */
     function getContent($limitstart = 0, $limit = 0, $additionalParams = '') {
+        $results = $this->getSolrResults($limitstart, $limit, array($additionalParams));
+
+        if (!is_null($results)) {
+            return $results->response->docs;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Recupera artículos del indice de solr. Este metodo acepta un arreglo de
+     * parametros
+     *
+     * @param int $limit
+     * @param int $limitstart
+     * @param array $queryParams
+     * @return Array
+     */
+    function getContentArray($limitstart = 0, $limit = 0, $additionalParams = array()) {
         $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
@@ -82,7 +101,7 @@ class comEqZonalesContentHelper {
      * @param string $queryParams
      * @return Array
      */
-    function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = '') {
+    function getSolrResults($limitstart = 0, $limit = 0, $additionalParams = array()) {
 
         $eqZonalesParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
@@ -125,14 +144,18 @@ class comEqZonalesContentHelper {
 
         $fqParams[] = $this->getWhere();
 
-        if (strlen($additionalParams) > 0) {
+        /*if (strlen($additionalParams) > 0) {
             $fqParams[] = $additionalParams;
+        }*/
+
+        foreach ($additionalParams as $param) {
+            $fqParams[] = $param;
         }
 
-        $menu = $this->getMenuValue();
+        /*$menu = $this->getMenuValue();
         if ($menu) {
             $fqParams[] = "tags_values:$menu";
-        }
+        }*/
 
         $disabledBands = $this->getDisabledBands();
         if (strlen($disabledBands) > 0) {
