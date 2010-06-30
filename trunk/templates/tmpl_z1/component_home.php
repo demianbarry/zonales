@@ -21,6 +21,8 @@
             <div id="home_top">
             </div>
 
+            <div class="lineSplit" style="background:url(<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/linea_03.gif); height:10px; width:978px; display:block; font-size:0; margin-bottom:10px;"></div>
+
             <div id="home_zona">
                 <div id="home_zona_text">
                     <img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/zonales_home.jpg" />
