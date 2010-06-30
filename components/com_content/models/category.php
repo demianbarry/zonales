@@ -339,9 +339,12 @@ class ContentModelCategory extends JModel
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
 
-                        $menu = JRequest::getString('banda', NULL, 'get');
+                        $params = array ("!tags_values:la_voz_del_vecino");
 
-                        $params = array ("tags_values:$menu", "!tags_values:la_voz_del_vecino");
+                        $menu = JRequest::getString('banda', 'a', 'get');
+                        if ($menu) {
+                            $params[] = "tags_values:$menu";
+                        }
 
                         $Arows = $contenthelper->getContentArray($limitstart, $limit, $params);
 
