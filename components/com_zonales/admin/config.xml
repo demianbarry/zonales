@@ -10,5 +10,6 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="recaptcha_publickey" type="text" default="" label="RECAPTCHA_PUBLICKEY" description="TIP_RECAPTCHA_PUBLICKEY"/>
 		<param name="recaptcha_privatekey" type="text" default="" label="RECAPTCHA_PRIVATEKEY" description="TIP_RECAPTCHA_PRIVATEKEY"/>
+                <param name="root_value" type="sql" default="" query="SELECT id, label FROM #__custom_properties_values WHERE parent_id = 0" key_field="id" value_field="label" description="root_value_tip" />
 	</params>
 </root>
