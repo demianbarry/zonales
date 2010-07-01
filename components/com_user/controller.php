@@ -375,7 +375,7 @@ class UserController extends JController {
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
-        $zonalId = JRequest::getInt('zonal',UserHelper::ZONAL_NOT_DEFINED,'method');
+        $zonalId = JRequest::getInt('zonalid',UserHelper::ZONAL_NOT_DEFINED,'method');
         $email2 = JRequest::getString('email2','','method');
         $birthday = JRequest::getString('birthdate','','method');
         $sex = JRequest::getString('sex','M','method');
