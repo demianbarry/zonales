@@ -171,6 +171,7 @@ class EqZonalesControllerBand extends JController {
         }
 
         // Recupera los zonales por defecto especificados por el usuario
+        /*
         $query = "SELECT e.value AS cp_value_id, v.label AS valor".
                 " FROM #__aapu_attribute_entity e".
                 " INNER JOIN #__custom_properties_values v ON v.id = e.value".
@@ -185,14 +186,15 @@ class EqZonalesControllerBand extends JController {
             $row->default = 0;
             $row->active = 0;
         }
-
-        $rows = array_merge($rows1, $rows2);
+         */
+        
+        //$rows = array_merge($rows1, $rows2);
 
         /**
          * Crea/modifica las bandas del ecualizador según la configuración
          * especificada.
          */
-        if($this->modifyBandImpl($rows)) {
+        if($this->modifyBandImpl($rows1)) {
             return true;
         }
         return false;
