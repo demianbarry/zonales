@@ -135,6 +135,7 @@
         <file>js/glassnav.js</file>
         <file>js/swfobject.js</file>
         <file>js/window.js</file>
+        <file>js/login_action_switch.js</file>
         <file>swf/index.html</file>
         <file>swf/inicio.swf</file>
         <file>swf/mapa.swf</file>
