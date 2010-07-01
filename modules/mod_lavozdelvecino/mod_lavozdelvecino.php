@@ -30,7 +30,7 @@ $helper = new comEqZonalesContentHelper();
 $limit = 100;
 $results = array();
 try {
-    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino AND published:true");
+    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino");
 }
 catch (Exception $e) {
     print_r($e->getMessage());
@@ -61,7 +61,12 @@ if ($results) {
         }
 
         $item->created = $doc->created;
-        $item->introtext = $doc->introtext;
+
+        $imgPos = strpos($doc->introtext, "<img ");
+        $strPre = substr($doc->introtext, 0, $imgPos+5);
+        $strPos = substr($doc->introtext, $imgPos+5);
+
+        $item->introtext = $strPre.' style="width: 280px" '.$strPos;
         $item->text = $doc->fulltext;
         $item->browsernav = '';
         if($key < $cantArticles)
