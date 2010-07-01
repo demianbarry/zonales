@@ -22,10 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 
     window.addEvent('domready', function() {
         $('provincias').addEvent('change', function() {
-            loadMunicipios('');
+            loadMunicipios();
         });
 
-        loadMunicipios(<?php echo $selectedOption?>);
+        loadMunicipios(<?php echo "$selectedOption" ?>);
     });
 
     function loadMunicipios(selected){

@@ -17,10 +17,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
 ?>
 
-<?php if(!$user->guest) :?>
+
 <!-- Validacion -->
 <script language="javascript" type="text/javascript">
     <!--
+<?php if(!$user->guest) :?>
     function validate(form, fn) {
         if (document.formvalidator.isValid(form) == false) {
             return fn(form);
@@ -57,9 +58,9 @@ JHTML::_('behavior.formvalidation');
         else if (form.email.hasClass('invalid')) {
             alert("<?php echo JText::_( 'SC_EMAIL_WARNING', true ); ?>");
         }
-        else if (form.telefono.hasClass('invalid')) {
-            alert("<?php echo JText::_( 'SC_PHONE_WARNING', true ); ?>");
-        }
+        /*else if (form.telefono.hasClass('invalid')) {
+            alert("<?php //echo JText::_( 'SC_PHONE_WARNING', true ); ?>");
+        }*/
         return false;
     }
 
@@ -70,7 +71,9 @@ JHTML::_('behavior.formvalidation');
         custom_theme_widget: 'recaptcha_widget'
     };
 
+<?php endif?>
     window.addEvent('domready', function() {
+<?php if(!$user->guest) :?>
         // reconvierte el textarea usado por tinyMCE. neceasario para enviar
         // el formulario por medio de Ajax.Form
         var fixTiny = function(properties) {
@@ -88,7 +91,7 @@ JHTML::_('behavior.formvalidation');
                     $('siguiente').setStyle('display','none');
                     $('nombre').addClass('required');
                     $('email').addClass('required validate-email');
-                    $('telefono').addClass('required');
+                    //$('telefono').addClass('required');
                     $('corresponsal').setStyle('display', '');
                     return true;
                 }
@@ -105,7 +108,7 @@ JHTML::_('behavior.formvalidation');
             $('corresponsal').setStyle('display', 'none');
             $('nombre').removeClass('required');
             $('email').removeClass('required validate-email');
-            $('telefono').removeClass('required');
+            //$('telefono').removeClass('required');
         });
 
         // al cambiar el partido, recupero las localidades
@@ -138,27 +141,23 @@ JHTML::_('behavior.formvalidation');
                 }
             });
         });
-
-        // creo el Slider que muestra y oculta el formulario de Soy Corresponsal
-        var mySoyCorresponsalSlider = new Fx.Slide('mod_soycorresponsal_main_div', {fps: 20});
-        // lo oculto por defecto
-        // mySoyCorresponsalSlider.hide();
-
-        // clickeando en el título muestro u oculto el formulario
-        $('enviar_soycorresponsal').addEvent('click', function(e) {
-            mySoyCorresponsalSlider.toggle();
-            if($('enviar_soycorresponsal').innerHTML == '<?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?>') {
-                $('enviar_soycorresponsal').setHTML('<?php echo JText::_('MOD_SOYCORRESPONSAL_VER_NOTICIAS');?>');
-            } else {
-                $('enviar_soycorresponsal').setHTML('<?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?>');
-            }
-
-        });
-
         // cargo las localidades de acuerdo al partido que esté seleccionado al cargar la página
         loadLocalidades(<?php echo $selectedOption?>);
+<?php endif?>
+        // creo el Slider que muestra y oculta el formulario de Soy Corresponsal
+        //var mySoyCorresponsalSlider = new Fx.Slide('mod_soycorresponsal_main_div', {fps: 20});
+        // lo oculto por defecto
+        //mySoyCorresponsalSlider.hide();
+
+        $('mod_soycorresponsal_main_div').setStyle('display','none');
+
+        // clickeando en el título muestro u oculto el formulario
+        $('title_soycorresponsal').addEvent('click', function(e) {
+            $('mod_soycorresponsal_main_div').setStyle('display',$('mod_soycorresponsal_main_div').getStyle('display') == 'none' ? 'block':'none')
+        });
     });
 
+<?php if(!$user->guest) :?>
     /**
      * Recupera mediante una llamada Ajax la lista de localidades, de acuerdo al partido seleccionado.
      */
@@ -180,24 +179,23 @@ JHTML::_('behavior.formvalidation');
             }
         }).request();
     }
+<?php endif?>
     //-->
 </script>
-<?php endif?>
 
 <!-- form -->
 <div class="moduletable_formVecinos">
     <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>
-    <?php if($user->guest): ?>
-    <div class="moduletable_formVecinos_bodyDiv">
-            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_PRE');?>
-        <a href="index.php?option=com_user&view=zlogin"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_LOGED');?></a>
-            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_INTER');?>
-        <a href="index.php?option=com_user&view=register&map=0"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
-            <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_POS');?>
-    </div>
-    <?php else : ?>
-    <a id="enviar_soycorresponsal" href="#" style="display: none;"><?php echo JText::_('MOD_SOYCORRESPONSAL_ENVIAR_A');?></a>
     <div id="mod_soycorresponsal_main_div" class="moduletable_formVecinos_bodyDiv">
+        <?php if($user->guest): ?>
+        <div class="moduletable_formVecinos_bodyDiv">
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_PRE');?>
+            <a href="index.php?option=com_user&view=zlogin"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_LOGED');?></a>
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_INTER');?>
+            <a href="index.php?option=com_user&view=register&map=0"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_POS');?>
+        </div>
+        <?php else : ?>
         <p><?php echo JText::_('INTRO');?></p>
         <p><strong><?php echo $module->title; ?></strong> <?php echo JText::_('INTRO2');?> <strong><?php echo JText::_('VIEW_IN');?></strong>.</p>
         <div class="splitter"></div>
@@ -267,8 +265,8 @@ JHTML::_('behavior.formvalidation');
                 <?php echo JHTML::_('form.token'); ?>
         </form>
 
-        <div id="mensaje" title="mensaje" />
+        <div id="mensaje" title="mensaje" />    
+        <?php endif?>
     </div>
-    <?php endif?>
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->

@@ -70,7 +70,7 @@ class modCloudHelper {
     }
 
     static function showHtmlTag($tag,$tagLabel,$size) {
-        echo '<a href="' . JRoute::_('index.php?searchword='.htmlentities( $tag ).'&amp;ordering=&amp;searchphrase=all&amp;option=com_search' ) . '" style="padding: 0px 4px; font-size: ' . $size . 'em">' . htmlentities( $tagLabel ) . '</a>';
+        echo '<a href="' . JRoute::_('index.php?searchword='.htmlentities( $tag ).'&amp;ordering=&amp;searchphrase=all&amp;option=com_search' ) . '" style="padding: 0px 4px; font-size: ' . $size . 'em">' . $tagLabel . '</a>';
     }
 }
 
