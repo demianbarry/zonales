@@ -81,7 +81,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `#__providers` WRITE;
 INSERT INTO `#__providers` VALUES  (1,'Google','https://www.google.com/accounts/o8/id',NULL,1,NULL,NULL,'images/login/google.png',0,'','',':::',NULL,NULL,NULL,1,0),
- (2,'Yahoo','me.yahoo.com',NULL,1,NULL,NULL,'images/login/yahoo.png',0,'','',':::',NULL,NULL,NULL,1,0),
+ (2,'Yahoo','https://me.yahoo.com',NULL,1,NULL,NULL,'images/login/yahoo.png',0,'','',':::',NULL,NULL,NULL,1,0),
  (3,'OpenID',NULL,NULL,1,NULL,NULL,'images/login/openid.png',0,'','','text:username:ZONALES_PROVIDER_ENTER_ID:',NULL,NULL,NULL,1,0),
  (4,'Zonales',NULL,NULL,6,NULL,NULL,'images/login/zonales.png',3,'','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:/password:password:ZONALES_PROVIDER_ENTER_PASSWORD:',NULL,NULL,NULL,1,1),
  (5,'ClaimID',NULL,NULL,1,NULL,NULL,'images/login/claimid.png',0,'http://claimid.com/','','text:username:ZONALES_PROVIDER_ENTER_USERNAME:',NULL,NULL,NULL,1,0),
