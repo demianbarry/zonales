@@ -16,7 +16,7 @@
     margin-bottom: 10px;
 }
 
-.moduletable_formZcloud h1{
+.moduletable_formZcloud h1 {
     display:block;
     padding:10px;
     background:#FF9900;
@@ -24,6 +24,10 @@
     font-size:16px;
     color:#FFFFFF;
     font-weight:bold;
+    cursor: pointer;
+}
+
+.open{
     cursor: pointer;
 }
 
