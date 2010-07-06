@@ -1,7 +1,7 @@
 /* CSS del módulo 'ZLogin' */
 
 .moduletable_zlogin{
-	width:160px;
+	width: 100%;
 	margin-bottom:10px;
 	background:#F8F8F1;
 	border-bottom:1px dotted #CCCCCC;
@@ -41,8 +41,7 @@
 }
 
 .moduletable_zlogin #formzlogin{
-	width:160px;
-        border-bottom:1px solid lightGrey;
+	        
 }
 
 .moduletable_zlogin label, .moduletable_zlogin a{

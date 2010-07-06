@@ -11,47 +11,128 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/home.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/_<?php echo $this->params->get('mainColor'); ?>.css" />
 
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/window.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/login_action_switch.js"></script>
+        <style type="text/css">
+
+            #containerContent{
+                background:none;
+            }
+
+            .miniBox{
+                margin-bottom:10px;
+                padding:5px;                
+            }
+
+            .miniBox .padd{
+                padding:5px;
+            }
+
+            .miniBox p{
+                font-size:11px;
+            }
+
+            .miniBox .heading{
+                display:block;
+                padding:10px;
+                margin-bottom:10px;
+                background:#009CC9;
+            }
+
+            .miniBox .heading h1{
+                color:#FFFFFF;
+                font-family:Georgia, "Times New Roman", Times, serif;
+                font-size:18px;
+                font-weight:bold;
+                letter-spacing:-1px;
+            }
+
+            .miniBox label{
+                margin-top: 10px;
+                margin-bottom:5px;
+                display:block;
+            }
+
+            .miniBox select, .miniBox input{
+                font-family:Arial, Helvetica, sans-serif;
+                font-size:11px;
+                color:#666666;
+            }
+
+            .miniBox select{
+                width:200px;
+            }
+
+            .miniBox input{
+                width:200px;
+            }
+
+            .miniBox input.radio{
+                margin-bottom:10px;
+                width:0;
+            }
+
+            .miniBox input.submit{
+                width:100px;
+            }
+        </style>
+
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/window.js"></script>        
         <!--<?php JHTML::script('swfobject.js'); ?>-->
+        <?php
+        $user =& JFactory::getUser();
+        if ($user->guest):
+            ?>
+        <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA"></script>
+        <script type="text/javascript">  FB.init("91778705a13235cd3efe59d31e4d31bf","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
+        <?php endif ?>
     </head>
 
     <body>
         <center>
-            <div id="home_top">
-            </div>
+            <table>
+                <tbody>
+                    <tr><td>
+                            <div id="wrapper">
+                                <div id="containerContent">
 
-            <div class="lineSplit" style="background:url(<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/linea_03.gif); height:10px; width:978px; display:block; font-size:0; margin-bottom:10px;"></div>
+                                    <div style="margin-left:10px;">
+                                        <div id="container-l">
+                                            <div id="mainContent">
 
-            <div id="home_zona">
-                <div id="home_zona_text">
-                    <img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/zonales_home.jpg" />
-                </div>
-                <div id="home_zona_mod">
-                    <jdoc:include type="modules" name="home_zona" style="xhtml" />
-                </div>
+                                                <img src="templates/<?php echo $mainframe->getTemplate(); ?>/images/home/zonales_top.jpg" style="margin-bottom:10px; width: 99%;" />
 
-            </div>
+                                                <div class="miniBox">
+                                                    <jdoc:include type="modules" name="home_zona" style="xhtml" />
+                                                </div><!-- .miniBox -->
+                                            </div><!-- END #mainContent -->
+                                            <div id="otherContent">
+                                                <div class="miniBox">
+                                                    <jdoc:include type="modules" name="home_login" style="xhtml" />
+                                                </div><!-- .miniBox -->
+                                                <div class="miniBox">
+                                                    <jdoc:include type="modules" name="home_register" style="xhtml" />
+                                                </div><!-- .miniBox -->
 
-            <div id="home_login">
-                <div id="home_login_text">
-                </div>
-                <div id="home_login_mod">
-                    <jdoc:include type="modules" name="home_login" style="xhtml" />
-                </div>
-            </div>
+                                            </div><!-- END #otherContent -->
+                                            <div class="clear"></div>
 
-            <div id="copy">
-                Copyright 2009 ZONALES.COM.AR | Todos los derechos reservados. <a href="http://validator.w3.org/check?uri=referer"><img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/w3c_xhtml_01.gif" alt="Valid XHTML 1.0 Transitional" /></a>
-            </div><!-- END #copy -->
+                                        </div><!-- END #container-l -->
+                                    </div>
 
-            <?php
-            $user =& JFactory::getUser();
-            if ($user->guest):
-                ?>
-            <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA"></script>
-            <script type="text/javascript">  FB.init("91778705a13235cd3efe59d31e4d31bf","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
-            <?php endif ?>
+                                </div><!-- END #containerContent -->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <div id="copy">
+                                Copyright 2009 ZONALES.COM.AR | Todos los derechos reservados. <a href="http://validator.w3.org/check?uri=referer"><img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/w3c_xhtml_01.gif" alt="Valid XHTML 1.0 Transitional" /></a>
+                            </div><!-- END #copy -->
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </center>
     </body>
 </html>
