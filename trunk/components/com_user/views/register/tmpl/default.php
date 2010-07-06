@@ -82,22 +82,22 @@ foreach ($this->providerslist as $prov) {
     }
 
     window.addEvent('domready', function() {
-        $('provincias').addEvent('change', function(value) {
-            loadMunicipios('');
+        $('reg_provincias').addEvent('change', function(value) {
+            regLoadMunicipios('');
         });
 
-        loadMunicipios(<?php echo $this->selectedOption?>);
+        regLoadMunicipios(<?php echo $this->selectedOption?>);
         document.formvalidator.setHandler('passverify', function (value) { return ($('passwordt').value == value); }    );
     });
 
-    function loadMunicipios(selected){
-        $('z_localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonal&selected='+selected;
+    function regLoadMunicipios(selected){
+        $('reg_z_localidad_container').empty().addClass('ajax-loading');
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('reg_provincias').value+'&name=zonal&selected='+selected;
             new Ajax(url, {
                 method: 'get',
                 onComplete: function(response) {
-                    $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
-                    $('municipio_container').setStyle('display','block');
+                    $('reg_z_localidad_container').removeClass('ajax-loading').setHTML(response);
+                    $('reg_municipio_container').setStyle('display','block');
                 }
             }).request();
     }
@@ -260,13 +260,13 @@ if(isset($this->message)) {
             </td>
             <td>
                 <div>
-                    <div id="z_provincias_container">
-                        <p><label class="combo_zonal_label">Provincia</label></p>
+                    <div id="reg_z_provincias_container">
+                        <p><label class="reg_combo_zonal_label">Provincia</label></p>
                         <?php echo $this->lists['provincias_select']; ?>
                     </div>
-                    <div id="municipio_container" style="display: none;">
-                        <p><label class="combo_zonal_label">Municipio</label></p>
-                        <div id="z_localidad_container"></div>
+                    <div id="reg_municipio_container" style="display: none;">
+                        <p><label class="reg_combo_zonal_label">Municipio</label></p>
+                        <div id="reg_z_localidad_container"></div>
                     <br/>
                     </div>
                 </div>

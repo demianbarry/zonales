@@ -124,8 +124,8 @@ class UserViewRegister extends JView {
 
         // crea select de zonales disponibles
         $parents = $helper->getItems($root);
-        $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'provincias',
-                'size="1" class="provincias_select required"', 'id', 'label', $selectedParent);
+        $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'reg_provincias',
+                'size="1" class="reg_provincias_select required"', 'id', 'label', $selectedParent);
 
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
