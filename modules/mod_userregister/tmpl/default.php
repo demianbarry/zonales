@@ -81,7 +81,7 @@ foreach ($providerslist as $prov) {
     }
 
     window.addEvent('domready', function() {
-        $('reg_provincias').addEvent('change', function() {
+        $('reg_provincias').addEvent('change', function(value) {
             regLoadMunicipios('');
         });
 
@@ -287,7 +287,7 @@ foreach ($providerslist as $prov) {
                         <option value="<?php echo $provider->name ?>"
                                 style="background-image: url(<?php echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
                                 class="providers-option"
-                                onclick="function func<?php echo $provider->name ?>(){ <?php
+                                onclick="function regfunc<?php echo $provider->name ?>(){ <?php
                                             if ($provider->type == 'Tradicional') {
                                                 echo 'hideAll();';
                                                 echo 'showPass();}';
@@ -302,7 +302,7 @@ foreach ($providerslist as $prov) {
                                                 echo 'setElement(elements,\'' . $provider->name . '\',\'' . $provider->type . '\');';
                                                 echo '}';
                                             }
-                                            echo 'func' . $provider->name . '()';
+                                            echo 'regfunc' . $provider->name . '()';
 
 
                                             ?>"
