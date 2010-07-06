@@ -125,3 +125,15 @@
     background-color: #0080FF;
     color: white;
 }
+
+.show {
+    background:  url("/templates/z1/images/hide3.gif");
+    background-repeat: no-repeat;
+    background-position: right center;        
+}
+
+.hide {
+    background:  url("/templates/z1/images/hide3.gif");
+    background-repeat: no-repeat;
+    background-position: right center;    
+}

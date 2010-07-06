@@ -6,6 +6,8 @@ window.addEvent('domready', function () {
     loginModule.setStyle('display','block');
     registerModule.setStyle('display','none');
 
+
+
     registerUser.addEvent('click', function (){
         registerUser.href = '#';
         loginModule.setStyle('display','none');

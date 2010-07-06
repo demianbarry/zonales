@@ -3,14 +3,14 @@
 .moduletable_userreg{
     display: block;
     float: left;
-    width:160px;
+    width:100%;
     margin-bottom:10px;
     background:#F8F8F1;
     border-bottom:1px dotted #CCCCCC;
 }
 
 #userRegTable 
-    tr, td {
+tr, td {
     margin:0;
     padding:0;
     margin-bottom: 10px;
@@ -21,23 +21,23 @@
 }
 
 .moduletable_userreg h1 {
-	padding:10px;
-	margin-bottom:10px;
-	background:#009CC9;
-	font-family:Georgia, "Times New Roman", Times, serif;
-	font-size:16px;
-	color:#FFFFFF;
-	font-weight:bold;
-	letter-spacing:-1px;
+    padding:10px;
+    margin-bottom:10px;
+    background:#009CC9;
+    font-family:Georgia, "Times New Roman", Times, serif;
+    font-size:16px;
+    color:#FFFFFF;
+    font-weight:bold;
+    letter-spacing:-1px;
 }
 
 .reg_button {
-    display:block;
-    width: 100%;
+    display:block;    
     border:1px solid #CCCCCC;margin:0;padding:0;
     font-family:"trebuchet MS";
     font-size:11px;
     color:#666666;
+    margin-top: 10px;
 }
 
 .reg_provincias_select {
@@ -90,4 +90,23 @@
 
 #josForm {
     margin: 10px;
+    width: 160px;
+}
+
+#reg_combozona_container {
+    font-size: 13px;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px gray dotted;
+}
+
+#reg_z_provincias_container {
+    margin-top: 10px;
+}
+
+#reg_zlogin_container {
+    font-size: 13px;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px gray dotted;
 }
