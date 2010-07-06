@@ -91,6 +91,8 @@
         <file>images/rss.gif</file>
         <file>images/w3c_css.gif</file>
         <file>images/w3c_xhtml_01.gif</file>
+        <file>images/show3.gif</file>
+        <file>images/hide3.gif</file>
         <file>images/_violeta/index.html</file>
         <file>images/_violeta/back-dotted-v.gif</file>
         <file>images/_violeta/back_lastComm.gif</file>
@@ -154,6 +156,7 @@
         <position>cols</position>
         <position>home_zona</position>
         <position>home_login</position>
+        <position>home_register</position>
     </positions>
 
     <params>
