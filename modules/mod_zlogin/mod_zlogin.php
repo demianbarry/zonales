@@ -14,16 +14,16 @@ $providerslist = array($selectProvider);
 
 // realiza la consulta a la base de datos
 $selectProviders = 'SELECT p.name, p.icon_url, g.name as groupname, p.required_input, p.default '.
-                    'FROM #__providers p, #__groups g '.
-                    'WHERE p.access=g.id AND p.enabled=1 '.
-                    'ORDER BY p.name';
+        'FROM #__providers p, #__groups g '.
+        'WHERE p.access=g.id AND p.enabled=1 '.
+        'ORDER BY p.name';
 $db->setQuery($selectProviders);
 $providers = $db->loadObjectList();
 $providerslist = array_merge($providerslist,$providers);
 
 
 foreach ($providers as $cprov) {
-    if ($cprov->default){
+    if ($cprov->default) {
         $defaultProvider = $cprov->name;
     }
 }
@@ -81,6 +81,19 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 
     window.addEvent('domready', function() {
 
+        /*var registerUser = $("registeruser");
+        var registerModule = $("registrationform");
+
+        if(registerModule != undefined) {
+            registerModule.setStyle('display','none');
+
+            registerUser.addEvent('click', function (){
+                registerUser.href = '#';
+                $('zlogin').setStyle('display','none');
+                registerModule.setStyle('display','block');
+            });
+        }*/
+
         $('formzlogin_submit').setStyle('display', 'none');
 
 
@@ -107,7 +120,8 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
     echo "]";
     echo "});";
 } ?>
-    setElements();
+        setElements();
+        setDefaultProvider();
     });
 
     function setSelectedIndex() {
@@ -125,9 +139,7 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
                 break;
             }
         }
-    }
-
-    window.addEvent('domready', setDefaultProvider());
+    }   
 
     function onFocus(element) {
         if(element.hasClass('inactive')) {
