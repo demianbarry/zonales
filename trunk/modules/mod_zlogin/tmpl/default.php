@@ -26,7 +26,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <p class="connect-message"><?php echo $connectMessage ?></p>
 
             <!-- aqui va el selector de proveedores -->
-            <select class="providers" id="formzlogin_selprovider" name="selprovider" style="width: 100%;" onchange="setElements();">
+            <select class="providers" id="formzlogin_selprovider" name="selprovider" onchange="setElements();">
                 <?php foreach ($providerslist as $provider): ?>
                     <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
                 <option value="" style="background-image: url(<?php if(isset($provider->icon_url)) echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
@@ -61,7 +61,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                                     $show = 'block';
                                 }
 
-                                echo '<input type="'. $type .'" name="'. $name . '" id="formzlogin_'. $name .'" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="'. $callback .'" value="'.$value.'" style="width: 100%;"/>';
+                                echo '<input type="'. $type .'" name="'. $name . '" id="formzlogin_'. $name .'" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="'. $callback .'" value="'.$value.'"/>';
 
                                 ?>
 

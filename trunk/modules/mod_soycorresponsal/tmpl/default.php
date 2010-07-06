@@ -150,10 +150,17 @@ JHTML::_('behavior.formvalidation');
         //mySoyCorresponsalSlider.hide();
 
         $('mod_soycorresponsal_main_div').setStyle('display','none');
+        $('title_soycorresponsal').addClass('show');
 
         // clickeando en el título muestro u oculto el formulario
         $('title_soycorresponsal').addEvent('click', function(e) {
-            $('mod_soycorresponsal_main_div').setStyle('display',$('mod_soycorresponsal_main_div').getStyle('display') == 'none' ? 'block':'none')
+            if($('mod_soycorresponsal_main_div').getStyle('display') == 'none') {
+                $('mod_soycorresponsal_main_div').setStyle('display','block');
+                $('title_soycorresponsal').removeClass('show').addClass('hide');
+            } else  {
+                $('mod_soycorresponsal_main_div').setStyle('display','none');
+                $('title_soycorresponsal').removeClass('hide').addClass('show');
+            }
         });
     });
 
