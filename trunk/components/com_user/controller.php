@@ -253,26 +253,8 @@ class UserController extends JController {
         $error = $mainframe->logout();
 
         if(!JError::isError($error)) {
-            if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
-                $return = base64_decode($return);
-                if (!JURI::isInternal($return)) {
-                    $return = '';
-                }
-            }
-
-            //////// SACAR DE ACA!!!!!!!! /////////
-//            $db = JFactory::getDBO();
-//        $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
-//    $db->setQuery($selectKeys);
-//    $dbKeys = $db->loadObject();
-//    $facebook = new Facebook($apikey, $secretkey);
-//    $facebook->logout(JURI::getBase());
-            //////////////////////
-
-            // Redirect if the return url is not registration or login
-            if ( $return && !( strpos( $return, 'com_user' )) ) {
-                $mainframe->redirect( $return );
-            }
+            $message = JText::_('SYSTEM_LOGOUT_SUCCESS');
+            UserHelper::showMessage(SUCCESS, $message);
         } else {
             parent::display();
         }
@@ -370,7 +352,9 @@ class UserController extends JController {
         global $mainframe;
 
         // Check for request forgeries
-        JRequest::checkToken() or jexit( 'Invalid Token' );
+        $token = JUtility::getToken();
+        JRequest::checkToken() or jexit( "se esperaba el token $token");
+        //JRequest::checkToken() or jexit( JText::_('SYSTEM_TOKEN_INVALID') );
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
