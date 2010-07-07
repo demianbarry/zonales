@@ -352,9 +352,7 @@ class UserController extends JController {
         global $mainframe;
 
         // Check for request forgeries
-        $token = JUtility::getToken();
-        JRequest::checkToken() or jexit( "se esperaba el token $token");
-        //JRequest::checkToken() or jexit( JText::_('SYSTEM_TOKEN_INVALID') );
+        JRequest::checkToken() or jexit(JText::_('SYSTEM_TOKEN_INVALID'));
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
