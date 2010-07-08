@@ -160,9 +160,9 @@
     </positions>
 
     <params>
-        <param name="mainColor" type="list" default="naranja" label="Color principal del template" description="Colores disponibles para usar en el template.">
-            <option value="azul">Azul</option>
+        <param name="mainColor" type="list" default="violeta" label="Color principal del template" description="Colores disponibles para usar en el template.">
             <option value="violeta">Violeta</option>
+            <option value="azul">Azul</option>            
         </param>
     </params>
 

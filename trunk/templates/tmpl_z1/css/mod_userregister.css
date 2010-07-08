@@ -90,7 +90,7 @@ tr, td {
 
 #josForm {
     margin: 10px;
-    width: 160px;
+    width: 270px;
 }
 
 #reg_combozona_container {
@@ -109,4 +109,16 @@ tr, td {
     padding-top: 10px;
     margin-top: 10px;
     border-top: 1px gray dotted;
+}
+
+#reg_sex_container {
+    width: 160px;
+}
+
+label.expandible {
+    background-color:#009CC9;
+    color:white;
+    cursor:pointer;
+    font-size:13px;
+    padding:5px;
 }
