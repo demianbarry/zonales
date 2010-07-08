@@ -11,7 +11,7 @@
     </description>
     <files>
         <filename module="mod_userregister"
-               >mod_userregister.php
+                  >mod_userregister.php
         </filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
@@ -20,4 +20,10 @@
     <languages folder="language">
         <language tag="es-ES">es-ES.mod_userregister.ini</language>
     </languages>
+    <params>
+        <param name="show_colapsed" type="radio" default="1" label="SHOWCOLAPSED" description="TIP_SHOWCOLAPSED">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+        </param>
+    </params>
 </install>
