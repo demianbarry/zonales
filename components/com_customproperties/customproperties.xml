@@ -208,6 +208,10 @@
 			<filename>views/cpfields/tmpl/default.php</filename>
 			<filename>views/cpfields/tmpl/edit.php</filename>
 
+                        <filename>views/tags/index.html</filename>
+			<filename>views/tags/view.html.php</filename>
+			<filename>views/tags/tmpl/default.php</filename>
+
                         <filename>views/cpvalues/index.html</filename>
 			<filename>views/cpvalues/view.html.php</filename>
 			<filename>views/cpvalues/tmpl/index.html</filename>
