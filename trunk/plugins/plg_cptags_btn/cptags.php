@@ -86,7 +86,8 @@ class plgButtonCptags extends JPlugin
 
                 $app = JFactory::getApplication();
                 if ($app->isAdmin())
-                        $link = 'index.php?option=com_customproperties&amp;controller=hierarchictagging&amp;view=hierarchictagging&amp;tmpl=component&id='.$content_id;
+                        //$link = 'index.php?option=com_customproperties&amp;controller=hierarchictagging&amp;view=hierarchictagging&amp;tmpl=component&id='.$content_id;
+                        $link = 'index.php?option=com_customproperties&task=tags&cid='.$content_id.'&tmpl=component';
                 else
                         $link = 'index.php?option=com_customproperties&amp;controller=hierarchictagging&amp;view=hierarchictagging&amp;tmpl=component_only&id='.$content_id;
 
