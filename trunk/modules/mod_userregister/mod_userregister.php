@@ -127,6 +127,8 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
                 'size="1" class="reg_provincias_select required"', 'id', 'label', $selectedParent);
 
 
+        $showColapsed = $params->get('show_colapsed');
+
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
