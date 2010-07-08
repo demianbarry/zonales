@@ -1,8 +1,6 @@
 var tagsArray = null;
 
-window.addEvent('domready', function() {
-    loadTagsArray(null);
-});
+loadTagsArray(null);
 
 function loadTagsArray(id) {
     if(id) {
