@@ -27,9 +27,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <div id="navigation">
 	<ul id="mymenu">
 		<li id="s0"><a href="<?php echo JURI::base(); ?>"><?php echo JText::_('Inicio'); ?></a></li>
+                <?php if (isset ($eq->fields)): ?>
 		<?php foreach ($eq->fields as $field): ?>
 		<li id="s<?php echo $field->id; ?>"><a href="<?php echo($field->link ? $field->link : '#'); ?>"><?php echo $field->label; ?></a></li>
 		<?php endforeach; ?>
+                <?php endif;?>
 	</ul>
 </div>
 <div id="sublinks">
