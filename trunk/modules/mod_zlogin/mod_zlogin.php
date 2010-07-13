@@ -161,11 +161,25 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
         }
     }
 
+    function setUsername(provider){
+        if (provider == 'Google'){
+            $('formzlogin_username').value='https://www.google.com/accounts/o8/id';
+            $('formzlogin_provider').value='OpenID';
+        }
+        if (provider == 'Yahoo'){
+            $('formzlogin_username').value='https://me.yahoo.com';
+            $('formzlogin_provider').value='OpenID';
+        }
+    }
+
     function setElements() {
         setSelectedIndex();
         var provider = providers[index];
         $('formzlogin_provider').value=provider.name;
         $('formzlogin_submit').value=sprintf(<?php echo "'$buttonMessage'"?>,provider.name);
+
+        setUsername(provider.name);
+
         var elements = provider.inputs;
 <?php
 foreach ($providerslist as $prov) {
