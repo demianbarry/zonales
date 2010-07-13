@@ -91,18 +91,20 @@ function openid($credentials,$options) {
     //$discovery = trim($dbprovider->discovery_url);
     //    $discovery = ($dbprovider->discovery_url == null) ? null : trim($dbprovider->discovery_url);
     $discovery = $dbprovider->discovery_url;
-    $beginning = substr($credentials['username'], 0, strlen($prefix));
-    $ending = substr($credentials['username'], strlen($credentials['username']) - strlen($suffix));
+    $username = trim($credentials['username']);
+    $beginning = substr($username, 0, strlen($prefix));
+    $ending = substr($username, strlen($username) - strlen($suffix));
 
     if ($beginning != $prefix) {
-        $credentials['username'] = $prefix . $credentials['username'];
+        $username = $prefix . $username;
     }
     if ($ending != $suffix) {
-        $credentials['username'] = $credentials['username'] . $suffix;
+        $username = $username . $suffix;
     }
 
-    $discovery_url = (!is_null($discovery) && $discovery != '') ? $discovery : $credentials['username'];
-    $discovery_url = trim($discovery_url);
+    //$discovery_url = ($discovery) ? $discovery : $credentials['username'];
+    $discovery_url = (isset ($discovery) && !is_null($discovery) && $discovery != '') ? $discovery : $username;
+    //$discovery_url = trim($discovery_url);
 
     ################################################
 
