@@ -36,6 +36,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </div>
 <div id="sublinks">
 	<ul id="s0_m"><li /></ul>
+        <?php if (isset ($eq->fields)): ?>
 	<?php foreach ($eq->fields as $field): ?>
 	<ul id="s<?php echo $field->id; ?>_m">
 		<?php foreach ($field->bands as $band): ?>
@@ -43,5 +44,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>
+        <?php endif;?>
 </div>
 <!-- glassmenu -->
