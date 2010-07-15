@@ -8,6 +8,7 @@ $cid = $this->cid;
 
 ?>
 
+<?php echo $this->result; ?>
 
 <div id="addTagsDiv<?php echo $cid?>" style="display: block; background: none repeat scroll 0% 0% #F8F8F1; position: relative; margin: 5px; padding: 10px; border: 1px outset grey;">
       <div id="tagsSearchHeader<?php echo $cid?>">
