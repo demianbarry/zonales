@@ -49,31 +49,6 @@ function facebookconnect($credentials,$options) {
         $info[STATUS] = Auth_FAILURE;
     }
 
-    // crea una copia de los parametros recibidos sin el sig
-//    $fb_params = array();
-//    foreach ($sessionData as $clave => $valor) {
-//        if ($clave != 'sig') {
-//            $fb_params[$clave] = $valor;
-//        }
-//    }
-//
-//    $apikey = $dbKeys->apikey;
-//    $secretkey = $dbKeys->secretkey;
-//    $facebook = new Facebook($apikey, $secretkey);
-//
-//    $info = array();
-//    // si los parametros vinieron de facebook
-//    if ($facebook->verify_signature($fb_params, $sessionData['sig'])) {
-//        $facebook->set_user($sessionData['uid'], $sessionData['session_key'], $sessionData['expires'], $sessionData['secret']);
-//
-//        $userid = $facebook->get_loggedin_user();
-//        $info[EXTERNAL_ID] = $userid;
-//        $info[STATUS] = Auth_SUCCESS;
-//    }
-//    else { //sino todo mal
-//        $info[STATUS] = Auth_FAILURE;
-//    }
-
     return $info;
 
 }
@@ -103,9 +78,9 @@ function openid($credentials,$options) {
     }
 
     //$discovery_url = ($discovery) ? $discovery : $credentials['username'];
-    $discovery_url = (isset ($discovery) && !is_null($discovery) && $discovery != '') ? $discovery : $username;
-    //$discovery_url = trim($discovery_url);
-
+    $discovery_url = ($discovery) ? $discovery : $username;
+    $username = ($discovery) ? '' : $username;
+    
     ################################################
 
 
@@ -186,7 +161,7 @@ function openid($credentials,$options) {
         $options[JUtility::getToken()] = 1;
 
         $process_url  = sprintf($entry_url->toString()."?option=com_user&task=login&provider=%s",$provider);
-        $process_url  = (isset ($credentials['username']) && $credentials['username'] != '') ? sprintf("%s&username=%s",$process_url,$credentials['username']) : $process_url;
+        $process_url  = (isset ($username) && $username) ? sprintf("%s&username=%s",$process_url,urlencode($username)) : $process_url;
         $process_url .= '&'.JURI::buildQuery($options);
         $session->set('return_url', $process_url );
 
@@ -246,37 +221,46 @@ function openid($credentials,$options) {
             break;
     }
 
+    //die("discovery url: #$discovery_url# username:#$username#");
+
     return $info;
 }
 
 function twitteroauth($credentials,$options) {
-    $session = & JFactory :: getSession();
-    $mainframe =& JFactory::getApplication();
-    $db = JFactory::getDBO();
-    $db->setQuery('select p.apikey, p.secretkey as secret from #__providers p where p.name=' . $db->Quote($credentials['provider']));
-    $consumer = $db->loadObject();
-    $twitterObj = new EpiTwitter($consumer->apikey, $consumer->secret);
+    try {
+        $session = & JFactory :: getSession();
+        $mainframe =& JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $db->setQuery('select p.apikey, p.secretkey as secret from #__providers p where p.name=' . $db->Quote($credentials['provider']));
+        $consumer = $db->loadObject();
+        $twitterObj = new EpiTwitter($consumer->apikey, $consumer->secret);
 
+        // si no se ha iniciado el proceso de autenticacion
+        $hasbegun = $session->get('twitterhasbegun');
+        if (!isset ($hasbegun) || $hasbegun == 'false') {
+            $session->set('twitterhasbegun','true');
+            $mainframe->redirect($twitterObj->getAuthenticateUrl());
+        }
 
-    // si no se ha iniciado el proceso de autenticacion
-    $hasbegun = $session->get('twitterhasbegun');
-    if (!isset ($hasbegun) || $hasbegun == 'false'){
-        $session->set('twitterhasbegun','true');
-        $mainframe->redirect($twitterObj->getAuthenticateUrl());
+        $session->set('twitterhasbegun','false');
+
+        $twitterObj->setToken($credentials['oauth_token']);
+        $token = $twitterObj->getAccessToken();
+        $twitterObj->setToken($token->oauth_token, $token->oauth_token_secret);
+        $data = $twitterObj->get_accountVerify_credentials();
+
+        $info = array();
+        $info[EXTERNAL_ID] = $data->id;
+        $info[STATUS] = Auth_SUCCESS;
+
+        return $info;
+    }
+    catch (EpiOAuthException $ex ){
+        $info = array();
+        $info[STATUS] = Auth_FAILURE;
+        return $info;
     }
 
-    $session->set('twitterhasbegun','false');
-
-   $twitterObj->setToken($credentials['oauth_token']);
-    $token = $twitterObj->getAccessToken();
-    $twitterObj->setToken($token->oauth_token, $token->oauth_token_secret);
-    $data = $twitterObj->get_accountVerify_credentials();
-
-    $info = array();
-    $info[EXTERNAL_ID] = $data->id;
-    $info[STATUS] = Auth_SUCCESS;
-
-    return $info;
 }
 
 function liveid($credentials,$options) {
@@ -333,6 +317,4 @@ function liveid($credentials,$options) {
     }
     return $info;
 }
-
-
 ?>
