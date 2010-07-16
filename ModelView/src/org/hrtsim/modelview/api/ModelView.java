@@ -11,4 +11,6 @@ public interface ModelView  {
 
     public CloneableOpenSupport getOpenSupport(MultiDataObject mdo);
 
+    public void show();
+
 }
