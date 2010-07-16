@@ -10,11 +10,15 @@ import org.openide.windows.CloneableOpenSupport;
  *
  * @author fep
  */
-@ServiceProvider(service = ModelView.class)
+//@ServiceProvider(service = ModelView.class)
 public class DfltModelView implements ModelView {
 
     public CloneableOpenSupport getOpenSupport(MultiDataObject mdo) {
         return new DfltModelViewSupport(mdo.getPrimaryEntry());
+    }
+
+    public void show() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
