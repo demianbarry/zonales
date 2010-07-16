@@ -139,9 +139,10 @@
                         <filename>controllers/hierarchictagging.php</filename>
 
 			<filename>css/cp_admin.css</filename>
-
+                        <filename>css/customproperties.css</filename>
 			<filename>images/index.html</filename>
 			<filename>images/assign.png</filename>
+                        <filename>images/eliminar.gif</filename>
 			<filename>images/config.png</filename>
 			<filename>images/controlpanel.png</filename>
 			<filename>images/customproperties.png</filename>

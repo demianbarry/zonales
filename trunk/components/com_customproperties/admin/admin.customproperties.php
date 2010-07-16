@@ -16,6 +16,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $document	=& JFactory::getDocument();
 $document->addStyleSheet(JUri::root().'/administrator/components/com_customproperties/css/cp_admin.css');
+$document->addStyleSheet(JUri::root().'/administrator/components/com_customproperties/css/customproperties.css');
 
 // Set the table directory
 JTable::addIncludePath( JPATH_COMPONENT.DS.'tables' );
