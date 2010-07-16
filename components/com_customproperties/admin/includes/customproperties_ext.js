@@ -73,6 +73,9 @@ function searchTags(event, id) {
                 });
             }
             return;
+        default:
+            if(key.length!=1 && key != 'backspace' && key != 'delete')
+                return;
     }
 
     var tagsSearchField = $('tagsSearchField'+id)
@@ -141,10 +144,10 @@ function searchTags(event, id) {
                     },
                     'styles': {
                         'cursor': 'pointer'
-                    }
+                    }                    
                 }));
-                divs[divs.length-1].adopt(new Element('div', {
-                    }).setHTML(element.value+'/'+(element.parent != null ? element.parent+'/' : '')+element.field));
+                divs[divs.length-1].adopt(new Element('div', {                    
+                    }).setHTML(element.value));
                 divs[divs.length-1].adopt(new Element('input', {
                     'type': "checkbox",
                     'events': {

@@ -27,12 +27,12 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
 
     $app =& JFactory::getApplication();
 
-    $database 		= JFactory::getDBO();
-    $user 			= JFactory::getUser();
-    $aid			= $user->get('aid',0);
-    $result			= "";
-    $tagstring		= "";
-    $tagstrings		= array();
+    $database = JFactory::getDBO();
+    $user = JFactory::getUser();
+    $aid = $user->get('aid',0);
+    $result = "";
+    $tagstring = "";
+    $tagstrings = array();
 
     $show_tag_name 	= $params->get('show_tag_name', '0');
     $linked_tags 	= $params->get('linked_tags', '0');
@@ -106,7 +106,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
         JHTML::_( 'behavior.modal' );
         $link = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=tagging&tmpl=component_only&id='.$cid);
         $rel = "{handler: 'iframe', size: {x: 570, y: 400}}";
-        $result .= "<span class=\"cp_tag\"><a class=\"modal\" rel=\"$rel\" href=\"$link\">".JText::_('Edit tags')."</a></span>\n";
+        //$result .= "<span class=\"cp_tag\"><a class=\"modal\" rel=\"$rel\" href=\"$link\">".JText::_('Edit tags')."</a></span>\n";
         $result .= "<span class=\"cp_tag\"><a style=\"cursor: pointer;\" onclick=\"showAddTagsDiv($cid)\">".JText::_('Add tags')."</a></span>\n";
     }
 
