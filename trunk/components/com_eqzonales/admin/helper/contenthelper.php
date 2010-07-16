@@ -261,7 +261,7 @@ class comEqZonalesContentHelper {
 
         // Si se recupera correctamente el zonal actual, se compone la lista
         // de zonales de preferencia para el usuario
-        if ($zonal->id) {
+        if ($zonal != null && $zonal->id) {
             $localidades = $helper->getLocalidadesByPartido($zonal->id);
 
             $localidadesList = array();
