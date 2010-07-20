@@ -402,7 +402,7 @@ class EqZonalesControllerEq extends JController {
             // datos del ecualizador solicitado
             $eqModel = &$this->getModel('Eq');
             $eqModel->setId($eqId);
-            $eq = $eqModel->getData(true);
+            $eq = $eqModel->getData();
 
             if (!isset($eq->id)) {
                 return array();
@@ -416,7 +416,7 @@ class EqZonalesControllerEq extends JController {
             $bandModel->setOrderBy(
                     $eqZonalesParams->get('eq_order_by', 'band_label') . ' ' .
                     $eqZonalesParams->get('eq_order', 'asc'));
-            $bands = $bandModel->getAll(true);
+            $bands = $bandModel->getAll();
 
             $data = new stdClass();
             $data->eq = $eq;
