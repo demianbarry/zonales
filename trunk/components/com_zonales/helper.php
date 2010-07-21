@@ -61,6 +61,26 @@ class comZonalesHelper {
     }
 
     /**
+     * Recupera información acerca de un zonal a partir de su Id
+     *
+     * @param int zonal_id Id del zonal
+     * @return object Objeto con información acerca del zonal indicado
+     */
+    function getZonalById($zonal_id) {
+
+        $dbo	= & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '.
+                $dbo->nameQuote('v.parent_id') .', '. $dbo->nameQuote('v.label')
+                .' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+                .' WHERE '. $dbo->nameQuote('v.name') .' = '. $dbo->quote($zonal_id);
+        $dbo->setQuery($query);
+
+        $zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
+
+        return $zonal;
+    }
+
+    /**
      * Recupera información de un zonal a partir de un nombre.
      *
      * @param string $name Nombre del zonal
