@@ -105,7 +105,7 @@ class JWFComponentHandler_content  extends JWFComponentHandler {
     }
 
     function getEditLink( $id ) {
-        return JRoute::_("index.php?option=com_content&task=edit&id=$id");
+        return JRoute::_("index.php?option=com_content&task=edit&id=$id&tmpl=component_edit");
     }
 
     function getLatestRevisionId( $id ) {

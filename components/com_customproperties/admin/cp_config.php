@@ -9,6 +9,7 @@ $cp_config['search_archived']='1';
 $cp_config['result_acl']='0';
 $cp_config['frontend_tagging']='1';
 $cp_config['editing_level']='1';
+$cp_config['publishing_group']='21';        
 $cp_config['use_itemid']='1';
 $cp_config['limit']='';
 $cp_config['search_sections']='';

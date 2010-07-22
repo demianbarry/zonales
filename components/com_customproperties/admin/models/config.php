@@ -134,6 +134,7 @@ class CustompropertiesModelConfig extends JModel
 	$cp_config['frontend_tagging']='0';
 	$cp_config['use_itemid']='1';
 	$cp_config['editing_level']='1';
+        $cp_config['publishing_group']='21';
 	$cp_config['limit']='';
 	$cp_config['search_sections']='';
 	$cp_config['default_ordering']='newest';

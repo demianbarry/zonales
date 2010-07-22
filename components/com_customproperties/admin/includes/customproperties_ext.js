@@ -7,16 +7,32 @@ function loadTagsArray(id) {
         var tagsSearchResults = $('tagsSearchResults'+id);
         tagsSearchResults.addClass('ajax-loading');
     }
-    new Json.Remote('index.php?option=com_customproperties&format=raw&task=getAllTags', {
-        onComplete: function(tags){
-            tagsArray = tags;
-            if(id) {
-                tagsSearchResults.removeClass('ajax-loading');
-                searchTags(null, id);
+    if(typeof(Json)!="undefined") {
+        new Json.Remote('index.php?option=com_customproperties&format=raw&task=getAllTags', {
+            onComplete: function(tags){
+                tagsArray = tags;
+                if(id) {
+                    tagsSearchResults.removeClass('ajax-loading');
+                    searchTags(null, id);
+                }
             }
-        }
-    }).send();
+        }).send();
+    }
+    else if(typeof(Request) != "undefined"){
+        new Request.JSON({
+            url: 'index.php?option=com_customproperties&format=raw&task=getAllTags',
+            onSuccess: function(tags){
+                tagsArray = tags;
+                if(id) {
+                    tagsSearchResults.removeClass('ajax-loading');
+                    searchTags(null, id);
+                }
+            }
+        }).send();
+
+    }
 }
+
 
 function deleteTag(value_id, field_id, content_table, content_id) {
     var span = $(value_id+'_'+field_id+'_'+content_table+'_'+content_id);
@@ -27,16 +43,32 @@ function deleteTag(value_id, field_id, content_table, content_id) {
     if(confirm('¿Está seguro de eliminar la etiqueta?')) {
         span.empty().addClass('ajax-loading');
         var url='index.php?option=com_customproperties&format=raw&task=removeTags&valueId='+value_id+'&fieldId='+field_id+'&content_table=\''+content_table+'\'&cid='+content_id;
-        new Ajax(url, {
-            method: 'get',
-            onComplete: function(response) {
-                span.remove();
-            },
-            onFailure: function() {
-                span.setHTML(spanContent).removeClass('ajax-loading');
-            }
+        if(typeof(Ajax) != "undefined") {
+            new Ajax(url, {
+                method: 'get',
+                onComplete: function(response) {
+                    span.remove();
+                },
+                onFailure: function() {
+                    span.innerHTML=(spanContent);
+                    span.removeClass('ajax-loading');
+                }
                 
-        }).request();
+            }).request();
+        } else if (typeof(Request != "undefined")) {
+            new Request({
+                'url': url,
+                method: 'get',
+                onComplete: function(response) {
+                    span.dispose();
+                },
+                onFailure: function() {
+                    span.innerHTML=(spanContent);
+                    span.removeClass('ajax-loading');
+                }
+
+            }).send();
+        }
     }
 }
 
@@ -74,7 +106,7 @@ function searchTags(event, id) {
             }
             return;
         default:
-            if(key.length!=1 && key != 'backspace' && key != 'delete')
+            if(key.length != 1 && key != 'backspace' && key != 'delete')
                 return;
     }
 
@@ -83,7 +115,7 @@ function searchTags(event, id) {
 
     if(value.length < 3) {
         tagsSearchResults.empty()
-        tagsSearchResults.setHTML('Indique al menos tres caracteres para la búsqueda.');
+        tagsSearchResults.innerHTML='Indique al menos tres caracteres para la búsqueda.';
         return;
     }
     
@@ -147,7 +179,7 @@ function searchTags(event, id) {
                     }                    
                 }));
                 divs[divs.length-1].adopt(new Element('div', {                    
-                    }).setHTML(element.value));
+                    })).innerHTML=element.value;
                 divs[divs.length-1].adopt(new Element('input', {
                     'type': "checkbox",
                     'events': {
@@ -172,7 +204,7 @@ function searchTags(event, id) {
             divs[0].addClass('selected');
 
         if(divs.length == 0) {
-            tagsSearchResults.setHTML('No se encontraron resultados.');
+            tagsSearchResults.innerHTML='No se encontraron resultados.';
         }
 
         if(selectedTags.getElements('div').length != 0)
@@ -183,7 +215,7 @@ function searchTags(event, id) {
         tagsSearchResults.removeClass('ajax-loading');
     } else
     if(value == null || value == ''){
-        tagsSearchResults.setHTML('Indique al menos tres caracteres para la búsqueda.');
+        tagsSearchResults.innerHTML='Indique al menos tres caracteres para la búsqueda.';
         tagsSearchResults.empty();
     }
     tagsSearchField.focus();
@@ -210,11 +242,22 @@ function addTags(event, id) {
     $('tagsSearchResults'+id).setStyle('display', 'none');
     $('selectedTags'+id).setStyle('display', 'none');
 
-    $('addTagsForm'+id).send({
-        onSuccess: function(response) {
-            $('addTagsDiv'+id).setStyle('display', 'none');
-            $('addTagsDiv'+id).setStyle('display', 'none');
-            window.location.reload();
-        }
-    });
+    if(typeof(Json)!="undefined") {
+        $('addTagsForm'+id).send({
+            onSuccess: function(response) {
+                $('addTagsDiv'+id).setStyle('display', 'none');
+                window.location.reload();
+            }
+        });
+    }
+    else if(typeof(Request) != "undefined"){
+        $('addTagsForm'+id).set('send', {
+            onComplete: function(response) {
+                $('addTagsDiv'+id).setStyle('display', 'none');
+                window.location.reload();
+            }
+        });
+        $('addTagsForm'+id).send();
+    }
+    
 }

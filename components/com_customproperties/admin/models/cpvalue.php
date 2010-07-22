@@ -93,6 +93,7 @@ class CustompropertiesModelCpvalue extends JModel {
             $this->_data->default = 0;
             $this->_data->ordering = 0;
             $this->_data->multiple = 1;
+            $this->_data->access_group = 0;
         }
         return $this->_data;
     }
@@ -111,6 +112,7 @@ class CustompropertiesModelCpvalue extends JModel {
         $data->default = 0;
         $data->ordering = 0;
         $data->multiple = 1;
+        $data->access_group = 0;
 
         return $data;
     }
@@ -214,6 +216,7 @@ class CustompropertiesModelCpvalue extends JModel {
         $array['default']		= JRequest::getVar('default', '', '', 'int');
         $array['ordering'] 		= JRequest::getVar('ordering', '', '', 'int');
         $array['multiple'] 		= JRequest::getVar('multiple', '', '', 'int');
+        $array['access_group'] 		= JRequest::getVar('access_group', '', '', 'int');
 
 
 //print_r($array);

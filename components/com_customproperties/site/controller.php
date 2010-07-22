@@ -33,6 +33,7 @@ class CustompropertiesController extends JController {
         parent::__construct();
         $this->registerTask('add', 		'assignCP');
         $this->registerTask('replace',	'assignCP');
+        $this->registerTask('tags',	'display');
     }
 
     /**
@@ -48,7 +49,6 @@ class CustompropertiesController extends JController {
 
         switch ($vName) {
             case 'tagging' :
-
                 $document->addStyleSheet('components/com_customproperties/css/customproperties.css');
                 $vName = 'tagging';
                 $vLayout = JRequest::getCmd('layout', 'default');
@@ -74,6 +74,15 @@ class CustompropertiesController extends JController {
                 $view->setModel($this->getModel('assignhierarchic', 'CustompropertiesModel'));
                 $view->setModel($this->getModel('cpvalues', 'CustompropertiesModel'));
 
+                break;
+            case 'tags' :
+            case 'getAllTags' :                
+                $document->addStyleSheet('components/com_customproperties/css/customproperties.css');
+                $vName = 'tags';
+                $vLayout = JRequest::getCmd('layout', 'default');
+                // add dministrator views
+                $this->addViewPath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS);
+                $view = & $this->getView($vName, $vType);
                 break;
             case 'show' :
             default :
@@ -140,7 +149,7 @@ class CustompropertiesController extends JController {
             $this->setRedirect($return_to, JText::_('CP_ERR_FUNCTION_DISABLED'), 'error');
             return;
         }
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             $this->setRedirect($return_to, JText::_('CP_ERR_NOAUTH'), 'error');
             return;
         }
@@ -156,7 +165,7 @@ class CustompropertiesController extends JController {
         $database 	= JFactory::getDBO();
         $user 		= JFactory::getUser();
 
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             echo JText::_('CP_ERR_DELTAG');
             return;
         }
@@ -175,6 +184,17 @@ class CustompropertiesController extends JController {
         $database->setQuery($query);
         $database->query();
 
+        $article  =& JTable::getInstance('content');
+        $query =    " UPDATE #__content ".
+                " SET modified = '".gmdate('Y-m-d H:i:s')."'".
+                " WHERE id = $content_id";
+        $database->setQuery($query);
+        $database->query();
+
+        // Process the content preparation plugins
+        JPluginHelper::importPlugin('content');
+        $dispatcher =& JDispatcher::getInstance();
+        $dispatcher->trigger('onAfterContentSave', array(&$article,($article->id < 1)));
         return ;
     }
 
@@ -184,7 +204,7 @@ class CustompropertiesController extends JController {
         $database 	= JFactory::getDBO();
         $user 		= JFactory::getUser();
 
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             echo JText::_('CP_ERR_DELTAG');
             return;
         }
@@ -238,7 +258,7 @@ class CustompropertiesController extends JController {
         $database 	= JFactory::getDBO();
         $user 		= JFactory::getUser();
 
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             echo JText::_('CP_ERR_DELTAG');
             return;
         }
@@ -270,15 +290,16 @@ class CustompropertiesController extends JController {
                 $query =    " UPDATE #__content ".
                         " SET modified = '".gmdate('Y-m-d H:i:s')."'".
                         " WHERE id = $content_id";
-
                 $database->setQuery($query);
                 $database->query();
 
+                // Process the content preparation plugins
+                JPluginHelper::importPlugin('content');
                 $dispatcher =& JDispatcher::getInstance();
                 $dispatcher->trigger('onAfterContentSave', array(&$article,($article->id < 1)));
             }
         }
-
+        return;
     }
 
     function getAllTags() {
@@ -287,7 +308,7 @@ class CustompropertiesController extends JController {
         $database 	= JFactory::getDBO();
         $user 		= JFactory::getUser();
 
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             echo JText::_('CP_ERR_DELTAG');
             return;
         }
@@ -301,6 +322,7 @@ class CustompropertiesController extends JController {
                 ." JOIN #__custom_properties_fields f ON (f.id = v.field_id)"
                 ." LEFT JOIN #__custom_properties_values p ON (p.id = v.parent_id)"
                 ." WHERE v.parent_id IS NOT NULL"
+                ." AND v.access_group <= ".$user->get('gid')
                 ." GROUP BY value";
 
         $database->setQuery($query);
