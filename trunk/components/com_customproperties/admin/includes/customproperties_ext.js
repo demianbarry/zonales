@@ -85,7 +85,7 @@ function searchTags(event, id) {
         case 'up':
             ev.stop();
             tagsSearchResults.getElements('div[class=selected]').each(function(element, index){
-                if(previous = element.getPrevious()) {
+                if((previous = element.getPrevious())) {
                     element.removeClass('selected');
                     previous.addClass('selected');
                 }
@@ -98,7 +98,7 @@ function searchTags(event, id) {
                 tagsSearchResults.childNodes[0].addClass('selected');
             } else {
                 elmts.each(function(element, index){
-                    if(next = element.getNext()) {
+                    if((next = element.getNext())) {
                         element.removeClass('selected');
                         next.addClass('selected');
                     }
