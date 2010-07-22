@@ -97,6 +97,7 @@ class CustompropertiesModelSearch extends JModel
 		$params->def( 'result_acl',		 		$cp_config['result_acl'] );
 		$params->def( 'frontend_tagging',		$cp_config['frontend_tagging'] != '' ? 	$cp_config['frontend_tagging'] 	: '0') ;
 		$params->def( 'editing_level',			$cp_config['editing_level'] != '' ? 	$cp_config['editing_level'] 	: '1') ;
+                $params->def( 'publishing_group',			$cp_config['publishing_group'] != '' ? 	$cp_config['publishing_group'] 	: '0') ;
 
 		$params->def( 'limit',					$cp_config['limit'] != '' ? 			$cp_config['limit'] 			: $mainframe->getCfg('list_limit') );
 		$params->def( 'search_sections',		preg_replace( '/[^0-9\,]/', '', 		$cp_config['search_sections'] ));

@@ -115,7 +115,7 @@ class CustompropertiesControllerHierarchictagging extends JController {
             $this->setRedirect($return_to, JText::_('CP_ERR_FUNCTION_DISABLED'), 'error');
             return;
         }
-        if ($user->get('gid') < $cp_config['editing_level']) {
+        if ($user->get('aid') < $cp_config['editing_level']) {
             $this->setRedirect($return_to, JText::_('CP_ERR_NOAUTH'), 'error');
             return;
         }
