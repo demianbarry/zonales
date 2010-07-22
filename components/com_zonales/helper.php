@@ -170,7 +170,7 @@ class comZonalesHelper {
                 .' FROM #__custom_properties_values v '
                 .' WHERE v.field_id = '
                 .' (SELECT f.id FROM #__custom_properties_fields f'
-                .' WHERE f.name = "root_zonales") AND v.name LIKE "bue\_%"';
+                .' WHERE f.name = "root_zonales")';
         $dbo->setQuery($query);
 
         return  $this->_cache->get(array($dbo, 'loadObjectList'), array());

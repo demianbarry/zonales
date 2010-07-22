@@ -229,9 +229,7 @@ class ZonalesController extends JController {
                 // tabla de contenidos joomla
                 $row = & JTable::getInstance('content');
 
-                if ($catid == 0) {
-                    jexit($helper->getJsonResponse('failure', $modparams->get('error'), 'Invalid response'));
-                } else {
+                if ($catid > 0) {
                     $category =& JTable::getInstance('category');
                     $category->load($catid);
                     $sectionid = $category->section;
@@ -273,7 +271,7 @@ class ZonalesController extends JController {
                 $enviaNombre = JRequest::getVar('nombre', NULL, 'post', 'string');
                 $enviaEmail = JRequest::getVar('email', NULL, 'post', 'string');
                 $enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
-                $row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>Telefono: $enviaTel</p>";
+                $row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>";
 
                 // Make sure the data is valid
                 if (!$row->check()) {
