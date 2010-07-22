@@ -255,4 +255,37 @@ class ZonalesController extends JController
 
 		return;
 	}
+         /**
+         * Genera un select html listando todos los values que sean hijos directos
+         * del tag con el identificador $id.
+         *
+         * @param int $id identificador tag padre
+         * @param string $name id y nombre del select html
+         * @return String select html
+         */
+        function getItemsAjax($id = null, $name = null, $selected = null, $class = null) {
+            if(is_null($id)) {
+                $id = JRequest::getVar('id', NULL, 'get', 'int');
+            }
+            if(is_null($name)) {
+                $name = JRequest::getVar('name', NULL, 'get', 'string');
+            }
+            if(is_null($selected)) {
+                $selected = JRequest::getVar('selected', NULL, 'get', 'string');
+            }
+            if(is_null($class)) {
+                $class = JRequest::getVar('class', 'item_ajax_select', 'get', 'string');
+            }
+
+            // helper zonales
+            require_once (JPATH_ROOT.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+
+            $helper = new comZonalesHelper();
+            $parents = $helper->getItems($id);
+
+            echo JHTML::_('select.genericlist', $parents, $name,
+            'size="1" class="'.$class.' required"', 'id', 'label', $selected);
+            return;
+        }
+
 }

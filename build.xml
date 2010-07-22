@@ -179,9 +179,6 @@
         <include name="**" />
     </fileset>
 
-    <fileset dir="${src_libraries}/g2p-utils" id="lib_g2p-utils_files">
-        <include name="**" />
-    </fileset>
 
 
     <!-- ======================================================
@@ -567,7 +564,9 @@
     <target name="dist_lib_g2p-utils" description="Crea archivo de distribución Joomla para la biblioteca G2P-utils">
         <echo message="Creando archivo de distribución de la biblioteca g2p-utils"/>
         <zip destfile="${src_dist_dir}/${dist.lib_g2p-utils.file}.zip">
-            <fileset refid="lib_g2p-utils_files"/>
+            <zipfileset dir="${src_libraries}" includes="g2p-utils/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="solr/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="joomla/**" prefix="libraries" />
         </zip>
     </target>
 

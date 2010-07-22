@@ -72,7 +72,7 @@ class comZonalesHelper {
         $query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '.
                 $dbo->nameQuote('v.parent_id') .', '. $dbo->nameQuote('v.label')
                 .' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
-                .' WHERE '. $dbo->nameQuote('v.name') .' = '. $dbo->quote($zonal_id);
+                .' WHERE '. $dbo->nameQuote('v.id') .' = '. $dbo->quote($zonal_id);
         $dbo->setQuery($query);
 
         $zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
