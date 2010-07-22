@@ -19,6 +19,10 @@
         <language tag="es-ES">es-ES.mod_soycorresponsal.ini</language>
     </languages>
     <params>
+        <param name="show_colapsed" type="radio" default="1" label="SHOWCOLAPSED" description="TIP_SHOWCOLAPSED">
+            <option value="0">NO</option>
+            <option value="1">YES</option>
+        </param>
         <param name="show_email" type="radio" default="1" label="SHOWEMAIL" description="TIP_SHOWEMAIL">
             <option value="0">NO</option>
             <option value="1">YES</option>

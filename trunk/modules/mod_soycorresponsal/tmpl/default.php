@@ -97,8 +97,7 @@ JHTML::_('behavior.formvalidation');
                 }
                 return false;
             } else {
-                $('mensaje').empty();
-                $('nota').setStyle('display', 'block');
+                window.location.reload();
             }
         });
 
@@ -152,21 +151,21 @@ JHTML::_('behavior.formvalidation');
         //mySoyCorresponsalSlider.hide();
 
 <?php if($showColapsed): ?>
-                $('mod_soycorresponsal_main_div').setStyle('display','none');
-                $('title_soycorresponsal').addClass('show');
+        $('mod_soycorresponsal_main_div').setStyle('display','none');
+        $('title_soycorresponsal').addClass('show');
 
-                // clickeando en el título muestro u oculto el formulario
-                $('title_soycorresponsal').addEvent('click', function(e) {
-                    if($('mod_soycorresponsal_main_div').getStyle('display') == 'none') {
-                        $('mod_soycorresponsal_main_div').setStyle('display','block');
-                        $('title_soycorresponsal').removeClass('show').addClass('hide');
-                    } else  {
-                        $('mod_soycorresponsal_main_div').setStyle('display','none');
-                        $('title_soycorresponsal').removeClass('hide').addClass('show');
-                    }
-                });
+        // clickeando en el título muestro u oculto el formulario
+        $('title_soycorresponsal').addEvent('click', function(e) {
+            if($('mod_soycorresponsal_main_div').getStyle('display') == 'none') {
+                $('mod_soycorresponsal_main_div').setStyle('display','block');
+                $('title_soycorresponsal').removeClass('show').addClass('hide');
+            } else  {
+                $('mod_soycorresponsal_main_div').setStyle('display','none');
+                $('title_soycorresponsal').removeClass('hide').addClass('show');
+            }
+        });
 <?php endif;?>
-            });
+    });
 
 <?php if(!$user->guest) :?>
     /**

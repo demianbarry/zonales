@@ -24,6 +24,7 @@ if(!$user->guest) {
     require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
 
 // parametros
+    $showColapsed = $params->get('show_colapsed');
     $showEmail = $params->get('show_email');
     $showPhone = $params->get('show_phone');
     $captchaTextNew = $params->get('captchaTextNew');
@@ -55,7 +56,7 @@ if(!$user->guest) {
 
     $parents = $helper->getItems($root);
     $lists['provincias_select'] = JHTML::_('select.genericlist', $parents, 'provincias_sc',
-            'size="1" class="provincias_select required"', 'id', 'label', $zonal->parent_id);
+            'size="1" class="provincias_select required"', 'id', 'label', ($zonal?$zonal->parent_id:0));
 
 // crea select de zonales disponibles
     /*$lists['partido_select'] = JHTML::_('select.genericlist', $zonales, 'partidos',
