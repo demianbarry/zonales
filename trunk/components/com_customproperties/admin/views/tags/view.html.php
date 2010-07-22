@@ -29,7 +29,7 @@ class CustompropertiesViewtags extends JView {
      * @return void
      **/
     function display($tpl = null) {
-        global $option, $mainframe, $Itemid, $cp_config;
+        global $option;
 
         $this->_context = $option.'tags';		// nombre del contexto
         $this->cid = JRequest::getVar('cid', 0, '', 'int');
@@ -42,6 +42,7 @@ class CustompropertiesViewtags extends JView {
 
         $user = JFactory::getUser();
         $aid = $user->get('aid',0);
+        $gid = $user->get('gid',0);
 
         $ce_file = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_customproperties' . DS . 'contentelement.class.php';
         require_once $ce_file;
@@ -54,7 +55,7 @@ class CustompropertiesViewtags extends JView {
         }
         $this->assignRef('ce',$ce);
 
-        $query = "  SELECT DISTINCT f.id as fid, f.label as name, v.id as vid, v.label
+        $query = "  SELECT DISTINCT f.id AS fid, f.label AS name, v.id AS vid, v.label, v.access_group AS ag
                     FROM #__custom_properties AS cp
 			INNER JOIN #__custom_properties_fields AS f
 			ON (cp.field_id = f.id)
@@ -70,7 +71,8 @@ class CustompropertiesViewtags extends JView {
         $database->setQuery($query);
         $database->getErrorMsg();
         $this->assignRef('tags',$database->loadObjectList());
-        
+        $this->assignRef('app',$app);
+        $this->assignRef('gid',$gid);
         parent::display($tpl);
     }
 

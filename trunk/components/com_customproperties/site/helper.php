@@ -43,9 +43,19 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
         $document = JFactory::getDocument();
         $script = JUri::root().'/administrator/components/com_customproperties/includes/customproperties_ext.js';
         $document->addScript($script);
+
+        $query = "  SELECT count(*)
+                    FROM jos_content
+                    WHERE creted_by = ".$user->get('id')."
+                    AND id = '$cid'";
+
+        $database->setQuery($query);
+        $database->getErrorMsg();
+        $can_edit = $database->load();
     }
 
-    $query = "SELECT DISTINCT f.id as fid, f.label as name, v.id as vid, v.label
+
+    $query = "SELECT DISTINCT f.id as fid, f.label as name, v.id as vid, v.label, v.access_group as ag
 		FROM #__custom_properties AS cp
 			INNER JOIN #__custom_properties_fields AS f
 			ON (cp.field_id = f.id )
@@ -90,7 +100,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
 
         if($linked_tags)
             $result .= "</a>\n";
-        if($can_edit)
+        if($can_edit && $user->get('gid') >= $tag->ag)
             $result .= "<img id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='/templates/".$app->getTemplate()."/images/eliminar.gif'>";
         $result .= "</span> ";
 
@@ -103,8 +113,10 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
 
     if($can_edit) {
         $fe_tagging = true;
+        JHTML::_( 'behavior.mootools' );
         JHTML::_( 'behavior.modal' );
-        $link = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=tagging&tmpl=component_only&id='.$cid);
+        //$link = JRoute::_('index.php?option=com_customproperties&controller=hierarchictagging&view=tagging&tmpl=component_only&id='.$cid);
+        $link = 'index.php?option=com_customproperties&task=tags&cid='.$cid.'&tmpl=component_only';
         $rel = "{handler: 'iframe', size: {x: 570, y: 400}}";
         //$result .= "<span class=\"cp_tag\"><a class=\"modal\" rel=\"$rel\" href=\"$link\">".JText::_('Edit tags')."</a></span>\n";
         $result .= "<span class=\"cp_tag\"><a style=\"cursor: pointer;\" onclick=\"showAddTagsDiv($cid)\">".JText::_('Add tags')."</a></span>\n";

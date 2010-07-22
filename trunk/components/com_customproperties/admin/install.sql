@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `#__custom_properties_values` (
   `default` tinyint(1) NOT NULL default '0',
   `ordering` int(11) NOT NULL default '0',
   `multiple` tinyint default '1',
+  `access_group` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `field_id` (`field_id`),
   KEY `name` (`name`),
