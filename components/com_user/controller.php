@@ -33,12 +33,12 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_a
  * @since 1.5
  */
 class UserController extends JController {
-/**
- * Method to display a view
- *
- * @access	public
- * @since	1.5
- */
+    /**
+     * Method to display a view
+     *
+     * @access	public
+     * @since	1.5
+     */
     function display() {
         parent::display();
     }
@@ -60,7 +60,7 @@ class UserController extends JController {
     }
 
     function save() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         $user	 =& JFactory::getUser();
@@ -115,7 +115,7 @@ class UserController extends JController {
         if ($model->store($post)) {
             $msg	= JText::_( 'Your settings have been saved.' );
         } else {
-        //$msg	= JText::_( 'Error saving your settings.' );
+            //$msg	= JText::_( 'Error saving your settings.' );
             $msg	= $model->getError();
         }
 
@@ -142,7 +142,7 @@ class UserController extends JController {
     }
 
     function aliasregister() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken('request') or jexit( 'Invalid Token' );
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
@@ -161,7 +161,7 @@ class UserController extends JController {
         $credentials = array();
         $options = array();
         if ($epUserdata == null) {
-        // Check for request forgeries
+            // Check for request forgeries
             //JRequest::checkToken('request') or jexit( 'Invalid Token' );
             $credentials['provider'] = JRequest::getVar('provider', null, 'method', 'string');
             $credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
@@ -219,12 +219,19 @@ class UserController extends JController {
                 $this->aliasreg($options['providerid'],$options['externalid']);
             }
             else {
-                $session = & JFactory :: getSession();
-                $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
-                $db->setQuery($selectProvider);
-                $dbprovider = $db->loadObject();
+                try {
+                    $session = & JFactory :: getSession();
+                    $selectProvider = 'select p.id from #__providers p where p.name = "' . $credentials['provider'] . '"';
+                    $db->setQuery($selectProvider);
+                    $dbprovider = $db->loadObject();
 
-                $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
+                    $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
+
+                }
+                catch (Exception $ex) {
+                    $message = JText::_("SYSTEM_ALIAS_REGISTERED");
+                    UserHelper::showMessage(ERROR, $message);
+                }
             }
 
             $zonal = UserHelper::getZonal();
@@ -297,9 +304,9 @@ class UserController extends JController {
     }
 
     private function getUserId($db,$user,$username = false) {
-    //            $id_query = 'SELECT u.id FROM #__users u'.
-    //                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
-    //                ' AND u.birthdate="' . $user->get('birthdate') . '"';
+        //            $id_query = 'SELECT u.id FROM #__users u'.
+        //                ' WHERE u.name = ' . $db->Quote($user->get('name')) .
+        //                ' AND u.birthdate="' . $user->get('birthdate') . '"';
 
         $variations = $this->getVariations($user->get('name'));
         $end = implode('","', $variations);
@@ -308,9 +315,9 @@ class UserController extends JController {
         $useUsername = ($username) ? ' AND u.username ="' . $user->get('username') . '"' : '';
 
         $id_query = 'SELECT u.id FROM #__users u, #__aapu_attribute_entity ae '.
-            ' WHERE ae.value_date="' . $user->get('birthdate') . '"' .
-            $useUsername . " AND ae.object_id=u.id AND ae.object_type='TABLE' AND ae.object_name='#__users'" .
-            ' AND u.name IN (' . $end . ')';
+                ' WHERE ae.value_date="' . $user->get('birthdate') . '"' .
+                $useUsername . " AND ae.object_id=u.id AND ae.object_type='TABLE' AND ae.object_name='#__users'" .
+                ' AND u.name IN (' . $end . ')';
         $db->setQuery($id_query);
         $dbuserid = $db->loadObject();
 
@@ -329,19 +336,23 @@ class UserController extends JController {
     }
 
     private function insertAlias($block,$userid,$alias,$providerid) {
-        $db = &JFactory::getDBO();
-        $passphrase = JUtility::getHash( JUserHelper::genRandomPassword());
+        try {
+            $db = &JFactory::getDBO();
+            $passphrase = JUtility::getHash( JUserHelper::genRandomPassword());
 
-        $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation) ' .
-            'values (' . $userid . ',"' . $alias .
-            '",' . $providerid . ',"' . date('Y-m-d') . '",' .
-            $block . ',"' . $passphrase . '")';
+            $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation) ' .
+                    'values (' . $userid . ',"' . $alias .
+                    '",' . $providerid . ',"' . date('Y-m-d') . '",' .
+                    $block . ',"' . $passphrase . '")';
 
-        $db->setQuery($insertAlias);
-        if (!$db->query()) {
-            return false;
+            $db->setQuery($insertAlias);
+            return $db->query();
         }
-        return true;
+
+        catch (Exception $ex) {
+            $message = JText::_("SYSTEM_ALIAS_REGISTERED");
+            UserHelper::showMessage(ERROR, $message);
+        }
     }
 
     /**
@@ -363,7 +374,7 @@ class UserController extends JController {
         $sex = JRequest::getString('sex','M','method');
         $username = JRequest::getString('usernamer','','method');
 
-        if ($zonalId == UserHelper::ZONAL_NOT_DEFINED){
+        if ($zonalId == UserHelper::ZONAL_NOT_DEFINED) {
             $notZonalMessage = JText::_('SYSTEM_ZONAL_NOT_DEFINED');
             $baseUrl = "option=com_user&view=register&map=0";
             UserHelper::showMessage(ERROR, $notZonalMessage, $baseUrl);
@@ -406,7 +417,7 @@ class UserController extends JController {
         $userExists = $this->userExists($db, $user);
         $requestNewAlias = true;
 
-        if ($userExists){
+        if ($userExists) {
             $message = JText::_('SYSTEM_MESSAGE_ERROR_USER_EXISTS');
             UserHelper::showMessage(ERROR, $message);
         }
@@ -474,44 +485,44 @@ class UserController extends JController {
             $emailId = $emailData->id;
 
             $dataSex = array(
-                'value' => $sex,
-                'object_id' => $userid,
-                'object_type' => 'TABLE',
-                'object_name' => '#__users',
-                'attribute_id' => $sexId
+                    'value' => $sex,
+                    'object_id' => $userid,
+                    'object_type' => 'TABLE',
+                    'object_name' => '#__users',
+                    'attribute_id' => $sexId
             );
 
             $dataBirthday = array(
-                'value_date' => $birthday,
-                'object_id' => $userid,
-                'object_type' => 'TABLE',
-                'object_name' => '#__users',
-                'attribute_id' => $birthdayId
+                    'value_date' => $birthday,
+                    'object_id' => $userid,
+                    'object_type' => 'TABLE',
+                    'object_name' => '#__users',
+                    'attribute_id' => $birthdayId
             );
 
             $dataZonal = array(
-                'value' => $zonalId,
-                'object_id' => $userid,
-                'object_type' => 'TABLE',
-                'object_name' => '#__users',
-                'attribute_id' => $zonaId
+                    'value' => $zonalId,
+                    'object_id' => $userid,
+                    'object_type' => 'TABLE',
+                    'object_name' => '#__users',
+                    'attribute_id' => $zonaId
             );
 
             $dataEmail2 = array(
-                'value' => $email2,
-                'object_id' => $userid,
-                'object_type' => 'TABLE',
-                'object_name' => '#__users',
-                'attribute_id' => $emailId
+                    'value' => $email2,
+                    'object_id' => $userid,
+                    'object_type' => 'TABLE',
+                    'object_name' => '#__users',
+                    'attribute_id' => $emailId
             );
 
             $attributesEntityModel = new AapuModelAttribute_entity();
             // If there was an error with registration, set the message and display form
             if ( !$attributesEntityModel->store(false, false, $dataSex) ||
-                !$attributesEntityModel->store(false, false, $dataBirthday) ||
-                !$attributesEntityModel->store(false, false, $dataZonal) ||
+                    !$attributesEntityModel->store(false, false, $dataBirthday) ||
+                    !$attributesEntityModel->store(false, false, $dataZonal) ||
                     !$attributesEntityModel->store(false, false, $dataEmail2)) {
-                
+
                 JError::raiseWarning('', JText::_( $user->getError()));
 
                 $message = JText::_('SYSTEM_MESSAGE_ERROR_REGISTER');
@@ -534,29 +545,35 @@ class UserController extends JController {
         ##### testing ##########
 
         if ($userExists && $externalid != '' && $providerid != 0) {
-        // hay que agregar un alias
+            // hay que agregar un alias
 
             // $userid = $this->getUserId($db, $user);
 
-            $externalid = urldecode($externalid);
+            try {
+                $externalid = urldecode($externalid);
 
-            $this->insertAlias($block, $userid, $externalid,$user->get('providerid'));
+                $this->insertAlias($block, $userid, $externalid,$user->get('providerid'));
 
-            $requestNewAlias = false;
+                $requestNewAlias = false;
 
-            // Send registration confirmation mail
-            $selectpass = 'select u.password from #__users u where id=' . $userid;
-            $db->setQuery($selectpass);
-            $dbpass = $db->loadObject();
+                // Send registration confirmation mail
+                $selectpass = 'select u.password from #__users u where id=' . $userid;
+                $db->setQuery($selectpass);
+                $dbpass = $db->loadObject();
 
-            $password = preg_replace('/[\x00-\x1F\x7F]/', '', $dbpass->password); //Disallow control chars in the email
-            $userClone->set('activation', $passphrase);
-        //UserController::_sendMail($userClone, $password);
+                $password = preg_replace('/[\x00-\x1F\x7F]/', '', $dbpass->password); //Disallow control chars in the email
+                $userClone->set('activation', $passphrase);
+            }
+            catch (Exception $ex) {
+                $message = JText::_("SYSTEM_ALIAS_REGISTERED");
+                UserHelper::showMessage(ERROR, $message);
+            }
+            //UserController::_sendMail($userClone, $password);
         }
         else {
-        // tomo los valores especificos del proveedor externo
+            // tomo los valores especificos del proveedor externo
             $epProveedor = JRequest::getVar('selprovider', '', 'method', 'string');
-            
+
             if ($epProveedor && $epProveedor != 'Zonales') {
                 $epUserData = array();
                 $epUserData['epusername'] = JRequest::getVar('epusername', '', 'method', 'string');
@@ -600,7 +617,7 @@ class UserController extends JController {
 
         // Check to see if they're logged in, because they don't need activating!
         if ($user->get('id')) {
-        // They're already logged in, so redirect them to the home page
+            // They're already logged in, so redirect them to the home page
             $mainframe->redirect( 'index.php' );
         }
 
@@ -620,7 +637,7 @@ class UserController extends JController {
         $activation = $db->getEscaped( $activation );
 
         if (empty( $activation )) {
-        // Page Title
+            // Page Title
             $document->setTitle( JText::_( 'REG_ACTIVATE_NOT_FOUND_TITLE' ) );
             // Breadcrumb
             $pathway->addItem( JText::_( 'REG_ACTIVATE_NOT_FOUND_TITLE' ));
@@ -635,7 +652,7 @@ class UserController extends JController {
         // Lets activate this user
         jimport('joomla.user.helper');
         if (JUserHelper::activateUser($activation)) {
-        // Page Title
+            // Page Title
             $document->setTitle( JText::_( 'REG_ACTIVATE_COMPLETE_TITLE' ) );
             // Breadcrumb
             $pathway->addItem( JText::_( 'REG_ACTIVATE_COMPLETE_TITLE' ));
@@ -644,7 +661,7 @@ class UserController extends JController {
             $message->text = JText::_( 'REG_ACTIVATE_COMPLETE' );
         }
         else {
-        // Page Title
+            // Page Title
             $document->setTitle( JText::_( 'REG_ACTIVATE_NOT_FOUND_TITLE' ) );
             // Breadcrumb
             $pathway->addItem( JText::_( 'REG_ACTIVATE_NOT_FOUND_TITLE' ));
@@ -663,7 +680,7 @@ class UserController extends JController {
      * @access	public
      */
     function requestreset() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         // Get the input
@@ -688,7 +705,7 @@ class UserController extends JController {
      * @access	public
      */
     function confirmreset() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         // Get the input
@@ -713,7 +730,7 @@ class UserController extends JController {
      * @access	public
      */
     function completereset() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         // Get the input
@@ -740,7 +757,7 @@ class UserController extends JController {
      * @access	public
      */
     function remindusername() {
-    // Check for request forgeries
+        // Check for request forgeries
         JRequest::checkToken() or jexit( 'Invalid Token' );
 
         // Get the input
@@ -789,8 +806,8 @@ class UserController extends JController {
 
         //get all super administrator
         $query = 'SELECT name, email, sendEmail' .
-            ' FROM #__users' .
-            ' WHERE LOWER( usertype ) = "super administrator"';
+                ' FROM #__users' .
+                ' WHERE LOWER( usertype ) = "super administrator"';
         $db->setQuery( $query );
         $rows = $db->loadObjectList();
 
@@ -813,6 +830,63 @@ class UserController extends JController {
                 $message2 = html_entity_decode($message2, ENT_QUOTES);
                 JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
             }
+        }
+    }
+
+    // registration validations
+    function checkEmail() {
+        $email = urldecode(JRequest::getString('email',NULL,'method'));
+
+        // validate email format
+        if (!UserHelper::isEmailAddressWellformed($email)) {
+            echo JText::_("SYSTEM_EMAIL_INVALID_FORMAT");
+            return ;
+        }
+
+        // verify that email is not used
+        if (UserHelper::emailExists($email)) {
+            echo JText::_("SYSTEM_EMAIL_ALREADY_USED");
+            return ;
+        }
+    }
+
+    function checkBirthDate() {
+        $birthdate = urldecode(JRequest::getString('birthdate',NULL,'method'));
+
+        // validate date format
+        if (!UserHelper::checkDateFormat($birthdate)) {
+            echo JText::_("SYSTEM_DATE_INVALID");
+            return ;
+        }
+
+        // verify user age
+        $usersConfig 	= &JComponentHelper::getParams( 'com_users' );
+        //$minAge = $usersConfig->get( 'minage' );
+        $minAge = 18;
+        $today = strtotime(date("Y-m-d"));
+        $birthdateUnix = strtotime($birthdate);
+        $yearsDiff = (int) (($today - $birthdateUnix)/(365 * 24 * 60 * 60));
+
+        if ($yearsDiff < $minAge) {
+            echo sprintf(JText::_("SYSTEM_DATE_BIRTH_VERY_YOUNG"),$minAge);
+            return ;
+        }
+    }
+
+    function checkUserExistence(){
+        $birthdate = urldecode(JRequest::getString('birthdate',NULL,'method'));
+        $fullname = urldecode(JRequest::getString('fullname',NULL,'method'));
+
+        $user = new JUser();
+        $user->set("birthdate", $birthdate);
+        $user->set("name", $fullname);
+
+        $db = JFactory::getDBO();
+        $id = $this->getUserId($db, $user);
+
+        if ($id){
+            echo JText::_("SYSTEM_USER_EXISTS");
+            return ;
         }
     }
 }
