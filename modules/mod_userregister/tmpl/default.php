@@ -163,7 +163,7 @@ foreach ($providerslist as $prov) {
                     height="15"
                     colspan="2"
                     >
-                    <label id="namemsg"
+                    <label class="userregister" id="namemsg"
                            for="name"
                            >
                         <?php echo '*' . $nameMessage ?>:
@@ -181,7 +181,7 @@ foreach ($providerslist as $prov) {
             <!-- SOLICITUD DE NOMBRE DE USUARIO -->
             <tr>
                 <td height="15" colspan="2">
-                    <label id="usernamemsg"
+                    <label class="userregister" id="usernamemsg"
                            for="username"
                            >
                         <?php echo '*' . $usernameMessage ?>:
@@ -201,7 +201,7 @@ foreach ($providerslist as $prov) {
             <!-- SOLICITUD DE CORREO ELECTRONICO -->
             <tr>
                 <td height="15" colspan="2">
-                    <label id="emailmsg"
+                    <label class="userregister" id="emailmsg"
                            for="email"
                            >
                         <?php echo '*' . $emailMessage ?>:
@@ -219,7 +219,7 @@ foreach ($providerslist as $prov) {
             <!-- SOLICITUD DE CORREO ELECTRONICO AUXILIAR-->
             <tr>
                 <td height="15" colspan="2">
-                    <label id="email2msg"
+                    <label class="userregister" id="email2msg"
                            for="email2"
                            >
                         <?php echo $backupEmailMessage ?>:
@@ -239,7 +239,7 @@ foreach ($providerslist as $prov) {
             <!-- agregado por G2P -->
             <tr>
                 <td colspan="2">
-                    <label for="birthdate">
+                    <label class="userregister" for="birthdate">
                         <?php echo '*' . $birthdateMessage ?>:
                     </label>
                     <?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')) ?>
@@ -249,7 +249,7 @@ foreach ($providerslist as $prov) {
             <!-- SOLICITUD DEL SEXO -->
             <tr>
                 <td height="15" colspan="2">
-                    <label id="sexmsg"
+                    <label class="userregister" id="sexmsg"
                            for="sex"
                            >
                         <?php echo '*' . $sexMessage ?>:
@@ -276,7 +276,7 @@ foreach ($providerslist as $prov) {
             <tr>
                 <td colspan="2">
                     <div style="margin-top: 20px; border-top: 1px dotted gray">
-                        <label
+                        <label class="userregister"
                             class="expandible"
                             id="zonalmsg"
                             for="reg_provincias">
@@ -284,11 +284,11 @@ foreach ($providerslist as $prov) {
                         </label>
                         <div id="selectZonalDiv">
                             <div id="reg_z_provincias_container">
-                                <p><label class="reg_combo_zonal_label">Provincia</label></p>
+                                <p><label class="userregister" class="reg_combo_zonal_label">Provincia</label></p>
                                 <?php echo $lists['provincias_select']; ?>
                             </div>
                             <div id="reg_municipio_container" style="display: none;">
-                                <p><label class="reg_combo_zonal_label">Municipio</label></p>
+                                <p><label class="userregister" class="reg_combo_zonal_label">Municipio</label></p>
                                 <div id="reg_z_localidad_container"></div>
                             </div>
                         </div>
@@ -304,7 +304,7 @@ foreach ($providerslist as $prov) {
                 <td height="15" colspan="2">
                     <div style="margin-top: 10px; border-top: 1px dotted gray">
                         <?php if($show): ?>
-                        <label
+                        <label class="userregister"
                             class="expandible"
                             id="providermsg"
                             for="provider">
@@ -375,7 +375,7 @@ foreach ($providerslist as $prov) {
                                                                      $show = 'none';
 
                                                                      if ($type != 'button') {
-                                                                         echo '<label id="ep'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
+                                                                         echo '<label class="userregister" id="ep'. $name .'message" for="'. $name .'" >'. sprintf(JText::_($message),$provider->name) .'</label>';
                                                                          echo '';
                                                                          $value = '';
                                                                          $show = 'block';
@@ -406,7 +406,7 @@ foreach ($providerslist as $prov) {
             <tr>
                 <td height="15" colspan="2">
                     <a name="passlocation"></a>
-                    <label style="display: none;"
+                    <label class="userregister" style="display: none;"
                            id="pwmsg"
                            for="passwordt"
                            >
@@ -424,7 +424,7 @@ foreach ($providerslist as $prov) {
             </tr>
             <tr>
                 <td height="15" colspan="2">
-                    <label style="display: none;"
+                    <label class="userregister" style="display: none;"
                            id="pw2msg"
                            for="password2"
                            >
