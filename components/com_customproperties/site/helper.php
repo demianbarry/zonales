@@ -101,7 +101,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
         if($linked_tags)
             $result .= "</a>\n";
         if($can_edit && $user->get('gid') >= $tag->ag)
-            $result .= "<img id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='/templates/".$app->getTemplate()."/images/eliminar.gif'>";
+            $result .= "<img alt=\"$tag->name\" id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='/templates/".$app->getTemplate()."/images/eliminar.gif'>";
         $result .= "</span> ";
 
         $tagstrings[] = $tagstring;
@@ -352,7 +352,7 @@ function getThumb($file, $image_dir,  $width, $heigth, $extra="", $aspect=true, 
         if($twx == $width && $thy == $heigth) {
             $found = true;
             $size = 'width="'.$width.'" height="'.$heigth.'"';
-            $image= '<img src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
+            $image= '<img alt="img" src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
         }
     }
 
@@ -368,7 +368,7 @@ function getThumb($file, $image_dir,  $width, $heigth, $extra="", $aspect=true, 
                     break;
                 }
                 $size = 'width="'.$width.'" height="'.$heigth.'"';
-                $image= '<img src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
+                $image= '<img alt="img" src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
                 break;
 
             case 'gif':
@@ -379,7 +379,7 @@ function getThumb($file, $image_dir,  $width, $heigth, $extra="", $aspect=true, 
                         break;
                     }
                     $size = 'width="'.$width.'" height="'.$heigth.'"';
-                    $image= '<img src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
+                    $image= '<img alt="img" src="'.$thumb_url.'" '.$size.' '.$extra.'/>';
                     break;
                 }
                 else {

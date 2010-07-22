@@ -54,7 +54,7 @@ JToolBarHelper :: back();
 			"<td align=\"center\">" . $ce->ce_ordering . "</td>" .
 			"<td align=\"center\">" .
 			"<a href=\"$link&amp;task=togglece&amp;cename=" . $ce->name . "\">" .
-			"<img border=\"0\" src=\"" . ($ce->active ? 'images/tick.png' : 'images/publish_x.png') . "\"/>" .
+			"<img border=\"0\" src=\"" . ($ce->active ? 'images/tick.png' : 'images/publish_x.png') . "\" alt=\"$ce->name\"/>" .
 			"</a>" .
 			"</td>" .
 			"<td align=\"center\">" .
