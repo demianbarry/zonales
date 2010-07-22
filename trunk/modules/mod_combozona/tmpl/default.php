@@ -24,7 +24,6 @@ defined('_JEXEC') or die('Restricted access');
         $('provincias').addEvent('change', function() {
             loadMunicipios();
         });
-
         loadMunicipios(<?php echo "$selectedOption" ?>);
     });
 
@@ -43,7 +42,14 @@ defined('_JEXEC') or die('Restricted access');
 </script>
 
 <div id="mod_combozonal" class="moduletable_combozonal">
+    <h1><?php echo $module->title; ?></h1>
+
     <form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form">
+        <?php if(!$zonal): ?>
+        <p>
+                <?php echo JText::_('MOD_COMBOZONA_WELCOME');?>
+        </p>
+        <?php endif;?>
         <div id="z_provincias_container">
             <p><label class="combo_zonal_label">Provincia</label></p>
             <?php echo $lists['provincias_select']; ?>

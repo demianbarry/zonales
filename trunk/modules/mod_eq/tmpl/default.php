@@ -97,11 +97,20 @@ JHTML::_('behavior.formvalidation');
             //    myEqSlider.toggle();
             //});
             $('mod_eq_main_div').setStyle('display','none');
+            $('title_eq').addClass('show');
 
             // clickeando en el título muestro u oculto el formulario
             $('title_eq').addEvent('click', function(e) {
-                $('mod_eq_main_div').setStyle('display',$('mod_eq_main_div').getStyle('display') == 'none' ? 'block':'none')
+                if($('mod_eq_main_div').getStyle('display') == 'none') {
+                    $('mod_eq_main_div').setStyle('display','block');
+                    $('title_eq').removeClass('show').addClass('hide');
+                } else  {
+                    $('mod_eq_main_div').setStyle('display','none');
+                    $('title_eq').removeClass('hide').addClass('show');
+                }
             });
+
+
         });
         //-->
 </script>
