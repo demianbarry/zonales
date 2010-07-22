@@ -8,6 +8,42 @@ JHTML::script('webtoolkit.js',JRoute::_('media/system/js/'),false);
 //JHTML::script('cookies.js',JRoute::_('media/system/js/'),false);
 ?>
 <script type="text/javascript" language="javascript">
+    function trim (str, charlist) {
+        var whitespace, l = 0, i = 0;
+
+        str += '';
+
+        if (!charlist) {
+            // default list
+            whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+        } else {
+            // preg_quote custom list
+            charlist += '';
+            whitespace = charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '$1');    }
+
+        l = str.length;
+        for (i = 0; i < l; i++) {
+            if (whitespace.indexOf(str.charAt(i)) === -1) {            str = str.substring(i);
+                break;
+            }
+        }
+        l = str.length;
+        for (i = l - 1; i >= 0; i--) {
+            if (whitespace.indexOf(str.charAt(i)) === -1) {
+                str = str.substring(0, i + 1);
+                break;        }
+        }
+
+        return whitespace.indexOf(str.charAt(0)) === -1 ? str : '';
+    }
+
+
+    function urlencode (str) {
+    str = (str+'').toString();
+    return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').
+                                                                    replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+').replace(/~/g, '%7E');
+}
+
     function showPass() {
         $('pwmsg').style.display = 'block';
         $('passwordt').style.display = 'block';
@@ -68,10 +104,15 @@ foreach ($providerslist as $prov) {
                 method: 'get',
                 update: 'user_message',
                 onComplete: function(response) {
-                    $('user_message').removeClass('ajax-loading').setHTML(response);
-                    if(response.length > 0) {
+                    var resp = trim(response);
+                    $('user_message').removeClass('ajax-loading').setHTML(resp);
+                    if(resp.length > 0) {
                         $('usernamer').value = '';
                         $('usernamer').focus();
+                        $("regsubmit").disabled=true;
+                    }
+                    else{
+                        $("regsubmit").disabled=false;
                     }
                 }
             }).request();
@@ -80,9 +121,95 @@ foreach ($providerslist as $prov) {
         }
     }
 
+    function checkEmail(email,id) {
+        if(email != null && email.length > 0 ) {
+            $(id + '_message').empty().addClass('ajax-loading');
+            var url='index.php?option=com_user&format=raw&task=checkEmail&email='+urlencode($(id).value);
+            new Ajax(url, {
+                method: 'get',
+                update: id + '_message',
+                onComplete: function(response) {
+                    var resp = trim(response);
+                    $(id + '_message').removeClass('ajax-loading').setHTML(resp);
+                    if(resp.length > 0) {
+                        $(id).value = '';
+                        //$(id).focus();
+                        $("regsubmit").disabled=true;
+                    }
+                    else{
+                        $("regsubmit").disabled=false;
+                    }
+                }
+            }).request();
+        } else {
+            $(id + '_message').empty();
+        }
+    }
+
+    function checkBirthDate(birthdate) {
+        if(birthdate != null && birthdate.length > 0 ) {
+            $('birthdate_message').empty().addClass('ajax-loading');
+            var url='index.php?option=com_user&format=raw&task=checkBirthDate&birthdate='+urlencode($('birthdate').value);
+            new Ajax(url, {
+                method: 'get',
+                update: 'birthdate_message',
+                onComplete: function(response) {
+                    var resp = trim(response);
+                    $('birthdate_message').removeClass('ajax-loading').setHTML(resp);
+                    if(resp.length > 0) {
+                        $('birthdate').value = '';
+                        //$('birthdate').focus();
+                        $("regsubmit").disabled=true;
+                    }
+                    else {
+                        $("regsubmit").disabled=false;
+                        checkUserExistence($('name').value, $('birthdate').value);
+                    }
+                }
+            }).request();
+        } else {
+            $('birthdate_message').empty();
+        }
+    }
+
+    function checkUserExistence(fullname,birthdate) {
+        if(birthdate != null && birthdate.length > 0 && fullname != null && fullname.length > 0) {
+            $('fullname_message').empty().addClass('ajax-loading');
+            var url='index.php?option=com_user&format=raw&task=checkUserExistence&birthdate='+urlencode($('birthdate').value) + '&fullname=' + urlencode($('name').value);
+            new Ajax(url, {
+                method: 'get',
+                update: 'fullname_message',
+                onComplete: function(response) {
+                    var resp = trim(response);
+                    $('fullname_message').removeClass('ajax-loading').setHTML(resp);
+                    if(resp.length > 0) {
+                        var message = resp + '\n' + '<?php echo JText::_('SYSTEM_USER_EXISTS_CONFIRM'); ?>';
+                        if (confirm(message)){
+                            var aliasParameters = '';
+                            if ($('providerid').value != 0 && $('externalid').value != ''){
+                                aliasParameters = '&externalid=' + $('externalid').value + '&providerid=' + $('providerid').value;
+                            }
+                            window.location.href = 'index.php?option=com_user&view=zlogin&map=0' + aliasParameters;
+                        }
+                        $("regsubmit").disabled=true;
+                    }
+                    else{
+                        $("regsubmit").disabled=false;
+                    }
+                }
+            }).request();
+        } else {
+            $('fullname_message').empty();
+        }
+    }
+
     window.addEvent('domready', function() {
         $('reg_provincias').addEvent('change', function(value) {
             regLoadMunicipios('');
+        });
+
+        $('birthdate').addEvent('blur', function() {
+            checkBirthDate($('birthdate').value);
         });
 
         regLoadMunicipios(<?php echo $selectedOption?>);
@@ -176,6 +303,7 @@ foreach ($providerslist as $prov) {
                            class="inputbox required"
                            maxlength="50"
                            />
+                    <div id="fullname_message"></div>
                 </td>
             </tr>
             <!-- SOLICITUD DE NOMBRE DE USUARIO -->
@@ -213,7 +341,9 @@ foreach ($providerslist as $prov) {
                            value="<?php echo $user->get( 'email' );?>"
                            class="inputbox required validate-email"
                            maxlength="100"
+                           onblur="checkEmail(this.value, this.id)"
                            />
+                    <div id="email_message"></div>
                 </td>
             </tr>
             <!-- SOLICITUD DE CORREO ELECTRONICO AUXILIAR-->
@@ -231,7 +361,9 @@ foreach ($providerslist as $prov) {
                            value="<?php echo $user->get( 'email2' );?>"
                            class="inputbox validate-email"
                            maxlength="100"
+                           onblur="checkEmail(this.value, this.id)"
                            />
+                    <div id="email2_message"></div>
                 </td>
             </tr>
 
@@ -243,6 +375,7 @@ foreach ($providerslist as $prov) {
                         <?php echo '*' . $birthdateMessage ?>:
                     </label>
                     <?php echo JHTML::calendar(date('Y-m-d'),'birthdate','birthdate','%Y-%m-%d',array('class' => 'date')) ?>
+                    <div id="birthdate_message"></div>
                 </td>
             </tr>
             <!-- agregado por G2P -->
@@ -257,6 +390,7 @@ foreach ($providerslist as $prov) {
                     <div id="reg_sex_container">
                         <div style="float: left">
                             <input type="radio"
+                                   id="sexfem"
                                    name="sex"
                                    value="F"
                                    style="width: auto;"/>
@@ -452,6 +586,7 @@ foreach ($providerslist as $prov) {
 
         <input  class="reg_button validate"
                 type="submit"
+                id="regsubmit"
                 value="<?php echo $confirmRegisterMessage ?>">
         <input type="hidden"
                id="fixbutton"
@@ -472,10 +607,12 @@ foreach ($providerslist as $prov) {
                />
         <input type="hidden"
                name="providerid"
+               id="providerid"
                value="<?php echo $providerid; ?>"
                />
         <input type="hidden"
                name="externalid"
+               id="externalid"
                value="<?php echo $externalid; ?>"
                />
         <input type="hidden"
