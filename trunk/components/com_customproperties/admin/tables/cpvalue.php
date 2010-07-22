@@ -39,6 +39,8 @@ class TableCpvalue extends JTable {
     var $ordering = null;
     /* multiple children selection */
     var $multiple = null;
+    /* access level group */
+    var $access_group = null;
 
     /**
      * Constructor

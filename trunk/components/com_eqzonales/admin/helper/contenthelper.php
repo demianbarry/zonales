@@ -45,8 +45,8 @@ class comEqZonalesContentHelper {
      * @param string $queryParams
      * @return Array
      */
-    function getTotal($limitstart = 0, $limit = 0, $additionalParams = '') {
-        $results = $this->getSolrResults($limitstart, $limit, array($additionalParams));
+    function getTotal($limitstart = 0, $limit = 0, $additionalParams = array()) {
+        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
             return count($results->response->docs);
@@ -81,8 +81,8 @@ class comEqZonalesContentHelper {
      * @param string $queryParams
      * @return Array
      */
-    function getContent($limitstart = 0, $limit = 0, $additionalParams = '') {
-        $results = $this->getSolrResults($limitstart, $limit, array($additionalParams));
+    function getContent($limitstart = 0, $limit = 0, $additionalParams = array()) {
+        $results = $this->getSolrResults($limitstart, $limit, $additionalParams);
 
         if (!is_null($results)) {
             return $results->response->docs;
@@ -160,9 +160,10 @@ class comEqZonalesContentHelper {
 
         $fqParams = array();
 
-        $fqParams[] = $this->getWhere();
+        if($stateFrom = JRequest::getInt('stateFrom') && $stateTo = JRequest::getInt('stateTo'))
+            $fqParams[] = $this->getWhere($stateFrom, $stateTo);
 
-         foreach ($additionalParams as $param) {
+        foreach ($additionalParams as $param) {
             $fqParams[] = $param;
         }
 
@@ -222,7 +223,7 @@ class comEqZonalesContentHelper {
      * @global $mainframe
      * @return String query con parámetros solr para la búsqueda
      */
-    function getWhere() {
+    function getWhere($stateFrom = '0', $stateTo = '1') {
         global $mainframe;
 
         // usuario
@@ -245,14 +246,11 @@ class comEqZonalesContentHelper {
             $where .= "+access:[* TO $gid]";
         }
 
-        if ($user->authorize('com_content', 'edit', 'content', 'all')) {
-            $where .= "+state:[0 TO *]";
-        }
-        else {
-            $where .= '+state:[1 TO 1]';
-            $where .= '+(hasPublishUpDate:false OR publish_up:[* TO NOW])';
-            $where .= '+(hasPublishDownDate:false OR publish_down:[NOW TO *])';
-        }
+
+        $where .= "+state:[$stateFrom TO $stateTo]";
+
+        $where .= '+(hasPublishUpDate:false OR publish_up:[* TO NOW])';
+        $where .= '+(hasPublishDownDate:false OR publish_down:[NOW TO *])';
 
         // Zonal - lista de zonales, zonal actualmente seleccionado
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
@@ -270,7 +268,11 @@ class comEqZonalesContentHelper {
             }
 
             $where .= '+tags_values:('.implode(" ",$localidadesList).')';
-        }
+        } else
+        //si no estoy buscando la vista myarchive, agrego el tag de portada
+            if(JRequest::getString('view', NULL, 'get') != 'myarchive') {
+                $where .= '+tags_values:portada';
+            }
 
         return $where;
     }

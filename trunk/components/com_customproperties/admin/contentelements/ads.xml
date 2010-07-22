@@ -51,8 +51,5 @@
         <field name="sec_table_title"		type="fieldname"	required="1"></field>
         <field name="sec_table_published"	type="fieldname"	required="0"></field>
     </section>
-
-    <>
-
 </contentelement>
 
