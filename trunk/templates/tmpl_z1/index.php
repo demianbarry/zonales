@@ -8,7 +8,7 @@ if(is_null($helper->getZonal()) && !$helper->isAuthenticationOnProgress() && $he
 {
 // si no se ha seleccionado un zonal o no hay ninguna autenticacion en progreso
 //$view = 'component_map.php';
-    $view = 'component_home.php';
+    $view = 'component.php';
 }
 /************** Agregado Nacho ****************/
 else {

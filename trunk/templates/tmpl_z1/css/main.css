@@ -137,3 +137,7 @@
     background-repeat: no-repeat;
     background-position: right center;    
 }
+
+.adminform .key {
+    height: 30px;
+}

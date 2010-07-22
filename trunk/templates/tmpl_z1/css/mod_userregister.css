@@ -121,4 +121,13 @@ label.expandible {
     cursor:pointer;
     font-size:13px;
     padding:5px;
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+label{
+    margin-top: 10px;
+    margin-bottom:5px;
+    display:block;
 }
