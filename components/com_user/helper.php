@@ -1,5 +1,6 @@
 <?php
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php';
+require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
 
 class UserHelper {
     const ZONAL_NOT_DEFINED = 0;
@@ -7,10 +8,11 @@ class UserHelper {
     static function showMessage($type,$message,$baseUrl = null) {
         global $mainframe;
 
-        $url = ($baseUrl == NULL) ? '' : $baseUrl . '&';
-        $route = JRoute::_(
-                "?$url"."status=" . $type . '&message=' . urlencode($message)
-        );
+        $url = ($baseUrl == NULL) ? '' : $baseUrl;
+        $route = JRoute::_("?$url");
+        $session =& JFactory::getSession();
+        $session->set(MMSTATUS,$type);
+        $session->set(MMMESSAGE,urlencode($message));
         $mainframe->redirect($route);
     }
 

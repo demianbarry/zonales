@@ -18,6 +18,7 @@ class UserViewZlogin extends JView {
         $this->assign('providerid',$providerid);
         $this->assign('externalid',$externalid);
         $this->assignRef('moduleproviders',$htmlProviders);
+        $this->assign('message',JText::_('SYSTEM_USER_ALIAS_NOT_FOUND_AUTHENTICATE'));
         parent::display($tpl);
     }
 }
