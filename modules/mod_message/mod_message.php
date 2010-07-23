@@ -2,8 +2,12 @@
 
 require_once 'constants.php';
 
-$status = JRequest::getInt('status', '0', 'method');
-$messageRaw = urldecode(JRequest::getString('message','','method'));
+$session =& JFactory::getSession();
+$status = (int) $session->get(MMSTATUS);
+$messageRaw = urldecode($session->get(MMMESSAGE));
+
+$session->set(MMSTATUS,'0');
+$session->set(MMMESSAGE,urlencode(''));
 
 if ($messageRaw != '') {
     switch ($status) {
