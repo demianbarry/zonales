@@ -132,6 +132,10 @@
     <fileset dir="${src_plugins}/solrevents" id="plg_solrevents_files">
         <include name="**" />
     </fileset>
+    <!-- plg_autotagging -->
+    <fileset dir="${src_plugins}/autotagging" id="plg_autotagging_files">
+        <include name="**" />
+    </fileset>
 
     <!-- com_zonales -->
     <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -379,13 +383,22 @@
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_user_eqevents.ini" prefix="language" />
         </zip>
     </target>
-
+   
     <!-- plugin solrevents -->
     <target name="dist_plg_solrevents" description="Crea archivo de distribución Joomla para el plugin SolrEvents">
         <echo message="Creando archivo de distribución de plugin SolrEvents"/>
         <zip destfile="${src_dist_dir}/${dist.plg_solrevents.file}.zip" >
             <fileset refid="plg_solrevents_files"/>
             <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_content_solrevents.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- plugin autotagging -->
+    <target name="dist_plg_autotagging" description="Crea archivo de distribución Joomla para el plugin Autotagging">
+        <echo message="Creando archivo de distribución de plugin Autotagging"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_autotagging.file}.zip" >
+            <fileset refid="plg_autotagging_files"/>
+            <!--<zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_content_solrevents.ini" prefix="language" />-->
         </zip>
     </target>
 
