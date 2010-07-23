@@ -48,6 +48,7 @@ dist.plg_authproxy.file=plg_authproxy
 dist.plg_externallogin.file=plg_externallogin
 dist.plg_cptags.file=plg_cptags
 dist.plg_cptags_btn.file=plg_cptags_btn
+dist.plg_autotagging.file=plg_autotagging
 
 dist.lib_g2p-utils.file=lib_g2p-utils
 inst.mod_jxcomments.file=inst_mod_jxcomments
