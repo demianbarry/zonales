@@ -5,9 +5,9 @@
         document.getElementById('submit').value = '<?php echo $submitText ?>';
     }
 
-    function changeStatus() {
-        for ()
-    }
+//    function changeStatus() {
+//        for ()
+//    }
 </script>
 
 <?php # verifica si hay que mostrar la seccion de habilitacion/deshabilitacion de alias ?>
