@@ -98,7 +98,7 @@
                                         <div id="container-l">
                                             <div id="mainContent">
 
-                                                <img src="templates/<?php echo $mainframe->getTemplate(); ?>/images/home/zonales_top.jpg" style="margin-left:5px; margin-bottom:10px; width: 98%;" />
+                                                <img src="templates/<?php echo $mainframe->getTemplate(); ?>/images/home/zonales_top.jpg" style="margin-left:5px; margin-bottom:10px; width: 98%;" alt="Zonales"/>
 
                                                 <div class="miniBox">
                                                     <jdoc:include type="modules" name="home_zona" style="xhtml" />
