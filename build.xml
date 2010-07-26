@@ -136,6 +136,10 @@
     <fileset dir="${src_plugins}/autotagging" id="plg_autotagging_files">
         <include name="**" />
     </fileset>
+    <!-- plg_like -->
+    <fileset dir="${src_plugins}/plg_like" id="plg_like_files">
+        <include name="**" />
+    </fileset>
 
     <!-- com_zonales -->
     <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -421,12 +425,21 @@
         </zip>
     </target>
 
-    <!-- plugin plg_cptags -->
+    <!-- plugin plg_cptags_btn -->
     <target name="dist_plg_cptags_btn" description="Crea archivo de distribución Joomla para el plugin CPTags_btn">
         <echo message="Creando archivo de distribución de plugin CPTags_btn"/>
         <zip destfile="${src_dist_dir}/${dist.plg_cptags_btn.file}.zip" >
             <fileset refid="plg_cptags_btn_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- plugin plg_like -->
+    <target name="dist_plg_like" description="Crea archivo de distribución Joomla para el plugin Like">
+        <echo message="Creando archivo de distribución de plugin Like"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_like.file}.zip" >
+            <fileset refid="plg_like_files"/>
+            <!--zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" /-->
         </zip>
     </target>
 
