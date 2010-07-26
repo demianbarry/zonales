@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 26-07-2010 a las 11:55:34
+-- Tiempo de generación: 26-07-2010 a las 12:20:18
 -- Versión del servidor: 5.0.77
 -- Versión de PHP: 5.1.6
 
@@ -67,7 +67,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (5, 5, '', 'Cinemark Institucional', 'cinemark-institucional', 0, 3121, 1, 'cinemark_250x200.jpg', 'http://www.cinemark.com.ar/', '2009-05-13 14:07:16', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (6, 6, '', 'ARBA Institucional', 'arba-institucional', 0, 3119, 2, 'arba_250x200.jpg', 'http://www.arba.gov.ar/', '2009-05-13 14:12:00', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (7, 7, '', 'Fate Institucional', 'fate-institucional', 0, 4567, 4, 'fate_783x130.jpg', 'http://www.fate.com.ar/', '2009-05-19 14:19:35', 1, 0, '0000-00-00 00:00:00', '', '', 10, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
-(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7596, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
+(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7597, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (9, 9, '', 'Juanjo Dominguez', 'juanjo-dominguez', 0, 1209, 17, 'brown_juanjo_dominguez.jpg', 'index.php?option=com_content&view=article&id=44:el-guitarrista-que-recorrio-el-mundo-pero-prefiere-burzaco&catid=6:historias-y-personajes&Itemid=7', '2009-07-13 20:11:21', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_almirante_brown', 'width=0\nheight=0'),
 (10, 9, '', 'Javier Zanetti', 'javier-zanetti', 0, 293, 8, 'lanus_javier_zanetti.jpg', 'index.php?option=com_content&view=article&id=50:escalada-tiene-un-embajador-de-lujo&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 19:59:29', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_lanus', 'width=0\nheight=0'),
 (11, 9, '', 'Luis Gaeda', 'luis-gaeda', 0, 401, 6, 'avellaneda_luis_gaeda.jpg', 'index.php?option=com_content&view=article&id=153:los-gadea-el-clan-taekwondista-de-pineiro&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:01:17', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_avellaneda', 'width=0\nheight=0'),
@@ -77,7 +77,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (15, 9, '', 'Paz Martínez', 'paz-martinez', 0, 243, 8, 'echeverria_paz_martinez.jpg', 'index.php?option=com_content&view=article&id=93:paz-martinez-el-romantico-de-monte-grande&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:15:13', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_esteban_echeverria', 'width=0\nheight=0'),
 (16, 9, '', 'Roberto De Vicenzo', 'roberto-de-vicenzo', 0, 205, 9, 'berazategui_de_vicenzo.jpg', 'index.php?option=com_content&view=article&id=112:roberto-de-vicenzo-un-icono-del-golf-nacional-y-de-berazategui&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:19:11', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 8, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_berazategui', 'width=0\nheight=0'),
 (17, 9, '', 'Osito', 'osito', 0, 73, 4, 'ezeiza_osito.jpg', 'index.php?option=com_content&view=article&id=189:el-magico-mundo-de-osito&catid=6:historias-y-personajes&Itemid=7', '2010-07-12 15:20:50', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 5, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_ezeiza', 'width=0\nheight=0'),
-(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11191, 0, 'publicite_160x250.jpg', '', '2010-05-28 21:04:39', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
+(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11197, 0, 'publicite_160x250.jpg', '', '2010-05-28 21:04:39', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
 
 -- --------------------------------------------------------
 
@@ -38296,6 +38296,84 @@ INSERT INTO `jos_custom_properties_values` (`id`, `field_id`, `parent_id`, `name
 (2838, 14, 183, 'yerba_buena_(s)', 'Yerba Buena (S)', 0, 0, 0, 0, 21),
 (2839, 14, 183, 'yerba_buena', 'Yerba Buena', 0, 0, 0, 0, 21),
 (2840, 15, 0, 'portada', 'Portada', 0, 0, 103, 0, 21);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jos_menu`
+--
+
+CREATE TABLE IF NOT EXISTS `jos_menu` (
+  `id` int(11) NOT NULL auto_increment,
+  `menutype` varchar(75) default NULL,
+  `name` varchar(255) default NULL,
+  `alias` varchar(255) NOT NULL default '',
+  `link` text,
+  `type` varchar(50) NOT NULL default '',
+  `published` tinyint(1) NOT NULL default '0',
+  `parent` int(11) unsigned NOT NULL default '0',
+  `componentid` int(11) unsigned NOT NULL default '0',
+  `sublevel` int(11) default '0',
+  `ordering` int(11) default '0',
+  `checked_out` int(11) unsigned NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `pollid` int(11) NOT NULL default '0',
+  `browserNav` tinyint(4) default '0',
+  `access` tinyint(3) unsigned NOT NULL default '0',
+  `utaccess` tinyint(3) unsigned NOT NULL default '0',
+  `params` text NOT NULL,
+  `lft` int(11) unsigned NOT NULL default '0',
+  `rgt` int(11) unsigned NOT NULL default '0',
+  `home` int(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `componentid` (`componentid`,`menutype`,`published`,`access`),
+  KEY `menutype` (`menutype`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+
+--
+-- Volcar la base de datos para la tabla `jos_menu`
+--
+
+INSERT INTO `jos_menu` (`id`, `menutype`, `name`, `alias`, `link`, `type`, `published`, `parent`, `componentid`, `sublevel`, `ordering`, `checked_out`, `checked_out_time`, `pollid`, `browserNav`, `access`, `utaccess`, `params`, `lft`, `rgt`, `home`) VALUES
+(2, 'mainmenu', 'Actualidad', 'actualidad', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', 1, 0, 20, 0, 9, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(3, 'mainmenu', 'Deportes', 'deportes', 'index.php?option=com_content&view=category&layout=blog&id=3', 'component', 1, 0, 20, 0, 10, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=1\nshow_description_image=1\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(4, 'mainmenu', 'Sociedad', 'sociedad', 'index.php?option=com_content&view=category&layout=blog&id=4', 'component', 1, 0, 20, 0, 11, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(5, 'mainmenu', 'Consumo y salidas', 'consumo-y-salidas', 'index.php?option=com_content&view=category&layout=blog&id=5', 'component', 1, 0, 20, 0, 12, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(6, 'mainmenu', 'La voz del vecino', 'la-voz-del-vecino', 'index.php?option=com_content&view=category&layout=blog&id=2', 'component', 1, 0, 20, 0, 13, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(7, 'mainmenu', 'Historias y personajes', 'historias-y-personajes', 'index.php?option=com_content&view=category&layout=blog&id=6', 'component', 1, 0, 20, 0, 14, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(8, 'mainmenu', 'NOTICIAS', 'noticias', 'index.php?option=com_content&view=section&layout=blog&id=1', 'component', -2, 0, 20, 0, 2, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(10, 'mainmenu', 'ACTUALIDAD', 'actualidad', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', -2, 0, 20, 1, 7, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(11, 'mainmenu', 'DEPORTES', 'deportes', 'index.php?option=com_content&view=category&layout=blog&id=3', 'component', -2, 0, 20, 1, 6, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(12, 'mainmenu', 'AGENDA', 'agenda', 'index.php?option=com_content&view=section&layout=blog&id=3', 'component', -2, 0, 20, 0, 5, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(13, 'mainmenu', 'TEATRO', 'teatro', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', -2, 0, 20, 1, 4, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(14, 'mainmenu', 'CINE', 'cine', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', -2, 0, 20, 1, 3, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=1\nnum_intro_articles=4\nnum_columns=2\nnum_links=4\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(15, 'mainmenu', 'Agenda', 'agenda', 'index.php?option=com_content&view=section&layout=blog&id=3', 'component', 1, 0, 20, 0, 15, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_item_navigation=0\nshow_readmore=0\nshow_vote=0\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(16, 'mainmenu', 'Mapa', 'mapa', 'index.php?option=com_zonales&view=mapa', 'component', -2, 0, 49, 0, 1, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'page_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(17, 'mainmenu', 'Contactos', 'contactos', 'index.php?option=com_content&view=article&id=191', 'component', 0, 0, 20, 0, 16, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_noauth=\nshow_title=\nlink_titles=0\nshow_intro=\nshow_section=0\nlink_section=0\nshow_category=0\nlink_category=0\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_item_navigation=0\nshow_readmore=0\nshow_vote=0\nshow_icons=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nshow_hits=0\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=_contactos\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
+(18, 'usuarioeditor', 'Crear nota', 'crear-nota', 'index.php?option=com_content&view=article&layout=form', 'component', 1, 0, 20, 0, 1, 0, '0000-00-00 00:00:00', 0, 0, 2, 0, 'show_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jos_menu_types`
+--
+
+CREATE TABLE IF NOT EXISTS `jos_menu_types` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `menutype` varchar(75) NOT NULL default '',
+  `title` varchar(255) NOT NULL default '',
+  `description` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `menutype` (`menutype`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Volcar la base de datos para la tabla `jos_menu_types`
+--
+
+INSERT INTO `jos_menu_types` (`id`, `menutype`, `title`, `description`) VALUES
+(2, 'usuarioeditor', 'Menu editor', ''),
+(3, 'menuprueba', 'Menu prueba', 'menu prueba');
 
 -- --------------------------------------------------------
 
