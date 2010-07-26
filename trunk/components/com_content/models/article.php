@@ -314,7 +314,7 @@ class ContentModelArticle extends JModel
 		$article->title = trim( $article->title );
 
 		// Publishing state hardening for Authors
-		if (!$user->authorize('com_content', 'publish', 'content', 'all'))
+		if (/*!$user->authorize('com_content', 'edit', 'content', 'own')*/false)
 		{
 			if ($isNew)
 			{
