@@ -81,7 +81,6 @@
 	<files>
 	
 		<filename plugin="denunciar">denunciar.php</filename>
-		<filename>like/thumbsup2.jpg</filename>
 	
 	</files>
 </install>
