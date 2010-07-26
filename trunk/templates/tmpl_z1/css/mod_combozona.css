@@ -19,6 +19,12 @@
     cursor: pointer;
 }
 
+.moduletable_combozonal p {
+    color:#666666;
+    font-family:'trebuchet MS';
+    font-size:14px;
+}
+
 .provincias_select {
     border:1px solid #CCCCCC;
     margin:0;
@@ -62,4 +68,7 @@
 
 .combo_zonal_form {
     margin: 10px;
+    color:#666666;
+    font-family:"trebuchet MS";
+    font-size:13px;
 }

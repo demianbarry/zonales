@@ -51,8 +51,7 @@
     background-color: #009CC9;
 }
 
-.moduletable_formVecinos #formVecinos #siguiente{
-    background:url(../images/_violeta/bot_next.gif);
+.moduletable_formVecinos #formVecinos #siguiente, #volver, #enviar{
     display:block;
     overflow:hidden;
     width:82px !important;
@@ -61,17 +60,16 @@
     cursor:pointer;
     margin-top:10px;
 }
-
+.moduletable_formVecinos #formVecinos #siguiente{
+    background:url(../images/_violeta/bot_next.gif);
+}
 .moduletable_formVecinos #formVecinos #volver{
-    background:url(../images/_violeta/bot_back.gif);
-    display:block;
-    overflow:hidden;
-    width:82px !important;
-    height:18px;
-    text-indent:90px;
-    cursor:pointer;
-    margin-top:10px;
+    background:url(../images/_violeta/bot_back.gif);    
     float: left;
+}
+.moduletable_formVecinos #formVecinos #enviar{
+    background:url(../images/_violeta/bot_sent.gif);
+    float: right;
 }
 
 /* mod ultimos comentarios */
