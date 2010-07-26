@@ -347,6 +347,7 @@ class ContentModelCategory extends JModel
                         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
                         $contenthelper = new comEqZonalesContentHelper();
 
+
                         $params = array();
                         $menu = JRequest::getString('banda', NULL, 'get');
                         if ($menu) {
