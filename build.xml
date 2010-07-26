@@ -140,6 +140,10 @@
     <fileset dir="${src_plugins}/plg_like" id="plg_like_files">
         <include name="**" />
     </fileset>
+    <!-- plg_denunciar -->
+    <fileset dir="${src_plugins}/plg_denunciar" id="plg_denunciar_files">
+        <include name="**" />
+    </fileset>
 
     <!-- com_zonales -->
     <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
@@ -439,6 +443,14 @@
         <echo message="Creando archivo de distribución de plugin Like"/>
         <zip destfile="${src_dist_dir}/${dist.plg_like.file}.zip" >
             <fileset refid="plg_like_files"/>
+            <!--zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" /-->
+        </zip>
+    </target>
+        <!-- plugin plg_denunciar -->
+    <target name="dist_plg_denunciar" description="Crea archivo de distribución Joomla para el plugin denunciar">
+        <echo message="Creando archivo de distribución de plugin denunciar"/>
+        <zip destfile="${src_dist_dir}/${dist.plg_denunciar.file}.zip" >
+            <fileset refid="plg_denunciar_files"/>
             <!--zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" /-->
         </zip>
     </target>
