@@ -84,7 +84,8 @@ JHTML::_('behavior.formvalidation');
             return true;
         }
 
-        $('siguiente').addEvent('click', function() {
+        $('siguiente').addEvent('click', function(e) {
+            new Event(e).stop();
             if($('nota').getStyle('display') != 'none') {
                 if (validate($('formVecinos'), validateNota)) {
                     $('nota').setStyle('display', 'none');
@@ -101,7 +102,8 @@ JHTML::_('behavior.formvalidation');
             }
         });
 
-        $('volver').addEvent('click', function() {
+        $('volver').addEvent('click', function(e) {
+            new Event(e).stop();
             $('nota').setStyle('display', 'block');
             $('siguiente').setStyle('display','block');
             $('corresponsal').setStyle('display', 'none');
@@ -227,14 +229,14 @@ JHTML::_('behavior.formvalidation');
                 <label for="text"><?php echo JText::_('TEXT');?></label>
                     <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
             </div>
-            <a id="siguiente" name="siguiente"><?php echo JText::_('NEXT');?></a>
+            <input id="siguiente" type="submit" name="siguiente" value="<?php echo JText::_('NEXT');?>" />
             <div id="corresponsal" style="display: none;">
                 <label for="nombre"><?php echo JText::_('NAME');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="nombre" name="nombre" type="text" class="" value="<?php echo $user->name; ?>" disabled="true"/>
+                <input id="nombre" name="nombre" type="text" class="" value="<?php echo $user->name; ?>" readonly="true"/>
 
                     <?php if ($showEmail): ?>
                 <label for="email"><?php echo JText::_('MAIL');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="email" name="email" type="text" class="" value="<?php echo $user->email; ?>" disabled="true"/>
+                <input id="email" name="email" type="text" class="" value="<?php echo $user->email; ?>" readonly="true"/>
                     <?php endif; ?>
 
                     <?php if ($showPhone): ?>
@@ -264,8 +266,8 @@ JHTML::_('behavior.formvalidation');
                 <script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
                 <div class="splitter"></div>
 
-                <input id="enviar" name="enviar" src="templates/<?php echo $template; ?>/images/<?php echo $mainColor; ?>/bot_sent.gif" type="image" />
-                <a id="volver" name="volver"></a>
+                <input id="enviar" type="submit" name="enviar" value="<?php echo JText::_('SEND');?>"/>
+                <input id="volver" type="submit" name="volver" value="<?php echo JText::_('BACK');?>"/>
             </div>
 
             <input type="hidden" name="task" value="saveCorresponsalContent" />

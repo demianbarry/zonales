@@ -49,7 +49,7 @@ JHTML::_('behavior.formvalidation');
                     <tr>
                         <td valign="top" colspan="2">
                             <p>
-                                        <?php echo $article->introtext ?>
+                                        <?php echo $article->text ?>
                             </p>
                         </td>
                     </tr>

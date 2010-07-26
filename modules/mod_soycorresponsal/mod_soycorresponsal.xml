@@ -30,7 +30,7 @@
         <param name="show_phone" type="radio" default="1" label="SHOWPHONE" description="TIP_SHOWPHONE">
             <option value="0">NO</option>
             <option value="1">YES</option>
-        </param>
+        </param>        
         <param name="category" type="category" label="Select a category" />
         <param name="user" type="sql" default="" query="SELECT id, name FROM #__users" key_field="id" value_field="name" description="TIP_USER" />
         <param name="confirmacion" type="textarea" rows="3" cols="40" label="CONFIRMACION" default="¡Gracias!  A la brevedad nos comunicaremos con usted." description="TIP_CONFIRMACION" />
