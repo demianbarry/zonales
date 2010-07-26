@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 26-07-2010 a las 12:20:18
+-- Tiempo de generación: 26-07-2010 a las 17:10:38
 -- Versión del servidor: 5.0.77
 -- Versión de PHP: 5.1.6
 
@@ -67,7 +67,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (5, 5, '', 'Cinemark Institucional', 'cinemark-institucional', 0, 3121, 1, 'cinemark_250x200.jpg', 'http://www.cinemark.com.ar/', '2009-05-13 14:07:16', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (6, 6, '', 'ARBA Institucional', 'arba-institucional', 0, 3119, 2, 'arba_250x200.jpg', 'http://www.arba.gov.ar/', '2009-05-13 14:12:00', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (7, 7, '', 'Fate Institucional', 'fate-institucional', 0, 4567, 4, 'fate_783x130.jpg', 'http://www.fate.com.ar/', '2009-05-19 14:19:35', 1, 0, '0000-00-00 00:00:00', '', '', 10, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
-(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7597, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
+(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7705, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (9, 9, '', 'Juanjo Dominguez', 'juanjo-dominguez', 0, 1209, 17, 'brown_juanjo_dominguez.jpg', 'index.php?option=com_content&view=article&id=44:el-guitarrista-que-recorrio-el-mundo-pero-prefiere-burzaco&catid=6:historias-y-personajes&Itemid=7', '2009-07-13 20:11:21', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_almirante_brown', 'width=0\nheight=0'),
 (10, 9, '', 'Javier Zanetti', 'javier-zanetti', 0, 293, 8, 'lanus_javier_zanetti.jpg', 'index.php?option=com_content&view=article&id=50:escalada-tiene-un-embajador-de-lujo&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 19:59:29', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_lanus', 'width=0\nheight=0'),
 (11, 9, '', 'Luis Gaeda', 'luis-gaeda', 0, 401, 6, 'avellaneda_luis_gaeda.jpg', 'index.php?option=com_content&view=article&id=153:los-gadea-el-clan-taekwondista-de-pineiro&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:01:17', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_avellaneda', 'width=0\nheight=0'),
@@ -77,7 +77,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (15, 9, '', 'Paz Martínez', 'paz-martinez', 0, 243, 8, 'echeverria_paz_martinez.jpg', 'index.php?option=com_content&view=article&id=93:paz-martinez-el-romantico-de-monte-grande&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:15:13', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_esteban_echeverria', 'width=0\nheight=0'),
 (16, 9, '', 'Roberto De Vicenzo', 'roberto-de-vicenzo', 0, 205, 9, 'berazategui_de_vicenzo.jpg', 'index.php?option=com_content&view=article&id=112:roberto-de-vicenzo-un-icono-del-golf-nacional-y-de-berazategui&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:19:11', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 8, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_berazategui', 'width=0\nheight=0'),
 (17, 9, '', 'Osito', 'osito', 0, 73, 4, 'ezeiza_osito.jpg', 'index.php?option=com_content&view=article&id=189:el-magico-mundo-de-osito&catid=6:historias-y-personajes&Itemid=7', '2010-07-12 15:20:50', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 5, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_ezeiza', 'width=0\nheight=0'),
-(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11197, 0, 'publicite_160x250.jpg', '', '2010-05-28 21:04:39', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
+(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11307, 0, 'publicite_160x250.jpg', '', '2010-05-28 21:04:39', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
 
 -- --------------------------------------------------------
 
@@ -38335,6 +38335,7 @@ CREATE TABLE IF NOT EXISTS `jos_menu` (
 --
 
 INSERT INTO `jos_menu` (`id`, `menutype`, `name`, `alias`, `link`, `type`, `published`, `parent`, `componentid`, `sublevel`, `ordering`, `checked_out`, `checked_out_time`, `pollid`, `browserNav`, `access`, `utaccess`, `params`, `lft`, `rgt`, `home`) VALUES
+(1, 'mainmenu', 'Home', 'home', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', 1, 0, 20, 0, 8, 0, '0000-00-00 00:00:00', 0, 0, 0, 3, 'show_description=0\nshow_description_image=0\nnum_leading_articles=4\nnum_intro_articles=0\nnum_columns=1\nnum_links=6\norderby_pri=\norderby_sec=\nmulti_column_order=1\nshow_pagination=0\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nshow_hits=0\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 1),
 (2, 'mainmenu', 'Actualidad', 'actualidad', 'index.php?option=com_content&view=category&layout=blog&id=1', 'component', 1, 0, 20, 0, 9, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
 (3, 'mainmenu', 'Deportes', 'deportes', 'index.php?option=com_content&view=category&layout=blog&id=3', 'component', 1, 0, 20, 0, 10, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=1\nshow_description_image=1\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
 (4, 'mainmenu', 'Sociedad', 'sociedad', 'index.php?option=com_content&view=category&layout=blog&id=4', 'component', 1, 0, 20, 0, 11, 0, '0000-00-00 00:00:00', 0, 0, 0, 0, 'show_description=0\nshow_description_image=0\nnum_leading_articles=0\nnum_intro_articles=8\nnum_columns=1\nnum_links=0\norderby_pri=\norderby_sec=\nmulti_column_order=0\nshow_pagination=2\nshow_pagination_results=1\nshow_feed_link=1\nshow_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n', 0, 0, 0),
@@ -38372,6 +38373,7 @@ CREATE TABLE IF NOT EXISTS `jos_menu_types` (
 --
 
 INSERT INTO `jos_menu_types` (`id`, `menutype`, `title`, `description`) VALUES
+(1, 'mainmenu', 'Main Menu', 'The main menu for the site'),
 (2, 'usuarioeditor', 'Menu editor', ''),
 (3, 'menuprueba', 'Menu prueba', 'menu prueba');
 
