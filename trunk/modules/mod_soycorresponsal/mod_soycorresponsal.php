@@ -25,6 +25,7 @@ if(!$user->guest) {
 
 // parametros
     $showColapsed = $params->get('show_colapsed');
+    $this->def
     $showEmail = $params->get('show_email');
     $showPhone = $params->get('show_phone');
     $captchaTextNew = $params->get('captchaTextNew');

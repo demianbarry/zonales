@@ -30,7 +30,7 @@ $helper = new comEqZonalesContentHelper();
 $limit = 100;
 $results = array();
 try {
-    $results = $helper->getContent(0, $limit, "tags_values:la_voz_del_vecino");
+    $results = $helper->getContent(0, $limit, array("tags_values:la_voz_del_vecino"));
 }
 catch (Exception $e) {
     print_r($e->getMessage());
@@ -52,7 +52,16 @@ if ($results) {
     foreach ($results as $key => $doc) {
         $item = new stdClass();
         $item->href = ContentHelperRoute::getArticleRoute($doc->id);
+        $item->id = $doc->id;
         $item->title = $doc->title;
+        $item->sectionid = $doc->sectionid;
+        $item->catid = $doc->catid;
+        $item->state = $doc->state;
+        $item->access = $doc->access;
+        $item->slug = $doc->slug;
+        $item->catslug = $doc->catslug;
+        $item->created_by = $doc->created_by;
+
 
         if (isset($doc->section) && isset($doc->category)) {
             $item->section = $doc->section . '/' . $doc->category;
@@ -62,13 +71,25 @@ if ($results) {
 
         $item->created = $doc->created;
 
-        $imgPos = strpos($doc->introtext, "<img ");
-        $strPre = substr($doc->introtext, 0, $imgPos+5);
-        $strPos = substr($doc->introtext, $imgPos+5);
+        /**
+         * Si hay imágenes, les fijo un tamaño específico
+         */
+        $img_path = null;
+        if(($imgPos = strpos($doc->introtext, "<img "))) {
+            $urlPos = strpos($doc->introtext, "src=\"", $imgPos);
+            $img_path = substr($doc->introtext,$urlPos+4, strpos($doc->introtext, '"', $urlPos+5));
 
-        $item->introtext = $strPre.' style="width: 280px" '.$strPos;
-        $item->text = $doc->fulltext;
+            $strPre = substr($doc->introtext, 0, $imgPos+5);
+            $strPos = substr($doc->introtext, $imgPos+5);
+        }
+        $item->text = $imgPos && checkRezizeImageNeeded($img_path) ? $strPre.' style="width: 280px" '.$strPos : $doc->introtext;
+
+        $item->fulltext = $doc->fulltext;
         $item->browsernav = '';
+        // Process the content preparation plugins
+        JPluginHelper::importPlugin('content');
+        $dispatcher =& JDispatcher::getInstance();
+        $dispatcher->trigger('onPrepareContent', array (& $item, null, 0));
         if($key < $cantArticles)
             $articles[] = $item;
         else
@@ -78,3 +99,13 @@ if ($results) {
 }
 
 require(JModuleHelper::getLayoutPath('mod_lavozdelvecino'));
+
+function checkRezizeImageNeeded($img_path) {
+    if(!$img_path)
+        return false;
+    $max_width = 260;
+    $max_height = 200;
+
+    list($width, $height) = getimagesize($img_path);
+    return (($max_height<$height) || ($max_width < $width));
+}
