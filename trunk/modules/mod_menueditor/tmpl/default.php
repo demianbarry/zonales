@@ -16,25 +16,23 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
-<script language="javascript" type="text/javascript">
-<!--
-    function logout(){
-        window.location.href='<?php echo $logoutRoute ?>';
-    }
-//-->
-</script>
-
-<div class="moduletable_sessioninfo">
+<?php if($user->get('aid') >= 1):?>
+<div class="moduletable_menueditor">
+    <h1><?php echo $module->title; ?></h1>
     <p>
-        <a href="<?php echo $profileLink ?>">
-            <?php echo $greetingMessage ?>
+        <a href="<?php echo $createArticleRoute ?>">
+            <?php echo JText::_('MOD_MENUEDITOR_CREATE_ARTICLE'); ?>
         </a>
     </p>
-    <br/>
-    <input type="button"
-           value="<?php echo $sessionCloseMessage ?>"
-           name="closesession"
-           class="closesession"
-           onclick="logout()" />
-    <br/>
+    <p>
+        <a href="<?php echo $viewPublishedArticles ?>">
+            <?php echo JText::_('MOD_MENUEDITOR_VIEW_PUBLISHED_ARTICLES'); ?>
+        </a>
+    </p>
+    <p>
+        <a href="<?php echo $viewUnpublishedArticles ?>">
+            <?php echo JText::_('MOD_MENUEDITOR_VIEW_UNPUBLISHED_ARTICLES'); ?>
+        </a>
+    </p>        
 </div>
+<?php endif;?>

@@ -17,6 +17,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $user =& JFactory::getUser();
 
-$logoutRoute = JRoute::_('index.php?view=myarchive', false);
+$createArticleRoute = JRoute::_('index.php?view=article&task=edit&option=com_content', false);
+$viewPublishedArticles = JRoute::_('index.php?view=myarchive&stateFrom=1&stateTo=1&option=com_content', false);
+$viewUnpublishedArticles = JRoute::_('index.php?view=myarchive&stateFrom=0&stateTo=0&option=com_content', false);
 
 require(JModuleHelper::getLayoutPath('mod_menueditor'));
