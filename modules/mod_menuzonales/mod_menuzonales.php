@@ -57,7 +57,7 @@ if (!is_null($result) && !empty($result)) {
                 $band->link = JRoute::_($menu_item->link . "&Itemid=" . $menu_item->id ."&banda=" . $band->band_name);
                 $eq->fields[$band->field_id]->id = $band->field_id;
                 $eq->fields[$band->field_id]->label = $band->group_label;
-                $eq->fields[$band->field_id]->link = $menu_item;
+                $eq->fields[$band->field_id]->link = $band->link;
                 $eq->fields[$band->field_id]->bands[] = $band;
             }
         }
