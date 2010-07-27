@@ -160,8 +160,8 @@ class comEqZonalesContentHelper {
 
         $fqParams = array();
 
-        $stateFrom = JRequest::getInt('stateFrom') ? JRequest::getInt('stateFrom') : 1;
-        $stateTo = JRequest::getInt('stateTo') ? JRequest::getInt('stateTo') : 1;
+        $stateFrom = JRequest::getVar('stateFrom') != null ? JRequest::getInt('stateFrom') : 1;
+        $stateTo = JRequest::getVar('stateTo') != null ? JRequest::getInt('stateTo') : 1;
         $fqParams[] = $this->getWhere($stateFrom, $stateTo);
         
 
@@ -257,19 +257,19 @@ class comEqZonalesContentHelper {
         // Zonal - lista de zonales, zonal actualmente seleccionado
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
         $helper = new comZonalesHelper();
-        $zonal = $helper->getZonal();
+        $zonal = $helper->getZonalActual();
 
         // Si se recupera correctamente el zonal actual, se compone la lista
         // de zonales de preferencia para el usuario
-        if ($zonal != null && $zonal->id) {
-            $localidades = $helper->getLocalidadesByPartido($zonal->id);
+        if ($zonal != null) {
+            /*$localidades = $helper->getLocalidadesByPartido($zonal->id);
 
             $localidadesList = array();
             foreach($localidades as $localidad) {
                 $localidadesList[] = $localidad->name;
-            }
+            }*/
 
-            $where .= '+tags_values:('.implode(" ",$localidadesList).')';
+            $where .= "+tags_values:$zonal";//('.implode(" ",$localidadesList).')';
         } else
         //si no estoy buscando la vista myarchive, agrego el tag de portada
             if(JRequest::getString('view', NULL, 'get') != 'myarchive') {
