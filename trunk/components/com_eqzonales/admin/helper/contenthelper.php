@@ -160,8 +160,10 @@ class comEqZonalesContentHelper {
 
         $fqParams = array();
 
-        if($stateFrom = JRequest::getInt('stateFrom') && $stateTo = JRequest::getInt('stateTo'))
-            $fqParams[] = $this->getWhere($stateFrom, $stateTo);
+        $stateFrom = JRequest::getInt('stateFrom') ? JRequest::getInt('stateFrom') : 1;
+        $stateTo = JRequest::getInt('stateTo') ? JRequest::getInt('stateTo') : 1;
+        $fqParams[] = $this->getWhere($stateFrom, $stateTo);
+        
 
         foreach ($additionalParams as $param) {
             $fqParams[] = $param;
@@ -223,7 +225,7 @@ class comEqZonalesContentHelper {
      * @global $mainframe
      * @return String query con parámetros solr para la búsqueda
      */
-    function getWhere($stateFrom = '0', $stateTo = '1') {
+    function getWhere($stateFrom = '1', $stateTo = '1') {
         global $mainframe;
 
         // usuario
