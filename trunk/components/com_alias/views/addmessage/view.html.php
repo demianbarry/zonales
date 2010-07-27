@@ -8,7 +8,7 @@ class AliasViewAddMessage extends JView {
     function display($tpl = null) {
         $status = JRequest::getInt('status', '0', 'method');
         $class = 'aliasmessage';
-        $returnUrl = JRoute::_('index.php');
+        $returnUrl = JRoute::_('?option=com_aapu');
         $returnMessage = JText::_('ZONALES_ALIAS_COMEBACK');
 
         switch ($status) {

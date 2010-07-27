@@ -5,9 +5,25 @@
         document.getElementById('submit').value = '<?php echo $submitText ?>';
     }
 
-//    function changeStatus() {
-//        for ()
-//    }
+    function changeStatus() {
+        var aliases = document.getElementsByClassName('alias');
+        var alias;
+        var params = '';
+        var i;
+        for (i=0;i<aliases.length;i++) {
+            alias = aliases[i];
+            params = params + '&' + alias.name + '=' + alias.checked;
+        }
+            $('alias_progress').empty().addClass('ajax-loading');
+            var url='index.php?option=com_alias&format=raw&task=unblock&' + '<?php echo JUtility::getToken()?>' + '=1'+params;
+            new Ajax(url, {
+                method: 'get',
+                update: 'alias_progress',
+                onComplete: function(response) {
+                    $('alias_progress').removeClass('ajax-loading');
+                }
+            }).request();
+    }
 </script>
 
 <?php # verifica si hay que mostrar la seccion de habilitacion/deshabilitacion de alias ?>
@@ -20,10 +36,7 @@
     <?php echo $messageAliasBlockAdmin ?>
 </p>
 
-<form name="aliasadmin"
-      action="<?php echo JRoute::_('index.php') ?>"
-      method="POST"
->
+<form name="aliasadmin" action="index.php" method="post" id="aliasadmin" >
     <table border="0" 
            cellspacing="4"
     >
@@ -54,6 +67,7 @@
                 <td>
                     <input type="checkbox"
                            name="<?php echo 'alias'.$dbalias->id ?>"
+                           class="alias"
                            <?php echo (!$dbalias->block) ? 'checked="checked"' : '' ?>
                     />
                 </td>
@@ -62,23 +76,13 @@
         </tbody>
     </table>
 
-    <input type="button"
-           value="<?php echo JText::_('ZONALES_ALIAS_ACCEPT'); ?>"
-           name="submitChanges"
-           onclick=""
-    />
-    <input type="hidden"
-           name="option"
-           value="com_alias"
-    />
-    <input type="hidden"
-           name="task"
-           value="unblock"
-    />
+    <input type="button" value="<?php echo JText::_('ZONALES_ALIAS_ACCEPT'); ?>" name="submitChanges" onclick="changeStatus();" />
+    <input type="hidden" name="option" value="com_alias" />
+    <input type="hidden" name="task" value="unblock" />
     <?php echo JHTML::_( 'form.token' ); ?>
 
 </form>
-
+<div id="alias_progress"></div>
 <?php else: ?>
 
 <p class="noalias">
