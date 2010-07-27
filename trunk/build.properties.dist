@@ -37,6 +37,7 @@ dist.mod_sessioninfo.file=mod_sessioninfo
 dist.mod_zcloud.file=mod_zcloud
 dist.mod_zlogin.file=mod_zlogin
 dist.mod_lavozdelvecino.file=mod_lavozdelvecino
+dist.mod_menueditor.file=mod_menueditor
 
 # nombre plugin
 dist.plg_zonalescontent.file=plg_zonalescontent
