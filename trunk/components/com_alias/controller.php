@@ -26,9 +26,9 @@ class AliasController extends JController {
     function unblock() {
         //JRequest::checkToken() or jexit( 'Invalid Token' );
 
-        try {
             $db =& JFactory::getDBO();
             $user =& JFactory::getUser();
+            $iserror = false;
 
             //$row =& JTable::getInstance('alias', 'Table');
             //$row = new JTableAlias($db);
@@ -50,18 +50,12 @@ class AliasController extends JController {
                     ' where id=' . $alias->id;
 
                 $db->setQuery($update);
-                $db->query();
+                $iserror = ($db->query() && $iserror);
             }
 
-            $message = JText::_('ZONALES_ALIAS_BLOCKED_SUCCESSFULLY');
+            $message = ($iserror) ? JText::_('ZONALES_ALIAS_BLOCKED_ERROR') : JText::_('ZONALES_ALIAS_BLOCKED_SUCCESSFULLY');
             echo $message;
             //UserHelper::showMessage(SUCCESS, $message);
-        }
-        catch (Exception $ex) {
-            $message = JText::_('ZONALES_ALIAS_BLOCKED_ERROR');
-            echo $message;
-            //UserHelper::showMessage(ERROR, $message);
-        }
     }
 
 }
