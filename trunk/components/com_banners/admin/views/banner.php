@@ -447,11 +447,11 @@ class BannersViewBanner
 								<?php
 							} elseif (preg_match("#gif|jpg|png#i", $row->imageurl)) {
 								?>
-								<img src="../images/banners/<?php echo $row->imageurl; ?>" name="imagelib" />
+								<img src="../images/banners/<?php echo $row->imageurl; ?>" name="imagelib" alt="<?php echo $row->name ?>"/>
 								<?php
 							} else {
 								?>
-								<img src="images/blank.png" name="imagelib" />
+								<img src="images/blank.png" name="imagelib" alt="<?php echo $row->name ?>"/>
 								<?php
 							}
 							?>
