@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 26-07-2010 a las 17:08:47
+-- Tiempo de generación: 27-07-2010 a las 16:33:33
 -- Versión del servidor: 5.0.77
 -- Versión de PHP: 5.1.6
 
@@ -64,4 +64,4 @@ CREATE TABLE IF NOT EXISTS `jos_content` (
   KEY `idx_state` (`state`),
   KEY `idx_catid` (`catid`),
   KEY `idx_createdby` (`created_by`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=588 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=590 ;

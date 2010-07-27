@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 26-07-2010 a las 17:10:38
+-- Tiempo de generación: 27-07-2010 a las 16:32:56
 -- Versión del servidor: 5.0.77
 -- Versión de PHP: 5.1.6
 
@@ -67,7 +67,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (5, 5, '', 'Cinemark Institucional', 'cinemark-institucional', 0, 3121, 1, 'cinemark_250x200.jpg', 'http://www.cinemark.com.ar/', '2009-05-13 14:07:16', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (6, 6, '', 'ARBA Institucional', 'arba-institucional', 0, 3119, 2, 'arba_250x200.jpg', 'http://www.arba.gov.ar/', '2009-05-13 14:12:00', 1, 0, '0000-00-00 00:00:00', '', '', 7, '', 0, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (7, 7, '', 'Fate Institucional', 'fate-institucional', 0, 4567, 4, 'fate_783x130.jpg', 'http://www.fate.com.ar/', '2009-05-19 14:19:35', 1, 0, '0000-00-00 00:00:00', '', '', 10, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
-(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7705, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
+(8, 8, '', 'Publicite (naranja)', 'publicite-naranja', 0, 7827, 23, 'publicite_160x200.jpg', '', '2010-05-28 21:42:07', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0'),
 (9, 9, '', 'Juanjo Dominguez', 'juanjo-dominguez', 0, 1209, 17, 'brown_juanjo_dominguez.jpg', 'index.php?option=com_content&view=article&id=44:el-guitarrista-que-recorrio-el-mundo-pero-prefiere-burzaco&catid=6:historias-y-personajes&Itemid=7', '2009-07-13 20:11:21', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_almirante_brown', 'width=0\nheight=0'),
 (10, 9, '', 'Javier Zanetti', 'javier-zanetti', 0, 293, 8, 'lanus_javier_zanetti.jpg', 'index.php?option=com_content&view=article&id=50:escalada-tiene-un-embajador-de-lujo&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 19:59:29', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_lanus', 'width=0\nheight=0'),
 (11, 9, '', 'Luis Gaeda', 'luis-gaeda', 0, 401, 6, 'avellaneda_luis_gaeda.jpg', 'index.php?option=com_content&view=article&id=153:los-gadea-el-clan-taekwondista-de-pineiro&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:01:17', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_avellaneda', 'width=0\nheight=0'),
@@ -77,7 +77,7 @@ INSERT INTO `jos_banner` (`bid`, `cid`, `type`, `name`, `alias`, `imptotal`, `im
 (15, 9, '', 'Paz Martínez', 'paz-martinez', 0, 243, 8, 'echeverria_paz_martinez.jpg', 'index.php?option=com_content&view=article&id=93:paz-martinez-el-romantico-de-monte-grande&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:15:13', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_esteban_echeverria', 'width=0\nheight=0'),
 (16, 9, '', 'Roberto De Vicenzo', 'roberto-de-vicenzo', 0, 205, 9, 'berazategui_de_vicenzo.jpg', 'index.php?option=com_content&view=article&id=112:roberto-de-vicenzo-un-icono-del-golf-nacional-y-de-berazategui&catid=6:historias-y-personajes&Itemid=7', '2009-07-03 20:19:11', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 8, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_berazategui', 'width=0\nheight=0'),
 (17, 9, '', 'Osito', 'osito', 0, 73, 4, 'ezeiza_osito.jpg', 'index.php?option=com_content&view=article&id=189:el-magico-mundo-de-osito&catid=6:historias-y-personajes&Itemid=7', '2010-07-12 15:20:50', 1, 0, '0000-00-00 00:00:00', '', '', 14, '', 0, 5, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'bue_ezeiza', 'width=0\nheight=0'),
-(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11307, 0, 'publicite_160x250.jpg', '', '2010-05-28 21:04:39', 1, 0, '0000-00-00 00:00:00', '', '', 8, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
+(18, 8, '', 'Publicite (celeste)', 'publicite-celeste', 0, 11933, 0, 'publicite_160x250.jpg', '', '2010-07-27 13:56:40', 1, 0, '0000-00-00 00:00:00', '', '', 20, '', 1, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'width=0\nheight=0');
 
 -- --------------------------------------------------------
 
@@ -36164,7 +36164,7 @@ CREATE TABLE IF NOT EXISTS `jos_categories` (
   KEY `cat_idx` (`section`,`published`,`access`),
   KEY `idx_access` (`access`),
   KEY `idx_checkout` (`checked_out`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Volcar la base de datos para la tabla `jos_categories`
@@ -36178,15 +36178,16 @@ INSERT INTO `jos_categories` (`id`, `parent_id`, `title`, `name`, `alias`, `imag
 (5, 0, 'Consumo y salidas', '', 'consumo-y-salidas', '', '1', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 5, 0, 0, ''),
 (6, 0, 'Historias y personajes', '', 'historias-y-personajes', '', '1', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 6, 0, 0, ''),
 (7, 0, '250x200 (col2)', '', '250x200-col2', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 1, 0, 0, ''),
-(8, 0, '160x200 (col3)', '', '160x200-col3', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 2, 0, 0, ''),
-(9, 0, '468x269 (main)', '', '468x269-main', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 3, 0, 0, ''),
-(10, 0, '783x130 (cols)', '', '783x130-cols', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 5, 0, 0, ''),
+(8, 0, '160x200 (col3)', '', '160x200-col3', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 3, 0, 0, ''),
+(9, 0, '468x269 (main)', '', '468x269-main', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 4, 0, 0, ''),
+(10, 0, '783x130 (cols)', '', '783x130-cols', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 6, 0, 0, ''),
 (11, 0, 'Topnav', '', 'topnav', '', '5', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 1, 0, 0, ''),
 (12, 0, 'Cine', '', 'cine', '', '3', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 1, 0, 0, ''),
 (13, 0, 'Teatro', '', 'teatro', '', '3', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 2, 0, 0, ''),
 (15, 0, 'sd', '', 'asd', '200px-music_icon.svg.png', '1', 'left', 'asdasdasdasd asd asdf sdfgsdg srge', 1, 0, '0000-00-00 00:00:00', NULL, 3, 0, 0, ''),
-(14, 0, 'Personajes', '', 'personajes', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 4, 0, 0, ''),
+(14, 0, 'Personajes', '', 'personajes', '', 'com_banner', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 5, 0, 0, ''),
 (16, 0, 'DyT Motor Eq', '', 'dyt-motor-eq', '', '7', 'left', '<p>Noticias cargadas para test del motor de ecualización.<br mce_bogus="1"></p>', 1, 0, '0000-00-00 00:00:00', NULL, 1, 0, 0, ''),
+(20, 0, '160x250 (col3)', '', '160x250-col3', '', 'com_banner', 'left', '<br />', 1, 0, '0000-00-00 00:00:00', NULL, 2, 0, 0, ''),
 (19, 0, 'Policiales', '', 'policiales', '', '1', 'left', '', 1, 0, '0000-00-00 00:00:00', NULL, 7, 0, 0, '');
 
 -- --------------------------------------------------------
