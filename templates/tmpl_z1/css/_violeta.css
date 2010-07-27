@@ -36,7 +36,6 @@
 }	
 
 /* mod la voz del vecino */
-
 .moduletable_lavozdelvecino h1{
     background:#009CC9;
 }
@@ -90,7 +89,7 @@
 }
 
 .resultbox .resultbox-bg .search-results h3.search-header{ /* t�tulo de la caja */
-                                                           background:#009CC9;
+    background:#009CC9;
 }
 
 .resultbox-bg{
@@ -122,5 +121,10 @@
 
 /* mod_combozona */
 .moduletable_combozonal h1 {
+    background:#009CC9;
+}
+
+/* mod menu editor */
+.moduletable_menueditor h1{
     background:#009CC9;
 }

@@ -141,3 +141,10 @@
 .adminform .key {
     height: 30px;
 }
+
+/* Estilo para las imágenes de las noticias */
+.Apple-style-span img {
+    padding: 2px;
+    border: solid 1px grey;
+    margin: 5px;
+}
