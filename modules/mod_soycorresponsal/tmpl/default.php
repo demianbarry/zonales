@@ -15,9 +15,95 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 JHTML::_('behavior.formvalidation');
+$showColapsed = true;
 ?>
+<!-- form -->
+<div class="moduletable_formVecinos">
+    <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>
+    <div id="mod_soycorresponsal_main_div" class="moduletable_formVecinos_bodyDiv">
+        <?php if($user->guest): ?>
+        <div class="moduletable_formVecinos_bodyDiv">
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_PRE');?>
+            <a href="index.php?option=com_user&view=zlogin"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_LOGED');?></a>
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_INTER');?>
+            <a href="index.php?option=com_user&view=register&map=0"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
+                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_POS');?>
+        </div>
+        <?php else : ?>
+        <p><?php echo JText::_('INTRO');?></p>
+        <p><strong><?php echo $module->title; ?></strong> <?php echo JText::_('INTRO2');?> <strong><?php echo JText::_('VIEW_IN');?></strong>.</p>
+        <div class="splitter"></div>
 
+        <form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" >
+            <div id="nota">
+                <label for="provincias_sc"><?php echo JText::_('COUNTY');?></label>
+                    <?php echo $lists['provincias_select']; ?>
 
+                <label id="loc_label" for="localidad" style="display:block;"><?php echo JText::_('CITY');?></label>
+                <div id="localidad_container" style="display:block;">
+                </div>
+
+                <div class="splitter"></div>
+
+                <label for="title"><?php echo JText::_('TITLE');?></label>
+                <input id="title" name="title" type="text" class="required" value="" size="55px"/>
+
+                <label for="text"><?php echo JText::_('TEXT');?></label>
+                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
+            </div>
+            <input id="siguiente" type="submit" name="siguiente" value="<?php echo JText::_('NEXT');?>" />
+            <div id="corresponsal" style="display: none;">
+                <label for="nombre"><?php echo JText::_('NAME');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
+                <input id="nombre" name="nombre" type="text" class="" value="<?php echo $user->name; ?>" readonly="true"/>
+
+                    <?php if ($showEmail): ?>
+                <label for="email"><?php echo JText::_('MAIL');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
+                <input id="email" name="email" type="text" class="" value="<?php echo $user->email; ?>" readonly="true"/>
+                    <?php endif; ?>
+
+                    <?php if ($showPhone): ?>
+                <!--<label for="telefono"><?php //echo JText::_('PHONE');?><span>(<?php //echo JText::_('NO_PUBLIC');?>)</span></label>
+                <input id="telefono" name="telefono" type="text" class="" value="<?php //echo $user->telephone; ?>" disabled="true"/>-->
+                    <?php endif; ?>
+
+                <div class="splitter"></div>
+                <div id="captchaStatus" style="display: none; color:red;"><?php echo JText::_('INCORRECT');?></div>
+                <div id="recaptcha_widget" style="display:none">
+                    <div id="recaptcha_image"></div>
+                    <br/>
+                    <span class="recaptcha_only_if_image"><?php echo JText::_('WORDS_CAPTCHA');?></span>
+                    <span class="recaptcha_only_if_audio"><?php echo JText::_('NOMBERS_CAPTCHA');?></span>
+                    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
+
+                    <div><a href="javascript:Recaptcha.reload()"><?php echo $captchaTextNew;?></a></div>
+                    <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><?php echo $captchaTextSnd;?></a></div>
+                    <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><?php echo $captchaTextImg;?></a></div>
+                    <div><a href="javascript:Recaptcha.showhelp()"><?php echo $captchaTextHelp;?></a></div>
+                    <noscript>
+                        <iframe src="http://api.recaptcha.net/noscript?k=<?php echo $captcha_publickey; ?>" height="300" width="500" frameborder="0"></iframe><br>
+                        <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+                        <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                    </noscript>
+                </div>
+                <script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
+                <div class="splitter"></div>
+
+                <input id="enviar" type="submit" name="enviar" value="<?php echo JText::_('SEND');?>"/>
+                <input id="volver" type="submit" name="volver" value="<?php echo JText::_('BACK');?>"/>
+            </div>
+
+            <input type="hidden" name="task" value="saveCorresponsalContent" />
+            <input type="hidden" name="option" value="com_zonales" />
+            <input type="hidden" name="format" value="raw" />
+            <input type="hidden" name="module" value="<?php echo $module->title; ?>" />
+                <?php echo JHTML::_('form.token'); ?>
+        </form>
+
+        <div id="mensaje" title="mensaje" />    
+        <?php endif?>
+    </div>
+</div><!-- end #moduletable_formVecinos -->
+<!-- form -->
 <!-- Validacion -->
 <script language="javascript" type="text/javascript">
     <!--
@@ -194,91 +280,3 @@ JHTML::_('behavior.formvalidation');
 <?php endif?>
     //-->
 </script>
-
-<!-- form -->
-<div class="moduletable_formVecinos">
-    <h1 id="title_soycorresponsal"><?php echo $module->title; ?></h1>
-    <div id="mod_soycorresponsal_main_div" class="moduletable_formVecinos_bodyDiv">
-        <?php if($user->guest): ?>
-        <div class="moduletable_formVecinos_bodyDiv">
-                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_PRE');?>
-            <a href="index.php?option=com_user&view=zlogin"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_LOGED');?></a>
-                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_INTER');?>
-            <a href="index.php?option=com_user&view=register&map=0"><?php echo JText::_('MOD_SOYCORRESPONSAL_GET_REGISTERED');?></a>
-                <?php echo JText::_('MOD_SOYCORRESPONSAL_INVITATION_POS');?>
-        </div>
-        <?php else : ?>
-        <p><?php echo JText::_('INTRO');?></p>
-        <p><strong><?php echo $module->title; ?></strong> <?php echo JText::_('INTRO2');?> <strong><?php echo JText::_('VIEW_IN');?></strong>.</p>
-        <div class="splitter"></div>
-
-        <form action="index.php" method="post" id="formVecinos" name="formVecinos" class="form-validate" >
-            <div id="nota">
-                <label for="provincias_sc"><?php echo JText::_('COUNTY');?></label>
-                    <?php echo $lists['provincias_select']; ?>
-
-                <label id="loc_label" for="localidad" style="display:block;"><?php echo JText::_('CITY');?></label>
-                <div id="localidad_container" style="display:block;">
-                </div>
-
-                <div class="splitter"></div>
-
-                <label for="title"><?php echo JText::_('TITLE');?></label>
-                <input id="title" name="title" type="text" class="required" value="" size="55px"/>
-
-                <label for="text"><?php echo JText::_('TEXT');?></label>
-                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
-            </div>
-            <input id="siguiente" type="submit" name="siguiente" value="<?php echo JText::_('NEXT');?>" />
-            <div id="corresponsal" style="display: none;">
-                <label for="nombre"><?php echo JText::_('NAME');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="nombre" name="nombre" type="text" class="" value="<?php echo $user->name; ?>" readonly="true"/>
-
-                    <?php if ($showEmail): ?>
-                <label for="email"><?php echo JText::_('MAIL');?><span>(<?php echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="email" name="email" type="text" class="" value="<?php echo $user->email; ?>" readonly="true"/>
-                    <?php endif; ?>
-
-                    <?php if ($showPhone): ?>
-                <!--<label for="telefono"><?php //echo JText::_('PHONE');?><span>(<?php //echo JText::_('NO_PUBLIC');?>)</span></label>
-                <input id="telefono" name="telefono" type="text" class="" value="<?php //echo $user->telephone; ?>" disabled="true"/>-->
-                    <?php endif; ?>
-
-                <div class="splitter"></div>
-                <div id="captchaStatus" style="display: none; color:red;"><?php echo JText::_('INCORRECT');?></div>
-                <div id="recaptcha_widget" style="display:none">
-                    <div id="recaptcha_image"></div>
-                    <br/>
-                    <span class="recaptcha_only_if_image"><?php echo JText::_('WORDS_CAPTCHA');?></span>
-                    <span class="recaptcha_only_if_audio"><?php echo JText::_('NOMBERS_CAPTCHA');?></span>
-                    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
-
-                    <div><a href="javascript:Recaptcha.reload()"><?php echo $captchaTextNew;?></a></div>
-                    <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><?php echo $captchaTextSnd;?></a></div>
-                    <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><?php echo $captchaTextImg;?></a></div>
-                    <div><a href="javascript:Recaptcha.showhelp()"><?php echo $captchaTextHelp;?></a></div>
-                    <noscript>
-                        <iframe src="http://api.recaptcha.net/noscript?k=<?php echo $captcha_publickey; ?>" height="300" width="500" frameborder="0"></iframe><br>
-                        <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-                        <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
-                    </noscript>
-                </div>
-                <script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
-                <div class="splitter"></div>
-
-                <input id="enviar" type="submit" name="enviar" value="<?php echo JText::_('SEND');?>"/>
-                <input id="volver" type="submit" name="volver" value="<?php echo JText::_('BACK');?>"/>
-            </div>
-
-            <input type="hidden" name="task" value="saveCorresponsalContent" />
-            <input type="hidden" name="option" value="com_zonales" />
-            <input type="hidden" name="format" value="raw" />
-            <input type="hidden" name="module" value="<?php echo $module->title; ?>" />
-                <?php echo JHTML::_('form.token'); ?>
-        </form>
-
-        <div id="mensaje" title="mensaje" />    
-        <?php endif?>
-    </div>
-</div><!-- end #moduletable_formVecinos -->
-<!-- form -->

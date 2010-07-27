@@ -15,32 +15,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-
-<!-- Validacion -->
-<script language="javascript" type="text/javascript">
-    <!--
-
-    window.addEvent('domready', function() {
-        $('provincias').addEvent('change', function() {
-            loadMunicipios();
-        });
-        loadMunicipios(<?php echo "$selectedOption" ?>);
-    });
-
-    function loadMunicipios(selected){
-        $('z_localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
-        new Ajax(url, {
-            method: 'get',
-            onComplete: function(response) {
-                $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
-                $('municipio_container').setStyle('display','block');
-            }
-        }).request();
-    }
-    //-->
-</script>
-
 <div id="mod_combozonal" class="moduletable_combozonal">
     <h1><?php echo $module->title; ?></h1>
 
@@ -66,3 +40,27 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo JHTML::_('form.token'); ?>
     </form>
 </div>
+<!-- Validacion -->
+<script language="javascript" type="text/javascript">
+    <!--
+
+    window.addEvent('domready', function() {
+        $('provincias').addEvent('change', function() {
+            loadMunicipios();
+        });
+        loadMunicipios(<?php echo "$selectedOption" ?>);
+    });
+
+    function loadMunicipios(selected){
+        $('z_localidad_container').empty().addClass('ajax-loading');
+        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
+        new Ajax(url, {
+            method: 'get',
+            onComplete: function(response) {
+                $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
+                $('municipio_container').setStyle('display','block');
+            }
+        }).request();
+    }
+    //-->
+</script>
