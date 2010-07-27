@@ -6,7 +6,7 @@ jimport('joomla.application.component.controller');
 //jimport('joomla.database.table.alias');
 
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'views' . DS . 'message' . DS . 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 
 class AliasController extends JController {
 

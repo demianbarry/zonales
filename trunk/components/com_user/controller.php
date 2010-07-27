@@ -20,7 +20,7 @@ jimport('joomla.application.component.controller');
 jimport( 'joomla.utilities.utility' );
 jimport('joomla.user.helper');
 
-require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 require_once 'helper.php';
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'models' . DS . 'attributes.php';
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_aapu' . DS . 'models' . DS . 'attribute_entity.php';
