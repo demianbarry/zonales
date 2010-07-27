@@ -89,7 +89,7 @@ if ($results) {
         // Process the content preparation plugins
         JPluginHelper::importPlugin('content');
         $dispatcher =& JDispatcher::getInstance();
-        $dispatcher->trigger('onAfterContentSave', array (& $row, null, 0));
+        $dispatcher->trigger('onPrepareContent', array (& $item, null, 0));
         if($key < $cantArticles)
             $articles[] = $item;
         else
