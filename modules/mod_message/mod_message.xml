@@ -15,8 +15,7 @@
         </filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
-        <filename>index.html</filename>
-        <filename>constants.php</filename>
+        <filename>index.html</filename>        
     </files>
     <params>
           <param name="icondir" type="text" default="images/message/"
