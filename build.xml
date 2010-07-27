@@ -101,6 +101,10 @@
     <fileset dir="${src_modules}/mod_userregister" id="mod_userregister_files">
         <include name="**" />
     </fileset>
+    <!-- mod_userregister -->
+    <fileset dir="${src_modules}/mod_menueditor" id="mod_menueditor_files">
+        <include name="**" />
+    </fileset>
 
     <!-- plg_zonalescontent -->
     <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
@@ -355,6 +359,15 @@
         <zip destfile="${src_dist_dir}/${dist.mod_combozona.file}.zip" >
             <fileset refid="mod_combozona_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_combozona.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo menueditor -->
+    <target name="dist_mod_menueditor" description="Crea archivo de distribución Joomla para el modulo Menú Editor">
+        <echo message="Creando archivo de distribución de modulo Menú Editor"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_menueditor.file}.zip" >
+            <fileset refid="mod_menueditor_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menueditor.ini" prefix="language" />
         </zip>
     </target>
 
