@@ -51,7 +51,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
 
         $database->setQuery($query);
         $database->getErrorMsg();
-        $can_edit = $database->load();
+        $can_edit = $database->loadResult();
     }
 
 
