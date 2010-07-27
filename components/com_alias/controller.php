@@ -24,7 +24,7 @@ class AliasController extends JController {
      *
      */
     function unblock() {
-        JRequest::checkToken() or jexit( 'Invalid Token' );
+        //JRequest::checkToken() or jexit( 'Invalid Token' );
 
         try {
             $db =& JFactory::getDBO();
@@ -42,9 +42,9 @@ class AliasController extends JController {
             // a cada alias del usuario le actualizo su estado (habilitado o dehabilitado)
             // segun lo especificado por el usuario
             foreach ($dbaliaslist as $alias) {
-                $unblock = JRequest::getBool('alias'.$alias->id, false,'method');
+                $unblock = JRequest::getString('alias'.$alias->id, 'false','method');
 
-                $block = ($unblock) ? '0' : '1';
+                $block = ($unblock == 'true') ? '0' : '1';
 
                 $update = 'update #__alias set block=' . $block .
                     ' where id=' . $alias->id;
@@ -54,11 +54,13 @@ class AliasController extends JController {
             }
 
             $message = JText::_('ZONALES_ALIAS_BLOCKED_SUCCESSFULLY');
-            UserHelper::showMessage(SUCCESS, $message);
+            echo $message;
+            //UserHelper::showMessage(SUCCESS, $message);
         }
         catch (Exception $ex) {
             $message = JText::_('ZONALES_ALIAS_BLOCKED_ERROR');
-            UserHelper::showMessage(ERROR, $message);
+            echo $message;
+            //UserHelper::showMessage(ERROR, $message);
         }
     }
 
