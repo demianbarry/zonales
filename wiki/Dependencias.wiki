@@ -1,0 +1,50 @@
+= Dependencias =
+
+== Template Z1 ==
+=== Depende de: ===
+  * com_zonales (Utiliza el Helper del componente)
+
+== Componente Zonales ==
+=== Depende de: ===
+  * com_customproperties (Se debe configurar el root_value)
+
+=== Es necesario para: ===
+  * mod_zbanners
+  * mod_seleccionazonal
+  * mod_eq
+  * mod_userregister
+  * mod_zonalactual
+  * mod_soycorresponsal
+  * mod_combozona
+  * com_aapu (si se utiliza el render de Zonas)
+  * com_content
+  * com_eqzonales
+  * com_user
+  * plg_solrsearch
+  * plg_zonalescontent
+  * plg_autotag
+
+== Custom Properties ==
+=== Es necesario para: ===
+  * com_zonales
+  * mod_zbanners
+  * mod_seleccionazonal
+  * mod_eq
+  * mod_userregister
+  * mod_zonalactual
+  * mod_soycorresponsal
+  * mod_combozona
+  * com_aapu (si se utiliza el render de Zonas)
+  * com_content
+  * com_eqzonales
+  * com_user
+  * plg_solrsearch
+  * plg_zonalescontent
+  * plg_autotag
+
+== Componente EqZonales ==
+=== Depende de: ==
+  * lib_g2p_utils (Librerías para querys de Solr)
+
+=== Es necesario para: ===
+ * 
