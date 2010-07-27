@@ -21,7 +21,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @param bool $append_to_meta appends tags to meta keywords. Default false. Note: this function makes sense when only one article is displayed (cplugin). There's no point in appending the tags of the search result page, to meta.
  * @returns string html formatted cp_tags areal
  */
-function showTags($ce, $cid, $params, $append_to_meta=false) {
+function showTags($ce, $item, $params, $append_to_meta=false) {
 
     global $Itemid;
 
@@ -30,6 +30,8 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
     $database = JFactory::getDBO();
     $user = JFactory::getUser();
     $aid = $user->get('aid',0);
+    $gid = $user->get('gid');
+    $cid = $item->id;
     $result = "";
     $tagstring = "";
     $tagstrings = array();
@@ -39,23 +41,17 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
     $url_format 	= $params->get('url_format', '0');
     $use_itemid	= $params->get('use_itemid', '1');
 
-    if($can_edit = $params->get('frontend_tagging') == 1 && ($aid >= $params->get('editing_level'))) {
+    if(($can_edit = $params->get('frontend_tagging')) == 1 && ($aid >= $params->get('editing_level'))) {
         $document = JFactory::getDocument();
         $script = JUri::root().'/administrator/components/com_customproperties/includes/customproperties_ext.js';
         $document->addScript($script);
 
-        $query = "  SELECT count(*)
-                    FROM jos_content
-                    WHERE creted_by = ".$user->get('id')."
-                    AND id = '$cid'";
-
-        $database->setQuery($query);
-        $database->getErrorMsg();
-        $can_edit = $database->loadResult();
+        if($gid < $params->get('publishing_group'))
+            $can_edit = ($item->created_by == $user->get('id'));
     }
 
 
-    $query = "SELECT DISTINCT f.id as fid, f.label as name, v.id as vid, v.label, v.access_group as ag
+    $query = "SELECT DISTINCT f.id as fid, f.label as name, v.id as vid, v.name as vname, v.label, v.access_group as ag
 		FROM #__custom_properties AS cp
 			INNER JOIN #__custom_properties_fields AS f
 			ON (cp.field_id = f.id )
@@ -85,11 +81,12 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
         $tagstring = "";
 
         if($url_format == 0) {
-            $link = JRoute::_("index.php?option=com_customproperties&task=tag&tagId=". $tag->vid .$itemid_url);
+            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->name");
         }
         else {
-            $link = JRoute::_("index.php?option=com_customproperties&task=tag&tagName=". urlencode($tag->name.":".$tag->label) . $itemid_url);
+            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->name");
         }
+        //http://www.zonales.com.ar:50081/index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=espectaculos
 
         $result .= "<span id=".$tag->vid."_".$tag->fid."_".$ce->table."_".$cid." class=\"cp_tag cp_tag_".$tag->vid."\">";
         if($linked_tags) $result .= "<a href=\"$link\">";
@@ -100,7 +97,7 @@ function showTags($ce, $cid, $params, $append_to_meta=false) {
 
         if($linked_tags)
             $result .= "</a>\n";
-        if($can_edit && $user->get('gid') >= $tag->ag)
+        if($can_edit && $gid >= $tag->ag)
             $result .= "<img alt=\"$tag->name\" id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='/templates/".$app->getTemplate()."/images/eliminar.gif'>";
         $result .= "</span> ";
 
