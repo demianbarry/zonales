@@ -84,6 +84,7 @@ JHTML::_('behavior.formvalidation');
 
                         }
                         $('respuesta').removeClass('ajax-loading').setHTML(resp.msg);
+                        window.location.reload();
                     }
                 });
             });

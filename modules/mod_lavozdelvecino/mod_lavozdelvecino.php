@@ -74,22 +74,22 @@ if ($results) {
         /**
          * Si hay imágenes, les fijo un tamaño específico
          */
-        $img_path = null;
+        /*$img_path = null;
         if(($imgPos = strpos($doc->introtext, "<img "))) {
             $urlPos = strpos($doc->introtext, "src=\"", $imgPos);
             $img_path = substr($doc->introtext,$urlPos+4, strpos($doc->introtext, '"', $urlPos+5));
 
             $strPre = substr($doc->introtext, 0, $imgPos+5);
             $strPos = substr($doc->introtext, $imgPos+5);
-        }
-        $item->text = $imgPos && checkRezizeImageNeeded($img_path) ? $strPre.' style="width: 280px" '.$strPos : $doc->introtext;
+        }*/
+        $item->text = /*$imgPos && checkRezizeImageNeeded($img_path) ? $strPre.' style="width: 280px" '.$strPos : */$doc->introtext;
 
         $item->fulltext = $doc->fulltext;
         $item->browsernav = '';
         // Process the content preparation plugins
         JPluginHelper::importPlugin('content');
         $dispatcher =& JDispatcher::getInstance();
-        $dispatcher->trigger('onPrepareContent', array (& $item, null, 0));
+        $dispatcher->trigger('onAfterContentSave', array (& $row, null, 0));
         if($key < $cantArticles)
             $articles[] = $item;
         else
@@ -97,8 +97,9 @@ if ($results) {
     }
 
 }
-
+//$dispatcher->trigger('onBeforeDisplayContent', array (& $item, null, 0));
 require(JModuleHelper::getLayoutPath('mod_lavozdelvecino'));
+//$dispatcher->trigger('onAfterDisplayContent', array (& $item, null, 0));
 
 function checkRezizeImageNeeded($img_path) {
     if(!$img_path)
