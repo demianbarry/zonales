@@ -1,6 +1,6 @@
 <?php
 
-require_once 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 
 $session =& JFactory::getSession();
 $status = (int) $session->get(MMSTATUS);
