@@ -80,49 +80,56 @@ function plgContentLike( &$row, &$params, $page=0 ) {
     $user = &JFactory::getUser();
     $content_id 	= $row->id;
 
-    if($user->id==0 || $user->id=='' )
-        $user_id = $user->id;
-    else
-        $user_id = 1222;
+    $query = "SELECT count(*)
+                FROM #__custom_properties
+                WHERE value_id IN (".(is_array($pluginParams->get('notice_tags')) ? implode(",", $pluginParams->get('notice_tags')) : $pluginParams->get('notice_tags')).")
+                AND ref_table='content' AND content_id = $row->id";
+    $database->setQuery($query);
+    if($database->loadResult() > 0) {
+        
+        if($user->id==0 || $user->id=='' )
+            $user_id = $user->id;
+        else
+            $user_id = 1222;
 
-    $usercount = '';
-    $count = '';
-    $showthumb = $pluginParams->get('showthumb');
-    $linkcolor = $pluginParams->get('linkcolor');
-    $textcolor = $pluginParams->get('textcolor');
-    $textsize = $pluginParams->get('textsize');
-    $textfloat = $pluginParams->get('textfloat');
-    $textclear = $pluginParams->get('textclear');
-    $showfrontpage = $pluginParams->get('showfrontpage');
-    if ($showthumb == 'yes') {
-        $likeimage = '<img src="plugins/content/like/thumbsup2.jpg" style="vertical-align: text-bottom; border: 0;">';
-    }
-    if ($showthumb == 'no') {
-        $likeimage = '';
-    }
+        $usercount = '';
+        $count = '';
+        $showthumb = $pluginParams->get('showthumb');
+        $linkcolor = $pluginParams->get('linkcolor');
+        $textcolor = $pluginParams->get('textcolor');
+        $textsize = $pluginParams->get('textsize');
+        $textfloat = $pluginParams->get('textfloat');
+        $textclear = $pluginParams->get('textclear');
+        $showfrontpage = $pluginParams->get('showfrontpage');
+        if ($showthumb == 'yes') {
+            $likeimage = '<img src="plugins/content/like/thumbsup2.jpg" style="vertical-align: text-bottom; border: 0;">';
+        }
+        if ($showthumb == 'no') {
+            $likeimage = '';
+        }
 
-    $query		= "SELECT count(*) FROM #__like_tb WHERE content_id = $content_id";
-    $database->setQuery( $query );
-    $count		= $database->loadResult();
-
-
-    $query		= "SELECT count(*) FROM #__like_tb WHERE content_id = $content_id AND user_id = $user_id";
-    $database->setQuery( $query );
-    $usercount = $database->loadResult();
-
-    $query		= "SELECT count(*) FROM #__content_frontpage WHERE content_id = $content_id";
-    $database->setQuery( $query );
-    $onfrontpage = $database->loadResult();
-    
-
-    if (($showfrontpage == 'no') and ($onfrontpage > 0)) {
+        $query		= "SELECT count(*) FROM #__like_tb WHERE content_id = $content_id";
+        $database->setQuery( $query );
+        $count		= $database->loadResult();
 
 
+        $query		= "SELECT count(*) FROM #__like_tb WHERE content_id = $content_id AND user_id = $user_id";
+        $database->setQuery( $query );
+        $usercount = $database->loadResult();
 
-    }
+        $query		= "SELECT count(*) FROM #__content_frontpage WHERE content_id = $content_id";
+        $database->setQuery( $query );
+        $onfrontpage = $database->loadResult();
 
-    if (($showfrontpage =="yes") or (!$onfrontpage)) {
-        $css = '<!-- CSS STYLES -->
+
+        if (($showfrontpage == 'no') and ($onfrontpage > 0)) {
+
+
+
+        }
+
+        if (($showfrontpage =="yes") or (!$onfrontpage)) {
+            $css = '<!-- CSS STYLES -->
 
 				<style type="text/css">
 				<!--
@@ -140,58 +147,58 @@ function plgContentLike( &$row, &$params, $page=0 ) {
 
 
 
-        if ((!$user->id) && ($count == 1)) {
+            if ((!$user->id) && ($count == 1)) {
 
-            $html = '';
-            $html .= $css . '<div id="like">';
-            $html .= $likeimage . ' <i> ' . $count . ' Les gusta el articulo.</i>';
-            $html .= '</div>';
+                $html = '';
+                $html .= $css . '<div id="like">';
+                $html .= $likeimage . ' <i> ' . $count . ' Les gusta el articulo.</i>';
+                $html .= '</div>';
 
-            return $html;
+                return $html;
 
-        }
+            }
 
-        if ((!$user->id) && ($count > 1)) {
+            if ((!$user->id) && ($count > 1)) {
 
-            $html = '';
-            $html .= $css . '<div id="like">';
-            $html .= $likeimage . ' <i>' . $count . ' Les gusta el articulo.</i>';
-            $html .= '</div>';
+                $html = '';
+                $html .= $css . '<div id="like">';
+                $html .= $likeimage . ' <i>' . $count . ' Les gusta el articulo.</i>';
+                $html .= '</div>';
 
-            return $html;
+                return $html;
 
-        }
-
-
-        if (($user->id) && ($usercount == 1) && ($count == 1)) {
-
-            $html ='';
-            $html .= $css . '<div id="like">';
-            $html .= $likeimage . ' ' . '<i>A ti te gusta este articulo.</i>';
-            $html .= '</div>';
-
-            return $html;
-
-        }
-
-        if (($user->id) && ($usercount == 1) && ($count > 1)) {
-
-            $html ='';
-            $html .= $css . '<div id="like">';
-            $html .= $likeimage . ' ' . '<i>You and ' . ($count - 1) . ' otras personas les gusta este articulo.</i>';
-            $html .= '</div>';
-
-            return $html;
-
-        }
+            }
 
 
+            if (($user->id) && ($usercount == 1) && ($count == 1)) {
 
-        if(($user_id) && ($usercount == 0 )) {
+                $html ='';
+                $html .= $css . '<div id="like">';
+                $html .= $likeimage . ' ' . '<i>A ti te gusta este articulo.</i>';
+                $html .= '</div>';
+
+                return $html;
+
+            }
+
+            if (($user->id) && ($usercount == 1) && ($count > 1)) {
+
+                $html ='';
+                $html .= $css . '<div id="like">';
+                $html .= $likeimage . ' ' . '<i>You and ' . ($count - 1) . ' otras personas les gusta este articulo.</i>';
+                $html .= '</div>';
+
+                return $html;
+
+            }
 
 
-            $html = '';
-            $html .= '<style type="text/css">
+
+            if(($user_id) && ($usercount == 0 )) {
+
+
+                $html = '';
+                $html .= '<style type="text/css">
 			<!--
 			.text_button {
 			   border: none;
@@ -207,23 +214,23 @@ function plgContentLike( &$row, &$params, $page=0 ) {
 			</style>';
 
 
-            $html .= $css . '<div id="like">';
-            $html .= '<form method="post" action="' . likePageURL()  . '">';
-            $html .= '<span class="like">';
-            $html .= ' ' . $likeimage . ' <input type="submit" value="Me gusta" class="text_button">';
-            $html .= '<input type="hidden" name="task" value="like" />';
-            $html .= '<input type="hidden" name="option" value="com_content" />';
-            $html .= '<input type="hidden" name="user_id" value="'. $user_id . '" />';
-            $html .= '<input type="hidden" name="content_id" value="' . $content_id . '" />';
-            $html .= '<input type="hidden" name="url" value="'. JURI::current() . '" />';
-            $html .= '</span>';
-            $html .= '</form>';
-            $html .= '</div>';
+                $html .= $css . '<div id="like">';
+                $html .= '<form method="post" action="' . likePageURL()  . '">';
+                $html .= '<span class="like">';
+                $html .= ' ' . $likeimage . ' <input type="submit" value="Me gusta" class="text_button">';
+                $html .= '<input type="hidden" name="task" value="like" />';
+                $html .= '<input type="hidden" name="option" value="com_content" />';
+                $html .= '<input type="hidden" name="user_id" value="'. $user_id . '" />';
+                $html .= '<input type="hidden" name="content_id" value="' . $content_id . '" />';
+                $html .= '<input type="hidden" name="url" value="'. JURI::current() . '" />';
+                $html .= '</span>';
+                $html .= '</form>';
+                $html .= '</div>';
 
-            return $html;
+                return $html;
 
+            }
         }
-
     } // end if on front page
 
 }
