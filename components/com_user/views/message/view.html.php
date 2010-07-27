@@ -5,7 +5,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-require_once 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 
 class UserViewMessage extends JView {
 

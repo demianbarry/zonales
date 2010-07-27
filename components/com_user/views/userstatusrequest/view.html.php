@@ -3,7 +3,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
-require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 
 class UserViewUserStatusRequest extends JView {
 

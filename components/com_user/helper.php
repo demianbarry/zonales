@@ -1,6 +1,6 @@
 <?php
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php';
-require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
+require_once 'constants.php';
 
 class UserHelper {
     const ZONAL_NOT_DEFINED = 0;

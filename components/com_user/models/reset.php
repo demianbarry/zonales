@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 require_once JPATH_COMPONENT . DS . 'helper.php';
-require_once JPATH_ROOT . DS . 'modules' . DS . 'mod_message' . DS . 'constants.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'constants.php';
 
 /**
  * User Component Reset Model
