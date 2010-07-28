@@ -22,7 +22,7 @@ class UserHelper {
         $zonales = $helper->getZonales();
 
         $db = JFactory::getDBO();
-        $query = "SELECT v.name FROM #__aapu_attributes a, #__aapu_attribute_entity e, #__custom_properties_values v WHERE e.attribute_id=a.id AND a.name='zonal' AND e.object_id=" . $user->id. " AND e.object_type='TABLE' AND object_name='#__users' AND v.id=e.value";
+        $query = "SELECT v.name FROM #__aapu_attributes a, #__aapu_attribute_entity e, #__custom_properties_values v WHERE e.attribute_id=a.id AND a.name='zonal' AND e.object_id=" . $user->id. " AND e.object_type='TABLE' AND object_name='#__users' AND v.id=e.value_int";
         $db->setQuery($query);
         $dbZonal = $db->loadObject();
         return $dbZonal->name;
