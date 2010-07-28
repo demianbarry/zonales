@@ -27,6 +27,8 @@
             <div id="wrapper">
                 <div id="top">
 
+                    <jdoc:include type="modules" name="bannerTop" style="xhtml" />
+                    
                     <jdoc:include type="modules" name="topSearch" style="xhtml" />
 
                     <div id="mainMenu">
