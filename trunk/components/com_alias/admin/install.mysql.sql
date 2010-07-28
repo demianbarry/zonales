@@ -53,6 +53,7 @@ CREATE TABLE  `#__alias` (
   `user_id` int(11) NOT NULL,
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
+  `label` varchar(255) NOT NULL,
   `provider_id` int(11) NOT NULL,
   `association_date` date NOT NULL,
   `block` tinyint(1) NOT NULL,

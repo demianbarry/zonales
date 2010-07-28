@@ -129,6 +129,7 @@ class plgAuthenticationExternallogin extends JPlugin {
                             ' AND p.name = ' . $db->Quote($provider);
                         $db->setQuery($query);
                         $dbresult = $db->loadObject();
+                        $session =& JFactory::getSession();
 
                         if ($dbresult) {
                         // if so, we set our username value to the provided value
@@ -138,14 +139,16 @@ class plgAuthenticationExternallogin extends JPlugin {
                             // el acceso es cancelado
                             if ($dbresult->aliasblocked || $dbresult->userblocked) {
                                 $message = ($dbresult->aliasblocked) ? 'SYSTEM_MESSAGE_ERROR_ALIAS_BLOCKED' : 'SYSTEM_MESSAGE_ERROR_USER_BLOCKED';
-                                $url = JRoute::_('?status=' . ERROR . '&message=' . urlencode($message));
+
+                                $session->set(MMSTATUS,ERROR);
+                                $session->set(MMMESSAGE,urlencode($message));
+                                $url = JRoute::_('?');
                                 $mainframe->redirect($url);
 //                                $response->status = JAUTHENTICATE_STATUS_FAILURE;
 //                                $response->error_message = 'The identifier is Blocked';
 //                                return false;
                             }
 
-                            $session =& JFactory::getSession();
                             $session->set('accessprotocol',$dbprotocol->name);
                         } else { // si el alias no existe
 
