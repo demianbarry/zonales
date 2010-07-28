@@ -41,7 +41,7 @@ function facebookconnect($credentials,$options) {
         $sessionData[$key] = $value;
     }
 
-    if (isset ($sessionData['uid']) && $sessionData['uid'] != 0 && $sessionData['uid'] != ''){
+    if (isset ($sessionData['uid']) && $sessionData['uid'] != 0 && $sessionData['uid'] != '') {
         $info[EXTERNAL_ID] = $sessionData['uid'];
         $info[STATUS] = Auth_SUCCESS;
     }
@@ -80,7 +80,7 @@ function openid($credentials,$options) {
     //$discovery_url = ($discovery) ? $discovery : $credentials['username'];
     $discovery_url = ($discovery) ? $discovery : $username;
     $username = ($discovery) ? '' : $username;
-    
+
     ################################################
 
 
@@ -132,6 +132,28 @@ function openid($credentials,$options) {
             return $info;
         }
 
+        $ax_request = null;
+       // if ($discovery) {
+            $ax_request = new Auth_OpenID_AX_FetchRequest();
+            $ax_request->add('email');
+     //   }
+
+        if ($ax_request) {
+            //$auth_request->addExtension($ax_request);
+            $auth_request->addExtensionArg('ax', 'type.email', 'http://axschema.org/contact/email');
+        }
+//        $sreg_request = null;
+//       // if ($discovery) {
+//            $sreg_request = Auth_OpenID_SRegRequest::build(
+//                    array ('email')
+//            );
+//      //  }
+//
+//        if ($sreg_request) {
+//            $auth_request->addExtension($sreg_request);
+//        }
+
+
 //        $policy_uris = array();
 //        if ($this->params->get( 'phishing-resistant', 0)) {
 //            $policy_uris[] = 'http://schemas.openid.net/pape/policies/2007/06/phishing-resistant';
@@ -166,10 +188,10 @@ function openid($credentials,$options) {
         $session->set('return_url', $process_url );
 
         $trust_url = $entry_url->toString(array (
-            'path',
-            'host',
-            'port',
-            'scheme'
+                'path',
+                'host',
+                'port',
+                'scheme'
         ));
         $session->set('trust_url', $trust_url);
         // For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
@@ -182,20 +204,20 @@ function openid($credentials,$options) {
             if (Auth_OpenID :: isFailure($redirect_url)) {
                 displayError("Could not redirect to server: " . $redirect_url->message);
             } else {
-            // Send redirect.
+                // Send redirect.
                 $mainframe->redirect($redirect_url);
                 return false;
             }
         } else {
-        // Generate form markup and render it.
+            // Generate form markup and render it.
             $form_id = 'openid_message';
             $form_html = $auth_request->htmlMarkup($trust_url, $process_url, false, array (
-                'id' => $form_id
+                    'id' => $form_id
             ));
             // Display an error if the form markup couldn't be generated;
             // otherwise, render the HTML.
             if (Auth_OpenID :: isFailure($form_html)) {
-            //displayError("Could not redirect to server: " . $form_html->message);
+                //displayError("Could not redirect to server: " . $form_html->message);
             } else {
                 JResponse :: setBody($form_html);
                 echo JResponse :: toString($mainframe->getCfg('gzip'));
@@ -206,12 +228,25 @@ function openid($credentials,$options) {
     }
     $result = $consumer->complete($session->get('return_url'));
 
-    // estandarizo el formato de salida de los datos necesarios
+// estandarizo el formato de salida de los datos necesarios
     $info[EXTERNAL_ID] = $result->getDisplayIdentifier();
 
     switch ($result->status) {
         case Auth_OpenID_SUCCESS:
             $info[STATUS] = Auth_SUCCESS;
+            $axFetch = new Auth_OpenID_AX_FetchResponse();
+            $ax_resp = $axFetch->fromSuccessResponse($result);
+
+            if ($ax_resp == null) die("la respuesta es null");
+
+            $info[EMAIL] = $ax_resp->get('type.email');
+            $info[LABEL] = ($discovery) ? $info[EMAIL] : $info[EXTERNAL_ID];
+//            $sreg_resp = Auth_OpenID_SRegResponse::fromSuccessResponse($result);
+//
+//            $sreg = $sreg_resp->contents();
+//            $info[EMAIL] = $sreg['email'];
+//            $info[LABEL] = ($discovery) ? $sreg['email'] : $result->getDisplayIdentifier();
+            die("email: #" . $info[EMAIL] . "#");
             break;
         case Auth_OpenID_CANCEL:
             $info[STATUS] = Auth_CANCEL;
@@ -255,7 +290,7 @@ function twitteroauth($credentials,$options) {
 
         return $info;
     }
-    catch (EpiOAuthException $ex ){
+    catch (EpiOAuthException $ex ) {
         $info = array();
         $info[STATUS] = Auth_FAILURE;
         return $info;
