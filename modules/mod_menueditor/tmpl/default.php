@@ -33,6 +33,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
         <a href="<?php echo $viewUnpublishedArticles ?>">
                 <?php echo JText::_('MOD_MENUEDITOR_VIEW_UNPUBLISHED_ARTICLES'); ?>
         </a>
-    </p>        
+    </p>
+    <p>
+        <a href="<?php echo $viewDenouncedArticles ?>">
+                <?php echo JText::_('MOD_MENUEDITOR_VIEW_DENOUNCED_ARTICLES'); ?>
+        </a>
+    </p>
 </div>
 <?php endif;?>
