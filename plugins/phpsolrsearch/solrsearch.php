@@ -113,7 +113,7 @@ class plgSearchSolrsearch extends JPlugin {
                     $item->section = JText::_('Uncategorised Content');
                 }
                 
-                $item->tags = showTags($ce, $doc->id, $params);
+                $item->tags = showTags($ce, $doc, $params);
                 $item->created = $doc->created;
                 $item->introtext = $doc->introtext;
                 $item->browsernav = '';
@@ -259,16 +259,22 @@ class plgSearchSolrsearch extends JPlugin {
         // lista de zonales, zonal actualmente seleccionado
         require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
         $helper = new comZonalesHelper();
-        $zonal = $helper->getZonal();
-        $localidades = $helper->getLocalidadesByPartido($zonal->id);
+        $zonal = $helper->getZonalActual();
+        /*$localidades = $helper->getLocalidadesByPartido($zonal->id);
 
 
         $localidadesList = array();
         foreach($localidades as $localidad) {
             $localidadesList[] = $localidad->name;
-        }
+        }*/
 
-        $where .= '+tags_values:('.implode(" ",$localidadesList).')';
+        if ($zonal != null) {
+            $where .= "+tags_values:$zonal";//('.implode(" ",$localidadesList).')';
+        } else
+            //si no estoy buscando la vista myarchive, agrego el tag de portada
+            if(JRequest::getString('view', NULL, 'get') != 'myarchive') {
+                $where .= '+tags_values:portada';
+        }
 
         //$where .= $additionalParams;
 
@@ -298,6 +304,15 @@ class plgSearchSolrsearch extends JPlugin {
 
             if (!is_null($result) && !empty($result)) {
                 $eq = $result[0];
+
+                foreach ($eq->bands as $band) {
+                    $bq .= " tags_values:$band->band_name^$band->peso";
+                }
+            }
+        } else {
+            $session =& JFactory::getSession();
+            if ($session->has('eq')) {
+                $eq = $session->get('eq');
 
                 foreach ($eq->bands as $band) {
                     $bq .= " tags_values:$band->band_name^$band->peso";
