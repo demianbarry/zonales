@@ -226,18 +226,18 @@ class ZonalesController extends JController {
                     $user =& JFactory::getUser($modparams->get('user'));
                 }
 
-                $catid = $modparams->get('category', 0);
+                //$catid = $modparams->get('category', 0);
 
                 $nullDate = $db->getNullDate();
 
                 // tabla de contenidos joomla
                 $row = & JTable::getInstance('content');
 
-                if ($catid > 0) {
+                /*if ($catid > 0) {
                     $category =& JTable::getInstance('category');
                     $category->load($catid);
                     $sectionid = $category->section;
-                }
+                }*/
 
                 $nullDate = $db->getNullDate();
 
@@ -245,8 +245,8 @@ class ZonalesController extends JController {
                 $row = & JTable::getInstance('content');
 
                 $row->title = JRequest::getVar('title', NULL, 'post', 'string');
-                $row->sectionid = $sectionid;
-                $row->catid = $catid;
+                $row->sectionid = 0;
+                $row->catid = 0;
                 $row->version = 0;
                 $row->state = 0;
                 $row->ordering = 0;
