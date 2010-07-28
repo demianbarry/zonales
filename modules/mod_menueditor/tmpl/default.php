@@ -16,7 +16,7 @@
 defined( '_JEXEC' ) or die ( 'Restricted Access' );
 ?>
 
-<?php if($user->get('aid') >= 1):?>
+<?php if($user->get('aid') >= 2):?>
 <div class="moduletable_menueditor">
     <h1 style="display:block; padding:10px;  background-color: #009CC9; font-family:Georgia, 'Times New Roman', Times, serif; font-size:16px; color:#FFFFFF; font-weight:bold;"><?php echo $module->title; ?></h1>
     <p>
