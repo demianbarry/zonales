@@ -1,10 +1,10 @@
 <?php
 /**
- * @version		$Id: category.php 11687 2009-03-11 17:49:23Z ian $
- * @package		Joomla
- * @subpackage	Content
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
+ * @version             $Id: category.php 11687 2009-03-11 17:49:23Z ian $
+ * @package             Joomla
+ * @subpackage  Content
+ * @copyright   Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @license             GNU/GPL, see LICENSE.php
  * Joomla! is free software. This version may have been modified pursuant to the
  * GNU General Public License, and as distributed it includes or is derivative
  * of works licensed under the GNU General Public License or other free or open
@@ -20,24 +20,18 @@ jimport('joomla.application.component.model');
 /**
  * Content Component My Archive Model
  *
- * @package		Joomla
- * @subpackage	Content
+ * @package             Joomla
+ * @subpackage  Content
  * @since 1.5
  */
 class ContentModelMyarchive extends JModel {
-    /**
-     * User id
-     *
-     * @var int
-     */
-    var $_id = null;
 
     /**
      * Archive items data
      *
      * @var array
      */
-    var $_data = null;
+    var $_data = array();
 
     /**
      * Archive number items
@@ -53,6 +47,7 @@ class ContentModelMyarchive extends JModel {
      */
     var $_user = null;
 
+    var $_publishing_group;
 
 
     /**
@@ -66,44 +61,38 @@ class ContentModelMyarchive extends JModel {
         global $mainframe, $cp_config;
         include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_customproperties'.DS.'cp_config.php');
 
-        $id = JRequest::getVar('id', 0, '', 'int');
+        $this->_publishing_group = $cp_config['publishing_group'];
+
         $published = JRequest::getVar('published', true, '', 'boolean');
-        $this->setId((int)$id);
+        $stateFrom = JRequest::getVar('stateFrom') != null ? JRequest::getInt('stateFrom') : false;
         $this->_user =& JFactory::getUser();
-        $Arows = $contenthelper->getContent($limitstart, $limit, array('!tags_values:la_voz_del_vecino',$this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
+        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
+        $contenthelper = new comEqZonalesContentHelper();
+        // Get the pagination request variables
+        $limit          = JRequest::getVar('limit', 100, '', 'int');
+        $limitstart     = JRequest::getVar('limitstart', 0, '', 'int');
+        $Arows = $contenthelper->getContent($limitstart, $limit, array($stateFrom != '5' ? '!tags_values:la_voz_del_vecino':"",$this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
 
 
         // here we initialize defaults for category model
         $params = &$mainframe->getParams();
-        $params->def('filter',					1);
-        $params->def('filter_type',				'title');
-    }
-
-    /**
-     * Method to set the category id
-     *
-     * @access	public
-     * @param	int	Archive ID number
-     */
-    function setId($id) {
-        // Set category ID and wipe data
-        $this->_id			= $id;
-        $this->_data		= array();
-        $this->_total		= null;
+        $params->def('filter',                                  1);
+        $params->def('filter_type',                             'title');
     }
 
     /**
      * Method to get content item data for the current category
      *
-     * @param	int	$state	The content state to pull from for the current
+     * @param   int     $state  The content state to pull from for the current
      * category
      * @since 1.5
      */
     function getData($state = 1) {
         // Load the Archive data
-        if ($this->_loadArchive() && $this->_loadData($state)) {
+        if ($this->_loadData($state)) {
             // Initialize some variables
-            $user	=& JFactory::getUser();
+            $user       =& JFactory::getUser();
+            global $cp_config;
 
             // Make sure the category is published
             // check whether category access level allows access
@@ -137,8 +126,8 @@ class ContentModelMyarchive extends JModel {
      * Method to load content item data for items in the category if they don't
      * exist.
      *
-     * @access	private
-     * @return	boolean	True on success
+     * @access  private
+     * @return  boolean True on success
      */
     function _loadData($state = 1) {
         if (empty($this->_user)) {
@@ -147,14 +136,13 @@ class ContentModelMyarchive extends JModel {
 
         // Lets load the siblings if they don't already exist
         if (empty($this->_content[$state])) {
-            // Get the pagination request variables
-            $limit		= JRequest::getVar('limit', 0, '', 'int');
-            $limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-
-            // Resultados desde Solr
-            require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
-            $contenthelper = new comEqZonalesContentHelper();
-            $Arows = $contenthelper->getContent($limitstart, $limit, array('!tags_values:la_voz_del_vecino', $this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
+        $stateFrom = JRequest::getVar('stateFrom') != null ? JRequest::getInt('stateFrom') : false;
+        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
+        $contenthelper = new comEqZonalesContentHelper();
+        // Get the pagination request variables
+        $limit          = JRequest::getVar('limit', 100, '', 'int');
+        $limitstart     = JRequest::getVar('limitstart', 0, '', 'int');
+        $Arows = $contenthelper->getContent($limitstart, $limit, array($stateFrom != '5' ? '!tags_values:la_voz_del_vecino':"",$this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
 
             // special handling required as Uncategorized content does not have a section / category id linkage
             $i = $limitstart;
