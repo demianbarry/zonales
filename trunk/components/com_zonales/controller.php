@@ -221,7 +221,11 @@ class ZonalesController extends JController {
             } else {
                 // inicializa variables a utilizar
                 $db =& JFactory::getDBO();
-                $user =& JFactory::getUser($modparams->get('user'));
+                $user =& JFactory::getUser();
+                if($user->guest) {
+                    $user =& JFactory::getUser($modparams->get('user'));
+                }
+
                 $catid = $modparams->get('category', 0);
 
                 $nullDate = $db->getNullDate();
@@ -256,7 +260,7 @@ class ZonalesController extends JController {
                 $tzoffset = $config->getValue('config.offset');
                 $date =& JFactory::getDate('now', $tzoffset);
                 $row->created = $date->toMySQL();
-                $row->publish_up = $date->toMysQL();
+                $row->publish_up = date('Y-m-d 00:00:00');
 
                 // se redondea timestamp de creación
                 if ($row->created && strlen(trim( $row->created )) <= 10) {
@@ -273,6 +277,17 @@ class ZonalesController extends JController {
                 $enviaTel = JRequest::getVar('telefono', NULL, 'post', 'string');
                 $row->introtext = $row->introtext . "<p>Envio esta noticia:</p><p>Nombre: $enviaNombre<br/>Email: $enviaEmail<br/>";
 
+                /**
+                 * Para videos de YouTube, arreglo la url para que se pueda ver
+                 */
+                $searchString = "watch?v=";
+                $imgPos = 0;
+                while(($imgPos = strpos($row->introtext, $searchString, $imgPos))) {
+                    $strPre = substr($row->introtext, 0, $imgPos);
+                    $strPos = substr($row->introtext, $imgPos+strlen($searchString));
+                    $row->introtext = $strPre.'v/'.$strPos;
+                }                
+                
                 // Make sure the data is valid
                 if (!$row->check()) {
                     JError::raiseError( 500, $db->stderr() );
