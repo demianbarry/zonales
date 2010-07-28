@@ -47,7 +47,28 @@ class render_for_ZONAL_data_type {
                 'size="1" class="aapu_provincias_select required"', 'id', 'label', $selectedParent);
 
         $return =
-            '<script language="javascript" type="text/javascript">
+            '<div class="render">
+                <div id="aapu_z_provincias_container">
+                    <td class="key">
+                        <p><label class="combo_zonal_label">Provincia</label></p>
+                    </td>
+                    <td colspan="2">'.
+                        $provincias.'
+                    </td>
+                </div>
+                </tr>
+                <tr>
+                <div id="aapu_municipio_container" style="display: none;">
+                    <td class="key">
+                        <p><label class="combo_zonal_label">Municipio</label></p>
+                    </td>
+                    <td colspan="2">
+                        <div id="aapu_z_localidad_container"></div>
+                    </td>
+                    <br/>
+                </div>
+            </div>
+            <script language="javascript" type="text/javascript">
                 <!--
 
                 window.addEvent(\'domready\', function() {
@@ -70,28 +91,7 @@ class render_for_ZONAL_data_type {
                     }).request();
                 }
                 //-->
-            </script>
-            <div class="render">
-                <div id="aapu_z_provincias_container">
-                    <td class="key">
-                        <p><label class="combo_zonal_label">Provincia</label></p>
-                    </td>
-                    <td colspan="2">'.
-                        $provincias.'
-                    </td>
-                </div>
-                </tr>
-                <tr>
-                <div id="aapu_municipio_container" style="display: none;">
-                    <td class="key">
-                        <p><label class="combo_zonal_label">Municipio</label></p>
-                    </td>
-                    <td colspan="2">
-                        <div id="aapu_z_localidad_container"></div>
-                    </td>
-                    <br/>
-                </div>
-            </div>';
+            </script>';
 
         return $return;
     }
