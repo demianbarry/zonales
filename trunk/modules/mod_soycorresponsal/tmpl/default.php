@@ -18,8 +18,12 @@ JHTML::_('behavior.formvalidation');
 $showColapsed = true;
 ?>
 <script type="text/javascript">
+
+    // informa a recaptcha de no generar la interface por default
     var RecaptchaOptions = {
-        theme : 'clean'
+        theme: 'custom',
+        lang: 'es',
+        custom_theme_widget: 'recaptcha_widget'
     };
 </script>
 
@@ -72,27 +76,7 @@ $showColapsed = true;
         <input id="telefono" name="telefono" type="text" class="" value="<?php //echo $user->telephone; ?>" disabled="true"/>-->
                     <?php endif; ?>
 
-                <div class="splitter"></div>
-                <!--<div id="captchaStatus" style="display: none; color:red;"><?php //echo JText::_('INCORRECT');?></div>
-                <div id="recaptcha_widget" style="display:none">
-                    <div id="recaptcha_image"></div>
-                    <br/>
-                    <span class="recaptcha_only_if_image"><?php //echo JText::_('WORDS_CAPTCHA');?></span>
-                    <span class="recaptcha_only_if_audio"><?php //echo JText::_('NOMBERS_CAPTCHA');?></span>
-                    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
-
-                    <div><a href="javascript:Recaptcha.reload()"><?php //echo $captchaTextNew;?></a></div>
-                    <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><?php //echo $captchaTextSnd;?></a></div>
-                    <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><?php //echo $captchaTextImg;?></a></div>
-                    <div><a href="javascript:Recaptcha.showhelp()"><?php //echo $captchaTextHelp;?></a></div>
-                    <noscript>
-                        <iframe src="http://api.recaptcha.net/noscript?k=<?php //echo $captcha_publickey; ?>" height="300" width="500" frameborder="0"></iframe><br>
-                        <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-                        <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
-                    </noscript>
-                </div>
-                <script language="javascript" type="text/javascript" src="http://api.recaptcha.net/challenge?k=<?php echo $captcha_publickey; ?>"></script>
-                -->
+                <div class="splitter"></div>               
                 <div id="recaptcha_widget" style="display:none">
 
                     <div id="recaptcha_image"></div>
@@ -103,14 +87,11 @@ $showColapsed = true;
 
                     <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
 
-                    <div><a href="javascript:Recaptcha.reload()"><?php echo $captchaTextNew;?></a></div<
+                    <div><a href="javascript:Recaptcha.reload()"><?php echo $captchaTextNew;?></a></div>
                     <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><?php echo $captchaTextSnd;?></a></div>
                     <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><?php echo $captchaTextImg;?></a></div>
-
                     <div><a href="javascript:Recaptcha.showhelp()"><?php echo $captchaTextHelp;?></a></div>
-
                 </div>
-
                 <script type="text/javascript"
                         src="http://www.google.com/recaptcha/api/challenge?k=<?php echo $captcha_publickey; ?>">
                 </script>
@@ -186,12 +167,6 @@ $showColapsed = true;
         return false;
     }
 
-    // informa a recaptcha de no generar la interface por default
-    var RecaptchaOptions = {
-        theme: 'custom',
-        lang: 'es',
-        custom_theme_widget: 'recaptcha_widget'
-    };
 
 <?php endif?>
     window.addEvent('domready', function() {
