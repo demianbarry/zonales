@@ -618,6 +618,8 @@
             <zipfileset dir="${src_libraries}" includes="g2p-utils/**" prefix="libraries" />
             <zipfileset dir="${src_libraries}" includes="solr/**" prefix="libraries" />
             <zipfileset dir="${src_libraries}" includes="joomla/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="json/**" prefix="libraries" />
+            <zipfileset dir="${src_libraries}" includes="recaptcha/**" prefix="libraries" />
         </zip>
     </target>
 
