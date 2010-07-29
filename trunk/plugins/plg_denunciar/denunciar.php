@@ -14,40 +14,50 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
-// ini_set('display_errors',1);
-// error_reporting(E_ALL);
-
 $database = &JFactory::getDbo();
-
-
-$sql		= "CREATE TABLE IF NOT EXISTS `#__denunciar_tb` (`id` int(11) NOT NULL auto_increment, comment longtext, `content_id` int(11) default NULL, `user_id` int(11) default NULL, PRIMARY KEY  (`id`)) ENGINE = MYISAM AUTO_INCREMENT =1 DEFAULT
-		CHARSET = utf8 AUTO_INCREMENT =1;";
+$sql		= "CREATE TABLE IF NOT EXISTS `#__denunciar_tb` (
+                    `id` int(11) NOT NULL auto_increment,
+                     comment longtext,
+                     `content_id` int(11) default NULL,
+                     `user_id` int(11) default NULL,
+                     `state` tinyint(1) default 0, 
+                     `created` datetime default '0000-00-00 00:00:00',
+                     PRIMARY KEY  (`id`))
+                     ENGINE = MYISAM AUTO_INCREMENT =1 DEFAULT CHARSET = utf8 AUTO_INCREMENT =1;";
 $database->setQuery($sql);
 $database->query();
 
+$user	= & JFactory::getUser();
+
+$plugin = & JPluginHelper::getPlugin('content', 'denunciar');
+$pluginParams   = new JParameter( $plugin->params );
 
 $task = JRequest::getVar('task', '', 'post');
-
 switch ($task) {
 
     case "denunciar":
 
         $contentid = JRequest::getVar('content_id', '', 'post');
-        $userid = JRequest::getVar('user_id', '', 'post');
 
-
-        $sql = "INSERT INTO #__denunciar_tb (user_id, content_id,comment)
-				    VALUES('$userid', '$contentid','')" ;
+        // registro la denuncia
+        $sql = "INSERT INTO #__denunciar_tb (user_id, content_id,comment,created)
+				    VALUES($user->id, $contentid,'','".gmdate('Y-m-d H:i:s')."')" ;
         $database->setQuery($sql);
         $database->query();
 
+        // despublico el artículo
+        $sql = "UPDATE #__content
+                    SET state = ".$pluginParams->get('state').",
+                        modified = '".gmdate('Y-m-d H:i:s')."'
+                    WHERE id = $contentid";
+        $database->setQuery($sql);
+        $database->query();
 
         $from = "denuncia@zonales.com.ar";
 
-        $fromname = 'Denuncia!!';
+        $fromname = "Zonales: se ha denunciado el artículo nº $contentid";
 
-        $recipient[] = 'juanmanuelcortez@gmail.com';
+        $recipient[] = $pluginParams->get('recipient');
 
         $subject = 'Denunciaron Articulo ';
 
@@ -78,13 +88,11 @@ switch ($task) {
 
 }
 
-$plugin = & JPluginHelper::getPlugin('content', 'denunciar');
-$pluginParams   = new JParameter( $plugin->params );
 $denunciardisplay = $pluginParams->get('denunciardisplay');
 
 
 $mainframe->registerEvent( $denunciardisplay, 'plgContentdenunciar' );
-
+$mainframe->registerEvent( 'onAfterContentSave', 'plgContentPublish' );
 
 function denunciarPageURL() {
     $pageURL = 'http';
@@ -101,6 +109,10 @@ function denunciarPageURL() {
 
 
 function plgContentdenunciar( &$row, &$params, $page=0 ) {
+// Process the content preparation plugins
+    JPluginHelper::importPlugin('content');
+    $dispatcher =& JDispatcher::getInstance();
+    $dispatcher->trigger('onAfterContentSave', array( $row,$row->id > 0));
 
     $url = JUri::base(true);
     $uri = & JFactory::getURI();
@@ -129,69 +141,15 @@ function plgContentdenunciar( &$row, &$params, $page=0 ) {
         $showfrontpage = $pluginParams->get('showfrontpage');
         $denunciarimage = '<img src="plugins/content/notlike/notlike.png" style="vertical-align: text-bottom; border: 0; margin-left:5px;">';
 
-        $query		= "SELECT count(*) FROM #__denunciar_tb WHERE content_id = $content_id";
-        $database->setQuery( $query );
-        $count		= $database->loadResult();
-
-
-        $query		= "SELECT count(*) FROM #__denunciar_tb WHERE content_id = $content_id AND user_id = $user_id";
+        $query          = "SELECT count(*) FROM #__denunciar_tb WHERE content_id = $content_id AND state = 0";
         $database->setQuery( $query );
         $usercount = $database->loadResult();
 
-        $query		= "SELECT count(*) FROM #__content_frontpage WHERE content_id = $content_id";
-        $database->setQuery( $query );
-        $onfrontpage = $database->loadResult();
 
+        if(($user_id) && ($usercount == 0 )) {
 
-        if (($showfrontpage == 'no') and ($onfrontpage > 0)) {
-
-
-
-        }
-
-        if (($showfrontpage =="yes") or (!$onfrontpage)) {
-
-            $css = '<!-- CSS STYLES -->
-
-				<style type="text/css">
-				<!--
-
-				div#denunciar{
-	
-				color: ' . $textcolor . ';
-				font-size: ' . $textsize . 'px;
-				float: ' . $textfloat . ';
-				clear: ' . $textclear . ';
-
-				}
-			
-			--></style>';
-
-
-
-
-            if (($user->id) && ($count > 1)) {
-
-                $html = '';
-                $html .= $css . '<div id="denunciar">  &nbsp;';
-                $html .= $denunciarimage . ' <i>' . $count . ' Usuarios denunciaron esta articulo.</i>';
-                $html .= '</div>';
-
-                return $html;
-
-            }
-
-
-
-
-
-
-
-            if(($user_id) && ($usercount == 0 )) {
-
-
-                $html = '';
-                $html .= '<style type="text/css">
+            $html = '';
+            $html .= '<style type="text/css">
 			<!--
 			.text_button {
 			   border: none;
@@ -207,25 +165,39 @@ function plgContentdenunciar( &$row, &$params, $page=0 ) {
 			</style>';
 
 
-                $html .= $css . '<div id="denunciar">';
-                $html .= '<form method="post" action="' . denunciarPageURL()  . '">';
-                $html .= '<span class="denunciar">';
-                $html .= ' ' . $denunciarimage . ' <input type="submit" value="denunciar" class="text_button">';
-                $html .= '<input type="hidden" name="task" value="denunciar" />';
-                $html .= '<input type="hidden" name="option" value="com_content" />';
-                $html .= '<input type="hidden" name="user_id" value="'. $user_id . '" />';
-                $html .= '<input type="hidden" name="content_id" value="' . $content_id . '" />';
-                $html .= '<input type="hidden" name="url" value="'. JURI::current() . '" />';
-                $html .= '</span>';
-                $html .= '</form>';
-                $html .= '</div>';
+            $html .= '<div id="denunciar">';
+            $html .= '<form method="post" action="' . denunciarPageURL()  . '">';
+            $html .= '<span class="denunciar">';
+            $html .= ' ' . $denunciarimage . ' <input type="submit" value="denunciar" class="text_button">';
+            $html .= '<input type="hidden" name="task" value="denunciar" />';
+            $html .= '<input type="hidden" name="option" value="com_content" />';
+            $html .= '<input type="hidden" name="content_id" value="' . $content_id . '" />';
+            $html .= '<input type="hidden" name="url" value="'. JURI::current() . '" />';
+            $html .= '</span>';
+            $html .= '</form>';
+            $html .= '</div>';
 
-                return $html;
-
-            }
+            return $html;
         }
+
 
     } // end if on front page
 }
 
+function plgContentPublish( &$row, &$params, $page=0 ) {
 
+    $url = JUri::base(true);
+    $uri = & JFactory::getURI();
+    $plugin = & JPluginHelper::getPlugin('content', 'denunciar');
+    $pluginParams   = new JParameter( $plugin->params );
+    $database = &JFactory::getDbo();
+
+    if($row->state == 1) {
+        $query = "  UPDATE #__denunciar_tb
+                        SET state = 1
+                        WHERE content_id = $row->id
+                        AND state = 0";
+        $database->setQuery($query);
+        $database->query();
+    }
+}
