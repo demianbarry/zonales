@@ -14,25 +14,20 @@
             <option value="onBeforeDisplayContent">Before Display Content</option>
             <option value="onAfterDisplayContent">After Display Content</option>
         </param>
-
-
         <param name="textsize" type="text" size="3" default="12" label="Font Size In Pixels" description="Like Font Size In Pixels" />
-
         <param name="recipient" type="text" size="20" label="PLG_DENUNCIAR_RECIPIENT" description="TIP_PLG_DENUNCIAR_RECIPIENT"/>
-
+        <param name="state" type="text" size="5" default="5" label="PLG_DENUNCIAR_STATE" description="TIP_PLG_DENUNCIAR_STATE"/>
         <param name="textfloat" type="list" label="Like Alignment" default="none" description="Float like thumb and text left, right or none">
             <option value="none">None</option>
             <option value="left">Left</option>
             <option value="right">Right</option>
         </param>
-
         <param name="textclear" type="list" label="Like Text Clear" default="none" description="Clear items on sides of Like">
             <option value="none">None</option>
             <option value="left">Left</option>
             <option value="right">Right</option>
             <option value="both">Both</option>
         </param>
-
         <param name="linkcolor" type="list" label="Like link color" default="blue" description="Select color of Like link">
             <option value="white">White</option>
             <option value="silver">Silver</option>
