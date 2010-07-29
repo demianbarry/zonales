@@ -241,26 +241,21 @@ class ZonalesController extends JController {
 
                 $nullDate = $db->getNullDate();
 
-                // tabla de contenidos joomla
-                $row = & JTable::getInstance('content');
-
                 $row->title = JRequest::getVar('title', NULL, 'post', 'string');
                 $row->sectionid = 0;
                 $row->catid = 0;
                 $row->version = 0;
-                $row->state = 0;
+                $row->state = 1;
                 $row->ordering = 0;
                 $row->images = array ();
                 $row->publish_down = $nullDate;
                 $row->created_by = $user->get('id');
-                $row->modified = $nullDate;
+                $row->modified = gmdate('Y-m-d H:i:s');
 
                 // corrección de la fecha
                 $config =& JFactory::getConfig();
-                $tzoffset = $config->getValue('config.offset');
-                $date =& JFactory::getDate('now', $tzoffset);
-                $row->created = $date->toMySQL();
-                $row->publish_up = date('Y-m-d 00:00:00');
+                $row->created = gmdate('Y-m-d H:i:s');
+                $row->publish_up = gmdate('Y-m-d 00:00:00');
 
                 // se redondea timestamp de creación
                 if ($row->created && strlen(trim( $row->created )) <= 10) {
@@ -286,8 +281,8 @@ class ZonalesController extends JController {
                     $strPre = substr($row->introtext, 0, $imgPos);
                     $strPos = substr($row->introtext, $imgPos+strlen($searchString));
                     $row->introtext = $strPre.'v/'.$strPos;
-                }                
-                
+                }
+
                 // Make sure the data is valid
                 if (!$row->check()) {
                     JError::raiseError( 500, $db->stderr() );
@@ -315,6 +310,11 @@ class ZonalesController extends JController {
                 $database = JFactory::getDBO();
                 $database->setQuery($query);
                 $database->query();
+
+                // Process the content preparation plugins
+                JPluginHelper::importPlugin('content');
+                $dispatcher =& JDispatcher::getInstance();
+                $dispatcher->trigger('onAfterContentSave', array(&$row,($row->id < 1)));
 
                 // Todo ok, enviamos confirmación
                 echo $helper->getJsonResponse('success', $modparams->get('confirmacion'));
