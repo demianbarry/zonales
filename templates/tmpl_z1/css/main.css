@@ -28,7 +28,7 @@
 }
 
 #containerContent{
-	background:url(../images/back-wrapp.gif);
+    background:url(../images/back-wrapp.gif);
 }
 
 #container-l{
@@ -142,9 +142,15 @@
     height: 30px;
 }
 
-/* Estilo para las imágenes de las noticias */
+/* Estilos para las imágenes de las noticias */
 .Apple-style-span img {
     padding: 2px;
     border: solid 1px grey;
     margin: 5px;
+}
+
+.contentpaneopen tbody tr td p img {
+    border:1px solid grey;
+    margin:10px;
+    padding:2px;
 }
