@@ -158,12 +158,12 @@ class plgAuthenticationExternallogin extends JPlugin {
                                 $user =& JFactory::getUser();
                                 if ($user->guest) {
                                     $mainframe->redirect($this->params->get('getstatusurl') . '&externalid=' . $info[EXTERNAL_ID] .
-                                        '&providerid=' . $dbprovider->id);
+                                        '&providerid=' . $dbprovider->id . '&email=' . urlencode($info[EMAIL]) . '&label=' . urlencode($info[LABEL]));
                                 }
                                 else {
                                     $token = JUtility::getToken();
                                     $mainframe->redirect($this->params->get('aliasregisterurl') . '&externalid=' . urlencode($info[EXTERNAL_ID]) .
-                                        '&providerid=' . $dbprovider->id . '&' . $token .'=1');
+                                        '&providerid=' . $dbprovider->id . '&' . $token .'=1'. '&email=' . urlencode($info[EMAIL]) . '&label=' . urlencode($info[LABEL]));
                                 }
                             }
 
