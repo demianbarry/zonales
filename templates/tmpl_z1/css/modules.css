@@ -520,6 +520,16 @@ div.cp_field_label{
 }
 
 
+
+..moduletable_bannerTop{
+	position:absolute;
+	width:160px;
+	height:200px;
+	margin-left:650px;
+	margin-top:25px;
+}
+
+
 /* ////////////////////////////////////////////////////// yooSearch */
 
 .moduletable_yooSearch{
