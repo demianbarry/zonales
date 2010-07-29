@@ -40,8 +40,9 @@ function showTags($ce, $item, $params, $append_to_meta=false) {
     $linked_tags 	= $params->get('linked_tags', '0');
     $url_format 	= $params->get('url_format', '0');
     $use_itemid	= $params->get('use_itemid', '1');
+    $can_edit = false;
 
-    if(($can_edit = $params->get('frontend_tagging')) == 1 && ($aid >= $params->get('editing_level'))) {
+    if(($aid >= $params->get('editing_level')) && ($can_edit = $params->get('frontend_tagging')) == 1 ) {
         $document = JFactory::getDocument();
         $script = JUri::root().'/administrator/components/com_customproperties/includes/customproperties_ext.js';
         $document->addScript($script);
