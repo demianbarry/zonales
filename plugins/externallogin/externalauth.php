@@ -132,26 +132,18 @@ function openid($credentials,$options) {
             return $info;
         }
 
-        $ax_request = null;
-       // if ($discovery) {
-            $ax_request = new Auth_OpenID_AX_FetchRequest();
-            $ax_request->add('email');
-     //   }
+
+        // if ($auth_request->endpoint->usesExtension(Auth_OpenID_AX_NS_URI)) {
+        $ax_request = new Auth_OpenID_AX_FetchRequest();
+        $ax_request->add(Auth_OpenID_AX_AttrInfo::make('http://axschema.org/contact/email', 1, true));
+
+        //         }
+        $sreg_request = Auth_OpenID_SRegRequest::build(array ('email'));
 
         if ($ax_request) {
-            //$auth_request->addExtension($ax_request);
-            $auth_request->addExtensionArg('ax', 'type.email', 'http://axschema.org/contact/email');
+            $auth_request->addExtension($ax_request);
+            $auth_request->addExtension($sreg_request);
         }
-//        $sreg_request = null;
-//       // if ($discovery) {
-//            $sreg_request = Auth_OpenID_SRegRequest::build(
-//                    array ('email')
-//            );
-//      //  }
-//
-//        if ($sreg_request) {
-//            $auth_request->addExtension($sreg_request);
-//        }
 
 
 //        $policy_uris = array();
@@ -234,19 +226,27 @@ function openid($credentials,$options) {
     switch ($result->status) {
         case Auth_OpenID_SUCCESS:
             $info[STATUS] = Auth_SUCCESS;
-            $axFetch = new Auth_OpenID_AX_FetchResponse();
-            $ax_resp = $axFetch->fromSuccessResponse($result);
+            $ax_resp = Auth_OpenID_AX_FetchResponse::fromSuccessResponse($result);
 
-            if ($ax_resp == null) die("la respuesta es null");
+            if ($ax_resp) {
+                $email = $ax_resp->getSingle('http://axschema.org/contact/email');
+                if ($email && !is_a($email, 'Auth_OpenID_AX_Error')) {
+                    $info[EMAIL] = $email;
+                }
+            }
 
-            $info[EMAIL] = $ax_resp->get('type.email');
+
+            $sreg_resp = Auth_OpenID_SRegResponse::fromSuccessResponse($result);
+
+            if (!isset ($info[EMAIL]) && $sreg_resp) {
+                $sreg = $sreg_resp->contents();
+                if (isset ($sreg['email'])){
+                    $info[EMAIL] = $sreg['email'];
+                }
+            }
+
+            $info[EMAIL] = (isset ($info[EMAIL])) ? $info[EMAIL] : $info[EXTERNAL_ID];
             $info[LABEL] = ($discovery) ? $info[EMAIL] : $info[EXTERNAL_ID];
-//            $sreg_resp = Auth_OpenID_SRegResponse::fromSuccessResponse($result);
-//
-//            $sreg = $sreg_resp->contents();
-//            $info[EMAIL] = $sreg['email'];
-//            $info[LABEL] = ($discovery) ? $sreg['email'] : $result->getDisplayIdentifier();
-            die("email: #" . $info[EMAIL] . "#");
             break;
         case Auth_OpenID_CANCEL:
             $info[STATUS] = Auth_CANCEL;
@@ -255,8 +255,6 @@ function openid($credentials,$options) {
             $info[STATUS] = Auth_FAILURE;
             break;
     }
-
-    //die("discovery url: #$discovery_url# username:#$username#");
 
     return $info;
 }
