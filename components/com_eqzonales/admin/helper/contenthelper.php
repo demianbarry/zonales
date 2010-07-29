@@ -179,6 +179,8 @@ class comEqZonalesContentHelper {
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
         $queryParams['qt'] = $solr_querytype;
+        $queryParams['bf'] = 'recip(map(rord(modified),0,0,99000),1,95000,95000)^100';
+
 
         try {
             $results = $solr->search("", $limitstart, $limit, $queryParams);

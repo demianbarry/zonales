@@ -187,19 +187,19 @@ class ContentController extends JController
 		$model->checkin();
 
 		// gets section name of item
-		$query = 'SELECT s.title' .
+		/*$query = 'SELECT s.title' .
 				' FROM #__sections AS s' .
 				' WHERE s.scope = "content"' .
 				' AND s.id = ' . (int) $post['sectionid'];
 		$db->setQuery($query);
-		// gets category name of item
-		$section = $db->loadResult();
+		// gets category name of item*/
+		$section = 'Sin sección';
 
-		$query = 'SELECT c.title' .
+		/*$query = 'SELECT c.title' .
 				' FROM #__categories AS c' .
 				' WHERE c.id = ' . (int) $post['catid'];
-		$db->setQuery($query);
-		$category = $db->loadResult();
+		$db->setQuery($query);*/
+		$category = 'Sin categoría';
 
 		if ($isNew)
 		{
@@ -236,7 +236,7 @@ class ContentController extends JController
 			$msg = $isNew ? JText::_('THANK_SUB') : JText::_('Item successfully saved.');
 		}
 		
-		$referer = JRoute::_('index.php?view=article&id='.$model->get('id').'task=edit&layout=form', false);/*JRequest::getString('ret',  base64_encode(JURI::base()), 'get');
+		$referer = JRoute::_('index.php?view=article&id='.$model->get('id').'task=edit&layout=form&tmpl=component_edit', false);/*JRequest::getString('ret',  base64_encode(JURI::base()), 'get');
 		$referer = base64_decode($referer);
 		if (!JURI::isInternal($referer)) {
 			$referer = '';

@@ -59,7 +59,7 @@ $showColapsed = true;
                 <input id="title" name="title" type="text" class="required" value="" size="55px"/>
 
                 <label for="text"><?php echo JText::_('TEXT');?></label>
-                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', true, $editorParams ); ?>
+                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
             </div>
             <input id="siguiente" type="submit" name="siguiente" value="<?php echo JText::_('NEXT');?>" />
             <div id="corresponsal" style="display: none;">
@@ -228,11 +228,15 @@ $showColapsed = true;
             loadLocalidades(this.value);
         });
 
+
+
         $('formVecinos').addEvent('submit', function(e) {
             new Event(e).stop();
 
             if(typeof(tinyMCE) != "undefined") {
                 fixTiny({instace:'text'});
+            } else if (typeof(CKEDITOR.instances.text) != 'undefined') {
+                $('text').innerHTML = CKEDITOR.instances.text.getData();
             }
 
             if (validate(this, validateForm) == false) {
