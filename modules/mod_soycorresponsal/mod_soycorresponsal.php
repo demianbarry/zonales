@@ -72,9 +72,9 @@ if(!$user->guest) {
 
 // editor
     $editor =& JFactory::getEditor();
-    $editorParams = array (
+    $editorParams = array (''/*
             'theme' => 'simple',
-            'toolbar' => 'top'
+            'toolbar' => 'top'*/
     );
 
 // valores para los parametros del template

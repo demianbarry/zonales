@@ -59,7 +59,7 @@ $showColapsed = true;
                 <input id="title" name="title" type="text" class="required" value="" size="55px"/>
 
                 <label for="text"><?php echo JText::_('TEXT');?></label>
-                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', false, $editorParams ); ?>
+                    <?php echo $editor->display( 'text', null, '100%', '250', '60', '20', true, $editorParams ); ?>
             </div>
             <input id="siguiente" type="submit" name="siguiente" value="<?php echo JText::_('NEXT');?>" />
             <div id="corresponsal" style="display: none;">
@@ -103,10 +103,7 @@ $showColapsed = true;
                     <input type="hidden" name="recaptcha_response_field"
                            value="manual_challenge">
                 </noscript>
-                <div class="splitter"></div>
-
-                <input id="enviar" type="submit" name="enviar" value="<?php echo JText::_('SEND');?>"/>
-                <input id="volver" type="submit" name="volver" value="<?php echo JText::_('BACK');?>"/>
+                <div class="splitter"></div>                
             </div>
 
             <input type="hidden" name="task" value="saveCorresponsalContent" />
@@ -114,11 +111,23 @@ $showColapsed = true;
             <input type="hidden" name="format" value="raw" />
             <input type="hidden" name="module" value="<?php echo $module->title; ?>" />
                 <?php echo JHTML::_('form.token'); ?>
-        </form>
 
+            <table id="botones">
+                <tbody>
+                    <tr>
+                        <td>
+                            <input id="volver" type="submit" name="volver" value="<?php echo JText::_('BACK');?>"/>
+                        </td>
+                        <td>
+                            <input id="enviar" type="submit" name="enviar" value="<?php echo JText::_('SEND');?>"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
         <div id="mensaje" title="mensaje" />    
         <?php endif?>
-    </div>
+    </div>    
 </div><!-- end #moduletable_formVecinos -->
 <!-- form -->
 <!-- Validacion -->
@@ -171,6 +180,7 @@ $showColapsed = true;
 <?php endif?>
     window.addEvent('domready', function() {
 <?php if(!$user->guest) :?>
+
         // reconvierte el textarea usado por tinyMCE. neceasario para enviar
         // el formulario por medio de Ajax.Form
         var fixTiny = function(properties) {
@@ -180,6 +190,8 @@ $showColapsed = true;
             tinyMCE.triggerSave(true,true);
             return true;
         }
+
+        $('botones').setStyle('display', 'none');
 
         $('siguiente').addEvent('click', function(e) {
             new Event(e).stop();
@@ -191,6 +203,7 @@ $showColapsed = true;
                     $('email').addClass('required validate-email');
                     //$('telefono').addClass('required');
                     $('corresponsal').setStyle('display', '');
+                    $('botones').setStyle('display', 'block');
                     return true;
                 }
                 return false;
@@ -207,6 +220,7 @@ $showColapsed = true;
             $('nombre').removeClass('required');
             $('email').removeClass('required validate-email');
             //$('telefono').removeClass('required');
+            $('botones').setStyle('display', 'none');
         });
 
         // al cambiar el partido, recupero las localidades
@@ -225,6 +239,7 @@ $showColapsed = true;
                 return false;
             }
             $('corresponsal').setStyle('display','none');
+            $('botones').setStyle('display', 'none');
             $('mensaje').empty().addClass('ajax-loading').setStyle('display', ''),
             this.send({
                 onSuccess: function(response) {
