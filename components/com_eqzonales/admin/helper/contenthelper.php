@@ -182,6 +182,10 @@ class comEqZonalesContentHelper {
 
         try {
             $results = $solr->search("", $limitstart, $limit, $queryParams);
+            foreach ($results->response->docs as $doc) {
+                $doc->slug = strlen($doc->alias) ? "$doc->id:$doc->alias" : $doc->id;
+                $doc->catslug = $doc->catid;
+            }
         }
         catch (Exception $e) {
             return null;

@@ -362,8 +362,8 @@ class ContentModelCategory extends JModel
 			$rows = array();
 			foreach ($Arows as $row)
 			{
-                                $row->slug = strlen($row->alias) ? "$row->id:$row->alias" : $row->id;
-                                $row->catslug = $row->catid;
+                                //$row->slug = strlen($row->alias) ? "$row->id:$row->alias" : $row->id;
+                                //$row->catslug = $row->catid;
 
 				// check to determine if section or category has proper access rights
 				$rows[$i] = $row;
