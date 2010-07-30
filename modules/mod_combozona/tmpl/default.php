@@ -32,6 +32,7 @@ defined('_JEXEC') or die('Restricted access');
             <p><label class="combo_zonal_label">Municipio</label></p>
             <div id="z_localidad_container"></div>
             <input class="combo_zonal_button" type="submit" value="<?php if($zonal) echo JText::_('MOD_COMBOZONA_CHANGE_ZONAL'); else echo JText::_('MOD_COMBOZONA_CHOOSE_ZONAL')?>" id="changeZonal" name="changeZonal" />
+            <input class="combo_zonal_button" type="<?php echo ($zonal ? 'submit' : 'hidden')?>" value="<?php echo JText::_('MOD_COMBOZONA_CLEAR_ZONAL');?>" id="clearZonal" name="clearZonal" onclick="$('formComboZona').task.value='clearZonal'"/>
             <br/>
         </div>
 
