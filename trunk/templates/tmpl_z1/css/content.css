@@ -92,7 +92,7 @@
         color:#B4B4B4;
 }
 
-a.readon{ /* leer m▒s... */
+a.readmore-link{ /* leer m▒s... */
         display:block;
         margin-top:10px;
 
@@ -104,7 +104,7 @@ a.readon{ /* leer m▒s... */
         text-transform:uppercase;
 }
 
-a:hover.readon{}
+a:hover.readmore-link{}
 
 .article_separator{
         display:block;
