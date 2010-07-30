@@ -47,6 +47,11 @@
                     </label>
                 </td>
                 <td>
+                    <label class="aliaslabel">
+                        <?php echo $dbalias->label ?>
+                    </label>
+                </td>
+                <td>
                     <input type="checkbox"
                            name="<?php echo 'alias'.$dbalias->id ?>"
                            <?php echo (!$dbalias->block) ? 'checked="checked"' : '' ?>

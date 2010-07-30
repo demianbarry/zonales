@@ -338,7 +338,13 @@ foreach ($providerslist as $prov) {
                            id="email"
                            name="email"
                            size="15"
-                           value="<?php echo $user->get( 'email' );?>"
+                           value="<?php if ($email) {
+                               echo $email;
+                           }
+                           else{
+                               $user->get( 'email' );
+                           }
+                               ?>"
                            class="inputbox required validate-email"
                            maxlength="100"
                            onblur="checkEmail(this.value, this.id)"
@@ -614,6 +620,11 @@ foreach ($providerslist as $prov) {
                name="externalid"
                id="externalid"
                value="<?php echo $externalid; ?>"
+               />
+        <input type="hidden"
+               name="label"
+               id="label"
+               value="<?php echo $label; ?>"
                />
         <input type="hidden"
                name="force"

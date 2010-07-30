@@ -128,14 +128,16 @@ class UserController extends JController {
         $this->setRedirect( 'index.php' );
     }
 
-    private function aliasreg($providerid,$externalid) {
+    private function aliasreg($providerid,$externalid,$label,$email) {
 
-        if ($providerid != 0 && $externalid != '') {
+        if ($providerid != 0 && $externalid != '' && $label != '' && $email != '') {
             $db = &JFactory::getDBO();
             $user =& JFactory::getUser();
 
             $externalid = urldecode($externalid);
-            $status = $this->insertAlias('0', $user->id, $externalid, $providerid);
+            $email = urldecode($email);
+            $label = urldecode($label);
+            $status = $this->insertAlias('0', $user->id, $externalid, $providerid,$label,$email);
             return $status;
         }
         return false;
@@ -147,8 +149,10 @@ class UserController extends JController {
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+        $email = JRequest::getVar('email', '', 'method', 'string');
+        $label = JRequest::getVar('label', '', 'method', 'string');
 
-        $statusAux = $this->aliasreg($providerid,$externalid);
+        $statusAux = $this->aliasreg($providerid,$externalid,$label,$email);
 
         $status = ($statusAux) ? '0' : '1';
 
@@ -200,6 +204,8 @@ class UserController extends JController {
 
         $options['providerid'] = JRequest::getInt('providerid', '0', 'method');
         $options['externalid'] = JRequest::getVar('externalid', '', 'method', 'string');
+        $options['email'] = JRequest::getVar('email', '', 'method', 'string');
+        $options['label'] = JRequest::getVar('label', '', 'method', 'string');
 
         ##### testing ##########
         $db = &JFactory::getDBO();
@@ -216,7 +222,7 @@ class UserController extends JController {
             }
 
             if ($credentials['userid'] == 0) {
-                $this->aliasreg($options['providerid'],$options['externalid']);
+                $this->aliasreg($options['providerid'],$options['externalid'],$options['label'],$options['email']);
             }
             else {
                 try {
@@ -225,7 +231,7 @@ class UserController extends JController {
                     $db->setQuery($selectProvider);
                     $dbprovider = $db->loadObject();
 
-                    $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id);
+                    $this->insertAlias(0, $credentials['userid'], $session->get('externalidentifier'), $dbprovider->id,$session->get('label'),$session->get('email'));
 
                 }
                 catch (Exception $ex) {
@@ -335,15 +341,15 @@ class UserController extends JController {
         return ($this->getUserId($db, $user) != null);
     }
 
-    private function insertAlias($block,$userid,$alias,$providerid) {
+    private function insertAlias($block,$userid,$alias,$providerid,$label,$email) {
         try {
             $db = &JFactory::getDBO();
             $passphrase = JUtility::getHash( JUserHelper::genRandomPassword());
 
-            $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation) ' .
+            $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation,label) ' .
                     'values (' . $userid . ',"' . $alias .
                     '",' . $providerid . ',"' . date('Y-m-d') . '",' .
-                    $block . ',"' . $passphrase . '")';
+                    $block . ',"' . $passphrase . '","'.$label.'")';
 
             $db->setQuery($insertAlias);
             return $db->query();
@@ -367,6 +373,8 @@ class UserController extends JController {
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+        $aliasemail = JRequest::getVar('email', '', 'method', 'string');
+        $label = JRequest::getVar('label', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
         $zonalId = JRequest::getInt('zonal',UserHelper::ZONAL_NOT_DEFINED,'method');
         $email2 = JRequest::getString('email2','','method');
@@ -552,7 +560,7 @@ class UserController extends JController {
             try {
                 $externalid = urldecode($externalid);
 
-                $this->insertAlias($block, $userid, $externalid,$user->get('providerid'));
+                $this->insertAlias($block, $userid, $externalid,$user->get('providerid'),$label,$aliasemail);
 
                 $requestNewAlias = false;
 
