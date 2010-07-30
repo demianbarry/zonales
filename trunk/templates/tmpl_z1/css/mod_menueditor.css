@@ -1,12 +1,12 @@
 /* CSS del m�dulo 'Soy corresponsal' */
 
-.moduletable_formVecinos {
+.moduletable_menueditor {
     margin-bottom:10px;
     background:#F8F8F1;
     border:1px solid #F1F1F1;
 }
 
-.moduletable_formVecinos_bodyDiv {
+.moduletable_menueditor_bodyDiv {
     background:none repeat scroll 0 0 #F8F8F1;
     border-bottom:1px dotted #CCCCCC;
     font-size:11px;
@@ -15,7 +15,7 @@
     text-align:justify;    
 }
 
-.moduletable_formVecinos h1{
+.moduletable_menueditor h1{
     display:block;
     padding:10px;
     background-color: #FF9900;
@@ -26,7 +26,7 @@
     cursor: pointer;
 }
 
-.moduletable_formVecinos p{
+.moduletable_menueditor p{
     line-height:13px;
     font-family:"trebuchet MS";
     font-size:11px;
@@ -34,11 +34,11 @@
     margin-bottom:7px;
 }
 
-.moduletable_formVecinos p strong{
+.moduletable_menueditor p strong{
     font-weight:bold;
 }
 
-.moduletable_formVecinos .splitter, .moduletable_formVecinos #formVecinos .splitter{
+.moduletable_menueditor .splitter, .moduletable_menueditor #menueditor .splitter{
     display:block;
     margin-top:10px;
     margin-bottom:10px;
@@ -46,84 +46,19 @@
     border-bottom:1px solid #FFFFFF;
 }
 
-.moduletable_formVecinos #formVecinos{
+.moduletable_menueditor {
     margin-bottom: 10px;
 }
 
-.moduletable_formVecinos label{
+.moduletable_menueditor label{
     display:block;
     margin-top:10px;
     margin-bottom:4px;
-
     font-family:"trebuchet MS";
     font-size:11px;
     color:#666666;
 }
 
-.moduletable_formVecinos label span{
-    color:#999999;}
-
-.moduletable_formVecinos #formVecinos input, .moduletable_formVecinos #formVecinos select, .moduletable_formVecinos #formVecinos textarea{
-    border:1px solid #CCCCCC;margin:0;padding:0;
-
-    font-family:"trebuchet MS";
-    font-size:11px;
-    color:#666666;
-}
-
-.moduletable_formVecinos #formVecinos #nombre{
-    width:220px;
-}
-
-.moduletable_formVecinos #formVecinos #email{
-    width:220px;
-}
-
-.moduletable_formVecinos #formVecinos #telefono{
-    width:220px;
-}
-
-.moduletable_formVecinos #formVecinos #partido{
-    width:220px;
-}
-
-.moduletable_formVecinos #formVecinos #localidad{
-    width:220px;
-}
-
-.moduletable_formVecinos #formVecinos #titulo{
-    width:280px;
-}
-
-.moduletable_formVecinos #formVecinos #texto{
-    width:280px;
-    height:200px;
-}
-
-.moduletable_formVecinos #formVecinos #enviar{
-    border:0;margin:0;padding:0;
-    margin-top:10px;
-    margin-bottom:10px;
-    float: right;
-}
-
-.moduletable_formVecinos #formVecinos #volver{
-    border:0;margin:0;padding:0;
-    margin-top:10px;
-    margin-bottom:10px;
-    float: left;
-}
-
-#enviar_soycorresponsal {
-    cursor: pointer;
-}
-
-/* recaptcha */
-
-.moduletable_formVecinos #recaptcha_image{
-    width:270px !important;
-}
-
-.moduletable_formVecinos #recaptcha_image img{
-    width:270px !important;
+.moduletable_menueditor label span{
+    color:#999999;
 }

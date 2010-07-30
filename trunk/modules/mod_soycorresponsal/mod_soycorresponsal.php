@@ -65,7 +65,7 @@ if(!$user->guest) {
 // crea select de zonales disponibles
     /*$lists['localidad_select'] = JHTML::_('select.genericlist', $localidades, 'localidad',
         'size="1" class="required"', 'id', 'label');*/
-
+    
 // template
     $app =& JFactory::getApplication();
     $template = $app->getTemplate();
@@ -83,7 +83,5 @@ if(!$user->guest) {
 
     $mainColor = $tparams->get('mainColor', null);
     if ($mainColor) $mainColor = '_' . $mainColor;
-
-
 }
 require(JModuleHelper::getLayoutPath('mod_soycorresponsal'));

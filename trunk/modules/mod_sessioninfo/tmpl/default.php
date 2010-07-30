@@ -25,6 +25,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </script>
 
 <div class="moduletable_sessioninfo">
+    <h1 id="title_sessioninfo"><?php echo $module->title; ?></h1>
     <p>
         <a href="<?php echo $profileLink ?>">
             <?php echo $greetingMessage ?>
