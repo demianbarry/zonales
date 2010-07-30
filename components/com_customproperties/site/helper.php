@@ -82,10 +82,10 @@ function showTags($ce, $item, $params, $append_to_meta=false) {
         $tagstring = "";
 
         if($url_format == 0) {
-            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->name");
+            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->vname");
         }
         else {
-            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->name");
+            $link = JRoute::_("index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=$tag->vname");
         }
         //http://www.zonales.com.ar:50081/index.php?option=com_content&view=category&layout=blog&id=1&Itemid=2&banda=espectaculos
 
