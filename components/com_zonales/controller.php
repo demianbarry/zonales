@@ -114,6 +114,15 @@ class ZonalesController extends JController {
     }
 
     /**
+     * Limpia el zonal actual.
+     *
+     * @param int $id identificador del zonal
+     */
+    function clearZonal($id) {
+        $this->setZonal(null);
+    }
+
+    /**
      * Setea o actualiza la variable de sesión con el zonal actualmente
      * seleccionado por el usuario, y retorna mensaje de confirmación.
      * Este mètodo debe ser utilizado en operaciones tipo ajax.
