@@ -2,9 +2,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $config =& JFactory::getConfig();
-$publish_up =& JFactory::getDate($this->article->publish_up ? $this->article->publish_up:'00:00:00', $mainframe->getCfg('offset'));
-$publish_up->setOffset($config->getValue('config.offset'));
-$publish_up = $publish_up->toFormat();
+//$publish_up =& JFactory::getDate($this->article->publish_up ? $this->article->publish_up:'00:00:00', $mainframe->getCfg('offset'));
+//$publish_up->setOffset($config->getValue('config.offset'));
+$publish_up = date('Y-m-d 00:00:00');//$publish_up->toFormat();
 
 if (! isset($this->article->publish_down) || $this->article->publish_down == 'Never') {
     $publish_down = JText::_('Never');
@@ -14,7 +14,6 @@ if (! isset($this->article->publish_down) || $this->article->publish_down == 'Ne
     $publish_down = $publish_down->toFormat();
 }
 ?>
-<link rel="stylesheet" type="text/css" href="/templates/z1/css/mbit_editor.css" />
 <script type="text/javascript">
     <!--
     function setgood() {

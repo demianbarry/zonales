@@ -295,7 +295,7 @@ class ContentViewArticle extends ContentView
 				' ORDER BY s.ordering';
 		$db->setQuery($query);*/
 
-		$sections[] = JHTML::_('select.option', '-1', '- '.JText::_('Select Section').' -', 'id', 'title');
+		//$sections[] = JHTML::_('select.option', '-1', '- '.JText::_('Select Section').' -', 'id', 'title');
 		$sections[] = JHTML::_('select.option', '0', JText::_('Uncategorized'), 'id', 'title');
 		//$sections = array_merge($sections, $db->loadObjectList());
 		$lists['sectionid'] = JHTML::_('select.genericlist',  $sections, 'sectionid', 'class="inputbox" size="1" '.$javascript, 'id', 'title', intval($article->sectionid));
