@@ -99,7 +99,7 @@ function showTags($ce, $item, $params, $append_to_meta=false) {
         if($linked_tags)
             $result .= "</a>\n";
         if($can_edit && $gid >= $tag->ag)
-            $result .= "<img alt=\"$tag->name\" id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='/templates/".$app->getTemplate()."/images/eliminar.gif'>";
+            $result .= "<img alt=\"$tag->name\" id='tag_img_$tag->vid' onclick='deleteTag($tag->vid,$tag->fid, \"$ce->table\", $cid)' style='cursor: pointer; vertical-align: middle;' src='templates/".$app->getTemplate()."/images/eliminar.gif'>";
         $result .= "</span> ";
 
         $tagstrings[] = $tagstring;
