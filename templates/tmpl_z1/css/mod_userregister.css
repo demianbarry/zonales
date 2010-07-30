@@ -1,6 +1,6 @@
-/* CSS del módulo 'MenuEditor' */
+/* CSS del módulo 'userreg' */
 
-.moduletable_menueditor{
+.moduletable_userreg{
     display: block;
     float: left;
     width:100%;
@@ -9,8 +9,7 @@
     border-bottom:1px dotted #CCCCCC;
 }
 
-#menueditorTable
-tr, td {
+#userregTable tr, #userregTable td {
     margin:0;
     padding:0;
     margin-bottom: 10px;
@@ -20,7 +19,7 @@ tr, td {
     width: 100%;
 }
 
-.moduletable_menueditor h1 {
+.moduletable_userreg h1 {
     padding:10px;
     margin-bottom:10px;
     background:#009CC9;
@@ -31,7 +30,7 @@ tr, td {
     letter-spacing:-1px;
 }
 
-label.expandible {
+.moduletable_userreg label.expandible {
     background-color:#009CC9;
     color:white;
     cursor:pointer;
@@ -42,7 +41,7 @@ label.expandible {
     margin-top: 5px;
 }
 
-label{
+.moduletable_userreg label{
     margin-top: 10px;
     margin-bottom:5px;
     display:block;
