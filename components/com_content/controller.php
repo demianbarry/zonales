@@ -60,10 +60,13 @@ class ContentController extends JController
 	function edit()
 	{
 		$user	=& JFactory::getUser();
+		global $cp_config;
+                include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_customproperties'.DS.'cp_config.php');
 
 		// Create a user access object for the user
 		$access					= new stdClass();
-		$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
+		//$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
+		$access->canEdit		= $user->get('aid') >= $cp_config['editing_level'];
 		$access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
 		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
 
@@ -125,9 +128,10 @@ class ContentController extends JController
 
 		// Create a user access object for the user
 		$access					= new stdClass();
-		$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
+		//$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
+		$access->canEdit                = $user->get('aid') >= $cp_config['editing_level'];
 		$access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
-		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
+		$access->canPublish		= $user->authorize('com_content', 'edit', 'content', 'own');
 
 		if (!($access->canEdit || $access->canEditOwn)) {
 			JError::raiseError( 403, JText::_("ALERTNOTAUTH") );
@@ -193,13 +197,13 @@ class ContentController extends JController
 				' AND s.id = ' . (int) $post['sectionid'];
 		$db->setQuery($query);
 		// gets category name of item*/
-		$section = 'Sin sección';
+		$section = 'Sin sección';//$db->loadResult();
 
 		/*$query = 'SELECT c.title' .
 				' FROM #__categories AS c' .
 				' WHERE c.id = ' . (int) $post['catid'];
 		$db->setQuery($query);*/
-		$category = 'Sin categoría';
+		$category = 'Sin categoría';//$db->loadResult();
 
 		if ($isNew)
 		{

@@ -106,7 +106,7 @@ class JHTMLIcon
 
                 JHTML::_('behavior.tooltip');
 
-                $url = 'index.php?view=article&id='.$article->slug.'&task=edit&ret='.base64_encode($ret).'&tmpl=component_edit';
+                $url = 'index.php?view=article&id='.$article->slug.'&task=edit&ret='.base64_encode($ret).'&tmpl=component_edit&option=com_content';
                 $icon = $article->state ? 'edit.png' : 'edit_unpublished.png';
                 $text = JHTML::_('image.site', $icon, '/images/M_images/', NULL, NULL, JText::_('Edit'));
 
