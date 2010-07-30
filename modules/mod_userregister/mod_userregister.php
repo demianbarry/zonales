@@ -131,6 +131,8 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
 
         $providerid = JRequest::getInt('providerid', '0', 'method');
         $externalid = JRequest::getVar('externalid', '', 'method', 'string');
+        $email = JRequest::getVar('email', '', 'method', 'string');
+        $label = JRequest::getVar('label', '', 'method', 'string');
         $force = JRequest::getInt('force', '0', 'method');
 
         $nameMessage = JText::_( 'Name' );

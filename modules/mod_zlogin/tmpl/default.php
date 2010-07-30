@@ -92,6 +92,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
             <input name="providerid" type="hidden" value=<?php echo $providerid ?> />
             <input name="externalid" type="hidden"  value="<?php echo urlencode($externalid) ?>" />
+            <input name="email" type="hidden"  value="<?php echo $aliasemail ?>" />
+            <input name="label" type="hidden"  value="<?php echo $aliaslabel ?>" />
             <input name="provider" type="hidden" value="OpenID" id="formzlogin_provider"/>
             <?php echo JHTML::_( 'form.token' ); ?>
         </fieldset>

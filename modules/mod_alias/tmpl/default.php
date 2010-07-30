@@ -44,6 +44,9 @@
             <tr>
                 <th></th>
                 <th>
+                    <?php echo $titleProvider ?>
+                </th>
+                <th>
                     <?php echo $titleAlias ?>
                 </th>
                 <th>
@@ -62,6 +65,11 @@
                 <td>
                     <label class="providername">
                         <?php echo $dbalias->providername ?>
+                    </label>
+                </td>
+                <td>
+                    <label class="aliaslabel">
+                        <?php echo $dbalias->label ?>
                     </label>
                 </td>
                 <td>

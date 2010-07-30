@@ -46,7 +46,7 @@ class AliasViewAlias extends JView {
         else {
             // recupero los alias del usuario
             $userid = $user->id;
-            $query = 'select a.id, p.icon_url, a.block, p.name as providername from #__alias a, #__providers p where user_id=' . $userid .
+            $query = 'select a.id, p.icon_url, a.block, p.name as providername, a.label from #__alias a, #__providers p where user_id=' . $userid .
                 ' and a.provider_id=p.id';
             $db->setQuery($query);
             $dbaliaslist = $db->loadObjectList();

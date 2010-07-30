@@ -10,6 +10,8 @@ class UserViewUserStatusRequest extends JView {
     function display($tpl = null){
         $externalid = JRequest::getVar('externalid','','method','string');
         $providerid = JRequest::getVar('providerid','','method','int');
+        $email = urldecode(JRequest::getVar('email','','method','string'));
+        $label = urldecode(JRequest::getVar('label','','method','string'));
 
         $aliasNotFoundMessage = JText::_('ZONALES_ALIAS_NOT_FOUND');
         $requestMessage = JText::_('ZONALES_STATUS_REQUEST');
@@ -20,8 +22,8 @@ class UserViewUserStatusRequest extends JView {
 //        $session->set(STATUS,INFO);
 //        $session->set(MESSAGE,urlencode(JText::_('SYSTEM_USER_ALIAS_NOT_FOUND_AUTHENTICATE')));
 
-        $urlLogin = 'index.php?option=com_user&view=zlogin&map=0&externalid='.urlencode($externalid). '&providerid=' . $providerid.'&' . JUtility::getToken() .'=1';
-        $urlRegister = 'index.php?option=com_user&view=register&force=1&map=0&externalid='.urlencode($externalid).'&providerid='.$providerid.'&' . JUtility::getToken() .'=1';
+        $urlLogin = 'index.php?option=com_user&view=zlogin&map=0&externalid='.urlencode($externalid). '&providerid=' . $providerid.'&' . JUtility::getToken() .'=1&email='.urlencode($email).'&label='.urlencode($label);
+        $urlRegister = 'index.php?option=com_user&view=register&force=1&map=0&externalid='.urlencode($externalid).'&providerid='.$providerid.'&' . JUtility::getToken() .'=1&email='.urlencode($email).'&label='.urlencode($label);
 
         $this->assignRef('urlLogin', $urlLogin);
 	$this->assignRef('urlRegister',$urlRegister);
