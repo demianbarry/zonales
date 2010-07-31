@@ -148,8 +148,8 @@ class ContentModelMyarchive extends JModel {
             $i = $limitstart;
             $rows = array();
             foreach ($Arows as $row) {
-                $row->slug = strlen($row->alias) ? "$row->id:$row->alias" : $row->id;
-                $row->catslug = strlen($row->catalias) ? "$row->catid:$row->catalias" : $row->catid;
+                //$row->slug = strlen($row->alias) ? "$row->id:$row->alias" : $row->id;
+                //$row->catslug = strlen($row->catalias) ? "$row->catid:$row->catalias" : $row->catid;
 
                 // check to determine if section or category has proper access rights
                 $rows[$i] = $row;
