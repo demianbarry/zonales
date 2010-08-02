@@ -43,6 +43,14 @@ CREATE TABLE IF NOT EXISTS `jos_components` (
   KEY `parent_option` (`parent`,`option`(32))
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=82 ;
 
+
+--
+-- Vaciar la tabla si existe
+--
+
+TRUNCATE `jos_components`;
+
+
 --
 -- Volcar la base de datos para la tabla `jos_components`
 --
@@ -135,6 +143,12 @@ CREATE TABLE IF NOT EXISTS `jos_modules` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
 
 --
+-- Vaciar la tabla si existe
+--
+
+TRUNCATE `jos_modules`;
+
+--
 -- Volcar la base de datos para la tabla `jos_modules`
 --
 
@@ -175,6 +189,45 @@ INSERT INTO `jos_modules` (`id`, `title`, `content`, `ordering`, `position`, `ch
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jos_modules_menu`
+--
+
+CREATE TABLE IF NOT EXISTS `jos_modules_menu` (
+  `moduleid` int(11) NOT NULL default '0',
+  `menuid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`moduleid`,`menuid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+TRUNCATE `jos_modules_menu`;
+
+--
+-- Volcar la base de datos para la tabla `jos_modules_menu`
+--
+
+INSERT INTO `jos_modules_menu` (`moduleid`, `menuid`) VALUES
+(1, 0),
+(16, 0),
+(17, 0),
+(18, 0),
+(20, 0),
+(21, 0),
+(23, 0),
+(24, 0),
+(25, 0),
+(29, 0),
+(31, 0),
+(37, 0),
+(38, 0),
+(40, 0),
+(42, 0),
+(48, 0),
+(49, 0),
+(50, 0);
+
+
+
+--
 -- Estructura de tabla para la tabla `jos_plugins`
 --
 
@@ -194,6 +247,12 @@ CREATE TABLE IF NOT EXISTS `jos_plugins` (
   PRIMARY KEY  (`id`),
   KEY `idx_folder` (`published`,`client_id`,`access`,`folder`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
+
+--
+-- Vaciar la tabla si existe
+--
+
+TRUNCATE `jos_plugins`;
 
 --
 -- Volcar la base de datos para la tabla `jos_plugins`
@@ -247,3 +306,67 @@ INSERT INTO `jos_plugins` (`id`, `name`, `element`, `folder`, `access`, `orderin
 (62, 'Editor - CKEditor', 'ckeditor', 'editors', 0, 0, 1, 0, 0, 0, '0000-00-00 00:00:00', 'language=es\ntoolbar=Default\ntoolbar_ft=Creative\nCreative_ToolBar=[''Styles'',''Format''],[''Font'',''FontSize''],[''Source''],[''Bold'',''Italic'',''Underline'',''Find'',''JustifyLeft'',''JustifyCenter'',''JustifyRight'',''JustifyBlock'',''NumberedList'',''BulletedList''],[''TextColor'',''BGColor'',''Outdent'',''Indent'',''Link'',''Anchor'',''Image'',''Flash'']\nBlog_ToolBar=[ ''Bold'', ''Italic'', ''-'', ''NumberedList'', ''BulletedList'', ''-'', ''Link'', ''Unlink'' ]\nskin=v2\nColor=#6B6868\nentermode=1\nshiftentermode=1\nckfinder=1\nskinfm=light\nusergroup_access=29|18|19|20|21|30|23|24|25\n\n'),
 (47, 'Authentication Proxy', 'authproxy', 'system', 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 'loginurl=index.php?option=com_user&task=login\n'),
 (67, 'External Login', 'externallogin', 'authentication', 0, 0, 1, 0, 0, 0, '0000-00-00 00:00:00', 'aliasregisterurl=index.php?option=com_user&task=aliasregister\ngetstatusurl=index.php?option=com_user&view=userstatusrequest\n');
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jos_eqzonales_eq`
+--
+
+CREATE TABLE IF NOT EXISTS `jos_eqzonales_eq` (
+  `id` int(11) NOT NULL auto_increment,
+  `nombre` varchar(100) NOT NULL COMMENT 'Nombre del Ecualizador.',
+  `descripcion` varchar(512) default NULL COMMENT 'Descripción del Ecualizador. Preferentemente que objetivos tematicos tiene.',
+  `observaciones` varchar(512) default NULL COMMENT 'Cualquier tipo de observaciones.',
+  `user_id` int(11) default NULL COMMENT 'Usuario Joomla al cual pertenece este ecualizador.',
+  `solrquery_bq` tinytext,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Ecualizadores de Usuario.' AUTO_INCREMENT=4 ;
+
+
+TRUNCATE `jos_eqzonales_eq`;
+
+--
+-- Volcar la base de datos para la tabla `jos_eqzonales_eq`
+--
+
+INSERT INTO `jos_eqzonales_eq` (`id`, `nombre`, `descripcion`, `observaciones`, `user_id`, `solrquery_bq`) VALUES
+(1, 'Ecualizador Anónimo', 'Ecualizador Anónimo', 'Ecualizador Anónimo', 0, NULL);
+
+
+--
+-- Estructura de tabla para la tabla `jos_eqzonales_banda`
+--
+
+CREATE TABLE IF NOT EXISTS `jos_eqzonales_banda` (
+  `id` int(11) NOT NULL auto_increment,
+  `valor` varchar(255) NOT NULL COMMENT 'Campo desnormalizado con el valor a mostrar en la banda del ecualizador gráfico. Se pude hacer igual al nombre del tag (value) con el que se relaciona.',
+  `peso` int(11) NOT NULL default '0' COMMENT 'Peso asignado por el usuario a este tag (value).',
+  `cp_value_id` int(11) NOT NULL COMMENT 'tag (value) asociado en la tabla jos_customproperties_values',
+  `eq_id` int(11) NOT NULL COMMENT 'Ecualizador al que pertenece este atributo (o banda)',
+  `default` tinyint(1) NOT NULL default '0',
+  `active` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `uq_atributo_eq` (`cp_value_id`,`eq_id`),
+  KEY `fk_eq_atributos_eq1` (`eq_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Bandas que componen el ecualizador.' AUTO_INCREMENT=22 ;
+
+
+TRUNCATE `jos_eqzonales_banda`;
+
+--
+-- Volcar la base de datos para la tabla `jos_eqzonales_banda`
+--
+
+INSERT INTO `jos_eqzonales_banda` (`id`, `valor`, `peso`, `cp_value_id`, `eq_id`, `default`, `active`) VALUES
+(1, 'Actualidad', 50, 99, 1, 0, 0),
+(2, 'Deportes', 50, 101, 1, 0, 0),
+(3, 'Sociedad', 50, 102, 1, 0, 0),
+(4, 'Espectáculos', 50, 103, 1, 0, 0),
+(5, 'Policiales', 50, 104, 1, 0, 0),
+(6, 'Turismo', 50, 126, 1, 0, 0),
+(7, 'Tecnología', 50, 140, 1, 0, 0);
+
+

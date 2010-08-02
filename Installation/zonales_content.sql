@@ -21,6 +21,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- --------------------------------------------------------
 
+DROP TABLE IF EXISTS `jos_content`;
+
 --
 -- Estructura de tabla para la tabla `jos_content`
 --
