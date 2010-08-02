@@ -27,7 +27,8 @@ $priority = array();
 $priority[] = JHTML::_('select.option', '0', '0');
 $priority[] = JHTML::_('select.option', '1', '1');
 $priority[] = JHTML::_('select.option', '2', '2');
-
+$acl =& JFactory::getACL();
+$gtree = $acl->get_group_children_tree( null, 'USERS', false );
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -70,6 +71,10 @@ $priority[] = JHTML::_('select.option', '2', '2');
                         <td><?php echo JHTML::_('select.genericlist', $this->fields, 'field', '','id', 'label', $value->field_id) ?></td>
                     </tr>
                     <?php endif;?>
+                    <tr>
+                        <td><?php echo JText::_('Access');?></td>
+                        <td><?php echo JHTML::_('select.genericlist',   $gtree, 'access_group', 'size="10"', 'value', 'text', $value->access_group); ?></td>
+                    </tr>
                 </table>
             </td>
 
@@ -116,6 +121,7 @@ $priority[] = JHTML::_('select.option', '2', '2');
                                         <th class="title"><?php echo JText::_('Name/Value')?></th>
                                         <th align="left"><?php echo JText::_('Label')?></th>
                                         <th align="left" title="Priority"><?php echo JText::_('Pri') ?></th>
+                                        <th width="5%"><?php echo JText::_( 'Access Group')?></th>
                                         <th width="5%"><?php echo JText::_( 'Default')?></th>
                                         <th width="5%">ID</th>
                                         <th colspan="2" align="center" width="5%"><?php echo JText::_('Reorder')?></th>
@@ -146,6 +152,9 @@ $priority[] = JHTML::_('select.option', '2', '2');
                                         <td>
                                                         <?php //TODO controlal volore del campo priority ?>
                                                         <?php echo JHTML::_('select.genericlist', $priority, 'value_priority[]', 'class="inputbox" size="1"', 'value', 'text', $row->priority ? $row->priority : 0 ); ?>
+                                        </td>
+                                         <td>
+                                             <?php echo JHTML::_('select.genericlist',   $gtree, 'ag[]', '', 'value', 'text', $row->access_group); ?>
                                         </td>
                                         <td>
                                             <input type="checkbox" name="value_default[<?php echo $index; ?>]" value="1" <?php echo $is_default?>/>
@@ -196,7 +205,7 @@ $priority[] = JHTML::_('select.option', '2', '2');
     <input type="hidden" name="controller" value="values" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="cid" value="<?php echo $this->value->id; ?>" />
+    <input type="hidden" name="cid" value="<?php echo $this->value->id; ?>" />    
     <input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
     <input type="hidden" name="ordering" value="<?php echo $this->value->ordering; ?>" />
 
