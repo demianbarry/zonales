@@ -299,6 +299,7 @@ class CustompropertiesModelCpvalue extends JModel {
         $ids 		= JRequest::getVar('value_id', 		null, 	'', 'array');
         $names 		= JRequest::getVar('value_name', 	null, 	'', 'array');
         $labels 	= JRequest::getVar('value_label', 	'', 	'', 'array');
+        $access_groups 	= JRequest::getVar('ag', 	'', 	'', 'array');
         $priorities	= JRequest::getVar('value_priority','', 	'', 'array');
         $defaults 	= JRequest::getVar('value_default', '', 	'', 'array');
         $orders 	= JRequest::getVar('value_order', 	'', 	'', 'array');
@@ -315,6 +316,7 @@ class CustompropertiesModelCpvalue extends JModel {
                 $array['field_id'] 	= $field_id;
                 $array['name'] 		= $this->_fixName($names[$key]);
                 $array['label'] 	= $this->_fixLabel($labels[$key]);
+                $array['access_group'] 	= $access_groups[$key] ? $access_groups[$key] : JRequest::getVar('access_group',0,'','int');;
                 $array['priority'] 	= $priorities[$key];
                 //$array['default']       = $defaults[$key];
 

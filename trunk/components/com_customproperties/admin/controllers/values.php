@@ -108,8 +108,8 @@ class CustompropertiesControllerValues extends JController {
                 $pid = $newpid;
             }
         }
-        $field = JRequest::getVar('field', 0, '', 'int');
 
+        $field = JRequest::getVar('field', 0, '', 'int');
         $fatherModel = $this->getModel('Cpvalue');
         $fatherModel->setId($pid);
         $father = $fatherModel->getData();
@@ -123,8 +123,7 @@ class CustompropertiesControllerValues extends JController {
             $msg_type = "message";
             if($this->getTask() == 'save') {
                 $link = 'index.php?option=com_customproperties&controller=values&cid='.$pid;
-            }
-            else {
+            } else {
                 $link = 'index.php?option=com_customproperties&controller=values&task=edit&cid='.$model->_id.'&pid='.$pid;
             }
         }
