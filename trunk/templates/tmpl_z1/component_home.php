@@ -1,4 +1,5 @@
 <?php echo '<?xml version="1.0" encoding="utf-8"?'.'>'; ?>
+<?php include_once 'auth_util.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" xmlns:fb="http://www.facebook.com/2008/fbml" >
     <head>
@@ -82,7 +83,7 @@
         if ($user->guest):
             ?>
         <script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/es_LA"></script>
-        <script type="text/javascript">  FB.init("91778705a13235cd3efe59d31e4d31bf","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
+        <script type="text/javascript">  FB.init("<?php echo getApiKey("Facebook")?>","index.php?option=com_user&task=login&provider=Facebook/xd_receiver.htm");</script>
         <?php endif ?>
     </head>
 
