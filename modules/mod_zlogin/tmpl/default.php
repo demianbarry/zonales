@@ -83,7 +83,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 
                 <?php endif ?>
             <?php endforeach ?>
-            <input id="formzlogin_submit" type="submit" name="Submit" class="button" value="<?php echo $providerConnectMessage ?>" />
+            <input id="formzlogin_submit" type="submit" name="confirm" class="button" value="<?php echo $providerConnectMessage ?>" />
         </div>        
 
         <fieldset class="input">
