@@ -346,10 +346,10 @@ class UserController extends JController {
             $db = &JFactory::getDBO();
             $passphrase = JUtility::getHash( JUserHelper::genRandomPassword());
 
-            $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation,label) ' .
+            $insertAlias = 'insert into #__alias(user_id,name,provider_id,association_date,block,activation,label,email) ' .
                     'values (' . $userid . ',"' . $alias .
                     '",' . $providerid . ',"' . date('Y-m-d') . '",' .
-                    $block . ',"' . $passphrase . '","'.$label.'")';
+                    $block . ',"' . $passphrase . '","'.$label. '","' . $email . '")';
 
             $db->setQuery($insertAlias);
             return $db->query();
