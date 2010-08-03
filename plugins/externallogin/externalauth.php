@@ -15,10 +15,12 @@ function tradicional($credentials,$options) {
 
 function facebookconnect($credentials,$options) {
     $db = JFactory::getDBO();
-    $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($credentials['provider']);
+    $provider = explode("/", $credentials['provider']);
+    $selectKeys = 'select p.apikey, p.secretkey from #__providers p where p.name=' . $db->Quote($provider[0]);
     $db->setQuery($selectKeys);
     $dbKeys = $db->loadObject();
 
+    $sd = json_decode($credentials['session']);
     // se eliminan las llaves
     $withoutBeginning = substr($credentials['session'], 1);
     $rawString = substr($withoutBeginning, 0, strlen($withoutBeginning)-1);
@@ -44,6 +46,14 @@ function facebookconnect($credentials,$options) {
     if (isset ($sessionData['uid']) && $sessionData['uid'] != 0 && $sessionData['uid'] != '') {
         $info[EXTERNAL_ID] = $sessionData['uid'];
         $info[STATUS] = Auth_SUCCESS;
+        // todo: solicitar email
+//        $facebook = new Facebook($dbKeys->apikey,$dbKeys->secretkey);
+//        $fb_user = $facebook->user;
+//        $data = $facebook->api_client->users_getInfo(array($sessionData['uid']),array('array'));
+//
+//        $info[EMAIL] = $data[0]['email'];
+        $info[EMAIL] = '';
+        $info[LABEL] = $info[EMAIL];
     }
     else {
         $info[STATUS] = Auth_FAILURE;
@@ -57,7 +67,7 @@ function openid($credentials,$options) {
     $mainframe =& JFactory::getApplication();
     $provider = $credentials[PROVIDER];
     $db = JFactory::getDBO();
-    $selectProvider = 'select p.id, p.discovery_url, p.prefix, p.suffix from #__providers p where p.name = "' . $provider . '"';
+    $selectProvider = 'select p.id, p.discovery_url, p.prefix, p.suffix, p.use_email from #__providers p where p.name = "' . $provider . '"';
     $db->setQuery($selectProvider);
     $dbprovider = $db->loadObject();
 
@@ -246,7 +256,7 @@ function openid($credentials,$options) {
             }
 
             $info[EMAIL] = (isset ($info[EMAIL])) ? $info[EMAIL] : $info[EXTERNAL_ID];
-            $info[LABEL] = ($discovery) ? $info[EMAIL] : $info[EXTERNAL_ID];
+            $info[LABEL] = ($dbprovider->use_email) ? $info[EMAIL] : $info[EXTERNAL_ID];
             break;
         case Auth_OpenID_CANCEL:
             $info[STATUS] = Auth_CANCEL;
@@ -285,6 +295,9 @@ function twitteroauth($credentials,$options) {
         $info = array();
         $info[EXTERNAL_ID] = $data->id;
         $info[STATUS] = Auth_SUCCESS;
+        // todo: solicitar email
+        $info[EMAIL] = '';
+        $info[LABEL] = $info[EMAIL];
 
         return $info;
     }
@@ -348,6 +361,10 @@ function liveid($credentials,$options) {
             $info[STATUS] = Auth_FAILURE;
         }
     }
+
+    // todo: solicitar email
+    $info[EMAIL] = '';
+    $info[LABEL] = $info[EMAIL];
     return $info;
 }
 ?>
