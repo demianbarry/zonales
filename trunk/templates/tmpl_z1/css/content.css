@@ -69,6 +69,8 @@
         color:#333333;
         font-size:20px;
         font-weight:bold;
+        margin-left:20px;
+        margin-top:20px;
 }
 
 .contentheading a{ /* t▒tulo de los art▒culos con link */
@@ -227,4 +229,8 @@ a:hover.readmore-link{}
         font-weight:normal !important;
         color:#FF9900 !important;
         text-decoration:underline !important;
+}
+
+#oEditor {
+    padding: 20px;
 }
