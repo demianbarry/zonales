@@ -78,9 +78,7 @@ class plgContentAutotagging extends JPlugin {
                                             AND ae.object_id = ".$user->get('id');
             $database = JFactory::getDBO();
             $database->setQuery($query);
-            $database->query();
-            $article->on_index = 1;
-            $article->store();
+            $database->query();            
         }
         return true;
     }
