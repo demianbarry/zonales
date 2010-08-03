@@ -2,10 +2,23 @@
 #labels Phase-Deploy
 
 = Introduccion =
+Aqui se detallara el proceso de instalacion y configuracion de User Alias Authentication Workflow (UAAW) 
 
 = Instalacion =
+UAAW consta de las siguientes extensiones que deben ser instaladas en el orden que se indica:
+  * _Componente Alias (com_alias)_: es el soporte de registro y administracion de los alias de usuario.
+  * _Componente User (com_user)_: contiene todas las operaciones basicas que se pueden realizar sobre los usuarios (registro, login, etc.)
+  * _Plugin External Login (plg_externallogin)_: es el que realiza la comunicacion con los distintos proveedores de autenticacion para que el usuario pueda acceder al sitio.
+  * _Plugin Auth Proxy (plg_authproxy)_: es un proxy que actua como intermediario entre el proveedor y el plugin External Login cuando el proveedor de autenticacion redirige al usuario de vuelta al sitio. Es decir, Auth Proxy recibe la respuesta del proveedor y la redirige al plugin External Login.
+  * _Modulo Message (mod_message)_: se encarga de mostrar los mensajes informados por UAAW.
+  * _Modulo Register (mod_userregister)_: pantalla de registro de usuarios que se separo del componente User para poder ubicarla en cualquier parte.
+  * _Modulo Alias (mod_alias)_: pantalla de adminitracion de alias que se separo del coponente Alias para poder integrarlo mas facilmente al componente AAPU.
+  * _Modulo Zonales Login (mod_zlogin)_: pantalla que permite escoger el proveedor con cual autenticarse e ingresar los datos necesarios para iniciar el proceso (si es necesario).
+  * _Modulo Session Information (mod_sessioninfo)_: indica al usuario confirmacion de que se encuentra identificado en el sitio (lo saluda por su nombre y apellido) y permite un rapido acceso a la edicion de su perfil (manejado por AAPU).
 
 ==Dependencias==
+UAAW depende de los siguientes extensiones:
+  * Componente AAPU (com_aapu)
 
 = Configuracion =
 
