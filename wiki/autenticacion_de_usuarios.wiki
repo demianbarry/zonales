@@ -1,4 +1,4 @@
-#summary Autenticacion de usuarios
+#summary Autenticacion de usuarios (en construccion)
 #labels Phase-Deploy
 
 = Introduccion =
@@ -63,6 +63,8 @@ La tabla contiene los siguientes campos:
   * _apikey_. Algunos proveedores de autenticacion requieren que se cree una "aplicacion" en sus servidores en el que se especifican parametros de configuracion para que el proceso de autenticacion funcione correctamente. Esto se debe a que el sitio sera visto por el proveedor como una "aplicacion" mas del servidor del proveedor. Una vez creada la "aplicacion" el proveedor informa el identificador de la misma y una clave secreta. Estos datos se utilizan para autenticar al sitio y obtener los datos de configuracion del mismo antes de iniciar el proceso de autenticacion del usuario. En este campo se especifica el identificador otorgado por el proveedor de autenticacion a la "aplicacion".
   * _secretkey_. En este campo se especifica la clave secreta otorgada por el proveedor de autenticacion a la "aplicacion", para que pueda autenticarse ante el proveedor.
   * _callback_parameters_. Aqui se especifican los parametros que retorna el proveedor de autenticacion cuando redirige al usuario de regreso al sitio. Util para reconocer al proveedor cuando no se tiene otra forma.
+  * _enabled_. Indica si el proveedor se encuentra habilitado o deshabilitado. Si el proveedor de autenticacion esta deshabilitado entonces el usuario no podra elegirlo para realizar la autenticacion. Se habilita con un 1 (uno) y  se deshabilita con un 0 (cero).
+  * _use_email_. Indica si se usa el email del usuario, obtenido del proveedor de autenticacion, como identificador cuando lo vea el usuario en la pantalla de administracion. Esto es asi porque no todos los identificadores son "agradables a la vista".
 ====Alias====
 ===Plugin External Login===
 Debe ejecutarse antes que el plugin de autenticacion estandar de Joomla!.
