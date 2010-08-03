@@ -240,7 +240,7 @@ class ContentController extends JController
 			$msg = $isNew ? JText::_('THANK_SUB') : JText::_('Item successfully saved.');
 		}
 		
-		$referer = JRoute::_('index.php?view=article&id='.$model->get('id').'task=edit&layout=form&tmpl=component_edit', false);/*JRequest::getString('ret',  base64_encode(JURI::base()), 'get');
+		$referer = JRoute::_('index.php?view=article&id='.$model->get('id').'task=edit&layout=form&tmpl=component_only', false);/*JRequest::getString('ret',  base64_encode(JURI::base()), 'get');
 		$referer = base64_decode($referer);
 		if (!JURI::isInternal($referer)) {
 			$referer = '';
