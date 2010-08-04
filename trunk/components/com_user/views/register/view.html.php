@@ -28,9 +28,11 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
  */
 class UserViewRegister extends JView {
     function display($tpl = null) {
-        $module = JModuleHelper::getModule('mod_userregister');
-        $html = JModuleHelper::renderModule($module);
-        $this->assignRef('moduleregister',$html);
+        if($tpl != 'message') {
+            $module = JModuleHelper::getModule('mod_userregister');
+            $html = JModuleHelper::renderModule($module);
+            $this->assignRef('moduleregister',$html);
+        }
         parent::display($tpl);
     }
 }
