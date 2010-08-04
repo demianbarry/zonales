@@ -221,7 +221,7 @@ foreach ($this->lists['sectioncategories'] as $k=>$items) {
                             </button>
                             <script type="text/javascript">
                                  if (typeof($('sbox-window')) != "undefined") {
-                                     $('article_edit_cancel_button').setStyle = ("display", "none");
+                                     $('article_edit_cancel_button').setStyle("display", "none");
                                  }
                             </script>
                             <button type="button" onclick="submitbutton('save')">
