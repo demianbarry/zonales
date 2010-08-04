@@ -16,6 +16,7 @@
         <file>component_only.php</file>
         <file>component.php</file>
         <file>favicon.ico</file>
+        <file>auth_util.php</file>
         <file>index.php</file>
         <file>index.html</file>
         <file>params.ini</file>
