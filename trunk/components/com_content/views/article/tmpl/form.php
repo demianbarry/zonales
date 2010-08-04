@@ -220,7 +220,7 @@ foreach ($this->lists['sectioncategories'] as $k=>$items) {
                                 <?php echo JText::_('Cancel') ?>
                             </button>
                             <script type="text/javascript">
-                                 if (typeof($('sbox-window')) == "undefined") {
+                                 if (typeof($('sbox-window')) != "undefined") {
                                      $('article_edit_cancel_button').setStyle = ("display", "none");
                                  }
                             </script>
