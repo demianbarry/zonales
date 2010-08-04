@@ -216,9 +216,14 @@ foreach ($this->lists['sectioncategories'] as $k=>$items) {
                 <tr>
                     <td colspan="2">
                         <div style="float: right;">
-                            <button type="button" onclick="submitbutton('cancel')">
+                            <button id="article_edit_cancel_button" type="button" onclick="submitbutton('cancel')">
                                 <?php echo JText::_('Cancel') ?>
                             </button>
+                            <script type="text/javascript">
+                                 if (typeof($('sbox-window')) == "undefined") {
+                                     $('article_edit_cancel_button').setStyle = ("display", "none");
+                                 }
+                            </script>
                             <button type="button" onclick="submitbutton('save')">
                                 <?php echo JText::_('Save') ?>
                             </button>
