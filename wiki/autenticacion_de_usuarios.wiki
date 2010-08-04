@@ -1,20 +1,20 @@
-#summary Autenticacion de usuarios (en construccion)
+#summary Autenticación de usuarios (en construcción)
 #labels Phase-Deploy
 
-= Introduccion =
-Aqui se detallara el proceso de instalacion y configuracion de User Alias Authentication Workflow (UAAW) 
+= Introducción =
+Aqui se detallara el proceso de instalación y configuración de User Alias Authentication Workflow (UAAW) 
 
-= Instalacion =
+= Instalación =
 UAAW consta de las siguientes extensiones que deben ser instaladas en el orden que se indica:
-  * _Componente Alias (com_alias)_: es el soporte de registro y administracion de los alias de usuario.
-  * _Componente User (com_user)_: contiene todas las operaciones basicas que se pueden realizar sobre los usuarios (registro, login, etc.)
-  * _Plugin External Login (plg_externallogin)_: es el que realiza la comunicacion con los distintos proveedores de autenticacion para que el usuario pueda acceder al sitio.
-  * _Plugin Auth Proxy (plg_authproxy)_: es un proxy que actua como intermediario entre el proveedor y el plugin External Login cuando el proveedor de autenticacion redirige al usuario de vuelta al sitio. Es decir, Auth Proxy recibe la respuesta del proveedor y la redirige al plugin External Login.
+  * _Componente Alias (com_alias)_: es el soporte de registro y administración de los alias de usuario.
+  * _Componente User (com_user)_: contiene todas las operaciones básicas que se pueden realizar sobre los usuarios (registro, login, etc.)
+  * _Plugin External Login (plg_externallogin)_: es el que realiza la comunicación con los distintos proveedores de autenticacion para que el usuario pueda acceder al sitio.
+  * _Plugin Auth Proxy (plg_authproxy)_: es un proxy que actua como intermediario entre el proveedor y el plugin External Login cuando el proveedor de autenticación redirige al usuario de vuelta al sitio. Es decir, Auth Proxy recibe la respuesta del proveedor y la redirige al plugin External Login.
   * _Modulo Message (mod_message)_: se encarga de mostrar los mensajes informados por UAAW.
   * _Modulo Register (mod_userregister)_: pantalla de registro de usuarios que se separo del componente User para poder ubicarla en cualquier parte.
-  * _Modulo Alias (mod_alias)_: pantalla de adminitracion de alias que se separo del coponente Alias para poder integrarlo mas facilmente al componente AAPU.
+  * _Modulo Alias (mod_alias)_: pantalla de administración de alias que se separo del componente Alias para poder integrarlo mas fácilmente al componente AAPU.
   * _Modulo Zonales Login (mod_zlogin)_: pantalla que permite escoger el proveedor con cual autenticarse e ingresar los datos necesarios para iniciar el proceso (si es necesario).
-  * _Modulo Session Information (mod_sessioninfo)_: indica al usuario confirmacion de que se encuentra identificado en el sitio (lo saluda por su nombre y apellido) y permite un rapido acceso a la edicion de su perfil (manejado por AAPU).
+  * _Modulo Session Information (mod_sessioninfo)_: indica al usuario confirmación de que se encuentra identificado en el sitio (lo saluda por su nombre y apellido) y permite un rápido acceso a la edición de su perfil (manejado por AAPU).
 
 Para instalar el componente User hay que generar el paquete *inst_com_user*, copiarlo en la raiz del directorio donde se encuentra Joomla! instalado y descomprimirlo in situ.
 Para instalar el resto de las extensiones hay que generar el paquete correspondiente e instalarlo de la forma oficial de Joomla! ([http://comunidadjoomla.org/centro-de-ayuda/169-instalardesinstalar-extensiones.html Como instalar/desinstalar extensiones])
@@ -23,54 +23,76 @@ Para instalar el resto de las extensiones hay que generar el paquete correspondi
 UAAW depende de los siguientes extensiones:
   * Componente AAPU (com_aapu)
 
-= Configuracion =
+= Configuración =
 
 ==Extensiones==
 ===Componente Alias===
-El componente de Alias no tiene interface de backend. Por lo que, por ahora, su administracion se lleva a cabo modificando directamente las tablas de la base de datos.
+El componente de Alias no tiene interfase de backend. Por lo que, por ahora, su administración se lleva a cabo modificando directamente las tablas de la base de datos.
 ====Protocolos====
 En la tabla jos_protocol_types se registran los protocolos soportados. Esta tabla contiene los siguientes campos relevantes: 
   * _name_. Se registra el nombre del protocolo.
-  * _function_. El nombre de la funcion, en el codigo fuente del plugin External Login, que establece la comunicacion con el proveedor seleccionado utilizando el protocolo propiamente dicho.
-Esta tabla es de bajo nivel y solo deberia modificarse cuando se haya agregado una nueva funcion en el plugin External Login que implemente un nuevo protocolo o se le haya cambiado el nombre a una de las funciones existentes.
+  * _function_. El nombre de la función, en el código fuente del plugin External Login, que establece la comunicación con el proveedor seleccionado utilizando el protocolo propiamente dicho.
+Esta tabla es de bajo nivel y solo debería modificarse cuando se haya agregado una nueva función en el plugin External Login que implemente un nuevo protocolo o se le haya cambiado el nombre a una de las funciones existentes.
 
-El componente Alias ya viene con soporte para varios protocolos de autenticacion.
+El componente Alias ya viene con soporte para varios protocolos de autenticación.
 ====Proveedores====
 La tabla jos_providers es la tabla que con mas frecuencia se va a modificar de UAAW.
 
 La tabla contiene los siguientes campos:
-  * _name_. El nombre con que se va a identificar al proveedor de autenticacion en UAAW. Debe ser un nombre representativo y no debe contener espacios. El usuario interactua con el contenido de este campo.
-  * _discovery_url_. Algunos proveedores del protocolo OpenID requieren que se especifique una URL de discovery fija (independiente del usuario). Esta URL sirve para descubrir la URL del proveedor de autenticacion. El resto de los proveedores utilizan como URL de discovery el identificador proporcionado por el usuario por lo que se especificaria NULL en este campo.
-  * _parameters_. Algunos proveedores requieren que se especifiquen parametros adicionales en el momento de iniciar la autenticacion.
-  * _protocol_type_id_. Especifica el id del protocolo que utiliza el proveedor de autenticacion para realizar la comunicacion con el sitio. El id debe corresponder a uno de los protocolos registrados en la tabla jos_protocol_types.
-  * _description_. Especifica una breve descripcion del proveedor.
-  * _observation_. Especifica una observacion relevante a tener en cuenta con respecto al proveedor.
-  * _icon_url_. Aqui se registra la ruta, relativa a la raiz de Joomla!, donde se encuentra el icono que representa al proveedor. El usuario puede ver este icono en la pantalla de administracion de alias y en el modulo de Zonales Login. Los iconos utilizados por defecto son de 16x16 pixeles.
+  * _name_. El nombre con que se va a identificar al proveedor de autenticación en UAAW. Debe ser un nombre representativo y no debe contener espacios. El usuario interactúa con el contenido de este campo.
+  * _discovery_url_. Algunos proveedores del protocolo OpenID requieren que se especifique una URL de discovery fija (independiente del usuario). Esta URL sirve para descubrir la URL del proveedor de autenticación. El resto de los proveedores utilizan como URL de discovery el identificador proporcionado por el usuario por lo que se especificaria NULL en este campo.
+  * _parameters_. Algunos proveedores requieren que se especifiquen parametros adicionales en el momento de iniciar la autenticación.
+  * _protocol_type_id_. Especifica el id del protocolo que utiliza el proveedor de autenticacion para realizar la comunicación con el sitio. El id debe corresponder a uno de los protocolos registrados en la tabla jos_protocol_types.
+  * _description_. Especifica una breve descripción del proveedor.
+  * _observation_. Especifica una observación relevante a tener en cuenta con respecto al proveedor.
+  * _icon_url_. Aquí se registra la ruta, relativa a la raíz de Joomla!, donde se encuentra el icono que representa al proveedor. El usuario puede ver este icono en la pantalla de administración de alias y en el modulo de Zonales Login. Los iconos utilizados por defecto son de 16x16 pixeles.
   * _access_. Indica si el proveedor puede ser visto por cualquier usuario o solo invitado. Un 0 (cero) indica que es _publico_ y un 3 (tres) indica que solo puede ser accedido por el usuario invitado.
-  * _prefix_. Algunos proveedores que requieren que el usuario indique un identificador, otorgan identificadores a sus usuarios, cuando se registran, que siguen un patron especifico. Por ejemplo identificador: parteFijaA + nombreDeUsuario + parteFijaB. El nombre de usuario es con el cual el usuario ingresa al sitio del proveedor de autenticacion y edita su perfil. El campo _prefix_ registra la _parteFijaA_ del identificador. Esto se hace de esta manera para que el usuario no tenga que ingresar el identificador completo y solo ingrese el nombre de usuario con el cual lo conoce el proveedor de autenticacion.
+  * _prefix_. Algunos proveedores que requieren que el usuario indique un identificador, otorgan identificadores a sus usuarios, cuando se registran, que siguen un patron especifico. Por ejemplo identificador: parteFijaA + nombreDeUsuario + parteFijaB. El nombre de usuario es con el cual el usuario ingresa al sitio del proveedor de autenticación y edita su perfil. El campo _prefix_ registra la _parteFijaA_ del identificador. Esto se hace de esta manera para que el usuario no tenga que ingresar el identificador completo y solo ingrese el nombre de usuario con el cual lo conoce el proveedor de autenticación.
   * _suffix_. Este campo registra la _parteFijaB_ del identificador del usuario.
-  * _required_input_. Aqui se especifican los elementos necesarios que debe mostrar el Modulo de Zonales Login para que el usuario pueda indicar los parametros necesarios para que el proceso de autenticacion se inicie. Cada elemento se separa por una barra "/" (sin las comillas)
+  * _required_input_. Aqui se especifican los elementos necesarios que debe mostrar el Modulo de Zonales Login para que el usuario pueda indicar los parámetros necesarios para que el proceso de autenticación se inicie. Cada elemento se separa por una barra "/" (sin las comillas)
   El formato para especificar un elemento es el siguiente: 
-  tipo:nombre:mensaje:funcion 
+  tipo:nombre:mensaje:función 
    * _Tipo_: Es el tipo de elemento. Debe ser uno de los soportados por el elemento _input_ de HTML.
-   * _Nombre_: Es nombre que se le da al elemento. Si el elemento que se va a especificar es para que el usuario especifique su nombre de usuario entonces deberia llamarse _username_.
-   * _Mensaje_: Es el mensaje que le informa al usuario la utilidad del elemento. Siguiendo con el ejemplo el usuario deberia ver "Ingrese su nombre de usuario". Se recomienda especificar aqui la clave de internacionalizacion y no el mensaje directamente.
-   * _Funcion_: (opcional) Es una funcion javascript que se invocara cuando el usuario haga click en el elemento. Aunque es opcional, si se omite, de todas formas hay que especificar los dos puntos (:) correspondientes.
-  Se epecifican dos elementos: usuario y password. No hay funcion.
+   * _Nombre_: Es nombre que se le da al elemento. Si el elemento que se va a especificar es para que el usuario especifique su nombre de usuario entonces debería llamarse _username_.
+   * _Mensaje_: Es el mensaje que le informa al usuario la utilidad del elemento. Siguiendo con el ejemplo el usuario debería ver "Ingrese su nombre de usuario". Se recomienda especificar aquí la clave de internacionalización y no el mensaje directamente.
+   * _Función_: (opcional) Es una función javascript que se invocara cuando el usuario haga click en el elemento. Aunque es opcional, si se omite, de todas formas hay que especificar los dos puntos (:) correspondientes.
+  Se especifican dos elementos: usuario y password. No hay función.
   {{{text:username:ZONALES_PROVIDER_ENTER_USERNAME:/password:password:ZONALES_PROVIDER_ENTER_PASSWORD:}}}
-  Se especifica un solo elemento: un boton. Se indica la funcion javascript a invocar cuando el usuario lo presione. Observe que los espacios y los punto y comas (;) tambien son considerados parte de la funcion.
+  Se especifica un solo elemento: un boton. Se indica la función javascript a invocar cuando el usuario lo presione. Observe que los espacios y los punto y comas (;) tambien son considerados parte de la funcion.
   {{{button:clickme:ZONALES_PROVIDER_CONNECT:FB.Connect.requireSession(); return false;}}}
-  * _apikey_. Algunos proveedores de autenticacion requieren que se cree una "aplicacion" en sus servidores en el que se especifican parametros de configuracion para que el proceso de autenticacion funcione correctamente. Esto se debe a que el sitio sera visto por el proveedor como una "aplicacion" mas del servidor del proveedor. Una vez creada la "aplicacion" el proveedor informa el identificador de la misma y una clave secreta. Estos datos se utilizan para autenticar al sitio y obtener los datos de configuracion del mismo antes de iniciar el proceso de autenticacion del usuario. En este campo se especifica el identificador otorgado por el proveedor de autenticacion a la "aplicacion".
-  * _secretkey_. En este campo se especifica la clave secreta otorgada por el proveedor de autenticacion a la "aplicacion", para que pueda autenticarse ante el proveedor.
-  * _callback_parameters_. Aqui se especifican los parametros que retorna el proveedor de autenticacion cuando redirige al usuario de regreso al sitio. Util para reconocer al proveedor cuando no se tiene otra forma.
-  * _enabled_. Indica si el proveedor se encuentra habilitado o deshabilitado. Si el proveedor de autenticacion esta deshabilitado entonces el usuario no podra elegirlo para realizar la autenticacion. Se habilita con un 1 (uno) y  se deshabilita con un 0 (cero).
-  * _use_email_. Indica si se usa el email del usuario, obtenido del proveedor de autenticacion, como identificador cuando lo vea el usuario en la pantalla de administracion. Esto es asi porque no todos los identificadores son "agradables a la vista".
+  * _apikey_. Algunos proveedores de autenticación requieren que se cree una "aplicación" en sus servidores en el que se especifican parámetros de configuración para que el proceso de autenticación funcione correctamente. Esto se debe a que el sitio sera visto por el proveedor como una "aplicación" mas del servidor del proveedor. Una vez creada la "aplicación" el proveedor informa el identificador de la misma y una clave secreta. Estos datos se utilizan para autenticar al sitio y obtener los datos de configuración del mismo antes de iniciar el proceso de autenticación del usuario. En este campo se especifica el identificador otorgado por el proveedor de autenticación a la "aplicación".
+  * _secretkey_. En este campo se especifica la clave secreta otorgada por el proveedor de autenticacion a la "aplicación", para que pueda autenticarse ante el proveedor.
+  * _callback_parameters_. Aquí se especifican los parámetros que retorna el proveedor de autenticacion cuando redirige al usuario de regreso al sitio. Útil para reconocer al proveedor cuando no se tiene otra forma.
+  * _enabled_. Indica si el proveedor se encuentra habilitado o deshabilitado. Si el proveedor de autenticación esta deshabilitado entonces el usuario no podrá elegirlo para realizar la autenticación. Se habilita con un 1 (uno) y  se deshabilita con un 0 (cero).
+  * _default_. Indica si es el proveedor por defecto en el modulo de Zonales Login (Experimental)
+  * _use_email_. Indica si se usa el email del usuario, obtenido del proveedor de autenticación, como identificador cuando lo vea el usuario en la pantalla de administración. Esto es así porque no todos los identificadores son "agradables a la vista".
 ====Alias====
+La configuración de los alias esta diseñada para que lo haga el usuario desde la configuración de su perfil (se puede integrar al componente AAPU).
+=====Frontend=====
+La pantalla administración de alias se divide en dos secciones:
+  * _Habilitación/Deshabilitación de alias_. En esta sección el usuario puede habilitar o deshabilitar sus alias como desee. Si un alias se encuentra deshabilitado significa que, mientras este en ese estado, no se lo podrá usar para acceder al sitio. La pantalla consta de cuatro columnas:
+   * Icono del proveedor.
+   * Nombre del proveedor.
+   * Etiqueta del alias. Se trata del identificador, otorgado por el proveedor de autenticación, si es _user friendly_ o de su dirección de correo electrónico, si no lo es. Útil para identificar la cuenta en caso de que el usuario tenga varias cuentas con el mismo proveedor.
+   * Checkbox que permite habilitar o deshabilitar el alias. Si se encuentra chequeado significa que el alias esta habilitado.
+  * _Asociación de nuevo alias_. Aquí el usuario ve una pantalla similar a la del modulo Zonales Login que permite autenticarse con un proveedor de autenticación. Si la autenticación es exitosa entonces queda asociado el identificador obtenido como un nuevo alias del usuario. Quedando listo para ser usado.
+=====Backend=====
+La tabla jos_alias por lo general no requerirá modificación alguna por parte del administrador del sitio. Es una tabla que se actualiza de forma automática a medida que los usuarios asocian nuevos alias, los habilitan o deshabilitan, etc.
+Esta tabla se encuentra vacía cuando se instala el componente Alias.
+Los campos de la tabla jos_alias son los siguientes:
+  * _user_id_. ID del usuario al que le pertenece el alias. Este ID debe existir en la tabla jos_users
+  * _name_. Identificador del usuario otorgado por el proveedor de autenticación. Este identificador puede ser una URL, un numero o una secuencia alfanumérica única. El chequeo de existencia de un alias se realiza comparando este campo.
+  * _label_. Es el identificador del usuario o el email del mismo otorgado por el proveedor de autenticación. El contenido de este campo depende del valor del campo _use_email_ en la tabla jos_providers. Se muestra el contenido de este campo en la pantalla de _Administración de alias_.
+  * _email_. Dirección de correo electrónico obtenido del proveedor de autenticación.
+  * _provider_id_. ID del proveedor de autenticación. Debe ser un ID registrado en la tabla jos_providers.
+  * _association_date_. Fecha en la que se asocio el identificador del usuario como un alias del mismo.
+  * _block_. Indica si el alias se encuentra habilitado o no. Si tiene un 1 (uno) se encuentra habilitado. Tiene un 0 (cero) en caso contrario.
+  * _activation_. Contiene el código de activación para habilitar el alias asociado, si el usuario no esta autenticado.
 ===Plugin External Login===
-Debe ejecutarse antes que el plugin de autenticacion estandar de Joomla!.
+Debe ejecutarse antes que el plugin de autenticación estándar de Joomla!.
 
 Debe tener nivel de acceso _Publico_.
 
-Posee dos parametros preseteados, que en circunstancias normales no es necesario modificar, que permite especificar las URLs internas a la accion de registro de alias y a la pantalla de desambiguacion en caso de que no se pueda determinar a quien corresponde el identificador obtenido del proveedor.
+Posee dos parámetros preseteados, que en circunstancias normales no es necesario modificar, que permite especificar las URLs internas a la acción de registro de alias y a la pantalla de desambiguación en caso de que no se pueda determinar a quien corresponde el identificador obtenido del proveedor.
 
 = Uso =
