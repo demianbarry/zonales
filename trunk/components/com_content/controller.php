@@ -126,6 +126,7 @@ class ContentController extends JController
 			return;
 		}
 
+                global $cp_config;
 		// Create a user access object for the user
 		$access					= new stdClass();
 		//$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
