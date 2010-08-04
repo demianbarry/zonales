@@ -158,7 +158,7 @@ class EqZonalesControllerBand extends JController {
 
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
         $query = "SELECT id AS cp_value_id, label AS valor FROM `#__custom_properties_values`".
-            " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `default` = 1";
+                " WHERE `parent_id` = 0 AND `field_id` = $noticias_field AND `default` = 1";
         $db->setQuery($query);
         $rows1 = $db->loadObjectList();
 
@@ -186,8 +186,8 @@ class EqZonalesControllerBand extends JController {
             $row->default = 0;
             $row->active = 0;
         }
-         */
-        
+        */
+
         //$rows = array_merge($rows1, $rows2);
 
         /**
@@ -250,6 +250,8 @@ class EqZonalesControllerBand extends JController {
                 return false;
             }
         }
+        // guardamos el ecualizador en la sesión
+        $this->modifyBandAnonImpl($params);
 
         return true;
     }
@@ -262,30 +264,33 @@ class EqZonalesControllerBand extends JController {
      */
     function modifyBandAnonImpl($params = null) {
         $session =& JFactory::getSession();
-        if (!$session->has('eq')) {
-            return FALSE;
-        }
 
-        $eq = $session->get('eq');
+        foreach ($params as $band) {
 
-        if (!is_null($eq) && !empty($eq)) {
-            $eqtmp = $eq;
+            if (!$session->has('eq'.$band->eq_id)) {
+                return FALSE;
+            }
 
-            // actualizamos los valores del ecualizador
-            foreach ($eqtmp->bands as $band) {
-                foreach ($params as $param) {
-                    if (property_exists($param, 'id')) {
-                        if ($param->id == $band->id) {
-                            $band->peso = $param->peso;
+            $eq = $session->get('eq'.$band->eq_id);
+
+            if (!is_null($eq) && !empty($eq)) {
+                $eqtmp = $eq;
+
+                // actualizamos los valores del ecualizador
+                foreach ($eqtmp->bands as $myband) {
+                    foreach ($params as $param) {
+                        if (property_exists($param, 'id')) {
+                            if ($param->id == $myband->id) {
+                                $myband->peso = $param->peso;
+                            }
                         }
                     }
                 }
+
+                // ordenamos bandas de mayor a menor según el peso
+                usort($eqtmp->bands, array('EqZonalesControllerBand', 'ordenaBandasPorPeso'));
             }
-
-            // ordenamos bandas de mayor a menor según el peso
-            usort($eqtmp->bands, array('EqZonalesControllerBand', 'ordenaBandasPorPeso'));
         }
-
         return true;
     }
 
