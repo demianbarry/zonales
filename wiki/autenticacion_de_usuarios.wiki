@@ -9,7 +9,7 @@ UAAW consta de las siguientes extensiones que deben ser instaladas en el orden q
   * _Componente Alias (com_alias)_: es el soporte de registro y administración de los alias de usuario.
   * _Componente User (com_user)_: contiene todas las operaciones básicas que se pueden realizar sobre los usuarios (registro, login, etc.)
   * _Plugin External Login (plg_externallogin)_: es el que realiza la comunicación con los distintos proveedores de autenticacion para que el usuario pueda acceder al sitio.
-  * _Plugin Auth Proxy (plg_authproxy)_: es un proxy que actua como intermediario entre el proveedor y el plugin External Login cuando el proveedor de autenticación redirige al usuario de vuelta al sitio. Es decir, Auth Proxy recibe la respuesta del proveedor y la redirige al plugin External Login.
+  * _Plugin Authentication Proxy (plg_authproxy)_: es un proxy que actua como intermediario entre el proveedor y el plugin External Login cuando el proveedor de autenticación redirige al usuario de vuelta al sitio. Es decir, Auth Proxy recibe la respuesta del proveedor y la redirige al plugin External Login.
   * _Modulo Message (mod_message)_: se encarga de mostrar los mensajes informados por UAAW.
   * _Modulo Register (mod_userregister)_: pantalla de registro de usuarios que se separo del componente User para poder ubicarla en cualquier parte.
   * _Modulo Alias (mod_alias)_: pantalla de administración de alias que se separo del componente Alias para poder integrarlo mas fácilmente al componente AAPU.
@@ -22,6 +22,7 @@ Para instalar el resto de las extensiones hay que generar el paquete correspondi
 ==Dependencias==
 UAAW depende de los siguientes extensiones:
   * Componente AAPU (com_aapu)
+  * Template de Zonales
 
 = Configuración =
 
@@ -66,6 +67,16 @@ La tabla contiene los siguientes campos:
   * _enabled_. Indica si el proveedor se encuentra habilitado o deshabilitado. Si el proveedor de autenticación esta deshabilitado entonces el usuario no podrá elegirlo para realizar la autenticación. Se habilita con un 1 (uno) y  se deshabilita con un 0 (cero).
   * _default_. Indica si es el proveedor por defecto en el modulo de Zonales Login (Experimental)
   * _use_email_. Indica si se usa el email del usuario, obtenido del proveedor de autenticación, como identificador cuando lo vea el usuario en la pantalla de administración. Esto es así porque no todos los identificadores son "agradables a la vista".
+=====Configuración de Facebook Connect=====
+  # Acceder a Facebook (autenticarse).
+  # Ir a la [http://www.facebook.com/developers/ Página de Desarrolladores de Facebook].
+  # Crear una nueva "aplicación" presionando el boton *Configurar una nueva aplicación*
+  # En la pantalla de configuración especificar:
+   # El nombre de la "aplicación"
+   # Elegir idioma _Español_.
+   # En la pestaña *Connect* especificar como _URL de conexión_ http://DOMINIO_ZONALES:NUMERO_DE_PUERTO/index.php?option=com_user&task=login&provider=Facebook Reemplazar DOMINIO_ZONALES y NUMERO_DE_PUERTO por lo que corresponda.
+   # En la pestaña *Autenticación* especificar como _Post-Authorize Callback URL_ http://DOMINIO_ZONALES:NUMERO_DE_PUERTO
+En el momento de la instalación del componente Alias se crea una entrada en la tabla jos_providers con los datos necesarios para que el usuario pueda elegir a Facebook como proveedor de autenticación. Los campos *apikey* y *secretkey* deben ser actualizados con los obtenidos de Facebook cuando se creo la "aplicación".
 ====Alias====
 La configuración de los alias esta diseñada para que lo haga el usuario desde la configuración de su perfil (se puede integrar al componente AAPU).
 =====Frontend=====
@@ -91,8 +102,39 @@ Los campos de la tabla jos_alias son los siguientes:
 ===Plugin External Login===
 Debe ejecutarse antes que el plugin de autenticación estándar de Joomla!.
 
-Debe tener nivel de acceso _Publico_.
+Debe tener nivel de acceso _Público_.
 
 Posee dos parámetros preseteados, que en circunstancias normales no es necesario modificar, que permite especificar las URLs internas a la acción de registro de alias y a la pantalla de desambiguación en caso de que no se pueda determinar a quien corresponde el identificador obtenido del proveedor.
+No olvidar activar el plugin.
+===Plugin Authentication Proxy===
 
+Debe tener nivel de acceso _Público_.
+
+Posee un parámetro preseteado, que en circunstancias normales no es necesario modificar, que permite especificar la URL interna a la acción de login de usuarios.
+
+No olvidar activar el plugin.
+===Modulo Message===
+No mostrar titulo. Publicado. En la posición _user5_. Debe tener nivel de acceso _Público_.
+
+
+Posee un parámetro preseteado, que en circunstancias normales no es necesario modificar, que permite especificar el directorio, relativo a la raíz de Joomla!, en donde se encuentran los iconos a mostrar. Estos iconos tienen nombres predefinidos que deben respetarse en caso de cambiarlos.
+===Modulo Register===
+No mostrar titulo. Publicado. En la posición _home_register_. Debe tener nivel de acceso _Público_.
+===Modulo Alias===
+En la configuración del modulo:
+No mostrar titulo. Publicado. En la posición _user5_. Debe tener nivel de acceso _Público_.
+
+====Integración con el componente AAPU====
+  # En _Gestión de Pestañas_ del componente AAPU, verificar la existencia de la pestaña _Alias_. Si no existe: 
+   # Presionar el botón crear.
+   # En la pantalla que aparece nombrar a la pestaña _Alias_, etiquetarla con la frase que quiera que el usuario identifique a la pestaña, por ejemplo _Administración de Alias_.
+  # En _Gestión de Atributos_, verificar la existencia del atributo _Administración de Alias_. Si no existe:
+   # Presionar el botón crear.
+   # En la pantalla que aparece nombrar al atributo, asignarle una etiqueta descriptiva, por ejemplo _Administración de Alias_. Indicar que no es requerido, publicarlo, especificar que debe ir en la pestaña _Alias_. En *tipo de dato* elegir _MODULE_ y en *lista de valores* ingresar _alias_
+===Modulo Zonales Login===
+No mostrar titulo. Publicado. En la posición _right_. Debe tener nivel de acceso _Público_.
+===Modulo Session Information===
+No mostrar titulo. Publicado. En la posición _right_. Debe tener nivel de acceso _Registrado_. Colocar en el mismo orden que el modulo Zonales Login.
+
+Posee dos parámetros preseteados, que en circunstancias normales no es necesario modificar, que permite especificar la URL interna a la administración del perfil del usuario y el texto a mostrar en el boton de logout.
 = Uso =
