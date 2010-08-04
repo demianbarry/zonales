@@ -509,7 +509,7 @@ class UserController extends JController {
             );
 
             $dataZonal = array(
-                    'value' => $zonalId,
+                    'value_int' => $zonalId,
                     'object_id' => $userid,
                     'object_type' => 'TABLE',
                     'object_name' => '#__users',
