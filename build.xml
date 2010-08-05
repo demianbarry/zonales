@@ -430,6 +430,7 @@
             <zipfileset dir="${src_libraries}/facebookconnect" includes="**" prefix="libraries/facebookconnect"/>
             <zipfileset dir="${src_libraries}/twitter" includes="**" prefix="libraries/twitter"/>
             <zipfileset dir="${src_libraries}/windowsliveid" includes="**" prefix="libraries/windowsliveid"/>
+            <zipfileset dir="${src_libraries}/openid" includes="**" prefix="libraries/openid"/>
         </zip>
     </target>
 
