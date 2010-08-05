@@ -1,4 +1,4 @@
-#summary Autenticación de usuarios (en estado alfa)
+#summary Autenticación de usuarios (articulo en estado alfa)
 #labels Phase-Deploy
 
 = Introducción =
