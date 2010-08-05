@@ -1,4 +1,4 @@
-#summary Autenticación de usuarios (en construcción)
+#summary Autenticación de usuarios (en estado alfa)
 #labels Phase-Deploy
 
 = Introducción =
@@ -29,6 +29,8 @@ UAAW depende de los siguientes extensiones:
 ==Extensiones==
 ===Componente Alias===
 El componente de Alias no tiene interfase de backend. Por lo que, por ahora, su administración se lleva a cabo modificando directamente las tablas de la base de datos.
+
+Tener en cuenta que el componente Alias elimina todas sus tablas cuando es desinstalado.
 ====Protocolos====
 En la tabla jos_protocol_types se registran los protocolos soportados. Esta tabla contiene los siguientes campos relevantes: 
   * _name_. Se registra el nombre del protocolo.
@@ -70,13 +72,24 @@ La tabla contiene los siguientes campos:
 =====Configuración de Facebook Connect=====
   # Acceder a Facebook (autenticarse).
   # Ir a la [http://www.facebook.com/developers/ Página de Desarrolladores de Facebook].
-  # Crear una nueva "aplicación" presionando el boton *Configurar una nueva aplicación*
+  # Crear una nueva "aplicación" presionando el botón *Configurar una nueva aplicación*
   # En la pantalla de configuración especificar:
-   # El nombre de la "aplicación"
+   # El nombre de la "aplicación".
    # Elegir idioma _Español_.
    # En la pestaña *Connect* especificar como _URL de conexión_ http://DOMINIO_ZONALES:NUMERO_DE_PUERTO/index.php?option=com_user&task=login&provider=Facebook Reemplazar DOMINIO_ZONALES y NUMERO_DE_PUERTO por lo que corresponda.
    # En la pestaña *Autenticación* especificar como _Post-Authorize Callback URL_ http://DOMINIO_ZONALES:NUMERO_DE_PUERTO
-En el momento de la instalación del componente Alias se crea una entrada en la tabla jos_providers con los datos necesarios para que el usuario pueda elegir a Facebook como proveedor de autenticación. Los campos *apikey* y *secretkey* deben ser actualizados con los obtenidos de Facebook cuando se creo la "aplicación".
+En el momento de la instalación del componente Alias se crea una entrada en la tabla jos_providers con los datos necesarios para que el usuario pueda elegir a Facebook como proveedor de autenticación. Los campos *apikey* y *secretkey* deben ser actualizados con los obtenidos de Facebook cuando se creo la "aplicación" (_Api Key_ y _Secret_ informado por Facebook).
+=====Configuración de Twitter OAuth=====
+  # Acceder a Twitter (autenticarse)
+  # Ir a la [http://dev.twitter.com/apps/new Página de Desarrolladores de Twitter]
+  # En la pantalla de configuración especificar:
+   # El nombre de la "aplicación".
+   # En *Aplication Website* colocar _http://DOMINIO_ZONALES:NUMERO_DE_PUERTO_ Reemplazar DOMINIO_ZONALES y NUMERO_DE_PUERTO por lo que corresponda.
+   # En *Organization* ingresar _Mediabit_.
+   # En *Application Type* elegir _Browser_.
+   # En *Callback URL* ingresar _http://DOMINIO_ZONALES:NUMERO_DE_PUERTO/index.php?option=com_user&task=login&provider=Twitter_
+   # En *Default Access Type* elegir _Read Only_.
+En el momento de la instalación del componente Alias se crea una entrada en la tabla jos_providers con los datos necesarios para que el usuario pueda elegir a Twitter como proveedor de autenticación. Los campos *apikey* y *secretkey* deben ser actualizados con los obtenidos de Twitter cuando se creo la "aplicación" (_Consumer Key_ y _Consumer Secret_ informados por Twitter).
 ====Alias====
 La configuración de los alias esta diseñada para que lo haga el usuario desde la configuración de su perfil (se puede integrar al componente AAPU).
 =====Frontend=====
@@ -138,3 +151,11 @@ No mostrar titulo. Publicado. En la posición _right_. Debe tener nivel de acces
 
 Posee dos parámetros preseteados, que en circunstancias normales no es necesario modificar, que permite especificar la URL interna a la administración del perfil del usuario y el texto a mostrar en el boton de logout.
 = Uso =
+La secuencia de acciones que tienen lugar en el sitio cuando el usuario intenta acceder son:
+http://zonales.googlecode.com/svn/wiki/workflow.jpg
+=Arquitectura=
+La interacción entre los elementos core de UAAW son:
+http://zonales.googlecode.com/svn/wiki/deployment.jpg
+= Más Información =
+Si requiere más información sobre UAAW o algun tema relacionado por favor vea:
+  * [http://zonales.googlecode.com/svn/docs/paper_uaaw.pdf Paper] presentado en la 39º JAIIO
