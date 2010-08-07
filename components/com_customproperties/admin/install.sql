@@ -48,3 +48,13 @@ CREATE TABLE IF NOT EXISTS `#__custom_properties_values` (
   KEY `priority` (`priority`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__denunciar_tb` (
+    `id` int(11) NOT NULL auto_increment,
+    comment longtext,
+    `content_id` int(11) default NULL,
+    `user_id` int(11) default NULL,
+    `state` tinyint(1) default 0,
+    `created` datetime default '0000-00-00 00:00:00',
+    PRIMARY KEY  (`id`))
+ENGINE = MYISAM AUTO_INCREMENT =1 DEFAULT CHARSET = utf8 AUTO_INCREMENT =1;
+

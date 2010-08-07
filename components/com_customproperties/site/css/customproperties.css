@@ -78,3 +78,11 @@ div.cp_field_label{
 	margin :0 ;
 	padding :4px;
 }
+.contentpaneopen img.cp_tags_delete {
+        border: none;
+        cursor: pointer;
+        vertical-align: middle;
+        margin:1px;
+        padding:1px;
+}
+
