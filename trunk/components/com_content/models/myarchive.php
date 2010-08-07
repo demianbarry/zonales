@@ -64,14 +64,16 @@ class ContentModelMyarchive extends JModel {
 	$this->_publishing_group = $cp_config['publishing_group'];
 
         $published = JRequest::getVar('published', true, '', 'boolean');
-        $stateFrom = JRequest::getVar('stateFrom') != null ? JRequest::getInt('stateFrom') : false;
+        $getDenounced = JRequest::getVar('getDenounced') != null ? JRequest::getInt('getDenounced') : false;
         $this->_user =& JFactory::getUser();
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
         $contenthelper = new comEqZonalesContentHelper();
 	// Get the pagination request variables
         $limit		= JRequest::getVar('limit', 100, '', 'int');
         $limitstart	= JRequest::getVar('limitstart', 0, '', 'int');        
-        $Arows = $contenthelper->getContent($limitstart, $limit, array($stateFrom != '5' ? '!tags_values:la_voz_del_vecino':"",$this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
+        $Arows = $contenthelper->getContent($limitstart, $limit, array( !$getDenounced ? '!tags_values:la_voz_del_vecino':"denuncias:[1 TO *]",
+                                                                        $this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):"")
+                                                                        );
 
 
         // here we initialize defaults for category model
@@ -136,13 +138,15 @@ class ContentModelMyarchive extends JModel {
 
         // Lets load the siblings if they don't already exist
         if (empty($this->_content[$state])) {
-	$stateFrom = JRequest::getVar('stateFrom') != null ? JRequest::getInt('stateFrom') : false;
+	$getDenounced = JRequest::getVar('getDenounced') != null ? JRequest::getInt('getDenounced') : false;
         require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'contenthelper.php');
         $contenthelper = new comEqZonalesContentHelper();
         // Get the pagination request variables
         $limit          = JRequest::getVar('limit', 100, '', 'int');
         $limitstart     = JRequest::getVar('limitstart', 0, '', 'int');
-        $Arows = $contenthelper->getContent($limitstart, $limit, array($stateFrom != '5' ? '!tags_values:la_voz_del_vecino':"",$this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):""));
+        $Arows = $contenthelper->getContent($limitstart, $limit, array( !$getDenounced ? '!tags_values:la_voz_del_vecino':"denuncias:[1 TO *]",
+                                                                        $this->_user->get('gid') < $this->_publishing_group ? "created_by:".$this->_user->get('id'):"")
+                                                                        );
 
             // special handling required as Uncategorized content does not have a section / category id linkage
             $i = $limitstart;

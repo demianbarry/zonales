@@ -120,7 +120,10 @@ class JHTMLIcon {
         $overlib .= '&lt;br /&gt;';
         $overlib .= $author;
 
-        $button = JHTML::_('link', JRoute::_($url), $text, array('rel' => "{handler: 'iframe', size: {x: 600, y: 600}}", 'class' => 'modal-button'));
+        $attribs['class']     = "modal-button";
+        $attribs['rel']     = "{handler: 'iframe', size: {x: 600, y: 600}}";
+
+        $button = JHTML::_('link', JRoute::_($url), $text, $attribs);
 
         $output = '<span class="hasTip" title="'.JText::_( 'Edit Item' ).' :: '.$overlib.'">'.$button.'</span>';
         return $output;
