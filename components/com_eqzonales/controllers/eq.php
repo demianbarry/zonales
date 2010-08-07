@@ -111,6 +111,39 @@ class EqZonalesControllerEq extends JController {
         return $this->createEqImpl($params);
     }
 
+        /**
+     * Crea un nuevo ecualizador en base a la información del usuario.
+     *
+     * @param Array $user arreglo con datos del usuario.
+     */
+    function _createNewDefaultEq($user) {
+        /**
+         * Objeto con información del usurio y ecualizador a crear
+         */
+        $eq = new stdClass();
+        $eq->user_id = $user->id;
+        $eq->nombre = $user->name;
+        $eq->descripcion = 'Ecualizador de ' . $eq->nombre;
+        $eq->observaciones = 'Ecualizador de ' . $eq->nombre;
+
+        /**
+         * Crea el ecualizador con los datos del nuevo usuario.
+         */
+        $eqId = $this->createEq($eq);
+        if ($eqId === FALSE) {
+            return;
+        } else {
+            $eq->id = $eqId;
+            /**
+             * Instancia las bandas por defecto para el ecualizador.
+             */
+            require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'band.php');
+            $ctrlBand = new EqZonalesControllerBand();
+            $ctrlBand->createDefaultBands($eq);
+        }
+        return array($eq);
+    }
+
     /**
      * Modifica un Ecualizador. Esta función esta pensanda para ser invocada
      * mediante Ajax desde el frontend. Espera recuperar como variable POST
@@ -441,7 +474,8 @@ class EqZonalesControllerEq extends JController {
 
     function retrieveUserEqImpl($userId) {
         $session =& JFactory::getSession();
-        $user =& JFactory::getUser();
+        $user =& JFactory::getUser($userId);
+        $userId = $user->id;
         $data = null;
         
         if ($session->has('eqs'.$user->guest)) {
@@ -449,7 +483,8 @@ class EqZonalesControllerEq extends JController {
         } else {
             if ($userId >= 0) {
                 $model = &$this->getModel('Eq');
-                $eqs = $model->getUserEqs($userId);
+                if(!($eqs = $model->getUserEqs($userId)))
+                     $eqs = $this->_createNewDefaultEq($user);
 
                 $data = array();
                 foreach ($eqs as $currentEq) {
