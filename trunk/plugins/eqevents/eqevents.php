@@ -112,39 +112,9 @@ class plgUserEqevents extends JPlugin {
         // Si el usuario no cuenta con un ecualizador, se lo genera
         $userEq = $this->_ctrlEq->retrieveUserEqImpl($id);
         if (is_null($userEq) || empty($userEq)) {
-            $this->_createNewDefaultEq($userTmp);
+            $this->_ctrlEq->_createNewDefaultEq($userTmp);
         }
 
         return true;
-    }
-
-    /**
-     * Crea un nuevo ecualizador en base a la información del usuario.
-     *
-     * @param Array $user arreglo con datos del usuario.
-     */
-    function _createNewDefaultEq($user) {
-        /**
-         * Objeto con información del usurio y ecualizador a crear
-         */
-        $params = new stdClass();
-        $params->user_id = $user['id'];
-        $params->nombre = $user['name'];
-        $params->descripcion = 'Ecualizador de ' . $user['name'];
-        $params->observaciones = 'Ecualizador de ' . $user['name'];
-
-        /**
-         * Crea el ecualizador con los datos del nuevo usuario.
-         */
-        $eqId = $this->_ctrlEq->createEq($params);
-        if ($eqId === FALSE) {
-            return;
-        } else {
-            $params->id = $eqId;
-            /**
-             * Instancia las bandas por defecto para el ecualizador.
-             */
-            $this->_ctrlBand->createDefaultBands($params);
-        }
     }
 }
