@@ -145,12 +145,18 @@
 /* Estilos para las imágenes de las noticias */
 .Apple-style-span img {
     padding: 2px;
-    border: solid 1px grey;
+    border: solid 1px silver;
     margin: 5px;
 }
 
-.contentpaneopen tbody tr td p img {
-    border:1px solid grey;
+.contentpaneopen img {
+    border:1px solid silver;
     margin:10px;
     padding:2px;
+}
+
+.contentpaneopen .modal-button img {
+    border: none;
+    margin:1px;
+    padding:1px;
 }

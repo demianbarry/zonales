@@ -16,23 +16,15 @@ class UserHelper {
         $mainframe->redirect($route);
     }
 
-    static function getZonal() {
-        $helper = new comZonalesHelper();
+    static function getUsersZonal() {
         $user =& JFactory::getUser();
-        $zonales = $helper->getZonales();
-
         $db = JFactory::getDBO();
-        $query = "SELECT v.name FROM #__aapu_attributes a, #__aapu_attribute_entity e, #__custom_properties_values v WHERE e.attribute_id=a.id AND a.name='zonal' AND e.object_id=" . $user->id. " AND e.object_type='TABLE' AND object_name='#__users' AND (v.id=e.value_int OR v.id=e.value)";
+        $query = "SELECT v.name, v.label FROM #__aapu_attributes a, #__aapu_attribute_entity e, #__custom_properties_values v WHERE e.attribute_id=a.id AND a.name='zonal' AND e.object_id=" . $user->id. " AND e.object_type='TABLE' AND object_name='#__users' AND (v.id=e.value_int OR v.id=e.value)";
         $db->setQuery($query);
         $dbZonal = $db->loadObject();
-        return $dbZonal->name;
+        return $dbZonal;
     }
-
-    static function setZonal($zonal) {
-        $session = JFactory::getSession();
-        $session->set('zonales_zonal_name',$zonal);
-    }
-
+    
     static function isEmailAddressWellformed($email) {
         // First, we check that there's one @ symbol,
         // and that the lengths are right.

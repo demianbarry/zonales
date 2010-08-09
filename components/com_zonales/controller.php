@@ -77,15 +77,17 @@ class ZonalesController extends JController {
         if ($view && $item)
             $return .= '&view=' . $view . '&Itemid=' . $item;
 
-        $session = JFactory::getSession();
         if ($zname) {
             $zonal = $this->_zonalesHelper->getZonal($zname);
+
+            $session = JFactory::getSession();
             if ($zonal) {
                 $session->set('zonales_zonal_name', $zonal->name);
+                $session->set('zonales_zonal_label', $zonal->label);
+            } else {
+                $session->set('zonales_zonal_name', NULL);
+                $session->set('zonales_zonal_label', NULL);
             }
-        }
-        else {
-            $session->set('zonales_zonal_name', NULL);
         }
 
         $this->setRedirect($return);
@@ -142,10 +144,14 @@ class ZonalesController extends JController {
 
             if ($zonal) {
                 $session = JFactory::getSession();
-                $session->set('zonales_zonal_name', ($zonal ? $zonal->name : NULL));
+                $session->set('zonales_zonal_name', ($zonal->name));
+                $session->set('zonales_zonal_label', ($zonal->label));
 
                 $result = "success";
                 $message = $zonal->label;
+            } else {
+                $session->set('zonales_zonal_name', NULL);
+                $session->set('zonales_zonal_label', NULL);
             }
         }
 

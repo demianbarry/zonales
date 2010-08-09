@@ -35,6 +35,17 @@ class comZonalesHelper {
     }
 
     /**
+     * Retorna el identificador del zonal actual de la sesión, o null en
+     * caso de que no se encuentre seteado ninguno.
+     *
+     * @return  string Identificador del zonal actual
+     */
+    function getZonalActualLabel() {
+        $session = JFactory::getSession();
+        return $session->get('zonales_zonal_label', null);
+    }
+
+    /**
      * Recupera información acerca de un zonal en particular. Si no se
      * especifica el nombre interno se recuperará información acerca del
      * zonal actual.
@@ -407,7 +418,7 @@ class comZonalesHelper {
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
         $query = "SELECT id, label FROM `#__custom_properties_values`".
                 " WHERE `parent_id` = $id";
-        
+
         $dbo->setQuery($query);
         $rows = $dbo->loadObjectList();
 
@@ -423,4 +434,17 @@ class comZonalesHelper {
         return $root;
     }
 
+    /**
+     * Setea o actualiza la variable de sesión con el zonal indicado.
+     */
+    static function setZonal($zonal) {
+        $session = JFactory::getSession();
+        if ($zonal) {
+            $session->set('zonales_zonal_name', $zonal->name);
+            $session->set('zonales_zonal_label', $zonal->label);
+        } else {
+            $session->set('zonales_zonal_name', NULL);
+            $session->set('zonales_zonal_label', NULL);
+        }
+    }
 }

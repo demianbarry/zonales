@@ -187,7 +187,7 @@ class UserController extends JController {
         $user =& JFactory::getUser();
         $registerNewAlias = (!$user->guest);
 
-        if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
+        if (($return = JRequest::getVar('return', '', 'method', 'base64'))) {
             $return = base64_decode($return);
             if (!JURI::isInternal($return)) {
                 $return = '';
@@ -239,9 +239,10 @@ class UserController extends JController {
                     UserHelper::showMessage(ERROR, $message);
                 }
             }
+            $zonal = UserHelper::getUsersZonal();
 
-            $zonal = UserHelper::getZonal();
-            UserHelper::setZonal($zonal);
+            require_once JPATH_ROOT . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php';
+            comZonalesHelper::setZonal($zonal);
 
             $i18nKey = ($registerNewAlias) ? 'SYSTEM_MESSAGE_SUCCESS_ALIAS_ADDED' : 'SYSTEM_MESSAGE_SUCCESS_LOGIN';
             $message = JText::_($i18nKey);
