@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5.2" type="plugin" group="content" method="upgrade">
+<install version="1.5.2" type="plugin" group="content">
     <name>Content - Denunciar</name>
     <author>Mediabit</author>
     <creationDate>May 2010</creationDate>
@@ -16,7 +16,7 @@
         </param>
         <param name="textsize" type="text" size="3" default="12" label="Font Size In Pixels" description="Like Font Size In Pixels" />
         <param name="recipient" type="text" size="20" label="PLG_DENUNCIAR_RECIPIENT" description="TIP_PLG_DENUNCIAR_RECIPIENT"/>
-        <param name="state" type="text" size="5" default="5" label="PLG_DENUNCIAR_STATE" description="TIP_PLG_DENUNCIAR_STATE"/>
+        <param name="maxdenouncechars" type="text" size="5" default="500" label="PLG_DENUNCIAR_MAXDENOUNCECHARS" description="TIP_PLG_DENUNCIAR_MAXDENOUNCECHARS"/>
         <param name="textfloat" type="list" label="Like Alignment" default="none" description="Float like thumb and text left, right or none">
             <option value="none">None</option>
             <option value="left">Left</option>
@@ -67,7 +67,6 @@
             <option value="purple">Purple</option>
             <option value="fuchsia">Fuchsia</option>
         </param>
-
         <param name="showfrontpage" type="list" label="Show front page items" default="yes" description="Select wether to show front page items">
             <option value="yes">Yes</option>
             <option value="no">No</option>
@@ -79,4 +78,7 @@
         <filename>notlike/notlike.png</filename>
         <filename>parameterTypes/multilist.php</filename>
     </files>
+    <languages folder="admin/language">
+        <language tag="es-ES">es-ES.plg_content_denunciar.ini</language>
+    </languages>
 </install>

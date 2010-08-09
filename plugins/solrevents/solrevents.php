@@ -52,43 +52,9 @@ class plgContentSolrEvents extends JPlugin {
      * @return	void
      */
     function onAfterContentSave( &$article = null, $isNew = null) {
-        global $mainframe;
-
-       $eqzParams = &JComponentHelper::getParams( 'com_eqzonales' );
-
-        // recupera parametros
-        $solr_url = $eqzParams->get( 'solr_url', null );
-        $solr_port = $eqzParams->get( 'solr_port', null );
-        $solr_webapp = $eqzParams->get( 'solr_webapp', null );
-        $solr_dataimport = $eqzParams->get( 'solr_dataimport', null);
-        $solr_deltaimport = $eqzParams->get( 'solr_deltaimport', null);
-
-        // No se especifico la url de solr
-        if ($solr_url == null) {
-            return;
-        }
-        // No se especifico el puerto de solr
-        if ($solr_port == null) {
-            return;
-        }
-        // No se especifico el puerto de webapp
-        if ($solr_webapp == null) {
-            return;
-        }
-        // No se especifico el request handler
-        if ($solr_dataimport == null) {
-            return;
-        }
-        // No se especifico el comando de indexado incremental
-        if ($solr_deltaimport == null) {
-            return;
-        }
-
-        // Se construye el request
-        $http = new HttpRequest("$solr_url:$solr_port/$solr_webapp/$solr_dataimport?command=$solr_deltaimport", HttpRequest::METH_GET);
-        $http->send();
-
-        return true;
+        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'helper'.DS.'helper.php');
+        $helper = new comEqZonalesHelper();
+        return $helper->launchSolrImport();
     }
 
 }
