@@ -56,5 +56,49 @@ class comEqZonalesHelper
 
         return $params;
     }
+    
+    /**
+     * Lanzo un import de Solr.
+     *
+     * @param 	object		A JTableContent object
+     * @param 	bool		If the content is just about to be created
+     * @return	void
+     */
+    function launchSolrImport($fullImport = false) {
+        $eqzParams = &JComponentHelper::getParams( 'com_eqzonales' );
 
+        // recupera parametros
+        $solr_url = $eqzParams->get( 'solr_url', null );
+        $solr_port = $eqzParams->get( 'solr_port', null );
+        $solr_webapp = $eqzParams->get( 'solr_webapp', null );
+        $solr_dataimport = $eqzParams->get( 'solr_dataimport', null);
+        $solr_import = $eqzParams->get( $fullImport ? 'solr_fullimport' : 'solr_deltaimport', null);
+
+        // No se especifico la url de solr
+        if ($solr_url == null) {
+            return;
+        }
+        // No se especifico el puerto de solr
+        if ($solr_port == null) {
+            return;
+        }
+        // No se especifico el puerto de webapp
+        if ($solr_webapp == null) {
+            return;
+        }
+        // No se especifico el request handler
+        if ($solr_dataimport == null) {
+            return;
+        }
+        // No se especifico el comando de indexado incremental
+        if ($solr_import == null) {
+            return;
+        }
+
+        // Se construye el request
+        $http = new HttpRequest("$solr_url:$solr_port/$solr_webapp/$solr_dataimport?command=$solr_import", HttpRequest::METH_GET);
+        $http->send();
+
+        return true;
+    }
 }

@@ -179,7 +179,7 @@ class comEqZonalesContentHelper {
         $queryParams['fl'] = $this->getFieldList();
         $queryParams['bq'] = $this->getEqPreferences();
         $queryParams['qt'] = $solr_querytype;
-        $queryParams['bf'] = 'recip(map(rord(modified),0,0,99000),1,95000,95000)^100';
+        $queryParams['bf'] = 'recip(map(rord(modified),10,100,99000),100,95000,95000)^350';
 
 
         try {
