@@ -24,261 +24,256 @@ require_once (JPATH_COMPONENT.DS.'view.php');
  * @subpackage	Content
  * @since 1.5
  */
-class ContentViewCategory extends ContentView
-{
-	function display($tpl = null)
-	{
-		global $mainframe, $option;
+class ContentViewCategory extends ContentView {
+    function display($tpl = null) {
+        global $mainframe, $option;
 
-		// Initialize some variables
-		$user		=& JFactory::getUser();
-		$uri 		=& JFactory::getURI();
-		$document	=& JFactory::getDocument();
-		$pathway	=& $mainframe->getPathway();
+        // Initialize some variables
+        $user		=& JFactory::getUser();
+        $uri 		=& JFactory::getURI();
+        $document	=& JFactory::getDocument();
+        $pathway	=& $mainframe->getPathway();
 
-		// Get the menu item object
-		$menus = &JSite::getMenu();
-		$menu  = $menus->getActive();
+        // Get the menu item object
+        $menus = &JSite::getMenu();
+        $menu  = $menus->getActive();
 
-		// Get the page/component configuration
-		$params = clone($mainframe->getParams('com_content'));
+        // Get the page/component configuration
+        $params = clone($mainframe->getParams('com_content'));
 
-		// Request variables
-		$layout     = JRequest::getCmd('layout');
-		$task		= JRequest::getCmd('task');
+        // Request variables
+        $layout     = JRequest::getCmd('layout');
+        $task		= JRequest::getCmd('task');
 
-		// Parameters
-		$params->def('num_leading_articles', 	1);
-		$params->def('num_intro_articles', 		4);
-		$params->def('num_columns',				2);
-		$params->def('num_links', 				4);
-		$params->def('show_headings', 			1);
-		$params->def('show_pagination',			2);
-		$params->def('show_pagination_results',	1);
-		$params->def('show_pagination_limit',	1);
-		$params->def('filter',					1);
-		if (($params->def('filter_type', 'title') != 'hits') && ($params->def('filter_type', 'title') != 'author')) {
-			$params->set('filter_type', 'title');
-		}
+        // Parameters
+        $params->def('num_leading_articles', 	1);
+        $params->def('num_intro_articles', 		4);
+        $params->def('num_columns',				2);
+        $params->def('num_links', 				4);
+        $params->def('show_headings', 			1);
+        $params->def('show_pagination',			2);
+        $params->def('show_pagination_results',	1);
+        $params->def('show_pagination_limit',	1);
+        $params->def('filter',					1);
+        if (($params->def('filter_type', 'title') != 'hits') && ($params->def('filter_type', 'title') != 'author')) {
+            $params->set('filter_type', 'title');
+        }
 
-		$intro		= $params->get('num_intro_articles');
-		$leading	= $params->get('num_leading_articles');
-		$links		= $params->get('num_links');
+        $intro		= $params->get('num_intro_articles');
+        $leading	= $params->get('num_leading_articles');
+        $links		= $params->get('num_links');
 
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+        $limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 
-		if ($layout == 'blog') {
-			$default_limit = $intro + $leading + $links;
-		} else {
-			$params->def('display_num', $mainframe->getCfg('list_limit'));
-			$default_limit = $params->get('display_num');
-		}
-		$limit = $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $default_limit, 'int');
+        if ($layout == 'blog') {
+            $default_limit = $intro + $leading + $links;
+        } else {
+            $params->def('display_num', $mainframe->getCfg('list_limit'));
+            $default_limit = $params->get('display_num');
+        }
+        $limit = $mainframe->getUserStateFromRequest('com_content.'.$this->getLayout().'.limit', 'limit', $default_limit, 'int');
 
-		JRequest::setVar('limit', (int) $limit);
+        JRequest::setVar('limit', (int) $limit);
 
-		$contentConfig = &JComponentHelper::getParams('com_content');
-		$params->def('show_page_title', 	$contentConfig->get('show_title'));
+        $contentConfig = &JComponentHelper::getParams('com_content');
+        $params->def('show_page_title', 	$contentConfig->get('show_title'));
 
-		// Get some data from the model
-		$items		= & $this->get( 'Data' );
-		$total		= & $this->get( 'Total' );
-		$category	= & $this->get( 'Category' );
+        // Get some data from the model
+        $items		= & $this->get( 'Data' );
+        $total		= & $this->get( 'Total' );
+        $category	= & $this->get( 'Category' );
 
-		//add alternate feed link
-		if($params->get('show_feed_link', 1) == 1)
-		{
-			$link	= '&format=feed&limitstart=';
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-		}
+        //add alternate feed link
+        if($params->get('show_feed_link', 1) == 1) {
+            $link	= '&format=feed&limitstart=';
+            $attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+            $document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
+            $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+            $document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
+        }
 
-		// Create a user access object for the user
-		$access					= new stdClass();
-		$access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
-		$access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
-		$access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
+        // Create a user access object for the user
+        $access					= new stdClass();
+        $access->canEdit		= $user->authorize('com_content', 'edit', 'content', 'all');
+        $access->canEditOwn		= $user->authorize('com_content', 'edit', 'content', 'own');
+        $access->canPublish		= $user->authorize('com_content', 'publish', 'content', 'all');
 
-		// Set page title per category
-		// because the application sets a default page title, we need to get it
-		// right from the menu item itself
-		if (is_object( $menu )) {
+        // Set page title per category
+        // because the application sets a default page title, we need to get it
+        // right from the menu item itself
+        /*if (is_object( $menu )) {
 			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
 				$params->set('page_title',	$category->title);
 			}
 		} else {
 			$params->set('page_title',	$category->title);
-		}
-		$document->setTitle( $params->get( 'page_title' ) );
+		}*/
+        // Zonal - lista de zonales, zonal actualmente seleccionado
+        require_once (JPATH_BASE.DS.'components'.DS.'com_zonales'.DS.'helper.php');
+        $helper = new comZonalesHelper();
+        $zonal = $helper->getZonalActualLabel();
+        $banda = JRequest::getVar('banda', null);
+        $document->setTitle(JText::_('Zonales - ').($zonal ? $zonal : JText::_('Portada')));
 
-		//set breadcrumbs
-		if(is_object($menu) && $menu->query['view'] != 'category') {
-			$pathway->addItem($category->title, '');
-		}
+        $this->assignRef('zonal', $zonal);
+        $this->assignRef('banda', $banda);
 
-		// Prepare category description
-		$category->description = JHTML::_('content.prepare', $category->description);
+        //set breadcrumbs
+        if(is_object($menu) && $menu->query['view'] != 'category') {
+            $pathway->addItem($category->title, '');
+        }
 
-		$params->def('date_format',	JText::_('DATE_FORMAT_LC2'));
+        // Prepare category description
+        $category->description = JHTML::_('content.prepare', $category->description);
 
-		// Keep a copy for safe keeping this is soooooo dirty -- must deal with in a later version
-		// @todo -- oh my god we need to find this reference issue in 1.6 :)
-		$this->_params = $params->toArray();
+        $params->def('date_format',	JText::_('DATE_FORMAT_LC2'));
 
-		jimport('joomla.html.pagination');
-		//In case we are in a blog view set the limit
-		if ($layout == 'blog') {
-			$pagination = new JPagination($total, $limitstart, $limit - $links);
-		} else {
-			$pagination = new JPagination($total, $limitstart, $limit);
-		}
+        // Keep a copy for safe keeping this is soooooo dirty -- must deal with in a later version
+        // @todo -- oh my god we need to find this reference issue in 1.6 :)
+        $this->_params = $params->toArray();
 
-		$this->assign('total',		$total);
-		$this->assign('action', 	str_replace('&', '&amp;', $uri->toString()));
+        jimport('joomla.html.pagination');
+        //In case we are in a blog view set the limit
+        if ($layout == 'blog') {
+            $pagination = new JPagination($total, $limitstart, $limit - $links);
+        } else {
+            $pagination = new JPagination($total, $limitstart, $limit);
+        }
 
-		$this->assignRef('items',		$items);
-		$this->assignRef('params',		$params);
-		$this->assignRef('category',	$category);
-		$this->assignRef('user',		$user);
-		$this->assignRef('access',		$access);
-		$this->assignRef('pagination',	$pagination);
+        $this->assign('total',		$total);
+        $this->assign('action', 	str_replace('&', '&amp;', $uri->toString()));
 
-		parent::display($tpl);
-	}
+        $this->assignRef('items',		$items);
+        $this->assignRef('params',		$params);
+        $this->assignRef('category',	$category);
+        $this->assignRef('user',		$user);
+        $this->assignRef('access',		$access);
+        $this->assignRef('pagination',	$pagination);
 
-	function &getItems()
-	{
-		global $mainframe;
+        parent::display($tpl);
+    }
 
-		//create select lists
-		$user	= &JFactory::getUser();
-		$lists	= $this->_buildSortLists();
+    function &getItems() {
+        global $mainframe;
 
-		if (!count( $this->items ) )
-		{
-			$this->assign('lists',	$lists);
-			$return = array();
-			return $return;
-		}
+        //create select lists
+        $user	= &JFactory::getUser();
+        $lists	= $this->_buildSortLists();
 
-		//create paginatiion
-		if ($lists['filter']) {
-			$this->data->link .= '&amp;filter='.urlencode($lists['filter']);
-		}
+        if (!count( $this->items ) ) {
+            $this->assign('lists',	$lists);
+            $return = array();
+            return $return;
+        }
 
-		$k = 0;
-		$i = 0;
-		foreach($this->items as $key => $item)
-		{
-			// checks if the item is a public or registered/special item
-			if ($item->access <= $user->get('aid', 0))
-			{
-				$item->link	= JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
-				$item->readmore_register = false;
-			}
-			else
-			{
-				$item->link = JRoute::_('index.php?option=com_user&task=register');
-				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid), false);
-				$fullURL = new JURI($item->link);
-				$fullURL->setVar('return', base64_encode($returnURL));
-				$item->link = $fullURL->toString();
-				$item->readmore_register = true;
-			}
-			$item->created	= JHTML::_('date', $item->created, $this->params->get('date_format'));
+        //create paginatiion
+        if ($lists['filter']) {
+            $this->data->link .= '&amp;filter='.urlencode($lists['filter']);
+        }
 
-			$item->odd		= $k;
-			$item->count    = $i;
+        $k = 0;
+        $i = 0;
+        foreach($this->items as $key => $item) {
+            // checks if the item is a public or registered/special item
+            if ($item->access <= $user->get('aid', 0)) {
+                $item->link	= JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+                $item->readmore_register = false;
+            }
+            else {
+                $item->link = JRoute::_('index.php?option=com_user&task=register');
+                $returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid), false);
+                $fullURL = new JURI($item->link);
+                $fullURL->setVar('return', base64_encode($returnURL));
+                $item->link = $fullURL->toString();
+                $item->readmore_register = true;
+            }
+            $item->created	= JHTML::_('date', $item->created, $this->params->get('date_format'));
 
-			$this->items[$key] = $item;
-			$k = 1 - $k;
-			$i++;
-		}
+            $item->odd		= $k;
+            $item->count    = $i;
 
-		$this->assign('lists',	$lists);
+            $this->items[$key] = $item;
+            $k = 1 - $k;
+            $i++;
+        }
 
-		return $this->items;
-	}
+        $this->assign('lists',	$lists);
 
-	function &getItem($index = 0, &$params)
-	{
-		global $mainframe;
+        return $this->items;
+    }
 
-		// Initialize some variables
-		$user		=& JFactory::getUser();
-		$dispatcher	=& JDispatcher::getInstance();
+    function &getItem($index = 0, &$params) {
+        global $mainframe;
 
-		$SiteName	= $mainframe->getCfg('sitename');
+        // Initialize some variables
+        $user		=& JFactory::getUser();
+        $dispatcher	=& JDispatcher::getInstance();
 
-		$item 		=& $this->items[$index];
-		$item->text = $item->introtext;
+        $SiteName	= $mainframe->getCfg('sitename');
 
-		$category	= & $this->get( 'Category' );
-		$item->category = $category->title;
-		$item->section  = $category->sectiontitle;
+        $item 		=& $this->items[$index];
+        $item->text = $item->introtext;
 
-		// Get the page/component configuration and article parameters
-		$item->params = clone($params);
-		$aparams = new JParameter($item->attribs);
+        $category	= & $this->get( 'Category' );
+        $item->category = $category->title;
+        $item->section  = $category->sectiontitle;
 
-		// Merge article parameters into the page configuration
-		$item->params->merge($aparams);
+        // Get the page/component configuration and article parameters
+        $item->params = clone($params);
+        $aparams = new JParameter($item->attribs);
 
-		// Process the content preparation plugins
-		JPluginHelper::importPlugin('content');
-		$results = $dispatcher->trigger('onPrepareContent', array (& $item, & $item->params, 0));
+        // Merge article parameters into the page configuration
+        $item->params->merge($aparams);
 
-		// Build the link and text of the readmore button
-		if (($item->params->get('show_readmore') && @ $item->readmore) || $item->params->get('link_titles'))
-		{
-			// checks if the item is a public or registered/special item
-			if ($item->access <= $user->get('aid', 0))
-			{
-				//$item->readmore_link = JRoute::_('index.php?view=article&catid='.$this->category->slug.'&id='.$item->slug);
-				$item->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
-				$item->readmore_register = false;
-			}
-			else
-			{
-				$item->readmore_link = JRoute::_('index.php?option=com_user&view=login');
-				$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid),false);
-				$fullURL = new JURI($item->readmore_link);
-				$fullURL->setVar('return', base64_encode($returnURL));
-				$item->readmore_link = $fullURL->toString();
-				$item->readmore_register = true;
-			}
-		}
+        // Process the content preparation plugins
+        JPluginHelper::importPlugin('content');
+        $results = $dispatcher->trigger('onPrepareContent', array (& $item, & $item->params, 0));
 
-		$item->event = new stdClass();
-		$results = $dispatcher->trigger('onAfterDisplayTitle', array (& $item, & $item->params,0));
-		$item->event->afterDisplayTitle = trim(implode("\n", $results));
+        // Build the link and text of the readmore button
+        if (($item->params->get('show_readmore') && @ $item->readmore) || $item->params->get('link_titles')) {
+            // checks if the item is a public or registered/special item
+            if ($item->access <= $user->get('aid', 0)) {
+                //$item->readmore_link = JRoute::_('index.php?view=article&catid='.$this->category->slug.'&id='.$item->slug);
+                $item->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid));
+                $item->readmore_register = false;
+            }
+            else {
+                $item->readmore_link = JRoute::_('index.php?option=com_user&view=login');
+                $returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->sectionid),false);
+                $fullURL = new JURI($item->readmore_link);
+                $fullURL->setVar('return', base64_encode($returnURL));
+                $item->readmore_link = $fullURL->toString();
+                $item->readmore_register = true;
+            }
+        }
 
-		$results = $dispatcher->trigger('onBeforeDisplayContent', array (& $item, & $item->params, 0));
-		$item->event->beforeDisplayContent = trim(implode("\n", $results));
+        $item->event = new stdClass();
+        $results = $dispatcher->trigger('onAfterDisplayTitle', array (& $item, & $item->params,0));
+        $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onAfterDisplayContent', array (& $item, & $item->params, 0));
-		$item->event->afterDisplayContent = trim(implode("\n", $results));
+        $results = $dispatcher->trigger('onBeforeDisplayContent', array (& $item, & $item->params, 0));
+        $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		return $item;
-	}
+        $results = $dispatcher->trigger('onAfterDisplayContent', array (& $item, & $item->params, 0));
+        $item->event->afterDisplayContent = trim(implode("\n", $results));
 
-	function _buildSortLists()
-	{
-		// Table ordering values
-		$filter				= JRequest::getString('filter');
-		global $mainframe;
-		$itemid = JRequest::getInt('id',0) . ':' . JRequest::getInt('Itemid',0);
-		$filter_order  = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'cmd');
-		$filter_order_Dir = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-		$lists['task']      = 'category';
-		$lists['filter']    = $filter;
-		$lists['order']     = $filter_order;
-		$lists['order_Dir'] = $filter_order_Dir;
+        return $item;
+    }
 
-		return $lists;
-	}
+    function _buildSortLists() {
+        // Table ordering values
+        $filter				= JRequest::getString('filter');
+        global $mainframe;
+        $itemid = JRequest::getInt('id',0) . ':' . JRequest::getInt('Itemid',0);
+        $filter_order  = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'cmd');
+        $filter_order_Dir = $mainframe->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+        $lists['task']      = 'category';
+        $lists['filter']    = $filter;
+        $lists['order']     = $filter_order;
+        $lists['order_Dir'] = $filter_order_Dir;
+
+        return $lists;
+    }
 }
 ?>

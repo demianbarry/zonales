@@ -129,10 +129,10 @@ endif; ?>
 <?php if ($this->item->params->get('show_readmore') && $this->item->readmore) : ?>
 <tr>
 	<td  colspan="2">
-		<a href="<?php echo $this->item->readmore_link; ?>" class="readon<?php echo $this->item->params->get('pageclass_sfx'); ?>">
+		<a href="<?php echo $this->item->readmore_link; ?>" class="readmore-link<?php echo $this->item->params->get('pageclass_sfx'); ?>">
 			<?php if ($this->item->readmore_register) :
 				echo JText::_('Register to read more...');
-			elseif ($readmore = $this->item->params->get('readmore')) :
+			elseif (($readmore = $this->item->params->get('readmore'))) :
 				echo $readmore;
 			else :
 				echo JText::sprintf('Read more...');
