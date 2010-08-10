@@ -1,4 +1,4 @@
-#summary Aplicación y administración de etiquetas (en construcción)
+#summary Aplicación y administración de etiquetas (articulo en estado alfa)
 #labels Phase-Deploy
 
 = Introducción =
