@@ -1,0 +1,33 @@
+#summary Administración Avanzada de perfiles de usuario.
+#labels Phase-Deploy
+
+= Introducción =
+
+El componente de _Administración Avanzada de Perfiles de Usuarios (AAPU)_ permite al administrador del sitio definir fácilmente que datos puede consultar, modificar y especificar un usuario de su perfil. 
+
+=Descripción general de la pantalla de administración=
+La pantalla de administración del componente AAPU consta de las siguientes secciones:
+  * Gestión de usuarios
+  * Gestión de pestañas
+  * Gestión de atributos
+  * Gestión de tipos de datos
+  * Configuración
+==Gestión de usuarios==
+Aquí se puede ver los usuario registrados en el sitio, junto con los datos relevantes.
+
+A los usuarios seleccionados se los puede borrar o editar, dependiendo de la acción elegida (al haber presionado algunos de los botones que se encuentran en la parte superior derecha). A un usuario también se le puede editar su perfil si se presiona su nombre o nombre de usuario.
+
+Se puede agregar un usuario presionando el botón _Crear_ que se encuentra en la parte superior derecha, junto con los otros dos botones. Si se decide por crear un nuevo usuario o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados dependerá de la configuración que haya realizado previamente el administrador. Aunque por defecto el componente solicita los siguientes datos:
+  * Email
+  * Email de respaldo
+  * Fecha de nacimiento
+  * Sexo
+  * Zonal de preferencia
+  * Contraseña 
+  * Nombre
+  * Nombre  de usuario
+Si el administrador así lo dispuso podrían aparecer mas campos requeridos en la pestaña básica y/o mas pestañas adicionales.
+==Gestión de pestañas==
+==Gestión de atributos==
+==Gestión de tipos de datos==
+==Configuración==
