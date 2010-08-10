@@ -1,4 +1,4 @@
-#summary Administración Avanzada de perfiles de usuario.
+#summary Administración Avanzada de perfiles de usuario. (en construcción)
 #labels Phase-Deploy
 
 = Introducción =
@@ -28,6 +28,32 @@ Se puede agregar un usuario presionando el botón _Crear_ que se encuentra en la
   * Nombre  de usuario
 Si el administrador así lo dispuso podrían aparecer mas campos requeridos en la pestaña básica y/o mas pestañas adicionales.
 ==Gestión de pestañas==
+Aquí se puede ver las distintas pestañas registradas por el administrador. Las pestañas que aquí figuran se podrán seleccionar en el perfil del usuario si las mismas contienen al menos un atributo definido para ser mostrado en esa pestaña.
+
+Con las pestañas listadas se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+Si se decide por crear una nueva pestaña o editar una existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Nombre de la pestaña
+  * Etiqueta (Frase a mostrar al usuario para que identifique la pestaña)
+  * Descripción
 ==Gestión de atributos==
+Aquí se puede ver los distintos atributos registradas por el administrador. Los atributos que aquí figuran aparecerán en la pestaña correspondiente en el perfil del usuario.
+
+Con los atributos listados se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+
+Si se decide por crear un nuevo atributo o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Nombre
+  * Etiqueta
+  * Descripción
+  * Comentarios
+  * Desde (desde cuando es valido el atributo. Implementación futura. Todavía no se utiliza)
+  * Hasta (hasta cuando es valido el atributo. Implementación futura. Todavía no se utiliza)
+  * Requerido (el atributo es requerido?)
+  * Publicado (el atributo va a ser mostrado en una pestaña?)
+  * Archivo con validadores (archivo PHP con la validación de los datos que recibe el atributo)
+  * Pestañas (permite elegir en que pestaña debe mostrarse el atributo. Si se elige _Hard Data_ se mostrara en la pestaña básica)
+  * Tipo de dato (permite elegir el tipo de dato que acepta el atributo)
+  * Lista de valores (datos especiales que necesita el atributo para funcionar)
 ==Gestión de tipos de datos==
 ==Configuración==
