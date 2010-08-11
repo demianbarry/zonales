@@ -78,3 +78,8 @@ Si se decide por crear un nuevo tipo de dato o editar uno existente, entonces ap
   * Descripción 
   * Archivo de renderizado (archivo PHP con la lógica necesaria para mostrar el atributo de ese tipo en pantalla)
 ==Configuración==
+=Renders=
+Los renders son la lógica que muestran por pantalla los tipos de datos soportados. Esta es su función principal. La otra función que tienen es indicar en que campo de la tabla _attribute_entities_ se guardara el valor que el usuario haya ingresado o elegido. Esto es porque AAPU esta diseñado para poder utilizarlo con cualquier tipo de dato.
+Los renders se encuentran en _RAIZ_DE_JOOMLA/administrator/com_aapu/plugins/renders_ y se reconocen porque su nombre respeta el siguiente formato *render_for_TIPODEDATO_data_type.php*
+=Validadores=
+Los validadores verifican que el dato ingresado por el usuario sea valido con respecto al tipo de dato, por ejemplo si el tipo de dato es INT se mostrara un mensaje de error si el usuario ingresa una palabra. Los validadores devuelven un mensaje de error si la validación no fue exitosa.
