@@ -55,5 +55,26 @@ Si se decide por crear un nuevo atributo o editar uno existente, entonces aparec
   * Pestañas (permite elegir en que pestaña debe mostrarse el atributo. Si se elige _Hard Data_ se mostrara en la pestaña básica)
   * Tipo de dato (permite elegir el tipo de dato que acepta el atributo)
   * Lista de valores (datos especiales que necesita el atributo para funcionar)
+  || *Tipo de dato* || *Valores esperados* ||
+  || BOOLEAN || _N/A_ ||
+  || COMBOBOX || v1,v2,...,vn o SQL ||
+  || DATE || _N/A_ ||
+  || DOUBLE || _N/A_ ||
+  || INT || _N/A_ ||
+  || LISTBOX || v1,v2,...,vn o SQL ||
+  || MODULE || nombre del modulo ||
+  || MULTI_LISTBOX || v1,v2,...,vn o SQL ||
+  || SEX || _N/A_ ||
+  || TEXT || _N/A_ ||
+  || ZONAL || _N/A_ ||
 ==Gestión de tipos de datos==
+Aquí se puede ver los distintos tipos de datos registrados por el administrador, junto con los predefinidos. Los tipos de datos que aquí figuran podrán ser elegidos en el momento de crear o editar un atributo.
+
+Con los atributos listados se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+
+Si se decide por crear un nuevo tipo de dato o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Etiqueta (nombre del tipo de dato que vera el usuario)
+  * Descripción 
+  * Archivo de renderizado (archivo PHP con la lógica necesaria para mostrar el atributo de ese tipo en pantalla)
 ==Configuración==
