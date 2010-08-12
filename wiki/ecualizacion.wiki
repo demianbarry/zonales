@@ -1,0 +1,15 @@
+#summary Ecualización de contenido por interés (en construcción)
+#labels Phase-Deploy
+
+= Introducción =
+
+Se decribira el filtrado del contenido de acuerdo a los intereses de los usuarios. Para lograr este objetivo se debe realizar lo siguiente:
+  * El usuario debe ecualizar temas de su interés indicándoles un peso que refleje su relevancia
+  * Se deben aplicar etiquetas (tags) al contenido que lo caractericen.  
+  * La búsqueda debe mostrar solo los resultados que respondan a la ecualización del usuario, ordenados por relevancia.
+
+=Ecualización por parte del usuario=
+=Etiquetado de contenido=
+=Análisis de contenido=
+=Búsqueda de contenido=
+Busqueda por nivel de coincidencia, peso segun cantidad de veces que se repite el termino, donde aparece (cuerpo, titulo, etc), relevancia segun ecualizador, etc. 
