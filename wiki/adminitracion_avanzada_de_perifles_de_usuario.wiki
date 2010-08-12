@@ -1,4 +1,4 @@
-#summary Administración Avanzada de perfiles de usuario. (en construcción)
+#summary Administración Avanzada de perfiles de usuario. (articulo en estado alfa)
 #labels Phase-Deploy
 
 = Introducción =
