@@ -9,7 +9,20 @@ Se decribira el filtrado del contenido de acuerdo a los intereses de los usuario
   * La búsqueda debe mostrar solo los resultados que respondan a la ecualización del usuario, ordenados por relevancia.
 
 =Ecualización por parte del usuario=
+El usuario tiene a su disposición un ecualizador que le permite indicar que tan importante es para el una categoría de contenido.
+
+El ecualizador consta de distintas bandas. Cada banda hace referencia a una categoría de contenido. Las bandas permiten indicar el nivel de interés del usuario por la categoría asociada. Cada banda permite especificar un nivel de interés de 0 (cero) a 100 (cien). Cada banda e independiente de las demás por lo tanto no importa que nivel de interés se especifique en cada banda, no afectara a las demás. Una vez indicado el nivel de interés deseado en todas las bandas deseadas, se deben guardar los cambios.
 =Etiquetado de contenido=
+El etiquetado manual se detallo en [etiquetado Aplicación y administración de etiquetas]
 =Análisis de contenido=
+Todo el contenido debe ser analizado para así descubrir sus palabras relevantes y poder categorizarlo. Esto se lleva a cabo mediante el indexado del contenido. El indexado es llevado a cabo por *Solr* y en base a cuanto contenido indexar hay dos formas de invocar el indexado:
+  * _Full Import_: indexa todo el contenido existente.
+  * _Delta Import_: indexa solo el contenido que no ha sido indexado hasta el momento, es decir que indexa el contenido que ha sido agregado luego del ultimo indexado.
+El indexado asigna un peso a cada palabra o frase relevante según la cantidad de veces que se repite en el contenido, en que parte del contenido aparece, criterios definidos por el administrador, etc.
 =Búsqueda de contenido=
-Busqueda por nivel de coincidencia, peso segun cantidad de veces que se repite el termino, donde aparece (cuerpo, titulo, etc), relevancia segun ecualizador, etc. 
+Cuando el usuario accede a una pagina que le muestra contenido, esta es mostrada de acuerdo al resultado del filtrado, que se ha realizado de acuerdo a la ecualización especificada por el usuario.
+
+El filtrado funciona de la siguiente manera: 
+  # Se analiza el ecualizador del usuario y se consideran las categorías con nivel de interés mayor a cero. Es decir, solo las categorías que le interesan al usuario.
+  # Se recupera el contenido que correspondan a las categorías consideradas en el punto anterior.
+  # Se ordena el contenido recuperado de acuerdo al peso calculado según el nivel coincidencia con el nivel de interés del usuario por esa categoría. Cada vez que una categoría coincide con la de algún contenido su peso asignado durante el indexado es utilizado para calcular un peso de ordenamiento considerando el peso de las demás categorías coincidentes.
