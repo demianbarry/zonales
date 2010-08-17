@@ -19,6 +19,8 @@ Todo el contenido debe ser analizado para así descubrir sus palabras relevantes
   * _Full Import_: indexa todo el contenido existente.
   * _Delta Import_: indexa solo el contenido que no ha sido indexado hasta el momento, es decir que indexa el contenido que ha sido agregado luego del ultimo indexado.
 El indexado asigna un peso a cada palabra o frase relevante según la cantidad de veces que se repite en el contenido, en que parte del contenido aparece, criterios definidos por el administrador, etc.
+
+Cada vez que se modifica algún contenido se realiza un _Delta Import_.
 =Búsqueda de contenido=
 Cuando el usuario accede a una pagina que le muestra contenido, esta es mostrada de acuerdo al resultado del filtrado, que se ha realizado de acuerdo a la ecualización especificada por el usuario.
 
