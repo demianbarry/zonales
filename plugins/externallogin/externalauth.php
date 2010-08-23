@@ -53,7 +53,8 @@ function facebookconnect($credentials,$options) {
 //
 //        $info[EMAIL] = $data[0]['email'];
         $info[EMAIL] = '';
-        $info[LABEL] = $info[EMAIL];
+        //$info[LABEL] = $info[EMAIL];
+        $info[LABEL] = $sessionData['uid'];
     }
     else {
         $info[STATUS] = Auth_FAILURE;
