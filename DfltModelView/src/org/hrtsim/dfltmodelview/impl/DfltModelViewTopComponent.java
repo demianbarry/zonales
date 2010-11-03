@@ -12,7 +12,6 @@ import org.hrtsim.rttaskdef.PeriodicTaskDef;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
-//import org.openide.util.ImageUtilities;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.Lookup;
 import org.openide.windows.CloneableTopComponent;
@@ -33,18 +32,14 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
     public DfltModelViewTopComponent() {
         BaseModel baseModel = Lookup.getDefault().lookup(BaseModel.class);
         EventList<PeriodicTaskDef> tasksDefs = new BasicEventList<PeriodicTaskDef>();
-        //tasksDefs.addAll(baseModel.getPeriodicTasks());
         tasksDefs.addAll(baseModel.getRtsSystem().getPeriodicTaskDefs());
-        SortedList<PeriodicTaskDef> sortedTaskDefs = new SortedList<PeriodicTaskDef>(tasksDefs, new IssueComparator());
-        this.taskDefTableModel =
-                new EventTableModel<PeriodicTaskDef>(tasksDefs, new IssueTableFormat());
+        SortedList<PeriodicTaskDef> sortedTaskDefs = new SortedList<PeriodicTaskDef>(tasksDefs, new TaskDefComparator());
+        this.taskDefTableModel = new EventTableModel<PeriodicTaskDef>(tasksDefs, new TaskDefTableFormat());
         System.out.println(taskDefTableModel);
 
         initComponents();
         setName(NbBundle.getMessage(DfltModelViewTopComponent.class, "CTL_DfltModelViewTopComponent"));
         setToolTipText(NbBundle.getMessage(DfltModelViewTopComponent.class, "HINT_DfltModelViewTopComponent"));
-//        setIcon(ImageUtilities.loadImage(ICON_PATH, true));
-
     }
 
     /** This method is called from within the constructor to
@@ -103,7 +98,7 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
                             .addComponent(jScrollPane1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -222,7 +217,7 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
         this.taskDefTableModel = taskDefTableModel;
     }
 
-    public class IssueComparator implements Comparator<PeriodicTaskDef> {
+    public class TaskDefComparator implements Comparator<PeriodicTaskDef> {
 
         public int compare(PeriodicTaskDef o1, PeriodicTaskDef o2) {
             // periodos
@@ -246,7 +241,7 @@ public final class DfltModelViewTopComponent extends CloneableTopComponent {
         }
     }
 
-    public class IssueTableFormat implements TableFormat<PeriodicTaskDef> {
+    public class TaskDefTableFormat implements TableFormat<PeriodicTaskDef> {
 
         public int getColumnCount() {
             return 5;

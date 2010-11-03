@@ -1,9 +1,9 @@
 package org.hrtsim.dfltmodelview;
 
+import org.hrtsim.basemodel.api.BaseModel;
 import org.hrtsim.dfltmodelview.impl.DfltModelViewSupport;
 import org.hrtsim.modelview.api.ModelView;
 import org.openide.loaders.MultiDataObject;
-import org.openide.util.lookup.ServiceProvider;
 import org.openide.windows.CloneableOpenSupport;
 
 /**
@@ -18,6 +18,10 @@ public class DfltModelView implements ModelView {
     }
 
     public void show() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void show(BaseModel baseModel) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
