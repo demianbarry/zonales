@@ -1,0 +1,17 @@
+#summary One-sentence summary of this page.
+#labels Joomla1.6,características,análisisdeimpacto
+
+= Introducción =
+
+Se pretende plasmar en esta página las novedades de Joomla 1.6, analizar los cambios y mejoras introducidos y analizar el impacto sobre el proyecto zonales.
+
+= Análisis de la versión =
+
+A modo de introducción al tema, vale la pena leer el siguiente artículo:
+
+[http://www.gnumla.com/articulos/joomla-16-si-joomla-16-no-todo-lo-que-necesitas-saber.html]
+
+
+
+
+
