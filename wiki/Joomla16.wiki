@@ -38,3 +38,7 @@ Podemos resumir el proceso de migración en de la siguiente forma:
   * Modificaciones realizadas al core de Joomla! 1.5: Debe analizarse si es necesario realizarlas en la nueva versión, y en caso afirmativo deben realizarse nuevamente sobre la nueva arquitectura. 
 
 == Análisis de extensiones de Zonales ==
+
+|| Extensión || Tipo || Necesaria en 1.6? || Tareas para migración || Observaciones ||
+|| Joomla ACL || 3ros. sin modif. || NO || || Joomla 1.6 ya incluye ACL||
+|| JXComments || 3ros. sin modif. || NS/NC || Buscar otra || No actualizada para 1.6 ||
