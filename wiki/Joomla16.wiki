@@ -11,18 +11,30 @@ A modo de introducción al tema, vale la pena leer el siguiente artículo:
 
 [http://www.gnumla.com/articulos/joomla-16-si-joomla-16-no-todo-lo-que-necesitas-saber.html]
 
+Existe un componente denominado JUpgrade que en teoría realiza automáticamente la migración, generando una nueva instancia de Joomla 1.6 a partir de una 1.5 exitente.
 
+Por el momento está mayormente probada utilizando la versión Joomla 1.5.22, y no recomiendan su uso con una versión anterior a la 1.5.11. Asimismo, solo se migra por el momento el core. La migración de extensiones de terceros está en proceso de desarrollo.
+
+[http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6#Upgrading]
 
 == Lista de novedades y cambios ==
 
-En el sitio de documentación oficial de Joomla! podemos encontrar las novedades de la versión. Hay que prestar especial atención a la sección *Desarrolladores* donde detalla las funciones deprecadas, nuevas funciones, cambios en la base de datos, etc. Deben ser tenidos en cuenta para la revisión del código.
+En el sitio de documentación oficial de Joomla! podemos encontrar las novedades de la versión. Hay que prestar especial atención a la sección *Desarrolladores* donde se detallan los cambios realizados. Deben ser tenidos en cuenta para la revisión del código.
 
 [http://docs.joomla.org/What%27s_new_in_Joomla_1.6]
 
-= Migración de 1.5 a 1.6 =
+= Migración de Zonales de Joomla! 1.5 a 1.6 =
 
 Dado la magnitud de los cambios realizados, no es posible utilizar nada de lo existente sin una revisión y actualización previa.
 
 Podemos resumir el proceso de migración en de la siguiente forma:
 
-  * 
+  * Debe revisarse la lista de extensiones completa que se utilizaron hasta el momento en Zonales sobre Joomla! 1.5 para determinar, teniendo en cuenta las características de Joomla! 1.6 cuales siguen siendo necesarias y cuales no.
+  * Extensiones de terceros sin modificar que utilizamos en Zonales: checkear la existencia de versiones compatibles con Joomla! 1.6.
+  * Extensiones de terceros modificadas por el equipo de trabajo: además de checkear si existen nuevas versiones debe analizarse si se pueden realizar las mismas modificaciones.
+  * Extensiones desarrolladas por el equipo de trabajo: deben revisarse y actualizarse teniendo en cuenta las nuevas características de Joomla 1.6, la lista de funciones nuevas y deprecadas, cambios en la base de datos, etc.
+  * Para las extensiones de terceros que no estén actualizadas para Joomla! 1.6, deberá buscarse alguna alternativa o desarrollar una propia.
+  * Template: debe modificarse para adaptarlo a la nueva especificación de templates. Existe un instructivo en "Documentación/Joomla 1.6" para tal fin.
+  * Modificaciones realizadas al core de Joomla! 1.5: Debe analizarse si es necesario realizarlas en la nueva versión, y en caso afirmativo deben realizarse nuevamente sobre la nueva arquitectura. 
+
+== Análisis de extensiones de Zonales ==
