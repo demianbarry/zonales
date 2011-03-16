@@ -41,7 +41,7 @@ Podemos resumir el proceso de migración en de la siguiente forma:
 
 || *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
 || Joomla ACL || 3ros. sin modif. || NO || - || Joomla 1.6 ya incluye ACL||
-|| JXComments || 3ros. sin modif. || NS/NC || Buscar otra || No actualizada para 1.6 ||
+|| JXComments || 3ros. sin modif. <br> Prueba || NS/NC || Buscar otra || No actualizada para 1.6 ||
 
 = Otros links de interés =
 
