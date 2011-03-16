@@ -13,5 +13,6 @@ A modo de introducción al tema, vale la pena leer el siguiente artículo:
 
 
 
+== Lista de novedades y cambios ==
 
-
+En el sitio de documentación oficial de Joomla! podemos encontrar las novedades de la versión. Hay que prestar especial atención a la sección *Desarrolladores* donde detalla las funciones deprecadas, nuevas funciones, cambios en la base de datos, etc. Deben ser tenidos en cuenta para la revisión del código.
