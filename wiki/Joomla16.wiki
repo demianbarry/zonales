@@ -40,8 +40,18 @@ Podemos resumir el proceso de migración en de la siguiente forma:
 == Análisis de extensiones de Zonales ==
 
 || *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
-|| Joomla ACL || 3ros. sin modif. || NO || - || Joomla 1.6 ya incluye ACL||
-|| JXComments || 3ros. sin modif. || NS/NC || Buscar otra || No actualizada para 1.6 ||
+|| Joomla ACL || 3ros. sin modif. || NO || Joomla 1.6 ya incluye ACL || Componente, módulo y plugin no son necesarios en Joomla 1.6 ||
+|| JXComments || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
+|| CKEditor || 3ros. sin modif. || SI || Instalar artof editor || artof editor es CKEditor con un plugin y tiene una versión para Joomla 1.6 ||
+|| JXLibraries || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
+|| YooSearch || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
+|| Yoo Efects || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
+|| JComments  || 3ros. sin modif. || REVISAR - Probablemente NO || No actualizada para 1.6 || - ||
+|| JoomlaXplorer || 3ros. sin modif. || NO || No actualizada para 1.6 || Si es necesario un gestor de archivos para Joomla, buscar otro actualizado para 1.6, por ejemplo eXtplorer ||
+|| Easy SQL  || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
+|| Cliente PHP para Solr  || 3ros. sin modif. || SI || Revisar compatibilidad || Esta librería es PHP, independiente de Joomla, debería funcionar aunque deben revisarse las extensiones Solr ||
+|| Custom Properties (Tags) || 3ros. modif. || SI || No actualizada para 1.6 || Probablemente sea muy dificil de adaptar. Ver desarrollo de extensión propia. Analizar categorías jerárquicas de Joomla 1.6 ||
+
 
 = Otros links de interés =
 
