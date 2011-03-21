@@ -13,7 +13,7 @@ A modo de introducción al tema, vale la pena leer el siguiente artículo:
 
 Existe un componente denominado JUpgrade que en teoría realiza automáticamente la migración, generando una nueva instancia de Joomla 1.6 a partir de una 1.5 exitente.
 
-Por el momento está mayormente probada utilizando la versión Joomla 1.5.22, y no recomiendan su uso con una versión anterior a la 1.5.11. Asimismo, solo se migra por el momento el core. La migración de extensiones de terceros está en proceso de desarrollo.
+Por el momento está mayormente probado utilizando la versión Joomla 1.5.22, y no recomiendan su uso con una versión anterior a la 1.5.11. Asimismo, solo se migra por el momento el core. La migración de extensiones de terceros está en proceso de desarrollo.
 
 [http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6#Upgrading]
 
