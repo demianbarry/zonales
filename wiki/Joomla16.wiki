@@ -39,24 +39,55 @@ Podemos resumir el proceso de migración en de la siguiente forma:
 
 == Análisis de extensiones de Zonales ==
 
-|| *Extensiones de terceros sin modificar* ||
+=== Extensiones de terceros sin modificar ===
+
 || *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
-|| Joomla ACL || 3ros. sin modif. || NO || Joomla 1.6 ya incluye ACL || Componente, módulo y plugin no son necesarios en Joomla 1.6 ||
-|| JXComments || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
-|| CKEditor || 3ros. sin modif. || SI || Instalar artof editor || artof editor es CKEditor con un plugin y tiene una versión para Joomla 1.6. Tmb. existe JCK Editor para J 1.6 ||
-|| JXLibraries || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
-|| YooSearch || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
-|| Yoo Efects || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
-|| JComments  || 3ros. sin modif. || REVISAR - Probablemente NO || No actualizada para 1.6 || - ||
-|| JoomlaXplorer || 3ros. sin modif. || NO || No actualizada para 1.6 || Si es necesario un gestor de archivos para Joomla, buscar otro actualizado para 1.6, por ejemplo eXtplorer ||
-|| Easy SQL  || 3ros. sin modif. || REVISAR || No actualizada para 1.6 || - ||
-|| Cliente PHP para Solr  || 3ros. sin modif. || SI || Revisar compatibilidad || Esta librería es PHP, independiente de Joomla, debería funcionar aunque deben revisarse las extensiones Solr ||
+|| Joomla ACL || Componente + Módulo + Plugin || NO || Joomla 1.6 ya incluye ACL || - ||
+|| JXComments || Paquete || REVISAR || No actualizada para 1.6 || - ||
+|| CKEditor || Paquete || SI || Instalar artof editor || artof editor es CKEditor con un plugin y tiene una versión para Joomla 1.6. Tmb. existe JCK Editor para J 1.6 ||
+|| JXLibraries || Librería || REVISAR || No actualizada para 1.6 || - ||
+|| YooSearch || Módulo || SI || No actualizada para 1.6 || Analizar alternativas ||
+|| Yoo Efects || Módulo || SI || No actualizada para 1.6 || Analizar alternativas ||
+|| JComments  || Módulo || REVISAR - Probablemente NO || No actualizada para 1.6 || - ||
+|| JoomlaXplorer || Componente || NO || No actualizada para 1.6 || Si es necesario un gestor de archivos para Joomla, buscar otro actualizado para 1.6, por ejemplo eXtplorer ||
+|| Easy SQL  || Componente || REVISAR || No actualizada para 1.6 || - ||
+|| Cliente PHP para Solr  || Librería PHP || SI || Revisar compatibilidad || Esta librería es PHP, independiente de Joomla, debería funcionar aunque deben revisarse las extensiones Solr ||
 
+=== Extensiones de terceros modificar ===
 
-|| Custom Properties (Tags) || 3ros. modif. || SI || No actualizada para 1.6 || Probablemente sea muy dificil de adaptar. Ver desarrollo de extensión propia. Analizar categorías jerárquicas de Joomla 1.6 ||
-|| Plg. Like  || 3ros. modif. || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
-|| Plg. Denunciar  || 3ros. modif. || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
+|| *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
+|| Custom Properties (Tags) || Componente || SI || No actualizada para 1.6 || Probablemente sea muy dificil de adaptar. Ver desarrollo de extensión propia. Analizar categorías jerárquicas de Joomla 1.6 ||
+|| Plg. Like  || Plugin || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
+|| Plg. Denunciar  || Plugin || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
 
+=== Extensiones de terceros modificar ===
+
+|| *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
+|| Admin. Avanzada de Perfiles de Usuario (AAPU) || Componente || REVISAR || Adaptar código fuente || Definir si va a utilizarse en Zonales. Deben terminarse varias características que quedaron pendientes ||
+|| Admin. de alias de Usuarios || Componente || SI || Adaptar código fuente || Ver integración con ZLogin en un paquete ||
+|| Ecualizador de intereses || Componente || SI || Adaptar código fuente || - ||
+|| Conjunto de banners para Zonales (imágenes) || Imágenes || SI || Chequear carpeta de banners || Conjunto de imágenes, solo hay que descomprimir donde Joomla guarda los banners ||
+|| Zonales Core || Componente || SI || Adaptar código fuente || - ||
+|| Modificación a la administración de contenidos de Joomla || Modif. al core || SI || Revisar el core de Joomla 1.6 y realizar las mismas modificaciones || Si es posible, realizar los cambios por plugin y no modificar el core ||
+|| Modificación a los menúes de Joomla || Modif. al core || SI || Revisar el core de Joomla 1.6 y realizar las mismas modificaciones || Si es posible, realizar los cambios por plugin y no modificar el core ||
+|| Modificación al componente de búsqueda de Joomla || Modif. al core || SI || Revisar el core de Joomla 1.6 y realizar las mismas modificaciones || Si es posible, realizar los cambios por plugin y no modificar el core ||
+|| Modificación al componente de admin. de Usuarios de Joomla || Modif. al core || SI || La funcionalidad modificada se puede lograr mediante com_aapu, evitando así modificar el core || - ||
+|| Librerías e imágenes necesarias para ZLogin || Librerías || SI || Depende de la revisión de Zlogin || Conjunto de librerías necesarias para ZLogin. Adaptar al nuevo tipo de extensión "librería" de Joomla 1.6 ||
+|| Librerías G2P || Librerías || SI || Depende de la revisión de las extensiones que utilizan las librerías || Adaptar al nuevo tipo de extensión "librería" de Joomla 1.6 ||
+|| Admin. de alias de Usuarios || Módulo || SI || Adaptar código fuente || Integrar instalador con com_alias ||
+|| Selector de Zonal || Módulo || REVISAR || Adaptar código fuente || Decidir si se sigue utilizando el este _combozona_ o se vuelve al mapa ||
+|| Ecualizador de intereses || Módulo || SI || Adaptar código fuente || Integrar instalador con com_eqzonales  ||
+|| La voz del vecino || Módulo || SI || Adaptar código fuente || - ||
+|| Menú Editor || Módulo || SI || Adaptar código fuente || - ||
+|| Menú dinámico para Zonales || Módulo || SI || Adaptar código fuente || - ||
+|| Visualización de Mensajes || Módulo || SI || Adaptar código fuente || - ||
+|| Alias Notice || Módulo || SI || Adaptar código fuente || Integrar instalador con com_alias ||
+|| Información de sesión del usuario || Módulo || SI || Adaptar código fuente || Integrar con ZLogin a com_aapu ||
+|| Soy Corresponsal || Módulo || SI || Adaptar código fuente || - ||
+|| Registro de Usuarios || Módulo || SI || Adaptar código fuente || Esta funcionalidad debería ser parte de com_aapu. Ya estaba construida una buena parte en el mismo ||
+|| Zonales Login || Módulo || SI || Adaptar código fuente || Integrar instalador con demás extensiones relacionadas ||
+|| Zonal Actual || Módulo || SI || Adaptar código fuente || Ver integración con mapa si se vuelve a utilizar ||
+|| Menú Editor || Módulo || SI || Adaptar código fuente || - ||
 
 
 = Otros links de interés =
