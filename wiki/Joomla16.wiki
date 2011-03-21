@@ -60,7 +60,7 @@ Podemos resumir el proceso de migración en de la siguiente forma:
 || Plg. Like  || Plugin || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
 || Plg. Denunciar  || Plugin || SI || No actualizada para 1.6 || Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad ||
 
-=== Extensiones de terceros modificar ===
+=== Extensiones desarrolladas desde cero ===
 
 || *Extensión* || *Tipo* || *Necesaria en 1.6?* || *Tareas para migración* || *Observaciones* ||
 || Admin. Avanzada de Perfiles de Usuario (AAPU) || Componente || REVISAR || Adaptar código fuente || Definir si va a utilizarse en Zonales. Deben terminarse varias características que quedaron pendientes ||
@@ -87,8 +87,16 @@ Podemos resumir el proceso de migración en de la siguiente forma:
 || Registro de Usuarios || Módulo || SI || Adaptar código fuente || Esta funcionalidad debería ser parte de com_aapu. Ya estaba construida una buena parte en el mismo ||
 || Zonales Login || Módulo || SI || Adaptar código fuente || Integrar instalador con demás extensiones relacionadas ||
 || Zonal Actual || Módulo || SI || Adaptar código fuente || Ver integración con mapa si se vuelve a utilizar ||
-|| Menú Editor || Módulo || SI || Adaptar código fuente || - ||
-
+|| Tagueo de artículos || Plugin || SI || Adaptar código fuente || - ||
+|| Proxy para autenticación || Plugin || SI || Adaptar código fuente || Integrar instalador con Zlogin ||
+|| Zonales Content || Plugin || SI || Adaptar código fuente || - ||
+|| Botón en el editor para tagueo de artículos || Plugin || SI || Adaptar código fuente || - ||
+|| Eventos del ecualizador || Plugin || SI || Adaptar código fuente || Integrar instalador con Ecualizador de Intereses ||
+|| Autenticación de usuarios utilizando protocolos externos || Plugin || SI || Adaptar código fuente || Integrar instalador con ZLogin ||
+|| Indexación de contenidos utilizando Solr || Plugin || SI || Adaptar código fuente || Integrar instalador con demás extensiones relacionadas con el vínculo con Solr ||
+|| Búsqueda de contenidos utilizando Solr || Plugin || SI || Adaptar código fuente || Integrar instalador con demás extensiones relacionadas con el vínculo con Solr ||
+|| Autotaggeo || Plugin || SI || Adaptar código fuente || - ||
+|| Template para Zonales Z1 || Template || SI || Adaptar a nuevos templates de Joomla 1.6 || Instructivo en documentación para realizar migración ||
 
 = Otros links de interés =
 
