@@ -1,11 +1,15 @@
 #summary Autoetiquetado de contenido (articulo en estado alfa)
 
-= Introducción =
+=Introducción=
 
 El etiquetado automático (autotagging) se ofrece en Zonales como un modo de colaborar con la carga de contenido. El objetivo fundamental es que tanto en la carga manual de contenidos como en su incorporación automática mediante medios de sindicación (Atom, RSS, etc.) el editor cuente con opciones de tags sugeridas por el sistema.
 
-= Funcionamiento básico =
+=Funcionamiento=
 El sistema consta de dos partes. En el sitio de Zonales un plugin Joomla! se dispara en el evento de guardar un contenido, ejecutando un _request_ *HTTP GET* a un _servlet_ Java. Este _servlet_ devuelve un lista de tags sugeridos para el contenido.
+
+==Servlet (En desarrollo)==
+Actualmente, el _servlet_ espera por un *GET HTTP* en donde se le indican id del contenido, la lista de _fields_ para su búsqueda en el índice de Solr y la lista de tags a analizar. El _servlet_ ejecuta una búsqueda en el índice de Solr tag por tag, y discrimina de esta manera cuales son relevantes. Con estos últimos genera un lista que retorna como resultado.
+
 
 = Etiquetar un elemento soportado=
 En la pantalla de edición del elemento se encontrara un botón que al presionarlo mostrara una pantalla que permitirá la asignación o desvinculación de las etiquetas al elemento.
