@@ -1,0 +1,22 @@
+#summary One-sentence summary of this page.
+#labels infraestructura,configuración,instalación,problemas,soluciones
+
+= Introducción =
+
+Página destinada a listar los problemas surgidos en la configuración de infraestructura de Zonales y las guías para su resolución
+
+
+= Detalles =
+
+== Agregar puertos de escucha a Apache ==
+
+*Descripción:* Al intentar agregar nuevos puertos de escucha al servidor apache, no iniciaba debido a que no tenía permisos para utilizar esos sockets.
+
+*Solución:* El problema era con la configuración de SELinux, debe habilitarse el puerto con el siguiente comando:
+  * semanage port -a -t http_port_t -p tcp 81
+
+Para listar todas las reglas referentes a puertos en SELInux, utilizar:
+  * semanage port -l
+
+El sitio de CentOS proporciona un instructivo completo referente a SELinux:
+  * http://wiki.centos.org/HowTos/SELinux
