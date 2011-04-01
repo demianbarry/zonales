@@ -20,3 +20,16 @@ Para listar todas las reglas referentes a puertos en SELInux, utilizar:
 
 El sitio de CentOS proporciona un instructivo completo referente a SELinux:
   * http://wiki.centos.org/HowTos/SELinux
+
+== Agregar reglas a SELinux a partir de audit ==
+
+
+*Descripción:* Al intentar conectar a MySQL desde phpmyadmin, puede obtenerse un mensaje en el audit de SELinux, indicando que httpd no puede acceder al socket de MySQL. Ejemplo:
+type=SYSCALL msg=audit(1301675951.666:103): arch=40000003 syscall=4 success=yes exit=1843546 a0=4 a1=b7d96000 a2=1c215a a3=bfd5c0f8 items=0 ppid=6166 pid=6167 auid=501 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=pts0 ses=1 comm="load_policy" exe="/usr/sbin/load_policy" subj=user_u:system_r:load_policy_t:s0 key=(null)
+type=AVC msg=audit(1301676035.624:104): avc:  denied  { name_connect } for  pid=6302 comm="httpd" dest=3306 scontext=root:system_r:httpd_t:s0 tcontext=system_u:object_r:mysqld_port_t:s0 tclass=tcp_socket
+
+
+*Solución:* Pueden crearse módulos de reglas de SELinux a partir de mensajes del audit, mediante el siguiente comando:
+  * grep httpd /var/log/audit/audit.log | audit2allow -M postgreylocal
+Luego debe activarse el módulo:
+  * semodule -i postgreylocal.pp 
