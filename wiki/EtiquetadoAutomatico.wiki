@@ -19,11 +19,9 @@ El servlet cuenta con tres clases:
 Esta clase cuenta con dos métodos: _getSteemedTags_ y _getRelevantTags_.
 
 ====getSteemedTags====
-
- Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho.
-     * Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
-     *
-     * @param tags Array de strings donde los índices impares se espera que sean ids y los pares tags
-     * @return Mapa de tags lematizados con un set de ids donde han sido encontrados
-     */
-    public static HashMap<String, Set<Integer>> getSteemedTags(String[] tags)
+Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho. Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
+  * Parámetros:
+      tags: Array de strings donde los índices impares se espera que sean ids y los pares tags.
+  * Retorno: Mapa de tags lematizados con un set de ids donde han sido encontrados.
+  * Prototipo:
+public static HashMap<String, Set<Integer>> getSteemedTags(String[] tags)
