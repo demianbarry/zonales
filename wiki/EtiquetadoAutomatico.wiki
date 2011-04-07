@@ -9,3 +9,16 @@ El sistema consta de dos partes. En el sitio de Zonales un plugin Joomla! se dis
 
 ==Servlet (En desarrollo)==
 Actualmente, el _servlet_ espera por un *GET HTTP* en donde se le indican id del contenido, la lista de _fields_ para su búsqueda en el índice de Solr y la lista de tags a analizar. El _servlet_ ejecuta una búsqueda en el índice de Solr tag por tag, y discrimina de esta manera cuales son relevantes. Con estos últimos genera un lista que retorna como resultado.
+
+El servlet cuenta con tres clases:
+  * RankingTermsFrequencyConstructor 
+  * TagsAnalizer
+  * TagsFilter 
+
+   * Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho.
+     * Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
+     *
+     * @param tags Array de strings donde los índices impares se espera que sean ids y los pares tags
+     * @return Mapa de tags lematizados con un set de ids donde han sido encontrados
+     */
+    public static HashMap<String, Set<Integer>> getSteemedTags(String[] tags)
