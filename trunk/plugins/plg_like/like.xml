@@ -77,6 +77,6 @@
     <files>
         <filename plugin="like">like.php</filename>
         <filename>like/thumbsup2.jpg</filename>
-        <filename>parameterTypes/multilist.php</filename>
+        <!--filename>parameterTypes/multilist.php</filename-->
     </files>
 </install>
