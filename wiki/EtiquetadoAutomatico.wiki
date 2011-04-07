@@ -12,10 +12,12 @@ Actualmente, el _servlet_ espera por un *GET HTTP* en donde se le indican id del
 
 El servlet cuenta con tres clases:
   * RankingTermsFrequencyConstructor 
-  * TagsAnalizer
-  * TagsFilter 
+  * TagsAnalizer (el servlet propiamente dicho)
+  * TagsFilter
 
-   * Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho.
+`getSteemedTags`
+
+ Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho.
      * Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
      *
      * @param tags Array de strings donde los índices impares se espera que sean ids y los pares tags
