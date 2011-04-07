@@ -57,5 +57,16 @@ El método recibe una lista de fields y analiza en cada uno de ellos la ocurrenc
   * Prototipo: 
 `public TreeMap<String, Integer> getTermFreq(String[] fields, int id) throws Throwable`
 
+==Client Side==
+En *components\com_customproperties\admin\views\hierarchictagging\view.html.php* se encuentra la función *setSuggestTags*. Esta función realiza el _request_ al servlet indicando los parámetros requeridos y genera una lista de tags sugeridos, que luego puede ser usada por el componente de selección de tags para "marcar" los mismos.
+
+
+  * Parámetros:
+      $ce_name: tipo de contenido, pues está prevista la posibilidad de sugerir tags para todo tipo de contenidos (el _servlet_ actualmente ignora este parámetro).
+      $contentId: id del contenido a buscar.
+  * Retorno: _void_.
+  * Prototipo: 
+      `function setSuggestTags($ce_name,$contentId);`
+
 ==Estado==
 *Esta funcionalidad está en desarrollo.* La versión original sugería tags en función de las palabras de un contenido. Esto no es óptimo porque las palabras no definen la temática de un contenido. Muchas veces son frases o construcciones complejas las que cumplen este cometido. Se deben investigar más a fondo las funciones de *Information Retrieval* de Solr. La implementación que estaba en desarrollo al momento de congelar el mismo buscaba el contenido en el índice de Solr a través de cada tag, y, si lo encontraba, sugería ese tag. Esto tampoco es óptimo porque obliga a realizar una búsqueda por cada tag, para devolver sólo un conjunto reducido como sugerencia.
