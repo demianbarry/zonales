@@ -25,3 +25,9 @@ Este método lematiza tags recibidos como un array donde los índices impares co
   * Retorno: Mapa de tags lematizados con un set de ids donde han sido encontrados.
   * Prototipo:
 `public static HashMap<String, Set`<Integer>`> getSteemedTags(String[] tags)`
+
+====getRelevantTags====
+Busco en el índice el id del documento (id interno del índice) en función del id del artículo. Podemos recuperar las frecuencias de los términos en función de este id interno del índice, por eso lo recuperamos.
+  * Parámetros: 
+      fields: Array 
+      tags: Array de 
