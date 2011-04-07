@@ -43,3 +43,19 @@ Esta clase es el _servlet_ que atiende el requerimiento HTTP GET. Si recibe un H
 Método que se ejecuta al recibir el _servlet_ requerimientos HTTP GET o POST. El método recupera los parámetros *tags*, *fields* y *id* del requerimiento, y ejecuta las funciones necesarias para retornar como respuesta la lista de *tags sugeridos*.
   * Request: http://ip_tomcat:puerto_tomcat/servlet/TagsAnalizer?tags=id_tag1,tag1,id_tag2,tag2&fields=field1,field2,field3&id=id_contenido
   * Response: tag_relevante1,tag_relevante2,tag_relevante3
+
+===RankingTermsFrequencyConstructor===
+Esta clase posee un único método que genera un mapa de términos y sus respectivas frecuencias ponderadas dentro del índice.
+
+====getTermFreq====
+El método recibe una lista de fields y analiza en cada uno de ellos la ocurrencia de los términos presentes en el documento. Si un término aparece en el título, por ejemplo, su frecuencia se multiplica por 5, por considerarse el título como más importante que la introducción o el cuerpo del contenido.
+
+  * Parámetros:
+      fields: Array que contiene los _fields_ de Solr que se utilizarán en la búsqueda y ponderación.
+      id: id del contenido a buscar.
+  * Retorno: TreeMap de términos con sus frecuencias ponderadas, ordenados en forma decreciente.
+  * Prototipo: 
+`public TreeMap<String, Integer> getTermFreq(String[] fields, int id) throws Throwable`
+
+==Estado==
+*Esta funcionalidad está en desarrollo.* La versión original sugería tags en función de las palabras de un contenido. Esto no es óptimo porque las palabras no definen la temática de un contenido. Muchas veces son frases o construcciones complejas las que cumplen este cometido. Se deben investigar más a fondo las funciones de *Information Retrieval* de Solr. La implementación que estaba en desarrollo al momento de congelar el mismo buscaba el contenido en el índice de Solr a través de cada tag, y, si lo encontraba, sugería ese tag. Esto tampoco es óptimo porque obliga a realizar una búsqueda por cada tag, para devolver sólo un conjunto reducido como sugerencia.
