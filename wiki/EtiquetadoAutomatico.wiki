@@ -37,3 +37,7 @@ Busco en el índice de Solr el id del documento (id interno del índice) en func
 `public static TreeMap<String, Integer> getRelevantTags(String[] fields, String[] tags, int id);`
 
 ===TagsAnalizer===
+Esta clase es el _servlet_ que atiende el requerimiento HTTP GET. Si recibe un HTTP POST, ejecuta el mismo método que para el GET.
+
+====doGet====
+Método que se ejecuta al recibir el _servlet_ requerimientos HTTP GET o POST. El método recupera los parámetros *tags*, *fields* y *id* del requerimiento, y ejecuta las funciones necesarias para retornar como respuesta la lista de *tags sugeridos*.
