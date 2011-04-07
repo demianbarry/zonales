@@ -35,3 +35,5 @@ Busco en el índice de Solr el id del documento (id interno del índice) en func
   * Retorno: TreeMap que contiene los tags relevantes con su id.
   * Prototipo: 
 `public static TreeMap<String, Integer> getRelevantTags(String[] fields, String[] tags, int id);`
+
+===TagsAnalizer===
