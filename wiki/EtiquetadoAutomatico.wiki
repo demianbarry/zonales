@@ -24,4 +24,4 @@ Este método lematiza tags recibidos como un array donde los índices impares co
       tags: Array de strings donde los índices impares se espera que sean ids y los pares tags.
   * Retorno: Mapa de tags lematizados con un set de ids donde han sido encontrados.
   * Prototipo:
-public static HashMap<String, Set<Integer>> getSteemedTags(String[] tags)
+`public static HashMap<String, Set<Integer`*`>> getSteemedTags(String[] tags)`
