@@ -41,3 +41,6 @@ Esta clase es el _servlet_ que atiende el requerimiento HTTP GET. Si recibe un H
 
 ====doGet====
 Método que se ejecuta al recibir el _servlet_ requerimientos HTTP GET o POST. El método recupera los parámetros *tags*, *fields* y *id* del requerimiento, y ejecuta las funciones necesarias para retornar como respuesta la lista de *tags sugeridos*.
+  * Request: http://ip_tomcat:puerto_tomcat/servlet/TagsAnalizer?tags=id_tag1,tag1,id_tag2,tag2&fields=field1,field2,field3&id=id_contenido
+  * Response: tag_relevante1,tag_relevante2,tag_relevante3
+
