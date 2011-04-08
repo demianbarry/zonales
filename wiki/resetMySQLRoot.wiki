@@ -10,8 +10,9 @@ Instructivo para resetear el password de root de MYSQL
 
 To reset a root password that you forgot (using paths on our system): 
 
-[root@host root]#killall mysqld
-[root@host root]#/usr/libexec/mysqld -Sg --user=root &
+killall mysqld
+
+/usr/libexec/mysqld -Sg --user=root &
 
 You may have better luck with: 
 
@@ -19,7 +20,8 @@ mysqld --skip-grant-tables --user=root
 
 Go back into MySQL with the client: 
 
-[root@host root]# mysql
+mysql
+
 Welcome to the MySQL monitor.  Commands end with ; or g.
 Your MySQL connection id is 1 to server version: 3.23.41
 Type 'help;' or 'h' for help. Type 'c' to clear the buffer.
@@ -35,4 +37,7 @@ Rows matched: 2  Changed: 2  Warnings: 0
 mysql> flush privileges;
 Query OK, 0 rows affected (0.01 sec)
 mysql> exit;
-[root@host root]#killall mysqld
+
+killall mysqld
+
+service mysqld start
