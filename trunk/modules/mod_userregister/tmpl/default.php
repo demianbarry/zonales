@@ -546,13 +546,13 @@ foreach ($providerslist as $prov) {
             <tr>
                 <td height="15" colspan="2">
                     <a name="passlocation"></a>
-                    <label class="userregister" style="display: none;"
+                    <label class="userregister" style="display: block;"
                            id="pwmsg"
                            for="passwordt"
                            >
                         <?php echo '*' . $passwordMessage ?>:
                     </label>
-                    <input style="display: none;"
+                    <input style="display: block;"
                            class=""
                            type="password"
                            id="passwordt"
@@ -564,13 +564,13 @@ foreach ($providerslist as $prov) {
             </tr>
             <tr>
                 <td height="15" colspan="2">
-                    <label class="userregister" style="display: none;"
+                    <label class="userregister" style="display: block;"
                            id="pw2msg"
                            for="password2"
                            >
                         <?php echo '*' . $verifyPasswordMessage ?>:
                     </label>
-                    <input style="display: none;"
+                    <input style="display: block;"
                            class=""
                            type="password"
                            id="password2"
