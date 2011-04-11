@@ -67,7 +67,7 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
         $db =& JFactory::getDBO();
         $selectProviders = 'select p.name, p.icon_url, g.name as groupname, p.required_input, t.name as type ' .
             'from #__providers p, #__groups g, #__protocol_types t ' .
-            'where p.access=g.id and t.id=p.protocol_type_id ' .
+            'where p.access=g.id and p.enabled=1 and t.id=p.protocol_type_id ' .
             'order by (select count(*) from #__alias a where p.id=a.provider_id) desc, t.name  asc';
 
         $db->setQuery($selectProviders);
