@@ -153,6 +153,8 @@
     border:1px solid silver;
     margin:10px;
     padding:2px;
+    max-height: 358px;
+    max-width: 448px;
 }
 
 .contentpaneopen .modal-button img {
