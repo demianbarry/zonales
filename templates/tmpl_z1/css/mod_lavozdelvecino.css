@@ -143,3 +143,14 @@
 .moduletable_lavozdelvecino #recaptcha_image img{
     width:270px !important;
 }
+
+.moduletable_lavozdelvecino img{
+    max-height: 350px;
+    max-width: 260px;
+    min-width: 260px;
+}
+
+.cp_tags img{
+    height: 6px;
+    width: 6px;
+}
