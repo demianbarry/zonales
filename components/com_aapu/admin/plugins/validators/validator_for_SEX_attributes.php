@@ -22,7 +22,7 @@ class validator_for_SEX_attributes {
             return '';
         }
 
-        return 'Sexo no válido';
+        return 'sexo invalido';
     }
 
 }

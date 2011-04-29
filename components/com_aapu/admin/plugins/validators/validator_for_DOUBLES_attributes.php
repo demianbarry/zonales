@@ -20,7 +20,7 @@ class validator_for_DOUBLES_attributes {
             return '';
         }
 
-        return ($value == strval(floatval($value))) ? '' : 'Valor no válido';
+        return ($value == strval(floatval($value))) ? '' : 'valor no valido';
     }
 
 }

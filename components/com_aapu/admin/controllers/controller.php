@@ -20,8 +20,10 @@ class AapuController extends JController {
      * @param array $default
      */
     function __construct($default = array()) {
-        parent::__construct($default);
+        parent::__construct($default);        //llamada al construcutor de la clase base
 
+
+        //registra la tarea y el metodo que la ejecuta
         $this->registerTask('listUsers', 'listUsers');
         $this->registerTask('editUser', 'editUser');
         $this->registerTask('addUser', 'editUser');
@@ -67,7 +69,7 @@ class AapuController extends JController {
     */
 
     function listUsers() {
-        $this->baseDisplayTask('ListUsers', 'Users');
+        $this->baseDisplayTask('ListUsers', 'Users'); //llamma baseDisplayTask con la vista y el modelo
     }
 
     function editUser() {
@@ -83,7 +85,7 @@ class AapuController extends JController {
         $view->setModel($this->getModel('attribute_entity', 'AapuModel'), true);
 
         // no se ejecuta si se accede al backend
-        $app = JFactory::getApplication();
+        $app = JFactory::getApplication();      //obtiene referencia al objeto
 
         if ($app->isAdmin()) {
             $this->baseDisplayTask($view, 'Users', 'default', 1);
@@ -106,7 +108,7 @@ class AapuController extends JController {
     function removeUser() {
         global $option;
 
-        $model = &$this->getModel('users');
+        $model = &$this->getModel('users');  //obtiene el modelo
         $cids = $_POST['cid'];
         $users = $model->getSelected($cids);
         $attrEntityModel = &$this->getModel('attribute_entity');
@@ -145,9 +147,9 @@ class AapuController extends JController {
         $acl =& JFactory::getACL();
 
         $userData = array();
-        $usersParams = &JComponentHelper::getParams( 'com_users' ); // load the Params
+        $usersParams = &JComponentHelper::getParams( 'com_users' ); // carga parametros
 
-        // get the default usertype
+        // obtiene usertype por defecto
         $usertype = $usersParams->get( 'new_usertype' );
         if (!$usertype) {
             $usertype = 'Registered';
@@ -463,7 +465,7 @@ class AapuController extends JController {
     }
 
     /*
-         * MANAGEMENT FUNCTIONS FOR DATA TYPES
+         * MANEJO DE FUNCIONES PARA TIPOS DE DATOS.
     */
 
     function listDataTypes() {
@@ -554,24 +556,25 @@ class AapuController extends JController {
     }
 
     /*
-         * GENERIC FUNCTIONS
+         * FUNCIONES GENERICAS
     */
 
     function baseDisplayTask($view, $modelName, $layout = 'default', $hidemainmenu = 0, $vars = array()) {
         global $option;
 
-        $document = &JFactory::getDocument();
+        $document = &JFactory::getDocument();   //obiene la referencia al objeto.
         $vLayout = JRequest::getCmd( 'layout', $layout );
 
         if (gettype($view) == 'string') {
-            // Get/Create the view
+            // Get/Crea la vista
             $vType = $document->getType();
             $vName = JRequest::getCmd('view', $view);
-            $view = &$this->getView( $vName, $vType);
+            $view = &$this->getView($vName, $vType);
         }
 
         // Get/Create the models
-        $model = &$this->getModel($modelName);
+
+        $model = &$this->getModel(JRequest::getCmd('model', $modelName));
         if ($model) {
             $view->setModel($model, true);
         }
@@ -627,12 +630,12 @@ class AapuController extends JController {
         //Import filesystem libraries. Perhaps not necessary, but does not hurt
         jimport('joomla.filesystem.file');
 
-        //Clean up filename to get rid of strange characters like spaces etc
+        //limpia filneam de caracteres extraños y espacios blanco
         $filename = JFile::makeSafe($file['name']);
 
         if ($filename != '') {
 
-            //Set up the source and destination of the file
+            //setea fuente y destino del archivo 'file'
             $src = $file['tmp_name'];
             $dest = JPATH_COMPONENT_ADMINISTRATOR . DS . 'plugins' . DS . $directory. DS . $filename;
 

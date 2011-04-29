@@ -13,7 +13,7 @@ class validator_for_DATES_attributes {
     //put your code here
 
     function validate($value) {
-
+       
         if ($value == null || $value == '') {
             return '';
         }
@@ -35,7 +35,9 @@ class validator_for_DATES_attributes {
                     if ($dia <= 31) { return ''; }
             }
         }
-        return 'La fecha no es válida';
+         
+       return JText::_ ('INVALID DATE');
+      //   return 'La fecha no es válida';
     }
 
 }
