@@ -73,5 +73,4 @@ INSERT INTO `#__aapu_data_types` (`id`, `label`, `description`, `render`) VALUES
 INSERT INTO `#__aapu_attributes` (`id`, `name`, `label`, `description`, `comments`, `from`, `to`, `canceled`, `required`, `published`, `validator`, `data_type_id`, `attribute_class_id`, `values_list`) VALUES
 (1, 'sex', 'Sexo', 'Sexo del usuario', '', '2010-04-08', '0000-00-00', 0, 1, 1, 'validator_for_SEX_attributes.php', 6, 1, null),
 (2, 'birthday', 'Fecha de Nacimiento', 'Fecha de Nacimiento', '', '2010-04-09', '0000-00-00', 0, 1, 1, 'validator_for_DATES_attributes.php', 4, 1, null),
-(3, 'zonal', 'Zonal de Preferencia', 'Zonal de Preferencia del usuario', '', '2010-05-04', '0000-00-00', 0, 1, 1, '', 8, 1, null),
-(4, 'email2', 'E-Mail de respaldo', 'E-Mail de respaldo', '', '2010-05-04', '0000-00-00', 0, 0, 1, 'validator_for_MAILS_attributes.php', 1, 1, '');
+(3, 'email2', 'E-Mail de respaldo', 'E-Mail de respaldo', '', '2010-05-04', '0000-00-00', 0, 0, 1, 'validator_for_MAILS_attributes.php', 1, 1, '');

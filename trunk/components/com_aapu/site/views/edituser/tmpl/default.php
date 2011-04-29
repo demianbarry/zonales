@@ -5,7 +5,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 ?>
 
 <!-- Validacion -->
-<script src="/includes/js/joomla.javascript.js" type="text/javascript"></script>
+<script src="includes/js/joomla.javascript.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
     <!--
     var ret;
@@ -31,12 +31,12 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
     }
 
     function validate_attr(attr) {
-
+    //var user=
         if (attr.id == 'name' || attr.id == 'username' || attr.id == 'email') {
             ret--;
             if (attr.hasClass('required')) {
                 if (!attr.getValue()) {
-                        $('valid_'+attr.id).innerHTML = "Campo requerido";
+                        $('valid_'+attr.id).innerHTML = "<?= JText::_('REQUIRED FIELD');?>"; //user;
                         return false;
                 } else {
                     $('valid_'+attr.id).innerHTML = "";
@@ -55,7 +55,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
             // If the field is required make sure it has a value
             if ($(attr).hasClass('required')) {
                     if (!($(attr).getValue())) {
-                            $('valid_'+attr.id.substring(5)).innerHTML = "Campo requerido";
+                            $('valid_'+attr.id.substring(5)).innerHTML = "<?= JText::_('REQUIRED FIELD');?>";
                             return false;
                     }
             }

@@ -9,11 +9,11 @@ class AapuViewListAttributes extends AapuBaseView
 		global $option, $mainframe;
 
 		$this->_context = $option . 'ListAttributes';		// nombre del contexto
-		$this->_orderfield = 'a.label';		// campo de ordenamiento
-		$this->_searchfield = 'a.label';		// campo de búsqueda
+		$this->_orderfield = 'a.label';                         // campo de ordenamiento
+		$this->_searchfield = 'a.label';                        // campo de búsqueda
 		$this->configure();
 
-		$this->setPagination();                         // setea la paginación
+		$this->setPagination();                                 // setea la paginación
 
 		$attributes =& $this->get('All');
 		foreach ($attributes as $attribute) {

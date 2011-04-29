@@ -34,7 +34,7 @@ JHTML::_('behavior.formvalidation');
             ret--;
             if (attr.hasClass('required')) {
                 if (!attr.getValue()) {
-                        $('valid_'+attr.id).innerHTML = "Campo requerido";
+                        $('valid_'+attr.id).innerHTML = "campo requerido";
                         return false;
                 } else {
                     $('valid_'+attr.id).innerHTML = "";
