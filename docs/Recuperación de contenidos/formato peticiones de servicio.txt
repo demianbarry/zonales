@@ -1,0 +1,24 @@
+----------------------------------------------------------------------------
+Request
+----------------------------------------------------------------------------
+http://domain:port/uri_servicio?parametro&parametro&parametro......
+
+Separador de listas: "_"
+
+----------------------------------------------------------------------------
+Parametros
+----------------------------------------------------------------------------
+Usuarios:
+			users=usuario-peso-bitNegacion  (1: incluir, 0: ignorar)
+
+			Ejemplo:  users=juanmadryn-2-1_ignacioaita-1-0
+
+Keywords:
+			keywords=keyword-bitNegacion
+
+			Ejemplo:  keywords=brown-1_negro-0
+
+Comenters:
+			commenters=commenter-bitNegacion
+
+			Ejemplo: rodrigojaramillo-1
