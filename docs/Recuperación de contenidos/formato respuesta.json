@@ -8,12 +8,14 @@
 			"name":
 			"url":
 		}
-		"to": {
-			"id":
-			"category":
-			"name":
-			"url":
-		}
+		"to": [
+			{
+				"id":
+				"category":
+				"name":
+				"url":
+			}
+		]
 		"title":
 		"text":
 		"links": [
