@@ -1,0 +1,33 @@
+{ 
+	"id":"199219160505_191037084276050", 
+	"from":
+		{ 
+			"name":"Rabia FilmsProductora", 
+			"id":"100000473416829" 
+		}, 
+	"to":
+		{ 
+			"data":[ 
+				{ 
+					"name":"LU17.com", 
+					"category":"Website", 
+					"id":"199219160505" 
+				} 
+			] 
+		}, 
+	"title":"Descendencia Rock - Ir (Video clip oficial)", 
+	"text":"Ayer se realiz\u00f3 la presentaci\u00f3n oficial del video Clip \"Ir\" realizado por la productora Rabia films en el caracol en el marco de los festejos por el aniversario de Archivo cultural , les dejamos el link 		disponible para todos para que lo vean y disfruten!!!", 
+	"links":[ 
+		{ 
+			"type":"picture", 
+			"url":"http:\/\/external.ak.fbcdn.net\/safe_image.php?d=f60a7b0a1ea2c3a03990928f85524c7f&w=130&h=130&url=http%3A%2F%2Fi2.ytimg.com%2Fvi%2FAamzh1W7vGA%2Fdefault.jpg" 
+		}, 
+		{ 
+			"type":"video", 
+			"url":"http:\/\/www.youtube.com\/watch?v=Aamzh1W7vGA" 
+		} 
+	], 
+	"actions":[ ], 
+	"created":"2011-05-08T23:41:02+0000", 
+	"modified":"2011-05-08T23:41:02+0000" 
+}
