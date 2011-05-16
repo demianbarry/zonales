@@ -21,22 +21,16 @@
 				"type": (video, picture, link, event, etc)
 				"url":
 			}
-			...
-			...
 		]
 		"actions": [
 			{
 				"type": (comment, retweet, like, share, favorite, etc.)
 				"cant":
-			}
-			...
-			...
+			}.
 		]
 		"created":
 		"modified":
 		"relevance":
 	}
-	...
-	...
 ]
 				
