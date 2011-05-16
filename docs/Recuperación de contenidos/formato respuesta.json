@@ -1,43 +1,42 @@
-{
-	"post": [
-		{
+[
+	{
+		"source":
+		"id":
+		"from": {
 			"id":
-			"users": {
-				"from": {
-					"id":
-					"type":
-					"name":
-				}
-				"to": {
-					"id":
-					"type":
-					"name":
-				}
-			}
-			"tittle":
-			"text":
-			"link": [
-				{
-					"type": (video, picture, link, event, etc)
-					"url":
-				}
-				...
-				...
-			]
-			"add": [
-				{
-					"type": (comment, retweet, like, share, favorite, etc.)
-					"cant":
-				}
-				...
-				...
-			]
-			"created":
-			"modified":
+			"category":
+			"name":
+			"url":
 		}
-		...
-		...
-	]
-	"last_post_id":
-}
+		"to": {
+			"id":
+			"category":
+			"name":
+			"url":
+		}
+		"title":
+		"text":
+		"links": [
+			{
+				"type": (video, picture, link, event, etc)
+				"url":
+			}
+			...
+			...
+		]
+		"actions": [
+			{
+				"type": (comment, retweet, like, share, favorite, etc.)
+				"cant":
+			}
+			...
+			...
+		]
+		"created":
+		"modified":
+		"relevance":
+	}
+	...
+	...
+]
 				
