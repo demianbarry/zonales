@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module: org.hrtsim.dfltmodelview
-OpenIDE-Module-Layer: org/hrtsim/dfltmodelview/layer.xml
-OpenIDE-Module-Localizing-Bundle: org/hrtsim/dfltmodelview/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0
-
