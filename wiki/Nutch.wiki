@@ -25,7 +25,9 @@ Nutch utiliza prestaciones de varios proyectos Apache, entre los que podemos des
   * Page signature
   * Metadata
   * Mantiene el page rank?
+
 *LinkDB*: Para cada URL destino mantiene información de los links asociados. Aparentemente mantiene una especie de grafo con los links de cada página.
+
 *Shards(segments)*:
   * Contenido completo de las páginas
   * Contenido parseado, metadata que se descubrió y outlinks
