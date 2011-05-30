@@ -1,4 +1,5 @@
-[http://www.zonales.com/templates/z20/images/logo.gif]
+[http://www.zonales.com/#portada http://zonales.dyndns.org:30082/logoZonales.gif]
+
   * [Index Zonales]
     * [Etapa1 Etapa 1]
       * [EtiquetadoAutomatico Etiquetado Automático]
