@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels Nutch
 
 = Introducción =
 
@@ -16,7 +17,6 @@ Nutch utiliza prestaciones de varios proyectos Apache, entre los que podemos des
 
 
 = Arquitectura =
-
 [http://zonales.dyndns.org:30082/images/NutchArq1.png]
 
 *CrawlDB*: Mantiene información de las URL conocidas:
@@ -88,5 +88,27 @@ Se detallan a continuación las distintas etapas del Workflow
   * Indexación del contenido
 
 *Class*: org.apache.nutch.indexer.Indexer, org.apache.nutch.indexer.SolrIndexer
-*Command*: nutch invertlinks <crawldir/linkdb> -dir <crawldir/segments>
+*Command*: nutch index <crawldir/indexes> <crawldir/crawldb> <crawldir/linkdb> <crawldir/segments>
 
+== Otros comandos ==
+
+Revisar estás opciones
+
+  * dedup
+  * merge
+
+= Objetivos =
+
+== RSS ==
+
+  * Analizar Crawl
+  * Analizar parser para RSS existente
+  * No crawlear canal con Nutch
+  * Consumir RSS con servlet -> Alimentar crawlDB??
+  * Devolver en formato XZone y JZone
+
+== Facebook / Twitter ==
+
+  * Parsear: separar posts
+  * Indexar directamente? o con Nutch?
+  * Outgoing links. Debe actualizar LinkDB.
