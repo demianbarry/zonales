@@ -11,6 +11,7 @@ Nutch ofrece una solución transparente, pues al ser una tecnología de código 
 Nutch utiliza prestaciones de varios proyectos Apache, entre los que podemos destacar:
 
 *Hadoop*: Map-Reduce, Distributed Filesystems
+
 *Tika*: Content type detection, passing
 
 
@@ -36,5 +37,56 @@ Se detallan a continuación las distintas etapas del Workflow
 
 == Inject ==
 
-Crea la CrawlDB a partir de las URL semillas (almacenadas en un archivo de texto plano)
+  * Crea la CrawlDB a partir de las URL semillas (almacenadas en un archivo de texto plano).
+  * Crea la LinkDB vacía
+
+*Class*: org.apache.nutch.crawl.Injector
+*Command*: nutch inject <crawldir/crawldb> <urldir>
+
+== Generate ==
+
+  * Genera la lista de fetch en el shard
+  * Indica desde donde hacer fetch, según políticas de crawl-urlfilter.txt
+  * Aparentemente genera los segmentos
+  * Analizar de que se trata la opción freegen...
+
+*Class*: org.apache.nutch.crawl.Generator
+*Command*: nutch generate <crawldir/crawldb> <crawldir/segments>
+
+== Fetch ==
+
+  * Trae el contenido plano
+  * Se puede configurar cantidad de threas para recuperar
+
+*Class*: org.apache.nutch.fetcher.Fetcher
+*Command*: nutch fetch <segments_list>
+
+== Parse ==
+
+  * Parsea contenido
+  * Descubre outlinks (Ver por qué no añade los links RSS de las noticias a la CrawlDB)
+
+*Class*: org.apache.nutch.parse.ParseSegment
+*Command*: nutch ParseSegment <segments_list>
+
+== UpdateDB ==
+
+  * Actualiza CrawlDB desde los shard
+ 
+*Class*: org.apache.nutch.crawl.CrawlDb
+*Command*: nutch updatedb <crawldir/crawldb> <segments_list>
+
+== Invert Links ==
+
+  * Actualiza LinkDB desde los shards
+
+*Class*: org.apache.nutch.crawl.LinkDB
+*Command*: nutch invertlinks <crawldir/linkdb> -dir <crawldir/segments>
+
+== Index / Solrindex==
+
+  * Indexación del contenido
+
+*Class*: org.apache.nutch.indexer.Indexer, org.apache.nutch.indexer.SolrIndexer
+*Command*: nutch invertlinks <crawldir/linkdb> -dir <crawldir/segments>
 
