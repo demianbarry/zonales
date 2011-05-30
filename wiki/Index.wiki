@@ -1,4 +1,4 @@
-#sidebar Tabla de contenidos
+#summary Tabla de contenidos
 [https://code.google.com/p/zonales/wiki/Index Zonales]
   # [Etapa1 Etapa 1]
     # [EtiquetadoAutomatico Etiquetado Automático]
@@ -17,6 +17,5 @@
     # [Creacion_de_instaladores_joomla Creación de Instaladores Joomla]
     # [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
 
-#summary Índice
 
 [http://www.zonales.com/#portada http://www.zonales.com/templates/z20/images/logo.gif]
