@@ -1,4 +1,4 @@
-[http://200.69.225.53:30082/logoZonales.gif]
+[http://www.zonales.com/#portada http://www.zonales.com/templates/z20/images/logo.gif]
   * [Index Zonales]
     * [Etapa1 Etapa 1]
       * [EtiquetadoAutomatico Etiquetado Automático]
