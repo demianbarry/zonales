@@ -44,7 +44,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.crawl.Injector
 
-*Command*: nutch inject <crawldir/crawldb> <urldir>
+*Command*: nutch inject `<crawldir/crawldb`> `<urldir`>
 
 == Generate ==
 
@@ -73,7 +73,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.parse.ParseSegment
 
-*Command*: nutch ParseSegment <segments_list>
+*Command*: nutch ParseSegment `<segments_list`>
 
 == UpdateDB ==
 
@@ -81,7 +81,7 @@ Se detallan a continuación las distintas etapas del Workflow
  
 *Class*: org.apache.nutch.crawl.CrawlDb
 
-*Command*: nutch updatedb <crawldir/crawldb> <segments_list>
+*Command*: nutch updatedb `<crawldir/crawldb`> `<segments_list`>
 
 == Invert Links ==
 
@@ -89,7 +89,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.crawl.LinkDB
 
-*Command*: nutch invertlinks <crawldir/linkdb> -dir <crawldir/segments>
+*Command*: nutch invertlinks `<crawldir/linkdb`> -dir `<crawldir/segments`>
 
 == Index / Solrindex==
 
@@ -97,7 +97,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.indexer.Indexer, org.apache.nutch.indexer.SolrIndexer
 
-*Command*: nutch index <crawldir/indexes> <crawldir/crawldb> <crawldir/linkdb> <crawldir/segments>
+*Command*: nutch index `<crawldir/indexes`> `<crawldir/crawldb`> `<crawldir/linkdb`> `<crawldir/segments`>
 
 == Otros comandos ==
 
