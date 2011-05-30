@@ -43,6 +43,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Crea la LinkDB vacía
 
 *Class*: org.apache.nutch.crawl.Injector
+
 *Command*: nutch inject <crawldir/crawldb> <urldir>
 
 == Generate ==
@@ -53,6 +54,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Analizar de que se trata la opción freegen...
 
 *Class*: org.apache.nutch.crawl.Generator
+
 *Command*: nutch generate <crawldir/crawldb> <crawldir/segments>
 
 == Fetch ==
@@ -61,6 +63,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Se puede configurar cantidad de threas para recuperar
 
 *Class*: org.apache.nutch.fetcher.Fetcher
+
 *Command*: nutch fetch <segments_list>
 
 == Parse ==
@@ -69,6 +72,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Descubre outlinks (Ver por qué no añade los links RSS de las noticias a la CrawlDB)
 
 *Class*: org.apache.nutch.parse.ParseSegment
+
 *Command*: nutch ParseSegment <segments_list>
 
 == UpdateDB ==
@@ -76,6 +80,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Actualiza CrawlDB desde los shard
  
 *Class*: org.apache.nutch.crawl.CrawlDb
+
 *Command*: nutch updatedb <crawldir/crawldb> <segments_list>
 
 == Invert Links ==
@@ -83,6 +88,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Actualiza LinkDB desde los shards
 
 *Class*: org.apache.nutch.crawl.LinkDB
+
 *Command*: nutch invertlinks <crawldir/linkdb> -dir <crawldir/segments>
 
 == Index / Solrindex==
@@ -90,6 +96,7 @@ Se detallan a continuación las distintas etapas del Workflow
   * Indexación del contenido
 
 *Class*: org.apache.nutch.indexer.Indexer, org.apache.nutch.indexer.SolrIndexer
+
 *Command*: nutch index <crawldir/indexes> <crawldir/crawldb> <crawldir/linkdb> <crawldir/segments>
 
 == Otros comandos ==
