@@ -11,7 +11,8 @@ A continuación se detalla el resultado obtenido de la ejecución paso a paso de
 
 *Previo*: Directorio urls creado con una única URL, la del servlet de facebook.
 
-*Ejecución*: {{{../bin/nutch inject crawl.fb ../urls}}}
+*Ejecución*: 
+{{{../bin/nutch inject crawl.fb ../urls}}}
 
 *Salida*: 
 {{{Injector: starting at 2011-05-30 11:56:25
