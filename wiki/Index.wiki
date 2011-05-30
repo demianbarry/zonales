@@ -1,21 +1,6 @@
-#summary Tabla de contenidos
-[https://code.google.com/p/zonales/wiki/Index Zonales]
-  # [Etapa1 Etapa 1]
-    # [EtiquetadoAutomatico Etiquetado Automático]
-    # [Clasificados Clasificados]
-    # [ecualizacion Ecualización]
-    # [adminitracion_avanzada_de_perifles_de_usuario Admin. de Perfiles de Usuario]
-    # [etiquetado Etiquetado]
-    # [autenticacion_de_usuarios ZLogin]
-    # [Dependencias Dependencias]
-  # [Etapa2 Etapa 2]
-
-  # [Herramientas Herramientas y utilidades]
-    # [resetMySQLRoot Reiniciar pass MySQL root]
-    # [Infraestructura Infraestructura]
-    # [Joomla16 Joomla 1.6]
-    # [Creacion_de_instaladores_joomla Creación de Instaladores Joomla]
-    # [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
-
-
+#labels Zonales
 [http://www.zonales.com/#portada http://www.zonales.com/templates/z20/images/logo.gif]
+
+= Wiki del proyecto Zonales =
+
+Describir de que se trata zonales, etc. etc.
