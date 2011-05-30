@@ -55,7 +55,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.crawl.Generator
 
-*Command*: nutch generate <crawldir/crawldb> <crawldir/segments>
+*Command*: nutch generate `<crawldir/crawldb`> `<crawldir/segments`>
 
 == Fetch ==
 
@@ -64,7 +64,7 @@ Se detallan a continuación las distintas etapas del Workflow
 
 *Class*: org.apache.nutch.fetcher.Fetcher
 
-*Command*: nutch fetch <segments_list>
+*Command*: nutch fetch `<segments_list`>
 
 == Parse ==
 
