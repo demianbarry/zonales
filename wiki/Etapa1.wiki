@@ -1,0 +1,7 @@
+#summary One-sentence summary of this page.
+#labels Etapa1,Zonales,Ecualizador
+
+= Introducción =
+
+Describir en esta página en que consistió la primer etapa del proyecto.
+
