@@ -81,7 +81,7 @@ Se detallan a continuación las distintas etapas del Workflow
  
 *Class*: org.apache.nutch.crawl.CrawlDb
 
-*Command*: nutch updatedb `<crawldir/crawldb`> `<segments_list`>
+*Command*: nutch updatedb `<crawldir/crawldb` -dir (`<segments`> | `<seg1`> | `<seg2`> )
 
 == Invert Links ==
 
