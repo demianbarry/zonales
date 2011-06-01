@@ -160,7 +160,7 @@ Deduzco que el comando _fetch_ también realiza parseo de los contenidos.
 
 == updatedb ==
 
-*Previo*: Segemento generado con el comando Generate
+*Previo*: Comando Fetch ejecutado
 
 *Ejecución*: 
 {{{
