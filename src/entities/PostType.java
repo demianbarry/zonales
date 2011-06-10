@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="modified" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
  *         &lt;element name="relevance" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="verbatim" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -67,22 +68,22 @@ public class PostType {
     protected String id;
     @XmlElement(required = true)
     protected User fromUser;
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     protected ToUsersType toUsers;
     @XmlElement(required = true)
     protected String title;
     @XmlElement(required = true)
     protected String text;
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     protected LinksType links;
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     protected ActionsType actions;
     @XmlElement(required = true)
     protected TagsType tags;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
     protected Date created;
-    @XmlElement(required = true)
+    @XmlElement(required = false)
     @XmlSchemaType(name = "dateTime")
     protected Date modified;
     protected int relevance;
@@ -389,7 +390,7 @@ public class PostType {
     }
 
     /**
-     * Gets the value of the relevance property.
+     * Gets the value of the verbatim property.
      * 
      */
     public String getVerbatim() {
@@ -397,7 +398,7 @@ public class PostType {
     }
 
     /**
-     * Sets the value of the relevance property.
+     * Sets the value of the verbatim property.
      * 
      */
     public void setVerbatim(String value) {
