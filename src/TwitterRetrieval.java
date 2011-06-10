@@ -33,12 +33,12 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import twitterentities.ActionType;
-import twitterentities.ActionsType;
-import twitterentities.PostType;
-import twitterentities.PostsType;
-import twitterentities.ToUsersType;
-import twitterentities.User;
+import entities.ActionType;
+import entities.ActionsType;
+import entities.PostType;
+import entities.PostsType;
+import entities.ToUsersType;
+import entities.User;
 
 /**
  * Example servlet showing request headers
@@ -111,11 +111,14 @@ public class TwitterRetrieval extends HttpServlet {
                 postsList.add(post);
             }
             PostsType posts = new PostsType(postsList);
-            if ("json".equalsIgnoreCase(request.getParameter("format"))) {
-                Gson gson = new Gson();
+            Gson gson = new Gson();
+            if ("json".equalsIgnoreCase(request.getParameter("format"))) {                
                 out.println(gson.toJson(posts));
             } else {
                 try {
+                    for(PostType postIt : posts.getPost()) {
+                        postIt.setVerbatim(gson.toJson(postIt));
+                    }
                     Twitter2XML(posts, out);
                 } catch (Exception ex) {
                     Logger.getLogger(TwitterRetrieval.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,7 +139,7 @@ public class TwitterRetrieval extends HttpServlet {
     }
 
     private void Twitter2XML(PostsType posts, PrintWriter out) throws Exception {
-        JAXBContext context = JAXBContext.newInstance("twitterentities");
+        JAXBContext context = JAXBContext.newInstance("entities");
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(posts, out);
