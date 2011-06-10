@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name="posts")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "posts", propOrder = {
-    "post"
+    "posts"
 })
 public class PostsType {
 
