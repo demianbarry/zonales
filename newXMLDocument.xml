@@ -1,0 +1,887 @@
+
+<posts xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="http://200.69.225.53:30082/XZone.xsd">
+    <post>
+        <source>Facebook</source>
+        <id>222136235762_10150106887765763</id>
+        <fromUser>
+            <name>Museo Municipal de Arte de Puerto Madryn</name>
+            <category>Local business</category>
+            <id>222136235762</id>
+            <url>http://www.facebook.com/profile.php?id=222136235762</url>
+        </fromUser>
+        <title>Felicidades...</title>
+        <text>Felicidades !!!!</text>
+        <links>
+            <link>
+                <type>picture</type>
+                <url>http://photos-e.ak.fbcdn.net/hphotos-ak-snc4/157014_10150106887755763_222136235762_8160956_5411477_s.jpg</url>
+            </link>
+            <link>
+                <type>photo</type>
+                <url>http://www.facebook.com/photo.php?fbid=10150106887755763&set=a.250053930762.184964.222136235762&type=1</url>
+            </link>
+        </links>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>3</cant>
+            </action>
+        </actions>
+        <created>2010-12-24T14:51:06+0000</created>
+        <modified>2010-12-24T14:51:06+0000</modified>
+        <relevance>3</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"222136235762_10150106887765763",
+  "fromUser":{
+    "name":"Museo Municipal de Arte de Puerto Madryn",
+    "category":"Local business",
+    "id":"222136235762",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=222136235762"
+  },
+  "title":"Felicidades...",
+  "text":"Felicidades !!!!",
+  "links":[
+    {
+      "type":"picture",
+      "url":"http:\/\/photos-e.ak.fbcdn.net\/hphotos-ak-snc4\/157014_10150106887755763_222136235762_8160956_5411477_s.jpg"
+    },
+    {
+      "type":"photo",
+      "url":"http:\/\/www.facebook.com\/photo.php?fbid=10150106887755763&set=a.250053930762.184964.222136235762&type=1"
+    }
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":3
+    }
+  ],
+  "created":"2010-12-24T14:51:06+0000",
+  "modified":"2010-12-24T14:51:06+0000",
+  "relevance":3
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>222136235762_10150104259985763</id>
+        <fromUser>
+            <name>Museo Municipal de Arte de Puerto Madryn</name>
+            <category>Local business</category>
+            <id>222136235762</id>
+            <url>http://www.facebook.com/profile.php?id=222136235762</url>
+        </fromUser>
+        <title>El Museo Municipal de Arte los invita el próximo...</title>
+        <text>El Museo Municipal de Arte los invita el próximo Miércoles 22 de Diciembre a las 20 hs a la inauguración del artista visual Emanuel Reyes, con la serie titulada: "TAUROMAQUIA EN PLATOS". Los esperamos a todos.</text>
+        <links>
+            <link>
+                <type>picture</type>
+                <url>http://photos-d.ak.fbcdn.net/hphotos-ak-ash1/164423_10150104259960763_222136235762_8115967_1827769_s.jpg</url>
+            </link>
+            <link>
+                <type>photo</type>
+                <url>http://www.facebook.com/photo.php?fbid=10150104259960763&set=a.250053930762.184964.222136235762&type=1</url>
+            </link>
+        </links>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>5</cant>
+            </action>
+            <action>
+                <type>comment</type>
+                <cant>2</cant>
+            </action>
+        </actions>
+        <created>2010-12-19T21:15:05+0000</created>
+        <modified>2010-12-20T23:48:27+0000</modified>
+        <relevance>11</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"222136235762_10150104259985763",
+  "fromUser":{
+    "name":"Museo Municipal de Arte de Puerto Madryn",
+    "category":"Local business",
+    "id":"222136235762",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=222136235762"
+  },
+  "title":"El Museo Municipal de Arte los invita el pr\u00f3ximo...",
+  "text":"El Museo Municipal de Arte los invita el pr\u00f3ximo Mi\u00e9rcoles 22 de Diciembre a las 20 hs a la inauguraci\u00f3n del artista visual Emanuel Reyes, con la serie titulada: \"TAUROMAQUIA EN PLATOS\". Los esperamos a todos.",
+  "links":[
+    {
+      "type":"picture",
+      "url":"http:\/\/photos-d.ak.fbcdn.net\/hphotos-ak-ash1\/164423_10150104259960763_222136235762_8115967_1827769_s.jpg"
+    },
+    {
+      "type":"photo",
+      "url":"http:\/\/www.facebook.com\/photo.php?fbid=10150104259960763&set=a.250053930762.184964.222136235762&type=1"
+    }
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":5
+    },
+    {
+      "type":"comment",
+      "cant":2
+    }
+  ],
+  "created":"2010-12-19T21:15:05+0000",
+  "modified":"2010-12-20T23:48:27+0000",
+  "relevance":11
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>199219160505_10150654776690506</id>
+        <fromUser>
+            <name>Julian Rodriguez</name>
+            <id>100001083437655</id>
+            <url>http://www.facebook.com/profile.php?id=100001083437655</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>LU17.com</name>
+                <category>Website</category>
+                <id>199219160505</id>
+                <url>http://www.facebook.com/profile.php?id=199219160505</url>
+            </toUser>
+        </toUsers>
+        <title>hay...</title>
+        <text>hay clases?
+        </text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>1</cant>
+            </action>
+        </actions>
+        <created>2011-06-10T14:49:10+0000</created>
+        <modified>2011-06-10T14:49:10+0000</modified>
+        <relevance>1</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"199219160505_10150654776690506",
+  "fromUser":{
+    "name":"Julian Rodriguez",
+    "id":"100001083437655",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=100001083437655"
+  },
+  "toUsers":[
+    {
+      "name":"LU17.com",
+      "category":"Website",
+      "id":"199219160505",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=199219160505"
+    }
+  ],
+  "title":"hay...",
+  "text":"hay clases?\n",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":1
+    }
+  ],
+  "created":"2011-06-10T14:49:10+0000",
+  "modified":"2011-06-10T14:49:10+0000",
+  "relevance":1
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>199219160505_10150654772695506</id>
+        <fromUser>
+            <name>Ramón Cea</name>
+            <id>1725691268</id>
+            <url>http://www.facebook.com/profile.php?id=1725691268</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>LU17.com</name>
+                <category>Website</category>
+                <id>199219160505</id>
+                <url>http://www.facebook.com/profile.php?id=199219160505</url>
+            </toUser>
+        </toUsers>
+        <title>Hay o no hay clases hoy !...</title>
+        <text>Hay o no hay clases hoy ! </text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>1</cant>
+            </action>
+        </actions>
+        <created>2011-06-10T14:45:24+0000</created>
+        <modified>2011-06-10T14:45:24+0000</modified>
+        <relevance>1</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"199219160505_10150654772695506",
+  "fromUser":{
+    "name":"Ram\u00f3n Cea",
+    "id":"1725691268",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=1725691268"
+  },
+  "toUsers":[
+    {
+      "name":"LU17.com",
+      "category":"Website",
+      "id":"199219160505",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=199219160505"
+    }
+  ],
+  "title":"Hay o no hay clases hoy !...",
+  "text":"Hay o no hay clases hoy ! ",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":1
+    }
+  ],
+  "created":"2011-06-10T14:45:24+0000",
+  "modified":"2011-06-10T14:45:24+0000",
+  "relevance":1
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>365539206306_10150194388181307</id>
+        <fromUser>
+            <name>Silvia Andrea Bustos</name>
+            <id>100000285451296</id>
+            <url>http://www.facebook.com/profile.php?id=100000285451296</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>A.P.A.M. - Asociación Protectora de Animales de Puerto Madryn</name>
+                <category>Non-profit organization</category>
+                <id>365539206306</id>
+                <url>http://www.facebook.com/profile.php?id=365539206306</url>
+            </toUser>
+        </toUsers>
+        <title>hola gente, les comento algo , hace algun tiempo...</title>
+        <text>hola gente, les comento algo , hace algun tiempo cuando descubri la perrita y sus cachorros del b. oeste en una cueva hay un basural como llendo para las quintas puedo asegurarles que hay cosas que se pueden reciclar y hacer cuchas para los perros del refugio y suele haber material para construccion que puede servir tambien , no esta de mas cartonear o como se diga ir a buscar a un basural si es para los pichis..... </text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>2</cant>
+            </action>
+            <action>
+                <type>comment</type>
+                <cant>1</cant>
+            </action>
+        </actions>
+        <created>2011-06-10T03:31:08+0000</created>
+        <modified>2011-06-10T12:51:34+0000</modified>
+        <relevance>5</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"365539206306_10150194388181307",
+  "fromUser":{
+    "name":"Silvia Andrea Bustos",
+    "id":"100000285451296",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=100000285451296"
+  },
+  "toUsers":[
+    {
+      "name":"A.P.A.M. - Asociaci\u00f3n Protectora de Animales de Puerto Madryn",
+      "category":"Non-profit organization",
+      "id":"365539206306",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=365539206306"
+    }
+  ],
+  "title":"hola gente, les comento algo , hace algun tiempo...",
+  "text":"hola gente, les comento algo , hace algun tiempo cuando descubri la perrita y sus cachorros del b. oeste en una cueva hay un basural como llendo para las quintas puedo asegurarles que hay cosas que se pueden reciclar y hacer cuchas para los perros del refugio y suele haber material para construccion que puede servir tambien , no esta de mas cartonear o como se diga ir a buscar a un basural si es para los pichis..... ",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":2
+    },
+    {
+      "type":"comment",
+      "cant":1
+    }
+  ],
+  "created":"2011-06-10T03:31:08+0000",
+  "modified":"2011-06-10T12:51:34+0000",
+  "relevance":5
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>365539206306_10150194297821307</id>
+        <fromUser>
+            <name>Lucia Mistrangelo</name>
+            <id>100000773546892</id>
+            <url>http://www.facebook.com/profile.php?id=100000773546892</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>A.P.A.M. - Asociación Protectora de Animales de Puerto Madryn</name>
+                <category>Non-profit organization</category>
+                <id>365539206306</id>
+                <url>http://www.facebook.com/profile.php?id=365539206306</url>
+            </toUser>
+        </toUsers>
+        <title>"El perro es el único ser que te quiere más que...</title>
+        <text>"El perro es el único ser que te quiere más que vos mismo." </text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>7</cant>
+            </action>
+        </actions>
+        <created>2011-06-10T00:55:42+0000</created>
+        <modified>2011-06-10T00:55:42+0000</modified>
+        <relevance>7</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"365539206306_10150194297821307",
+  "fromUser":{
+    "name":"Lucia Mistrangelo",
+    "id":"100000773546892",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=100000773546892"
+  },
+  "toUsers":[
+    {
+      "name":"A.P.A.M. - Asociaci\u00f3n Protectora de Animales de Puerto Madryn",
+      "category":"Non-profit organization",
+      "id":"365539206306",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=365539206306"
+    }
+  ],
+  "title":"\"El perro es el \u00fanico ser que te quiere m\u00e1s que...",
+  "text":"\"El perro es el \u00fanico ser que te quiere m\u00e1s que vos mismo.\" ",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":7
+    }
+  ],
+  "created":"2011-06-10T00:55:42+0000",
+  "modified":"2011-06-10T00:55:42+0000",
+  "relevance":7
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>122487684489920_122493194489369</id>
+        <fromUser>
+            <name>Camad - Cámara de Industria, Comercio y Producción de Puerto Madryn</name>
+            <category>Non-profit organization</category>
+            <id>122487684489920</id>
+            <url>http://www.facebook.com/profile.php?id=122487684489920</url>
+        </fromUser>
+        <title>FORMACION PROFESIONAL...</title>
+        <text>FORMACION PROFESIONAL 2011</text>
+        <links>
+            <link>
+                <type>picture</type>
+                <url>http://photos-h.ak.fbcdn.net/hphotos-ak-snc6/165164_122493184489370_122487684489920_158102_5004179_s.jpg</url>
+            </link>
+            <link>
+                <type>photo</type>
+                <url>http://www.facebook.com/photo.php?fbid=122493184489370&set=a.122493177822704.22223.122487684489920&type=1</url>
+            </link>
+        </links>
+        <actions>
+            <action>
+                <type>comment</type>
+                <cant>2</cant>
+            </action>
+        </actions>
+        <created>2011-01-29T15:09:04+0000</created>
+        <modified>2011-03-29T01:19:20+0000</modified>
+        <relevance>6</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"122487684489920_122493194489369",
+  "fromUser":{
+    "name":"Camad - C\u00e1mara de Industria, Comercio y Producci\u00f3n de Puerto Madryn",
+    "category":"Non-profit organization",
+    "id":"122487684489920",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=122487684489920"
+  },
+  "title":"FORMACION PROFESIONAL...",
+  "text":"FORMACION PROFESIONAL 2011",
+  "links":[
+    {
+      "type":"picture",
+      "url":"http:\/\/photos-h.ak.fbcdn.net\/hphotos-ak-snc6\/165164_122493184489370_122487684489920_158102_5004179_s.jpg"
+    },
+    {
+      "type":"photo",
+      "url":"http:\/\/www.facebook.com\/photo.php?fbid=122493184489370&set=a.122493177822704.22223.122487684489920&type=1"
+    }
+  ],
+  "actions":[
+    {
+      "type":"comment",
+      "cant":2
+    }
+  ],
+  "created":"2011-01-29T15:09:04+0000",
+  "modified":"2011-03-29T01:19:20+0000",
+  "relevance":6
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>369753984314_10150203289484315</id>
+        <fromUser>
+            <name>Soundmix Puertomadryn</name>
+            <id>1503177381</id>
+            <url>http://www.facebook.com/profile.php?id=1503177381</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>Madryn TV</name>
+                <category>Product/service</category>
+                <id>369753984314</id>
+                <url>http://www.facebook.com/profile.php?id=369753984314</url>
+            </toUser>
+        </toUsers>
+        <title>...</title>
+        <text>http://www.youtube.com/watch?v=-CUvDw4XdIE&feature=related</text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>1</cant>
+            </action>
+            <action>
+                <type>comment</type>
+                <cant>1</cant>
+            </action>
+        </actions>
+        <created>2011-06-10T13:10:14+0000</created>
+        <modified>2011-06-10T13:10:31+0000</modified>
+        <relevance>4</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"369753984314_10150203289484315",
+  "fromUser":{
+    "name":"Soundmix Puertomadryn",
+    "id":"1503177381",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=1503177381"
+  },
+  "toUsers":[
+    {
+      "name":"Madryn TV",
+      "category":"Product\/service",
+      "id":"369753984314",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=369753984314"
+    }
+  ],
+  "title":"...",
+  "text":"http:\/\/www.youtube.com\/watch?v=-CUvDw4XdIE&feature=related",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":1
+    },
+    {
+      "type":"comment",
+      "cant":1
+    }
+  ],
+  "created":"2011-06-10T13:10:14+0000",
+  "modified":"2011-06-10T13:10:31+0000",
+  "relevance":4
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>369753984314_10150201770804315</id>
+        <fromUser>
+            <name>Soundmix Puertomadryn</name>
+            <id>1503177381</id>
+            <url>http://www.facebook.com/profile.php?id=1503177381</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>Madryn TV</name>
+                <category>Product/service</category>
+                <id>369753984314</id>
+                <url>http://www.facebook.com/profile.php?id=369753984314</url>
+            </toUser>
+        </toUsers>
+        <title>HOLA AMIGOS… NO SE QUE HACER, CADA DIA ESTOY...</title>
+        <text>HOLA AMIGOS… NO SE QUE HACER, CADA DIA ESTOY MAS MAL, NECESITO HACER ALGO, Y NO ENCUENTRO UNA SOLUCION. NECESITO AYUDA.
+TENGO TOMADA LA PROPIEDAD DE MI PADRE. EN EL BARRIO OESTE DE LA CIUDAD DE PUERTO MADRYN. (DICEN QUE NO ES USURPACION) PERO TAMPOCO ME LA QUIERE DAR. LA PERSONA QUE ESTA METIDA ES UN TAL RICARDO RODOLFO MIRANDA. Y JULIO LINIARES. EN DONDE TIENE UNA CARPINTERIA TRUCHA. Y ESO NO ES TODO…. TIENEN 2 CASAS MAS EN COVITRE 2 Y EN LA CALLE JOSEFA DEL PINO.
+LA JUSTICIA NO ME DA UNA AYUDA, Y NO TENGO RECURSOS PARA NADA
+        </text>
+        <links/>
+        <actions>
+            <action>
+                <type>like</type>
+                <cant>1</cant>
+            </action>
+            <action>
+                <type>comment</type>
+                <cant>3</cant>
+            </action>
+        </actions>
+        <created>2011-06-08T19:45:32+0000</created>
+        <modified>2011-06-09T16:59:55+0000</modified>
+        <relevance>10</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"369753984314_10150201770804315",
+  "fromUser":{
+    "name":"Soundmix Puertomadryn",
+    "id":"1503177381",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=1503177381"
+  },
+  "toUsers":[
+    {
+      "name":"Madryn TV",
+      "category":"Product\/service",
+      "id":"369753984314",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=369753984314"
+    }
+  ],
+  "title":"HOLA AMIGOS\u2026 NO SE QUE HACER, CADA DIA ESTOY...",
+  "text":"HOLA AMIGOS\u2026 NO SE QUE HACER, CADA DIA ESTOY MAS MAL, NECESITO HACER ALGO, Y NO ENCUENTRO UNA SOLUCION. NECESITO AYUDA.\nTENGO TOMADA LA PROPIEDAD DE MI PADRE. EN EL BARRIO OESTE DE LA CIUDAD DE PUERTO MADRYN. (DICEN QUE NO ES USURPACION) PERO TAMPOCO ME LA QUIERE DAR. LA PERSONA QUE ESTA METIDA ES UN TAL RICARDO RODOLFO MIRANDA. Y JULIO LINIARES. EN DONDE TIENE UNA CARPINTERIA TRUCHA. Y ESO NO ES TODO\u2026. TIENEN 2 CASAS MAS EN COVITRE 2 Y EN LA CALLE JOSEFA DEL PINO.\nLA JUSTICIA NO ME DA UNA AYUDA, Y NO TENGO RECURSOS PARA NADA\n",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"like",
+      "cant":1
+    },
+    {
+      "type":"comment",
+      "cant":3
+    }
+  ],
+  "created":"2011-06-08T19:45:32+0000",
+  "modified":"2011-06-09T16:59:55+0000",
+  "relevance":10
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>144258372308382_159290900805129</id>
+        <fromUser>
+            <name>Ezequiel Salgado</name>
+            <id>100000220114345</id>
+            <url>http://www.facebook.com/profile.php?id=100000220114345</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>Puerto Madryn</name>
+                <category>Community</category>
+                <id>144258372308382</id>
+                <url>http://www.facebook.com/profile.php?id=144258372308382</url>
+            </toUser>
+        </toUsers>
+        <title>mañana si hay mucho viento y machas cenisas no...</title>
+        <text>mañana si hay mucho viento y machas cenisas no hay clases
+¿?
+        </text>
+        <links/>
+        <actions/>
+        <created>2011-06-10T02:55:31+0000</created>
+        <modified>2011-06-10T02:55:31+0000</modified>
+        <relevance>0</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"144258372308382_159290900805129",
+  "fromUser":{
+    "name":"Ezequiel Salgado",
+    "id":"100000220114345",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=100000220114345"
+  },
+  "toUsers":[
+    {
+      "name":"Puerto Madryn",
+      "category":"Community",
+      "id":"144258372308382",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=144258372308382"
+    }
+  ],
+  "title":"ma\u00f1ana si hay mucho viento y machas cenisas no...",
+  "text":"ma\u00f1ana si hay mucho viento y machas cenisas no hay clases\n\u00bf?",
+  "links":[
+
+  ],
+  "actions":[
+
+  ],
+  "created":"2011-06-10T02:55:31+0000",
+  "modified":"2011-06-10T02:55:31+0000",
+  "relevance":0
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>144258372308382_159189370815282</id>
+        <fromUser>
+            <name>Puerto Madryn</name>
+            <category>Community</category>
+            <id>144258372308382</id>
+            <url>http://www.facebook.com/profile.php?id=144258372308382</url>
+        </fromUser>
+        <title>mañana hay clases normales...lo afirmo la...</title>
+        <text>mañana hay clases normales...lo afirmo la ministra de educacion Romero :)</text>
+        <links/>
+        <actions>
+            <action>
+                <type>comment</type>
+                <cant>3</cant>
+            </action>
+        </actions>
+        <created>2011-06-09T16:33:52+0000</created>
+        <modified>2011-06-09T16:48:25+0000</modified>
+        <relevance>9</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"144258372308382_159189370815282",
+  "fromUser":{
+    "name":"Puerto Madryn",
+    "category":"Community",
+    "id":"144258372308382",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=144258372308382"
+  },
+  "title":"ma\u00f1ana hay clases normales...lo afirmo la...",
+  "text":"ma\u00f1ana hay clases normales...lo afirmo la ministra de educacion Romero :)",
+  "links":[
+
+  ],
+  "actions":[
+    {
+      "type":"comment",
+      "cant":3
+    }
+  ],
+  "created":"2011-06-09T16:33:52+0000",
+  "modified":"2011-06-09T16:48:25+0000",
+  "relevance":9
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>177481952271908_210990992254337</id>
+        <fromUser>
+            <name>Sur Software</name>
+            <category>Local business</category>
+            <id>177481952271908</id>
+            <url>http://www.facebook.com/profile.php?id=177481952271908</url>
+        </fromUser>
+        <title>Probando el texto a ver que...</title>
+        <text>Probando el texto a ver que trae</text>
+        <links/>
+        <actions/>
+        <created>2011-05-13T13:16:58+0000</created>
+        <modified>2011-05-13T13:16:58+0000</modified>
+        <relevance>0</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"177481952271908_210990992254337",
+  "fromUser":{
+    "name":"Sur Software",
+    "category":"Local business",
+    "id":"177481952271908",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=177481952271908"
+  },
+  "title":"Probando el texto a ver que...",
+  "text":"Probando el texto a ver que trae",
+  "links":[
+
+  ],
+  "actions":[
+
+  ],
+  "created":"2011-05-13T13:16:58+0000",
+  "modified":"2011-05-13T13:16:58+0000",
+  "relevance":0
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>177481952271908_180460651983335</id>
+        <fromUser>
+            <name>Sur Software</name>
+            <category>Local business</category>
+            <id>177481952271908</id>
+            <url>http://www.facebook.com/profile.php?id=177481952271908</url>
+        </fromUser>
+        <title>FONSOFT Emprendedores 2010</title>
+        <links>
+            <link>
+                <type>link</type>
+                <url>http://www.sursoftware.com.ar/index.php/que-hacemos/consultoria/10-fonsoft-emprendedores-2010</url>
+            </link>
+        </links>
+        <actions/>
+        <created>2010-12-28T19:40:03+0000</created>
+        <modified>2010-12-28T19:40:03+0000</modified>
+        <relevance>0</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"177481952271908_180460651983335",
+  "fromUser":{
+    "name":"Sur Software",
+    "category":"Local business",
+    "id":"177481952271908",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=177481952271908"
+  },
+  "title":"FONSOFT Emprendedores 2010",
+  "links":[
+    {
+      "type":"link",
+      "url":"http:\/\/www.sursoftware.com.ar\/index.php\/que-hacemos\/consultoria\/10-fonsoft-emprendedores-2010"
+    }
+  ],
+  "actions":[
+
+  ],
+  "created":"2010-12-28T19:40:03+0000",
+  "modified":"2010-12-28T19:40:03+0000",
+  "relevance":0
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>90091503815_10150250961783816</id>
+        <fromUser>
+            <name>Silvia Victoriano</name>
+            <id>1350645105</id>
+            <url>http://www.facebook.com/profile.php?id=1350645105</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>678</name>
+                <category>Tv show</category>
+                <id>90091503815</id>
+                <url>http://www.facebook.com/profile.php?id=90091503815</url>
+            </toUser>
+        </toUsers>
+        <title>De Macri no se habla mas?  Que paso? No esta...</title>
+        <text>De Macri no se habla mas?  Que paso? No esta procesado? Se olvidaron todos los medios? Sergio y Pablo Shocklender seran investigados y procesados si correspondiera, por que no hacen lo mismo con el idiota de Macro que cada vez que lo veo me dan nauseas.....
+        </text>
+        <links/>
+        <actions/>
+        <created>2011-06-10T14:51:07+0000</created>
+        <modified>2011-06-10T14:51:07+0000</modified>
+        <relevance>0</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"90091503815_10150250961783816",
+  "fromUser":{
+    "name":"Silvia Victoriano",
+    "id":"1350645105",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=1350645105"
+  },
+  "toUsers":[
+    {
+      "name":"678",
+      "category":"Tv show",
+      "id":"90091503815",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=90091503815"
+    }
+  ],
+  "title":"De Macri no se habla mas?  Que paso? No esta...",
+  "text":"De Macri no se habla mas?  Que paso? No esta procesado? Se olvidaron todos los medios? Sergio y Pablo Shocklender seran investigados y procesados si correspondiera, por que no hacen lo mismo con el idiota de Macro que cada vez que lo veo me dan nauseas.....\n",
+  "links":[
+
+  ],
+  "actions":[
+
+  ],
+  "created":"2011-06-10T14:51:07+0000",
+  "modified":"2011-06-10T14:51:07+0000",
+  "relevance":0
+}]]>
+        </verbatim>
+    </post>
+    <post>
+        <source>Facebook</source>
+        <id>90091503815_10150250961748816</id>
+        <fromUser>
+            <name>Juan Carlos Boccalon</name>
+            <id>100002185091977</id>
+            <url>http://www.facebook.com/profile.php?id=100002185091977</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>678</name>
+                <category>Tv show</category>
+                <id>90091503815</id>
+                <url>http://www.facebook.com/profile.php?id=90091503815</url>
+            </toUser>
+        </toUsers>
+        <title>que...</title>
+        <text>que cohete....</text>
+        <links/>
+        <actions/>
+        <created>2011-06-10T14:51:02+0000</created>
+        <modified>2011-06-10T14:51:02+0000</modified>
+        <relevance>0</relevance>
+        <verbatim><![CDATA[{
+  "source":"Facebook",
+  "id":"90091503815_10150250961748816",
+  "fromUser":{
+    "name":"Juan Carlos Boccalon",
+    "id":"100002185091977",
+    "url":"http:\/\/www.facebook.com\/profile.php?id=100002185091977"
+  },
+  "toUsers":[
+    {
+      "name":"678",
+      "category":"Tv show",
+      "id":"90091503815",
+      "url":"http:\/\/www.facebook.com\/profile.php?id=90091503815"
+    }
+  ],
+  "title":"que...",
+  "text":"que cohete....",
+  "links":[
+
+  ],
+  "actions":[
+
+  ],
+  "created":"2011-06-10T14:51:02+0000",
+  "modified":"2011-06-10T14:51:02+0000",
+  "relevance":0
+}]]>
+        </verbatim>
+    </post>
+</posts>
