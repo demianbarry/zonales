@@ -12,6 +12,7 @@
     * [Etapa2 Etapa 2]
       * [Nutch Nutch]
       * [NutchSteps WF de Nutch paso a paso]
+      * [GeneradoresXZone Generadores de XZone / JZone]
     * [Herramientas Herramientas y utilidades]
       * [resetMySQLRoot Reiniciar pass MySQL root]
       * [Infraestructura Infraestructura]
