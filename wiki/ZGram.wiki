@@ -1,0 +1,63 @@
+#Especificación EBNF para definir configuraciones de extracción de
+#información para zonales
+
+= ZGram --> Gramática para configurar parámetros de extracción (Crawling) =
+
+== Gramática EBNF ==
+
+<Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
+			["asignando los tags" <tags>] 
+			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
+			"a partir" <criterios> 
+			["incluye comentarios" ["de los usuarios:" <usuario> {"," <usuario>}]]
+			["y filtrando por" <filtros> ]
+			["incluye los tags de la fuente"]
+
+<localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
+<tags>		::= 	<tag> {","<tag>} 
+<tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
+<fuente>	::=	"facebook" | "twitter" | "feed"
+<uri_fuente>	::=	? uri de rss o atom bien formada ?
+<criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
+<criterio>	::=	"del usuario" <usuario> |
+			"de amigos del usuario" <usuario> |
+			"de las palabras" <palabras>
+<usuario>	::= 	? string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple?
+<palabras>	::= 	<palabra> {"," <palabra>}
+<palabra>	::=	? cualquier palabra ?
+<filtros>	::=	<filtro> {"y" <filtro>}
+<filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" |
+			"con una disperción entre palabras no mayor a" <numero_entero>" |
+			"aplica lista negra de usuarios" |
+			"aplica lista negra de palabras" |
+			"con al menos" <numero_entero> "actions"
+<min num shuld match> ::= ? según la especificación y formato de solr ?
+
+===ejemplos:===
+
+
+extraer para la localidad 'puerto madryn' 
+mediante la fuente facebook
+a partir del usuario 'LU17.com' y 'Madryn TV' y de amigos del usuario 'Cultura Puerto Madryn'
+incluye comentarios de los usuarios: 'Demián Barry', 'Juan Manuel Cortez'
+
+extraer para la localidad 'Argentina'
+mediante la fuente twitter asignando los tags 'política','actualidad'
+a partir del usuario '@CFKArgentina' y del usuario '@mauriciomacri' y del usuario '@ricalfonsin'
+incluye comentarios
+con al menos 50 actions
+
+extraer para la localidad 'Córdoba'
+mediante la fuente twitter asignando los tags 'Deporte','futbol'
+a partir de las palabras córdona, deporte, futbol, talleres
+y filtrando al menos 75% de las palabras deben estar y con al menos 25 actions
+incluye los tags de la fuente
+			 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
