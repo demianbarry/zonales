@@ -4,7 +4,7 @@
 = ZGram --> Gramática para configurar parámetros de extracción (Crawling) =
 
 == Gramática EBNF ==
-
+{{{
 <Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
 			["asignando los tags" <tags>] 
 			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
@@ -32,10 +32,10 @@
 			"aplica lista negra de palabras" |
 			"con al menos" <numero_entero> "actions"
 <min num shuld match> ::= ? según la especificación y formato de solr ?
+}}}
+
 
 ===ejemplos:===
-
-
 extraer para la localidad 'puerto madryn' 
 mediante la fuente facebook
 a partir del usuario 'LU17.com' y 'Madryn TV' y de amigos del usuario 'Cultura Puerto Madryn'
@@ -53,11 +53,3 @@ a partir de las palabras córdona, deporte, futbol, talleres
 y filtrando al menos 75% de las palabras deben estar y con al menos 25 actions
 incluye los tags de la fuente
 			 
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
