@@ -12,14 +12,16 @@
 			["incluye comentarios" ["de los usuarios:" <usuario> {"," <usuario>}]]
 			["y filtrando por" <filtros> ]
 			["incluye los tags de la fuente"]
-
+                        "."
+ 
 <localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
 <tags>		::= 	<tag> {","<tag>} 
 <tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
 <fuente>	::=	"facebook" | "twitter" | "feed"
 <uri_fuente>	::=	? uri de rss o atom bien formada ?
 <criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
-<criterio>	::=	"del usuario" <usuario> |
+<criterio>	::=	"de todo" |
+                        "del usuario" <usuario> |
 			"de amigos del usuario" <usuario> |
 			"de las palabras" <palabras>
 <usuario>	::= 	? string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple?
@@ -32,6 +34,7 @@
 			"aplica lista negra de palabras" |
 			"con al menos" <numero_entero> "actions"
 <min num shuld match> ::= ? según la especificación y formato de solr ?
+<uri_fuente>	::=	? formato uri apuntando al url de definición, encerrada entre comilla simples ?
 }}}
 
 
@@ -39,17 +42,21 @@
 extraer para la localidad 'puerto madryn' 
 mediante la fuente facebook
 a partir del usuario 'LU17.com' y 'Madryn TV' y de amigos del usuario 'Cultura Puerto Madryn'
-incluye comentarios de los usuarios: 'Demián Barry', 'Juan Manuel Cortez'
+incluye comentarios de los usuarios: 'Demián Barry', 'Juan Manuel Cortez'.
 
 extraer para la localidad 'Argentina'
 mediante la fuente twitter asignando los tags 'política','actualidad'
 a partir del usuario '@CFKArgentina' y del usuario '@mauriciomacri' y del usuario '@ricalfonsin'
 incluye comentarios
-con al menos 50 actions
+y filtrando por con al menos 50 actions.
 
 extraer para la localidad 'Córdoba'
 mediante la fuente twitter asignando los tags 'Deporte','futbol'
 a partir de las palabras córdona, deporte, futbol, talleres
 y filtrando al menos 75% de las palabras deben estar y con al menos 25 actions
-incluye los tags de la fuente
-			 
+incluye los tags de la fuente.
+
+extraer para la localidad 'rosario' 
+mediante la fuente rss ubicada en 'www.lacapital.com.ar/rss/ultimomomento.xml'
+a partir de todo
+incluye los tags de la fuente.
