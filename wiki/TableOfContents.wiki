@@ -13,6 +13,7 @@
       * [Nutch Nutch]
       * [NutchSteps WF de Nutch paso a paso]
       * [GeneradoresXZone Generadores de XZone / JZone]
+      * [PostSolrQuery Query Solr para recuperación de Post]
     * [Herramientas Herramientas y utilidades]
       * [resetMySQLRoot Reiniciar pass MySQL root]
       * [Infraestructura Infraestructura]
