@@ -35,4 +35,9 @@ Servlet desarrollado en JAVA para crawlear contenidos de Twitter que luego retor
 *URL Repositorio*: https://zonales.googlecode.com/svn/branches/TwitterRetrievalServlet
 
 
-= parse-xrss: Nutch Parse Plugin =
+= Zonales Feed Plugin Nutch: Nutch Parse Plugin =
+
+Parser de feeds rss para obtener las noticias rss de diarios online y luego generar
+formato XZone o JZone.
+
+*URL Repositorio*: https://zonales.googlecode.com/svn/branches/ZonalesFeedPluginNutch/
