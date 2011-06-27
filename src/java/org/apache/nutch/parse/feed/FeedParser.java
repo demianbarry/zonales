@@ -68,8 +68,21 @@ import com.sun.syndication.io.SyndFeedInput;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-
 import org.apache.nutch.parse.generateXZone.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.*;
+import javax.swing.text.html.HTML;
+import javax.swing.text.Element;
+import javax.swing.text.ElementIterator;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  *
@@ -145,19 +158,31 @@ public class FeedParser implements Parser {
             SyndEntry entry = (SyndEntry) i.next();
 
             newEntry = new PostType();
-            newEntry.setSource(feedLink);
-            newEntry.setId(entry.getUri());
+            newEntry.setSource(feedLink.substring(7));
+           // newEntry.setId(entry.getUri());
+	    newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
 	    newEntry.setFromUser(new User(null, entry.getAuthor(), null, null));
             newEntry.setTitle(entry.getTitle());
             newEntry.setText(entry.getDescription().getValue());
-	
+
 	    if(entry.getCategories().isEmpty())
                 newEntry.setTags(new TagsType(entry.getCategories()));
 
+	     try {
+                newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             newEntry.setCreated(entry.getPublishedDate());
+	    newEntry.setModified(entry.getPublishedDate());
             newEntry.setRelevance(0);
             newEntry.setVerbatim(gson.toJson(newEntry));
-     
+
             newsList.add(newEntry);
 
             addToMap(parseResult, feed, feedLink, entry, content,newEntry );
@@ -439,65 +464,107 @@ public class FeedParser implements Parser {
         return s != null && !s.equals("");
     }
 
-    /**
+    public static LinksType getLinks (String ConDatos , String url) throws FileNotFoundException, IOException, BadLocationException{
 
-    private void addToZoneMap(ParseResult parseResult, SyndFeed feed,
-            SyndEntry entry, Content content, PostType post) {
+        InputStream datos = null;
+        HTMLDocument doc;
+        URL urltemp;
+        String test=null;
+	List<LinkType> list = new ArrayList<LinkType>();
 
-        System.out.println("Entra al add To Zone map");
-        String link = entry.getLink(), text = null, title = null;
+        //FileInputStream datos= new FileInputStream (ConDatos);
+/*************/
+        if(ConDatos != null ){
+            datos = new ByteArrayInputStream(ConDatos.getBytes());
+            HTMLEditorKit kit = new HTMLEditorKit();
+            doc = (HTMLDocument) kit.createDefaultDocument();
+            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
+            Reader HTMLReader = new InputStreamReader(datos);
+            //Reader HTMLReader = new ImputStreamReader (datos);
+            kit.read(HTMLReader, doc, 0);
 
-        System.out.println("Antes parseMeta");
-        Metadata parseMeta = new Metadata(), contentMeta = content.getMetadata();
-        System.out.println("Antes parseResult.get(link)");
-        Parse parse = parseResult.get(link);
+        }
+        else{
 
-        System.out.println("Antes Add Zone Fields");
+           urltemp = new URL(url);
+         //   urltemp = url;
+         //    urltemp = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
+            HTMLEditorKit kit = new HTMLEditorKit();
+            doc = (HTMLDocument) kit.createDefaultDocument();
+            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
+            Reader HTMLReader = new InputStreamReader(urltemp.openConnection().getInputStream());
+            kit.read(HTMLReader, doc, 0);
 
-        addZoneFields(parseMeta, contentMeta, post, entry);
-
-        System.out.println("Paso addZoneFields(parseMeta, contentMeta, post, entry); Antes Add Zone merge");
-
-
-         ParseData data = parse.getData();
-        // data.getContentMeta().remove(Response.CONTENT_TYPE);
-         mergeMetadata(data.getParseMeta(), parseMeta);
-
+        }
+/*************/
 
 
-      //  mergeMetadata(parse.getData().getParseMeta(), parseMeta);
+        ElementIterator it = new ElementIterator(doc);
+        Element elem = null;
 
-        System.out.println("Paso merge");
+
+        while( (elem= it.next()) != null  )
+        {
+
+            if( (elem.getName().equals(  "img")) )
+            {
+                String img= "imagen";
+                String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
+                /***************/
+               if ((s.indexOf("http://www")) == 0){
+                 list.add(new LinkType(img,s));
+            }
+        }
 
     }
 
+   if(list.isEmpty())
+       return null;
+   else
+    return new LinksType(list);
 
-    private void addZoneFields(Metadata parseMeta, Metadata contentMeta,
-            PostType post, SyndEntry entry) {
-        System.out.println("Entra Add Zone Fields");
-        parseMeta.set(Feed.FEED_TITLE, post.getTitle());
-        System.out.println("Setea  FEED_TITLE");
-        parseMeta.set(Feed.FEED_ID, post.getId());
-        System.out.println("Setea  FEED_ID");
-        parseMeta.set(Feed.FEED_RELEVANCE, String.valueOf(post.getRelevance()));
-        System.out.println("Setea  FEED_RELEVANCE");
-        parseMeta.set(Feed.FEED_VERBATIM, post.getVerbatim());
-        System.out.println("Setea  FEED_VERBATIM");
+ }
+
+/*************************************/
+
+    public void getActions(URL url) throws IOException, BadLocationException{
+
+        InputStream datos = null;
+        HTMLDocument doc;
+        URL urltemp;
+        //FileInputStream datos= new FileInputStream (ConDatos);
+/*************/
 
 
-        for (LinkType link: post.getLinks().getLink()){
+            //urltemp = new URL(url, ConDatos);
+            //urltemp = url;
+            //URL url = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
+            HTMLEditorKit kit = new HTMLEditorKit();
+            doc = (HTMLDocument) kit.createDefaultDocument();
+            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
+            Reader HTMLReader = new InputStreamReader(url.openConnection().getInputStream());
+            kit.read(HTMLReader, doc, 0);
 
-        //parseMeta.add(Feed.FEED_LINKS, null);
+/*************/
 
 
+        ElementIterator it = new ElementIterator(doc);
+        Element elem;
+
+
+        while( (elem= it.next()) != null  )
+        {
+
+            if( (elem.getName().equals(  "comment")) )
+            {
+
+                String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
+
+                if( s != null )
+                    System.out.println (s );
+            }
         }
-         System.out.println("Paso For for (LinkType link: post.getLinks().getLink())");
-        for (ActionType action: post.getActions().getAction()){
 
-       // parseMeta.add(Feed.FEED_ACTIONS, null);
+    }
 
-
-        }
-         System.out.println("Paso For for (LinkType link: post.getLinks().getLink())");
-    }*/
 }
