@@ -48,7 +48,8 @@ import org.apache.nutch.parse.ParseData;
  */
 public class FeedIndexingFilter implements IndexingFilter {
 
-    public static final String dateFormatStr = "yyyyMMddHHmm";
+   // public static final String dateFormatStr = "yyyyMMddHHmm";
+    public static final String dateFormatStr = "yyyy'-'MM'-'dd'T'HH:mm:ss.S'Z'";
     private Configuration conf;
     private final static String PUBLISHED_DATE = "publishedDate";
     private final static String UPDATED_DATE = "updatedDate";
@@ -88,6 +89,13 @@ public class FeedIndexingFilter implements IndexingFilter {
         String feed_relevance = parseMeta.get(Feed.FEED_RELEVANCE);
         String feed_verbatim = parseMeta.get(Feed.FEED_VERBATIM);
 
+	 doc.removeField("site");
+         doc.removeField("host");
+         doc.removeField("tstamp");
+         doc.removeField("url");
+         doc.removeField("title");
+         doc.removeField("content");
+	 doc.removeField("segments");
 
         if (authors != null && authors.length > 0) {
             doc.add("fromuser_name", authors[0]);
@@ -136,24 +144,24 @@ public class FeedIndexingFilter implements IndexingFilter {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         if (published != null) {
             Date date = new Date(Long.parseLong(published));
-            String dateString = sdf.format(date);
-            doc.add("created", dateString);
+            doc.add("created",  sdf.format(date));
 
         }
 
         if (updated != null) {
             Date date = new Date(Long.parseLong(updated));
-            String dateString = sdf.format(date);
-            doc.add("modified", dateString);
+            doc.add("modified",  sdf.format(date));
         }
 
-         if (feed_verbatim != null) {
+        if (feed_verbatim != null) {
             doc.add("verbatim", feed_verbatim);
         }
 
          if (feed_text != null) {
              doc.add("text", feed_text);
-        }    
+        }
+
+
 
         return doc;
     }
@@ -195,4 +203,3 @@ public class FeedIndexingFilter implements IndexingFilter {
         this.conf = conf;
     }
 }
-
