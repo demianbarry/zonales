@@ -1,0 +1,22 @@
+#summary Set de consultas de testing en lenguaje de crawling ZGram.
+
+= Introduction =
+
+Se define el siguiente set de consultas de testing en la gramática ZGram.
+
+
+= Details =
+
+Zona: Puerto Madryn / Chubut
+*Usuarios sugeridos de Facebook a testear*
+Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto MAdryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal
+
+*Extracción*
+Extraer para la localidad "Puerto Madryn" asginando los tags "Cultura" mediante la fuente "Facebook" a partir 
+del usuario "Cultura Puerto Madryn" y amigo del usuario "Cultura Puerto Madryn"
+y del usuario "Museo Municipal Puerto Madryn"
+y del usuario "CCultural Caracol"
+y del usuario "Archivo Cultural Madryn"
+y del usuario "Coro Municipal Puerto Madryn"
+incluye comentarios de los usuarios "Grace Gliubizzi"
+y filtrando por con al menos 1 actions.
