@@ -21,3 +21,4 @@
       * [Creacion_de_instaladores_joomla Creación de Instaladores Joomla]
       * [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
       * [ZGram Gramática de extracción de Zonales] 
+      * [ConsultasExtraccionTesting Consultas de ejemplo para probar configuración de extracción] 
