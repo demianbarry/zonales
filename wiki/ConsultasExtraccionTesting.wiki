@@ -7,7 +7,7 @@ Se define el siguiente set de consultas de testing en la gramática ZGram.
 
 = Details =
 
-Zona: Puerto Madryn / Chubut
+* Zona: Puerto Madryn / Chubut
 *Usuarios sugeridos de Facebook a testear*
 Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto MAdryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal
 
