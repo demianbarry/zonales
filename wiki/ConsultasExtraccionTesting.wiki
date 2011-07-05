@@ -10,9 +10,9 @@ Se define el siguiente set de consultas de testing en la gramática ZGram.
   * *Zona:* 
 Puerto Madryn / Chubut
   * *Usuarios sugeridos de Facebook a testear*
-Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto Madryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal
+Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto Madryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal, PM Rugby Club, Club Alumni
   * *Diarios sugeridos a testear*
-TiempoOnLine.com, NotiChubut, ChubutParaTodos
+TiempoOnLine.com, NotiChubut, ChubutParaTodos,radiochubut.com
 
   * *Extracción 1*
 Extraer para la localidad "Puerto Madryn" asginando los tags "Cultura" mediante la fuente "Facebook" a partir 
@@ -54,3 +54,35 @@ y filtrando por con al menos 1 actions.
 Extraer para la localidad "Puerto Madryn" asginando los tags "Tecnología" mediante la fuente "RSS" ubicada en "rss_de_tecnología_tiempo_online" a partir 
 de "todo"
 y filtrando por lista negra "Microsoft"
+
+  * *Extracción 6*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Deporte" mediante la fuente "RSS" ubicada en "rss_de_deporte_tiempo_online" a partir de "todo"
+y flitrando por lista negra "Automovilismo"
+y filtrando por lista negra "Tenis"
+y flitrando por lista negra "Voley"
+
+ * *Extracción 7*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad" mediante la fuente "facebook" a partir
+del usuario "Lu17com"
+y del usuario "MadrynTV"
+y del usuario "Cultura Puerto Madryn"
+y del usuario "CCultural caracol"
+y del usuario "Puerto Madryn (chubut)"
+y del usuario "Apam Puerto Madryn"
+y del usuario "Coro Municipal Puerto Madryn"
+Incluye comentarios de los usuarios "Gabriela Bermudez"
+y filtrando por lista negra de usuarios "Gisel Acuña"
+
+ * *Extracción 8*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Universidad" mediante la fuente "Facebook" a partir 
+del usuario "Lic. en Informatica PM" y amigo del usuario "Lic. en Informatica PM"
+y del usuario "G2P" y amigo del usuario "G2P"
+y del usuario "Cetich Prensa Utn" y amigo del usuario "Cetich Prensa Utn" 
+y del usaurio "Bienestar Universitario Pm-unpsjb" y amigo del usuario "Bienestar Universitario Pm-unpsjb"
+y del usuario "TutoriasIngenieria Unpsjb Puerto Madryn" y amigo del usuario "TutoriasIngenieria Unpsjb Puerto Madryn"
+y del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb" y amigo del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb"
+
+* *Extracción 9*
+Extraer para la localidad "Puerto Madryn" asignando los tagas "Legislativas" mediante la fuente "RSS" ubicada en "rss_de_legislativas_tiempo_online" 
+a patir de las palabras "kirchnerismo" pero no "D'elia"
+y filtrando por lista negra de palabras "piquete"
