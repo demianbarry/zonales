@@ -30,8 +30,8 @@
 <filtros>	::=	<filtro> {"y" <filtro>}
 <filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" |
 			"con una disperción entre palabras no mayor a" <numero_entero>" |
-			"aplica lista negra de usuarios" |
-			"aplica lista negra de palabras" |
+			"lista negra de usuarios" |
+			"lista negra de palabras" |
 			"con al menos" <numero_entero> "actions"
 <min num shuld match> ::= ? según la especificación y formato de solr ?
 <uri_fuente>	::=	? formato uri apuntando al url de definición, encerrada entre comilla simples ?
