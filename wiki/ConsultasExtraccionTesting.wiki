@@ -114,7 +114,7 @@ y de las palabras "Obra Social"
 y filtrando por palabras ""
 
  * *Extracción 13*
-Extaraer para la localidad "Puerto Madryn" asignando los tags ""
+Extraer para la localidad "Puerto Madryn" asignando los tags "Deporte"
 mediante la fuente "Facebook" 
 a partir del usuario "a todo deporte"
 y del usuario "LU17com"
@@ -124,3 +124,26 @@ y de las palabras "Brown"
 y de las palabras "Futbol"
 y de las palabras "Nacional B"
 y filtrando por con al menos 1 actions.
+
+ * *Extracción 14*
+Extraer para la localidad "Puerto Madryn" asginando los tags "Cultura" mediante la fuente "Facebook" a partir 
+del usuario "Cultura Puerto Madryn" y amigos del usuario "Cultura Puerto Madryn" 
+y del usuario "Museo Municipal Puerto Madryn" y amigos del usuario "Museo Municipal Puerto Madryn"
+y del usuario "CCultural Caracol" y amigos del usuario "CCultural Caracol"
+y del usuario "Archivo Cultural Madryn"
+y del usuario "Coro Municipal Puerto Madryn"
+y filtrando por palabras "insultos"
+
+ * *Extracción 15*
+Extraer para la localidad "Puerto Madryn" asginando los tags "Entretenimiento" mediante la fuente "Facebook" a partir 
+del usuario "Cine Teatro Auditorium Puerto Madryn"
+y del usuario "Grupo Azucar Puerto Madryn"
+y del usuario "Madryn Salsa"
+y del usuario "Milonga Del Golfo Azul"
+y del usuario "Archivo Culturaldemadryn"
+y del usuario "Educación Artística Chubut"
+y del usario "La Movida del Tango"
+y del usuario "Tango Madryn"
+y palabras "Eventos"
+y filtrando por con al menos 1 actions.
+y filtrando
