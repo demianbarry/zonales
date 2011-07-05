@@ -10,7 +10,7 @@ Se define el siguiente set de consultas de testing en la gramática ZGram.
   * *Zona:* 
 Puerto Madryn / Chubut
   * *Usuarios sugeridos de Facebook a testear*
-Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto Madryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal, PM Rugby Club, Club Alumni
+Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto Madryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal, PM Rugby Club, Club Alumni, a todo depoerte, Paraiso FM, Radio Popular, CNAS Club Nautico Atlántico Sud 
   * *Diarios sugeridos a testear*
 TiempoOnLine.com, NotiChubut, ChubutParaTodos,radiochubut.com
 
@@ -83,6 +83,44 @@ y del usuario "TutoriasIngenieria Unpsjb Puerto Madryn" y amigo del usuario "Tut
 y del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb" y amigo del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb"
 
  * *Extracción 9*
-Extraer para la localidad "Puerto Madryn" asignando los tagas "Legislativas" mediante la fuente "RSS" ubicada en "rss_de_legislativas_tiempo_online" 
+Extraer para la localidad "Puerto Madryn" asignando los tags "Legislativas" mediante la fuente "RSS" ubicada en "rss_de_legislativas_tiempo_online" 
 a patir de las palabras "kirchnerismo" pero no "D'elia"
 y filtrando por lista negra de palabras "piquete"
+
+  * *Extracción 10*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Educativas"
+mediante la fuente "RSS" ubicada en "http://chubutparatodos.com.ar/feed/"
+a partir de las palabras "Universidad"
+y de las palabras "Escuela"
+y de las palbras "Coloegio"
+y de las palabras "Instituto"
+
+ * *Extracción 11*
+Extraer para la locaildad "Puerto Madryn" asignando los tags "Politica" mediante la fuente "RSS" ubicada en "http://chubutparatodos.com.ar/feed/" 
+a partir de las palabras "Eliceche"
+y de las palabras "Das Neves"
+y de la palabras "Buzzi"
+y de las palabras "Sastre"
+y de las palabras "Candidatos"
+y filtrando por palabras ""
+
+
+ * *Extracción 12*
+Extraer para la locaildad "Puerto Madryn" asignando los tags "Salud" mediante la fuente "RSS" ubicada en "http://chubutparatodos.com.ar/feed/" 
+a partir de las palabras "Hsopital"
+y de las palabras "Clinica"
+y de la palabras "Sanatorio"
+y de las palabras "Obra Social"
+y filtrando por palabras ""
+
+ * *Extracción 13*
+Extaraer para la localidad "Puerto Madryn" asignando los tags ""
+mediante la fuente "Facebook" 
+a partir del usuario "a todo deporte"
+y del usuario "LU17com"
+y del usuario "Brown de Puerto Madryn"
+y del usuario "MadrynTV"
+y de las palabras "Brown"
+y de las palabras "Futbol"
+y de las palabras "Nacional B"
+y filtrando por con al menos 1 actions.
