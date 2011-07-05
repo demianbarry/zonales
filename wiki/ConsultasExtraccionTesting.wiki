@@ -82,7 +82,7 @@ y del usaurio "Bienestar Universitario Pm-unpsjb" y amigo del usuario "Bienestar
 y del usuario "TutoriasIngenieria Unpsjb Puerto Madryn" y amigo del usuario "TutoriasIngenieria Unpsjb Puerto Madryn"
 y del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb" y amigo del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb"
 
-* *Extracción 9*
+ * *Extracción 9*
 Extraer para la localidad "Puerto Madryn" asignando los tagas "Legislativas" mediante la fuente "RSS" ubicada en "rss_de_legislativas_tiempo_online" 
 a patir de las palabras "kirchnerismo" pero no "D'elia"
 y filtrando por lista negra de palabras "piquete"
