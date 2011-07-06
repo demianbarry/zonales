@@ -60,3 +60,10 @@ extraer para la localidad 'rosario'
 mediante la fuente rss ubicada en 'www.lacapital.com.ar/rss/ultimomomento.xml'
 a partir de todo
 incluye los tags de la fuente.
+
+
+== Gramática ABNF ==
+La Gramática Augmented BNF es una variante moderna de la especificación BNF. Fue definida en la [http://tools.ietf.org/html/rfc5234 RFC 5234] y se implementó para utilizar la librería Parse2 que construye automáticamente parsers para gramáticas definidas mediante ABNF.
+
+La definición se encuentra en el proyecto *ZCrawl Parser* incluído en la rama _branches_ del repositorio Subversion.
+[http://code.google.com/p/zonales/source/browse/branches/ZCrawl%20Parser/zcrawl.abnf]
