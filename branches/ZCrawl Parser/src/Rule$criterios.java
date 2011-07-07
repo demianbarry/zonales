@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -72,7 +72,37 @@ final public class Rule$criterios extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Terminal$StringValue.parse(context, " y ");
+                    rule = Rule$space.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Terminal$StringValue.parse(context, "y");
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Rule$mspace.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
@@ -126,7 +156,67 @@ final public class Rule$criterios extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Terminal$StringValue.parse(context, "pero no ");
+                    rule = Rule$space.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Terminal$StringValue.parse(context, "pero");
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Rule$mspace.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Terminal$StringValue.parse(context, "no");
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Rule$mspace.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
@@ -169,7 +259,37 @@ final public class Rule$criterios extends Rule
                           int c3 = 0;
                           for (int i3 = 0; i3 < 1 && f3; i3++)
                           {
-                            rule = Terminal$StringValue.parse(context, "y ");
+                            rule = Rule$space.parse(context);
+                            if ((f3 = rule != null))
+                            {
+                              e3.add(rule);
+                              c3++;
+                            }
+                          }
+                          parsed = c3 == 1;
+                        }
+                        if (parsed)
+                        {
+                          boolean f3 = true;
+                          int c3 = 0;
+                          for (int i3 = 0; i3 < 1 && f3; i3++)
+                          {
+                            rule = Terminal$StringValue.parse(context, "y");
+                            if ((f3 = rule != null))
+                            {
+                              e3.add(rule);
+                              c3++;
+                            }
+                          }
+                          parsed = c3 == 1;
+                        }
+                        if (parsed)
+                        {
+                          boolean f3 = true;
+                          int c3 = 0;
+                          for (int i3 = 0; i3 < 1 && f3; i3++)
+                          {
+                            rule = Rule$mspace.parse(context);
                             if ((f3 = rule != null))
                             {
                               e3.add(rule);
