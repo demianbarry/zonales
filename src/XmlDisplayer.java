@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 public class XmlDisplayer implements Visitor
 {
 
-  public Object visit(Rule$Zcrawling rule)
+  public Object visit(Rule$zcrawling rule)
   {
-    System.out.println("<Zcrawling>");
+    System.out.println("<zcrawling>");
     if (visitRules(rule.rules).booleanValue()) System.out.println("");
-    System.out.println("</Zcrawling>");
+    System.out.println("</zcrawling>");
 
     return Boolean.FALSE;
   }
@@ -139,11 +139,11 @@ public class XmlDisplayer implements Visitor
     return Boolean.FALSE;
   }
 
-  public Object visit(Rule$char_val rule)
+  public Object visit(Rule$cadena rule)
   {
-    System.out.println("<char-val>");
+    System.out.println("<cadena>");
     if (visitRules(rule.rules).booleanValue()) System.out.println("");
-    System.out.println("</char-val>");
+    System.out.println("</cadena>");
 
     return Boolean.FALSE;
   }
@@ -171,6 +171,33 @@ public class XmlDisplayer implements Visitor
     System.out.println("<QUOTE>");
     if (visitRules(rule.rules).booleanValue()) System.out.println("");
     System.out.println("</QUOTE>");
+
+    return Boolean.FALSE;
+  }
+
+  public Object visit(Rule$mspace rule)
+  {
+    System.out.println("<mspace>");
+    if (visitRules(rule.rules).booleanValue()) System.out.println("");
+    System.out.println("</mspace>");
+
+    return Boolean.FALSE;
+  }
+
+  public Object visit(Rule$space rule)
+  {
+    System.out.println("<space>");
+    if (visitRules(rule.rules).booleanValue()) System.out.println("");
+    System.out.println("</space>");
+
+    return Boolean.FALSE;
+  }
+
+  public Object visit(Rule$comma rule)
+  {
+    System.out.println("<comma>");
+    if (visitRules(rule.rules).booleanValue()) System.out.println("");
+    System.out.println("</comma>");
 
     return Boolean.FALSE;
   }
