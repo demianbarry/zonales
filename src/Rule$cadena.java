@@ -1,18 +1,18 @@
 /* -----------------------------------------------------------------------------
- * Rule$char_val.java
+ * Rule$cadena.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
 
 import java.util.ArrayList;
 
-final public class Rule$char_val extends Rule
+final public class Rule$cadena extends Rule
 {
-  private Rule$char_val(String spelling, ArrayList<Rule> rules)
+  private Rule$cadena(String spelling, ArrayList<Rule> rules)
   {
     super(spelling, rules);
   }
@@ -22,9 +22,9 @@ final public class Rule$char_val extends Rule
     return visitor.visit(this);
   }
 
-  public static Rule$char_val parse(ParserContext context)
+  public static Rule$cadena parse(ParserContext context)
   {
-    context.push("char-val");
+    context.push("cadena");
 
     boolean parsed = true;
     int s0 = context.index;
@@ -143,13 +143,13 @@ final public class Rule$char_val extends Rule
 
     rule = null;
     if (parsed)
-      rule = new Rule$char_val(context.text.substring(s0, context.index), e0);
+      rule = new Rule$cadena(context.text.substring(s0, context.index), e0);
     else
       context.index = s0;
 
-    context.pop("char-val", parsed);
+    context.pop("cadena", parsed);
 
-    return (Rule$char_val)rule;
+    return (Rule$cadena)rule;
   }
 }
 

@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Displayer implements Visitor
 {
 
-  public Object visit(Rule$Zcrawling rule)
+  public Object visit(Rule$zcrawling rule)
   {
     return visitRules(rule.rules);
   }
@@ -83,7 +83,7 @@ public class Displayer implements Visitor
     return visitRules(rule.rules);
   }
 
-  public Object visit(Rule$char_val rule)
+  public Object visit(Rule$cadena rule)
   {
     return visitRules(rule.rules);
   }
@@ -99,6 +99,21 @@ public class Displayer implements Visitor
   }
 
   public Object visit(Rule$QUOTE rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$mspace rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$space rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$comma rule)
   {
     return visitRules(rule.rules);
   }

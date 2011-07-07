@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Rule$int.java
+ * Rule$comma.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
@@ -10,9 +10,9 @@
 
 import java.util.ArrayList;
 
-final public class Rule$int extends Rule
+final public class Rule$comma extends Rule
 {
-  private Rule$int(String spelling, ArrayList<Rule> rules)
+  private Rule$comma(String spelling, ArrayList<Rule> rules)
   {
     super(spelling, rules);
   }
@@ -22,9 +22,9 @@ final public class Rule$int extends Rule
     return visitor.visit(this);
   }
 
-  public static Rule$int parse(ParserContext context)
+  public static Rule$comma parse(ParserContext context)
   {
-    context.push("int");
+    context.push("comma");
 
     boolean parsed = true;
     int s0 = context.index;
@@ -42,16 +42,46 @@ final public class Rule$int extends Rule
         {
           boolean f1 = true;
           int c1 = 0;
-          while (f1)
+          for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$DIGIT.parse(context);
+            rule = Rule$space.parse(context);
             if ((f1 = rule != null))
             {
               e1.add(rule);
               c1++;
             }
           }
-          parsed = true;
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Terminal$StringValue.parse(context, ",");
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Rule$mspace.parse(context);
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
         }
         if (parsed)
           e0.addAll(e1);
@@ -62,13 +92,13 @@ final public class Rule$int extends Rule
 
     rule = null;
     if (parsed)
-      rule = new Rule$int(context.text.substring(s0, context.index), e0);
+      rule = new Rule$comma(context.text.substring(s0, context.index), e0);
     else
       context.index = s0;
 
-    context.pop("int", parsed);
+    context.pop("comma", parsed);
 
-    return (Rule$int)rule;
+    return (Rule$comma)rule;
   }
 }
 

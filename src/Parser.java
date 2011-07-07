@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -29,7 +29,7 @@ public class Parser
     if (ok)
     {
       arguments.setProperty("Trace", "Off");
-      arguments.setProperty("Rule", "Zcrawling");
+      arguments.setProperty("Rule", "zcrawling");
 
       for (int i = 0; i < args.length; i++)
       {
@@ -158,7 +158,7 @@ public class Parser
     ParserContext context = new ParserContext(string, trace);
 
     Rule rule = null;
-    if (rulename.equalsIgnoreCase("Zcrawling")) rule = Rule$Zcrawling.parse(context);
+    if (rulename.equalsIgnoreCase("zcrawling")) rule = Rule$zcrawling.parse(context);
     else if (rulename.equalsIgnoreCase("localidad")) rule = Rule$localidad.parse(context);
     else if (rulename.equalsIgnoreCase("tags")) rule = Rule$tags.parse(context);
     else if (rulename.equalsIgnoreCase("tag")) rule = Rule$tag.parse(context);
@@ -172,10 +172,13 @@ public class Parser
     else if (rulename.equalsIgnoreCase("filtros")) rule = Rule$filtros.parse(context);
     else if (rulename.equalsIgnoreCase("filtro")) rule = Rule$filtro.parse(context);
     else if (rulename.equalsIgnoreCase("min-num-shuld-match")) rule = Rule$min_num_shuld_match.parse(context);
-    else if (rulename.equalsIgnoreCase("char-val")) rule = Rule$char_val.parse(context);
+    else if (rulename.equalsIgnoreCase("cadena")) rule = Rule$cadena.parse(context);
     else if (rulename.equalsIgnoreCase("ALPHA")) rule = Rule$ALPHA.parse(context);
     else if (rulename.equalsIgnoreCase("DQUOTE")) rule = Rule$DQUOTE.parse(context);
     else if (rulename.equalsIgnoreCase("QUOTE")) rule = Rule$QUOTE.parse(context);
+    else if (rulename.equalsIgnoreCase("mspace")) rule = Rule$mspace.parse(context);
+    else if (rulename.equalsIgnoreCase("space")) rule = Rule$space.parse(context);
+    else if (rulename.equalsIgnoreCase("comma")) rule = Rule$comma.parse(context);
     else if (rulename.equalsIgnoreCase("DIGIT")) rule = Rule$DIGIT.parse(context);
     else if (rulename.equalsIgnoreCase("HEXDIG")) rule = Rule$HEXDIG.parse(context);
     else if (rulename.equalsIgnoreCase("int")) rule = Rule$int.parse(context);
