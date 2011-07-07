@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -72,7 +72,7 @@ final public class Rule$palabras extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Terminal$StringValue.parse(context, ", ");
+                    rule = Rule$comma.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);

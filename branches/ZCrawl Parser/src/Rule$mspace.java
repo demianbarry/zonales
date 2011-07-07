@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Rule$relative_ref.java
+ * Rule$mspace.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
@@ -10,9 +10,9 @@
 
 import java.util.ArrayList;
 
-final public class Rule$relative_ref extends Rule
+final public class Rule$mspace extends Rule
 {
-  private Rule$relative_ref(String spelling, ArrayList<Rule> rules)
+  private Rule$mspace(String spelling, ArrayList<Rule> rules)
   {
     super(spelling, rules);
   }
@@ -22,9 +22,9 @@ final public class Rule$relative_ref extends Rule
     return visitor.visit(this);
   }
 
-  public static Rule$relative_ref parse(ParserContext context)
+  public static Rule$mspace parse(ParserContext context)
   {
-    context.push("relative-ref");
+    context.push("mspace");
 
     boolean parsed = true;
     int s0 = context.index;
@@ -44,21 +44,6 @@ final public class Rule$relative_ref extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$relative_part.parse(context);
-            if ((f1 = rule != null))
-            {
-              e1.add(rule);
-              c1++;
-            }
-          }
-          parsed = c1 == 1;
-        }
-        if (parsed)
-        {
-          boolean f1 = true;
-          int c1 = 0;
-          for (int i1 = 0; i1 < 1 && f1; i1++)
-          {
             parsed = false;
             if (!parsed)
             {
@@ -72,22 +57,7 @@ final public class Rule$relative_ref extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Terminal$StringValue.parse(context, "");
-                    if ((f2 = rule != null))
-                    {
-                      e2.add(rule);
-                      c2++;
-                    }
-                  }
-                  parsed = c2 == 1;
-                }
-                if (parsed)
-                {
-                  boolean f2 = true;
-                  int c2 = 0;
-                  for (int i2 = 0; i2 < 1 && f2; i2++)
-                  {
-                    rule = Rule$query.parse(context);
+                    rule = Terminal$NumericValue.parse(context, "%x09-20", "[\\x09-\\x20]", 1);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
@@ -105,13 +75,7 @@ final public class Rule$relative_ref extends Rule
             if (parsed) c1++;
             f1 = parsed;
           }
-          parsed = true;
-        }
-        if (parsed)
-        {
-          boolean f1 = true;
-          int c1 = 0;
-          for (int i1 = 0; i1 < 1 && f1; i1++)
+          while (f1)
           {
             parsed = false;
             if (!parsed)
@@ -126,22 +90,7 @@ final public class Rule$relative_ref extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Terminal$StringValue.parse(context, "#");
-                    if ((f2 = rule != null))
-                    {
-                      e2.add(rule);
-                      c2++;
-                    }
-                  }
-                  parsed = c2 == 1;
-                }
-                if (parsed)
-                {
-                  boolean f2 = true;
-                  int c2 = 0;
-                  for (int i2 = 0; i2 < 1 && f2; i2++)
-                  {
-                    rule = Rule$fragment.parse(context);
+                    rule = Terminal$NumericValue.parse(context, "%x09-20", "[\\x09-\\x20]", 1);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
@@ -159,7 +108,7 @@ final public class Rule$relative_ref extends Rule
             if (parsed) c1++;
             f1 = parsed;
           }
-          parsed = true;
+          parsed = c1 >= 1;
         }
         if (parsed)
           e0.addAll(e1);
@@ -170,13 +119,13 @@ final public class Rule$relative_ref extends Rule
 
     rule = null;
     if (parsed)
-      rule = new Rule$relative_ref(context.text.substring(s0, context.index), e0);
+      rule = new Rule$mspace(context.text.substring(s0, context.index), e0);
     else
       context.index = s0;
 
-    context.pop("relative-ref", parsed);
+    context.pop("mspace", parsed);
 
-    return (Rule$relative_ref)rule;
+    return (Rule$mspace)rule;
   }
 }
 
