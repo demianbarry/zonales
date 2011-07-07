@@ -3,14 +3,14 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Tue Jul 05 12:09:22 ART 2011
+ * Produced : Wed Jul 06 11:11:55 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
 
 public interface Visitor
 {
-  public Object visit(Rule$Zcrawling rule);
+  public Object visit(Rule$zcrawling rule);
   public Object visit(Rule$localidad rule);
   public Object visit(Rule$tags rule);
   public Object visit(Rule$tag rule);
@@ -24,10 +24,13 @@ public interface Visitor
   public Object visit(Rule$filtros rule);
   public Object visit(Rule$filtro rule);
   public Object visit(Rule$min_num_shuld_match rule);
-  public Object visit(Rule$char_val rule);
+  public Object visit(Rule$cadena rule);
   public Object visit(Rule$ALPHA rule);
   public Object visit(Rule$DQUOTE rule);
   public Object visit(Rule$QUOTE rule);
+  public Object visit(Rule$mspace rule);
+  public Object visit(Rule$space rule);
+  public Object visit(Rule$comma rule);
   public Object visit(Rule$DIGIT rule);
   public Object visit(Rule$HEXDIG rule);
   public Object visit(Rule$int rule);
