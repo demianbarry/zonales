@@ -10,21 +10,21 @@ Se describe en esta sección el funcionamiento y los parámetros necesarios para
 El Servicio de Recuperación de Contenidos de Facebook se desarrolló en lenguaje PHP, debido, en parte, a que para este lenguaje existe una librería que permite la manipulación de la API Graph que ofrece Facebook.
 
 El servlet está compuesto por los siguientes archivos:
-||*Archivo*||*Funcionalidad que brinda*||
-||_index.php_||Lógica central del servicio||
-||_fbmain.php_||Librería para comunicación con la API de facebook||
-||_facebook.php_||Librería para comunicación con la API de facebook||
-||_FormTools.php_||Librería para interactuar con los parámetros recibidos||
-||_stemmer_es_||Lematización de las palabras en español||
+|| *Archivo* || *Funcionalidad que brinda* ||
+|| _index.php_ || Lógica central del servicio ||
+|| _fbmain.php_ || Librería para comunicación con la API de facebook ||
+|| _facebook.php_ || Librería para comunicación con la API de facebook ||
+|| _FormTools.php_ || Librería para interactuar con los parámetros recibidos ||
+|| _stemmer_es_ || Lematización de las palabras en español ||
 
 = Parámetros =
 
-||*Parámetro*||*Valores posibles*||
-||_users_||||
-||_keywords_||||
-||_zone_||||
-||_tags_||||
-||_commenters_||||
-||_limit_||||
-||_since_||||
-||_format_||||
+|| *Parámetro* || *Valores posibles* ||
+|| _users_ ||  ||
+|| _keywords_ ||  ||
+|| _zone_ ||  ||
+|| _tags_ ||  ||
+|| _commenters_ ||  ||
+|| _limit_ ||  ||
+|| _since_ ||  ||
+|| _format_ ||  ||
