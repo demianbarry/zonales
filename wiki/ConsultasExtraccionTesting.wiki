@@ -13,6 +13,8 @@ Puerto Madryn / Chubut
 Lu17com, Cultura Puerto Madryn, Museo Municipal Puerto Madryn, Arcvhico Cultural Madryn, MadrynTV, CCultural Caracol, El Madryn, Deportivo Madryn, Brown de Puerto Madryn, Puerto Madryn (Chubut), Lic. en Informática PM, Apam Puerto Madryn, G2P, Coro Municipal, PM Rugby Club, Club Alumni, a todo depoerte, Paraiso FM, Radio Popular, CNAS Club Nautico Atlántico Sud, Argentina Vision, Puerto Madryn Turismo, Cuyunco, Turismo Puma 
   * *Diarios sugeridos a testear*
 TiempoOnLine.com, NotiChubut, ChubutParaTodos,radiochubut.com
+ * *Usuarios sugeridos de Facebook a testear*
+ozonodigital, JornadaWeb, ichubut, RadioBravafm, tiemponline, CSyDepMadryn, madrynpasionweb
 
   * *Extracción 1*
 Extraer para la localidad "Puerto Madryn" asginando los tags "Cultura" mediante la fuente "Facebook" a partir 
@@ -63,7 +65,7 @@ y flitrando por lista negra "Voley"
 
  * *Extracción 7*
 Extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad","Interes General"
- mediante la fuente "facebook" a partir
+mediante la fuente "facebook" a partir
 del usuario "Lu17com"
 y del usuario "MadrynTV"
 y del usuario "Cultura Puerto Madryn"
@@ -216,3 +218,40 @@ y las palabras "Colegio"
 y las palabras "Escuela"
 filtrando por las palabras "Conflicto"
 y las palabras "Paro"
+
+ * *Extracción 22*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad"
+mediante la fuente "Twitter" a partir de usuario "ozonodigital"
+y filtrando por lista de palabras negras "Turismo"
+
+ * *Extracción 23*
+Extraer para la localidad "Puerto Madryn" asignando los Tags "Turismo"
+mediante la fuente "Twitter" 
+a partir del usuario "ozonodigital"
+y el usuario "ichubut"
+y el usuario "JornadaWeb"
+y el usuario "tiempoonline"
+y de las palabras "Turismo"
+y de las palabtas "Avistaje"
+y filtrando por con al menos 1 actions
+ 
+ * *Extracción 24*
+Extraer para la loclaiddad "Puerto Madryn" asignando los tags "Deporte"
+mediante la fuente "Twiter"
+a partir del usuario "ozonodigital"
+y el usuario "ichubut"
+y el usuario "JornadaWeb"
+y el usuario "tiempoonline"
+y el usuario "CSyDepMadryn"
+y el usuario "madrynpasionweb"
+
+ * *Extracción 25*
+Extraer para la localidad "Puerto Madryn" asignando los tags "Policiales"
+mediante la fuente "Twitter"
+a partir de usuario "JornadaWed"
+y el usuario "tiempoonline"
+y las palabras "Robo"
+y las palabras "Policia"
+y las palabras "Accidente"
+y las palabras "Incendio"
+y las palabras "contrabando"
