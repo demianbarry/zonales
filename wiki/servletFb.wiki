@@ -9,6 +9,8 @@ Se describe en esta sección el funcionamiento y los parámetros necesarios para
 
 El Servicio de Recuperación de Contenidos de Facebook se desarrolló en lenguaje PHP, debido, en parte, a que para este lenguaje existe una librería que permite la manipulación de la API Graph que ofrece Facebook.
 
+Permite obtener en conjunto de contenidos en formato XZone o JZone desde la red social Facebook, utilizando un conjunto de parámetros para configurar las búsquedas.
+
 El servlet está compuesto por los siguientes archivos:
 || *Archivo* || *Funcionalidad que brinda* ||
 || _index.php_ || Lógica central del servicio ||
@@ -20,11 +22,13 @@ El servlet está compuesto por los siguientes archivos:
 = Parámetros =
 
 || *Parámetro* || *Valores posibles* ||
-|| _users_ ||  ||
-|| _keywords_ ||  ||
-|| _zone_ ||  ||
-|| _tags_ ||  ||
-|| _commenters_ ||  ||
-|| _limit_ ||  ||
-|| _since_ ||  ||
-|| _format_ ||  ||
+|| _users_ || Lista de usuarios a crawlear, separados por comas ||
+|| _keywords_ || Lista de keywords a buscar, separados por comas ||
+|| _zone_ || Cadena que representa la zona ||
+|| _tags_ || Cadenas que representan los tags del contenido, separados por comas ||
+|| _commenters_ || Lista de usuarios de los cuales desea recuperarse sus comentarios, separados por comas ||
+|| _limit_ || Límite de post por cada búsqueda ||
+|| _since_ || Límite temporal de la búsqueda ||
+|| _format_ || Formato de respuesta ||
+
+= Funcionamiento =
