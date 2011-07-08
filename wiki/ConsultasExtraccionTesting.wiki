@@ -10,7 +10,7 @@ Se define el siguiente set de consultas de testing en la gramática ZGram.
   * *Zona:* 
 Puerto Madryn / Chubut
   * *Usuarios sugeridos de Facebook a testear*
-Lu17com (199219160505), Cultura Puerto Madryn (1836046085),Museo Puerto Madryn (100000352270923), Archivo Cultural Madryn (100001092692977), MadrynTV (188758487813112), CCultural Caracol (100000814444262), El Madryn (122257437825063), Deportivo Madryn (210333288980557), Brown de Puerto Madryn (173455296011243), Puerto Madryn (Chubut) (1215856616), Lic. en Informática PM, Apam Puerto Madryn (100000867650195), G2P, Coro Municipal (100000384739969)l, PM Rugby Club (111287862220502), Club Alumni (176721481157), a todo deporte (148718161861236), Paraiso FM (106513019373901), Radio Popular, CNAS Club Nautico Atlántico Sud (124727724231453), Argentina Vision (100000545777637), Puerto Madryn Turismo (1821074059), Cuyunco (131929666830457),Chucao (1485368759), Sector 7 (168085533241135), El ojo que todo lo ve (129724167066840), La Frontera (1643432852), La Noche de Madryn (257393286102), Cine Teatro Auditorium Puerto Madryn (114415061974688), Madryn Decaravana (100001226876533), Cetich Prensa Utn (100000467861695), Bienestar Universitario Pm-unpsjb (100002497536261) 
+Lu17com (199219160505), Cultura Puerto Madryn (1836046085),Museo Puerto Madryn (100000352270923), Archivo Cultural Madryn (100001092692977), MadrynTV (188758487813112), CCultural Caracol (100000814444262), El Madryn (122257437825063), Deportivo Madryn (210333288980557), Brown de Puerto Madryn (173455296011243), Puerto Madryn (Chubut) (1215856616), Lic. en Informática PM, Apam Puerto Madryn (100000867650195), G2P, Coro Municipal (100000384739969)l, PM Rugby Club (111287862220502), Club Alumni (176721481157), a todo deporte (148718161861236), Paraiso FM (106513019373901), Radio Popular, CNAS Club Nautico Atlántico Sud (124727724231453), Argentina Vision (100000545777637), Puerto Madryn Turismo (1821074059), Cuyunco (131929666830457),Chucao (1485368759), Sector 7 (168085533241135), El ojo que todo lo ve (129724167066840), La Frontera (1643432852), La Noche de Madryn (257393286102), Cine Teatro Auditorium Puerto Madryn (114415061974688), Madryn Decaravana (100001226876533), Cetich Prensa Utn (100000467861695), Bienestar Universitario Pm-unpsjb (100002497536261), TutoriasIngenieria Unpsjb Puerto Madryn (100002289860633), DelegadoAcadémico Fcn-puerto Madryn-unpsjb (100002052389618), G2P (110265212331715), Lic. en Informatica PM (123669000990875), Museo Municipal Puerto Madryn (100000352270923), Grupo Azucar Puerto Madryn (804714795), "Madryn Salsa (100001626622047)", Milonga Del Golfo Azul (100000830568178), Archivo Culturaldemadryn (100001092692977), Educación Artística Chubut (100000905740251), Tango Madryn (1810370469)
   * *Diarios sugeridos a testear*
 TiempoOnLine.com, NotiChubut, ChubutParaTodos,radiochubut.com
  * *Usuarios sugeridos de Facebook a testear*
@@ -76,12 +76,12 @@ y filtrando por lista negra de usuarios "1046447140"
 
  * *Extracción 8*
 extraer para la localidad "Puerto Madryn" asignando los tags "Universidad" mediante la fuente facebook a partir 
-del usuario "Lic. en Informatica PM" y de amigos del usuario "Lic. en Informatica PM"
-y del usuario "G2P" y de amigos del usuario "G2P"
+del usuario "123669000990875" y de amigos del usuario "123669000990875"
+y del usuario "G2P 110265212331715" y de amigos del usuario "110265212331715"
 y del usuario "100000467861695" y de amigos del usuario "100000467861695" 
 y del usaurio "100002497536261" y de amigos del usuario "100002497536261"
-y del usuario "TutoriasIngenieria Unpsjb Puerto Madryn" y de amigos del usuario "TutoriasIngenieria Unpsjb Puerto Madryn"
-y del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb" y de amigos del usuario "DelegadoAcadémico Fcn-puerto Madryn-unpsjb"
+y del usuario "100002289860633" y de amigos del usuario "100002289860633"
+y del usuario "100002052389618" y de amigos del usuario "100002052389618"
 y filtrando por con al menos 1 actions.
 
  * *Extracción 9*
@@ -104,7 +104,7 @@ y de las palabras "Das Neves"
 y de la palabras "Buzzi"
 y de las palabras "Sastre"
 y de las palabras "Candidatos"
-y filtrando por palabras "Eleciones"
+y filtrando por lista negra de palabras "Eleciones"
 
 
  * *Extracción 12*
@@ -113,7 +113,7 @@ a partir de las palabras "Hospital"
 y de las palabras "Clinica"
 y de la palabras "Sanatorio"
 y de las palabras "Obra Social"
-y filtrando por palabras "Cirugia"
+
 
  * *Extracción 13*
 extraer para la localidad "Puerto Madryn" asignando los tags "Deporte", "Futbol"
@@ -130,23 +130,22 @@ y filtrando por con al menos 1 actions.
  * *Extracción 14*
 extraer para la localidad "Puerto Madryn" asignando los tags "Cultura" 
 mediante la fuente facebook a partir 
-del usuario "1836046085" y amigos del usuario "1836046085" 
-y del usuario "Museo Municipal Puerto Madryn" y amigos del usuario "Museo Municipal Puerto Madryn"
-y del usuario "100000814444262" y amigos del usuario "100000814444262"
+del usuario "1836046085" y de amigos del usuario "1836046085" 
+y del usuario "100000352270923" y de amigos del usuario "100000352270923"
+y del usuario "100000814444262" y de amigos del usuario "100000814444262"
 y del usuario "100001092692977"
-y del usuario "100000867650195 Puerto Madryn"
+y del usuario "100000867650195"
 y filtrando por palabras "insultos"
 
  * *Extracción 15*
 extraer para la localidad "Puerto Madryn" asignando los tags "Entretenimiento" mediante la fuente facebook a partir 
-del usuario "Cine Teatro Auditorium Puerto Madryn"
-y del usuario "Grupo Azucar Puerto Madryn"
-y del usuario "Madryn Salsa"
-y del usuario "Milonga Del Golfo Azul"
-y del usuario "Archivo Culturaldemadryn"
-y del usuario "Educación Artística Chubut"
-y del usario "La Movida del Tango"
-y del usuario "Tango Madryn"
+del usuario "114415061974688"
+y del usuario "804714795"
+y del usuario "100001626622047"
+y del usuario "100000830568178"
+y del usuario "100001092692977"
+y del usuario "100000905740251"
+y del usuario "1810370469"
 y palabras "Eventos"
 y las palabras "Encuentro"
 y las palabras "Clases"
