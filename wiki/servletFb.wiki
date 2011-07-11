@@ -9,7 +9,7 @@ Se describe en esta sección el funcionamiento y los parámetros necesarios para
 
 El Servicio de Recuperación de Contenidos de Facebook se desarrolló en lenguaje PHP, debido, en parte, a que para este lenguaje existe una librería que permite la manipulación de la API Graph que ofrece Facebook.
 
-Permite obtener en conjunto de contenidos en formato XZone o JZone desde la red social Facebook, utilizando un conjunto de parámetros para configurar las búsquedas.
+Permite obtener un conjunto de contenidos en formato XZone o JZone desde la red social Facebook, utilizando un conjunto de parámetros para configurar las búsquedas.
 
 El servlet está compuesto por los siguientes archivos:
 || *Archivo* || *Funcionalidad que brinda* ||
@@ -35,12 +35,16 @@ El servlet está compuesto por los siguientes archivos:
 
 El funcionamiento del servicio puede resumirse en los siguientes items:
   * Si se especifican usuarios, se realiza un búsqueda de posts de cada uno utilizando la API de faceboook, incluyendo en la misma el límite de post y de fecha especificados (parámetros _limit_ y _since_). *_Importante:_* Los usuarios deben especificarse utilizando su ID de Faceboook.
-    * Sobre cada publicación recuperada, se verifica que haya sido generados por el usuario o por los commenters especificados. Si el parámetro _commenters_ contiene el valor "all" se traen todos las publicaciones.
+    * Sobre cada publicación recuperada, se verifica que haya sido generada por el usuario o por los commenters especificados. Si el parámetro _commenters_ contiene el valor "all" se traen todos las publicaciones.
     * Cada publicación recuperada se filtra por keywords (ver sección _keywords_)
   * Si no se especificaron usuarios, pero si keywords de búsqueda, se realiza un búsqueda a través de la API utilizando esos keywords (con los paŕametros _limit_ y _since_).
-    * Los resultados de esta búsqueda tambien se filtran por keywords (ver sección _keywords_).
+    * Los resultados de esta búsqueda también se filtran por keywords (ver sección _keywords_).
   * Si no se especificaron ni usuarios ni keywords, no se retorna ningún resultado.
 
 == Filtro por Keywords ==
 
-Pueden especificarse dentro del parámetro _keywords_ palabras a buscar en los contenidos como palabras que no deben contener. Las palabras que 
+Pueden especificarse dentro del parámetro _keywords_ las palabras que se deben buscar en los contenidos y las palabras conforman la lista negra (palabras que los contenidos no deben tener). Estas últimas deben ir precedidas por un signo de admiración (Ej: "!prostitución").
+De esta combinación de palabras a buscar y a filtrar surgen las siguientes posibilidades:
+  * _No se especifican palabras a buscar ni a filtrar_: el servicio recupera todos los contenidos acorde al resto de los parámetros, pero no realiza ningún filtro por keyword.
+  * _Se especifican palabras a filtrar (lista negra) pero no criterios de búsqueda por palabras_: el servicio recupera todos los contenidos que coincidan con los resto de los parámetros y elimina aquellos que contengan al menos una de las palabras de la lista negra.
+  * _Se especifican criterios de búsqueda_: el servicio recupera solo aquellos contenidos que contengan las palabras especificadas (su raíz en realidad, ya que realiza lematización). Si se especifican además palabras en la lista negra, elimina los contenidos que contengan al menos una de estas palabras.
