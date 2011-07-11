@@ -51,3 +51,37 @@ De esta combinación de palabras a buscar y a filtrar surgen las siguientes posi
   * _No se especifican palabras a buscar ni a filtrar_: el servicio recupera todos los contenidos acorde al resto de los parámetros, pero no realiza ningún filtro por keyword.
   * _Se especifican palabras a filtrar (lista negra) pero no criterios de búsqueda por palabras_: el servicio recupera todos los contenidos que coincidan con los resto de los parámetros y elimina aquellos que contengan al menos una de las palabras de la lista negra.
   * _Se especifican criterios de búsqueda_: el servicio recupera solo aquellos contenidos que contengan las palabras especificadas (su raíz en realidad, ya que realiza lematización). Si se especifican además palabras en la lista negra, elimina los contenidos que contengan al menos una de estas palabras.
+
+= Mapeo del servicio con la gramática EBNF =
+{{{
+<Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
+			["asignando los tags" <tags>] 
+			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
+			"a partir" <criterios> 
+			["incluye comentarios" ["de los usuarios:" <usuario> {"," <usuario>}]]
+			["y filtrando por" <filtros> ]
+			["incluye los tags de la fuente"]
+                        "."
+ 
+<localidad> 	::= 	parámetro "zone" del servicio
+<tags>		::= 	parámetro "tags" del servicio (tags=tag,tag,...,tag)
+<tag>		::= 	cada uno de los tags del parámetro "tags".
+<fuente>	::=	"facebook"
+<uri_fuente>	::=	URI del servicio??? Depende decisión de configuración. Sino no aplica...???
+<criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
+<criterio>	::=	"de todo" | sin parámetro "users"
+                        "del usuario" <usuario> | cada uno de los usuarios del parámetro "users"
+			"de amigos del usuario" <usuario> | No implementado por el momento
+			"de las palabras" <palabras> | Parámetro "keywords"
+<usuario>	::= 	ID del usuario Facebook
+<palabras>	::= 	parámetro "keywords" del servicio (keywords=keyword,keyword,...,keyword)
+<palabra>	::=	cada uno de los keywords del parámetro "keywords".
+<filtros>	::=	<filtro> {"y" <filtro>}
+<filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" | No implementado por el momento
+			"con una disperción entre palabras no mayor a" <numero_entero>" | No implementado por el momento
+			"lista negra de usuarios" | No implementado por el momento (Basta con no poner estos usuarios en el parámetro "users", problema solo cuando no se especifica el parámetros "users")
+			"lista negra de palabras" | keywords con signo "!" adelante en parámetros "keywords"
+			"con al menos" <numero_entero> "actions" | parámetro "minactions"
+<min num shuld match> ::= No implementado por el momento
+<uri_fuente>	::=	Decisión de configuración...
+}}}
