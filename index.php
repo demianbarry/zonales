@@ -9,15 +9,20 @@ include_once "stemmer-es/stemm_es.php";
 /* * ************** Configuraciones ************** */
 $config['baseurl'] = "http://200.69.225.53:30080/facebook-test/index.php";
 
+//Límite de post a recuperar por defecto
+define("_DEFAULT_LIMIT_", 200);
+define("_DEFAULT_FORMAT_", "json");
+
 /* * ************** Extracción de parámetros ************** */
 $usersStr = FormTools::getParameter('users');
-$limit = FormTools::getParameter('limit') === false ? 100 : FormTools::getParameter('limit');
-$since = FormTools::getParameter('since'); // === false ? 1300000000 : FormTools::getParameter('since');
-$format = FormTools::getParameter('format') === false ? "json" : strtolower(FormTools::getParameter('format'));
+$limit = FormTools::getParameter('limit') === false ? _DEFAULT_LIMIT_ : FormTools::getParameter('limit');
+$since = FormTools::getParameter('since');
+$format = FormTools::getParameter('format') === false ? _DEFAULT_FORMAT_ : strtolower(FormTools::getParameter('format'));
 $zone = FormTools::getParameter('zone');
 $keywordsStr = FormTools::getParameter('keywords');
 $tagsStr = FormTools::getParameter('tags');
 $commentersStr = FormTools::getParameter('commenters');
+$minActions = FormTools::getParameter('minactions');
 
 /* * ************** Procesamiento de parámetros ************** */
 //Formato de respuesta
@@ -148,8 +153,10 @@ try {
                     $validPost = true;
                 }
                 if ($validPost) {
-                    if (checkKeywords($feed, $keywords)) {
-                        $posts[] = processFeed($feed, $zone, $tags);
+                    if (checkActions($feed, $minActions)) {
+                        if (checkKeywords($feed, $keywords)) {
+                            $posts[] = processFeed($feed, $zone, $tags);
+                        }
                     }
                 }
             }
@@ -183,8 +190,10 @@ try {
 
             //Proceso cada post recuperado
             foreach ($feeds['data'] as $feed) {
-                if (checkKeywords($feed, $keywords)) {
-                    $posts[] = processFeed($feed, $zone, $tags);
+                if (checkActions($feed, $minActions)) {
+                    if (checkKeywords($feed, $keywords)) {
+                        $posts[] = processFeed($feed, $zone, $tags);
+                    }
                 }
             }
         }
@@ -383,6 +392,23 @@ function getBlackList($keywords) {
         }
     }
     return $blackList;
+}
+
+function checkActions($feed, $minActions) {
+    $actions = 0;
+
+    if (isset($feed['likes'])) {
+        $actions += $feed['likes']['count'];
+    }
+    if (isset($feed['comments'])) {
+        $actions += $feed['comments']['count'];
+    }
+
+    if ($minActions < $actions) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /*
