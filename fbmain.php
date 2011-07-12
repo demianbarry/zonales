@@ -5,8 +5,9 @@ $fbconfig['api'] = "9278da5e1ad4636708295b026c14d8ce";
 $fbconfig['secret'] = "1ad66f1d79477de016069d7ebc408e13";
 
 try {
-    include_once "facebook.php";
+    require_once 'src/facebook.php';
 } catch (Exception $o) {
+    echo "PEPEPEPE";
     showArrays($o);
 }
 // Create our Application instance.
@@ -22,7 +23,7 @@ $facebook = new Facebook(array(
 // if it is still valid until we make an API call using the session. A session
 // can become invalid if it has already expired (should not be getting the
 // session back in this case) or if the user logged out of Facebook.
-$session = $facebook->getSession();
+/*$session = $facebook->getSession();
 
 $fbme = null;
 // Session based graph API call.
@@ -33,7 +34,7 @@ if ($session) {
     } catch (FacebookApiException $e) {
         showArrays($e);
     }
-}
+}*/
 
 function showArrays($d) {
     echo '<pre>';
