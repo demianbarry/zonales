@@ -11,7 +11,9 @@ $config['baseurl'] = "http://200.69.225.53:30080/facebook-test/index.php";
 
 //Límite de post a recuperar por defecto
 define("_DEFAULT_LIMIT_", 200);
-define("_DEFAULT_FORMAT_", "json");
+define("_DEFAULT_FORMAT_", "xml");
+define("_DEFAULT_MIN_ACTIONS_", 0);
+
 
 /* * ************** Extracción de parámetros ************** */
 $usersStr = FormTools::getParameter('users');
@@ -22,7 +24,7 @@ $zone = FormTools::getParameter('zone');
 $keywordsStr = FormTools::getParameter('keywords');
 $tagsStr = FormTools::getParameter('tags');
 $commentersStr = FormTools::getParameter('commenters');
-$minActions = FormTools::getParameter('minactions');
+$minActions = FormTools::getParameter('minactions') === false ? _DEFAULT_MIN_ACTIONS_ : FormTools::getParameter('minactions');
 
 /* * ************** Procesamiento de parámetros ************** */
 //Formato de respuesta
@@ -130,6 +132,8 @@ try {
                 $api = $api . '&since=' . $since; //($loops == 1 ? $since : ($min > $since ? $min : $since));
             }
 
+            //$api = $api . '&access_token=' . $facebook->getAccessToken();
+
             $feeds = $facebook->api($api);
             /* Fin llamado a la API */
 
@@ -145,7 +149,7 @@ try {
                         foreach ($commenters as $commenter) {
                             if ($feed['from']['id'] == $commenter) {
                                 $validPost = true;
-                                break;
+                                //break;
                             }
                         }
                     }
@@ -184,6 +188,8 @@ try {
             if ($since) {
                 $api .= '&since=' . $since; //($loops == 1 ? $since : ($min > $since ? $min : $since));
             }
+
+            //$api = $api . '&access_token=' . $facebook->getAccessToken();
 
             $feeds = $facebook->api($api);
             /* Fin Llamado a la API */
@@ -404,7 +410,7 @@ function checkActions($feed, $minActions) {
         $actions += $feed['comments']['count'];
     }
 
-    if ($minActions < $actions) {
+    if ($minActions <= $actions) {
         return true;
     } else {
         return false;
