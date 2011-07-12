@@ -25,7 +25,7 @@ y del usuario "100000384739969"
 incluye comentarios de los usuarios: "1370187228"
 y filtrando por con al menos 1 actions.
 
-    * *Llamada servicio:* http://localhost/fb/index.php?zone=Puerto%20Madryn&tags=Cultura&users=1836046085,100000814444262,100001092692977,100000384739969&commenters=1370187228&minactions=1
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Cultura&users=1836046085,100000814444262,100001092692977,100000384739969&commenters=1370187228&minactions=1
     * *Observaciones:* Amigos del usuario no implementado aún.
 
   * *Extracción 2*
@@ -35,7 +35,7 @@ y del usuario "210333288980557"
 y del usuario "173455296011243"
 y filtrando por con al menos 1 actions.
 
-    * *Llamada servicio:* http://localhost/fb/index.php?zone=Puerto%20Madryn&tags=Deportes&users=122257437825063,210333288980557,173455296011243&minactions=1
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Deportes&users=122257437825063,210333288980557,173455296011243&minactions=1
 
   * *Extracción 3*
 extraer para la localidad "Puerto Madryn" asignando los tags "Entretenimiento" mediante la fuente facebook a partir 
@@ -47,7 +47,7 @@ y del usuario "114415061974688"
 y del usuario "100001226876533"
 y filtrando por con al menos 1 actions.
 
-    * *Llamada servicio:* http://localhost/fb/index.php?zone=Puerto%20Madryn&tags=Entretenimiento&users=168085533241135,129724167066840,1643432852,257393286102,114415061974688,100001226876533&minactions=1
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Entretenimiento&users=168085533241135,129724167066840,1643432852,257393286102,114415061974688,100001226876533&minactions=1
 
   * *Extracción 4*
 extraer para la localidad "Puerto Madryn" asignando los tags "Turismo" mediante la fuente facebook a partir 
@@ -57,7 +57,7 @@ y del usuario "1821074059"
 y del usuario "131929666830457"
 y filtrando por con al menos 1 actions.
 
-    * *Llamada servicio:* http://localhost/fb/index.php?zone=Puerto%20Madryn&tags=Turismo&users=1485368759,100000545777637,1821074059,131929666830457&minactions=1
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Turismo&users=1485368759,100000545777637,1821074059,131929666830457&minactions=1
 
   * *Extracción 5*
 extraer para la localidad "Puerto Madryn" asignando los tags "Tecnología" mediante la fuente rss ubicada en "rss_de_tecnología_tiempo_online" a partir 
