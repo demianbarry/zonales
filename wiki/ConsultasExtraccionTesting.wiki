@@ -83,15 +83,21 @@ y del usuario "100000384739969"
 incluye comentarios de los usuarios: "100000302251472"
 y filtrando por lista negra de usuarios "1046447140"
 
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Actualidad,Interes%20General&users=199219160505,188758487813112,1836046085,100000814444262,1215856616,100000867650195,100000384739969&commenters=100000302251472
+
  * *Extracción 8*
 extraer para la localidad "Puerto Madryn" asignando los tags "Universidad" mediante la fuente facebook a partir 
 del usuario "123669000990875" y de amigos del usuario "123669000990875"
-y del usuario "G2P 110265212331715" y de amigos del usuario "110265212331715"
+y del usuario "110265212331715" y de amigos del usuario "110265212331715"
 y del usuario "100000467861695" y de amigos del usuario "100000467861695" 
 y del usaurio "100002497536261" y de amigos del usuario "100002497536261"
 y del usuario "100002289860633" y de amigos del usuario "100002289860633"
 y del usuario "100002052389618" y de amigos del usuario "100002052389618"
+incluye comentarios
 y filtrando por con al menos 1 actions.
+
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Universidad&users=123669000990875,110265212331715,100000467861695,100002497536261,100002289860633,100002052389618&commenters=all
+    * *Observaciones:* Amigos del usuario no implementado aún.
 
  * *Extracción 9*
 extraer para la localidad "Puerto Madryn" asignando los tags "Legislativas" mediante la fuente rss ubicada en "rss_de_legislativas_tiempo_online" 
@@ -136,6 +142,8 @@ y de las palabras "Futbol"
 y de las palabras "Nacional B"
 y filtrando por con al menos 1 actions.
 
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Deporte,Futbol&users=148718161861236,199219160505,173455296011243,188758487813112&keywords=Brown,Futbol,Nacional%20B&commenters=all&minactions=1
+
  * *Extracción 14*
 extraer para la localidad "Puerto Madryn" asignando los tags "Cultura" 
 mediante la fuente facebook a partir 
@@ -144,7 +152,11 @@ y del usuario "100000352270923" y de amigos del usuario "100000352270923"
 y del usuario "100000814444262" y de amigos del usuario "100000814444262"
 y del usuario "100001092692977"
 y del usuario "100000867650195"
+incluye comentarios
 y filtrando por palabras "insultos"
+
+    * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Cultura&users=1836046085,100000352270923,100000814444262,100001092692977,100000867650195&commenters=all&keywords=!insultos
+    * *Observaciones:* Amigos del usuario no implementado aún.
 
  * *Extracción 15*
 extraer para la localidad "Puerto Madryn" asignando los tags "Entretenimiento" mediante la fuente facebook a partir 
