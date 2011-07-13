@@ -39,6 +39,8 @@ import entities.PostType;
 import entities.PostsType;
 import entities.ToUsersType;
 import entities.User;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 /**
  * Example servlet showing request headers
@@ -51,8 +53,9 @@ public class TwitterRetrieval extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        response.setContentType("text/javascript");
-        PrintWriter out = response.getWriter();
+        
+        response.setCharacterEncoding("UTF-8");        
+        PrintWriter out;
         try {
 
 
@@ -63,10 +66,12 @@ public class TwitterRetrieval extends HttpServlet {
             // addition of a PathInfo issue
 
             ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setDebugEnabled(true).setOAuthConsumerKey("Mn8OyMIfhGr63CH89tuQA").setOAuthConsumerSecret("QgeO6xPoSJxIv6KL6mvYKsUXdmlHcOXpXsSc0N1xSFg").setOAuthAccessToken("234742739-I1l0VGTTjRUbZrfH1jvKnTVFU9ZEvkxxUDpvsAJ2").setOAuthAccessTokenSecret("jLe3imI3JiPgmHCatt6SqYgRAcX5q8s6z38oUrqMc");
+            cb.setDebugEnabled(true).setOAuthConsumerKey("56NAE9lQHSOZIGXRktd5Qw").setOAuthConsumerSecret("zJjJrUUs1ubwKjtPOyYzrwBJzpwq7ud8Aryq1VhYH2E").setOAuthAccessTokenURL("https://api.twitter.com/oauth/access_token").setOAuthRequestTokenURL("https://api.twitter.com/oauth/request_token").setOAuthAuthorizationURL("https://api.twitter.com/oauth/authorize").setOAuthAccessToken("234742739-I1l0VGTTjRUbZrfH1jvKnTVFU9ZEvkxxUDpvsAJ2").setOAuthAccessTokenSecret("jLe3imI3JiPgmHCatt6SqYgRAcX5q8s6z38oUrqMc");
+            
             TwitterFactory tf = new TwitterFactory(cb.build());
             Twitter twitter = tf.getInstance();
 
+            //twitter.setOAuthAccessToken(twitter.getOAuthAccessToken("jmcthemaster", "juanma"));
             Query query = new Query(request.getParameter("keywords"));
             QueryResult result;
 
@@ -113,8 +118,12 @@ public class TwitterRetrieval extends HttpServlet {
             PostsType posts = new PostsType(postsList);
             Gson gson = new Gson();
             if ("json".equalsIgnoreCase(request.getParameter("format"))) {                
+                response.setContentType("text/javascript");
+                out = response.getWriter();
                 out.println(gson.toJson(posts));
             } else {
+                response.setContentType("application/xml");
+                out = response.getWriter();
                 try {
                     for(PostType postIt : posts.getPost()) {
                         postIt.setVerbatim(gson.toJson(postIt));

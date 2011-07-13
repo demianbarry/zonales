@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "postType", propOrder = {
+@XmlType(name = "post", propOrder = {
     "source",
     "id",
     "fromUser",
