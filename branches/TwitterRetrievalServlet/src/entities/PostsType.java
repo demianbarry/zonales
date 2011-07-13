@@ -39,18 +39,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name="posts")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "posts", propOrder = {
-    "posts"
+    "post"
 })
 public class PostsType {
 
     @XmlElement(required = true)
-    protected List<PostType> posts;
+    protected List<PostType> post;
 
     public PostsType() {
     }
 
     public PostsType(List<PostType> posts) {
-        this.posts = posts;
+        this.post = posts;
     }
 
     /**
@@ -76,10 +76,10 @@ public class PostsType {
      * 
      */
     public List<PostType> getPost() {
-        if (posts == null) {
-            posts = new ArrayList<PostType>();
+        if (post == null) {
+            post = new ArrayList<PostType>();
         }
-        return this.posts;
+        return this.post;
     }
 
 }
