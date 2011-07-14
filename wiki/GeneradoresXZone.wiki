@@ -132,14 +132,7 @@ Servicio desarrollado en PHP, crawlea post públicos de diversos usuarios y los 
 
 *URL Actual*: http://200.69.225.53:30080/facebook-test/index.php
 
-*Parámetros*:
-  * *_Users_*: Lista de códigos de usuarios de Facebook separada por coma (","). _Ejemplo_: users=222136235762,199219160505,365539206306,122487684489920,369753984314,144258372308382,177481952271908,90091503815
-
-  * *_limit_*: Cantidad de post a crawlear por cada usuario. _Ejemplo_: limit=20
-
-  * *_format_*: Formato en el que se desea obtener la respuesta. Valores posibles por el momento: "json", "xml". _Ejemplo_: format=xml
-
-  * *_zone_*: Zona a la que pertenecen los usuarios. La zona es devuelta como un tag del post. _Ejemplo_: zone=Puerto Madryn.
+[servletFb Servicio de Recuperacion de Contenidos de Facebook]
 
 *URL Repositorio*: https://zonales.googlecode.com/svn/branches/fb-information-retrieval
 
