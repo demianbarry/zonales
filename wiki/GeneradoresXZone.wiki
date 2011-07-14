@@ -132,7 +132,7 @@ Servicio desarrollado en PHP, crawlea post públicos de diversos usuarios y los 
 
 *URL Actual*: http://200.69.225.53:30080/facebook-test/index.php
 
-[servletFb Servicio de Recuperacion de Contenidos de Facebook]
+*Descripción:* [servletFb Servicio de Recuperacion de Contenidos de Facebook]
 
 *URL Repositorio*: https://zonales.googlecode.com/svn/branches/fb-information-retrieval
 
