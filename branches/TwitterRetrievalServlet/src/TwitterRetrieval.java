@@ -26,21 +26,13 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Tweet;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
 import entities.ActionType;
-import entities.ActionsType;
 import entities.PostType;
 import entities.PostsType;
-import entities.ToUsersType;
 import entities.User;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Example servlet showing request headers
@@ -53,9 +45,9 @@ public class TwitterRetrieval extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        
-        response.setCharacterEncoding("UTF-8");        
-        PrintWriter out;
+
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();;
         try {
 
 
@@ -65,59 +57,73 @@ public class TwitterRetrieval extends HttpServlet {
             // making these absolute till we work out the
             // addition of a PathInfo issue
 
-            ConfigurationBuilder cb = new ConfigurationBuilder();
+            /*ConfigurationBuilder cb = new ConfigurationBuilder();
             cb.setDebugEnabled(true).setOAuthConsumerKey("56NAE9lQHSOZIGXRktd5Qw").setOAuthConsumerSecret("zJjJrUUs1ubwKjtPOyYzrwBJzpwq7ud8Aryq1VhYH2E").setOAuthAccessTokenURL("https://api.twitter.com/oauth/access_token").setOAuthRequestTokenURL("https://api.twitter.com/oauth/request_token").setOAuthAuthorizationURL("https://api.twitter.com/oauth/authorize").setOAuthAccessToken("234742739-I1l0VGTTjRUbZrfH1jvKnTVFU9ZEvkxxUDpvsAJ2").setOAuthAccessTokenSecret("jLe3imI3JiPgmHCatt6SqYgRAcX5q8s6z38oUrqMc");
             
             TwitterFactory tf = new TwitterFactory(cb.build());
             Twitter twitter = tf.getInstance();
-
+            
             //twitter.setOAuthAccessToken(twitter.getOAuthAccessToken("jmcthemaster", "juanma"));
             Query query = new Query(request.getParameter("keywords"));
             QueryResult result;
-
-            result = twitter.search(query);
-
-            List<PostType> postsList = new ArrayList();
             
+            result = twitter.search(query);*/
+
+            String query = request.getParameter("q");
+
+            URL oracle = new URL("http://search.twitter.com/search?q=" + query);            
+            URLConnection yc = oracle.openConnection();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                    yc.getInputStream()));
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                out.println(inputLine);
+            }
+            in.close();
+
+            /*List<PostType> postsList = new ArrayList();
+
             PostType post;
             //List<LinkType> links = new ArrayList();
             List<ActionType> actions;
-            List<User> toUsers = new ArrayList();
+            List<User> toUsers = new ArrayList();*/
 
-            for (Tweet tweet : (List<Tweet>) result.getTweets()) {
-                actions = new ArrayList();
-                actions.add(new ActionType("retweets", twitter.getRetweetedByIDs(tweet.getId()).getIDs().length));
-                actions.add(new ActionType("replies", twitter.getRelatedResults(tweet.getId()).getTweetsWithReply().size()));
-
-                post = new PostType();
-                post.setSource("Twitter");
-                post.setId(String.valueOf(tweet.getId()));
-                post.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
-                        tweet.getFromUser(),
-                        tweet.getProfileImageUrl(),
-                        tweet.getSource()));
-
-                if (tweet.getToUser() != null) {
-                    toUsers.add(new User(String.valueOf(tweet.getToUserId()),
-                            tweet.getToUser(),
-                            null,
-                            tweet.getSource()));
-                    post.setToUsers(new ToUsersType(toUsers));
-                }
-
-                post.setTitle(tweet.getText().substring(0, tweet.getText().length() > 30 ? 30 : tweet.getText().length() - 1));
-                post.setText(tweet.getText());
-                //post.setLinks(new LinksType(links));
-                post.setActions(new ActionsType(actions));
-                post.setCreated(tweet.getCreatedAt());
-                post.setModified(tweet.getCreatedAt());
-                post.setRelevance(actions.get(0).getCant() * 3 + actions.get(1).getCant());
-
-                postsList.add(post);
+            /*for (Tweet tweet : (List<Tweet>) result.getTweets()) {
+            actions = new ArrayList();
+            //actions.add(new ActionType("retweets", twitter.getRetweetedByIDs(tweet.getId()).getIDs().length));
+            //actions.add(new ActionType("replies", twitter.getRelatedResults(tweet.getId()).getTweetsWithReply().size()));
+            
+            post = new PostType();
+            post.setSource("Twitter");
+            post.setId(String.valueOf(tweet.getId()));
+            post.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
+            tweet.getFromUser(),
+            tweet.getProfileImageUrl(),
+            tweet.getSource()));
+            
+            if (tweet.getToUser() != null) {
+            toUsers.add(new User(String.valueOf(tweet.getToUserId()),
+            tweet.getToUser(),
+            null,
+            tweet.getSource()));
+            post.setToUsers(new ToUsersType(toUsers));
             }
-            PostsType posts = new PostsType(postsList);
+            
+            post.setTitle(tweet.getText().substring(0, tweet.getText().length() > 30 ? 30 : tweet.getText().length() - 1));
+            post.setText(tweet.getText());
+            //post.setLinks(new LinksType(links));
+            post.setActions(new ActionsType(actions));
+            post.setCreated(tweet.getCreatedAt());
+            post.setModified(tweet.getCreatedAt());
+            post.setRelevance(actions.get(0).getCant() * 3 + actions.get(1).getCant());
+            
+            postsList.add(post);
+            }*/
+            /*PostsType posts = new PostsType(postsList);
             Gson gson = new Gson();
-            if ("json".equalsIgnoreCase(request.getParameter("format"))) {                
+            if ("json".equalsIgnoreCase(request.getParameter("format"))) {
                 response.setContentType("text/javascript");
                 out = response.getWriter();
                 out.println(gson.toJson(posts));
@@ -125,17 +131,17 @@ public class TwitterRetrieval extends HttpServlet {
                 response.setContentType("application/xml");
                 out = response.getWriter();
                 try {
-                    for(PostType postIt : posts.getPost()) {
+                    for (PostType postIt : posts.getPost()) {
                         postIt.setVerbatim(gson.toJson(postIt));
                     }
                     Twitter2XML(posts, out);
                 } catch (Exception ex) {
                     Logger.getLogger(TwitterRetrieval.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            }*/
 
 
-        } catch (TwitterException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(TwitterRetrieval.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
