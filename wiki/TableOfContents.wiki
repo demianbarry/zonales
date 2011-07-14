@@ -14,7 +14,7 @@
     * [Crawling]
       * [Nutch Nutch]
       * [NutchSteps WF de Nutch paso a paso]
-      * [GeneradoresXZone Generadores de XZone / JZone]
+      * [GeneradoresXZone Formatos XZone / JZone]
       * [PostSolrQuery Query Solr para recuperación de Post]
       * [ZGram Gramática de extracción de Zonales] 
       * [ConsultasExtraccionTesting Consultas de ejemplo para probar configuración de extracción] 
