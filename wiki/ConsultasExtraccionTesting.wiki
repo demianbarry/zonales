@@ -60,15 +60,13 @@ y filtrando por con al menos 1 actions.
     * *Llamada servicio:* http://sursoftware.dyndns.org/fb/index.php?zone=Puerto%20Madryn&tags=Turismo&users=1485368759,100000545777637,1821074059,131929666830457&minactions=1
 
   * *Extracción 5*
-extraer para la localidad "Puerto Madryn" asignando los tags "Tecnología" mediante la fuente rss ubicada en "rss_de_tecnología_tiempo_online" a partir 
+extraer para la localidad "Puerto Madryn" asignando los tags "Tecnología" mediante la fuente feed ubicada en "rss_de_tecnología_tiempo_online" a partir 
 de "todo"
 y filtrando por lista negra "Microsoft"
 
   * *Extracción 6*
-extraer para la localidad "Puerto Madryn" asignando los tags "Deporte" mediante la fuente rss ubicada en "rss_de_deporte_tiempo_online" a partir de "todo"
-y flitrando por lista negra "Automovilismo"
-y filtrando por lista negra "Tenis"
-y flitrando por lista negra "Voley"
+extraer para la localidad "Puerto Madryn" asignando los tags "Deporte" mediante la fuente feed ubicada en "rss_de_deporte_tiempo_online" a partir de "todo"
+y flitrando por lista negra de palabras
 
  * *Extracción 7*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad","Interes General"
@@ -100,30 +98,30 @@ y filtrando por con al menos 1 actions.
     * *Observaciones:* Amigos del usuario no implementado aún.
 
  * *Extracción 9*
-extraer para la localidad "Puerto Madryn" asignando los tags "Legislativas" mediante la fuente rss ubicada en "rss_de_legislativas_tiempo_online" 
+extraer para la localidad "Puerto Madryn" asignando los tags "Legislativas" mediante la fuente feed ubicada en "rss_de_legislativas_tiempo_online" 
 a patir de las palabras "kirchnerismo" pero no "D'elia"
-y filtrando por lista negra de palabras "piquete"
+y filtrando por lista negra de palabras 
 
   * *Extracción 10*
 extraer para la localidad "Puerto Madryn" asignando los tags "Educativas"
-mediante la fuente rss ubicada en "http://chubutparatodos.com.ar/feed/"
+mediante la fuente feed ubicada en "http://chubutparatodos.com.ar/feed/"
 a partir de las palabras "Universidad"
 y de las palabras "Escuela"
 y de las palbras "Coloegio"
 y de las palabras "Instituto"
 
  * *Extracción 11*
-extraer para la locaildad "Puerto Madryn" asignando los tags "Politica" mediante la fuente rss ubicada en "http://chubutparatodos.com.ar/feed/" 
+extraer para la locaildad "Puerto Madryn" asignando los tags "Politica" mediante la fuente feed ubicada en "http://chubutparatodos.com.ar/feed/" 
 a partir de las palabras "Eliceche"
 y de las palabras "Das Neves"
 y de la palabras "Buzzi"
 y de las palabras "Sastre"
 y de las palabras "Candidatos"
-y filtrando por lista negra de palabras "Eleciones"
+y filtrando por lista negra de palabras 
 
 
  * *Extracción 12*
-extraer para la locaildad "Puerto Madryn" asignando los tags "Salud" mediante la fuente rss ubicada en "http://chubutparatodos.com.ar/feed/" 
+extraer para la locaildad "Puerto Madryn" asignando los tags "Salud" mediante la fuente feed ubicada en "http://chubutparatodos.com.ar/feed/" 
 a partir de las palabras "Hospital"
 y de las palabras "Clinica"
 y de la palabras "Sanatorio"
@@ -175,7 +173,7 @@ y filtrando por lista negra de usuario "100000545777637"
 
  * *Extracción 16*
 extraer para la localidad "Puerto Madryn" asignando los tags "Campo"
-mediante la fuente rss ubicada en "http://www.tiemponline.com.ar/index.php?format=feed&type=rss"
+mediante la fuente feed ubicada en "http://www.tiemponline.com.ar/index.php?format=feed&type=rss"
 a partir de las palabras "Campo"
 y las palabras "Estancia"
 y las palabras "Cultivo"
@@ -184,58 +182,50 @@ y filtrando por con al menos 1 actions
 
  * *Extracción 17*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad", "Politica"
-mediante la fuente rss ubicada en "http://www.tiemponline.com.ar/index.php?format=feed&type=rss"
+mediante la fuente feed ubicada en "http://www.tiemponline.com.ar/index.php?format=feed&type=rss"
 a partir de las palabras "Gobierno"
 y las palabras "Elecciones"
 y las palabras "Modelo Chubut"
 y las palabras "Frente para la victoria"
 y las palabras "Intendente"
 y las palabras "Gobernador"
-y filtrando por las palabras "UCR"
-y las palabras "Provech"
+y filtrando por lista negra de palabras
 
 
  * *Extracción 18*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad", "Policiales", 
-mediante la fuente rss ubicada en "http://chubutparatodos.com.ar/feed/"
+mediante la fuente feed ubicada en "http://chubutparatodos.com.ar/feed/"
 a partir de las palabras "Robo"
 y las palabras "Choque"
 y las palabras "Accidente"
 y las palabras "Asesinato"
 y las palabras "Drogas"
-y filtrando por las palabras "allanamiento"
-y las palabras "incendio"
-y las palabras "contrabando"
+y filtrando por lista negra de palabras
 
  * *Extracción 19*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad", "Policiales"
-mediante la fuente rss ubicada en "http://www.notichubut.com/news/index.php?format=feed&type=rss"
+mediante la fuente feed ubicada en "http://www.notichubut.com/news/index.php?format=feed&type=rss"
 a partir de las palabras "Robo"
 y las palabras "Choque"
 y las palabras "Accidente"
 y las palabras "Asesinato"
 y las palabras "Drogas"
-y filtrando por las palabras "allanamiento"
-y las palabras "incendio"
-y las palabras "contrabando"
+y filtrando por lista negra de palabras
 
  * *Extracción 20*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad", "Deporte" 
-mediante la fuente rss ubicada en "http://www.notichubut.com/news/index.php?format=feed&type=rss"
+mediante la fuente feed ubicada en "http://www.notichubut.com/news/index.php?format=feed&type=rss"
 a partir de las palabras "Rugby"
-filtrando por palabras "Futbol"
-y las palabras "hockey"
-y las palabras "Voley"
+filtrando por lista negra de palabras 
 
  * *Extracción 21*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad", "Edcucativas", "Interes General"
-mediante las fuente rss ubicada en "http://www.radiochubut.com/index.php?format=feed&type=rss"
+mediante las fuente feed ubicada en "http://www.radiochubut.com/index.php?format=feed&type=rss"
 a partir de las palabras "Educacion"
 y las palabras "Atech"
 y las palabras "Colegio"
 y las palabras "Escuela"
-filtrando por las palabras "Conflicto"
-y las palabras "Paro"
+filtrando por lista negra de palabras 
 
  * *Extracción 22*
 extraer para la localidad "Puerto Madryn" asignando los tags "Actualidad"
