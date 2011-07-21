@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/juanma/Documents/NetBeansProjects/TwitterRetrievalServlet2/../../My%20Dropbox/workspaces/eclipse-zonales/XMLExamples/XZone.xsd" uri="src/conf/xml-resources/jaxb/XZone/XZone.xsd"/>
+    <system systemId="http://200.69.225.53:30082/XZone.xsd" uri="src/conf/xml-resources/jaxb/XZone/200.69.225.53_30082/XZone.xsd"/>
+</catalog>
