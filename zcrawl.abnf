@@ -1,31 +1,39 @@
 zcrawling	=     space "extraer" mspace "para" mspace "la" mspace "localidad" mspace localidad 
                         [mspace "asignando" mspace "los" mspace "tags" mspace tags] 
-                        mspace "mediante" mspace "la" mspace "fuente" mspace fuente [space "ubicada" mspace "en" mspace uri_fuente]
+                        mspace "mediante" mspace "la" mspace "fuente" mspace fuente [mspace "ubicada" mspace "en" mspace uri_fuente]
                         mspace "a" mspace "partir" mspace criterios 
-                        [mspace "incluye" mspace "comentarios" mspace [space "de" mspace "los" mspace "usuarios:" mspace usuario *(comma usuario)]]
+                        [mspace "incluye" mspace "comentarios" [mspace "de" mspace "los" mspace "usuarios:" mspace commenters]]
                         [mspace "y" mspace "filtrando" mspace "por" mspace filtros ]
                         [mspace "incluye" mspace "los" mspace "tags" mspace "de" mspace "la" mspace "fuente" space]
-                        ".";
+                        "." space;
  
 localidad	=   cadena; # para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple 
-tags		=   tag *(comma tag);
+tags		=   tag *(space comma space tag);
 tag		=   cadena; # para todo tag (distinto de la zona) definido en la estructura v�lida de tags de zonales entre comillas simple 
 fuente		=   "facebook" / "twitter" / "feed";
-uri_fuente	=   %x27 URI %x27; #  formato uri apuntando al url de definici�n, encerrada entre comilla simples 
+uri_fuente	=   %x22 URI %x22; #  formato uri apuntando al url de definici�n, encerrada entre comilla simples 
 criterios	=   criterio *(space "y" mspace criterio) [space "pero" mspace "no" mspace criterio *(space "y" mspace criterio)];
-criterio	=   space "de" mspace "todo" /
-                        space "del" mspace "usuario" mspace usuario /
-                        space "de" mspace "amigos" mspace "del" mspace "usuario" mspace usuario /
+criterio	=   space deTodo /
+                        space "del" mspace "usuario" mspace delUsuario /
+                        space "de" mspace "amigos" mspace "del" mspace "usuario" mspace amigosDelUsuario /
                         "de las palabras " palabras;
+deTodo          =   space "de" mspace "todo";
+delUsuario      =   usuario;
+amigosDelUsuario =  usuario;
+commenters      =   usuario *(comma usuario);
 usuario		=   cadena; #  string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple
-palabras	=   palabra *(comma palabra);
+palabras	=   palabra *(space comma space palabra);
 palabra		=   cadena; #  cualquier palabra 
 filtros		=   filtro *(space "y" mspace filtro);
 filtro		=   space "al" mspace "menos" mspace min-num-shuld-match space "de" mspace "las" mspace "palabras" mspace "deben" mspace "estar" space /
                         space "con" mspace "una" mspace "dispercion" mspace "entre" mspace "palabras" mspace "no" mspace "mayor" mspace "a" mspace int /
-                        space "lista" mspace "negra" mspace "de" mspace "usuarios" /
-                        space "lista" mspace "negra" mspace "de" mspace "palabras" /
-                        space "con" mspace "al" mspace "menos" mspace int space "actions";
+                        space listaNegraUsuarios /
+                        space listaNegraPalabras /
+                        space "con" mspace "al" mspace "menos" mspace minActions space "actions";
+listaNegraUsuarios  =   "lista" mspace "negra" mspace "de" mspace "usuarios";
+listaNegraPalabras  =   "lista" mspace "negra" mspace "de" mspace "palabras";
+minActions      =   int;
+
 min-num-shuld-match = cadena;	# segun la especificaci�n y formato de solr 
 
 cadena          =   DQUOTE *(%x23-7E / %x20) DQUOTE; # quoted string of SP and VCHAR without DQUOTE
@@ -40,7 +48,7 @@ mspace          =   1*(%x09-20);
 
 space           =   *(%x09-20);
 
-comma           =   space "," mspace;
+comma           =   ",";
 
 DIGIT		=   %x30-39; #0-9
 
@@ -48,83 +56,85 @@ HEXDIG		=   DIGIT / "A" / "B" / "C" / "D" / "E" / "F";
 								
 int		=   *DIGIT;
 
-URI             =   scheme ":" hier-part [ "" query ] [ "#" fragment ];
+URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ] ;
 
-hier-part       =   "//" authority path-abempty
-                        / path-absolute
-                        / path-rootless
-                        / path-empty;
+ hier-part     = "//" authority path-abempty
+               / path-absolute
+               / path-rootless
+               / path-empty ;
 
-URI-reference   =   URI / relative-ref;
+ URI-reference = URI / relative-ref ;
 
-absolute-URI    =   scheme ":" hier-part [ "" query ];
+ absolute-URI  = scheme ":" hier-part [ "?" query ] ;
 
-relative-ref    =   relative-part [ "" query ] [ "#" fragment ];
+ relative-ref  = relative-part [ "?" query ] [ "#" fragment ] ;
 
-relative-part   =   "//" authority path-abempty
-                        / path-absolute
-                        / path-noscheme
-                        / path-empty;
+ relative-part = "//" authority path-abempty
+               / path-absolute
+               / path-noscheme
+               / path-empty ;
 
-scheme          =   ALPHA *( ALPHA / DIGIT / "+" / "-" / "." );
+ scheme        = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." ) ;
 
-authority       =   [ userinfo "@" ] host [ ":" port ];
-userinfo        =   *( unreserved / pct-encoded / sub-delims / ":" );
-host            =   IP-literal / IPv4address / reg-name;
-port            =   *DIGIT;
+ authority     = [ userinfo "@" ] host [ ":" port ] ;
+ userinfo      = *( unreserved / pct-encoded / sub-delims / ":" ) ;
+ host          = IP-literal / IPv4address / reg-name ;
+ port          = *DIGIT ;
 
-IP-literal      =   "[" ( IPv6address / IPvFuture  ) "]";
+ IP-literal    = "[" ( IPv6address / IPvFuture  ) "]" ;
 
-IPvFuture       =   "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" );
+ IPvFuture     = "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" ) ;
 
-IPv6address     =   6( h16 ":" ) ls32
-                        /                       "::" 5( h16 ":" ) ls32
-                        / [               h16 ] "::" 4( h16 ":" ) ls32
-                        / [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
-                        / [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
-                        / [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
-                        / [ *4( h16 ":" ) h16 ] "::"              ls32
-                        / [ *5( h16 ":" ) h16 ] "::"              h16
-                        / [ *6( h16 ":" ) h16 ] "::";
+ IPv6address   =                            6( h16 ":" ) ls32
+               /                       "::" 5( h16 ":" ) ls32
+               / [               h16 ] "::" 4( h16 ":" ) ls32
+               / [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
+               / [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
+               / [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
+               / [ *4( h16 ":" ) h16 ] "::"              ls32
+               / [ *5( h16 ":" ) h16 ] "::"              h16
+               / [ *6( h16 ":" ) h16 ] "::" ;
 
-h16             =   1*4HEXDIG;
-ls32            =   ( h16 ":" h16 ) / IPv4address;
-IPv4address     =   dec-octet "." dec-octet "." dec-octet "." dec-octet;
-dec-octet       =         DIGIT                 # 0-9
-                        / %x31-39 DIGIT         # 10-99
-                        / "1" 2DIGIT            # 100-199
-                        / "2" %x30-34 DIGIT     # 200-249
-                        / "25" %x30-35;          # 250-255
+ h16           = 1*4HEXDIG ;
+ ls32          = ( h16 ":" h16 ) / IPv4address ;
 
-reg-name        =   *( unreserved / pct-encoded / sub-delims );
+ IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet ;
 
-path            =   path-abempty    # begins with "/" or is empty
-                        / path-absolute   # begins with "/" but not "//"
-                        / path-noscheme   # begins with a non-colon segment
-                        / path-rootless   # begins with a segment
-                        / path-empty;      # zero characters
+ dec-octet     = DIGIT                 # 0-9
+               / %x31-39 DIGIT         # 10-99
+               / "1" 2DIGIT            # 100-199
+               / "2" %x30-34 DIGIT     # 200-249
+               / "25" %x30-35;          # 250-255
 
-path-abempty    =   *( "/" segment );
-path-absolute   =   "/" [ segment-nz *( "/" segment ) ];
-path-noscheme   =   segment-nz-nc *( "/" segment );
-path-rootless   =   segment-nz *( "/" segment );
-path-empty      =   0(pchar);
+ reg-name      = *( unreserved / pct-encoded / sub-delims ) ;
 
-segment         =   *pchar;
-segment-nz      =   1*pchar;
-segment-nz-nc   =   1*( unreserved / pct-encoded / sub-delims / "@" );
-                        # non-zero-length segment without any colon ":";
+ path          = path-abempty    # begins with "/" or is empty
+               / path-absolute   # begins with "/" but not "//"
+               / path-noscheme   # begins with a non-colon segment
+               / path-rootless   # begins with a segment
+               / path-empty ;     # zero characters
 
-pchar           =   unreserved / pct-encoded / sub-delims / ":" / "@";
+ path-abempty  = *( "/" segment ) ;
+ path-absolute = "/" [ segment-nz *( "/" segment ) ] ;
+ path-noscheme = segment-nz-nc *( "/" segment ) ;
+ path-rootless = segment-nz *( "/" segment ) ;
+ path-empty    = 0*(pchar) ;
 
-query           =   *( pchar / "/" / "" );
+ segment       = *pchar ;
+ segment-nz    = 1*pchar ;
+ segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" ); 
+               # non-zero-length segment without any colon ":" ;
 
-fragment        =   *( pchar / "/" / "" );
+ pchar         = unreserved / pct-encoded / sub-delims / ":" / "@" ;
 
-pct-encoded     =   "%" HEXDIG HEXDIG;
+ query         = *( pchar / "/" / "?" ) ;
 
-unreserved      =   ALPHA / DIGIT / "-" / "." / "_" / "~";
-reserved        =   gen-delims / sub-delims;
-gen-delims      =     ":" / "/" / "" / "#" / "[" / "]" / "@";
-sub-delims      =   "!" / "$" / "&" / "'" / "(" / ")"
-                        / "*" / "+" / "," / "#" / "=";
+ fragment      = *( pchar / "/" / "?" ) ;
+
+ pct-encoded   = "%" HEXDIG HEXDIG ;
+
+ unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~" ;
+ reserved      = gen-delims / sub-delims ;
+ gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@" ;
+ sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
+               / "*" / "+" / "," / ";" / "=" ;
