@@ -5,7 +5,7 @@ package parser;
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Thu Jul 21 12:15:15 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -23,11 +23,15 @@ public interface Visitor
   public Object visit(Rule$deTodo rule);
   public Object visit(Rule$delUsuario rule);
   public Object visit(Rule$amigosDelUsuario rule);
+  public Object visit(Rule$commenters rule);
   public Object visit(Rule$usuario rule);
   public Object visit(Rule$palabras rule);
   public Object visit(Rule$palabra rule);
   public Object visit(Rule$filtros rule);
   public Object visit(Rule$filtro rule);
+  public Object visit(Rule$listaNegraUsuarios rule);
+  public Object visit(Rule$listaNegraPalabras rule);
+  public Object visit(Rule$minActions rule);
   public Object visit(Rule$min_num_shuld_match rule);
   public Object visit(Rule$cadena rule);
   public Object visit(Rule$ALPHA rule);

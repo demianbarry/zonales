@@ -4,7 +4,6 @@
  */
 package metadata;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +13,7 @@ import java.util.List;
 public class ZCrawling {
 
     public ZCrawling() {
+        
     }
 
     protected String localidad;
@@ -175,5 +175,26 @@ public class ZCrawling {
     public void setTagsFuente(String tagsFuente) {
         this.tagsFuente = tagsFuente;
     }
+    
+    protected List<String> comentarios;
+
+    /**
+     * Get the value of comentarios
+     *
+     * @return the value of comentarios
+     */
+    public List<String> getComentarios() {        
+        return comentarios;
+    }
+
+    /**
+     * Set the value of comentarios
+     *
+     * @param comentarios new value of comentarios
+     */
+    public void setComentarios(List<String> comentarios) {
+        this.comentarios = comentarios;
+    }
+
 
 }

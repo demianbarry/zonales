@@ -5,7 +5,7 @@ package parser;
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Thu Jul 21 12:15:15 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -70,6 +70,11 @@ public class Displayer implements Visitor
     return visitRules(rule.rules);
   }
 
+  public Object visit(Rule$commenters rule)
+  {
+    return visitRules(rule.rules);
+  }
+
   public Object visit(Rule$usuario rule)
   {
     return visitRules(rule.rules);
@@ -91,6 +96,21 @@ public class Displayer implements Visitor
   }
 
   public Object visit(Rule$filtro rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$listaNegraUsuarios rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$listaNegraPalabras rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$minActions rule)
   {
     return visitRules(rule.rules);
   }

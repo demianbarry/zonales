@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import metadata.Criterio;
+import metadata.Filtro;
 import metadata.ZCrawling;
 
 public class ZMetaDisplayer implements Visitor {
@@ -30,6 +31,7 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     public Object visit(Rule$localidad rule) {
+        Globals.zcrawling.setLocalidad(rule.spelling);
         //System.out.println("<localidad>");
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
@@ -96,7 +98,7 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     public Object visit(Rule$criterio rule) {
-        System.out.println(rule.spelling);
+        //System.out.println(rule.spelling);
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
         }
@@ -143,6 +145,8 @@ public class ZMetaDisplayer implements Visitor {
 
     public Object visit(Rule$filtros rule) {
         //System.out.println("<filtros>");
+        if(Globals.zcrawling.getFiltros() == null)
+            Globals.zcrawling.setFiltros(new ArrayList<Filtro>());
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
         }
@@ -678,6 +682,48 @@ public class ZMetaDisplayer implements Visitor {
         Criterio criterio = new Criterio();
         criterio.setDeTodo(true);
         Globals.zcrawling.getCriterios().add(criterio);
+        if (visitRules(rule.rules).booleanValue()) {
+            //System.out.println("");
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Object visit(Rule$commenters rule) {
+        Globals.zcrawling.setComentarios(Arrays.asList(rule.spelling.split(",")));
+        if (visitRules(rule.rules).booleanValue()) {
+            //System.out.println("");
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Object visit(Rule$minActions rule) {
+        Filtro filtro = new Filtro();
+        filtro.setMinActions(Integer.parseInt(rule.spelling));        
+        Globals.zcrawling.getFiltros().add(filtro);
+        if (visitRules(rule.rules).booleanValue()) {
+            //System.out.println("");
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Object visit(Rule$listaNegraUsuarios rule) {
+        Filtro filtro = new Filtro();
+        filtro.setListaNegraDeUsuarios(true);
+        Globals.zcrawling.getFiltros().add(filtro);
+        if (visitRules(rule.rules).booleanValue()) {
+            //System.out.println("");
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Object visit(Rule$listaNegraPalabras rule) {
+        Filtro filtro = new Filtro();
+        filtro.setListaNegraDePalabras(true);
+        Globals.zcrawling.getFiltros().add(filtro);
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
         }
