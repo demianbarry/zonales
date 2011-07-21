@@ -5,7 +5,7 @@ package parser;
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Thu Jul 21 16:57:20 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -74,7 +74,37 @@ final public class Rule$tags extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
+                    rule = Rule$space.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
                     rule = Rule$comma.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Rule$space.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
