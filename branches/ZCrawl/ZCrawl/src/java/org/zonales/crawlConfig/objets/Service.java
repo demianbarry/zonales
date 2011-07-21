@@ -66,4 +66,9 @@ public class Service {
         this.params.remove(this.params.indexOf(param));
     }
 
+    @Override
+    public String toString() {
+        return "{\"name\": \"" + name + "\", \"uri\": \"" + uri + "\", \"params\": " + params + "}";
+    }
+
 }

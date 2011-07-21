@@ -13,6 +13,9 @@ public class Param {
     private String name;
     private Boolean required;
 
+    public Param() {
+    }
+
     public Param(String name) {
         this.name = name;
     }
@@ -66,7 +69,7 @@ public class Param {
 
     @Override
     public String toString() {
-        return "{name: " + name + ", required: " + required + "}";
+        return "{\"name\": \"" + name + "\", \"required\": " + required + "}";
     }
 
 }

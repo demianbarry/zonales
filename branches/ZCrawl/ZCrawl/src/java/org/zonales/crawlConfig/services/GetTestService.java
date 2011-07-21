@@ -9,6 +9,6 @@ package org.zonales.crawlConfig.services;
  *
  * @author nacho
  */
-public interface GetConfig extends BaseService {
-
+public interface GetTestService extends BaseService {
+    
 }

@@ -2,13 +2,18 @@ package org.zonales.crawlConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.services.GetConfig;
+import org.zonales.crawlConfig.services.GetConfigImple;
+import org.zonales.crawlConfig.services.GetTestService;
+import org.zonales.crawlConfig.services.GetTestServiceHardCode;
 import org.zonales.crawlConfig.services.SetConfig;
+import org.zonales.crawlConfig.services.SetConfigImple;
 
 /**
  * Comienza el proceso de autentificacion
@@ -29,7 +34,7 @@ public class Main extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
 
         //PrintWriter out = response.getWriter();
         //response.setContentType("text/html")
@@ -42,13 +47,18 @@ public class Main extends HttpServlet {
 
 
         if ("setConfig".equals(service)) {
-            SetConfig setConfig = new SetConfig();
+            SetConfig setConfig = new SetConfigImple();
             setConfig.serve(request, response, props);
         }
 
         if ("getConfig".equals(service)) {
-            GetConfig getConfig = new GetConfig();
+            GetConfig getConfig = new GetConfigImple();
             getConfig.serve(request, response, props);
+        }
+
+        if ("getTestService".equals(service)) {
+            GetTestService getTestService = new GetTestServiceHardCode(); //Implementación del servicio "hardcodeada"
+            getTestService.serve(request, response, props);
         }
 
     }
@@ -64,8 +74,14 @@ public class Main extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
 
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            out.print("Request Error: " + ex.getMessage());
+            //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
 
     }
 
@@ -79,8 +95,14 @@ public class Main extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
 
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            out.print("Request Error: " + ex.getMessage());
+            //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
 
     }
 
