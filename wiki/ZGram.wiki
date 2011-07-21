@@ -134,6 +134,11 @@ Formato JSON que debe tener el resultado del parsing
             ]
         }
     ],
+    "comentarios" : [
+        "usuario",
+        "usuario",
+        "usuario"
+    ],
     "filtros" : [
         {
             "min_shuld_match" : 9 //Número
