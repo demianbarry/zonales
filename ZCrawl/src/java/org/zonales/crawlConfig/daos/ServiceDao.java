@@ -11,6 +11,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import org.zonales.crawlConfig.objets.Param;
 import org.zonales.crawlConfig.objets.Service;
 
@@ -48,7 +49,7 @@ public class ServiceDao extends BaseDao {
         this.services.insert(serviceDoc);
     }
 
-    public String retrieveService(String name) {
+    public String retrieveServiceJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
         DBCursor cur;
@@ -60,6 +61,48 @@ public class ServiceDao extends BaseDao {
         //System.out.println(resp);
         
         return resp.toString();
+    }
+
+    public Service retrieveService(String name) {
+        BasicDBObject query = new BasicDBObject("name", name);
+        DBObject resp;
+        DBCursor cur;
+        Service service = new Service();
+        ArrayList<BasicDBObject> paramsJson = new ArrayList<BasicDBObject>();
+        String paramName = "";
+        String token;
+        Boolean paramRequired = false;
+        StringTokenizer paramToken;
+        int tokenCount = 0;
+
+        cur = this.services.find(query);
+
+        resp = cur.next();
+        resp.removeField("_id");
+
+        service.setName((String)resp.get("name"));
+        service.setUri((String)resp.get("uri"));
+
+        paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
+
+        for (BasicDBObject paramJson: paramsJson) {
+            paramToken = new StringTokenizer(paramJson.toString(), "\" }");
+            while (paramToken.hasMoreTokens()) {
+                token = paramToken.nextToken();
+                tokenCount++;
+                if (tokenCount == 2) {
+                    paramName = token;
+                }
+                if (tokenCount == 4) {
+                    paramRequired = Boolean.valueOf(token);
+                }
+            }
+            service.addParam(paramName, paramRequired);
+        }
+
+        //System.out.println(service);
+        
+        return service;
     }
 
 }
