@@ -11,7 +11,7 @@ $config['baseurl'] = "http://200.69.225.53:30080/facebook-test/index.php";
 
 //Límite de post a recuperar por defecto
 define("_DEFAULT_LIMIT_", 200);
-define("_DEFAULT_FORMAT_", "xml");
+define("_DEFAULT_FORMAT_", "json");
 define("_DEFAULT_MIN_ACTIONS_", 0);
 
 
@@ -219,7 +219,7 @@ try {
 switch ($format) {
     //Convierto el array de posts en JSON
     case "json":
-        echo indent(json_encode($posts));
+        echo '{"post":' . indent(json_encode($posts)) . "}";
         break;
     //Convierto el array de posts en XML, utilizando la librería
     case "xml":
