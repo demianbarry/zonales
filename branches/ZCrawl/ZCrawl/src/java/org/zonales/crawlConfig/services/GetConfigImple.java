@@ -24,8 +24,8 @@ public class GetConfigImple implements GetConfig {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
-        PrintWriter out = response.getWriter();
         response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
