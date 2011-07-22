@@ -14,6 +14,8 @@ import org.zonales.crawlConfig.services.GetTestService;
 import org.zonales.crawlConfig.services.GetTestServiceHardCode;
 import org.zonales.crawlConfig.services.SetConfig;
 import org.zonales.crawlConfig.services.SetConfigImple;
+import org.zonales.crawlConfig.services.UpdateConfig;
+import org.zonales.crawlConfig.services.UpdateConfigImple;
 
 /**
  * Comienza el proceso de autentificacion
@@ -36,12 +38,14 @@ public class Main extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
 
-        //PrintWriter out = response.getWriter();
-        //response.setContentType("text/html")
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
 
         String service = request.getParameter("action");
 
-        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+        out.print(service);
+
+        /*InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
         Properties props = new Properties();
         props.load(stream);
 
@@ -60,6 +64,11 @@ public class Main extends HttpServlet {
             GetTestService getTestService = new GetTestServiceHardCode(); //Implementación del servicio "hardcodeada"
             getTestService.serve(request, response, props);
         }
+
+        if ("updateConfig".equals(service)) {
+            UpdateConfig updateConfig = new UpdateConfigImple();
+            updateConfig.serve(request, response, props);
+        }*/
 
     }
 

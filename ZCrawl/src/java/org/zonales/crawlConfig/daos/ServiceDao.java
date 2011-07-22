@@ -49,6 +49,47 @@ public class ServiceDao extends BaseDao {
         this.services.insert(serviceDoc);
     }
 
+    public void updateService(String name, Service newService) throws MongoException {
+        BasicDBObject query = new BasicDBObject("name", name);
+        DBObject resp;
+        DBCursor cur;
+
+        cur = this.services.find(query);
+
+        resp = cur.next();
+
+        if (resp != null) {
+            BasicDBObject serviceDoc = new BasicDBObject();
+
+            if (newService.getName() != null) {
+                serviceDoc.put("name", newService.getName());
+            } else {
+                serviceDoc.put("name", (String)resp.get("name"));
+            }
+
+            if (newService.getUri() != null) {
+                serviceDoc.put("uri", newService.getUri());
+            } else {
+                serviceDoc.put("uri", (String)resp.get("uri"));
+            }
+
+            ArrayList<Param> params = newService.getParams();
+
+            if (params != null) {
+                ArrayList paramsToDoc = new ArrayList();
+
+                for (Param param: params) {
+                    paramsToDoc.add(new BasicDBObject(param.getName(), param.getRequired()));
+                }
+                serviceDoc.put("params", paramsToDoc);
+            } else {
+                serviceDoc.put("params", resp.get("params"));
+            }
+
+            this.services.update(new BasicDBObject().append("name", name), serviceDoc);
+        }
+    }
+
     public String retrieveServiceJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;

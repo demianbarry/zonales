@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.zonales.crawlConfig.services;
 
 import com.mongodb.MongoException;
@@ -19,9 +20,9 @@ import org.zonales.crawlConfig.objets.Service;
  *
  * @author nacho
  */
-public class SetConfigImple implements SetConfig {
+public class UpdateConfigImple implements UpdateConfig {
 
-    public SetConfigImple() {
+    public UpdateConfigImple() {
     }
 
     @Override
@@ -29,26 +30,39 @@ public class SetConfigImple implements SetConfig {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        String uri = request.getParameter("uri");
-        String params = request.getParameter("params");
-        Service service = new Service(name, uri);
-        StringTokenizer paramToken = new StringTokenizer(params, ",;");
+        String newName = request.getParameter("newname");
+        String newUri = request.getParameter("newuri");
+        String newParams = request.getParameter("newparams");
+        Service service = new Service();
+        StringTokenizer paramToken;
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");
-        
-        while (paramToken.hasMoreTokens()) {
-            String paramName = paramToken.nextToken();
-            Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
-            //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
-            service.addParam(paramName, paramRequired);
+        if (name == null) {
+            out.print("Config name is required");
+            return;
         }
-        
+
+        if (newName != null) {
+            service.setName(newName);
+        }
+        if (newUri != null) {
+            service.setUri(newUri);
+        }
+        if (newParams != null) {
+            paramToken = new StringTokenizer(newParams, ",;");
+            while (paramToken.hasMoreTokens()) {
+                String paramName = paramToken.nextToken();
+                Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
+                service.addParam(paramName, paramRequired);
+            }
+        }
+
         try {
-            serviceDao.saveService(service);
+            serviceDao.updateService(name, service);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
             out.print(props.getProperty("failed_message"));
         }
     }
+
 }
