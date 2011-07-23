@@ -43,9 +43,7 @@ public class Main extends HttpServlet {
 
         String service = request.getParameter("action");
 
-        out.print(service);
-
-        /*InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
         Properties props = new Properties();
         props.load(stream);
 
@@ -68,7 +66,7 @@ public class Main extends HttpServlet {
         if ("updateConfig".equals(service)) {
             UpdateConfig updateConfig = new UpdateConfigImple();
             updateConfig.serve(request, response, props);
-        }*/
+        }
 
     }
 
