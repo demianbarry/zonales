@@ -1,0 +1,1 @@
+extraer%20para%20la%20localidad%20"Puerto%20Madryn"%20asignando%20los%20tags%20"Tecnologia"%20mediante%20la%20fuente%20feed%20ubicada%20en%20"http://rss_de_tecnologia_tiempo_online.com/"%20a%20partir%20de%20todo%20y%20filtrando%20por%20lista%20negra%20de%20palabras.

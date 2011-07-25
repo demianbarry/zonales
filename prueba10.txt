@@ -1,0 +1,1 @@
+extraer para la localidad "Puerto Madryn" asignando los tags "Educativas" mediante la fuente feed ubicada en "http://chubutparatodos.com.ar/feed" a partir de las palabras "Universidad","Escuela", "Colegio", "Instituto".
