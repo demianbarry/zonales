@@ -1,0 +1,3 @@
+extraer para la localidad "Puerto Madryn" asignando los tags "Universidad" mediante la fuente facebook a partir del usuario "123669000990875" y de amigos del usuario "123669000990875" y del usuario "110265212331715" y de amigos del usuario "110265212331715" y del usuario "100000467861695" y de amigos del usuario "100000467861695" y del usuario "100002497536261" y de amigos del usuario "100002497536261" y del usuario "100002289860633" y de amigos del usuario "100002289860633" y del usuario "100002052389618" y de amigos del usuario "100002052389618" incluye comentarios y filtrando por con al menos 1 actions.
+
+                            
