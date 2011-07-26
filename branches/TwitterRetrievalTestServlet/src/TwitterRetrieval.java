@@ -33,6 +33,7 @@ import entities.ToUsersType;
 import entities.User;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -55,24 +56,27 @@ public class TwitterRetrieval extends HttpServlet {
 
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        
+
         try {
             String query = request.getParameter("q");
             String tags = request.getParameter("tags");
-            String [] tag;
-            String url = "http://search.twitter.com/search?q=" + query + "&result_type=recent";//args[0];
+            String[] tagsArray = null;
+            if (tags != null) {                
+                tagsArray = tags.split(",");
+            }
+            String url = "http://twitter.com/#!/search/" + query ;//args[0];
             out = response.getWriter();
-            tag = tags.split(",");
-          
+
+
             Document doc = Jsoup.connect(url.replace(" ", "+")).get();
             //out.println("Fetching url: " + url);
 
             //  Elements test = doc.select("div.msg");
             Elements posteo = doc.select("ul li.result"); //obtengo los post.
             // Elements media = doc.select("[src]");
-            
+
             String src;
-            
+
 
             List<PostType> postsList = new ArrayList();
             PostType post;
@@ -89,21 +93,22 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setSource("Twitter");
                 post.setId(Jsoup.parse(src).select("a.lit").get(0).attr("href"));
 
-                if(Jsoup.parse(src).select("a.username").size() > 0)
-                post.setFromUser(new User(Jsoup.parse(src).select("a.username").get(0).attr("href"),
-                        Jsoup.parse(src).select("a.username").get(0).text(),
-                        Jsoup.parse(src).select("div.avatar a img").size() > 0 ? Jsoup.parse(src).select("div.avatar a img").get(0).attr("src") : "",
-                        "user"));
-                if(Jsoup.parse(src).select(".msgtxt a.username ").size() > 0){
+                if (Jsoup.parse(src).select("a.username").size() > 0) {
+                    post.setFromUser(new User(Jsoup.parse(src).select("a.username").get(0).attr("href"),
+                            Jsoup.parse(src).select("a.username").get(0).text(),
+                            Jsoup.parse(src).select("div.avatar a img").size() > 0 ? Jsoup.parse(src).select("div.avatar a img").get(0).attr("src") : "",
+                            "user"));
+                }
+                if (Jsoup.parse(src).select(".msgtxt a.username ").size() > 0) {
                     toUsers = new ArrayList();
                     for (Element toUser : Jsoup.parse(src).select(".msgtxt a.username ")) {
                         toUsers.add(new User(toUser.attr("href"),
                                 toUser.text(),
-                             "",
-                             "user"));
+                                "",
+                                "user"));
                     }
                 }
-                
+
                 post.setToUsers(new ToUsersType(toUsers));
                 //System.out.println("<P<OST>" + Jsoup.parse(src).select("a.username").get(0).text() + "</POST>");
                 //
@@ -123,22 +128,21 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setCreated(calendar.getTime());
                 post.setModified(calendar.getTime());
                 post.setRelevance(0);
-
-                
+                post.setTags(new TagsType(Arrays.asList(tagsArray)));
 
                 postsList.add(post);
 
             }
             PostsType posts = new PostsType(postsList);
             response.setContentType("text/javascript");
-            
+
             out.println((new Gson()).toJson(posts));
 
 
             /*
-
             
-
+            
+            
             /*for (Tweet tweet : (List<Tweet>) result.getTweets()) {
             actions = new ArrayList();
             //actions.add(new ActionType("retweets", twitter.getRetweetedByIDs(tweet.getId()).getIDs().length));
