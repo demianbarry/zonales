@@ -63,7 +63,8 @@ public class GetTestServiceHardCode implements GetTestService {
             if ((urlServlet = getURLTwitter(metadata, service)) == null) {
                 out.print("Debe especificarse una Localidad"); //reemplazar por el error correspondiente
             } else {
-                out.print(urlServlet);
+                Logger.getLogger(GetTestServiceHardCode.class.getName()).log(Level.INFO, "URL de recuperación de test para Twitter: {0}", new Object[]{urlServlet});
+                out.print(urlServlet);                
             }
         }
     }
@@ -72,7 +73,7 @@ public class GetTestServiceHardCode implements GetTestService {
         if (metadata == null) {
             return null;
         }
-        Logger.getLogger(GetTestServiceHardCode.class.getName()).log(Level.INFO, "URL de recuperación de test para Twitter: {0}", new Object[]{service.getUri()});
+        
         String urlServlet = service.getUri() + "?q=";
 
         Boolean first = true;
