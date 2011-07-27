@@ -25,6 +25,9 @@ $keywordsStr = FormTools::getParameter('keywords');
 $tagsStr = FormTools::getParameter('tags');
 $commentersStr = FormTools::getParameter('commenters');
 $minActions = FormTools::getParameter('minactions') === false ? _DEFAULT_MIN_ACTIONS_ : FormTools::getParameter('minactions');
+$userName = FormTools::getParameter('getId');
+$getCommenters = FormTools::getParameter('getCommenters');
+
 
 /* * ************** Procesamiento de parámetros ************** */
 //Formato de respuesta
@@ -118,7 +121,17 @@ if ($commentersStr) {
 
 /* * ************** Extracción ************** */
 try {
+    if ($userName) {
+        $api = '/' . $userName;
+        $userData = $facebook->api($api);
+        echo $userData['id'];
+        return;
+    }
+
     $posts = array();
+    $retCommenters = array();
+    $retCommentersInc = array();
+    $retCommentersFinal = array();
 
     //Si se especifican usuarios
     if ($usersStr) {
@@ -142,6 +155,20 @@ try {
             //Además chequeo los keywords en caso de que se especifiquen.
             foreach ($feeds['data'] as $feed) {
                 $validPost = false;
+                if ($getCommenters) {
+                    if ($feed['from']['id'] != $user) {
+                        if (!array_key_exists($feed['from']['id'], $retCommentersInc)) {
+                            $addCommenter = array();
+                            $addCommenter['id'] = $feed['from']['id'];
+                            $addCommenter['name'] = $feed['from']['name'];
+                            $addCommenter['url'] = "http://www.facebook.com/profile.php?id=" . $feed['from']['id'];
+                            $retCommenters[] = $addCommenter;
+                            $retCommentersInc[$feed['from']['id']] = 1;
+                        } else {
+                            $retCommentersInc[$feed['from']['id']] = $retCommentersInc[$feed['from']['id']] + 1;
+                        }
+                    }
+                }
                 if (!$allCommenters) {
                     if ($feed['from']['id'] == $user) {
                         $validPost = true;
@@ -205,6 +232,15 @@ try {
         }
     }
 
+    foreach ($retCommenters as $retCommenter) {
+        $addCommenter = array();
+        foreach ($retCommenter as $key => $value) {
+            $addCommenter[$key] = $value;
+        }
+        $addCommenter['cant'] = $retCommentersInc[$retCommenter['id']];
+        $retCommentersFinal[] = $addCommenter;
+    }
+
     /*
       $handle = fopen($filename, 'w');
       fwrite($handle, $max);
@@ -216,23 +252,39 @@ try {
 }
 
 /* * ****************** Respuesta **************** */
-switch ($format) {
-    //Convierto el array de posts en JSON
-    case "json":
-        echo '{"post":' . indent(json_encode($posts)) . "}";
-        break;
-    //Convierto el array de posts en XML, utilizando la librería
-    case "xml":
-        $xml = new ArrayToXML();
-        $xmlElement = new SimpleXMLElement($xml->toXml($posts, "posts"));
-        $xmlElement->addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        $xmlElement->addAttribute("xsi:noNamespaceSchemaLocation", "http://200.69.225.53:30082/XZone.xsd");
-        echo $xmlElement->asXML();
-        //echo $xml->toXml($posts, "posts");
-        break;
-    //Si se especifica otro formato, por el momento simplemente imprimo el array como está...
-    default:
-        print_r($posts);
+if ($getCommenters) {
+    switch ($format) {
+        case "json":
+            echo '{"commenters":' . indent(json_encode($retCommentersFinal)) . "}";
+            break;
+        case "xml":
+            $xml = new ArrayToXML();
+            $xmlElement = new SimpleXMLElement($xml->toXml($retCommentersFinal, "commenters"));
+            echo $xmlElement->asXML();
+            break;
+        //Si se especifica otro formato, por el momento simplemente imprimo el array como está...
+        default:
+            print_r($retCommentersFinal);
+    }
+} else {
+    switch ($format) {
+        //Convierto el array de posts en JSON
+        case "json":
+            echo '{"post":' . indent(json_encode($posts)) . "}";
+            break;
+        //Convierto el array de posts en XML, utilizando la librería
+        case "xml":
+            $xml = new ArrayToXML();
+            $xmlElement = new SimpleXMLElement($xml->toXml($posts, "posts"));
+            $xmlElement->addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            $xmlElement->addAttribute("xsi:noNamespaceSchemaLocation", "http://200.69.225.53:30082/XZone.xsd");
+            echo $xmlElement->asXML();
+            //echo $xml->toXml($posts, "posts");
+            break;
+        //Si se especifica otro formato, por el momento simplemente imprimo el array como está...
+        default:
+            print_r($posts);
+    }
 }
 
 /* * ****************** Procesamiento de feeds **************** */
