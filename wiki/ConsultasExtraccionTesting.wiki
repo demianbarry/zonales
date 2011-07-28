@@ -7,6 +7,11 @@ Se define el siguiente set de consultas de testing en la gramática ZGram.
 
 = Detalles =
 
+  * *Utilitarios Disponibles:*
+    * Generador de Consultas mediante la metadata de consulta --> http://200.69.225.53:30082/CMUtils/qbuilder.html
+    * Consulta mediante Lenguaje de consulta ZCrawl --> http://200.69.225.53:30082/CMUtils/extractUtil.html
+    * Utilitario para obtener id's de usuarios --> http://200.69.225.53:30082/CMUtils/
+
   * *Zona:* 
 Puerto Madryn / Chubut
   * *Usuarios sugeridos de Facebook a testear*
