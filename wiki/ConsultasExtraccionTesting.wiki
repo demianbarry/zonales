@@ -268,3 +268,18 @@ y de las palabras "Policia"
 y de las palabras "Accidente"
 y de las palabras "Incendio"
 y de las palabras "contrabando"
+
+  * *Extracción 26*
+extraer para la localidad "Puerto Madryn" 
+asignando los tags "Cultura" mediante la fuente facebook
+a partir del usuario "1836046085" y del usuario "100001092692977" 
+y del usuario "100000895652536" y del usuario "100000106568164" 
+y del usuario "100000814444262" y del usuario "1788957609" 
+y del usuario "100001028867714" y del usuario "100001163737415" 
+y del usuario "100001502473289" y del usuario "100001976354221" 
+y del usuario "1176596895" y del usuario "100002476403978"
+y del usuario "100001186045232" 
+incluye comentarios 
+incluye los tags de la fuente.
+
+    * Da error *Illegal character in URL*
