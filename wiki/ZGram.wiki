@@ -9,7 +9,7 @@
 			["asignando los tags" <tags>] 
 			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
 			"a partir" <criterios> 
-			["incluye comentarios" ["de los usuarios:" <usuario> {"," <usuario>}]]
+			["incluye comentarios" ["de los usuarios" <usuarios>]
 			["y filtrando por" <filtros> ]
 			["incluye los tags de la fuente"]
                         "."
@@ -21,9 +21,10 @@
 <uri_fuente>	::=	? uri de rss o atom bien formada ?
 <criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
 <criterio>	::=	"de todo" |
-                        "del usuario" <usuario> |
-			"de amigos del usuario" <usuario> |
-			"de las palabras" <palabras>
+                        "de los usuarios" <usuarios> |
+			"de amigos de los usuarios" <usuarios> |
+			["si o si"] "de las palabras" <palabras>
+<usuarios>      ::=      <usuario> {"," <usuario>}
 <usuario>	::= 	? string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple?
 <palabras>	::= 	<palabra> {"," <palabra>}
 <palabra>	::=	? cualquier palabra ?
