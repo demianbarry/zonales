@@ -30,7 +30,7 @@
 <palabra>	::=	? cualquier palabra ?
 <filtros>	::=	<filtro> {"y" <filtro>}
 <filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" |
-			"con una disperción entre palabras no mayor a" <numero_entero>" |
+			"con una dispersión entre palabras no mayor a" <numero_entero>" |
 			"lista negra de usuarios" |
 			"lista negra de palabras" |
 			"con al menos" <numero_entero> "actions"
