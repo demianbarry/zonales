@@ -19,6 +19,7 @@
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -57,13 +58,8 @@ public class ZCrawlTest extends HttpServlet {
             Properties props = new Properties();
             props.load(stream);
 
-            URL url = new URL(("http://localhost:38080/ZCrawlParserServlet/servlet/ZCrawlParser?q=" + query).replace(" ", "+"));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
             Integer timeout = Integer.valueOf(props.getProperty("timeout"));
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
-            connection.connect();
+            HttpURLConnection connection = getURLConnection("http://localhost:38080/ZCrawlParserServlet/servlet/ZCrawlParser?q="+query, timeout);
 
             int code = connection.getResponseCode();
 
@@ -73,35 +69,27 @@ public class ZCrawlTest extends HttpServlet {
                 metadata = getStringFromInpurStream(connection.getInputStream());
                 connection.disconnect();
                 Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Buscando URL de recuperación para la siguiente metadata: {0}", metadata);
-                url = new URL(("http://localhost:38080/ZCrawlMetaServlet/zcc?action=getTestService&q=" + metadata).replace(" ", "+"));
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(timeout);
-                connection.setReadTimeout(timeout);
-                connection.connect();
+                connection = getURLConnection(("http://localhost:38080/ZCrawlMetaServlet/zcc?action=getTestService&q=" + metadata), timeout);
                 code = connection.getResponseCode();
 
                 if (code == 200) {
                     testUrl = getStringFromInpurStream(connection.getInputStream());
                     connection.disconnect();
-                    url = new URL(testUrl.replace(" ", "+"));
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");                    
-                    connection.setConnectTimeout(timeout);
-                    connection.setReadTimeout(timeout);
-                    
-                    Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Solicitando con timeout {1} la siguiente URL de recuperación: {0}", new Object[]{url, connection.getReadTimeout()});
+                    connection = getURLConnection(testUrl, timeout);
+
+                    Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Solicitando con timeout {1} la siguiente URL de recuperación: {0}", new Object[]{testUrl, connection.getReadTimeout()});
                     connection.connect();
                     code = connection.getResponseCode();
-                    Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Código de respuesta: {0}", code);
-
+                    Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Código de respuesta: {0}", code);                    
+                    
                     if (code == 200) {
                         respuesta = getStringFromInpurStream(connection.getInputStream());
                         connection.disconnect();
                         Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Resultado de consulta: {0}", respuesta);
                         response.setContentType("text/javascript");
                         out = response.getWriter();
-                        out.println(respuesta.replace("\"", "'"));
+                        out.write(respuesta.replace("\"", "'"));
+                        out.flush();
                     } else {
                         Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Fall\u00f3 con el c\u00f3digo {0} la llamada a la URL: {1}", new Object[]{code, testUrl});
                         error = getStringFromInpurStream(connection.getErrorStream());
@@ -135,17 +123,28 @@ public class ZCrawlTest extends HttpServlet {
     }
 
     private String getStringFromInpurStream(InputStream is) {
-        String resultado = "";
+        StringBuilder resultado = new StringBuilder();
         int character = 0;
-        
-        try {            
+
+        try {
+            System.out.println("-------------");
             while ((character = is.read()) != -1) {
-                resultado += Character.toString((char) character);
-                System.out.print(resultado);
+                resultado.append(Character.toString((char) character));
+                System.out.print(Character.toString((char) character));
             }
+            System.out.println("-------------");
         } catch (Exception ex) {
             Logger.getLogger(ZCrawlTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return resultado;
+        return resultado.toString();
+    }
+
+    private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
+        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(timeout);
+        connection.setReadTimeout(timeout);
+        connection.connect();
+        return connection;
     }
 }
