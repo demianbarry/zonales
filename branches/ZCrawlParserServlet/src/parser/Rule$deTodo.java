@@ -1,14 +1,14 @@
-package parser;
-
 /* -----------------------------------------------------------------------------
  * Rule$deTodo.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Fri Jul 29 09:22:21 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
+
+package parser;
 
 import java.util.ArrayList;
 
@@ -40,21 +40,6 @@ final public class Rule$deTodo extends Rule
         ArrayList<Rule> e1 = new ArrayList<Rule>();
         int s1 = context.index;
         parsed = true;
-        if (parsed)
-        {
-          boolean f1 = true;
-          int c1 = 0;
-          for (int i1 = 0; i1 < 1 && f1; i1++)
-          {
-            rule = Rule$space.parse(context);
-            if ((f1 = rule != null))
-            {
-              e1.add(rule);
-              c1++;
-            }
-          }
-          parsed = c1 == 1;
-        }
         if (parsed)
         {
           boolean f1 = true;

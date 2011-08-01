@@ -1,14 +1,14 @@
-package parser;
-
 /* -----------------------------------------------------------------------------
  * Rule$criterios.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Fri Jul 29 09:34:22 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
+
+package parser;
 
 import java.util.ArrayList;
 
@@ -74,7 +74,7 @@ final public class Rule$criterios extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Rule$space.parse(context);
+                    rule = Rule$mspace.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);

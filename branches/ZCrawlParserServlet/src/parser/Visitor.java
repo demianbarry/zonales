@@ -1,14 +1,14 @@
-package parser;
-
 /* -----------------------------------------------------------------------------
  * Visitor.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Thu Jul 21 16:52:30 ART 2011
+ * Produced : Fri Jul 29 09:22:21 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
+
+package parser;
 
 public interface Visitor
 {
@@ -20,6 +20,7 @@ public interface Visitor
   public Object visit(Rule$uri_fuente rule);
   public Object visit(Rule$criterios rule);
   public Object visit(Rule$criterio rule);
+  public Object visit(Rule$siosi rule);
   public Object visit(Rule$deTodo rule);
   public Object visit(Rule$delUsuario rule);
   public Object visit(Rule$amigosDelUsuario rule);

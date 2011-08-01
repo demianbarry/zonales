@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Rule$relative_part.java
+ * Rule$siosi.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
@@ -12,9 +12,9 @@ package parser;
 
 import java.util.ArrayList;
 
-final public class Rule$relative_part extends Rule
+final public class Rule$siosi extends Rule
 {
-  private Rule$relative_part(String spelling, ArrayList<Rule> rules)
+  private Rule$siosi(String spelling, ArrayList<Rule> rules)
   {
     super(spelling, rules);
   }
@@ -24,9 +24,9 @@ final public class Rule$relative_part extends Rule
     return visitor.visit(this);
   }
 
-  public static Rule$relative_part parse(ParserContext context)
+  public static Rule$siosi parse(ParserContext context)
   {
-    context.push("relative-part");
+    context.push("siosi");
 
     boolean parsed = true;
     int s0 = context.index;
@@ -46,7 +46,7 @@ final public class Rule$relative_part extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Terminal$StringValue.parse(context, "//");
+            rule = Terminal$StringValue.parse(context, "si");
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -61,7 +61,7 @@ final public class Rule$relative_part extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$authority.parse(context);
+            rule = Rule$mspace.parse(context);
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -76,7 +76,7 @@ final public class Rule$relative_part extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$path_abempty.parse(context);
+            rule = Terminal$StringValue.parse(context, "o");
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -86,24 +86,12 @@ final public class Rule$relative_part extends Rule
           parsed = c1 == 1;
         }
         if (parsed)
-          e0.addAll(e1);
-        else
-          context.index = s1;
-      }
-    }
-    if (!parsed)
-    {
-      {
-        ArrayList<Rule> e1 = new ArrayList<Rule>();
-        int s1 = context.index;
-        parsed = true;
-        if (parsed)
         {
           boolean f1 = true;
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$path_absolute.parse(context);
+            rule = Rule$mspace.parse(context);
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -113,24 +101,12 @@ final public class Rule$relative_part extends Rule
           parsed = c1 == 1;
         }
         if (parsed)
-          e0.addAll(e1);
-        else
-          context.index = s1;
-      }
-    }
-    if (!parsed)
-    {
-      {
-        ArrayList<Rule> e1 = new ArrayList<Rule>();
-        int s1 = context.index;
-        parsed = true;
-        if (parsed)
         {
           boolean f1 = true;
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$path_noscheme.parse(context);
+            rule = Terminal$StringValue.parse(context, "si");
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -140,24 +116,12 @@ final public class Rule$relative_part extends Rule
           parsed = c1 == 1;
         }
         if (parsed)
-          e0.addAll(e1);
-        else
-          context.index = s1;
-      }
-    }
-    if (!parsed)
-    {
-      {
-        ArrayList<Rule> e1 = new ArrayList<Rule>();
-        int s1 = context.index;
-        parsed = true;
-        if (parsed)
         {
           boolean f1 = true;
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Rule$path_empty.parse(context);
+            rule = Rule$mspace.parse(context);
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -175,13 +139,13 @@ final public class Rule$relative_part extends Rule
 
     rule = null;
     if (parsed)
-      rule = new Rule$relative_part(context.text.substring(s0, context.index), e0);
+      rule = new Rule$siosi(context.text.substring(s0, context.index), e0);
     else
       context.index = s0;
 
-    context.pop("relative-part", parsed);
+    context.pop("siosi", parsed);
 
-    return (Rule$relative_part)rule;
+    return (Rule$siosi)rule;
   }
 }
 

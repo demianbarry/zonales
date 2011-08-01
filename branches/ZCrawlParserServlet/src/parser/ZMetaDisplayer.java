@@ -24,8 +24,7 @@ public class ZMetaDisplayer implements Visitor {
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
         }
-        //System.out.println("</zcrawling>");
-//        System.out.println(((CriterioPalabras) Globals.zcrawling.getCriterios().get(0)).getPalabras());
+
         Globals.out.println((new Gson()).toJson(Globals.zcrawling).replace("\\\"", ""));
         return Boolean.FALSE;
     }
@@ -122,7 +121,8 @@ public class ZMetaDisplayer implements Visitor {
 
         Criterio criterio = new Criterio();
         criterio.setPalabras(Arrays.asList(rule.spelling.split(",")));
-
+        criterio.setSiosi(Globals.siosi);
+        Globals.siosi = false;
         Globals.zcrawling.getCriterios().add(criterio);
 
         if (visitRules(rule.rules).booleanValue()) {
@@ -657,6 +657,8 @@ public class ZMetaDisplayer implements Visitor {
     public Object visit(Rule$delUsuario rule) {
         Criterio criterio = new Criterio();
         criterio.setDelUsuario(rule.spelling);
+        criterio.setSiosi(Globals.siosi);
+        Globals.siosi = false;
         Globals.zcrawling.getCriterios().add(criterio);
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
@@ -667,8 +669,10 @@ public class ZMetaDisplayer implements Visitor {
     @Override
     public Object visit(Rule$amigosDelUsuario rule) {
 
-        Criterio criterio = new Criterio();
+        Criterio criterio = new Criterio();        
         criterio.setAmigosDe(rule.spelling);
+        criterio.setSiosi(Globals.siosi);
+        Globals.siosi = false;
         Globals.zcrawling.getCriterios().add(criterio);
 
         if (visitRules(rule.rules).booleanValue()) {
@@ -724,6 +728,15 @@ public class ZMetaDisplayer implements Visitor {
         Filtro filtro = new Filtro();
         filtro.setListaNegraDePalabras(true);
         Globals.zcrawling.getFiltros().add(filtro);
+        if (visitRules(rule.rules).booleanValue()) {
+            //System.out.println("");
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Object visit(Rule$siosi rule) {        
+        Globals.siosi = true;
         if (visitRules(rule.rules).booleanValue()) {
             //System.out.println("");
         }

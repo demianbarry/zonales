@@ -1,14 +1,14 @@
-package parser;
-
 /* -----------------------------------------------------------------------------
  * Displayer.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Thu Jul 21 16:52:30 ART 2011
+ * Produced : Fri Jul 29 09:22:21 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
+
+package parser;
 
 import java.util.ArrayList;
 
@@ -51,6 +51,11 @@ public class Displayer implements Visitor
   }
 
   public Object visit(Rule$criterio rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$siosi rule)
   {
     return visitRules(rule.rules);
   }

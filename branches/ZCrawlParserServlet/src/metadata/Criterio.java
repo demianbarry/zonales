@@ -11,6 +11,27 @@ import java.util.List;
  * @author juanma
  */
 public class Criterio {
+    
+    protected Boolean siosi;
+
+    /**
+     * Get the value of siosi
+     *
+     * @return the value of siosi
+     */
+    public Boolean getSiosi() {
+        return siosi;
+    }
+
+    /**
+     * Set the value of siosi
+     *
+     * @param siosi new value of siosi
+     */
+    public void setSiosi(Boolean siosi) {
+        this.siosi = siosi;
+    }
+
 
     protected List<String> palabras;
 

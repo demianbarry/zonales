@@ -40,7 +40,7 @@ public class ZCrawlParser extends HttpServlet {
 
         String extraction = request.getParameter("q");
         try {
-            String[] args = {"-trace", "-visitor", "parser.ZMetaDisplayer", "-string", extraction};
+            String[] args = {"-visitor", "parser.ZMetaDisplayer", "-string", extraction};
             Parser.main(args);
         } catch (Exception ex) {
             //            Logger.getLogger(ZCrawlParser.class.getName()).log(Level.SEVERE, null, ex);
