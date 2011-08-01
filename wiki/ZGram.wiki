@@ -7,7 +7,7 @@
 {{{
 <Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
 			["asignando los tags" <tags>] 
-			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
+			"mediante la fuente" <fuente>
 			"a partir" <criterios> 
 			["incluye comentarios" ["de los usuarios" <usuarios>]
 			["y filtrando por" <filtros> ]
@@ -17,7 +17,7 @@
 <localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
 <tags>		::= 	<tag> {","<tag>} 
 <tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
-<fuente>	::=	"facebook" | "twitter" | "feed"
+<fuente>	::=	"facebook" | "twitter" | "feed ubicado en" <uri_fuente>
 <uri_fuente>	::=	? uri de rss o atom bien formada ?
 <criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
 <criterio>	::=	"de todo" |
