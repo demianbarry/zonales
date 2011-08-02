@@ -5,7 +5,8 @@
 
 == Gramática EBNF ==
 {{{
-<Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
+<Zcrawling> 	::= 	["**" <descripcion> "**"]
+                        "extraer para la localidad" <localidad> 
 			"mediante la fuente" <fuente>
 			["asignando los tags" <tags>] 
 			["a partir" <criterios>] 
@@ -14,6 +15,7 @@
 			["incluye los tags de la fuente"]
                         "."
  
+<descripcion>   ::=     ? Cualquier cadena de caracteres ?
 <localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
 <tags>		::= 	<tag> {","<tag>} 
 <tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
