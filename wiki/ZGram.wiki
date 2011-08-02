@@ -8,7 +8,7 @@
 <Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
 			["asignando los tags" <tags>] 
 			"mediante la fuente" <fuente>
-			"a partir" <criterios> 
+			["a partir" <criterios>] 
 			["incluye comentarios" ["de los usuarios" <usuarios>]
 			["y filtrando por" <filtros> ]
 			["incluye los tags de la fuente"]
@@ -20,8 +20,7 @@
 <fuente>	::=	"facebook" | "twitter" | "feed ubicado en" <uri_fuente>
 <uri_fuente>	::=	? uri de rss o atom bien formada ?
 <criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
-<criterio>	::=	"de todo" |
-                        "de los usuarios" <usuarios> |
+<criterio>	::=     "de los usuarios" <usuarios> |
 			"de amigos de los usuarios" <usuarios> |
 			["si o si"] "de las palabras" <palabras>
 <usuarios>      ::=      <usuario> {"," <usuario>}
