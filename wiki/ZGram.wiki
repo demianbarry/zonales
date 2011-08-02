@@ -6,8 +6,8 @@
 == Gramática EBNF ==
 {{{
 <Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
-			["asignando los tags" <tags>] 
 			"mediante la fuente" <fuente>
+			["asignando los tags" <tags>] 
 			["a partir" <criterios>] 
 			["incluye comentarios" ["de los usuarios" <usuarios>]
 			["y filtrando por" <filtros> ]
