@@ -7,6 +7,8 @@ package org.zonales.crawlConfig.services;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -230,14 +232,13 @@ public class GetTestServiceHardCode implements GetTestService {
         }
 
         String urlServlet = service.getUri() + "?url=";
-
-        Boolean first = true;
-
-        /*if (metadata.getLocalidad() != null && !metadata.getLocalidad().equals("")) {
-        first = false;
-        urlServlet += metadata.getLocalidad() + "+AND+";
-        }*/
-
+        urlServlet += metadata.getUriFuente();
+        
+        urlServlet += "&tags=" + metadata.getLocalidad();
+        for(String tag : metadata.getTags()){
+            urlServlet += ","+tag;
+        }
+        
         if (metadata.getCriterios() != null) {
 
             for (Criterio criterio : metadata.getCriterios()) {                
