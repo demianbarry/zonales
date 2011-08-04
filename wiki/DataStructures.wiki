@@ -1,0 +1,55 @@
+#summary One-sentence summary of this page.
+
+= Estructuras de datos =
+
+Se detallan en esta sección las estructuras de datos diseñadas para persistir las entidades utilizadas en Zonales.
+
+
+== Configuraciones de Fuentes de Extracción ==
+
+{{{
+
+}}}
+
+== Tags y Zonas ==
+
+{{{
+//Tipos de zonas o tags (similar al field de la estructura anterior
+{
+    "name" : "String", //Este campo debe ser único
+    "parents" : [
+        "String" //Nombres de los tipos que son padre del actual
+    ],
+    "state" : "String"  //Generado, publicado, despublicado, anulado
+}
+
+//Zonas
+{
+    "id" : 9, //Numérico entero. Este campo debe ser único. No es igual al ID que le pone MongoDB
+    "name" : "String",
+    "parent" : 9, //Numérico, ID de la zona padre
+    "type" : "String", //Debe ser el nombre de un tipo de zona existente
+    "state" : "String", ////Generado, publicado, despublicado, anulado
+    "center_lat" : -34.1125, //Tipo de dato float
+    "center_lon" : -64.7445, //Tipo de dato float
+    "zoom_level" : 9 //Tipo de datos entero positivo
+}
+
+//Tags
+{
+    "id" : 9, //Numérico entero. Este campo debe ser único. No es igual al ID que le pone MongoDB
+    "name" : "String",
+    "parent" : 9, //Numérico, ID del tag padre
+    "type" : "String", //Debe ser el nombre de un tipo de tag existente
+    "state" : "String" ////Generado, publicado, despublicado, anulado
+}
+
+//Puntos geográficos
+{
+    "street_name" : "String",  //Calle
+    "street_number" : 9, //Altura, entero positivo
+    "longitude" : -34.1125, //Float
+    "latitude" : -64.7445, //Float
+    "ext_zip_code" : "String"
+}
+}}}
