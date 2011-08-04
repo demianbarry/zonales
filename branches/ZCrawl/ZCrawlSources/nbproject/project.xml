@@ -7,13 +7,13 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-                    <file>${libs.Gson.classpath}</file>
-                </library>
-                <library dirs="200">
-                    <file>${libs.MongoDB.classpath}</file>
-                </library>
-                <library dirs="200">
                     <file>${libs.javaee-api-6.0.classpath}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.gson-1.7.1.jar}</file>
+                </library>
+                <library dirs="200">
+                    <file>${libs.mongodb.classpath}</file>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
