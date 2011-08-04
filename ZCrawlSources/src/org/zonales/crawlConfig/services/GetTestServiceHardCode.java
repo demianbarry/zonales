@@ -258,23 +258,7 @@ public class GetTestServiceHardCode implements GetTestService {
                 }
             }
         }
-        if (metadata.getFiltros() != null) {
-            for (Filtro filtro : metadata.getFiltros()) {
-                if (filtro.getMinActions() != null && filtro.getMinActions() > 0) {
-                }
-            }
-            if (metadata.getTags() != null) {
-                Boolean firstTag = true;
-                for (String tag : metadata.getTags()) {
-                    if (firstTag) {
-                        urlServlet += "&tags=" + tag;
-                        firstTag = false;
-                    } else {
-                        urlServlet += "," + tag;
-                    }
-                }
-            }
-        }
+
 
         return urlServlet;
     }
