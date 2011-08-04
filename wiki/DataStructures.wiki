@@ -8,6 +8,24 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
 == Configuraciones de Fuentes de Extracción ==
 
 {{{
+//Configuraciones de fuentes de extracción
+{
+    "name" : "String",
+    "uri" : "String",
+    "params" : [
+        {
+            "name" : "String",
+            "required" : true/false //Boolean
+        }
+    ],
+    "plugins" : [
+        {
+            "class_name" : "String",
+            "type" : "String" //Valores posibles por el momento: URLGetter, Publisher
+        }
+    ],
+    "state" : "String" //Valores posibles Generada, Publicada, Despublicada, Anulada
+}
 
 }}}
 
