@@ -15,6 +15,8 @@ public class Service {
     private String name;
     private String uri;
     private ArrayList<Param> params;
+    private ArrayList<Plugin> plugins;
+    private String state;
 
     public Service() {
     }
@@ -22,12 +24,6 @@ public class Service {
     public Service(String name, String uri) {
         this.name = name;
         this.uri = uri;
-    }
-
-    public Service(String name, String uri, ArrayList<Param> params) {
-        this.name = name;
-        this.uri = uri;
-        this.params = params;
     }
 
     public String getName() {
@@ -65,6 +61,8 @@ public class Service {
         Param param = new Param(name);
         this.params.remove(this.params.indexOf(param));
     }
+
+
 
     @Override
     public String toString() {

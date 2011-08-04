@@ -29,7 +29,7 @@ public class ServiceDao extends BaseDao {
         this.services.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
     }
 
-    public void saveService(Service service) throws MongoException {
+    public void save(Service service) throws MongoException {
         BasicDBObject serviceDoc = new BasicDBObject();
         
         ArrayList<Param> params = service.getParams();
@@ -41,6 +41,7 @@ public class ServiceDao extends BaseDao {
 
         serviceDoc.put("name", service.getName());
         serviceDoc.put("uri", service.getUri());
+        serviceDoc.put("pluginName", service.getPluginName());
 
         serviceDoc.put("params", paramsToDoc);
 
@@ -49,7 +50,7 @@ public class ServiceDao extends BaseDao {
         this.services.insert(serviceDoc);
     }
 
-    public void updateService(String name, Service newService) throws MongoException {
+    public void update(String name, Service newService) throws MongoException {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
         DBCursor cur;
@@ -73,6 +74,12 @@ public class ServiceDao extends BaseDao {
                 serviceDoc.put("uri", (String)resp.get("uri"));
             }
 
+            if (newService.getPluginName() != null) {
+                serviceDoc.put("pluginName", newService.getPluginName());
+            } else {
+                serviceDoc.put("pluginName", (String)resp.get("pluginName"));
+            }
+
             ArrayList<Param> params = newService.getParams();
 
             if (params != null) {
@@ -90,7 +97,7 @@ public class ServiceDao extends BaseDao {
         }
     }
 
-    public String retrieveServiceJson(String name) {
+    public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
         DBCursor cur;
@@ -104,7 +111,7 @@ public class ServiceDao extends BaseDao {
         return resp.toString();
     }
 
-    public Service retrieveService(String name) {
+    public Service retrieve(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
         DBCursor cur;
@@ -123,6 +130,7 @@ public class ServiceDao extends BaseDao {
 
         service.setName((String)resp.get("name"));
         service.setUri((String)resp.get("uri"));
+        service.setPluginName((String)resp.get("pluginName"));
 
         paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
 
