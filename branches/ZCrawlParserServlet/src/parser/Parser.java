@@ -1,14 +1,14 @@
-package parser;
-
 /* -----------------------------------------------------------------------------
  * Parser.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Wed Jul 20 09:15:24 ART 2011
+ * Produced : Wed Aug 03 09:32:54 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
+
+package parser;
 
 import java.util.Stack;
 import java.util.Properties;
@@ -41,10 +41,10 @@ public class Parser
           arguments.setProperty("Visitor", args[++i]);
         else if (args[i].equals("-file"))
           arguments.setProperty("File", args[++i]);
-        else if ("-string".equals(args[i]))
+        else if (args[i].equals("-string"))
           arguments.setProperty("String", args[++i]);
         else if (args[i].equals("-rule"))
-          arguments.setProperty("Rule", args[++i]);        
+          arguments.setProperty("Rule", args[++i]);
         else
         {
           error = "unknown argument: " + args[i];
@@ -161,17 +161,18 @@ public class Parser
 
     Rule rule = null;
     if (rulename.equalsIgnoreCase("zcrawling")) rule = Rule$zcrawling.parse(context);
+    else if (rulename.equalsIgnoreCase("descripcion")) rule = Rule$descripcion.parse(context);
     else if (rulename.equalsIgnoreCase("localidad")) rule = Rule$localidad.parse(context);
     else if (rulename.equalsIgnoreCase("tags")) rule = Rule$tags.parse(context);
     else if (rulename.equalsIgnoreCase("tag")) rule = Rule$tag.parse(context);
     else if (rulename.equalsIgnoreCase("fuente")) rule = Rule$fuente.parse(context);
     else if (rulename.equalsIgnoreCase("uri_fuente")) rule = Rule$uri_fuente.parse(context);
     else if (rulename.equalsIgnoreCase("criterios")) rule = Rule$criterios.parse(context);
-    else if (rulename.equalsIgnoreCase("siosi")) rule = Rule$siosi.parse(context);
     else if (rulename.equalsIgnoreCase("criterio")) rule = Rule$criterio.parse(context);
-    else if (rulename.equalsIgnoreCase("deTodo")) rule = Rule$deTodo.parse(context);
-    else if (rulename.equalsIgnoreCase("delUsuario")) rule = Rule$delUsuario.parse(context);
+    else if (rulename.equalsIgnoreCase("deLosUsuarios")) rule = Rule$deLosUsuarios.parse(context);
     else if (rulename.equalsIgnoreCase("amigosDelUsuario")) rule = Rule$amigosDelUsuario.parse(context);
+    else if (rulename.equalsIgnoreCase("siosi")) rule = Rule$siosi.parse(context);
+    else if (rulename.equalsIgnoreCase("usuarios")) rule = Rule$usuarios.parse(context);
     else if (rulename.equalsIgnoreCase("commenters")) rule = Rule$commenters.parse(context);
     else if (rulename.equalsIgnoreCase("usuario")) rule = Rule$usuario.parse(context);
     else if (rulename.equalsIgnoreCase("palabras")) rule = Rule$palabras.parse(context);
@@ -233,8 +234,8 @@ public class Parser
     if (rule == null)
     {
       throw new ParserException(
-        "falló la regla \"" + (String)context.getErrorStack().peek() + "\" en",
-        "'" + context.text + "'",
+        "rule \"" + (String)context.getErrorStack().peek() + "\" failed",
+        context.text,
         context.getErrorIndex(),
         context.getErrorStack());
     }

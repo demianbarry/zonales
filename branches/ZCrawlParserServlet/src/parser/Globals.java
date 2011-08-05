@@ -20,4 +20,5 @@ public class Globals {
     public static ZCrawling zcrawling;
     public static PrintWriter out;
     public static Boolean siosi = false;
+    public static Boolean nocriterios = false;
 }
