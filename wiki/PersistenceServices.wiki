@@ -1,0 +1,17 @@
+#summary One-sentence summary of this page.
+
+= Introducción =
+
+Descripción de los servicios de persistencia, con sus respectivos parámetros.
+
+
+= Servicios para la configuración de fuentes de extracción =
+
+== GetConfig ==
+
+URI: /getConfig
+
+=== Parámetros ===
+
+|| *Parámetro* || *Descripción* || *Posibles valores* || *Respuesta* || *Formato* || *Observaciones* ||
+|| name || Nombre del servicio a recuperar || Cualquier cadena || Configuración de la fuente solicitada || JSON || ||
