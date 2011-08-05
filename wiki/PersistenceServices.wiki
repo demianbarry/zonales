@@ -16,14 +16,14 @@ Descripción de los servicios de persistencia, con sus respectivos parámetros.
 === Parámetros ===
 
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
-|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar || Cualquier cadena || Configuración de la fuente de extracción solicitada || JSON || ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar || Cualquier cadena || ||
 
 *_Ejemplo_*: http://localhost:8080/ZCrawlSources/getConfig?name=facebook
 
 
 == SetConfig ==
 
-URI: /setConfig
+*_URI_*: /setConfig
 *_Respuesta_*: success / error
 *_Formato_*: Plain Text (Falta mejorar esquema de errores)
 
