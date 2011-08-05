@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Fri Jul 29 09:34:22 ART 2011
+ * Produced : Thu Aug 04 12:08:11 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -233,7 +233,7 @@ final public class Rule$criterios extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Rule$criterio.parse(context);
+                    rule = Rule$nocriterio.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);
@@ -276,7 +276,7 @@ final public class Rule$criterios extends Rule
                           int c3 = 0;
                           for (int i3 = 0; i3 < 1 && f3; i3++)
                           {
-                            rule = Terminal$StringValue.parse(context, "y");
+                            rule = Terminal$StringValue.parse(context, "ni");
                             if ((f3 = rule != null))
                             {
                               e3.add(rule);
@@ -306,7 +306,7 @@ final public class Rule$criterios extends Rule
                           int c3 = 0;
                           for (int i3 = 0; i3 < 1 && f3; i3++)
                           {
-                            rule = Rule$criterio.parse(context);
+                            rule = Rule$nocriterio.parse(context);
                             if ((f3 = rule != null))
                             {
                               e3.add(rule);
