@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:simpleType name="url">
+		<xs:restriction base="xs:string"></xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="linkType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string"></xs:element>
+			<xs:element name="url" type="url"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="linksType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="link" type="linkType"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="user">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" maxOccurs="1"
+				minOccurs="1">
+			</xs:element>
+			<xs:element name="name" type="xs:string" maxOccurs="1"
+				minOccurs="1">
+			</xs:element>
+			<xs:element name="url" type="url" maxOccurs="1" minOccurs="1">
+			</xs:element>
+			<xs:element name="category" type="xs:string" maxOccurs="1"
+				minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="toUsersType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="toUser" type="user"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="actionType">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string"></xs:element>
+			<xs:element name="cant" type="xs:int"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="actionsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="action" type="actionType"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="tagsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="tag" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="postType">
+		<xs:sequence>
+			<xs:element name="source" type="xs:string" />
+			<xs:element name="id" type="xs:string" />
+			<xs:element name="from" type="user" />
+			<xs:element name="toUsers" type="toUsersType" />
+			<xs:element name="title" type="xs:string" />
+			<xs:element name="text" type="xs:string" />
+			<xs:element name="links" type="linksType" />
+			<xs:element name="actions" type="actionsType" />
+			<xs:element name="tags" type="tagsType" />
+			<xs:element name="created" type="xs:dateTime" />
+			<xs:element name="modified" type="xs:dateTime" />
+            <xs:element name="relevance" type="xs:int" />
+            <xs:element name="verbatim" type="xs:string"></xs:element>
+        </xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="postsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="post" type="postType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="posts" type="postsType" />
+
+</xs:schema>
