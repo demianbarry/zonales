@@ -8,13 +8,14 @@
             <web-module-libraries>
                 <library dirs="200">
                     <file>${libs.javaee-api-6.0.classpath}</file>
-                </library>
-                <library dirs="200">
-                    <file>${libs.GSON.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.mongo-2.6.3.jar}</file>
+                    <file>${libs.mongodb.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.Gson.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

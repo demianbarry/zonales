@@ -17,6 +17,14 @@
         <servlet-name>GetServiceURL</servlet-name>
         <servlet-class>org.zonales.crawlConfig.services.GetTestService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SetType</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.SetType</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetType</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.GetType</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -32,5 +40,13 @@
     <servlet-mapping>
         <servlet-name>GetServiceURL</servlet-name>
         <url-pattern>/getServiceURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetType</servlet-name>
+        <url-pattern>/setType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetType</servlet-name>
+        <url-pattern>/getType</url-pattern>
     </servlet-mapping>
 </web-app>

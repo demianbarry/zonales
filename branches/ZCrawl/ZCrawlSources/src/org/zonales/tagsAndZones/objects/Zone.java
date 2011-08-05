@@ -29,6 +29,30 @@ public class Zone extends Tag {
         this.zoomLevel = zoomLevel;
     }
 
+    public float getScenterLat() {
+        return ScenterLat;
+    }
+
+    public void setScenterLat(float ScenterLat) {
+        this.ScenterLat = ScenterLat;
+    }
+
+    public float getCenterLon() {
+        return centerLon;
+    }
+
+    public void setCenterLon(float centerLon) {
+        this.centerLon = centerLon;
+    }
+
+    public int getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(int zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
     
 
 }
