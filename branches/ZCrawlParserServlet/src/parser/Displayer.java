@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Fri Jul 29 09:22:21 ART 2011
+ * Produced : Thu Aug 04 12:08:11 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -16,6 +16,11 @@ public class Displayer implements Visitor
 {
 
   public Object visit(Rule$zcrawling rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$descripcion rule)
   {
     return visitRules(rule.rules);
   }
@@ -55,22 +60,27 @@ public class Displayer implements Visitor
     return visitRules(rule.rules);
   }
 
-  public Object visit(Rule$siosi rule)
+  public Object visit(Rule$nocriterio rule)
   {
     return visitRules(rule.rules);
   }
 
-  public Object visit(Rule$deTodo rule)
-  {
-    return visitRules(rule.rules);
-  }
-
-  public Object visit(Rule$delUsuario rule)
+  public Object visit(Rule$deLosUsuarios rule)
   {
     return visitRules(rule.rules);
   }
 
   public Object visit(Rule$amigosDelUsuario rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$siosi rule)
+  {
+    return visitRules(rule.rules);
+  }
+
+  public Object visit(Rule$usuarios rule)
   {
     return visitRules(rule.rules);
   }
