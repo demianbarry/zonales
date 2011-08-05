@@ -52,15 +52,15 @@ public class Criterio {
     public void setPalabras(List<String> palabras) {
         this.palabras = palabras;
     }
-    protected String delUsuario;
+    protected List<String> deLosUsuarios;
 
     /**
      * Get the value of usuarios
      *
      * @return the value of usuarios
      */
-    public String getDelUsuario() {
-        return delUsuario;
+    public List<String> getDeLosUsuarios() {
+        return deLosUsuarios;
     }
 
     /**
@@ -68,8 +68,8 @@ public class Criterio {
      *
      * @param usuarios new value of usuarios
      */
-    public void setDelUsuario(String usuario) {
-        this.delUsuario = usuario;
+    public void setDeLosUsuarios(List<String> usuarios) {
+        this.deLosUsuarios = usuarios;
     }
     protected String amigosDe;
 
