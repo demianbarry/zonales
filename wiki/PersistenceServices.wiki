@@ -20,6 +20,7 @@ Descripción de los servicios de persistencia, con sus respectivos parámetros.
 
 *_Ejemplo_*: http://localhost:8080/ZCrawlSources/getConfig?name=facebook
 
+
 == SetConfig ==
 
 URI: /setConfig
@@ -35,6 +36,7 @@ URI: /setConfig
 || params || No || Parámetros de la fuente de extracción || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || ||
 
 *_Ejemplo_*: http://localhost:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false
+
 
 == UpdateConfig ==
 
@@ -53,3 +55,36 @@ URI: /updateConfig
 || newstate || No || Nuevo estado para la configuración de la fuente || Generada,Publicada,Despublicada,Anulada || ||
 
 *_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+
+
+== UpdateConfig ==
+
+URI: /updateConfig
+*_Respuesta_*: success / error
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a modificar || Cualquier cadena || ||
+|| newname || No || Nuevo nombre de la fuente de extracción || Cualquier cadena || ||
+|| newuri || No || Nueva Uri de la fuente de extracción || Cualquier cadena que represente una URL || ||
+|| newplugins || No || Plugins vinculados a la fuente de extracción que se modifican o agregan || Lista de plugins separados por punto y coma (";"). Cada plugins se compone de un par nombre,tipo separado por coma(",") || Falta control sobre existencia previa de plugins del mismo tipo ||
+|| newparams || No || Parámetros de la fuente de extracción que se modifican o agregan || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || Falta control sobre existencia previa de los parámetros ||
+|| newstate || No || Nuevo estado para la configuración de la fuente || Generada,Publicada,Despublicada,Anulada || ||
+
+*_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+
+
+== GetServiceURL ==
+
+URI: /getServiceURL
+*_Respuesta_*: URL de llamada al servicio
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| q || Si || Metadata de la cual se desea obtener la URL del servicio de extracción || ZGramData || ||
+
+*_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?q={"localidad":"Puerto Madryn","tags":["Turismo"],"fuente":"twitter","criterios":[{"delUsuario":"ozonodigital"},{"delUsuario":"ichubut"},{"delUsuario":"JornadaWeb?"},{"delUsuario":"tiempoonline"},{"palabras":["Turismo"]},{"palabras":["Avistaje"]}],"filtros":[{"minActions":1}]}
