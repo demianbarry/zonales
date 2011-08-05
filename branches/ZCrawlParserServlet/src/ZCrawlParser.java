@@ -18,6 +18,8 @@
  */
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import parser.Globals;
@@ -43,7 +45,7 @@ public class ZCrawlParser extends HttpServlet {
             String[] args = {"-visitor", "parser.ZMetaDisplayer", "-string", extraction};
             Parser.main(args);
         } catch (Exception ex) {
-            //            Logger.getLogger(ZCrawlParser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ZCrawlParser.class.getName()).log(Level.SEVERE, null, ex);
             response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
         }
     }

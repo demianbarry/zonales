@@ -16,6 +16,27 @@ public class ZCrawling {
         
     }
 
+    protected String descripcion;
+
+    /**
+     * Get the value of descripcion
+     *
+     * @return the value of descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * Set the value of descripcion
+     *
+     * @param descripcion new value of descripcion
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    
     protected String localidad;
 
     /**
