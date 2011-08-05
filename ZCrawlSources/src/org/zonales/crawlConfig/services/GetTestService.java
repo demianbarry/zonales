@@ -9,6 +9,7 @@ import org.zonales.crawlConfig.plugins.urlgetters.GetServiceURL;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
+import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
-import org.zonales.crawlParser.metadata.Criterio;
-import org.zonales.crawlParser.metadata.Filtro;
 import org.zonales.crawlParser.metadata.ZCrawling;
 
 /**
@@ -48,7 +48,9 @@ public class GetTestService extends BaseService {
 
         Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Fuente {0}, servicio {1}", new Object[]{metadata.getFuente(), service.getName()});
 
-        GetServiceURL getServiceURL = (GetServiceURL)Class.forName(service.getPluginName()).cast(GetServiceURL.class);
+        ArrayList<Plugin> plugins = service.getPlugins();
+        Plugin plugin = plugins.get(plugins.indexOf("URLGetter"));
+        GetServiceURL getServiceURL = (GetServiceURL)Class.forName(plugin.getClassName()).cast(GetServiceURL.class);
         urlServlet = getServiceURL.getURL(metadata, service);
 
         out.print(urlServlet);

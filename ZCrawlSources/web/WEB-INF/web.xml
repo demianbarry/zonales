@@ -9,6 +9,14 @@
         <servlet-name>SetConfig</servlet-name>
         <servlet-class>org.zonales.crawlConfig.services.SetConfig</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateConfig</servlet-name>
+        <servlet-class>org.zonales.crawlConfig.services.UpdateConfig</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetServiceURL</servlet-name>
+        <servlet-class>org.zonales.crawlConfig.services.GetTestService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -16,5 +24,13 @@
     <servlet-mapping>
         <servlet-name>SetConfig</servlet-name>
         <url-pattern>/setConfig</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateConfig</servlet-name>
+        <url-pattern>/updateConfig</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetServiceURL</servlet-name>
+        <url-pattern>/getServiceURL</url-pattern>
     </servlet-mapping>
 </web-app>

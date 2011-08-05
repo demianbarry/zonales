@@ -101,7 +101,18 @@ public class ServiceDao extends BaseDao {
                 serviceDoc.put("params", resp.get("params"));
             }
 
-            
+            ArrayList<Plugin> plugins = newService.getPlugins();
+
+            if (plugins != null) {
+                ArrayList pluginsToDoc = new ArrayList();
+
+                for (Plugin plugin: plugins) {
+                    pluginsToDoc.add(new BasicDBObject(plugin.getClassName(), plugin.getType()));
+                }
+                serviceDoc.put("plugins", pluginsToDoc);
+            } else {
+                serviceDoc.put("plugins", resp.get("plugins"));
+            }
 
             this.services.update(new BasicDBObject().append("name", name), serviceDoc);
         }

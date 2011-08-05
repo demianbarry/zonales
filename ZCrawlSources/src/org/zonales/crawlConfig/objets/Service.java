@@ -76,7 +76,7 @@ public class Service {
         this.plugins = plugins;
     }
 
-    public void addPlugin(String className, String type) {
+    public void addPlugin(String className, String type) throws TypeNotPresentException {
         ArrayList<String> possiblesTypes = PluginType.getPluginTypes();
 
         if (possiblesTypes.indexOf(type) < 0) {
@@ -105,7 +105,13 @@ public class Service {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(String state) throws TypeNotPresentException {
+        ArrayList<String> possiblesStates = State.getCrawlConfigStates();
+
+        if (possiblesStates.indexOf(state) < 0) {
+            throw new TypeNotPresentException(state, null);
+        }
+
         this.state = state;
     }
 
