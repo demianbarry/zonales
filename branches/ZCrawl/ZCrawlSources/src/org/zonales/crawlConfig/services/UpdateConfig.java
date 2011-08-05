@@ -29,10 +29,12 @@ public class UpdateConfig extends BaseService {
         String name = request.getParameter("name");
         String newName = request.getParameter("newname");
         String newUri = request.getParameter("newuri");
-        String newPluginName = request.getParameter("newpluginname");
+        String newPlugins = request.getParameter("newplugins");
         String newParams = request.getParameter("newparams");
+        String newState = request.getParameter("newstate");
         Service service = new Service();
         StringTokenizer paramToken;
+        StringTokenizer pluginToken;
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         if (name == null) {
@@ -46,8 +48,13 @@ public class UpdateConfig extends BaseService {
         if (newUri != null) {
             service.setUri(newUri);
         }
-        if (newPluginName != null) {
-            service.setPluginName(newPluginName);
+        if (newPlugins != null) {
+            pluginToken = new StringTokenizer(newPlugins, ",;");
+            while (pluginToken.hasMoreTokens()) {
+                String pluginName = pluginToken.nextToken();
+                String pluginType = pluginToken.nextToken();
+                service.addPlugin(pluginName, pluginType);  //TODO: Manejar error de tipo
+            }
         }
         if (newParams != null) {
             paramToken = new StringTokenizer(newParams, ",;");
@@ -56,6 +63,9 @@ public class UpdateConfig extends BaseService {
                 Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
                 service.addParam(paramName, paramRequired);
             }
+        }
+        if (newState != null) {
+            service.setState(newState);
         }
 
         try {

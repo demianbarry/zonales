@@ -6,7 +6,6 @@
 package org.zonales.tagsAndZones.objects;
 
 import org.zonales.crawlConfig.objets.State;
-import org.zonales.crawlConfig.objets.Type;
 
 /**
  *

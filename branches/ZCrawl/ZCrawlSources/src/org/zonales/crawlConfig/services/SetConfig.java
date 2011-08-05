@@ -28,10 +28,11 @@ public class SetConfig extends BaseService {
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
         String uri = request.getParameter("uri");
-        String pluginName = request.getParameter("pluginname");
+        String plugins = request.getParameter("plugins");
         String params = request.getParameter("params");
-        Service service = new Service(name, uri, pluginName);
+        Service service = new Service(name, uri);
         StringTokenizer paramToken = new StringTokenizer(params, ",;");
+        StringTokenizer pluginToken = new StringTokenizer(plugins, ",;");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");
@@ -42,6 +43,15 @@ public class SetConfig extends BaseService {
             //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
             service.addParam(paramName, paramRequired);
         }
+
+        while (pluginToken.hasMoreTokens()) {
+            String pluginName = pluginToken.nextToken();
+            String pluginType = paramToken.nextToken();
+            //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
+            service.addPlugin(pluginName, pluginType); //TODO: Manejar el error de typos en caso de que no sea uno de la lista
+        }
+
+        service.setState("Generada");
 
         try {
             serviceDao.save(service);

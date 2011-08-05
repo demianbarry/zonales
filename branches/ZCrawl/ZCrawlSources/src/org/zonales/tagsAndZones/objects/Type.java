@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package org.zonales.crawlConfig.objets;
+package org.zonales.tagsAndZones.objects;
 
 import java.util.List;
+import org.zonales.crawlConfig.objets.State;
 
 /**
  *
