@@ -28,7 +28,7 @@ public class GetPluginTypes  extends BaseService {
         ArrayList<String> pluginTypes = PluginType.getPluginTypes();
         Gson pluginTypesGson = new Gson();
 
-        out.print(pluginTypesGson.toJson("{" + pluginTypes + "}"));
+        out.print(pluginTypesGson.toJson(pluginTypes));
 
     }
 

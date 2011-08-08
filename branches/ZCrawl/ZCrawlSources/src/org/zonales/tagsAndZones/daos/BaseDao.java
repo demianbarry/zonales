@@ -17,12 +17,14 @@ import java.util.logging.Logger;
  */
 public class BaseDao {
     
-    protected Mongo conn;
-    protected DB db;
+    protected static Mongo conn;
+    protected DB db = null;
 
     public BaseDao(String db_host, Integer db_port, String db_name) {
         try {
-            conn = new Mongo(db_host, db_port);
+            if (conn == null) {
+                conn = new Mongo(db_host, db_port);
+            }
             db = conn.getDB(db_name);
         } catch (IOException ex) {
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
