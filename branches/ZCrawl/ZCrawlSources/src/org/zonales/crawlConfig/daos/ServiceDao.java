@@ -32,7 +32,11 @@ public class ServiceDao extends BaseDao {
 
     public void save(Service service) throws MongoException {
         BasicDBObject serviceDoc = new BasicDBObject();
-        
+
+        serviceDoc.put("name", service.getName());
+        serviceDoc.put("uri", service.getUri());
+        serviceDoc.put("state", service.getState());
+
         if (service.getParams() != null) {
             ArrayList<Param> params = service.getParams();
             ArrayList paramsToDoc = new ArrayList();
@@ -50,10 +54,6 @@ public class ServiceDao extends BaseDao {
             }
             serviceDoc.put("plugins", pluginsToDoc);
         }
-
-        serviceDoc.put("name", service.getName());
-        serviceDoc.put("uri", service.getUri());
-        serviceDoc.put("state", service.getState());
 
         System.out.println(serviceDoc.toString());
 
