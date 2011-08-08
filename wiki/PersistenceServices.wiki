@@ -16,9 +16,9 @@ Descripción de los servicios de persistencia, con sus respectivos parámetros.
 === Parámetros ===
 
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
-|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar || Cualquier cadena || ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar / All || Cualquier cadena || Si se especifica "all" como name trae todas las configuraciones ||
 
-*_Ejemplo_*: http://localhost:8080/ZCrawlSources/getConfig?name=facebook
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getConfig?name=facebook
 
 
 == SetConfig ==
@@ -35,7 +35,7 @@ Descripción de los servicios de persistencia, con sus respectivos parámetros.
 || plugins || Si || Plugins vinculados a la fuente de extracción || Lista de plugins separados por punto y coma (";"). Cada plugins se compone de un par nombre,tipo separado por coma(",") || ||
 || params || No || Parámetros de la fuente de extracción || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || ||
 
-*_Ejemplo_*: http://localhost:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false
 
 
 == UpdateConfig ==
@@ -54,7 +54,7 @@ URI: /updateConfig
 || newparams || No || Parámetros de la fuente de extracción que se modifican o agregan || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || Falta control sobre existencia previa de los parámetros ||
 || newstate || No || Nuevo estado para la configuración de la fuente || Generada,Publicada,Despublicada,Anulada || ||
 
-*_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
 
 
 == UpdateConfig ==
@@ -73,7 +73,7 @@ URI: /updateConfig
 || newparams || No || Parámetros de la fuente de extracción que se modifican o agregan || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || Falta control sobre existencia previa de los parámetros ||
 || newstate || No || Nuevo estado para la configuración de la fuente || Generada,Publicada,Despublicada,Anulada || ||
 
-*_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
 
 
 == GetServiceURL ==
@@ -87,4 +87,12 @@ URI: /getServiceURL
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
 || q || Si || Metadata de la cual se desea obtener la URL del servicio de extracción || ZGramData || ||
 
-*_Ejemplo_*: http://localhost:8080/ZCrawlSources/updateConfig?q={"localidad":"Puerto Madryn","tags":["Turismo"],"fuente":"twitter","criterios":[{"delUsuario":"ozonodigital"},{"delUsuario":"ichubut"},{"delUsuario":"JornadaWeb?"},{"delUsuario":"tiempoonline"},{"palabras":["Turismo"]},{"palabras":["Avistaje"]}],"filtros":[{"minActions":1}]}
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/updateConfig?q={"localidad":"Puerto Madryn","tags":["Turismo"],"fuente":"twitter","criterios":[{"delUsuario":"ozonodigital"},{"delUsuario":"ichubut"},{"delUsuario":"JornadaWeb?"},{"delUsuario":"tiempoonline"},{"palabras":["Turismo"]},{"palabras":["Avistaje"]}],"filtros":[{"minActions":1}]}
+
+== GetPluginTypes ==
+
+*_URI_*: /getPluginTypes
+*_Respuesta_*: Lista de tipos de plugins disponibles (Duro)
+*_Formato_*: JSON
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getPluginTypes
