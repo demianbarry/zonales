@@ -46,7 +46,7 @@ public class SetConfig extends BaseService {
 
         while (pluginToken.hasMoreTokens()) {
             String pluginName = pluginToken.nextToken();
-            String pluginType = paramToken.nextToken();
+            String pluginType = pluginToken.nextToken();
             //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
             service.addPlugin(pluginName, pluginType); //TODO: Manejar el error de typos en caso de que no sea uno de la lista
         }
