@@ -37,8 +37,12 @@ public class GetFacebookServiceURL implements GetServiceURL {
         if (metadata.getCriterios() != null) {
             for (Criterio criterio : metadata.getCriterios()) {
                 //Si hay usuarios, los agrego
-                if (criterio.getDelUsuario() != null) {
-                    users += criterio.getDelUsuario() + ",";
+                if (criterio.getDeLosUsuarios() != null) {
+                    for(String usuario : criterio.getDeLosUsuarios()){
+                        if(criterio.getDeLosUsuarios().indexOf(usuario) != 0)
+                            users += ",";
+                        users += usuario;
+                    }
                 }
                 //Si hay keywords, los agrego
                 if (criterio.getPalabras() != null) {
