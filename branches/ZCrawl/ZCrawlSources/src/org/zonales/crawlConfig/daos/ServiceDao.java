@@ -33,25 +33,27 @@ public class ServiceDao extends BaseDao {
     public void save(Service service) throws MongoException {
         BasicDBObject serviceDoc = new BasicDBObject();
         
-        ArrayList<Param> params = service.getParams();
-        ArrayList paramsToDoc = new ArrayList();
-        ArrayList<Plugin> plugins = service.getPlugins();
-        ArrayList pluginsToDoc = new ArrayList();
-
-        for (Param param: params) {
-            paramsToDoc.add(new BasicDBObject(param.getName(), param.getRequired()));
+        if (service.getParams() != null) {
+            ArrayList<Param> params = service.getParams();
+            ArrayList paramsToDoc = new ArrayList();
+            for (Param param: params) {
+                paramsToDoc.add(new BasicDBObject(param.getName(), param.getRequired()));
+            }
+            serviceDoc.put("params", paramsToDoc);
         }
 
-        for (Plugin plugin: plugins) {
-            pluginsToDoc.add(new BasicDBObject(plugin.getClassName(), plugin.getType()));
+        if (service.getPlugins() != null) {
+            ArrayList<Plugin> plugins = service.getPlugins();
+            ArrayList pluginsToDoc = new ArrayList();
+            for (Plugin plugin: plugins) {
+                pluginsToDoc.add(new BasicDBObject(plugin.getClassName(), plugin.getType()));
+            }
+            serviceDoc.put("plugins", pluginsToDoc);
         }
 
         serviceDoc.put("name", service.getName());
         serviceDoc.put("uri", service.getUri());
         serviceDoc.put("state", service.getState());
-
-        serviceDoc.put("params", paramsToDoc);
-        serviceDoc.put("plugins", pluginsToDoc);
 
         System.out.println(serviceDoc.toString());
 

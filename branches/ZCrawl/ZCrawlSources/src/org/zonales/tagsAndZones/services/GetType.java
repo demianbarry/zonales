@@ -16,16 +16,16 @@ import org.zonales.tagsAndZones.daos.TypeDao;
  *
  * @author rodrigo
  */
-public class GetType {
+public class GetType extends BaseService {
 
 
      public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
-        response.setContentType("text/html");
+        response.setContentType("text/javascript");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        TypeDao serviceDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+        TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        out.print(serviceDao.retrieveJson(name));
+        out.print(typeDao.retrieveJson(name));
     }
 
 }
