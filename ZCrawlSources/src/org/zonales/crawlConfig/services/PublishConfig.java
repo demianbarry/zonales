@@ -17,16 +17,14 @@ import org.zonales.crawlConfig.daos.ServiceDao;
  *
  * @author nacho
  */
-public class GetConfig extends BaseService {
+public class PublishConfig extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
-        response.setContentType("text/javascript");
+        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-
-        out.print(serviceDao.retrieveJson(name));
     }
 
 }

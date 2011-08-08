@@ -28,17 +28,17 @@ public class SetType extends BaseService{
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        String parents = request.getParameter("parents");
+        //String parents = request.getParameter("parents");
         Type type = new Type(name);
-        StringTokenizer parentsToken = new StringTokenizer(parents, ",");
+        //StringTokenizer parentsToken = new StringTokenizer(parents, ",");
         TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");
+        //out.print("Nombre: " + name + "<br>Parents: " + parents + "<br>");
 
-        while (parentsToken.hasMoreTokens()) {
+        /*while (parentsToken.hasMoreTokens()) {
             String parent = parentsToken.nextToken();
             type.addParent(parent);
-        }
+        }*/
 
         type.setState("Generada");
 
