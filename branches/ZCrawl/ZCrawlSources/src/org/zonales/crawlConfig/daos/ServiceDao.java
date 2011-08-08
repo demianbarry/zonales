@@ -134,6 +134,20 @@ public class ServiceDao extends BaseDao {
         return resp.toString();
     }
 
+    public String retrieveAll() {
+        String ret = "";
+        DBObject resp;
+        DBCursor cur = this.services.find();
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            resp.removeField("_id");
+            ret += resp;
+        }
+        
+        return ret;
+    }
+
     public Service retrieve(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
