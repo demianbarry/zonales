@@ -20,6 +20,7 @@
       * [ConsultasExtraccionTesting Consultas de ejemplo para probar configuración de extracción] 
       * [servletFb Servicio de Recuperacion de Contenidos de Facebook] 
       * [DataStructures Estructuras de datos]
+      * [PersistenceServices Servicios de Persistencia]
     * [Herramientas Infraestructura]
       * [resetMySQLRoot Reiniciar pass MySQL root]
       * [Infraestructura Infraestructura]
