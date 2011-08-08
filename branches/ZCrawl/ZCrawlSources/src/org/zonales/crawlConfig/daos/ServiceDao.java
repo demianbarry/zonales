@@ -130,8 +130,12 @@ public class ServiceDao extends BaseDao {
         resp = cur.next();
         resp.removeField("_id");
         //System.out.println(resp);
-        
-        return resp.toString();
+
+        if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
+            return resp.toString();
+        } else {
+            return null;
+        }
     }
 
     public String retrieveAll() {
@@ -142,7 +146,12 @@ public class ServiceDao extends BaseDao {
         while (cur.hasNext()) {
             resp = cur.next();
             resp.removeField("_id");
-            ret += resp;
+            System.out.println(resp);
+            if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
+                ret += resp;
+            } else {
+                return null;
+            }
         }
         
         return ret;
@@ -165,30 +174,32 @@ public class ServiceDao extends BaseDao {
         resp = cur.next();
         resp.removeField("_id");
 
-        service.setName((String)resp.get("name"));
-        service.setUri((String)resp.get("uri"));
-        //service.setPluginName((String)resp.get("pluginName"));
+        if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
+            service.setName((String)resp.get("name"));
+            service.setUri((String)resp.get("uri"));
+            //service.setPluginName((String)resp.get("pluginName"));
 
-        paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
+            paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
 
-        for (BasicDBObject paramJson: paramsJson) {
-            paramToken = new StringTokenizer(paramJson.toString(), "\" }");
-            while (paramToken.hasMoreTokens()) {
-                token = paramToken.nextToken();
-                tokenCount++;
-                if (tokenCount == 2) {
-                    paramName = token;
+            for (BasicDBObject paramJson: paramsJson) {
+                paramToken = new StringTokenizer(paramJson.toString(), "\" }");
+                while (paramToken.hasMoreTokens()) {
+                    token = paramToken.nextToken();
+                    tokenCount++;
+                    if (tokenCount == 2) {
+                        paramName = token;
+                    }
+                    if (tokenCount == 4) {
+                        paramRequired = Boolean.valueOf(token);
+                    }
                 }
-                if (tokenCount == 4) {
-                    paramRequired = Boolean.valueOf(token);
-                }
+                service.addParam(paramName, paramRequired);
             }
-            service.addParam(paramName, paramRequired);
+            return service;
+        } else {
+            return null;
         }
 
-        //System.out.println(service);
-        
-        return service;
     }
 
 }
