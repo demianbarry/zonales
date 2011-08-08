@@ -91,3 +91,37 @@ URI: /getServiceURL <br>
 
 *_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getPluginTypes
 
+
+<br>
+----
+== PublishConfig ==
+----
+
+*_URI_*: /publishConfig <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a publicar o despublicar || Cualquier cadena ||  ||
+|| publish || Si || Booleano para indicar si deseo publicar o despublicar || true/false || Para publicar el estado de la configuración debe ser "Generada" y para despublicar debe ser "Publicada" ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/publishConfig?name=facebook&publish=true
+
+<br>
+----
+== RemoveConfig ==
+----
+
+*_URI_*: /removeConfig <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción que se desea anular || Cualquier cadena || El estado de la fuente de extracción debe ser "Despublicada" o "Generada" para poder anular ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook
+
