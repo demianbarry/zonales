@@ -129,7 +129,7 @@ public class ServiceDao extends BaseDao {
 
         resp = cur.next();
         resp.removeField("_id");
-        //System.out.println(resp);
+        System.out.println(resp);
 
         if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
             return resp.toString();
@@ -173,6 +173,7 @@ public class ServiceDao extends BaseDao {
 
         resp = cur.next();
         resp.removeField("_id");
+        System.out.println(resp);
 
         if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
             service.setName((String)resp.get("name"));
