@@ -26,7 +26,11 @@ public class GetConfig extends BaseService {
         String name = request.getParameter("name");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        out.print(serviceDao.retrieveJson(name));
+        if ("all".equals(name)) {
+            out.print(serviceDao.retrieveAll());
+        } else {
+            out.print(serviceDao.retrieveJson(name));
+        }
     }
 
 }
