@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,11 +70,15 @@ public class UpdateConfig extends BaseService {
             service.setState(newState);
         }
 
+        Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
+
         try {
             serviceDao.update(name, service);
+            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración Actualizada {0} con nuevos parametros {1}", new Object[]{name, service});
             out.print(props.getProperty("success_message"));
-        } catch (MongoException e) {
-            out.print(props.getProperty("failed_message"));
+        } catch (MongoException ex) {
+            Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Error actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
+            out.print(props.getProperty("failed_message") + ": " + ex.getMessage());
         }
     }
 

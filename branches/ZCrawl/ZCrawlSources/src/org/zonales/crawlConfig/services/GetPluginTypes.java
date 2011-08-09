@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,7 @@ public class GetPluginTypes  extends BaseService {
         ArrayList<String> pluginTypes = PluginType.getPluginTypes();
         Gson pluginTypesGson = new Gson();
 
+        Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Obteniendo tipos de plugins");
         out.print(pluginTypesGson.toJson(pluginTypes));
 
     }

@@ -8,6 +8,8 @@ package org.zonales.crawlConfig.services;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,14 +35,18 @@ public class PublishConfig extends BaseService {
             if (service.getState().equals("Generada")) {
                 service.setState("Publicada");
                 serviceDao.update(name, service);
+                Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración publicada {0}", new Object[]{service.getName()});
             } else {
+                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
                 out.print(props.getProperty("failed_message") + ": previus state wrong");
             }
         } else {
             if (service.getState().equals("Publicada")) {
                 service.setState("Despublicada");
                 serviceDao.update(name, service);
+                Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración despublicada {0}", new Object[]{service.getName()});
             } else {
+                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
                 out.print(props.getProperty("failed_message") + ": previus state wrong");
             }
         }
