@@ -69,7 +69,7 @@ public class ZCrawlTest extends HttpServlet {
                 metadata = getStringFromInpurStream(connection.getInputStream());
                 connection.disconnect();
                 Logger.getLogger(ZCrawlTest.class.getName()).log(Level.INFO, "Buscando URL de recuperación para la siguiente metadata: {0}", metadata);
-                connection = getURLConnection(("http://localhost:38080/ZCrawlMetaServlet/zcc?action=getTestService&q=" + metadata), timeout);
+                connection = getURLConnection(("http://localhost:38080/ZCrawlSources/getServiceURL?q=" + metadata), timeout);
                 code = connection.getResponseCode();
 
                 if (code == 200) {
