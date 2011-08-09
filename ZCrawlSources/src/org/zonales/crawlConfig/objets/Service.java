@@ -117,7 +117,7 @@ public class Service {
 
     @Override
     public String toString() {
-        return "{\"name\": \"" + name + "\", \"uri\": \"" + uri + "\", \"params\": " + params + "}";
+        return "{\"name\": \"" + name + "\", \"uri\": \"" + uri + "\", \"params\": " + params + "\", \"plugins\": " + plugins + "}";
     }
 
 }
