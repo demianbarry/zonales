@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.crawlConfig.services;
 
 import com.mongodb.MongoException;
@@ -10,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,9 +57,9 @@ public class SetConfig extends BaseService {
         try {
             serviceDao.save(service);
             out.print(props.getProperty("success_message"));
-        } catch (MongoException e) {
+        } catch (MongoException ex) {
+            Logger.getLogger(SetConfig.class.getName()).log(Level.SEVERE, "Excepcion grave: {0}", ex.getMessage());
             out.print(props.getProperty("failed_message"));
         }
     }
-
 }
