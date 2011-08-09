@@ -1,0 +1,5 @@
+#summary Set de tips para desarrollo.
+
+= Introduction =
+
+Conjunto de buenas prácticas de programación acordadas por el equipo.
