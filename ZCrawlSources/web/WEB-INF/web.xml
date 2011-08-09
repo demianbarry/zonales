@@ -37,6 +37,22 @@
         <servlet-name>RemoveConfig</servlet-name>
         <servlet-class>org.zonales.crawlConfig.services.RemoveConfig</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetTag</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.GetTag</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetTag</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.SetTag</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetZone</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.GetZone</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SetZone</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.SetZone</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -72,6 +88,22 @@
     <servlet-mapping>
         <servlet-name>RemoveConfig</servlet-name>
         <url-pattern>/removeConfig</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetTag</servlet-name>
+        <url-pattern>/getTag</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetTag</servlet-name>
+        <url-pattern>/setTag</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetZone</servlet-name>
+        <url-pattern>/getZone</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetZone</servlet-name>
+        <url-pattern>/setZone</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
