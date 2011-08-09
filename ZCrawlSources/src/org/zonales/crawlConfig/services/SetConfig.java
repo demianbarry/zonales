@@ -36,7 +36,7 @@ public class SetConfig extends BaseService {
         StringTokenizer pluginToken = new StringTokenizer(plugins, ",;");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");
+        //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");        
 
         while (paramToken.hasMoreTokens()) {
             String paramName = paramToken.nextToken();
@@ -54,12 +54,15 @@ public class SetConfig extends BaseService {
 
         service.setState("Generada");
 
+        Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Guardando servicio según parametros {0}", new Object[]{service});
+
         try {
             serviceDao.save(service);
+            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Servicio guardado {0}", new Object[]{service});
             out.print(props.getProperty("success_message"));
         } catch (MongoException ex) {
-            Logger.getLogger(SetConfig.class.getName()).log(Level.SEVERE, "Excepcion grave: {0}", ex.getMessage());
-            out.print(props.getProperty("failed_message"));
+            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Error guardado servicio {0}: {1}", new Object[]{service,ex.getMessage()});
+            out.print(props.getProperty("failed_message") + ": " + ex.getMessage());
         }
     }
 }
