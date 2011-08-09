@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Content Manager Utilities - Zonales</title>
+        <link href="content.css" rel="stylesheet" type="text/css">
+        <link href="global.css" rel="stylesheet" type="text/css">
+        <script src="mootools.js" type="text/javascript"></script>
+        <script src="cmutils.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <div id="logo">
+                    <a href="/CMUtils"><img src="logo.gif" alt="Zonales"></a>
+                </div>
+            </div>
+            <div id="wrapper" class="clearfix">
+                
+                <div id="results_content">
+                    <h2>Configuracion de Fuentes de Extraccion</h2>
+
+                </div>
+                <div id="container_content">
+                    <table  cellspacing="0" cellpadding="0" border="0" width="100%" class="advanced_search">
+                        <tbody>
+                            <tr>
+                                <td colspan="2"><h2 style="margin-top: 0.7em;">Edicion</h2></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>Name</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getName" value=""></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>URI</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getUri" value=""></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><h2 style="margin-top: 0.7em;">Parametros</h2></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>Name</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getName" value=""></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>Requerido</label></td>
+                                <td class="input"><input type="checkbox" id=""></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><input type="button" style="width: 50%;" value="Modificar" onclick=""></td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="2"><h2 style="margin-top: 0.7em;">Plugins</h2></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>ClassName</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="get" value=""></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="label"><label>Type</label></td>
+                                <td>
+                                    <select id="plugintypes" >
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input"><input type="button" style="width: 50%;" value="Save" onclick="getPluginTypes();"></td>
+                                <td class="input"><input type="button" style="width: 50%;" value="Cancel" onclick=""></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
