@@ -1,0 +1,10 @@
+#summary Set de tips para desarrollo.
+
+= Introduction =
+
+Conjunto de buenas prácticas de programación acordadas por el equipo.
+
+
+= Details =
+
+Para introducir una nueva práctica debe consensuarse con el equipo su definición, utilización y publicación.
