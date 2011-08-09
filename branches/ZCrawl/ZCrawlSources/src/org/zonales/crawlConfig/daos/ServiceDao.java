@@ -177,12 +177,7 @@ public class ServiceDao extends BaseDao {
         DBObject resp;
         DBCursor cur;
         Service service = new Service();
-        ArrayList<BasicDBObject> paramsJson = new ArrayList<BasicDBObject>();
-        String paramName = "";
-        String token;
-        Boolean paramRequired = false;
-        StringTokenizer paramToken;
-        int tokenCount = 0;
+        ArrayList<BasicDBObject> paramsJson, pluginsJson;
 
         cur = this.services.find(query);
 
@@ -193,24 +188,21 @@ public class ServiceDao extends BaseDao {
         if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
             service.setName((String)resp.get("name"));
             service.setUri((String)resp.get("uri"));
+            service.setState((String)resp.get("state"));
             //service.setPluginName((String)resp.get("pluginName"));
 
             paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
 
             for (BasicDBObject paramJson: paramsJson) {
-                paramToken = new StringTokenizer(paramJson.toString(), "\" }");
-                while (paramToken.hasMoreTokens()) {
-                    token = paramToken.nextToken();
-                    tokenCount++;
-                    if (tokenCount == 2) {
-                        paramName = token;
-                    }
-                    if (tokenCount == 4) {
-                        paramRequired = Boolean.valueOf(token);
-                    }
-                }
-                service.addParam(paramName, paramRequired);
+                service.addParam((String)paramJson.get("name"), (Boolean)paramJson.get("required"));
             }
+
+            pluginsJson = (ArrayList<BasicDBObject>)resp.get("plugins");
+
+            for (BasicDBObject pluginJson: pluginsJson) {
+                service.addPlugin((String)pluginJson.get("class_name"), (String)pluginJson.get("type"));
+            }
+
             return service;
         } else {
             return null;
