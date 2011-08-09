@@ -41,7 +41,10 @@ public class ServiceDao extends BaseDao {
             ArrayList<Param> params = service.getParams();
             ArrayList paramsToDoc = new ArrayList();
             for (Param param: params) {
-                paramsToDoc.add(new BasicDBObject(param.getName(), param.getRequired()));
+                BasicDBObject paramDoc = new BasicDBObject();
+                paramDoc.put("name", param.getName());
+                paramDoc.put("required", param.getRequired());
+                paramsToDoc.add(paramDoc);
             }
             serviceDoc.put("params", paramsToDoc);
         }
@@ -50,7 +53,10 @@ public class ServiceDao extends BaseDao {
             ArrayList<Plugin> plugins = service.getPlugins();
             ArrayList pluginsToDoc = new ArrayList();
             for (Plugin plugin: plugins) {
-                pluginsToDoc.add(new BasicDBObject(plugin.getClassName(), plugin.getType()));
+                BasicDBObject pluginDoc = new BasicDBObject();
+                pluginDoc.put("class_name", plugin.getClassName());
+                pluginDoc.put("type", plugin.getType());
+                pluginsToDoc.add(pluginDoc);
             }
             serviceDoc.put("plugins", pluginsToDoc);
         }
@@ -96,7 +102,10 @@ public class ServiceDao extends BaseDao {
                 ArrayList paramsToDoc = new ArrayList();
 
                 for (Param param: params) {
-                    paramsToDoc.add(new BasicDBObject(param.getName(), param.getRequired()));
+                    BasicDBObject paramDoc = new BasicDBObject();
+                    paramDoc.put("name", param.getName());
+                    paramDoc.put("required", param.getRequired());
+                    paramsToDoc.add(paramDoc);
                 }
                 serviceDoc.put("params", paramsToDoc);
             } else {
@@ -109,7 +118,10 @@ public class ServiceDao extends BaseDao {
                 ArrayList pluginsToDoc = new ArrayList();
 
                 for (Plugin plugin: plugins) {
-                    pluginsToDoc.add(new BasicDBObject(plugin.getClassName(), plugin.getType()));
+                    BasicDBObject pluginDoc = new BasicDBObject();
+                    pluginDoc.put("class_name", plugin.getClassName());
+                    pluginDoc.put("type", plugin.getType());
+                    pluginsToDoc.add(pluginDoc);
                 }
                 serviceDoc.put("plugins", pluginsToDoc);
             } else {
@@ -139,7 +151,7 @@ public class ServiceDao extends BaseDao {
     }
 
     public String retrieveAll() {
-        String ret = "";
+        String ret = "[";
         DBObject resp;
         DBCursor cur = this.services.find();
 
@@ -148,11 +160,14 @@ public class ServiceDao extends BaseDao {
             resp.removeField("_id");
             System.out.println(resp);
             if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
-                ret += resp;
+                ret += resp + ",";
             } else {
                 return null;
             }
         }
+
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
         
         return ret;
     }
