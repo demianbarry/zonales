@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.errors.Errors;
 
 /**
  *
@@ -36,9 +37,10 @@ public class RemoveConfig extends BaseService {
             service.setState("Anulada");
             serviceDao.update(name, service);
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración anulada {0}", new Object[]{service.getName()});
+            out.print(Errors.SUCCESS);
         } else {
             Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
-            out.print(props.getProperty("failed_message") + ": previus state wrong");
+            out.print(Errors.PREVIUS_STATE_WRONG);
         }
 
     }
