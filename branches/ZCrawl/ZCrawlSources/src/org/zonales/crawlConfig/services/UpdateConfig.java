@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.errors.Errors;
 
 /**
  *
@@ -75,10 +76,10 @@ public class UpdateConfig extends BaseService {
         try {
             serviceDao.update(name, service);
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración Actualizada {0} con nuevos parametros {1}", new Object[]{name, service});
-            out.print(props.getProperty("success_message"));
+            out.print(Errors.SUCCESS);
         } catch (MongoException ex) {
             Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Error actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
-            out.print(props.getProperty("failed_message") + ": " + ex.getMessage());
+            out.print(Errors.UPDATE_FAILED);
         }
     }
 

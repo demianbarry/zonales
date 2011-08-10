@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.errors.Errors;
+import org.zonales.errors.Error;
 
 /**
  *
@@ -32,24 +34,39 @@ public class SetConfig extends BaseService {
         String plugins = request.getParameter("plugins");
         String params = request.getParameter("params");
         Service service = new Service(name, uri);
-        StringTokenizer paramToken = new StringTokenizer(params, ",;");
-        StringTokenizer pluginToken = new StringTokenizer(plugins, ",;");
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+
+        if (serviceDao == null) {
+            out.print(Errors.NO_DB_FAILED);
+            return;
+        }
 
         //out.print("Nombre: " + name + "<br>Uri: " + uri + "<br>Params: " + params + "<br>");        
 
-        while (paramToken.hasMoreTokens()) {
-            String paramName = paramToken.nextToken();
-            Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
-            //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
-            service.addParam(paramName, paramRequired);
+        if (params != null) {
+            StringTokenizer paramToken = new StringTokenizer(params, ",;");
+            while (paramToken.hasMoreTokens()) {
+                String paramName = paramToken.nextToken();
+                Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
+                //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
+                service.addParam(paramName, paramRequired);
+            }
         }
 
-        while (pluginToken.hasMoreTokens()) {
-            String pluginName = pluginToken.nextToken();
-            String pluginType = pluginToken.nextToken();
-            //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
-            service.addPlugin(pluginName, pluginType); //TODO: Manejar el error de typos en caso de que no sea uno de la lista
+        if (plugins != null) {
+            StringTokenizer pluginToken = new StringTokenizer(plugins, ",;");
+            while (pluginToken.hasMoreTokens()) {
+                String pluginName = pluginToken.nextToken();
+                String pluginType = pluginToken.nextToken();
+                //out.print("Nombre parametro: " + paramName + "<br>Required: " + paramRequired + "<br>");
+                service.addPlugin(pluginName, pluginType); //TODO: Manejar el error de typos en caso de que no sea uno de la lista
+            }
+        } else {
+            //Debe haber al menos un plugin
+            Error error = Errors.PARAM_REQUIRED_FAILED;
+            error.setMsg("Plugin param is required");
+            out.print(error);
+            return;
         }
 
         service.setState("Generada");
@@ -59,10 +76,10 @@ public class SetConfig extends BaseService {
         try {
             serviceDao.save(service);
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Servicio guardado {0}", new Object[]{service});
-            out.print(props.getProperty("success_message"));
+            out.print(Errors.SUCCESS);
         } catch (MongoException ex) {
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Error guardado servicio {0}: {1}", new Object[]{service,ex.getMessage()});
-            out.print(props.getProperty("failed_message") + ": " + ex.getMessage());
+            out.print(Errors.SAVE_FAILED);
         }
     }
 }

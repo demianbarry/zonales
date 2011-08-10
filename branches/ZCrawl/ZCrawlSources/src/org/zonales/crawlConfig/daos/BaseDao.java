@@ -27,7 +27,7 @@ public class BaseDao {
             }
             db = conn.getDB(db_name);
         } catch (IOException ex) {
-            Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, "Base de datos no disponible {0}", new Object[]{ex.getMessage()});
         }
     }
 

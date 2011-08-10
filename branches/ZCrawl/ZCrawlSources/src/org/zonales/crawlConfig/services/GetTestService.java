@@ -19,6 +19,7 @@ import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.crawlParser.metadata.ZCrawling;
+import org.zonales.errors.Errors;
 
 /**
  *
@@ -28,9 +29,9 @@ public class GetTestService extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         try {
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
             String metadataJson = request.getParameter("q");
             ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             Service service;
@@ -62,6 +63,7 @@ public class GetTestService extends BaseService {
                 out.print(urlServlet);
             } else {
                 Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
+                out.print(Errors.DATA_NOT_FOUND);
             }
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();
@@ -70,6 +72,7 @@ public class GetTestService extends BaseService {
                 stacktrace.append("\n");
             }
             Logger.getLogger(GetTestService.class.getName()).log(Level.SEVERE, "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+            out.print(Errors.UNKNOWN_ERROR);
         }
 
 

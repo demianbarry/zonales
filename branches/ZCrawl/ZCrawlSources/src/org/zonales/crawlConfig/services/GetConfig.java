@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
+import org.zonales.errors.Errors;
 
 /**
  *
@@ -36,7 +37,7 @@ public class GetConfig extends BaseService {
                 out.print(retrieve);
             } else {
                 Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "No se encontraron configuraciones");
-                out.print("no configs retrieve");
+                out.print(Errors.DATA_NOT_FOUND);
             }
         } else {
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Obteniendo la configuracion {0}", new Object[]{name});
@@ -45,7 +46,7 @@ public class GetConfig extends BaseService {
                 out.print(retrieve);
             } else {
                 Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "No se encontró la configuracion {0}", new Object[]{name});
-                out.print("config not found");
+                out.print(Errors.DATA_NOT_FOUND);
             }
         }
     }
