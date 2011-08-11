@@ -43,31 +43,33 @@ function getFacebookUserId() {
 function getAllConfig(){
     var url = "/getConfig?name=all";
     var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+    var configs_table = new Element('table', {'id' : 'resultTable'}).addClass('resultTable').inject($('list_content'));
     var reqId = new Request.JSON({
         url: urlProxy,
         method: 'get',
         onRequest: function(){
-        },
-        onSuccess: function(jsonObj) {
-            var configs_table = new Element('table', {'id' : 'resultTable'}).addClass('resultTable').inject($('list_content'));
             var config_title_tr = new Element('tr', {'style': 'background-color: lightGreen'}).inject(configs_table);
             new Element('td', {'html' : 'Crawl Config Name'}).inject(config_title_tr);
             new Element('td', {'html' : 'Crawl Config URI'}).inject(config_title_tr);
             new Element('td', {'html' : 'Publish'}).inject(config_title_tr);
+            new Element('td', {'html' : 'State'}).inject(config_title_tr);
             new Element('td', {'html' : 'Edit / remove'}).inject(config_title_tr);
+        },
+        onSuccess: function(jsonObj) {
             jsonObj.each(function(config) {
                 var config_tr = new Element('tr', {'id' : 'cl_' + config.name}).inject(configs_table);
                 new Element('td', {'html' : config.name, 'id' : 'cl_' + config.name + '_name'}).inject(config_tr);
                 new Element('td', {'html' : config.uri, 'id' : 'cl_' + config.name + '_uri'}).inject(config_tr);
                 var config_publish_td = new Element('td').inject(config_tr);
                 var publish = false;
-                if (config.state == "Publicada") {
+                if (config.state == "Published") {  //Ver como arreglar esta parte para que no sea duro
                     publish = true;
                 }
-                new Element('input', {'type' : "checkbox", 'checked' : publish}).inject(config_publish_td);
+                new Element('input', {'id' : 'cl_' + config.name + '_pub', 'type' : "checkbox", 'checked' : publish, 'onclick': 'publishConfig("' + config.name + '")'}).inject(config_publish_td);
+                new Element('td', {'html' : config.state, 'id' : 'cl_' + config.name + '_state'}).inject(config_tr);
                 var config_edit_remove_td = new Element('td').inject(config_tr);
-                new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': config.name, 'title': 'Edit', 'src': 'addedit.png', 'onclick' : 'getConfig("' + config.name + '")'}).inject(config_edit_remove_td);
-                new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': config.name, 'title': 'Remove', 'src': 'publish_x.png'}).inject(config_edit_remove_td);
+                new Element('img', {'id' : 'cl_' + config.name + '_edit', 'width' : '16', 'height' : '16', 'border': '0', 'alt': config.name, 'title': 'Edit', 'src': 'addedit.png', 'onclick' : 'getConfig("' + config.name + '")'}).inject(config_edit_remove_td);
+                new Element('img', {'id' : 'cl_' + config.name + '_rem', 'width' : '16', 'height' : '16', 'border': '0', 'alt': config.name, 'title': 'Remove', 'src': 'publish_x.png', 'onclick' : 'delConfig("' + config.name + '")'}).inject(config_edit_remove_td);
             });
         },
 
@@ -81,6 +83,7 @@ function getAllConfig(){
 }
 
 function addConfig() {
+    clearEdit();
     $('saveConfigButton').set('value', 'Save');
     $('edit_content').set('style', 'display:block');
 }
@@ -253,14 +256,18 @@ function setConfig(){
             },
             onSuccess: function(jsonObj) {
                 if (jsonObj.cod == 100) {
-                    var config_tr = new Element('tr').inject($('resultTable'));
-                    new Element('td', {'html' : $('getNameFuente').get('value')}).inject(config_tr);
-                    new Element('td', {'html' : $('getUriFuente').get('value')}).inject(config_tr);
+                    $('list_content').removeChild($('resultTable'));
+                    getAllConfig();
+                    /*var name = $('getNameFuente').get('value');
+                    var config_tr = new Element('tr', {'id' : 'cl_' + name}).inject($('resultTable'));
+                    new Element('td', {'html' : name, 'id' : 'cl_' + name + '_name'}).inject(config_tr);
+                    new Element('td', {'html' : $('getUriFuente').get('value'), 'id' : 'cl_' + name + '_uri'}).inject(config_tr);
                     var config_publish_td = new Element('td').inject(config_tr);
-                    new Element('input', {'type' : "checkbox", 'checked' : false}).inject(config_publish_td);
+                    new Element('input', {'type' : "checkbox", 'id' : 'cl_' + name + '_pub', 'checked' : false, 'onclick': 'publishConfig("' + name + '")'}).inject(config_publish_td);
                     var config_edit_remove_td = new Element('td').inject(config_tr);
-                    new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': 'Edit', 'title': 'Edit', 'src': 'addedit.png'}).inject(config_edit_remove_td);
-                    new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': 'Remove', 'title': 'Remove', 'src': 'publish_x.png'}).inject(config_edit_remove_td);
+                    new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'id' : 'cl_' + name + '_edit', 'alt': 'Edit', 'title': 'Edit', 'src': 'addedit.png', 'onclick' : 'getConfig("' + name + '")'}).inject(config_edit_remove_td);
+                    new Element('img', {'width' : '1', 'height' : '16', 'border': '0', 'id' : 'cl_' + name + '_rem', 'alt': 'Remove', 'title': 'Remove', 'src': 'publish_x.png', 'onclick' : 'delConfig("' + name + '")'}).inject(config_edit_remove_td);
+                    */
                     alert("Configuración guardada");
                     clearEdit();
                 } else {
@@ -280,6 +287,38 @@ function setConfig(){
     }
 }
 
+function publishConfig(name) {
+    var publish = $('cl_' + name + '_pub').get('checked');
+    var url = "/publishConfig?name="+name+"&publish=" + publish;
+    var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+
+    var reqId = new Request.JSON({
+        url: urlProxy,
+        method: 'get',
+        onRequest: function(){
+        },
+        onSuccess: function(jsonObj) {
+            if (jsonObj.cod == 100) {
+                if (publish) {
+                    $('cl_' + name + '_state').set('html', 'Published')
+                } else {
+                    $('cl_' + name + '_state').set('html', 'Unpublished')
+                }
+            } else {
+                $('cl_' + name + '_pub').set('checked', false);
+                alert("No se pudo publicar la configuración. Error: "+ jsonObj.msg);
+            }
+        },
+
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+
+        }
+
+    }).send();
+}
+
 function clearEdit() {
     $('getNameFuente').set('value', "");
     $('getUriFuente').set('value', "");
@@ -292,8 +331,8 @@ function clearEdit() {
     if (cantPlugins > 0) {
         $('configPlugins').removeChild($('plugins_table'));
     }
-    params.clean();
-    plugins.clean();
+    params.empty();
+    plugins.empty();
     cantParams = 0;
     cantPlugins = 0;
     $('edit_content').set('style', 'display:none')
@@ -327,8 +366,14 @@ function updateConfig(){
             },
             onSuccess: function(jsonObj) {
                 if (jsonObj.cod == 100) {
-                    $('cl_' + configEdited + '_name').set('html', $('getNameFuente').get('value'));
+                    $('list_content').removeChild($('resultTable'));
+                    getAllConfig();
+                    /*var newname = $('getNameFuente').get('value');
+                    $('cl_' + configEdited + '_name').set('html', newname);
                     $('cl_' + configEdited + '_uri').set('html', $('getUriFuente').get('value'));
+                    $('cl_' + configEdited + '_pub').set('onclick', 'publishConfig("' + newname + '",' + false + ')');
+                    $('cl_' + configEdited + '_edit').set('onclick', 'getConfig("' + newname + '")');
+                    $('cl_' + configEdited + '_pub').set('onclick', 'delConfig("' + newname + ')');*/
                     alert("Configuración actualizada");
                     clearEdit();
                 } else {
@@ -346,8 +391,8 @@ function updateConfig(){
     } else {
         alert("Faltan parámetros requeridos");
     }
-
 }
+
 function showFacebookUserProfile() {
     if ($('getProfileUserId').get('value') != "") {
         $('results_content').empty();
