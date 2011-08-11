@@ -21,6 +21,10 @@ public class Tag {
     public Tag() {
     }
 
+    public Tag(String name) {
+        this.name = name;
+    }
+
     public Tag(int id, String name, Tag parent, Type type, String state) {
         this.id = id;
         this.name = name;

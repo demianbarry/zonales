@@ -10,10 +10,10 @@ import com.mongodb.MongoException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.zonales.crawlConfig.services.BaseService;
 import org.zonales.tagsAndZones.daos.TagDao;
 import org.zonales.tagsAndZones.objects.Tag;
 /**
@@ -29,9 +29,9 @@ public class SetTag extends BaseService {
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
         //String parents = request.getParameter("parents");
-        Tag tag = new Tag();
+        Tag tag = new Tag(name);
         //StringTokenizer parentsToken = new StringTokenizer(parents, ",");
-        TagDao typeDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+        TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         //out.print("Nombre: " + name + "<br>Parents: " + parents + "<br>");
 
         /*while (parentsToken.hasMoreTokens()) {
@@ -42,7 +42,7 @@ public class SetTag extends BaseService {
         tag.setState("Generada");
 
         try {
-            typeDao.save(tag);
+            tagDao.save(tag);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
             out.print(props.getProperty("failed_message"));

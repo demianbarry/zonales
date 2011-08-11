@@ -10,6 +10,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
+import org.zonales.crawlConfig.daos.BaseDao;
 import org.zonales.tagsAndZones.objects.Type;
 
 /**
@@ -32,11 +33,11 @@ public class TypeDao extends BaseDao {
         typeDoc.put("name", type.getName());
         typeDoc.put("state", type.getState());
 
-        if(type.getParents() != null){
+        if (type.getParents() != null) {
 
             typeDoc.put("parents", type.getParents());
         }
-        
+
         System.out.println(typeDoc.toString());
         this.types.insert(typeDoc);
     }
@@ -89,6 +90,8 @@ public class TypeDao extends BaseDao {
         //System.out.println(resp);
 
         return resp.toString();
+
+
     }
 
     public Type retrieve(String name) {

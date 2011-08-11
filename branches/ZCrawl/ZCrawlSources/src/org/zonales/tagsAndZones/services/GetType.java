@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.zonales.crawlConfig.services.BaseService;
 import org.zonales.tagsAndZones.daos.TypeDao;
 /**
  *

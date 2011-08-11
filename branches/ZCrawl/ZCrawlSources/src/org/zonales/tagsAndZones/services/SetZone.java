@@ -7,25 +7,32 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.tagsAndZones.services;
 
 import com.mongodb.MongoException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.zonales.crawlConfig.services.BaseService;
+import org.zonales.errors.Errors;
+import org.zonales.tagsAndZones.daos.TagDao;
+import org.zonales.tagsAndZones.daos.TypeDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
+import org.zonales.tagsAndZones.objects.Tag;
+
 import org.zonales.tagsAndZones.objects.Zone;
 
 /**
  *
  * @author rodrigo
  */
-public class SetZone extends BaseService{
+public class SetZone extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
@@ -33,19 +40,40 @@ public class SetZone extends BaseService{
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        //String parents = request.getParameter("parents");
-        Zone zone = new Zone();
-        //StringTokenizer parentsToken = new StringTokenizer(parents, ",");
+        String parents = request.getParameter("parent");
+        String type = request.getParameter("type");
+        String centerlat = request.getParameter("centerlat");
+        String centerlon = request.getParameter("centerlon");
+        String zoomlevel = request.getParameter("zoomlevel");
+        Zone zone = null;
+        StringTokenizer parentsToken = new StringTokenizer(parents, ",");
         ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        //out.print("Nombre: " + name + "<br>Parents: " + parents + "<br>");
+        if (parents != null) {
+            while (parentsToken.hasMoreTokens()) {
+                String parentName = parentsToken.nextToken();
+                TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+                if (tagDao.retrieve(parentName) == null) {
+                    out.print(Errors.NO_DB_FAILED);
+                }
 
-        /*while (parentsToken.hasMoreTokens()) {
-            String parent = parentsToken.nextToken();
-            type.addParent(parent);
-        }*/
+            }
+        }
 
-        zone.setState("Generada");
+        if (type != null) {
+            TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+
+            if (typeDao.retrieve(name) == null) {
+                out.print(Errors.NO_DB_FAILED);
+            }
+        }
+
+        if (centerlat != null && centerlon != null && zoomlevel != null) {
+            zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
+            zone.setState("Generada");
+        } else {
+            zone = new Zone(name);
+        }
 
         try {
             zoneDao.save(zone);
@@ -57,6 +85,4 @@ public class SetZone extends BaseService{
 
 
     }
-
 }
-

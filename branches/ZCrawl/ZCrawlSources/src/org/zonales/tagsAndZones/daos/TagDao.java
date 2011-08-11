@@ -2,28 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.tagsAndZones.daos;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
-import java.util.ArrayList;
+import org.zonales.crawlConfig.daos.BaseDao;
 import org.zonales.tagsAndZones.objects.Tag;
 import org.zonales.tagsAndZones.objects.Type;
+
 /**
  *
  * @author rodrigo
  */
-public class TagDao extends BaseDao{
+public class TagDao extends BaseDao {
 
     private DBCollection tags;
 
     public TagDao(String db_host, Integer db_port, String db_name) {
         super(db_host, db_port, db_name);
         this.tags = this.db.getCollection("tags");
-        this.tags.ensureIndex(new BasicDBObject("id", 1), "uniqueName", true);
+        this.tags.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
     }
 
     public void save(Tag tag) throws MongoException {
@@ -33,12 +34,12 @@ public class TagDao extends BaseDao{
         tagDoc.put("name", tag.getName());
         tagDoc.put("state", tag.getState());
 
-         if(tag.getType() != null){
+        if (tag.getType() != null) {
 
             tagDoc.put("type", tag.getType());
         }
 
-        if(tag.getParent() != null){
+        if (tag.getParent() != null) {
 
             tagDoc.put("parent", tag.getParent());
         }
@@ -59,7 +60,7 @@ public class TagDao extends BaseDao{
         if (resp != null) {
             BasicDBObject tagDoc = new BasicDBObject();
 
-            if (newTag.getId() < 0 ) {
+            if (newTag.getId() < 0) {
                 tagDoc.put("id", newTag.getId());
             } else {
                 tagDoc.put("id", (String) resp.get("id"));
@@ -96,8 +97,11 @@ public class TagDao extends BaseDao{
     }
 
     public String retrieveJson(String name) {
+        
         BasicDBObject query = new BasicDBObject("name", name);
+
         DBObject resp;
+
         DBCursor cur;
 
         cur = this.tags.find(query);
@@ -107,6 +111,7 @@ public class TagDao extends BaseDao{
         //System.out.println(resp);
 
         return resp.toString();
+
     }
 
     public Tag retrieve(String name) {
@@ -125,10 +130,9 @@ public class TagDao extends BaseDao{
         tag.setParent((Tag) resp.get("parent"));
         tag.setType((Type) resp.get("type"));
         tag.setState((String) resp.get("state"));
-        
+
 
 
         return tag;
     }
-
 }
