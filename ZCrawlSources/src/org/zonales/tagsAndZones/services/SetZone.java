@@ -40,37 +40,28 @@ public class SetZone extends BaseService {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        String parents = request.getParameter("parent");
+        String parent = request.getParameter("parent");
         String type = request.getParameter("type");
         String centerlat = request.getParameter("centerlat");
         String centerlon = request.getParameter("centerlon");
         String zoomlevel = request.getParameter("zoomlevel");
         Zone zone = null;
-        StringTokenizer parentsToken = new StringTokenizer(parents, ",");
         ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        if (parents != null) {
-            while (parentsToken.hasMoreTokens()) {
-                String parentName = parentsToken.nextToken();
-                TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-                if (tagDao.retrieve(parentName) == null) {
-                    out.print(Errors.NO_DB_FAILED);
-                }
-
-            }
+        if (parent != null && zoneDao.retrieve(parent) == null) {
+            out.print(Errors.DATA_NOT_FOUND);
         }
 
         if (type != null) {
             TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-
             if (typeDao.retrieve(name) == null) {
-                out.print(Errors.NO_DB_FAILED);
+                out.print(Errors.TAG_TYPE_NOT_FOUND);
             }
         }
 
         if (centerlat != null && centerlon != null && zoomlevel != null) {
             zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
-            zone.setState("Generada");
+            zone.setState("created");
         } else {
             zone = new Zone(name);
         }
@@ -79,7 +70,7 @@ public class SetZone extends BaseService {
             zoneDao.save(zone);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
-            out.print(props.getProperty("failed_message"));
+            out.print(Errors.MONGODB_ERROR);
         }
 
 
