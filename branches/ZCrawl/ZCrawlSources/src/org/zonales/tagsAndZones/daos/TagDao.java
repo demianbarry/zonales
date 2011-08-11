@@ -95,6 +95,11 @@ public class TagDao extends BaseDao {
             this.tags.update(new BasicDBObject().append("name", name), tagDoc);
         }
     }
+    
+    public Boolean exists(String name) {
+        BasicDBObject query = new BasicDBObject("name", name);
+        return this.tags.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
+    }
 
     public String retrieveJson(String name) {
         

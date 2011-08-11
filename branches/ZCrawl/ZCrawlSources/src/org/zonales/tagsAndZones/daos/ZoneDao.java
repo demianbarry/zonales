@@ -114,6 +114,11 @@ public class ZoneDao extends BaseDao {
         }
     }
 
+    public Boolean exists(String name) {
+        BasicDBObject query = new BasicDBObject("name", name);
+        return this.zones.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
+    }
+    
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
