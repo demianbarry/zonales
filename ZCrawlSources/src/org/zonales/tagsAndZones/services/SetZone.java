@@ -19,12 +19,13 @@ import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.crawlConfig.services.BaseService;
 import org.zonales.errors.Errors;
 import org.zonales.tagsAndZones.daos.TagDao;
 import org.zonales.tagsAndZones.daos.TypeDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
-import org.zonales.tagsAndZones.objects.Tag;
+
 
 import org.zonales.tagsAndZones.objects.Zone;
 
@@ -46,28 +47,36 @@ public class SetZone extends BaseService {
         String centerlon = request.getParameter("centerlon");
         String zoomlevel = request.getParameter("zoomlevel");
         Zone zone = null;
+
         ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
-        if (parent != null && zoneDao.retrieve(parent) == null) {
-            out.print(Errors.DATA_NOT_FOUND);
+        if (parent != null) {
+
+            TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            if (tagDao.retrieve(parent) == null) {
+                out.print(Errors.DATA_NOT_FOUND);
+            }
+
         }
 
         if (type != null) {
             TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             if (typeDao.retrieve(name) == null) {
-                out.print(Errors.TAG_TYPE_NOT_FOUND);
+                out.print(Errors.DATA_NOT_FOUND);
             }
         }
 
         if (centerlat != null && centerlon != null && zoomlevel != null) {
             zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
-            zone.setState("created");
+           
         } else {
             zone = new Zone(name);
+           
         }
 
         try {
             zoneDao.save(zone);
+            zone.setState(State.GENERATED);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
             out.print(Errors.MONGODB_ERROR);
