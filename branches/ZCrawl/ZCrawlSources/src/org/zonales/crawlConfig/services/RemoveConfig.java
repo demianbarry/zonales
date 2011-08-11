@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.Errors;
 
 /**
@@ -33,8 +34,8 @@ public class RemoveConfig extends BaseService {
 
         Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Anulando Configuración {0}", new Object[]{service.getName()});
 
-        if (service.getState().equals("Despublicada") || service.getState().equals("Generada")) {
-            service.setState("Anulada");
+        if (service.getState().equals(State.UNPUBLISHED) || service.getState().equals(State.GENERATED)) {
+            service.setState(State.VOID);
             serviceDao.update(name, service);
             Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración anulada {0}", new Object[]{service.getName()});
             out.print(Errors.SUCCESS);

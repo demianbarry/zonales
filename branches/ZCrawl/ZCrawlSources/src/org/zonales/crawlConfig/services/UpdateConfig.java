@@ -34,7 +34,6 @@ public class UpdateConfig extends BaseService {
         String newUri = request.getParameter("newuri");
         String newPlugins = request.getParameter("newplugins");
         String newParams = request.getParameter("newparams");
-        String newState = request.getParameter("newstate");
         Service service = new Service();
         StringTokenizer paramToken;
         StringTokenizer pluginToken;
@@ -67,9 +66,8 @@ public class UpdateConfig extends BaseService {
                 service.addParam(paramName, paramRequired);
             }
         }
-        if (newState != null) {
-            service.setState(newState);
-        }
+        
+        service.setState("");
 
         Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
 
