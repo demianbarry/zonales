@@ -11,6 +11,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Param;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
@@ -23,7 +25,7 @@ public class ServiceDao extends BaseDao {
 
     private DBCollection services;
 
-    public ServiceDao(String db_host, Integer db_port, String db_name) {
+    public ServiceDao(String db_host, Integer db_port, String db_name) throws Exception {
         super(db_host, db_port, db_name);
         this.services = this.db.getCollection("services");
         this.services.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
@@ -142,11 +144,7 @@ public class ServiceDao extends BaseDao {
         resp.removeField("_id");
         System.out.println(resp);
 
-        if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
-            return resp.toString();
-        } else {
-            return null;
-        }
+        return resp.toString();
     }
 
     public String retrieveAll() {
@@ -176,7 +174,7 @@ public class ServiceDao extends BaseDao {
         DBObject resp;
         DBCursor cur;
         Service service = new Service();
-        ArrayList<BasicDBObject> paramsJson, pluginsJson;
+        ArrayList<BasicDBObject> params, plugins;
 
         cur = this.services.find(query);
 
@@ -184,28 +182,24 @@ public class ServiceDao extends BaseDao {
         resp.removeField("_id");
         System.out.println(resp);
 
-        if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
-            service.setName((String)resp.get("name"));
-            service.setUri((String)resp.get("uri"));
-            service.setState((String)resp.get("state"));
-            //service.setPluginName((String)resp.get("pluginName"));
+        service.setName((String)resp.get("name"));
+        service.setUri((String)resp.get("uri"));
+        service.setState((String)resp.get("state"));
+        //service.setPluginName((String)resp.get("pluginName"));
 
-            paramsJson = (ArrayList<BasicDBObject>)resp.get("params");
+        params = (ArrayList<BasicDBObject>)resp.get("params");
 
-            for (BasicDBObject paramJson: paramsJson) {
-                service.addParam((String)paramJson.get("name"), (Boolean)paramJson.get("required"));
-            }
-
-            pluginsJson = (ArrayList<BasicDBObject>)resp.get("plugins");
-
-            for (BasicDBObject pluginJson: pluginsJson) {
-                service.addPlugin((String)pluginJson.get("class_name"), (String)pluginJson.get("type"));
-            }
-
-            return service;
-        } else {
-            return null;
+        for (BasicDBObject param: params) {
+            service.addParam((String)param.get("name"), (Boolean)param.get("required"));
         }
+
+        plugins = (ArrayList<BasicDBObject>)resp.get("plugins");
+
+        for (BasicDBObject plugin: plugins) {
+            service.addPlugin((String)plugin.get("class_name"), (String)plugin.get("type"));
+        }
+
+        return service;
 
     }
 

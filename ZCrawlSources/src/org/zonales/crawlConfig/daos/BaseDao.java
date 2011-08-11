@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class BaseDao {
     
-    protected static Mongo conn;
+    protected static Mongo conn = null;
     protected DB db = null;
 
     public BaseDao(String db_host, Integer db_port, String db_name) {

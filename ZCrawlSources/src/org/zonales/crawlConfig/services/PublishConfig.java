@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.Errors;
 
 /**
@@ -32,24 +33,26 @@ public class PublishConfig extends BaseService {
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         Service service = serviceDao.retrieve(name);
 
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Servicio recuperado {0}", new Object[]{service});
+
         if (publish == true) {
-            if (service.getState().equals("Generada")) {
-                service.setState("Publicada");
+            if (service.getState().equals(State.GENERATED)) {
+                service.setState(State.PUBLISHED);
                 serviceDao.update(name, service);
-                Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración publicada {0}", new Object[]{service.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Configuración publicada {0}", new Object[]{service.getName()});
                 out.print(Errors.SUCCESS);
             } else {
-                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
                 out.print(Errors.PREVIUS_STATE_WRONG);
             }
         } else {
-            if (service.getState().equals("Publicada")) {
-                service.setState("Despublicada");
+            if (service.getState().equals(State.PUBLISHED)) {
+                service.setState(State.UNPUBLISHED);
                 serviceDao.update(name, service);
-                Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración despublicada {0}", new Object[]{service.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Configuración despublicada {0}", new Object[]{service.getName()});
                 out.print(Errors.SUCCESS);
             } else {
-                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Estado previo erroneo {0}", new Object[]{service.getState()});
                 out.print(Errors.PREVIUS_STATE_WRONG);
             }
         }
