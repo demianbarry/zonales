@@ -11,11 +11,10 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Param;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.crawlConfig.objets.State;
 
 /**
  *
@@ -184,7 +183,12 @@ public class ServiceDao extends BaseDao {
 
         service.setName((String)resp.get("name"));
         service.setUri((String)resp.get("uri"));
-        service.setState((String)resp.get("state"));
+        try {
+            service.setState((String)resp.get("state"));
+        } catch (TypeNotPresentException ex) {
+            service.setState(State.GENERATED);
+        }
+
         //service.setPluginName((String)resp.get("pluginName"));
 
         params = (ArrayList<BasicDBObject>)resp.get("params");
