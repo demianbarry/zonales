@@ -17,6 +17,10 @@ public class Zone extends Tag {
     public Zone() {
     }
 
+    public Zone(String name) {
+    }
+
+
     public Zone(float ScenterLat, float centerLon, int zoomLevel) {
         this.centerLat = ScenterLat;
         this.centerLon = centerLon;

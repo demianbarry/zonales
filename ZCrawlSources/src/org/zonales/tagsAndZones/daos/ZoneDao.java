@@ -9,9 +9,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
-import java.util.ArrayList;
+import org.zonales.crawlConfig.daos.BaseDao;
 import org.zonales.tagsAndZones.objects.Tag;
-import org.zonales.tagsAndZones.objects.Type;
 import org.zonales.tagsAndZones.objects.Zone;
 
 /**
