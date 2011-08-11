@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.services.BaseService;
+import org.zonales.errors.Errors;
 import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /**
@@ -29,9 +30,20 @@ public class GetZone extends BaseService {
             out = response.getWriter();
             String name = request.getParameter("name");
             ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-            out.print(zoneDao.retrieveJson(name));
+
+            if (zoneDao == null) {
+                out.print(Errors.NO_DB_FAILED);
+                return;
+            }
+
+            if (zoneDao.retrieve(name) == null) {
+                out.print(Errors.DATA_NOT_FOUND);
+            } else {
+                out.print(zoneDao.retrieveJson(name));
+            }
+
         } catch (IOException ex) {
-            Logger.getLogger(GetType.class.getName()).log(Level.SEVERE, null, ex);
+            out.print(Errors.MONGODB_ERROR);
         } finally {
             out.close();
         }
