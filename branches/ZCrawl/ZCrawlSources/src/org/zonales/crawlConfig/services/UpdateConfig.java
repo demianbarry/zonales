@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.Errors;
 
 /**
@@ -35,27 +36,36 @@ public class UpdateConfig extends BaseService {
         String newPlugins = request.getParameter("newplugins");
         String newParams = request.getParameter("newparams");
         Service service = new Service();
+        Service newService = new Service();
         StringTokenizer paramToken;
         StringTokenizer pluginToken;
         ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         if (name == null) {
-            out.print("Config name is required");
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "nombre del servicio requerido");
+            out.print(Errors.PARAM_REQUIRED_FAILED);
+            return;
+        }
+
+        service = serviceDao.retrieve(name);
+        if (State.PUBLISHED.equals(service.getState())) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Estado previo erroneo");
+            out.print(Errors.PREVIUS_STATE_WRONG);
             return;
         }
 
         if (newName != null) {
-            service.setName(newName);
+            newService.setName(newName);
         }
         if (newUri != null) {
-            service.setUri(newUri);
+            newService.setUri(newUri);
         }
         if (newPlugins != null) {
             pluginToken = new StringTokenizer(newPlugins, ",;");
             while (pluginToken.hasMoreTokens()) {
                 String pluginName = pluginToken.nextToken();
                 String pluginType = pluginToken.nextToken();
-                service.addPlugin(pluginName, pluginType);  //TODO: Manejar error de tipo
+                newService.addPlugin(pluginName, pluginType);  //TODO: Manejar error de tipo
             }
         }
         if (newParams != null) {
@@ -63,20 +73,20 @@ public class UpdateConfig extends BaseService {
             while (paramToken.hasMoreTokens()) {
                 String paramName = paramToken.nextToken();
                 Boolean paramRequired = Boolean.valueOf(paramToken.nextToken());
-                service.addParam(paramName, paramRequired);
+                newService.addParam(paramName, paramRequired);
             }
         }
         
-        service.setState("");
+        newService.setState(State.GENERATED);
 
-        Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, newService});
 
         try {
-            serviceDao.update(name, service);
-            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Configuración Actualizada {0} con nuevos parametros {1}", new Object[]{name, service});
+            serviceDao.update(name, newService);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Configuración Actualizada {0} con nuevos parametros {1}", new Object[]{name, newService});
             out.print(Errors.SUCCESS);
         } catch (MongoException ex) {
-            Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "Error actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, service});
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, newService});
             out.print(Errors.UPDATE_FAILED);
         }
     }
