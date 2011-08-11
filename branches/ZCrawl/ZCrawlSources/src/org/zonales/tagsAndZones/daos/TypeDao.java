@@ -23,7 +23,7 @@ public class TypeDao extends BaseDao {
 
     public TypeDao(String db_host, Integer db_port, String db_name) {
         super(db_host, db_port, db_name);
-        this.types = this.db.getCollection("types");
+        this.types = this.db.getCollection("tagTypes");
         this.types.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
     }
 
@@ -92,6 +92,11 @@ public class TypeDao extends BaseDao {
         return resp.toString();
 
 
+    }
+    
+    public Boolean exists(String name) {
+        BasicDBObject query = new BasicDBObject("name", name);
+        return this.types.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public Type retrieve(String name) {

@@ -5,8 +5,6 @@
 
 package org.zonales.tagsAndZones.objects;
 
-import org.zonales.crawlConfig.objets.State;
-
 /**
  *
  * @author nacho
