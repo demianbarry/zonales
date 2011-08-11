@@ -4,15 +4,26 @@
     clear:both;
 }
 
-#container_content{
-    /*border-top:1px solid #DFE4EC;*/
-    /*clear:both;*/
+#container_content {
     width:45%;
     float: left;
     margin-right: 25px;
 }
 
 #results_content {
+    width: 45%;
+    height: 100%;
+    float: left;
+    margin-left: 25px;
+}
+
+#list_content {
+    width:45%;
+    float: left;
+    margin-right: 25px;
+}
+
+#edit_content{
     width: 45%;
     height: 100%;
     float: left;
@@ -212,3 +223,17 @@ a#fdbk_close:hover {
     width: 25%;
     text-align: center;
 }
+
+.configTable {
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    border-spacing: 0;
+    border-collapse: separate;
+    width: 100%;
+}
+
+.configTable td {
+    width: 33%;
+    text-align: center;
+}
+

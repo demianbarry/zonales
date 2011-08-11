@@ -16,45 +16,61 @@
             </div>
             <div id="wrapper" class="clearfix">
                 
-                <div id="results_content">
-                    <h2>Configuracion de Fuentes de Extraccion</h2>
-
+                <div id="list_content">
+                    <div id="title" width="100%">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td width="70%">
+                                        <h2>Configuracion de Fuentes de Extraccion</h2>
+                                    </td>
+                                    <td width="30%">
+                                        <img alt="Add Crawl Config" style="float: right" src="addIcon.gif" title="Add Crawl Config" onclick="addConfig();">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div id="container_content">
+                <div id="edit_content" style="display:none">
                     <table  cellspacing="0" cellpadding="0" border="0" width="100%" class="advanced_search">
                         <tbody>
                             <tr>
                                 <td colspan="2"><h2 style="margin-top: 0.7em;">Edicion</h2></td>
                             </tr>
                             <tr>
-                                <td width="35%" class="label"><label>Name</label></td>
-                                <td class="input"><input type="text" style="width: 100%;" id="getName" value=""></td>
+                                <td width="35%" class="label"><label>Name (*)</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getNameFuente" value=""></td>
                             </tr>
                             <tr>
-                                <td width="35%" class="label"><label>URI</label></td>
-                                <td class="input"><input type="text" style="width: 100%;" id="getUri" value=""></td>
+                                <td width="35%" class="label"><label>URI (*)</label></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getUriFuente" value=""></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><h2 style="margin-top: 0.7em;">Parametros</h2></td>
                             </tr>
                             <tr>
                                 <td width="35%" class="label"><label>Name</label></td>
-                                <td class="input"><input type="text" style="width: 100%;" id="getName" value=""></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getNameParam" value=""></td>
                             </tr>
                             <tr>
                                 <td width="35%" class="label"><label>Requerido</label></td>
-                                <td class="input"><input type="checkbox" id=""></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><input type="button" style="width: 50%;" value="Modificar" onclick=""></td>
-                            </tr>
+                                <td class="input"><input type="checkbox" id="getReq"><img alt="Add Param" style="float: right" src="addIcon.gif" title="Add Param" onclick="addParam($('getNameParam').get('value'),$('getReq').get('checked'));"></td>
+                            </tr>                            
                             
                             <tr>
-                                <td colspan="2"><h2 style="margin-top: 0.7em;">Plugins</h2></td>
+                                <td colspan="2">
+                                    <div id="configParams"/>
+                                </td>
+                            </tr>
+                                
+                            
+                            <tr>
+                                <td colspan="2"><h2 style="margin-top: 0.7em;">Plugins (*)</h2></td>
                             </tr>
                             <tr>
                                 <td width="35%" class="label"><label>ClassName</label></td>
-                                <td class="input"><input type="text" style="width: 100%;" id="get" value=""></td>
+                                <td class="input"><input type="text" style="width: 100%;" id="getClassName" value=""></td>
                             </tr>
                             <tr>
                                 <td width="35%" class="label"><label>Type</label></td>
@@ -62,11 +78,22 @@
                                     <select id="plugintypes" >
                                         
                                     </select>
+                                    <img alt="Add Plugin" style="float: right" title="Add Plugin" src="addIcon.gif" onclick="addPlugin($('getClassName').get('value'),$('plugintypes').options[$('plugintypes').selectedIndex].get('text'));">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="input"><input type="button" style="width: 50%;" value="Save" onclick="getPluginTypes();"></td>
-                                <td class="input"><input type="button" style="width: 50%;" value="Cancel" onclick=""></td>
+                                <td colspan="2">
+                                    <div id="configPlugins"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input"><input id="saveConfigButton" type="button" style="width: 100%;" value="Save" onclick="saveConfig();"></td>
+                                <td class="input"><input type="button" style="width: 100%;" value="Cancel" onclick="clearEdit();"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    (*) Parámetros requeridos
+                                </td>
                             </tr>
                         </tbody>
                     </table>
