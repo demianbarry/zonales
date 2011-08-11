@@ -42,12 +42,12 @@ public class GetTestService extends BaseService {
             //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
             metadata = metadataGson.fromJson(metadataJson, ZCrawling.class);
 
-            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Buscando servicio según metadata {0}", new Object[]{metadataJson});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Buscando servicio según metadata {0}", new Object[]{metadataJson});
 
             //Recupero la configuración del servicio
             service = serviceDao.retrieve(metadata.getFuente());
 
-            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Fuente {0}, servicio {1}", new Object[]{metadata.getFuente(), service.toString()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fuente {0}, servicio {1}", new Object[]{metadata.getFuente(), service.toString()});
 
             GetServiceURL getServiceURL = null;
             ArrayList<Plugin> plugins = service.getPlugins();
@@ -62,7 +62,7 @@ public class GetTestService extends BaseService {
                 urlServlet = getServiceURL.getURL(metadata, service);
                 out.print(urlServlet);
             } else {
-                Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
                 out.print(Errors.DATA_NOT_FOUND);
             }
         } catch (Exception ex) {
@@ -71,7 +71,7 @@ public class GetTestService extends BaseService {
                 stacktrace.append(line.toString());
                 stacktrace.append("\n");
             }
-            Logger.getLogger(GetTestService.class.getName()).log(Level.SEVERE, "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
             out.print(Errors.UNKNOWN_ERROR);
         }
 

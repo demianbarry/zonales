@@ -31,21 +31,21 @@ public class GetConfig extends BaseService {
         String retrieve;
 
         if ("all".equals(name)) {
-            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Obteniendo todas las configuraciones");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todas las configuraciones");
             retrieve = serviceDao.retrieveAll();
             if (retrieve != null) {
                 out.print(retrieve);
             } else {
-                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "No se encontraron configuraciones");
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron configuraciones");
                 out.print(Errors.DATA_NOT_FOUND);
             }
         } else {
-            Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Obteniendo la configuracion {0}", new Object[]{name});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la configuracion {0}", new Object[]{name});
             retrieve = serviceDao.retrieveJson(name);
             if (retrieve != null) {
                 out.print(retrieve);
             } else {
-                Logger.getLogger(GetTestService.class.getName()).log(Level.WARNING, "No se encontró la configuracion {0}", new Object[]{name});
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontró la configuracion {0}", new Object[]{name});
                 out.print(Errors.DATA_NOT_FOUND);
             }
         }

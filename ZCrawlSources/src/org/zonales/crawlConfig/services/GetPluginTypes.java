@@ -30,7 +30,7 @@ public class GetPluginTypes  extends BaseService {
         ArrayList<String> pluginTypes = PluginType.getPluginTypes();
         Gson pluginTypesGson = new Gson();
 
-        Logger.getLogger(GetTestService.class.getName()).log(Level.INFO, "Obteniendo tipos de plugins");
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo tipos de plugins");
         out.print(pluginTypesGson.toJson(pluginTypes));
 
     }
