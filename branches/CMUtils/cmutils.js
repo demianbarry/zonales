@@ -8,6 +8,8 @@ var cantPlugins = 0;
 var params = new Array();
 var plugins = new Array();
 var configEdited;
+var proxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=';
+var servletUri = '';
 
 function getFacebookUserId() {
     if ($('getIdUsername').get('value') != "") {
@@ -41,8 +43,8 @@ function getFacebookUserId() {
 }
 
 function getAllConfig(){
-    var url = "/getConfig?name=all";
-    var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+    var url = servletUri + "/getConfig?name=all";
+    var urlProxy = proxy + encodeURIComponent(url);
     var configs_table = new Element('table', {'id' : 'resultTable'}).addClass('resultTable').inject($('list_content'));
     var reqId = new Request.JSON({
         url: urlProxy,
@@ -102,8 +104,8 @@ function getConfig(name) {
     $('saveConfigButton').set('value', 'Update');
     $('edit_content').set('style', 'display:block');
     configEdited = name;
-    var url = "/getConfig?name=" + name;
-    var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+    var url = servletUri + "/getConfig?name=" + name;
+    var urlProxy = proxy + encodeURIComponent(url);
     var reqId = new Request.JSON({
         url: urlProxy,
         method: 'get',
@@ -135,8 +137,8 @@ function getConfig(name) {
 }
 
 function getPluginTypes(){
-    var url = "/getPluginTypes";
-    var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+    var url = servletUri + "/getPluginTypes";
+    var urlProxy = proxy + encodeURIComponent(url);
     var reqId = new Request.JSON({
         url: urlProxy,
         method: 'get',
@@ -230,7 +232,7 @@ function removePlugin(pluginLine){
 
 function setConfig(){
     if (($('getNameFuente').get('value') != "") && ($('getUriFuente').get('value') != "") && plugins.length > 0){
-        var url = "/setConfig?name="+$('getNameFuente').get('value')+"&uri="+$('getUriFuente').get('value');
+        var url = servletUri + "/setConfig?name="+$('getNameFuente').get('value')+"&uri="+$('getUriFuente').get('value');
         if (params.length > 0) {
             url += '&params=';
             for (i = 0; i < params.length; i++) {
@@ -247,7 +249,7 @@ function setConfig(){
                 }
             }
         }
-        var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+        var urlProxy = proxy + encodeURIComponent(url);
 
         var reqId = new Request.JSON({
             url: urlProxy,
@@ -289,8 +291,8 @@ function setConfig(){
 
 function publishConfig(name) {
     var publish = $('cl_' + name + '_pub').get('checked');
-    var url = "/publishConfig?name="+name+"&publish=" + publish;
-    var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+    var url = servletUri + "/publishConfig?name="+name+"&publish=" + publish;
+    var urlProxy = proxy + encodeURIComponent(url);
 
     var reqId = new Request.JSON({
         url: urlProxy,
@@ -340,7 +342,7 @@ function clearEdit() {
 
 function updateConfig(){
     if (($('getNameFuente').get('value') != "") && ($('getUriFuente').get('value') != "") && plugins.length > 0){
-        var url = "/updateConfig?name="+configEdited+"&newname="+$('getNameFuente').get('value')+"&newuri="+$('getUriFuente').get('value');
+        var url = servletUri + "/updateConfig?name="+configEdited+"&newname="+$('getNameFuente').get('value')+"&newuri="+$('getUriFuente').get('value');
         if (params.length > 0) {
             url += '&newparams=';
             for (i = 0; i < params.length; i++) {
@@ -357,7 +359,7 @@ function updateConfig(){
                 }
             }
         }
-        var urlProxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(url);
+        var urlProxy = proxy + encodeURIComponent(url);
 
         var reqId = new Request.JSON({
             url: urlProxy,
