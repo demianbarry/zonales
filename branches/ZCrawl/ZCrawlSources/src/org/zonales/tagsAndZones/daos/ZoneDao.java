@@ -9,8 +9,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import java.util.ArrayList;
 import org.zonales.crawlConfig.daos.BaseDao;
-import org.zonales.tagsAndZones.objects.Tag;
+import org.zonales.tagsAndZones.objects.Type;
 import org.zonales.tagsAndZones.objects.Zone;
 
 /**
@@ -24,7 +25,7 @@ public class ZoneDao extends BaseDao {
     public ZoneDao(String db_host, Integer db_port, String db_name) {
         super(db_host, db_port, db_name);
         this.zones = this.db.getCollection("zones");
-        this.zones.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
+        this.zones.ensureIndex(new BasicDBObject("id", 1), "uniqueName", true);
     }
 
     public void save(Zone zone) throws MongoException {
@@ -39,11 +40,6 @@ public class ZoneDao extends BaseDao {
         ZoneDoc.put("centerLat", zone.getCenterLat());
         ZoneDoc.put("centerLon", zone.getCenterLon());
         ZoneDoc.put("zoomLevel", zone.getZoomLevel());
-
-        /*        if(zone.getParent() != null){
-
-        ZoneDoc.put("parents", zone.getParent());
-        }*/
 
         System.out.println(ZoneDoc.toString());
         this.zones.insert(ZoneDoc);
@@ -118,32 +114,41 @@ public class ZoneDao extends BaseDao {
         BasicDBObject query = new BasicDBObject("name", name);
         return this.zones.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
-    
+
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
         DBCursor cur;
 
-        cur = this.zones.find(query);
-
-        resp = cur.next();
+        resp = this.zones.findOne(query);
+        if (resp == null) {
+            return null;
+        }
         resp.removeField("_id");
         //System.out.println(resp);
 
         return resp.toString();
     }
 
+    public Zone retrieve(Integer id) {
+        BasicDBObject query = new BasicDBObject("id", id);
+        return getZone(query);
+    }
+
     public Zone retrieve(String name) {
-
         BasicDBObject query = new BasicDBObject("name", name);
+        return getZone(query);
+    }
+
+    private Zone getZone(BasicDBObject query) {
         DBObject resp;
-        DBCursor cur;
-        Zone zone = new Zone();
 
-        cur = this.zones.find(query);
-
-        resp = cur.next();
+        resp = this.zones.findOne(query);
+        if (resp == null) {
+            return null;
+        }
         resp.removeField("_id");
+        Zone zone = new Zone();
 
         zone.setId(Integer.parseInt((String) resp.get("id")));
 
@@ -151,13 +156,27 @@ public class ZoneDao extends BaseDao {
 
         zone.setState((String) resp.get("state"));
 
-        zone.setParent((Tag) resp.get("tag"));
+        if (resp.get("type") != null) {
+            DBObject obj = this.db.getCollection("tagTypes").findOne(new BasicDBObject("name", (String) resp.get("type")));
+            Type type = new Type((String) obj.get("name"), (ArrayList<String>) obj.get("parents"), (String) obj.get("state"));
+            zone.setType(type);
+        }
 
-        zone.setCenterLat(Float.parseFloat((String) resp.get("centerLat")));
+        if (resp.get("parent") != null) {
+            zone.setParent(retrieve(Integer.valueOf(String.valueOf(resp.get("parent")))));
+        }
 
-        zone.setCenterLon(Float.parseFloat((String) resp.get("centerLon")));
+        if (resp.get("centerLat") != null) {
+            zone.setCenterLat(Float.parseFloat((String) resp.get("centerLat")));
+        }
 
-        zone.setZoomLevel(Integer.parseInt((String) resp.get("zoomLevel")));
+        if (resp.get("centerLon") != null) {
+            zone.setCenterLon(Float.parseFloat((String) resp.get("centerLon")));
+        }
+
+        if (resp.get("zoomLevel") != null) {
+            zone.setZoomLevel(Integer.parseInt((String) resp.get("zoomLevel")));
+        }
 
         return zone;
     }

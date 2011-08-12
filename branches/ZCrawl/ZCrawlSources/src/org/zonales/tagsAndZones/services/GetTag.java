@@ -4,12 +4,10 @@
  */
 package org.zonales.tagsAndZones.services;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.services.BaseService;
@@ -23,7 +21,7 @@ import org.zonales.tagsAndZones.daos.TagDao;
 public class GetTag extends BaseService {
 
     @Override
-    public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+    public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) {
         PrintWriter out = null;
         try {
             response.setContentType("text/javascript");
@@ -41,11 +39,20 @@ public class GetTag extends BaseService {
             } else {
                 out.print(tagDao.retrieveJson(name));
             }
+        } catch (Exception ex) {
+            StringBuilder stacktrace = new StringBuilder();
+            for (StackTraceElement line : ex.getStackTrace()) {
+                stacktrace.append(line.toString());
+                stacktrace.append("\n");
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
 
-        } catch (IOException ex) {
-            out.print(Errors.MONGODB_ERROR);
+            out.print(Errors.MONGODB_ERROR);            
         } finally {
-            out.close();
+            if (out != null) {
+                out.close();
+            }
         }
     }
 }
