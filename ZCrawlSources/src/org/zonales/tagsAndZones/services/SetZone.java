@@ -12,10 +12,9 @@ package org.zonales.tagsAndZones.services;
 import com.mongodb.MongoException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +40,7 @@ public class SetZone extends BaseService {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
+        String id = request.getParameter("id");
         String parent = request.getParameter("parent");
         String type = request.getParameter("type");
         String centerlat = request.getParameter("centerlat");
@@ -49,12 +49,18 @@ public class SetZone extends BaseService {
         Zone zone = null;
 
         ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+        if (id == null) {
+            out.print(Errors.PARAM_REQUIRED_FAILED);
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Campo requerido ID");
+            return;
+        }
 
         if (parent != null) {
 
             TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             if (tagDao.retrieve(parent) == null) {
                 out.print(Errors.DATA_NOT_FOUND);
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron tags");
             }
 
         }
@@ -63,15 +69,16 @@ public class SetZone extends BaseService {
             TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             if (typeDao.retrieve(name) == null) {
                 out.print(Errors.DATA_NOT_FOUND);
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron types");
             }
         }
 
         if (centerlat != null && centerlon != null && zoomlevel != null) {
             zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
-           
+
         } else {
-            zone = new Zone(name);
-           
+            zone = new Zone(Integer.parseInt(id),name);
+
         }
 
         try {
@@ -80,6 +87,7 @@ public class SetZone extends BaseService {
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
             out.print(Errors.MONGODB_ERROR);
+
         }
 
 
