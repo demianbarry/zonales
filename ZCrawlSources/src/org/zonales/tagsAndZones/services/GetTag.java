@@ -28,16 +28,28 @@ public class GetTag extends BaseService {
             out = response.getWriter();
             String name = request.getParameter("name");
             TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            String retrieve;
 
             if (tagDao == null) {
                 out.print(Errors.NO_DB_FAILED);
                 return;
             }
 
-            if (tagDao.retrieve(name) == null) {
-                out.print(Errors.DATA_NOT_FOUND);
+            if ("all".equals(name)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los tags");
+                retrieve = tagDao.retrieveAll();
+            } else if ("allNames".equals(name)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de tags");
+                retrieve = tagDao.retrieveAll(true);
             } else {
-                out.print(tagDao.retrieveJson(name));
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo el tag {0}", new Object[]{name});
+                retrieve = tagDao.retrieveJson(name);
+            }
+            if (retrieve != null) {
+                out.print(retrieve);
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron tags");
+                out.print(Errors.DATA_NOT_FOUND);
             }
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();
@@ -48,7 +60,7 @@ public class GetTag extends BaseService {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                     "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
 
-            out.print(Errors.MONGODB_ERROR);            
+            out.print(Errors.MONGODB_ERROR);
         } finally {
             if (out != null) {
                 out.close();
