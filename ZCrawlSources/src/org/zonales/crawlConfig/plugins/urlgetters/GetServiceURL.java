@@ -6,7 +6,7 @@
 package org.zonales.crawlConfig.plugins.urlgetters;
 
 import org.zonales.crawlConfig.objets.Service;
-import org.zonales.crawlParser.metadata.ZCrawling;
+import org.zonales.metadata.ZCrawling;
 
 /**
  *

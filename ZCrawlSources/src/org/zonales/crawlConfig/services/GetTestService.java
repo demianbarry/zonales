@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
-import org.zonales.crawlParser.metadata.ZCrawling;
 import org.zonales.errors.Errors;
+import org.zonales.metadata.ZCrawling;
 
 /**
  *
