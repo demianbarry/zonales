@@ -148,6 +148,10 @@ public class ServiceDao extends BaseDao {
     }
 
     public String retrieveAll() {
+        return retrieveAll(false);
+    }
+
+    public String retrieveAll(Boolean onlyNames) {
         String ret = "[";
         DBObject resp;
         DBCursor cur = this.services.find();
@@ -156,8 +160,12 @@ public class ServiceDao extends BaseDao {
             resp = cur.next();
             resp.removeField("_id");
             System.out.println(resp);
-            if (resp.get("state") == null || !((String)resp.get("state")).equals("Anulada")) {
-                ret += resp + ",";
+            if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
+                if (onlyNames) {
+                    ret += resp.get("name") + ",";
+                } else {
+                    ret += resp + ",";
+                }
             } else {
                 return null;
             }
