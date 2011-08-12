@@ -12,7 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.objets.State;
-import org.zonales.crawlConfig.services.BaseService;
+import org.zonales.BaseService;
 import org.zonales.errors.Errors;
 import org.zonales.tagsAndZones.daos.TypeDao;
 import org.zonales.tagsAndZones.objects.Type;
