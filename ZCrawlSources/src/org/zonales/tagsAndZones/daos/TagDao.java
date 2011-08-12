@@ -12,7 +12,7 @@ import com.mongodb.MongoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.zonales.crawlConfig.daos.BaseDao;
+import org.zonales.BaseDao;
 import org.zonales.tagsAndZones.objects.Tag;
 import org.zonales.tagsAndZones.objects.Type;
 

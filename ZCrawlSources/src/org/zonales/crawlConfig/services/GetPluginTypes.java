@@ -5,6 +5,7 @@
 
 package org.zonales.crawlConfig.services;
 
+import org.zonales.BaseService;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;

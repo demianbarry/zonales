@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.zonales.crawlConfig.daos;
+package org.zonales;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;

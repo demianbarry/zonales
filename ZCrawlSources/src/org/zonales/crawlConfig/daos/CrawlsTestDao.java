@@ -10,6 +10,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import org.zonales.BaseDao;
 import org.zonales.crawlConfig.objets.CrawlsTest;
 
 /**

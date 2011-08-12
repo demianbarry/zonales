@@ -4,6 +4,7 @@
  */
 package org.zonales.crawlConfig.services;
 
+import org.zonales.BaseService;
 import org.zonales.crawlConfig.plugins.urlgetters.GetServiceURL;
 import com.google.gson.Gson;
 import java.io.IOException;
