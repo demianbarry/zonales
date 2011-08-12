@@ -17,7 +17,9 @@ public class Zone extends Tag {
     public Zone() {
     }
 
-    public Zone(String name) {
+    public Zone(int id,String name) {
+        super(id,name);
+
     }
 
 
