@@ -28,16 +28,28 @@ public class GetType extends BaseService {
             out = response.getWriter();
             String name = request.getParameter("name");
             TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            String retrieve;
 
             if (typeDao == null) {
                 out.print(Errors.NO_DB_FAILED);
                 return;
             }
 
-            if (typeDao.retrieve(name) == null) {
-                out.print(Errors.DATA_NOT_FOUND);
+            if ("all".equals(name)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los types");
+                retrieve = typeDao.retrieveAll();
+            } else if ("allNames".equals(name)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de los types");
+                retrieve = typeDao.retrieveAll(true);
             } else {
-                out.print(typeDao.retrieveJson(name));
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo el type {0}", new Object[]{name});
+                retrieve = typeDao.retrieveJson(name);
+            }
+            if (retrieve != null) {
+                out.print(retrieve);
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron types");
+                out.print(Errors.DATA_NOT_FOUND);
             }
 
         } catch (Exception ex) {
