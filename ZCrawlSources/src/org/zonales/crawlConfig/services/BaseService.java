@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.crawlConfig.services;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseService extends HttpServlet {
 
     InputStream stream;
-    Properties props;
+    static Properties props = null;
 
     public BaseService() {
     }
@@ -40,8 +39,10 @@ public abstract class BaseService extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
-        props = new Properties();
-        props.load(stream);
+        if (props == null) {
+            props = new Properties();
+            props.load(stream);
+        }
 
         try {
             serve(request, response, props);
@@ -85,5 +86,3 @@ public abstract class BaseService extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 }
-
-

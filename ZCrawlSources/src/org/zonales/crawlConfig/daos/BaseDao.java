@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.crawlConfig.daos;
 
 import com.mongodb.DB;
@@ -16,9 +15,9 @@ import java.util.logging.Logger;
  * @author nacho
  */
 public class BaseDao {
-    
+
     protected static Mongo conn = null;
-    protected DB db = null;
+    protected DB db = null;   
 
     public BaseDao(String db_host, Integer db_port, String db_name) {
         try {
@@ -30,5 +29,4 @@ public class BaseDao {
             Logger.getLogger(BaseDao.class.getName()).log(Level.SEVERE, "Base de datos no disponible {0}", new Object[]{ex.getMessage()});
         }
     }
-
 }

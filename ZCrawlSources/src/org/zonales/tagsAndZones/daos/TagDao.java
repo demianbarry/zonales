@@ -9,6 +9,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zonales.crawlConfig.daos.BaseDao;
 import org.zonales.tagsAndZones.objects.Tag;
 import org.zonales.tagsAndZones.objects.Type;
@@ -19,12 +22,12 @@ import org.zonales.tagsAndZones.objects.Type;
  */
 public class TagDao extends BaseDao {
 
-    private DBCollection tags;
+    private DBCollection tags = null;
 
     public TagDao(String db_host, Integer db_port, String db_name) {
         super(db_host, db_port, db_name);
         this.tags = this.db.getCollection("tags");
-        this.tags.ensureIndex(new BasicDBObject("name", 1), "uniqueName", true);
+        this.tags.ensureIndex(new BasicDBObject("id", 1), "uniqueName", true);
     }
 
     public void save(Tag tag) throws MongoException {
@@ -44,7 +47,7 @@ public class TagDao extends BaseDao {
             tagDoc.put("parent", tag.getParent());
         }
 
-        System.out.println(tagDoc.toString());
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Tag doc: {0}", new Object[]{tagDoc.toString()});
         this.tags.insert(tagDoc);
     }
 
@@ -95,14 +98,14 @@ public class TagDao extends BaseDao {
             this.tags.update(new BasicDBObject().append("name", name), tagDoc);
         }
     }
-    
+
     public Boolean exists(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         return this.tags.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public String retrieveJson(String name) {
-        
+
         BasicDBObject query = new BasicDBObject("name", name);
 
         DBObject resp;
@@ -119,24 +122,38 @@ public class TagDao extends BaseDao {
 
     }
 
+    public Tag retrieve(Integer id) {
+        BasicDBObject query = new BasicDBObject("id", id);
+        return getTag(query);
+    }
+
     public Tag retrieve(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
+        return getTag(query);
+    }
+
+    private Tag getTag(BasicDBObject query) {
         DBObject resp;
-        DBCursor cur;
-        Tag tag = new Tag();
 
-        cur = this.tags.find(query);
-
-        resp = cur.next();
+        resp = this.tags.findOne(query);
+        if (resp == null) {
+            return null;
+        }
         resp.removeField("_id");
 
+        Tag tag = new Tag();
         tag.setId(Integer.parseInt((String) resp.get("id")));
         tag.setName((String) resp.get("name"));
-        tag.setParent((Tag) resp.get("parent"));
-        tag.setType((Type) resp.get("type"));
         tag.setState((String) resp.get("state"));
+        if (resp.get("parent") != null) {
+            tag.setParent(retrieve(Integer.valueOf(String.valueOf(resp.get("parent")))));
+        }
 
-
+        if (resp.get("type") != null) {
+            DBObject obj = this.db.getCollection("tagTypes").findOne(new BasicDBObject("name", (String) resp.get("type")));
+            Type type = new Type((String) obj.get("name"), (ArrayList<String>) obj.get("parents"), (String) obj.get("state"));
+            tag.setType(type);
+        }
 
         return tag;
     }
