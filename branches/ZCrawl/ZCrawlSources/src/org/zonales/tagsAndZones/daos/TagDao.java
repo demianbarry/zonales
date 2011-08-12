@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.BaseDao;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.tagsAndZones.objects.Tag;
 import org.zonales.tagsAndZones.objects.Type;
 
@@ -120,6 +121,36 @@ public class TagDao extends BaseDao {
 
         return resp.toString();
 
+    }
+
+      public String retrieveAll() {
+        return retrieveAll(false);
+    }
+
+    public String retrieveAll(Boolean onlyNames) {
+        String ret = "[";
+        DBObject resp;
+        DBCursor cur = this.tags.find();
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            resp.removeField("_id");
+            System.out.println(resp);
+            if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
+                if (onlyNames) {
+                    ret += resp.get("name") + ",";
+                } else {
+                    ret += resp + ",";
+                }
+            } else {
+                return null;
+            }
+        }
+
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
+
+        return ret;
     }
 
     public Tag retrieve(Integer id) {

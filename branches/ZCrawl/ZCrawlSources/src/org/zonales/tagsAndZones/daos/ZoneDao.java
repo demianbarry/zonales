@@ -11,6 +11,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
 import org.zonales.BaseDao;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.tagsAndZones.objects.Type;
 import org.zonales.tagsAndZones.objects.Zone;
 
@@ -128,6 +129,36 @@ public class ZoneDao extends BaseDao {
         //System.out.println(resp);
 
         return resp.toString();
+    }
+
+      public String retrieveAll() {
+        return retrieveAll(false);
+    }
+
+    public String retrieveAll(Boolean onlyNames) {
+        String ret = "[";
+        DBObject resp;
+        DBCursor cur = this.zones.find();
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            resp.removeField("_id");
+            System.out.println(resp);
+            if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
+                if (onlyNames) {
+                    ret += resp.get("name") + ",";
+                } else {
+                    ret += resp + ",";
+                }
+            } else {
+                return null;
+            }
+        }
+
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
+
+        return ret;
     }
 
     public Zone retrieve(Integer id) {

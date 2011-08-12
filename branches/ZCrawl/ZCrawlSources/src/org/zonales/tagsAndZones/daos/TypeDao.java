@@ -11,6 +11,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
 import org.zonales.BaseDao;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.tagsAndZones.objects.Type;
 
 /**
@@ -78,6 +79,36 @@ public class TypeDao extends BaseDao {
         }
     }
 
+     public String retrieveAll() {
+        return retrieveAll(false);
+    }
+
+    public String retrieveAll(Boolean onlyNames) {
+        String ret = "[";
+        DBObject resp;
+        DBCursor cur = this.types.find();
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            resp.removeField("_id");
+            System.out.println(resp);
+            if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
+                if (onlyNames) {
+                    ret += resp.get("name") + ",";
+                } else {
+                    ret += resp + ",";
+                }
+            } else {
+                return null;
+            }
+        }
+
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
+
+        return ret;
+    }
+
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
@@ -93,7 +124,7 @@ public class TypeDao extends BaseDao {
 
 
     }
-    
+
     public Boolean exists(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         return this.types.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
