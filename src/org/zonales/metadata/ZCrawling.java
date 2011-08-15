@@ -177,14 +177,14 @@ public class ZCrawling {
         this.filtros = filtros;
     }
 
-    protected String tagsFuente = null;
+    protected Boolean tagsFuente = null;
 
     /**
      * Get the value of tagsFuente
      *
      * @return the value of tagsFuente
      */
-    public String getTagsFuente() {
+    public Boolean getTagsFuente() {
         return tagsFuente;
     }
 
@@ -193,7 +193,7 @@ public class ZCrawling {
      *
      * @param tagsFuente new value of tagsFuente
      */
-    public void setTagsFuente(String tagsFuente) {
+    public void setTagsFuente(Boolean tagsFuente) {
         this.tagsFuente = tagsFuente;
     }
     
