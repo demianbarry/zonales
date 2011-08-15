@@ -14,13 +14,13 @@ Descripción de los servicios de persistencia, con sus respectivos parámetros.
 ----
 
 *_URI_*: /getConfig <br>
-*_Respuesta_*: Configuración de la fuente de extracción solicitada <br>
+*_Respuesta_*: Configuración de la/s fuente/s de extracción solicitada <br>
 *_Formato_*: JSON
 
 === Parámetros ===
 
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
-|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar / All || Cualquier cadena || Si se especifica "all" como name trae todas las configuraciones ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar / All / AllNames || Cualquier cadena || Si se especifica "all" como name trae todas las configuraciones, AllNames trae todos los nombres ||
 
 *_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getConfig?name=facebook
 
