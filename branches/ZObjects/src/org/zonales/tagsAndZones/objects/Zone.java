@@ -17,11 +17,13 @@ public class Zone extends Tag {
     public Zone() {
     }
 
+    public Zone(String name) {
+        super(name);
+    }
+    
     public Zone(int id,String name) {
         super(id,name);
-
     }
-
 
     public Zone(float ScenterLat, float centerLon, int zoomLevel) {
         this.centerLat = ScenterLat;
