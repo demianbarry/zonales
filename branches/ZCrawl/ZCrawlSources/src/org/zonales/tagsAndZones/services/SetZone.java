@@ -18,9 +18,9 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.zonales.crawlConfig.objets.State;
 import org.zonales.BaseService;
-import org.zonales.errors.Errors;
+import org.zonales.crawlConfig.objets.State;
+import org.zonales.errors.ZMessages;
 import org.zonales.tagsAndZones.daos.TagDao;
 import org.zonales.tagsAndZones.daos.TypeDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
@@ -50,25 +50,23 @@ public class SetZone extends BaseService {
 
         ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         if (id == null) {
-            out.print(Errors.PARAM_REQUIRED_FAILED);
+            out.print(ZMessages.PARAM_REQUIRED_FAILED);
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Campo requerido ID");
             return;
         }
 
         if (parent != null) {
-
             TagDao tagDao = new TagDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             if (tagDao.retrieve(parent) == null) {
-                out.print(Errors.DATA_NOT_FOUND);
+                out.print(ZMessages.DATA_NOT_FOUND);
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron tags");
             }
-
         }
 
         if (type != null) {
             TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             if (typeDao.retrieve(name) == null) {
-                out.print(Errors.DATA_NOT_FOUND);
+                out.print(ZMessages.DATA_NOT_FOUND);
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron types");
             }
         }
@@ -77,8 +75,7 @@ public class SetZone extends BaseService {
             zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
 
         } else {
-            zone = new Zone(Integer.parseInt(id),name);
-
+            zone = new Zone(name);           
         }
 
         try {
@@ -86,7 +83,7 @@ public class SetZone extends BaseService {
             zone.setState(State.GENERATED);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
-            out.print(Errors.MONGODB_ERROR);
+            out.print(ZMessages.MONGODB_ERROR);
 
         }
 

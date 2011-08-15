@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.crawlConfig.objets.State;
-import org.zonales.errors.Errors;
-import org.zonales.errors.Error;
+import org.zonales.errors.ZMessages;
+import org.zonales.errors.ZMessage;
 
 /**
  *
@@ -60,7 +60,7 @@ public class SetConfig extends BaseService {
             }
         } else {
             //Debe haber al menos un plugin
-            Error error = Errors.PARAM_REQUIRED_FAILED;
+            ZMessage error = ZMessages.PARAM_REQUIRED_FAILED;
             error.setMsg("Plugin param is required");
             out.print(error);
             return;
@@ -74,13 +74,13 @@ public class SetConfig extends BaseService {
             ServiceDao serviceDao = new ServiceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             serviceDao.save(service);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Servicio guardado {0}", new Object[]{service});
-            out.print(Errors.SUCCESS);
+            out.print(ZMessages.SUCCESS);
         } catch (MongoException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error guardado servicio {0}: {1}", new Object[]{service,ex.getMessage()});
-            out.print(Errors.SAVE_FAILED);
+            out.print(ZMessages.SAVE_FAILED);
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Base de datos no disponible {0}", new Object[]{ex.getMessage()});
-            out.print(Errors.NO_DB_FAILED);
+            out.print(ZMessages.NO_DB_FAILED);
         }
     }
 }

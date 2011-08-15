@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.BaseService;
-import org.zonales.errors.Errors;
+import org.zonales.errors.ZMessages;
 import org.zonales.tagsAndZones.daos.TagDao;
 import org.zonales.tagsAndZones.objects.Tag;
 /**
@@ -38,7 +38,7 @@ public class SetTag extends BaseService {
             tag.setState(State.GENERATED);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
-            out.print(Errors.MONGODB_ERROR);
+            out.print(ZMessages.MONGODB_ERROR);
         }
 
 
