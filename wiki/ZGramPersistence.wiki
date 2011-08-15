@@ -10,11 +10,11 @@ Descripción de los servicios de persistencia de gramáticas de extracción, con
 
 <br>
 ----
-== GetConfig ==
+== GetZGram ==
 ----
 
-*_URI_*: /getConfig <br>
-*_Respuesta_*: Configuración de la fuente de extracción solicitada <br>
+*_URI_*: /getZGram <br>
+*_Respuesta_*: Extracción solicitada <br>
 *_Formato_*: JSON
 
 === Parámetros ===
@@ -38,13 +38,10 @@ Descripción de los servicios de persistencia de gramáticas de extracción, con
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
 || cod || Si || Código de respuesta del parser || Códigos de ZMessage || ||
 || msg || No || Mensaje de respuesta del parser || Cualquier cadena || ||
-|| metadata || Si || Metadata obtenida como respuesta del parser || Cualquier cadena || ||
-|| zona || Si || Zona de la extracción || Cadena que representa a la Zona ||  Debe existir en la base de zonas ||
-|| fuente || Si || Fuente para la extracción || Cadena que representa a la Fuente || Debe existir en la base de configuraciones de fuentes de extracción ||
-|| tags || No || Tags a asignar para la extracción || Lista de tags separados por coma "," || Deben existir en la base de tags ||
+|| metadata || Si || Metadata obtenida como respuesta del parser || Formato ZCrawling || ||
+|| verbatim || Si || Texto original de la consulta || Consulta de extracción ||   ||
 
-
-*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false
+*_Ejemplo_*: 
 
 <br>
 ----
