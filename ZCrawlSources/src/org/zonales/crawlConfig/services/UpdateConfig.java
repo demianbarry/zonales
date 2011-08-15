@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.crawlConfig.objets.State;
-import org.zonales.errors.Errors;
+import org.zonales.errors.ZMessages;
 
 /**
  *
@@ -44,14 +44,14 @@ public class UpdateConfig extends BaseService {
 
         if (name == null) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "nombre del servicio requerido");
-            out.print(Errors.PARAM_REQUIRED_FAILED);
+            out.print(ZMessages.PARAM_REQUIRED_FAILED);
             return;
         }
 
         service = serviceDao.retrieve(name);
         if (State.PUBLISHED.equals(service.getState())) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Estado previo erroneo");
-            out.print(Errors.PREVIUS_STATE_WRONG);
+            out.print(ZMessages.PREVIUS_STATE_WRONG);
             return;
         }
 
@@ -85,10 +85,10 @@ public class UpdateConfig extends BaseService {
         try {
             serviceDao.update(name, newService);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Configuración Actualizada {0} con nuevos parametros {1}", new Object[]{name, newService});
-            out.print(Errors.SUCCESS);
+            out.print(ZMessages.SUCCESS);
         } catch (MongoException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error actualizando configuración {0} con nuevos parametros {1}", new Object[]{name, newService});
-            out.print(Errors.UPDATE_FAILED);
+            out.print(ZMessages.UPDATE_FAILED);
         }
     }
 

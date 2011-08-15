@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
-import org.zonales.errors.Errors;
+import org.zonales.errors.ZMessages;
 import org.zonales.metadata.ZCrawling;
 
 /**
@@ -64,7 +64,7 @@ public class GetTestService extends BaseService {
                 out.print(urlServlet);
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
-                out.print(Errors.DATA_NOT_FOUND);
+                out.print(ZMessages.DATA_NOT_FOUND);
             }
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();
@@ -73,7 +73,7 @@ public class GetTestService extends BaseService {
                 stacktrace.append("\n");
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
-            out.print(Errors.UNKNOWN_ERROR);
+            out.print(ZMessages.UNKNOWN_ERROR);
         }
 
 

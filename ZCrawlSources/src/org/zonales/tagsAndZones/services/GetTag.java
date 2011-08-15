@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.BaseService;
-import org.zonales.errors.Errors;
+import org.zonales.errors.ZMessages;
 import org.zonales.tagsAndZones.daos.TagDao;
 
 /**
@@ -31,7 +31,7 @@ public class GetTag extends BaseService {
             String retrieve;
 
             if (tagDao == null) {
-                out.print(Errors.NO_DB_FAILED);
+                out.print(ZMessages.NO_DB_FAILED);
                 return;
             }
 
@@ -49,7 +49,7 @@ public class GetTag extends BaseService {
                 out.print(retrieve);
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "No se encontraron tags");
-                out.print(Errors.DATA_NOT_FOUND);
+                out.print(ZMessages.DATA_NOT_FOUND);
             }
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();
@@ -60,7 +60,7 @@ public class GetTag extends BaseService {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                     "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
 
-            out.print(Errors.MONGODB_ERROR);
+            out.print(ZMessages.MONGODB_ERROR);            
         } finally {
             if (out != null) {
                 out.close();

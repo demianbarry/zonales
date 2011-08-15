@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.BaseService;
-import org.zonales.errors.Errors;
+import org.zonales.errors.ZMessages;
 import org.zonales.tagsAndZones.daos.TypeDao;
 import org.zonales.tagsAndZones.objects.Type;
 
@@ -33,7 +33,7 @@ public class SetType extends BaseService {
         TypeDao typeDao = new TypeDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         if (typeDao == null) {
-            out.print(Errors.NO_DB_FAILED);
+            out.print(ZMessages.NO_DB_FAILED);
             return;
         }
         try {
@@ -41,7 +41,7 @@ public class SetType extends BaseService {
             type.setState(State.GENERATED);
             out.print(props.getProperty("success_message"));
         } catch (MongoException e) {
-           out.print(Errors.MONGODB_ERROR);
+           out.print(ZMessages.MONGODB_ERROR);
         }
 
 
