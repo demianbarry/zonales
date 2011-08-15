@@ -71,3 +71,85 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     "ext_zip_code" : "String"
 }
 }}}
+
+== Extracciones ==
+
+{{{
+{
+    "cod" : 9, //Integer
+    "msg" : "Mensaje",
+    "descripcion" : "Descripción",
+    "localidad" : "Localidad",
+    "fuente" : "Fuente",
+    "tags" : [
+        "tag",
+        "tag",
+        "tag"
+    ],
+    "uri_fuente" : "URI de la fuente",
+    "criterios" : [
+        {
+            "usuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "amigos de" : "Usuario"
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ],
+            "siosi" : true/false
+        }
+    ],
+    "no-criterios" : [
+        {
+            "usuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "amigos de" : "Usuario"
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ],
+            "siosi" : true/false
+        }
+    ],
+    "comentarios" : [
+        "usuario",
+        "usuario",
+        "usuario"
+    ],
+    "filtros" : [
+        {
+            "min_shuld_match" : 9 //Número
+        },
+        {
+            "dispersión" : 9 //Número
+        },
+        {
+            "lista negra de usuarios" : true/false
+        },
+        {
+            "lista negra de palabras" : true/false
+        },
+        {
+            "minActions" : 9 //Número
+        }
+    ],
+    "tagsFuente" : true/false,
+    "verbatim" : "Consulta original"
+}
+}}}
