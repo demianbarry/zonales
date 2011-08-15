@@ -1,0 +1,128 @@
+#summary One-sentence summary of this page.
+
+= Introducción =
+----
+
+Descripción de los servicios de persistencia de gramáticas de extracción, con sus respectivos parámetros.
+
+
+= Servicios para persistencia de extracciones =
+
+<br>
+----
+== GetConfig ==
+----
+
+*_URI_*: /getConfig <br>
+*_Respuesta_*: Configuración de la fuente de extracción solicitada <br>
+*_Formato_*: JSON
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a recuperar / All || Cualquier cadena || Si se especifica "all" como name trae todas las configuraciones ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getConfig?name=facebook
+
+<br>
+----
+== SetZGram ==
+----
+
+*_URI_*: /setZGram <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: JSON
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| cod || Si || Código de respuesta del parser || Códigos de ZMessage || ||
+|| msg || No || Mensaje de respuesta del parser || Cualquier cadena || ||
+|| metadata || Si || Metadata obtenida como respuesta del parser || Cualquier cadena || ||
+|| zona || Si || Zona de la extracción || Cadena que representa a la Zona ||  Debe existir en la base de zonas ||
+|| fuente || Si || Fuente para la extracción || Cadena que representa a la Fuente || Debe existir en la base de configuraciones de fuentes de extracción ||
+|| tags || No || Tags a asignar para la extracción || Lista de tags separados por coma "," || Deben existir en la base de tags ||
+
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false
+
+<br>
+----
+== UpdateConfig ==
+----
+
+URI: /updateConfig <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: JSON
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a modificar || Cualquier cadena || ||
+|| newname || No || Nuevo nombre de la fuente de extracción || Cualquier cadena || ||
+|| newuri || No || Nueva Uri de la fuente de extracción || Cualquier cadena que represente una URL || ||
+|| newplugins || No || Plugins vinculados a la fuente de extracción que se modifican o agregan || Lista de plugins separados por punto y coma (";"). Cada plugins se compone de un par nombre,tipo separado por coma(",") || Falta control sobre existencia previa de plugins del mismo tipo ||
+|| newparams || No || Parámetros de la fuente de extracción que se modifican o agregan || Lista de parámetros separados por punto y coma (";"). Cada parámetro se compone de un par nombre,requerido separado por coma(",") || Falta control sobre existencia previa de los parámetros ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+
+<br>
+----
+== GetServiceURL ==
+----
+
+URI: /getServiceURL <br>
+*_Respuesta_*: URL de llamada al servicio <br>
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| q || Si || Metadata de la cual se desea obtener la URL del servicio de extracción || ZGramData || ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/updateConfig?q={"localidad":"Puerto Madryn","tags":["Turismo"],"fuente":"twitter","criterios":[{"delUsuario":"ozonodigital"},{"delUsuario":"ichubut"},{"delUsuario":"JornadaWeb?"},{"delUsuario":"tiempoonline"},{"palabras":["Turismo"]},{"palabras":["Avistaje"]}],"filtros":[{"minActions":1}]}
+
+<br>
+----
+== GetPluginTypes ==
+----
+
+*_URI_*: /getPluginTypes <br>
+*_Respuesta_*: Lista de tipos de plugins disponibles (Duro) <br>
+*_Formato_*: JSON
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/getPluginTypes
+
+
+<br>
+----
+== PublishConfig ==
+----
+
+*_URI_*: /publishConfig <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción a publicar o despublicar || Cualquier cadena ||  ||
+|| publish || Si || Booleano para indicar si deseo publicar o despublicar || true/false || Para publicar el estado de la configuración debe ser "Generada" y para despublicar debe ser "Publicada" ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/publishConfig?name=facebook&publish=true
+
+<br>
+----
+== RemoveConfig ==
+----
+
+*_URI_*: /removeConfig <br>
+*_Respuesta_*: success / error <br>
+*_Formato_*: Plain Text (Falta mejorar esquema de errores)
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
+|| name || Si || Nombre de la configuración de la fuente de extracción que se desea anular || Cualquier cadena || El estado de la fuente de extracción debe ser "Despublicada" o "Generada" para poder anular ||
+
+*_Ejemplo_*: http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook
