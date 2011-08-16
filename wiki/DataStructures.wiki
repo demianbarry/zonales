@@ -150,6 +150,9 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
         }
     ],
     "tagsFuente" : true/false,
-    "verbatim" : "Consulta original"
+    "verbatim" : "Consulta original",
+    "estado" : "Estado",
+    "creado" : "Fecha de creación en milisegundos",
+    "modificado" : "Fecha de última modificación en milisegundos"
 }
 }}}
