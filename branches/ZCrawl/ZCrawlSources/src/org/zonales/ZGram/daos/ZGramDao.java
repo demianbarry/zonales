@@ -377,11 +377,16 @@ public class ZGramDao extends BaseDao {
 
         cur = this.extractions.find(query);
 
-        //resp = cur.next();
+        String ret = "[";
+        while (cur.hasNext()) {
+            ret += cur.next() + ",";
+        }
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
         //resp.removeField("_id");
-        System.out.println(cur);
+        System.out.println(ret);
 
-        return cur.toString();
+        return ret;
     }
 
     public String retrieveAll() {
@@ -390,6 +395,7 @@ public class ZGramDao extends BaseDao {
 
     public String retrieveAll(Boolean onlyNames) {
         String ret = "[";
+
         DBObject resp;
         DBCursor cur = this.extractions.find();
 
@@ -397,19 +403,17 @@ public class ZGramDao extends BaseDao {
             resp = cur.next();
             //resp.removeField("_id");
             System.out.println(resp);
-            if (resp.get("estado") == null || !((String)resp.get("state")).equals(State.VOID)) {
+            if (resp.get("estado") != null) {
                 if (onlyNames) {
-                    ret += resp.get("localidad");
-                    ret += resp.get("tags");
-                    ret += resp.get("descripcion");
-                    ret += resp.get("estado");
-                    ret += resp.get("modificado") + ",";
+                    ret += "{\"localidad\": \"" + resp.get("localidad") + "\",";
+                    ret += "\"tags\": " + resp.get("tags")  + ",";
+                    ret += "\"descripcion\": \"" + resp.get("descripcion") + "\",";
+                    ret += "\"estado\": \"" + resp.get("estado") + "\",";
+                    ret += "\"modificado\": " + resp.get("modificado") + "},";
                 } else {
                     ret += resp + ",";
                 }
-            } else {
-                return null;
-            }
+            } 
         }
 
         ret = ret.substring(0, ret.length() - 1);

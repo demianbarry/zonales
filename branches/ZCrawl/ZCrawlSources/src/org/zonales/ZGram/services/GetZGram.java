@@ -34,23 +34,25 @@ public class GetZGram extends BaseService {
         ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         String retrieve;
 
-        if ("all".equals(id)) {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todas las extracciones");
-            retrieve = zGramDao.retrieveAll();
-        } else if ("allNames".equals(id)) {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos datos básicos de las extracciones");
-            retrieve = zGramDao.retrieveAll(true);
-        } else {
-            if (id != null) {
+        if (id != null) {
+            if ("all".equals(id)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todas las extracciones");
+                retrieve = zGramDao.retrieveAll();
+            } else if ("allNames".equals(id)) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos datos básicos de las extracciones");
+                retrieve = zGramDao.retrieveAll(true);
+            } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la extracción {0}", new Object[]{id});
                 retrieve = zGramDao.retrieveJson(id);
-            } else if (filtrosJson != null) {
+            }
+        } else {
+            if (filtrosJson != null) {
                 Gson filtrosGson = new Gson();
                 ZGramFilter filtros = filtrosGson.fromJson(filtrosJson, ZGramFilter.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo extracción segun filtros {0}", new Object[]{filtros});
                 retrieve = zGramDao.retrieveJson(filtros);
             } else {
-                retrieve = null;
+                //retrieve = null;
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Debe especificarse id o filtros");
                 out.print(ZMessages.PARAM_REQUIRED_FAILED);
                 return;
