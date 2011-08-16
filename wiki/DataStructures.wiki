@@ -76,6 +76,8 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
 
 {{{
 {
+    "cod" : 9, //Integer
+    "msg" : "Mensaje",
     "descripcion" : "Descripción",
     "localidad" : "Localidad",
     "fuente" : "Fuente",
