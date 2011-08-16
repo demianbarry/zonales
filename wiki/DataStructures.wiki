@@ -76,8 +76,6 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
 
 {{{
 {
-    "cod" : 9, //Integer
-    "msg" : "Mensaje",
     "descripcion" : "Descripción",
     "localidad" : "Localidad",
     "fuente" : "Fuente",
@@ -86,17 +84,17 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
         "tag",
         "tag"
     ],
-    "uri_fuente" : "URI de la fuente",
+    "uriFuente" : "URI de la fuente",
     "criterios" : [
         {
-            "usuarios" : [
+            "deLosUsuarios" : [
                 "usuario",
                 "usuario",
                 "usuario"
             ]
         },
         {
-            "amigos de" : "Usuario"
+            "amigosDe" : "Usuario"
         },
         {
             "palabras" : [
@@ -107,16 +105,16 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
             "siosi" : true/false
         }
     ],
-    "no-criterios" : [
+    "noCriterios" : [
         {
-            "usuarios" : [
+            "deLosUsuarios" : [
                 "usuario",
                 "usuario",
                 "usuario"
             ]
         },
         {
-            "amigos de" : "Usuario"
+            "amigosDe" : "Usuario"
         },
         {
             "palabras" : [
@@ -134,16 +132,16 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     ],
     "filtros" : [
         {
-            "min_shuld_match" : 9 //Número
+            "minShuldMatch" : 9 //Número
         },
         {
             "dispersión" : 9 //Número
         },
         {
-            "lista negra de usuarios" : true/false
+            "listaNegraDeUsuarios" : true/false
         },
         {
-            "lista negra de palabras" : true/false
+            "listaNegraDePalabras" : true/false
         },
         {
             "minActions" : 9 //Número
