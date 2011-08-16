@@ -53,6 +53,18 @@
         <servlet-name>SetZone</servlet-name>
         <servlet-class>org.zonales.tagsAndZones.services.SetZone</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SetZGram</servlet-name>
+        <servlet-class>org.zonales.ZGram.services.SetZGram</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetZGram</servlet-name>
+        <servlet-class>org.zonales.ZGram.services.GetZGram</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateZGram</servlet-name>
+        <servlet-class>org.zonales.ZGram.services.UpdateZGram</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -104,6 +116,18 @@
     <servlet-mapping>
         <servlet-name>SetZone</servlet-name>
         <url-pattern>/setZone</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetZGram</servlet-name>
+        <url-pattern>/setZGram</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetZGram</servlet-name>
+        <url-pattern>/getZGram</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateZGram</servlet-name>
+        <url-pattern>/updateZGram</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
