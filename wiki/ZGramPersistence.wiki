@@ -16,11 +16,13 @@ Descripción de los servicios de persistencia de gramáticas de extracción, con
 *_URI_*: /getZGram <br>
 *_Respuesta_*: Extracción solicitada <br>
 *_Formato_*: JSON
+*_Observaciones_*: Debe especificarse el parámetros "id" o el parámetro "filtros"
 
 === Parámetros ===
 
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
-|| id || Si || Id de la extracción a recuperar / all / allNames || Cualquier cadena || Si se especifica "all" como name trae todas las extracciones, "AllNames" trae solamente los datos básicos de la extracción ||
+|| id || No || Id de la extracción a recuperar / all / allNames || Cualquier cadena || Si se especifica "all" como name trae todas las extracciones, "AllNames" trae solamente los datos básicos de la extracción ||
+|| filtros || No || Filtros para recuperar extracciones || JSON de filtros ||  ||
 
 *_Ejemplo_*: 
 
