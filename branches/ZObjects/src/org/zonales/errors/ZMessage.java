@@ -13,6 +13,9 @@ public class ZMessage {
     private int cod;
     private String msg;
 
+    public ZMessage() {
+    }
+
     public ZMessage(int cod, String msg) {
         this.cod = cod;
         this.msg = msg;
