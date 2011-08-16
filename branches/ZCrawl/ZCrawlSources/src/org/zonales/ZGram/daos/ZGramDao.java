@@ -16,6 +16,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.zonales.BaseDao;
 import org.zonales.ZGram.ZGram;
+import org.zonales.ZGram.ZGramFilter;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
@@ -26,16 +27,16 @@ import org.zonales.metadata.Filtro;
  */
 public class ZGramDao extends BaseDao {
 
-    private DBCollection zgrams;
+    private DBCollection extractions;
 
     public ZGramDao(String db_host, Integer db_port, String db_name) {
         super(db_host, db_port, db_name);
-        this.zgrams = this.db.getCollection("zgrams");
-        this.zgrams.createIndex(new BasicDBObject("localidad", 1));
-        this.zgrams.createIndex(new BasicDBObject("fuente", 1));
-        this.zgrams.createIndex(new BasicDBObject("creado", 1));
-        this.zgrams.createIndex(new BasicDBObject("modificado", 1));
-        this.zgrams.createIndex(new BasicDBObject("estado", 1));
+        this.extractions = this.db.getCollection("extractions");
+        this.extractions.createIndex(new BasicDBObject("localidad", 1));
+        this.extractions.createIndex(new BasicDBObject("fuente", 1));
+        this.extractions.createIndex(new BasicDBObject("creado", 1));
+        this.extractions.createIndex(new BasicDBObject("modificado", 1));
+        this.extractions.createIndex(new BasicDBObject("estado", 1));
     }
 
     public String save(ZGram zgram) throws MongoException {
@@ -61,7 +62,7 @@ public class ZGramDao extends BaseDao {
         }
         
         if (zgram.getMetadata().getUriFuente() != null)
-            zgramDoc.put("uri_fuente", zgram.getMetadata().getUriFuente());
+            zgramDoc.put("uriFuente", zgram.getMetadata().getUriFuente());
 
         if (zgram.getMetadata().getCriterios() != null) {
             ArrayList criteriosToDoc = new ArrayList();
@@ -72,10 +73,14 @@ public class ZGramDao extends BaseDao {
                     for (String usuario: usuarios) {
                         usuariosToDoc.add(usuario);
                     }
-                    criteriosToDoc.add(usuariosToDoc);
+                    BasicDBObject usuariosDoc = new BasicDBObject();
+                    usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                    criteriosToDoc.add(usuariosDoc);
                 }
                 if (criterio.getAmigosDe() != null) {
-                    criteriosToDoc.add(criterio.getAmigosDe());
+                    BasicDBObject amigosDoc = new BasicDBObject();
+                    amigosDoc.put("amigosDe", amigosDoc);
+                    criteriosToDoc.add(amigosDoc);
                 }
                 if (criterio.getPalabras() != null) {
                     List<String> palabras = criterio.getPalabras();
@@ -101,10 +106,14 @@ public class ZGramDao extends BaseDao {
                     for (String usuario: usuarios) {
                         usuariosToDoc.add(usuario);
                     }
-                    nocriteriosToDoc.add(usuariosToDoc);
+                    BasicDBObject usuariosDoc = new BasicDBObject();
+                    usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                    nocriteriosToDoc.add(usuariosDoc);
                 }
                 if (nocriterio.getAmigosDe() != null) {
-                    nocriteriosToDoc.add(nocriterio.getAmigosDe());
+                    BasicDBObject amigosDoc = new BasicDBObject();
+                    amigosDoc.put("amigosDe", amigosDoc);
+                    nocriteriosToDoc.add(amigosDoc);
                 }
                 if (nocriterio.getPalabras() != null) {
                     List<String> palabras = nocriterio.getPalabras();
@@ -118,7 +127,7 @@ public class ZGramDao extends BaseDao {
                     nocriteriosToDoc.add(palabrasDoc);
                 }
             }
-            zgramDoc.put("no-criterios", nocriteriosToDoc);
+            zgramDoc.put("noCriterios", nocriteriosToDoc);
         }
 
         if (zgram.getMetadata().getComentarios() != null) {
@@ -135,7 +144,7 @@ public class ZGramDao extends BaseDao {
             for (Filtro filtro : zgram.getMetadata().getFiltros()) {
                 if (filtro.getMinShuldMatch() != null){
                     filtroDoc.clear();
-                    filtroDoc.put("min_shuld_match", filtro.getMinShuldMatch());
+                    filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                     filtrosToDoc.add(filtroDoc);
                 }
                 if (filtro.getDispersion() != null){
@@ -145,12 +154,12 @@ public class ZGramDao extends BaseDao {
                 }
                 if (filtro.getListaNegraDeUsuarios() != null){
                     filtroDoc.clear();
-                    filtroDoc.put("lista negra de usuarios", filtro.getListaNegraDeUsuarios());
+                    filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                     filtrosToDoc.add(filtroDoc);
                 }
                 if (filtro.getListaNegraDePalabras() != null){
                     filtroDoc.clear();
-                    filtroDoc.put("lista negra de palabras", filtro.getListaNegraDePalabras());
+                    filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                     filtrosToDoc.add(filtroDoc);
                 }
                 if (filtro.getMinActions() != null){
@@ -163,14 +172,14 @@ public class ZGramDao extends BaseDao {
         }
 
         if (zgram.getMetadata().getTagsFuente() != null)
-            zgramDoc.put("tags_fuente", zgram.getMetadata().getTagsFuente());
+            zgramDoc.put("tagsFuente", zgram.getMetadata().getTagsFuente());
 
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
 
         System.out.println(zgramDoc.toString());
-        this.zgrams.insert(zgramDoc);
+        this.extractions.insert(zgramDoc);
         return zgramDoc.get("_id").toString();
     }
 
@@ -179,7 +188,7 @@ public class ZGramDao extends BaseDao {
         DBObject resp;
         DBCursor cur;
 
-        cur = this.zgrams.find(query);
+        cur = this.extractions.find(query);
 
         resp = cur.next();
 
@@ -207,7 +216,7 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("tags", tagsToDoc);
                 }
 
-                zgramDoc.put("uri_fuente", newZgram.getMetadata().getUriFuente());
+                zgramDoc.put("uriFuente", newZgram.getMetadata().getUriFuente());
 
                 for (Criterio criterio : newZgram.getMetadata().getCriterios()) {
                     ArrayList criteriosToDoc = new ArrayList();
@@ -217,10 +226,14 @@ public class ZGramDao extends BaseDao {
                         for (String usuario: usuarios) {
                             usuariosToDoc.add(usuario);
                         }
-                        criteriosToDoc.add(usuariosToDoc);
+                        BasicDBObject usuariosDoc = new BasicDBObject();
+                        usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                        criteriosToDoc.add(usuariosDoc);
                     }
                     if (criterio.getAmigosDe() != null) {
-                        criteriosToDoc.add(criterio.getAmigosDe());
+                        BasicDBObject amigosDoc = new BasicDBObject();
+                        amigosDoc.put("amigosDe", amigosDoc);
+                        criteriosToDoc.add(amigosDoc);
                     }
                     if (criterio.getPalabras() != null) {
                         List<String> palabras = criterio.getPalabras();
@@ -244,10 +257,14 @@ public class ZGramDao extends BaseDao {
                         for (String usuario: usuarios) {
                             usuariosToDoc.add(usuario);
                         }
-                        nocriteriosToDoc.add(usuariosToDoc);
+                        BasicDBObject usuariosDoc = new BasicDBObject();
+                        usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                        nocriteriosToDoc.add(usuariosDoc);
                     }
                     if (nocriterio.getAmigosDe() != null) {
-                        nocriteriosToDoc.add(nocriterio.getAmigosDe());
+                        BasicDBObject amigosDoc = new BasicDBObject();
+                        amigosDoc.put("amigosDe", amigosDoc);
+                        nocriteriosToDoc.add(amigosDoc);
                     }
                     if (nocriterio.getPalabras() != null) {
                         List<String> palabras = nocriterio.getPalabras();
@@ -260,7 +277,7 @@ public class ZGramDao extends BaseDao {
                         palabrasDoc.put("siosi", nocriterio.getSiosi());
                         nocriteriosToDoc.add(palabrasDoc);
                     }
-                    zgramDoc.put("no-criterios", nocriteriosToDoc);
+                    zgramDoc.put("noCriterios", nocriteriosToDoc);
                 }
 
                 if (newZgram.getMetadata().getComentarios() != null) {
@@ -277,7 +294,7 @@ public class ZGramDao extends BaseDao {
                     for (Filtro filtro : newZgram.getMetadata().getFiltros()) {
                         if (filtro.getMinShuldMatch() != null){
                             filtroDoc.clear();
-                            filtroDoc.put("min_shuld_match", filtro.getMinShuldMatch());
+                            filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                             filtrosToDoc.add(filtroDoc);
                         }
                         if (filtro.getDispersion() != null){
@@ -287,12 +304,12 @@ public class ZGramDao extends BaseDao {
                         }
                         if (filtro.getListaNegraDeUsuarios() != null){
                             filtroDoc.clear();
-                            filtroDoc.put("lista negra de usuarios", filtro.getListaNegraDeUsuarios());
+                            filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                             filtrosToDoc.add(filtroDoc);
                         }
                         if (filtro.getListaNegraDePalabras() != null){
                             filtroDoc.clear();
-                            filtroDoc.put("lista negra de palabras", filtro.getListaNegraDePalabras());
+                            filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                             filtrosToDoc.add(filtroDoc);
                         }
                         if (filtro.getMinActions() != null){
@@ -305,7 +322,7 @@ public class ZGramDao extends BaseDao {
                 }
 
                 if (newZgram.getMetadata().getTagsFuente() != null)
-                    zgramDoc.put("tags_fuente", newZgram.getMetadata().getTagsFuente());
+                    zgramDoc.put("tagsFuente", newZgram.getMetadata().getTagsFuente());
 
                 zgramDoc.put("estado", newZgram.getEstado());
 
@@ -314,19 +331,19 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("localidad", (String)resp.get("localidad"));
                 zgramDoc.put("fuente", (String)resp.get("fuente"));
                 zgramDoc.put("tags", (ArrayList)resp.get("tags"));
-                zgramDoc.put("uri_fuente", (String)resp.get("uri_fuente"));
+                zgramDoc.put("uriFuente", (String)resp.get("uriFuente"));
                 zgramDoc.put("criterios", (ArrayList)resp.get("criterios"));
-                zgramDoc.put("no-criterios", (ArrayList)resp.get("no-criterios"));
+                zgramDoc.put("noCriterios", (ArrayList)resp.get("noCriterios"));
                 zgramDoc.put("comentarios", (ArrayList)resp.get("comentarios"));
                 zgramDoc.put("filtros", (ArrayList)resp.get("filtros"));
-                zgramDoc.put("tags_fuente", (Boolean)resp.get("tags_fuente"));
+                zgramDoc.put("tagsFuente", (Boolean)resp.get("tagsFuente"));
                 zgramDoc.put("estado", (String)resp.get("estado"));
             }
 
             zgramDoc.put("creado", (Date)resp.get("creado"));
             zgramDoc.put("modificado", (new Date()).getTime());
 
-            this.zgrams.update(new BasicDBObject().append("_id", id), zgramDoc);
+            this.extractions.update(new BasicDBObject().append("_id", id), zgramDoc);
         }
     }
 
@@ -335,13 +352,36 @@ public class ZGramDao extends BaseDao {
         DBObject resp;
         DBCursor cur;
 
-        cur = this.zgrams.find(query);
+        cur = this.extractions.find(query);
 
         resp = cur.next();
         //resp.removeField("_id");
         System.out.println(resp);
 
         return resp.toString();
+    }
+
+    public String retrieveJson(ZGramFilter filtros) {
+        BasicDBObject query = new BasicDBObject();
+        DBObject resp;
+        DBCursor cur;
+
+        if(filtros.getEstado() != null)
+            query.put("estado", filtros.getEstado());
+        if(filtros.getFuente() != null)
+            query.put("fuente", filtros.getFuente());
+        if(filtros.getLocalidad() != null)
+            query.put("localidad", filtros.getLocalidad());
+        if(filtros.getTags() != null)
+            query.put("tags", filtros.getTags());
+
+        cur = this.extractions.find(query);
+
+        //resp = cur.next();
+        //resp.removeField("_id");
+        System.out.println(cur);
+
+        return cur.toString();
     }
 
     public String retrieveAll() {
@@ -351,7 +391,7 @@ public class ZGramDao extends BaseDao {
     public String retrieveAll(Boolean onlyNames) {
         String ret = "[";
         DBObject resp;
-        DBCursor cur = this.zgrams.find();
+        DBCursor cur = this.extractions.find();
 
         while (cur.hasNext()) {
             resp = cur.next();
