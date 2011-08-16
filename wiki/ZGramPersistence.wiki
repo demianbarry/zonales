@@ -20,7 +20,7 @@ Descripción de los servicios de persistencia de gramáticas de extracción, con
 === Parámetros ===
 
 || *Parámetro* || *Requerido* || *Descripción* || *Posibles valores* || *Observaciones* ||
-|| id || Si || Id de la extracción a recuperar / All / AllNames || Cualquier cadena || Si se especifica "all" como name trae todas las extracciones, "AllNames" trae solamente los datos básicos de la extracción ||
+|| id || Si || Id de la extracción a recuperar / all / allNames || Cualquier cadena || Si se especifica "all" como name trae todas las extracciones, "AllNames" trae solamente los datos básicos de la extracción ||
 
 *_Ejemplo_*: 
 
