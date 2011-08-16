@@ -175,7 +175,7 @@ public class ZGramDao extends BaseDao {
     }
 
     public void update(String id, ZGram newZgram) throws MongoException {
-        BasicDBObject query = new BasicDBObject("_id", id);
+        BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
         DBObject resp;
         DBCursor cur;
 
