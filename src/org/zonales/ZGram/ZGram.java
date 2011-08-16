@@ -5,6 +5,9 @@
 
 package org.zonales.ZGram;
 
+import java.util.Date;
+import org.zonales.crawlConfig.objets.State;
+import org.zonales.errors.ZMessage;
 import org.zonales.metadata.ZCrawling;
 
 /**
@@ -12,25 +15,29 @@ import org.zonales.metadata.ZCrawling;
  * @author nacho
  */
 public class ZGram {
-    private Error error;
+    private ZMessage zmessage;
     private ZCrawling metadata;
     private String verbatim;
+    private String estado;
+    private Date creado;
+    private Date modificado;
 
     public ZGram() {
     }
 
-    public ZGram(Error error, ZCrawling metadata, String verbatim) {
-        this.error = error;
+    public ZGram(ZMessage zmessage, ZCrawling metadata, String verbatim, String estado) {
+        this.zmessage = zmessage;
         this.metadata = metadata;
         this.verbatim = verbatim;
+        this.estado = estado;
     }
 
-    public Error getError() {
-        return error;
+    public ZMessage getZmessage() {
+        return zmessage;
     }
 
-    public void setError(Error error) {
-        this.error = error;
+    public void setZmessage(ZMessage zmessage) {
+        this.zmessage = zmessage;
     }
 
     public ZCrawling getMetadata() {
@@ -47,6 +54,30 @@ public class ZGram {
 
     public void setVerbatim(String verbatim) {
         this.verbatim = verbatim;
+    }
+
+    public Date getCreado() {
+        return creado;
+    }
+
+    public void setCreado(Date creado) {
+        this.creado = creado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Date getModificado() {
+        return modificado;
+    }
+
+    public void setModificado(Date modificado) {
+        this.modificado = modificado;
     }
 
 }
