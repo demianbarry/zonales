@@ -32,32 +32,41 @@ public class GetZGram extends BaseService {
         String id = request.getParameter("id");
         String filtrosJson = request.getParameter("filtros");
         ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-        String retrieve;
+        String retrieve = null;
+        ZGramFilter filtros = null;
+
+        if (filtrosJson != null) {
+            Gson filtrosGson = new Gson();
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo extracción segun filtros JSON {0}", new Object[]{filtrosJson});
+            filtros = filtrosGson.fromJson(filtrosJson, ZGramFilter.class);
+        }
 
         if (id != null) {
             if ("all".equals(id)) {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todas las extracciones");
                 retrieve = zGramDao.retrieveAll();
             } else if ("allNames".equals(id)) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos datos básicos de las extracciones");
-                retrieve = zGramDao.retrieveAll(true);
+                if (filtrosJson == null) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los datos básicos de las extracciones");
+                    retrieve = zGramDao.retrieveAll(true);
+                } else {
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los datos básicos de las extracciones segun filtros");
+                    retrieve = zGramDao.retrieveJson(filtros, true);
+                }
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la extracción {0}", new Object[]{id});
                 retrieve = zGramDao.retrieveJson(id);
             }
+        } else if (filtrosJson != null) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo extracción segun filtros {0}", new Object[]{filtrosJson});
+                retrieve = zGramDao.retrieveJson(filtros, false);
         } else {
-            if (filtrosJson != null) {
-                Gson filtrosGson = new Gson();
-                ZGramFilter filtros = filtrosGson.fromJson(filtrosJson, ZGramFilter.class);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo extracción segun filtros {0}", new Object[]{filtros});
-                retrieve = zGramDao.retrieveJson(filtros);
-            } else {
-                //retrieve = null;
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Debe especificarse id o filtros");
-                out.print(ZMessages.PARAM_REQUIRED_FAILED);
-                return;
-            }
+            retrieve = null;
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Debe especificarse id o filtros");
+            out.print(ZMessages.PARAM_REQUIRED_FAILED);
+            return;
         }
+
         if (retrieve != null) {
             out.print(retrieve);
         } else {
