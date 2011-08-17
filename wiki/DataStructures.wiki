@@ -170,4 +170,5 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     ],
     "estado" : "estado"
     "periodo" : "day" / "week" / "month" / "all"
+}
 }}}
