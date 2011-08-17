@@ -73,5 +73,11 @@ public class ZGramFilter {
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
-    
+
+    @Override
+    public String toString() {
+        return "ZGramFilter{" + "localidad=" + localidad + "fuente=" + fuente + "periodo=" + periodo + "tags=" + tags + "estado=" + estado + '}';
+    }
+
+
 }
