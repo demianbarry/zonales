@@ -156,3 +156,18 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     "modificado" : "Fecha de última modificación en milisegundos"
 }
 }}}
+
+== Filtros para las Extracciones ==
+
+{{{
+{
+    "localidad" : "Localidad",
+    "fuente" : "Fuente",
+    "tags" : [
+        "tag",
+        "tag",
+        "tag"
+    ],
+    "estado" : "estado"
+    "periodo" : "day" / "week" / "month" / "all"
+}}}
