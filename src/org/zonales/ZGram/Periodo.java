@@ -13,10 +13,10 @@ import java.util.ArrayList;
  */
 public class Periodo {
 
-    public static final String DAY = "Day";
-    public static final String WEEK = "Week";
-    public static final String MONTH = "Month";
-    public static final String ALL = "All";
+    public static final String DAY = "day";
+    public static final String WEEK = "week";
+    public static final String MONTH = "month";
+    public static final String ALL = "all";
 
     public static ArrayList<String> getPeriodos() {
         ArrayList<String> periodos = new ArrayList<String>();
