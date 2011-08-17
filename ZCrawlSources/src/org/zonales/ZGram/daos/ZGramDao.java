@@ -11,13 +11,14 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.zonales.BaseDao;
+import org.zonales.ZGram.Periodo;
 import org.zonales.ZGram.ZGram;
 import org.zonales.ZGram.ZGramFilter;
-import org.zonales.crawlConfig.objets.State;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
 
@@ -177,6 +178,7 @@ public class ZGramDao extends BaseDao {
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
+        zgramDoc.put("modificado", (new Date()).getTime());
 
         System.out.println(zgramDoc.toString());
         this.extractions.insert(zgramDoc);
@@ -340,7 +342,7 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("estado", (String)resp.get("estado"));
             }
 
-            zgramDoc.put("creado", (Date)resp.get("creado"));
+            zgramDoc.put("creado", (Long)resp.get("creado"));
             zgramDoc.put("modificado", (new Date()).getTime());
 
             this.extractions.update(new BasicDBObject().append("_id", id), zgramDoc);
@@ -361,7 +363,7 @@ public class ZGramDao extends BaseDao {
         return resp.toString();
     }
 
-    public String retrieveJson(ZGramFilter filtros) {
+    public String retrieveJson(ZGramFilter filtros, Boolean onlyNames) {
         BasicDBObject query = new BasicDBObject();
         DBObject resp;
         DBCursor cur;
@@ -375,16 +377,44 @@ public class ZGramDao extends BaseDao {
         if(filtros.getTags() != null)
             query.put("tags", filtros.getTags());
 
+        Calendar now = Calendar.getInstance();
+        if(filtros.getPeriodo() != null && !filtros.getPeriodo().equals(Periodo.ALL)) {
+            System.out.println(now.getTime().getTime());
+            now.set(Calendar.HOUR_OF_DAY, 0);
+            now.set(Calendar.MINUTE, 0);
+            now.set(Calendar.SECOND, 0);
+            now.set(Calendar.MILLISECOND, 0);
+            if (filtros.getPeriodo().equals(Periodo.DAY))
+                query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+            now.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            if (filtros.getPeriodo().equals(Periodo.WEEK))
+                query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+            now.set(Calendar.DAY_OF_MONTH, 1);
+            if (filtros.getPeriodo().equals(Periodo.MONTH))
+                query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+        }
+
         cur = this.extractions.find(query);
 
         String ret = "[";
+        Boolean nothing = true;
         while (cur.hasNext()) {
-            ret += cur.next() + ",";
+            resp = cur.next();
+            if (onlyNames) {
+                ret += "{\"_id\": \"" + resp.get("_id") + "\",";
+                ret += "\"localidad\": \"" + resp.get("localidad") + "\",";
+                ret += "\"tags\": " + resp.get("tags")  + ",";
+                ret += "\"descripcion\": \"" + resp.get("descripcion") + "\",";
+                ret += "\"estado\": \"" + resp.get("estado") + "\",";
+                ret += "\"modificado\": " + resp.get("modificado") + "},";
+            } else {
+                ret += resp + ",";
+            }
+            if (nothing) nothing = false;
         }
-        ret = ret.substring(0, ret.length() - 1);
+        if (!nothing)
+            ret = ret.substring(0, ret.length() - 1);
         ret += "]";
-        //resp.removeField("_id");
-        System.out.println(ret);
 
         return ret;
     }
@@ -405,7 +435,8 @@ public class ZGramDao extends BaseDao {
             System.out.println(resp);
             if (resp.get("estado") != null) {
                 if (onlyNames) {
-                    ret += "{\"localidad\": \"" + resp.get("localidad") + "\",";
+                    ret += "{\"_id\": \"" + resp.get("_id") + "\",";
+                    ret += "\"localidad\": \"" + resp.get("localidad") + "\",";
                     ret += "\"tags\": " + resp.get("tags")  + ",";
                     ret += "\"descripcion\": \"" + resp.get("descripcion") + "\",";
                     ret += "\"estado\": \"" + resp.get("estado") + "\",";
