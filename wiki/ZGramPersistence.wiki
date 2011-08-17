@@ -15,8 +15,8 @@ Descripción de los servicios de persistencia de gramáticas de extracción, con
 
 *_URI_*: /getZGram <br>
 *_Respuesta_*: Extracción solicitada <br>
-*_Formato_*: JSON
-*_Observaciones_*: Debe especificarse el parámetros "id" o el parámetro "filtros"
+*_Formato_*: JSON <br>
+*_Observaciones_*: Deben especificarse alguno de los parámetros o ambos.
 
 === Parámetros ===
 
