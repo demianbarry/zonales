@@ -49,7 +49,6 @@ public class ZCrawlParser extends HttpServlet {
             Parser.main(zcrawling, out, args);
             out.print("{\"cod\": \"" + ZMessages.SUCCESS.getCod() + "\", \"msg\": \"" + ZMessages.SUCCESS.getMsg() + "\", meta: \"" + (new Gson()).toJson(zcrawling).replace("\\\"", "").replace("\"", "\\\"") + "\"}");
         } catch (ParserException ex) {
-            Logger.getLogger(ZCrawlParser.class.getName()).log(Level.INFO, "{0} - {1} - {2}", new Object[]{zcrawling.getLocalidad(), zcrawling.getFuente(), zcrawling.getTags()});
 
             if (!"".equals(ex.getZcrawling().getLocalidad()) && !"".equals(ex.getZcrawling().getFuente()) && ex.getZcrawling().getTags() != null && !ex.getZcrawling().getTags().isEmpty()) {
                 out.print(ZMessages.appendMessage(ZMessages.ZPARSER_ZGRAM_PARTIALLY_PARSED, " - Error al parsear la configuración de extracción (el * marca el comienzo del error): " + ex.getMessage().replace("\\\"", "").replace("\"", "\\\"").replace("\n", "\\n") + "\", \"meta\": \"" + (new Gson()).toJson(zcrawling).replace("\\\"", "").replace("\"", "\\\"")));
