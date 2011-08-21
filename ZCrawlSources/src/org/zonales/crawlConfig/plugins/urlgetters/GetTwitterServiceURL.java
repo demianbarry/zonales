@@ -38,11 +38,13 @@ public class GetTwitterServiceURL implements GetServiceURL {
 
                 urlServlet += "(";
 
-                for (String usuario : criterio.getDeLosUsuarios()) {
-                    if (criterio.getDeLosUsuarios().indexOf(usuario) != 0) {
-                        urlServlet += "OR+";
+                if (criterio.getDeLosUsuarios() != null) {
+                    for (String usuario : criterio.getDeLosUsuarios()) {
+                        if (criterio.getDeLosUsuarios().indexOf(usuario) != 0) {
+                            urlServlet += "+OR+";
+                        }
+                        urlServlet += "from:" + usuario;
                     }
-                    urlServlet += "from:" + usuario;
                 }
 
                 if (criterio.getPalabras() != null) {
@@ -85,11 +87,11 @@ public class GetTwitterServiceURL implements GetServiceURL {
                 if (metadata.getNoCriterios().indexOf(criterio) != 0) {
                     urlServlet += "+";
                 }
-                
+
                 if (criterio.getPalabras() != null) {
                     for (String palabra : criterio.getPalabras()) {
                         if (criterio.getPalabras().indexOf(palabra) != 0) {
-                            urlServlet += "+-";                            
+                            urlServlet += "+-";
                         }
                         urlServlet += palabra.trim();
                     }

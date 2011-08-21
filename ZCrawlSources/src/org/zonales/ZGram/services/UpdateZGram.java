@@ -37,7 +37,7 @@ public class UpdateZGram extends BaseService {
         String msg = request.getParameter("newmsg");
         String metadataJson = request.getParameter("newmetadata");
         String verbatim = request.getParameter("newverbatim");
-        ZGram zgram = new ZGram();
+        String state = request.getParameter("newstate");
         ZCrawling metadata = new ZCrawling();
         Gson metadataGson = new Gson();
         ZMessage zMessage = new ZMessage(cod, msg);
@@ -45,18 +45,26 @@ public class UpdateZGram extends BaseService {
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
         metadata = metadataGson.fromJson(metadataJson, ZCrawling.class);
 
-        ZGram zGram = new ZGram(zMessage, metadata, verbatim, State.GENERATED);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Verbatim {0}", new Object[]{verbatim});
+        ZGram zGram = new ZGram(zMessage, metadata, verbatim, state != null && state.length() > 0 ? state : State.GENERATED);
 
         try {
             ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-            zGramDao.update(id, zgram);
+            zGramDao.update(id, zGram);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción actualizada {0}", new Object[]{zGram});
-            out.print("{\"ZMessage\": " + ZMessages.SUCCESS + ", \"id\": \"" + id + "\"}");
+            out.print(ZMessages.SUCCESS.toString().replace("}", "") + ", \"id\": \"" + id + "\"}");
         } catch (MongoException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error actualizando extracción {0}: {1}", new Object[]{zgram,ex.getMessage()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error actualizando extracción {0}: {1}", new Object[]{zGram, ex.getMessage()});
             out.print(ZMessages.SAVE_FAILED);
         } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Base de datos no disponible {0}", new Object[]{ex.getMessage()});
+            StringBuilder stacktrace = new StringBuilder();
+            for (StackTraceElement line : ex.getStackTrace()) {
+                stacktrace.append(line.toString());
+                stacktrace.append("\n");
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+
             out.print(ZMessages.NO_DB_FAILED);
         }
     }

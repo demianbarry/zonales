@@ -2,12 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.crawlConfig.plugins.urlgetters;
 
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.metadata.Criterio;
-import org.zonales.metadata.Filtro;
 import org.zonales.metadata.ZCrawling;
 
 /**
@@ -22,7 +20,7 @@ public class GetFeedServiceURL implements GetServiceURL {
             return null;
         }
 
-        String urlServlet = service.getUri() + "?q=";
+        String urlServlet = service.getUri() + "?url=" + metadata.getUriFuente() + "&formato=json";
 
         Boolean first = true;
 
@@ -36,39 +34,40 @@ public class GetFeedServiceURL implements GetServiceURL {
             for (Criterio criterio : metadata.getCriterios()) {
 
                 if (criterio.getPalabras() != null) {
+                    urlServlet += "&palabras=";
                     for (String palabra : criterio.getPalabras()) {
                         if (criterio.getPalabras().indexOf(palabra) != 0) {
-                            urlServlet += "+";
-                            if (!criterio.getSiosi()) {
-                                urlServlet += "OR+";
-                            }
-                        } else {
-
+                            urlServlet += ",";
                         }
-                        urlServlet += palabra.trim();
-                    }
-                }
-            }
-        }
-        if (metadata.getFiltros() != null) {
-            for (Filtro filtro : metadata.getFiltros()) {
-                if (filtro.getMinActions() != null && filtro.getMinActions() > 0) {
-                }
-            }
-            if (metadata.getTags() != null) {
-                Boolean firstTag = true;
-                for (String tag : metadata.getTags()) {
-                    if (firstTag) {
-                        urlServlet += "&tags=" + tag;
-                        firstTag = false;
-                    } else {
-                        urlServlet += "," + tag;
+                        urlServlet += palabra;
                     }
                 }
             }
         }
 
+        if (metadata.getNoCriterios() != null) {
+
+            for (Criterio nocriterio : metadata.getNoCriterios()) {
+
+                if (nocriterio.getPalabras() != null) {
+                    urlServlet += "&nopalabras=";
+                    for (String palabra : nocriterio.getPalabras()) {
+                        if (nocriterio.getPalabras().indexOf(palabra) != 0) {
+                            urlServlet += ",";
+                        }
+                        urlServlet += palabra;
+                    }
+                }
+            }
+        }
+
+        urlServlet += "&tags=" + metadata.getLocalidad();
+        if (metadata.getTags() != null) {
+            for (String tag : metadata.getTags()) {
+                urlServlet += ",";
+                urlServlet += tag;
+            }
+        }
         return urlServlet;
     }
-
 }
