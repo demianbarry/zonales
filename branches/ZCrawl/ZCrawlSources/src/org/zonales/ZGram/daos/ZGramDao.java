@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.ZGram.daos;
 
 import com.mongodb.BasicDBObject;
@@ -48,22 +47,25 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("msg", zgram.getZmessage().getMsg());
         }
 
-        if (zgram.getMetadata().getDescripcion() != null)  //opcional
+        if (zgram.getMetadata().getDescripcion() != null) //opcional
+        {
             zgramDoc.put("descripcion", zgram.getMetadata().getDescripcion());
-        
-        zgramDoc.put("localidad", zgram.getMetadata().getFuente());
+        }
+
+        zgramDoc.put("localidad", zgram.getMetadata().getLocalidad());
         zgramDoc.put("fuente", zgram.getMetadata().getFuente());
-        
+
         if (zgram.getMetadata().getTags() != null) {
             ArrayList tagsToDoc = new ArrayList();
-            for (String tag: zgram.getMetadata().getTags()) {
+            for (String tag : zgram.getMetadata().getTags()) {
                 tagsToDoc.add(tag);
             }
             zgramDoc.put("tags", tagsToDoc);
         }
-        
-        if (zgram.getMetadata().getUriFuente() != null)
+
+        if (zgram.getMetadata().getUriFuente() != null) {
             zgramDoc.put("uriFuente", zgram.getMetadata().getUriFuente());
+        }
 
         if (zgram.getMetadata().getCriterios() != null) {
             ArrayList criteriosToDoc = new ArrayList();
@@ -71,7 +73,7 @@ public class ZGramDao extends BaseDao {
                 if (criterio.getDeLosUsuarios() != null) {
                     List<String> usuarios = criterio.getDeLosUsuarios();
                     ArrayList usuariosToDoc = new ArrayList();
-                    for (String usuario: usuarios) {
+                    for (String usuario : usuarios) {
                         usuariosToDoc.add(usuario);
                     }
                     BasicDBObject usuariosDoc = new BasicDBObject();
@@ -87,7 +89,7 @@ public class ZGramDao extends BaseDao {
                     List<String> palabras = criterio.getPalabras();
                     ArrayList palabrasToDoc = new ArrayList();
                     BasicDBObject palabrasDoc = new BasicDBObject();
-                    for (String palabra: palabras) {
+                    for (String palabra : palabras) {
                         palabrasToDoc.add(palabra);
                     }
                     palabrasDoc.put("palabras", palabrasToDoc);
@@ -104,7 +106,7 @@ public class ZGramDao extends BaseDao {
                 if (nocriterio.getDeLosUsuarios() != null) {
                     List<String> usuarios = nocriterio.getDeLosUsuarios();
                     ArrayList usuariosToDoc = new ArrayList();
-                    for (String usuario: usuarios) {
+                    for (String usuario : usuarios) {
                         usuariosToDoc.add(usuario);
                     }
                     BasicDBObject usuariosDoc = new BasicDBObject();
@@ -120,7 +122,7 @@ public class ZGramDao extends BaseDao {
                     List<String> palabras = nocriterio.getPalabras();
                     ArrayList palabrasToDoc = new ArrayList();
                     BasicDBObject palabrasDoc = new BasicDBObject();
-                    for (String palabra: palabras) {
+                    for (String palabra : palabras) {
                         palabrasToDoc.add(palabra);
                     }
                     palabrasDoc.put("palabras", palabrasToDoc);
@@ -133,7 +135,7 @@ public class ZGramDao extends BaseDao {
 
         if (zgram.getMetadata().getComentarios() != null) {
             ArrayList comentariosToDoc = new ArrayList();
-            for (String comentario: zgram.getMetadata().getComentarios()) {
+            for (String comentario : zgram.getMetadata().getComentarios()) {
                 comentariosToDoc.add(comentario);
             }
             zgramDoc.put("comentarios", comentariosToDoc);
@@ -143,27 +145,27 @@ public class ZGramDao extends BaseDao {
             ArrayList filtrosToDoc = new ArrayList();
             BasicDBObject filtroDoc = new BasicDBObject();
             for (Filtro filtro : zgram.getMetadata().getFiltros()) {
-                if (filtro.getMinShuldMatch() != null){
+                if (filtro.getMinShuldMatch() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                     filtrosToDoc.add(filtroDoc);
                 }
-                if (filtro.getDispersion() != null){
+                if (filtro.getDispersion() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("dispersion", filtro.getDispersion());
                     filtrosToDoc.add(filtroDoc);
                 }
-                if (filtro.getListaNegraDeUsuarios() != null){
+                if (filtro.getListaNegraDeUsuarios() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                     filtrosToDoc.add(filtroDoc);
                 }
-                if (filtro.getListaNegraDePalabras() != null){
+                if (filtro.getListaNegraDePalabras() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                     filtrosToDoc.add(filtroDoc);
                 }
-                if (filtro.getMinActions() != null){
+                if (filtro.getMinActions() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("minActions", filtro.getMinActions());
                     filtrosToDoc.add(filtroDoc);
@@ -172,8 +174,9 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("filtros", filtrosToDoc);
         }
 
-        if (zgram.getMetadata().getTagsFuente() != null)
+        if (zgram.getMetadata().getTagsFuente() != null) {
             zgramDoc.put("tagsFuente", zgram.getMetadata().getTagsFuente());
+        }
 
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
@@ -201,18 +204,18 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("cod", newZgram.getZmessage().getCod());
                 zgramDoc.put("msg", newZgram.getZmessage().getMsg());
             } else {
-                zgramDoc.put("cod", (Integer)resp.get("cod"));
-                zgramDoc.put("msg", (String)resp.get("msg"));
+                zgramDoc.put("cod", (Integer) resp.get("cod"));
+                zgramDoc.put("msg", (String) resp.get("msg"));
             }
 
             if (newZgram.getMetadata() != null) {
                 zgramDoc.put("descripcion", newZgram.getMetadata().getDescripcion());
                 zgramDoc.put("localidad", newZgram.getMetadata().getLocalidad());
                 zgramDoc.put("fuente", newZgram.getMetadata().getFuente());
-                
+
                 if (newZgram.getMetadata().getTags() != null) {
                     ArrayList tagsToDoc = new ArrayList();
-                    for (String tag: newZgram.getMetadata().getTags()) {
+                    for (String tag : newZgram.getMetadata().getTags()) {
                         tagsToDoc.add(tag);
                     }
                     zgramDoc.put("tags", tagsToDoc);
@@ -220,71 +223,75 @@ public class ZGramDao extends BaseDao {
 
                 zgramDoc.put("uriFuente", newZgram.getMetadata().getUriFuente());
 
-                for (Criterio criterio : newZgram.getMetadata().getCriterios()) {
-                    ArrayList criteriosToDoc = new ArrayList();
-                    if (criterio.getDeLosUsuarios() != null) {
-                        List<String> usuarios = criterio.getDeLosUsuarios();
-                        ArrayList usuariosToDoc = new ArrayList();
-                        for (String usuario: usuarios) {
-                            usuariosToDoc.add(usuario);
+                if (newZgram.getMetadata().getCriterios() != null) {
+                    for (Criterio criterio : newZgram.getMetadata().getCriterios()) {
+                        ArrayList criteriosToDoc = new ArrayList();
+                        if (criterio.getDeLosUsuarios() != null) {
+                            List<String> usuarios = criterio.getDeLosUsuarios();
+                            ArrayList usuariosToDoc = new ArrayList();
+                            for (String usuario : usuarios) {
+                                usuariosToDoc.add(usuario);
+                            }
+                            BasicDBObject usuariosDoc = new BasicDBObject();
+                            usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                            criteriosToDoc.add(usuariosDoc);
                         }
-                        BasicDBObject usuariosDoc = new BasicDBObject();
-                        usuariosDoc.put("deLosUsuarios", usuariosToDoc);
-                        criteriosToDoc.add(usuariosDoc);
-                    }
-                    if (criterio.getAmigosDe() != null) {
-                        BasicDBObject amigosDoc = new BasicDBObject();
-                        amigosDoc.put("amigosDe", amigosDoc);
-                        criteriosToDoc.add(amigosDoc);
-                    }
-                    if (criterio.getPalabras() != null) {
-                        List<String> palabras = criterio.getPalabras();
-                        ArrayList palabrasToDoc = new ArrayList();
-                        BasicDBObject palabrasDoc = new BasicDBObject();
-                        for (String palabra: palabras) {
-                            palabrasToDoc.add(palabra);
+                        if (criterio.getAmigosDe() != null) {
+                            BasicDBObject amigosDoc = new BasicDBObject();
+                            amigosDoc.put("amigosDe", amigosDoc);
+                            criteriosToDoc.add(amigosDoc);
                         }
-                        palabrasDoc.put("palabras", palabrasToDoc);
-                        palabrasDoc.put("siosi", criterio.getSiosi());
-                        criteriosToDoc.add(palabrasDoc);
+                        if (criterio.getPalabras() != null) {
+                            List<String> palabras = criterio.getPalabras();
+                            ArrayList palabrasToDoc = new ArrayList();
+                            BasicDBObject palabrasDoc = new BasicDBObject();
+                            for (String palabra : palabras) {
+                                palabrasToDoc.add(palabra);
+                            }
+                            palabrasDoc.put("palabras", palabrasToDoc);
+                            palabrasDoc.put("siosi", criterio.getSiosi());
+                            criteriosToDoc.add(palabrasDoc);
+                        }
+                        zgramDoc.put("criterios", criteriosToDoc);
                     }
-                    zgramDoc.put("criterios", criteriosToDoc);
                 }
 
-                for (Criterio nocriterio : newZgram.getMetadata().getNoCriterios()) {
-                    ArrayList nocriteriosToDoc = new ArrayList();
-                    if (nocriterio.getDeLosUsuarios() != null) {
-                        List<String> usuarios = nocriterio.getDeLosUsuarios();
-                        ArrayList usuariosToDoc = new ArrayList();
-                        for (String usuario: usuarios) {
-                            usuariosToDoc.add(usuario);
+                if (newZgram.getMetadata().getNoCriterios() != null) {
+                    for (Criterio nocriterio : newZgram.getMetadata().getNoCriterios()) {
+                        ArrayList nocriteriosToDoc = new ArrayList();
+                        if (nocriterio.getDeLosUsuarios() != null) {
+                            List<String> usuarios = nocriterio.getDeLosUsuarios();
+                            ArrayList usuariosToDoc = new ArrayList();
+                            for (String usuario : usuarios) {
+                                usuariosToDoc.add(usuario);
+                            }
+                            BasicDBObject usuariosDoc = new BasicDBObject();
+                            usuariosDoc.put("deLosUsuarios", usuariosToDoc);
+                            nocriteriosToDoc.add(usuariosDoc);
                         }
-                        BasicDBObject usuariosDoc = new BasicDBObject();
-                        usuariosDoc.put("deLosUsuarios", usuariosToDoc);
-                        nocriteriosToDoc.add(usuariosDoc);
-                    }
-                    if (nocriterio.getAmigosDe() != null) {
-                        BasicDBObject amigosDoc = new BasicDBObject();
-                        amigosDoc.put("amigosDe", amigosDoc);
-                        nocriteriosToDoc.add(amigosDoc);
-                    }
-                    if (nocriterio.getPalabras() != null) {
-                        List<String> palabras = nocriterio.getPalabras();
-                        ArrayList palabrasToDoc = new ArrayList();
-                        BasicDBObject palabrasDoc = new BasicDBObject();
-                        for (String palabra: palabras) {
-                            palabrasToDoc.add(palabra);
+                        if (nocriterio.getAmigosDe() != null) {
+                            BasicDBObject amigosDoc = new BasicDBObject();
+                            amigosDoc.put("amigosDe", amigosDoc);
+                            nocriteriosToDoc.add(amigosDoc);
                         }
-                        palabrasDoc.put("palabras", palabrasToDoc);
-                        palabrasDoc.put("siosi", nocriterio.getSiosi());
-                        nocriteriosToDoc.add(palabrasDoc);
+                        if (nocriterio.getPalabras() != null) {
+                            List<String> palabras = nocriterio.getPalabras();
+                            ArrayList palabrasToDoc = new ArrayList();
+                            BasicDBObject palabrasDoc = new BasicDBObject();
+                            for (String palabra : palabras) {
+                                palabrasToDoc.add(palabra);
+                            }
+                            palabrasDoc.put("palabras", palabrasToDoc);
+                            palabrasDoc.put("siosi", nocriterio.getSiosi());
+                            nocriteriosToDoc.add(palabrasDoc);
+                        }
+                        zgramDoc.put("noCriterios", nocriteriosToDoc);
                     }
-                    zgramDoc.put("noCriterios", nocriteriosToDoc);
                 }
 
                 if (newZgram.getMetadata().getComentarios() != null) {
                     ArrayList comentariosToDoc = new ArrayList();
-                    for (String comentario: newZgram.getMetadata().getComentarios()) {
+                    for (String comentario : newZgram.getMetadata().getComentarios()) {
                         comentariosToDoc.add(comentario);
                     }
                     zgramDoc.put("comentarios", comentariosToDoc);
@@ -294,27 +301,27 @@ public class ZGramDao extends BaseDao {
                     ArrayList filtrosToDoc = new ArrayList();
                     BasicDBObject filtroDoc = new BasicDBObject();
                     for (Filtro filtro : newZgram.getMetadata().getFiltros()) {
-                        if (filtro.getMinShuldMatch() != null){
+                        if (filtro.getMinShuldMatch() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getDispersion() != null){
+                        if (filtro.getDispersion() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("dispersion", filtro.getDispersion());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDeUsuarios() != null){
+                        if (filtro.getListaNegraDeUsuarios() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDePalabras() != null){
+                        if (filtro.getListaNegraDePalabras() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getMinActions() != null){
+                        if (filtro.getMinActions() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("minActions", filtro.getMinActions());
                             filtrosToDoc.add(filtroDoc);
@@ -323,29 +330,30 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("filtros", filtrosToDoc);
                 }
 
-                if (newZgram.getMetadata().getTagsFuente() != null)
+                if (newZgram.getMetadata().getTagsFuente() != null) {
                     zgramDoc.put("tagsFuente", newZgram.getMetadata().getTagsFuente());
+                }
 
                 zgramDoc.put("estado", newZgram.getEstado());
 
             } else {
-                zgramDoc.put("descripcion", (String)resp.get("descripcion"));
-                zgramDoc.put("localidad", (String)resp.get("localidad"));
-                zgramDoc.put("fuente", (String)resp.get("fuente"));
-                zgramDoc.put("tags", (ArrayList)resp.get("tags"));
-                zgramDoc.put("uriFuente", (String)resp.get("uriFuente"));
-                zgramDoc.put("criterios", (ArrayList)resp.get("criterios"));
-                zgramDoc.put("noCriterios", (ArrayList)resp.get("noCriterios"));
-                zgramDoc.put("comentarios", (ArrayList)resp.get("comentarios"));
-                zgramDoc.put("filtros", (ArrayList)resp.get("filtros"));
-                zgramDoc.put("tagsFuente", (Boolean)resp.get("tagsFuente"));
-                zgramDoc.put("estado", (String)resp.get("estado"));
+                zgramDoc.put("descripcion", (String) resp.get("descripcion"));
+                zgramDoc.put("localidad", (String) resp.get("localidad"));
+                zgramDoc.put("fuente", (String) resp.get("fuente"));
+                zgramDoc.put("tags", (ArrayList) resp.get("tags"));
+                zgramDoc.put("uriFuente", (String) resp.get("uriFuente"));
+                zgramDoc.put("criterios", (ArrayList) resp.get("criterios"));
+                zgramDoc.put("noCriterios", (ArrayList) resp.get("noCriterios"));
+                zgramDoc.put("comentarios", (ArrayList) resp.get("comentarios"));
+                zgramDoc.put("filtros", (ArrayList) resp.get("filtros"));
+                zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
+                zgramDoc.put("estado", (String) resp.get("estado"));
             }
 
-            zgramDoc.put("creado", (Long)resp.get("creado"));
+            zgramDoc.put("creado", (Long) resp.get("creado"));
             zgramDoc.put("modificado", (new Date()).getTime());
-
-            this.extractions.update(new BasicDBObject().append("_id", id), zgramDoc);
+            zgramDoc.put("verbatim", newZgram.getVerbatim());
+            this.extractions.update(new BasicDBObject().append("_id", new ObjectId(id)), zgramDoc);
         }
     }
 
@@ -368,30 +376,37 @@ public class ZGramDao extends BaseDao {
         DBObject resp;
         DBCursor cur;
 
-        if(filtros.getEstado() != null)
+        if (filtros.getEstado() != null) {
             query.put("estado", filtros.getEstado());
-        if(filtros.getFuente() != null)
+        }
+        if (filtros.getFuente() != null) {
             query.put("fuente", filtros.getFuente());
-        if(filtros.getLocalidad() != null)
+        }
+        if (filtros.getLocalidad() != null) {
             query.put("localidad", filtros.getLocalidad());
-        if(filtros.getTags() != null)
+        }
+        if (filtros.getTags() != null) {
             query.put("tags", filtros.getTags());
+        }
 
         Calendar now = Calendar.getInstance();
-        if(filtros.getPeriodo() != null && !filtros.getPeriodo().equals(Periodo.ALL)) {
+        if (filtros.getPeriodo() != null && !filtros.getPeriodo().equals(Periodo.ALL)) {
             System.out.println(now.getTime().getTime());
             now.set(Calendar.HOUR_OF_DAY, 0);
             now.set(Calendar.MINUTE, 0);
             now.set(Calendar.SECOND, 0);
             now.set(Calendar.MILLISECOND, 0);
-            if (filtros.getPeriodo().equals(Periodo.DAY))
+            if (filtros.getPeriodo().equals(Periodo.DAY)) {
                 query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+            }
             now.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            if (filtros.getPeriodo().equals(Periodo.WEEK))
+            if (filtros.getPeriodo().equals(Periodo.WEEK)) {
                 query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+            }
             now.set(Calendar.DAY_OF_MONTH, 1);
-            if (filtros.getPeriodo().equals(Periodo.MONTH))
+            if (filtros.getPeriodo().equals(Periodo.MONTH)) {
                 query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
+            }
         }
 
         cur = this.extractions.find(query);
@@ -403,17 +418,20 @@ public class ZGramDao extends BaseDao {
             if (onlyNames) {
                 ret += "{\"_id\": \"" + resp.get("_id") + "\",";
                 ret += "\"localidad\": \"" + resp.get("localidad") + "\",";
-                ret += "\"tags\": " + resp.get("tags")  + ",";
+                ret += "\"tags\": " + resp.get("tags") + ",";
                 ret += "\"descripcion\": \"" + resp.get("descripcion") + "\",";
                 ret += "\"estado\": \"" + resp.get("estado") + "\",";
                 ret += "\"modificado\": " + resp.get("modificado") + "},";
             } else {
                 ret += resp + ",";
             }
-            if (nothing) nothing = false;
+            if (nothing) {
+                nothing = false;
+            }
         }
-        if (!nothing)
+        if (!nothing) {
             ret = ret.substring(0, ret.length() - 1);
+        }
         ret += "]";
 
         return ret;
@@ -437,14 +455,14 @@ public class ZGramDao extends BaseDao {
                 if (onlyNames) {
                     ret += "{\"_id\": \"" + resp.get("_id") + "\",";
                     ret += "\"localidad\": \"" + resp.get("localidad") + "\",";
-                    ret += "\"tags\": " + resp.get("tags")  + ",";
+                    ret += "\"tags\": " + resp.get("tags") + ",";
                     ret += "\"descripcion\": \"" + resp.get("descripcion") + "\",";
                     ret += "\"estado\": \"" + resp.get("estado") + "\",";
                     ret += "\"modificado\": " + resp.get("modificado") + "},";
                 } else {
                     ret += resp + ",";
                 }
-            } 
+            }
         }
 
         ret = ret.substring(0, ret.length() - 1);
@@ -454,44 +472,43 @@ public class ZGramDao extends BaseDao {
     }
 
     /*
-     public Service retrieve(String name) {
-        BasicDBObject query = new BasicDBObject("name", name);
-        DBObject resp;
-        DBCursor cur;
-        Service service = new Service();
-        ArrayList<BasicDBObject> params, plugins;
-
-        cur = this.services.find(query);
-
-        resp = cur.next();
-        resp.removeField("_id");
-        System.out.println(resp);
-
-        service.setName((String)resp.get("name"));
-        service.setUri((String)resp.get("uri"));
-        try {
-            service.setState((String)resp.get("state"));
-        } catch (TypeNotPresentException ex) {
-            service.setState(State.GENERATED);
-        }
-
-        //service.setPluginName((String)resp.get("pluginName"));
-
-        params = (ArrayList<BasicDBObject>)resp.get("params");
-
-        for (BasicDBObject param: params) {
-            service.addParam((String)param.get("name"), (Boolean)param.get("required"));
-        }
-
-        plugins = (ArrayList<BasicDBObject>)resp.get("plugins");
-
-        for (BasicDBObject plugin: plugins) {
-            service.addPlugin((String)plugin.get("class_name"), (String)plugin.get("type"));
-        }
-
-        return service;
-
+    public Service retrieve(String name) {
+    BasicDBObject query = new BasicDBObject("name", name);
+    DBObject resp;
+    DBCursor cur;
+    Service service = new Service();
+    ArrayList<BasicDBObject> params, plugins;
+    
+    cur = this.services.find(query);
+    
+    resp = cur.next();
+    resp.removeField("_id");
+    System.out.println(resp);
+    
+    service.setName((String)resp.get("name"));
+    service.setUri((String)resp.get("uri"));
+    try {
+    service.setState((String)resp.get("state"));
+    } catch (TypeNotPresentException ex) {
+    service.setState(State.GENERATED);
     }
-    */
-
+    
+    //service.setPluginName((String)resp.get("pluginName"));
+    
+    params = (ArrayList<BasicDBObject>)resp.get("params");
+    
+    for (BasicDBObject param: params) {
+    service.addParam((String)param.get("name"), (Boolean)param.get("required"));
+    }
+    
+    plugins = (ArrayList<BasicDBObject>)resp.get("plugins");
+    
+    for (BasicDBObject plugin: plugins) {
+    service.addPlugin((String)plugin.get("class_name"), (String)plugin.get("type"));
+    }
+    
+    return service;
+    
+    }
+     */
 }
