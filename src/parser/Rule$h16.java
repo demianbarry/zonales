@@ -19,9 +19,9 @@ final public class Rule$h16 extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$h16 parse(ParserContext context)

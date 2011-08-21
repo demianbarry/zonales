@@ -19,9 +19,9 @@ final public class Rule$path_empty extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$path_empty parse(ParserContext context)

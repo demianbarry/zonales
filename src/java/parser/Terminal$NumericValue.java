@@ -12,6 +12,7 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import org.zonales.metadata.ZCrawling;
 
 public class Terminal$NumericValue extends Rule
 {
@@ -51,9 +52,9 @@ public class Terminal$NumericValue extends Rule
     return numericValue;
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 }
 /* -----------------------------------------------------------------------------

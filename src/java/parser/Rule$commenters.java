@@ -11,6 +11,8 @@
 package parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import org.zonales.metadata.ZCrawling;
 
 final public class Rule$commenters extends Rule
 {
@@ -19,9 +21,9 @@ final public class Rule$commenters extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$commenters parse(ParserContext context)
@@ -70,6 +72,8 @@ final public class Rule$commenters extends Rule
 
     context.pop("commenters", parsed);
 
+    context.getZcrawling().setComentarios(Arrays.asList(rule.spelling.split(",")));
+    
     return (Rule$commenters)rule;
   }
 }

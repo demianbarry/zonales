@@ -19,9 +19,9 @@ final public class Rule$DIGIT extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$DIGIT parse(ParserContext context)

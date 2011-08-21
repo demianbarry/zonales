@@ -11,6 +11,7 @@
 package parser;
 
 import java.util.ArrayList;
+import org.zonales.metadata.ZCrawling;
 
 public abstract class Rule
 {
@@ -43,7 +44,7 @@ public abstract class Rule
     return spelling.compareTo(rule.spelling);
   }
 
-  public abstract Object accept(Visitor visitor);
+  public abstract Object accept(ZCrawling zcrawling, Visitor visitor) ;
 }
 
 /* -----------------------------------------------------------------------------

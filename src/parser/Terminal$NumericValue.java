@@ -51,9 +51,9 @@ public class Terminal$NumericValue extends Rule
     return numericValue;
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 }
 /* -----------------------------------------------------------------------------

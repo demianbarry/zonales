@@ -9,44 +9,41 @@ package parser;
  * -----------------------------------------------------------------------------
  */
 
-import com.google.gson.Gson;
 import java.util.ArrayList;
-import java.util.Arrays;
-import metadata.Criterio;
-import metadata.Filtro;
-import metadata.ZCrawling;
+import org.zonales.metadata.ZCrawling;
 
 public class ZMetaDisplayer implements Visitor {
 
     @Override
-    public Object visit(Rule$zcrawling rule) {
+    public Object visit(ZCrawling zcrawling, Rule$zcrawling rule) {
         //System.out.println("<zcrawling>");
-        Globals.zcrawling = new ZCrawling();
-        if (visitRules(rule.rules).booleanValue()) {
+        //zcrawling = new ZCrawling();
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
-
-        Globals.out.println((new Gson()).toJson(Globals.zcrawling).replace("\\\"", ""));
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$localidad rule) {
-        Globals.zcrawling.setLocalidad(rule.spelling);
+    public Object visit(ZCrawling zcrawling, Rule$localidad rule) {
+
+
+        //zcrawling.setLocalidad(rule.spelling);
         //System.out.println("<localidad>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
-        //System.out.println("</localidad>");
+        //System.out.println("</localidad>");           
 
         return Boolean.FALSE;
+
     }
 
     @Override
-    public Object visit(Rule$tags rule) {
+    public Object visit(ZCrawling zcrawling, Rule$tags rule) {
         //System.out.println("<tags>");
-        Globals.zcrawling.setTags(Arrays.asList(rule.spelling.split(",")));
-        if (visitRules(rule.rules).booleanValue()) {
+        //zcrawling.setTags(Arrays.asList(rule.spelling.split(",")));
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</tags>");
@@ -55,9 +52,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$tag rule) {
+    public Object visit(ZCrawling zcrawling, Rule$tag rule) {
         //System.out.println("<tag>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</tag>");
@@ -66,10 +63,11 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$fuente rule) {
+    public Object visit(ZCrawling zcrawling, Rule$fuente rule) {
         //System.out.println("<fuente>");
-        Globals.zcrawling.setFuente(rule.spelling);
-        if (visitRules(rule.rules).booleanValue()) {
+
+        //zcrawling.setFuente(rule.spelling.matches("feed.*") ? "feed" : rule.spelling);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</fuente>");
@@ -78,10 +76,10 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$uri_fuente rule) {
+    public Object visit(ZCrawling zcrawling, Rule$uri_fuente rule) {
         //System.out.println("<uri_fuente>");
-        Globals.zcrawling.setUriFuente(rule.spelling);
-        if (visitRules(rule.rules).booleanValue()) {
+        //zcrawling.setUriFuente(rule.spelling);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</uri_fuente>");
@@ -90,12 +88,12 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$criterios rule) {
+    public Object visit(ZCrawling zcrawling, Rule$criterios rule) {
         //System.out.println("<criterios>");
-        if (Globals.zcrawling.getCriterios() == null) {
-            Globals.zcrawling.setCriterios(new ArrayList<Criterio>());
-        }
-        if (visitRules(rule.rules).booleanValue()) {
+        /*if (zcrawling.getCriterios() == null) {
+            zcrawling.setCriterios(new ArrayList<Criterio>());
+        }*/
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</criterios>");
@@ -104,10 +102,10 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$criterio rule) {
-        Globals.nocriterios = false;
+    public Object visit(ZCrawling zcrawling, Rule$criterio rule) {
+        //Globals.nocriterios = false;
         //System.out.println(rule.spelling);
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</criterio>");
@@ -116,9 +114,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$usuario rule) {
+    public Object visit(ZCrawling zcrawling, Rule$usuario rule) {
         //System.out.println("<usuario>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</usuario>");
@@ -127,22 +125,22 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$palabras rule) {
+    public Object visit(ZCrawling zcrawling, Rule$palabras rule) {
         //System.out.println("<palabras>");        
 
-        Criterio criterio = new Criterio();
+        /*Criterio criterio = new Criterio();
         criterio.setPalabras(Arrays.asList(rule.spelling.split(",")));
         criterio.setSiosi(Globals.siosi);
         Globals.siosi = false;
-        
+
         if (Globals.nocriterios) {
-            Globals.zcrawling.getNoCriterios().add(criterio);
+            zcrawling.getNoCriterios().add(criterio);
         } else {
-            Globals.zcrawling.getCriterios().add(criterio);
+            zcrawling.getCriterios().add(criterio);
         }
-        Globals.nocriterios = false;
-        
-        if (visitRules(rule.rules).booleanValue()) {
+        Globals.nocriterios = false;*/
+
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</palabras>");
@@ -151,9 +149,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$palabra rule) {
+    public Object visit(ZCrawling zcrawling, Rule$palabra rule) {
         //System.out.println("<palabra>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</palabra>");
@@ -162,12 +160,12 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$filtros rule) {
+    public Object visit(ZCrawling zcrawling, Rule$filtros rule) {
         //System.out.println("<filtros>");
-        if (Globals.zcrawling.getFiltros() == null) {
-            Globals.zcrawling.setFiltros(new ArrayList<Filtro>());
-        }
-        if (visitRules(rule.rules).booleanValue()) {
+        /*if (zcrawling.getFiltros() == null) {
+            zcrawling.setFiltros(new ArrayList<Filtro>());
+        }*/
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</filtros>");
@@ -176,9 +174,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$filtro rule) {
+    public Object visit(ZCrawling zcrawling, Rule$filtro rule) {
         //System.out.println("<filtro>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</filtro>");
@@ -187,9 +185,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$min_num_shuld_match rule) {
+    public Object visit(ZCrawling zcrawling, Rule$min_num_shuld_match rule) {
         //System.out.println("<min-num-shuld-match>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</min-num-shuld-match>");
@@ -198,9 +196,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$cadena rule) {
+    public Object visit(ZCrawling zcrawling, Rule$cadena rule) {
         //System.out.println("<cadena>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</cadena>");
@@ -209,9 +207,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$ALPHA rule) {
+    public Object visit(ZCrawling zcrawling, Rule$ALPHA rule) {
         //System.out.println("<ALPHA>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</ALPHA>");
@@ -220,9 +218,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$DQUOTE rule) {
+    public Object visit(ZCrawling zcrawling, Rule$DQUOTE rule) {
         //System.out.println("<DQUOTE>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</DQUOTE>");
@@ -231,9 +229,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$QUOTE rule) {
+    public Object visit(ZCrawling zcrawling, Rule$QUOTE rule) {
         //System.out.println("<QUOTE>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</QUOTE>");
@@ -242,9 +240,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$mspace rule) {
+    public Object visit(ZCrawling zcrawling, Rule$mspace rule) {
         //System.out.println("<mspace>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</mspace>");
@@ -253,9 +251,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$space rule) {
+    public Object visit(ZCrawling zcrawling, Rule$space rule) {
         //System.out.println("<space>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</space>");
@@ -264,9 +262,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$comma rule) {
+    public Object visit(ZCrawling zcrawling, Rule$comma rule) {
         //System.out.println("<comma>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</comma>");
@@ -275,9 +273,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$DIGIT rule) {
+    public Object visit(ZCrawling zcrawling, Rule$DIGIT rule) {
         //System.out.println("<DIGIT>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</DIGIT>");
@@ -286,9 +284,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$HEXDIG rule) {
+    public Object visit(ZCrawling zcrawling, Rule$HEXDIG rule) {
         //System.out.println("<HEXDIG>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</HEXDIG>");
@@ -297,9 +295,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$int rule) {
+    public Object visit(ZCrawling zcrawling, Rule$int rule) {
         //System.out.println("<int>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</int>");
@@ -308,9 +306,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$URI rule) {
+    public Object visit(ZCrawling zcrawling, Rule$URI rule) {
         //System.out.println("<URI>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</URI>");
@@ -319,9 +317,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$hier_part rule) {
+    public Object visit(ZCrawling zcrawling, Rule$hier_part rule) {
         //System.out.println("<hier-part>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</hier-part>");
@@ -330,9 +328,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$URI_reference rule) {
+    public Object visit(ZCrawling zcrawling, Rule$URI_reference rule) {
         //System.out.println("<URI-reference>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</URI-reference>");
@@ -341,9 +339,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$absolute_URI rule) {
+    public Object visit(ZCrawling zcrawling, Rule$absolute_URI rule) {
         //System.out.println("<absolute-URI>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</absolute-URI>");
@@ -352,9 +350,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$relative_ref rule) {
+    public Object visit(ZCrawling zcrawling, Rule$relative_ref rule) {
         //System.out.println("<relative-ref>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</relative-ref>");
@@ -363,9 +361,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$relative_part rule) {
+    public Object visit(ZCrawling zcrawling, Rule$relative_part rule) {
         //System.out.println("<relative-part>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</relative-part>");
@@ -374,9 +372,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$scheme rule) {
+    public Object visit(ZCrawling zcrawling, Rule$scheme rule) {
         //System.out.println("<scheme>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</scheme>");
@@ -385,9 +383,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$authority rule) {
+    public Object visit(ZCrawling zcrawling, Rule$authority rule) {
         //System.out.println("<authority>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</authority>");
@@ -396,9 +394,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$userinfo rule) {
+    public Object visit(ZCrawling zcrawling, Rule$userinfo rule) {
         //System.out.println("<userinfo>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</userinfo>");
@@ -407,9 +405,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$host rule) {
+    public Object visit(ZCrawling zcrawling, Rule$host rule) {
         //System.out.println("<host>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</host>");
@@ -418,9 +416,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$port rule) {
+    public Object visit(ZCrawling zcrawling, Rule$port rule) {
         //System.out.println("<port>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</port>");
@@ -429,9 +427,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$IP_literal rule) {
+    public Object visit(ZCrawling zcrawling, Rule$IP_literal rule) {
         //System.out.println("<IP-literal>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</IP-literal>");
@@ -440,9 +438,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$IPvFuture rule) {
+    public Object visit(ZCrawling zcrawling, Rule$IPvFuture rule) {
         //System.out.println("<IPvFuture>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</IPvFuture>");
@@ -451,9 +449,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$IPv6address rule) {
+    public Object visit(ZCrawling zcrawling, Rule$IPv6address rule) {
         //System.out.println("<IPv6address>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</IPv6address>");
@@ -462,9 +460,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$h16 rule) {
+    public Object visit(ZCrawling zcrawling, Rule$h16 rule) {
         //System.out.println("<h16>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</h16>");
@@ -473,9 +471,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$ls32 rule) {
+    public Object visit(ZCrawling zcrawling, Rule$ls32 rule) {
         //System.out.println("<ls32>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</ls32>");
@@ -484,9 +482,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$IPv4address rule) {
+    public Object visit(ZCrawling zcrawling, Rule$IPv4address rule) {
         //System.out.println("<IPv4address>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</IPv4address>");
@@ -495,9 +493,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$dec_octet rule) {
+    public Object visit(ZCrawling zcrawling, Rule$dec_octet rule) {
         //System.out.println("<dec-octet>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</dec-octet>");
@@ -506,9 +504,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$reg_name rule) {
+    public Object visit(ZCrawling zcrawling, Rule$reg_name rule) {
         //System.out.println("<reg-name>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</reg-name>");
@@ -517,9 +515,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path rule) {
         //System.out.println("<path>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path>");
@@ -528,9 +526,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path_abempty rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path_abempty rule) {
         //System.out.println("<path-abempty>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path-abempty>");
@@ -539,9 +537,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path_absolute rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path_absolute rule) {
         //System.out.println("<path-absolute>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path-absolute>");
@@ -550,9 +548,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path_noscheme rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path_noscheme rule) {
         //System.out.println("<path-noscheme>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path-noscheme>");
@@ -561,9 +559,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path_rootless rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path_rootless rule) {
         //System.out.println("<path-rootless>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path-rootless>");
@@ -572,9 +570,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$path_empty rule) {
+    public Object visit(ZCrawling zcrawling, Rule$path_empty rule) {
         //System.out.println("<path-empty>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</path-empty>");
@@ -583,9 +581,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$segment rule) {
+    public Object visit(ZCrawling zcrawling, Rule$segment rule) {
         //System.out.println("<segment>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</segment>");
@@ -594,9 +592,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$segment_nz rule) {
+    public Object visit(ZCrawling zcrawling, Rule$segment_nz rule) {
         //System.out.println("<segment-nz>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</segment-nz>");
@@ -605,9 +603,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$segment_nz_nc rule) {
+    public Object visit(ZCrawling zcrawling, Rule$segment_nz_nc rule) {
         //System.out.println("<segment-nz-nc>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</segment-nz-nc>");
@@ -616,9 +614,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$pchar rule) {
+    public Object visit(ZCrawling zcrawling, Rule$pchar rule) {
         //System.out.println("<pchar>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</pchar>");
@@ -627,9 +625,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$query rule) {
+    public Object visit(ZCrawling zcrawling, Rule$query rule) {
         //System.out.println("<query>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</query>");
@@ -638,9 +636,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$fragment rule) {
+    public Object visit(ZCrawling zcrawling, Rule$fragment rule) {
         //System.out.println("<fragment>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</fragment>");
@@ -649,9 +647,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$pct_encoded rule) {
+    public Object visit(ZCrawling zcrawling, Rule$pct_encoded rule) {
         //System.out.println("<pct-encoded>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</pct-encoded>");
@@ -660,9 +658,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$unreserved rule) {
+    public Object visit(ZCrawling zcrawling, Rule$unreserved rule) {
         //System.out.println("<unreserved>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</unreserved>");
@@ -671,9 +669,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$reserved rule) {
+    public Object visit(ZCrawling zcrawling, Rule$reserved rule) {
         //System.out.println("<reserved>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</reserved>");
@@ -682,9 +680,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$gen_delims rule) {
+    public Object visit(ZCrawling zcrawling, Rule$gen_delims rule) {
         //System.out.println("<gen-delims>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</gen-delims>");
@@ -693,9 +691,9 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Rule$sub_delims rule) {
+    public Object visit(ZCrawling zcrawling, Rule$sub_delims rule) {
         //System.out.println("<sub-delims>");
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         //System.out.println("</sub-delims>");
@@ -704,135 +702,144 @@ public class ZMetaDisplayer implements Visitor {
     }
 
     @Override
-    public Object visit(Terminal$StringValue value) {
+    public Object visit(ZCrawling zcrawling, Terminal$StringValue value) {
         //System.out.print(value.spelling);
+
         return Boolean.TRUE;
     }
 
     @Override
-    public Object visit(Terminal$NumericValue value) {
+    public Object visit(ZCrawling zcrawling, Terminal$NumericValue value) {
         //System.out.print(value.spelling);
         return Boolean.TRUE;
     }
 
-    private Boolean visitRules(ArrayList<Rule> rules) {
+    private Boolean visitRules(ZCrawling zcrawling, ArrayList<Rule> rules) {
         Boolean terminal = Boolean.FALSE;
         for (Rule rule : rules) {
-            terminal = (Boolean) rule.accept(this);
+            terminal = (Boolean) rule.accept(zcrawling, this);
         }
         return terminal;
     }
 
     @Override
-    public Object visit(Rule$amigosDelUsuario rule) {
+    public Object visit(ZCrawling zcrawling, Rule$amigosDelUsuario rule) {
 
-        Criterio criterio = new Criterio();        
-        criterio.setAmigosDe(rule.spelling);
-        if (Globals.nocriterios) {
-            Globals.zcrawling.getNoCriterios().add(criterio);
-        } else {
-            Globals.zcrawling.getCriterios().add(criterio);
-        }
-        Globals.nocriterios = false;
+//        Criterio criterio = new Criterio();
+//        criterio.setAmigosDe(rule.spelling);
+//        if (Globals.nocriterios) {
+//            zcrawling.getNoCriterios().add(criterio);
+//        } else {
+//            zcrawling.getCriterios().add(criterio);
+//        }
+//        Globals.nocriterios = false;
 
 
-        if (visitRules(rule.rules).booleanValue()) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$commenters rule) {
-        Globals.zcrawling.setComentarios(Arrays.asList(rule.spelling.split(",")));
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$commenters rule) {
+//        zcrawling.setComentarios(Arrays.asList(rule.spelling.split(",")));
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$minActions rule) {
-        Filtro filtro = new Filtro();
-        filtro.setMinActions(Integer.parseInt(rule.spelling));
-        Globals.zcrawling.getFiltros().add(filtro);
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$minActions rule) {
+//        Filtro filtro = new Filtro();
+//        filtro.setMinActions(Integer.parseInt(rule.spelling));
+//        zcrawling.getFiltros().add(filtro);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$listaNegraUsuarios rule) {
-        Filtro filtro = new Filtro();
-        filtro.setListaNegraDeUsuarios(true);
-        Globals.zcrawling.getFiltros().add(filtro);
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$listaNegraUsuarios rule) {
+//        Filtro filtro = new Filtro();
+//        filtro.setListaNegraDeUsuarios(true);
+//        zcrawling.getFiltros().add(filtro);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$listaNegraPalabras rule) {
-        Filtro filtro = new Filtro();
-        filtro.setListaNegraDePalabras(true);
-        Globals.zcrawling.getFiltros().add(filtro);
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$listaNegraPalabras rule) {
+//        Filtro filtro = new Filtro();
+//        filtro.setListaNegraDePalabras(true);
+//        zcrawling.getFiltros().add(filtro);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$siosi rule) {
-        Globals.siosi = true;
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$siosi rule) {
+//        Globals.siosi = true;
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$descripcion rule) {
-        Globals.zcrawling.setDescripcion(rule.spelling);
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$descripcion rule) {
+//        zcrawling.setDescripcion(rule.spelling);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$deLosUsuarios rule) {
-        Criterio criterio = new Criterio();
-        criterio.setDeLosUsuarios(Arrays.asList(rule.spelling.split(",")));
-        if (Globals.nocriterios) {
-            Globals.zcrawling.getNoCriterios().add(criterio);
-        } else {
-            Globals.zcrawling.getCriterios().add(criterio);
-        }
-        Globals.nocriterios = false;
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$deLosUsuarios rule) {
+//        Criterio criterio = new Criterio();
+//        criterio.setDeLosUsuarios(Arrays.asList(rule.spelling.split(",")));
+//        if (Globals.nocriterios) {
+//            zcrawling.getNoCriterios().add(criterio);
+//        } else {
+//            zcrawling.getCriterios().add(criterio);
+//        }
+//        Globals.nocriterios = false;
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$usuarios rule) {
-        if (visitRules(rule.rules).booleanValue()) {
+    public Object visit(ZCrawling zcrawling, Rule$usuarios rule) {
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;
     }
 
     @Override
-    public Object visit(Rule$nocriterio rule) {
-        if (Globals.zcrawling.getNoCriterios() == null) {
-            Globals.zcrawling.setNoCriterios(new ArrayList<Criterio>());
+    public Object visit(ZCrawling zcrawling, Rule$nocriterio rule) {
+//        if (zcrawling.getNoCriterios() == null) {
+//            zcrawling.setNoCriterios(new ArrayList<Criterio>());
+//        }
+//        Globals.nocriterios = true;
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
+            //System.out.println("");
         }
-        Globals.nocriterios = true;
-        if (visitRules(rule.rules).booleanValue()) {
+        return Boolean.FALSE;
+    }
+
+    public Object visit(ZCrawling zcrawling, Rule$incluyeTagsFuente rule) {
+//        zcrawling.setTagsFuente(true);
+        if (visitRules(zcrawling, rule.rules).booleanValue()) {
             //System.out.println("");
         }
         return Boolean.FALSE;

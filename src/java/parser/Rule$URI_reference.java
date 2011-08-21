@@ -11,6 +11,7 @@
 package parser;
 
 import java.util.ArrayList;
+import org.zonales.metadata.ZCrawling;
 
 final public class Rule$URI_reference extends Rule
 {
@@ -19,9 +20,9 @@ final public class Rule$URI_reference extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$URI_reference parse(ParserContext context)

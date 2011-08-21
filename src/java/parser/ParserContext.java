@@ -11,6 +11,7 @@ package parser;
  */
 
 import java.util.Stack;
+import org.zonales.metadata.ZCrawling;
 
 public class ParserContext
 {
@@ -22,14 +23,24 @@ public class ParserContext
   private int level = 0;
   private int error = -1;
   private int start = 0;
+  private ZCrawling zcrawling;
+
+    public ZCrawling getZcrawling() {
+        return zcrawling;
+    }
+
+    public void setZcrawling(ZCrawling zcrawling) {
+        this.zcrawling = zcrawling;
+    }
 
   private final boolean traceOn;
 
-  public ParserContext(String text, boolean traceOn)
+  public ParserContext(String text, boolean traceOn, ZCrawling zcrawling)
   {
     this.text = text;
     this.traceOn = traceOn;
     index = 0;
+    this.zcrawling = zcrawling;
   }
 
   public void push(String rulename)

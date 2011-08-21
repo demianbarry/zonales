@@ -11,6 +11,7 @@
 package parser;
 
 import java.util.ArrayList;
+import org.zonales.metadata.ZCrawling;
 
 final public class Rule$fuente extends Rule
 {
@@ -19,9 +20,9 @@ final public class Rule$fuente extends Rule
     super(spelling, rules);
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor) 
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 
   public static Rule$fuente parse(ParserContext context)
@@ -101,8 +102,7 @@ final public class Rule$fuente extends Rule
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
             rule = Terminal$StringValue.parse(context, "feed");
-            if ((f1 = rule != null))
-            {
+            if ((f1 = rule != null)) {
               e1.add(rule);
               c1++;
             }
@@ -214,6 +214,7 @@ final public class Rule$fuente extends Rule
 
     context.pop("fuente", parsed);
 
+    context.getZcrawling().setFuente(rule.spelling.matches("feed.*") ? "feed" : rule.spelling);
     return (Rule$fuente)rule;
   }
 }

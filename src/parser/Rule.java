@@ -43,7 +43,7 @@ public abstract class Rule
     return spelling.compareTo(rule.spelling);
   }
 
-  public abstract Object accept(Visitor visitor);
+  public abstract Object accept(ZCrawling zcrawling, Visitor visitor);
 }
 
 /* -----------------------------------------------------------------------------
