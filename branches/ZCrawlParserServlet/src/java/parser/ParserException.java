@@ -10,6 +10,7 @@ package parser;
  * -----------------------------------------------------------------------------
  */
 import java.util.Stack;
+import org.zonales.metadata.ZCrawling;
 
 /**
  * <p>Signals that a parse failure has occurred.</p>
@@ -23,6 +24,15 @@ public class ParserException extends Exception {
     private String text60;
     private int index60;
     private Stack<String> ruleStack;
+    private ZCrawling zcrawling;
+
+    public ZCrawling getZcrawling() {
+        return zcrawling;
+    }
+
+    public void setZcrawling(ZCrawling zcrawling) {
+        this.zcrawling = zcrawling;
+    }
     static final private String newline = System.getProperty("line.separator", "\n");
 
     /**
@@ -37,7 +47,8 @@ public class ParserException extends Exception {
             String reason,
             String text,
             int index,
-            Stack<String> ruleStack) {
+            Stack<String> ruleStack,
+            ZCrawling zcrawling) {
         this.reason = reason;
         this.ruleStack = ruleStack;
 
@@ -45,6 +56,7 @@ public class ParserException extends Exception {
         int end = (text.length() < index + 30) ? text.length() : index + 30;
         text60 = text.substring(start, end).replaceAll("[^\\p{Print}]", " ");
         index60 = (index < 30) ? index : 30;
+        this.zcrawling = zcrawling;
     }
 
     /**
@@ -110,9 +122,9 @@ public class ParserException extends Exception {
         StringBuilder buffer = new StringBuilder();
         buffer.append(reason);
         buffer.append(newline);
-        buffer.append(text60.substring(0, index60 + 1));
+        buffer.append(text60.substring(0, text60.length() > index60 + 1 ? index60 + 1 : text60.length()));
         buffer.append("(*)");
-        buffer.append(text60.substring(index60 + 1));
+        buffer.append(text60.substring(text60.length() > index60 + 1 ? index60 + 1 : text60.length()));
         buffer.append(newline);
         //buffer.append(marker.substring(0, index60) + "^" + newline);
 

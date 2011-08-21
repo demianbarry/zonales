@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Criterio {
     
-    protected Boolean siosi;
+    protected boolean siosi = false;
 
     /**
      * Get the value of siosi

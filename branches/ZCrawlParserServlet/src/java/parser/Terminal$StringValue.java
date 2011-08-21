@@ -11,6 +11,7 @@
 package parser;
 
 import java.util.ArrayList;
+import org.zonales.metadata.ZCrawling;
 
 public class Terminal$StringValue extends Rule
 {
@@ -48,9 +49,9 @@ public class Terminal$StringValue extends Rule
     return stringValue;
   }
 
-  public Object accept(Visitor visitor)
+  public Object accept(ZCrawling zcrawling, Visitor visitor)
   {
-    return visitor.visit(this);
+    return visitor.visit(zcrawling, this);
   }
 }
 /* -----------------------------------------------------------------------------

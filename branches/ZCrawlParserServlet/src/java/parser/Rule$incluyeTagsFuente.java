@@ -1,21 +1,20 @@
 /* -----------------------------------------------------------------------------
- * Rule$listaNegraUsuarios.java
+ * Rule$incluyeTagsFuente.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Thu Aug 04 12:08:11 ART 2011
+ * Produced : Sat Aug 20 09:28:50 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
 package parser;
 
 import java.util.ArrayList;
-import org.zonales.metadata.Filtro;
 import org.zonales.metadata.ZCrawling;
 
-final public class Rule$listaNegraUsuarios extends Rule {
+final public class Rule$incluyeTagsFuente extends Rule {
 
-    private Rule$listaNegraUsuarios(String spelling, ArrayList<Rule> rules) {
+    private Rule$incluyeTagsFuente(String spelling, ArrayList<Rule> rules) {
         super(spelling, rules);
     }
 
@@ -23,8 +22,8 @@ final public class Rule$listaNegraUsuarios extends Rule {
         return visitor.visit(zcrawling, this);
     }
 
-    public static Rule$listaNegraUsuarios parse(ParserContext context) {
-        context.push("listaNegraUsuarios");
+    public static Rule$incluyeTagsFuente parse(ParserContext context) {
+        context.push("incluyeTagsFuente");
 
         boolean parsed = true;
         int s0 = context.index;
@@ -41,7 +40,19 @@ final public class Rule$listaNegraUsuarios extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Terminal$StringValue.parse(context, "lista");
+                        rule = Rule$mspace.parse(context);
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Terminal$StringValue.parse(context, "incluye");
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -65,7 +76,31 @@ final public class Rule$listaNegraUsuarios extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Terminal$StringValue.parse(context, "negra");
+                        rule = Terminal$StringValue.parse(context, "los");
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Rule$mspace.parse(context);
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Terminal$StringValue.parse(context, "tags");
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -113,7 +148,43 @@ final public class Rule$listaNegraUsuarios extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Terminal$StringValue.parse(context, "usuarios");
+                        rule = Terminal$StringValue.parse(context, "la");
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Rule$mspace.parse(context);
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Terminal$StringValue.parse(context, "fuente");
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Rule$space.parse(context);
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -131,18 +202,17 @@ final public class Rule$listaNegraUsuarios extends Rule {
 
         rule = null;
         if (parsed) {
-            rule = new Rule$listaNegraUsuarios(context.text.substring(s0, context.index), e0);
+            rule = new Rule$incluyeTagsFuente(context.text.substring(s0, context.index), e0);
         } else {
             context.index = s0;
         }
 
-        context.pop("listaNegraUsuarios", parsed);
+        context.pop("incluyeTagsFuente", parsed);
 
-        Filtro filtro = new Filtro();
-        filtro.setListaNegraDeUsuarios(true);
-        context.getZcrawling().getFiltros().add(filtro);
-
-        return (Rule$listaNegraUsuarios) rule;
+        if (rule != null) {
+            context.getZcrawling().setTagsFuente(true);
+        }
+        return (Rule$incluyeTagsFuente) rule;
     }
 }
 
