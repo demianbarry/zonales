@@ -13,10 +13,11 @@ import java.util.ArrayList;
  */
 public class State {
 
-    public static final String GENERATED = "Generated";
-    public static final String PUBLISHED = "Published";
-    public static final String UNPUBLISHED = "Unpublished";
-    public static final String VOID = "Void";
+    public static final String GENERATED = "generated";
+    public static final String COMPILED = "compiled";
+    public static final String PUBLISHED = "published";
+    public static final String UNPUBLISHED = "unpublished";
+    public static final String VOID = "void";
 
     public static ArrayList<String> getCrawlConfigStates() {
         ArrayList<String> states = new ArrayList<String>();
@@ -24,7 +25,8 @@ public class State {
         states.add(GENERATED);
         states.add(PUBLISHED);
         states.add(UNPUBLISHED);
-        states.add(VOID);
+        states.add(COMPILED);
+        states.add(VOID);        
 
         return states;
     }
