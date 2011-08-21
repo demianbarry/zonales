@@ -15,7 +15,47 @@ public class ZCrawling {
     public ZCrawling() {
         
     }
+    protected boolean siosi = false;
 
+    /**
+     * Get the value of siosi
+     *
+     * @return the value of siosi
+     */
+    public Boolean getSiosi() {
+        return siosi;
+    }
+
+    /**
+     * Set the value of siosi
+     *
+     * @param siosi new value of siosi
+     */
+    public void setSiosi(Boolean siosi) {
+        this.siosi = siosi;
+    }
+
+    protected boolean nocriterio = false;
+
+    /**
+     * Get the value of nocriterio
+     *
+     * @return the value of nocriterio
+     */
+    public Boolean getNocriterio() {
+        return nocriterio;
+    }
+
+    /**
+     * Set the value of nocriterio
+     *
+     * @param nocriterio new value of nocriterio
+     */
+    public void setNocriterio(Boolean nocriterio) {
+        this.nocriterio = nocriterio;
+    }
+
+    
     protected String descripcion;
 
     /**
@@ -177,7 +217,7 @@ public class ZCrawling {
         this.filtros = filtros;
     }
 
-    protected Boolean tagsFuente = null;
+    protected boolean tagsFuente = false;
 
     /**
      * Get the value of tagsFuente

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.errors;
 
 /**
@@ -11,9 +10,50 @@ package org.zonales.errors;
  */
 public class ZMessages {
 
+    public static String appendMessage(ZMessage error, String msg) {
+        return "{\"cod\": \"" + error.getCod() + "\", \"msg\": \"" + error.getMsg() + msg + "\"}";
+    }
+
+    public static ZMessage switchMessages(int code) {
+        switch (code) {
+            case 200:
+                return PREVIUS_STATE_WRONG;
+            case 201:
+                return UPDATE_FAILED;
+            case 202:
+                return SAVE_FAILED;
+            case 203:
+                return DATA_NOT_FOUND;
+            case 204:
+                return PARAM_REQUIRED_FAILED;
+            case 205:
+                return TAG_TYPE_NOT_FOUND;
+            case 220:
+                return ZPARSER_ZGRAM_PARTIALLY_PARSED;
+            case 300:
+                return UNKNOWN_ERROR;
+            case 301:
+                return NO_DB_FAILED;
+            case 302:
+                return MONGODB_ERROR;
+            case 303:
+                return CONN_ERROR;
+            case 320:
+                return ZPARSER_USE_ERROR;
+            case 321:
+                return ZPARSER_PARSE_VISITOR_ERROR;
+            case 322:
+                return ZPARSER_PARSE_VISITOR_ILEGAL_ERROR;
+            case 323:
+                return ZPARSER_PARSE_VISITOR_INSTANT_ERROR;
+            case 324:
+                return ZPARSER_CANNOT_PARSE;
+            default:
+                return SUCCESS;
+        }
+    }
     //INFO
     public static final ZMessage SUCCESS = new ZMessage(100, "Success");
-
     //Warning (errores de código, manejados, etc.
     public static final ZMessage PREVIUS_STATE_WRONG = new ZMessage(200, "Previus state wrong");
     public static final ZMessage UPDATE_FAILED = new ZMessage(201, "Update failed");
@@ -21,13 +61,15 @@ public class ZMessages {
     public static final ZMessage DATA_NOT_FOUND = new ZMessage(203, "Data not found");
     public static final ZMessage PARAM_REQUIRED_FAILED = new ZMessage(204, "Param required failed");
     public static final ZMessage TAG_TYPE_NOT_FOUND = new ZMessage(205, "Declared tag type doesn't exists");
-    public static final ZMessage PARSER_ZGRAM_PARTIALLY_PARSED = new ZMessage(220, "ZGram partially parsed");
-    
+    public static final ZMessage ZPARSER_ZGRAM_PARTIALLY_PARSED = new ZMessage(220, "ZParser - La consulta se parseo parcialmente. La porción correcta se guardó.");
     //Error (Excepciones)
     public static final ZMessage UNKNOWN_ERROR = new ZMessage(300, "Unknown Error");
     public static final ZMessage NO_DB_FAILED = new ZMessage(301, "DB is unavailable");
     public static final ZMessage MONGODB_ERROR = new ZMessage(302, "MongoDB error");
-    public static final ZMessage ZPARSER_USE_ERROR = new ZMessage(320, "ZParser - use error");
-    public static final ZMessage ZPARSER_PARSE_ERROR = new ZMessage(321, "ZParser - parse error");
-    
+    public static final ZMessage CONN_ERROR = new ZMessage(303, "Connection error");
+    public static final ZMessage ZPARSER_USE_ERROR = new ZMessage(320, "ZParser - use error: Parser [-rule rulename] [-trace] <-file file | -string string> [-visitor visitor]");
+    public static final ZMessage ZPARSER_PARSE_VISITOR_ERROR = new ZMessage(321, "ZParser - visitor error: class not found");
+    public static final ZMessage ZPARSER_PARSE_VISITOR_ILEGAL_ERROR = new ZMessage(322, "ZParser - visitor error: illegal access");
+    public static final ZMessage ZPARSER_PARSE_VISITOR_INSTANT_ERROR = new ZMessage(323, "ZParser - visitor error: instantiation failure");
+    public static final ZMessage ZPARSER_CANNOT_PARSE = new ZMessage(324, "ZParser - No se pudo parsear la consulta");
 }
