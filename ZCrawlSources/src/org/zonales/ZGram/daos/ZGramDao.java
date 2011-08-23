@@ -224,8 +224,8 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("uriFuente", newZgram.getMetadata().getUriFuente());
 
                 if (newZgram.getMetadata().getCriterios() != null) {
+                    ArrayList criteriosToDoc = new ArrayList();
                     for (Criterio criterio : newZgram.getMetadata().getCriterios()) {
-                        ArrayList criteriosToDoc = new ArrayList();
                         if (criterio.getDeLosUsuarios() != null) {
                             List<String> usuarios = criterio.getDeLosUsuarios();
                             ArrayList usuariosToDoc = new ArrayList();
@@ -252,13 +252,13 @@ public class ZGramDao extends BaseDao {
                             palabrasDoc.put("siosi", criterio.getSiosi());
                             criteriosToDoc.add(palabrasDoc);
                         }
-                        zgramDoc.put("criterios", criteriosToDoc);
                     }
+                    zgramDoc.put("criterios", criteriosToDoc);
                 }
 
                 if (newZgram.getMetadata().getNoCriterios() != null) {
+                    ArrayList nocriteriosToDoc = new ArrayList();
                     for (Criterio nocriterio : newZgram.getMetadata().getNoCriterios()) {
-                        ArrayList nocriteriosToDoc = new ArrayList();
                         if (nocriterio.getDeLosUsuarios() != null) {
                             List<String> usuarios = nocriterio.getDeLosUsuarios();
                             ArrayList usuariosToDoc = new ArrayList();
@@ -285,8 +285,8 @@ public class ZGramDao extends BaseDao {
                             palabrasDoc.put("siosi", nocriterio.getSiosi());
                             nocriteriosToDoc.add(palabrasDoc);
                         }
-                        zgramDoc.put("noCriterios", nocriteriosToDoc);
                     }
+                    zgramDoc.put("noCriterios", nocriteriosToDoc);
                 }
 
                 if (newZgram.getMetadata().getComentarios() != null) {
