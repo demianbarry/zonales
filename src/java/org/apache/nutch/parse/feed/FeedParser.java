@@ -621,22 +621,21 @@ public class FeedParser extends HttpServlet implements Parser {
     }
 
     public StringBuffer getContent(String url) throws MalformedURLException, IOException {
-
-        URL gotoUrl = new URL(URLDecoder.decode(url, "UTF-8"));
-        HttpURLConnection conn = (HttpURLConnection) gotoUrl.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept-Charset", "UTF-8");
-        conn.connect();
-        InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-        BufferedReader in = new BufferedReader(isr);
+        
+        HttpURLConnection conn = getURLConnection(URLDecoder.decode(url, "UTF-8"), 60000);       
+        
+        //InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+        
+        //BufferedReader in = new BufferedReader(isr);
 
         StringBuffer sb = new StringBuffer();
-        String inputLine;
+        sb.append(getStringFromInpurStream(conn.getInputStream()));
+        //String inputLine;
 
-        //Guarda el contenido de la URL
+        /*//Guarda el contenido de la URL
         while ((inputLine = in.readLine()) != null) {
             sb.append(inputLine + "\r\n");
-        }
+        }*/
         return sb;
     }
 
@@ -802,5 +801,31 @@ public class FeedParser extends HttpServlet implements Parser {
             out.println(parse.getText());
         }
 
+    }
+    
+    private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
+        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(timeout);
+        connection.setReadTimeout(timeout);
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        connection.connect();
+        return connection;
+    }
+    
+        private String getStringFromInpurStream(InputStream is) {
+        StringBuilder resultado = new StringBuilder();
+        int character = 0;
+
+        try {            
+            while ((character = is.read()) != -1) {
+                resultado.append(Character.toString((char) character));
+             
+            }            
+
+        } catch (Exception ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado.toString();
     }
 }
