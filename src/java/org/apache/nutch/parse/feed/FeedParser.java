@@ -85,6 +85,7 @@ import java.net.URL;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
@@ -619,7 +620,11 @@ public class FeedParser extends HttpServlet implements Parser {
     public StringBuffer getContent(String url) throws MalformedURLException, IOException {
 
         URL gotoUrl = new URL(URLDecoder.decode(url, "UTF-8"));
-        InputStreamReader isr = new InputStreamReader(gotoUrl.openStream());
+        HttpURLConnection conn = (HttpURLConnection)gotoUrl.openConnection();
+        conn.setRequestMethod("GET");        
+        conn.setRequestProperty("Accept-Charset", "UTF-8");
+        conn.connect();
+        InputStreamReader isr = new InputStreamReader(conn.getInputStream());
         BufferedReader in = new BufferedReader(isr);
 
         StringBuffer sb = new StringBuffer();
