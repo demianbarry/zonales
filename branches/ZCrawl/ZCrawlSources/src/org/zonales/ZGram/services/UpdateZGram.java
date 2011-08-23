@@ -41,7 +41,6 @@ public class UpdateZGram extends BaseService {
         ZCrawling metadata = new ZCrawling();
         Gson metadataGson = new Gson();
         ZMessage zMessage = new ZMessage(cod, msg);
-
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
         metadata = metadataGson.fromJson(metadataJson, ZCrawling.class);
 
