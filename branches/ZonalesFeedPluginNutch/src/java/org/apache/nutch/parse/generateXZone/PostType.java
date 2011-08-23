@@ -82,11 +82,9 @@ public class PostType {
     @XmlElement(required = true)
     protected TagsType tags;
     @XmlElement(required = true)
-    @XmlSchemaType(name = "dateTime")
-    protected Date created;
+    protected String created;
     @XmlElement(required = false)
-    @XmlSchemaType(name = "dateTime")
-    protected Date modified;
+    protected String modified;
     protected int relevance;
     @XmlElement(required = true)
     protected String verbatim;
@@ -94,7 +92,7 @@ public class PostType {
     public PostType() {
     }
 
-    public PostType(String source, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, Date created, Date modified, int relevance, String verbatim) {
+    public PostType(String source, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
         this.source = source;
         this.id = id;
         this.fromUser = fromUser;
@@ -331,10 +329,10 @@ public class PostType {
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link String }
      *     
      */
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 
@@ -343,10 +341,10 @@ public class PostType {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link String }
      *     
      */
-    public void setCreated(Date value) {
+    public void setCreated(String value) {
         this.created = value;
     }
 
@@ -355,10 +353,10 @@ public class PostType {
      * 
      * @return
      *     possible object is
-     *     {@link Date }
+     *     {@link String }
      *     
      */
-    public Date getModified() {
+    public String getModified() {
         return modified;
     }
 
@@ -367,10 +365,10 @@ public class PostType {
      * 
      * @param value
      *     allowed object is
-     *     {@link Date }
+     *     {@link String }
      *     
      */
-    public void setModified(Date value) {
+    public void setModified(String value) {
         this.modified = value;
     }
 
@@ -406,5 +404,3 @@ public class PostType {
         this.verbatim = value;
     }
 }
-
-
