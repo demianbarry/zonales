@@ -200,7 +200,7 @@ public class FeedParser extends HttpServlet implements Parser {
                     if(newEntry.getLinks() == null)
                         newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
                     newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink()));
-                    newEntry.setCreated(String.valueOf(entry.getPublishedDate()));
+                    newEntry.setCreated(String.valueOf(entry.getPublishedDate().getTime()));
                     newEntry.setModified(String.valueOf(entry.getPublishedDate().getTime()));
                     newEntry.setRelevance(0);
                     if (!json) {
