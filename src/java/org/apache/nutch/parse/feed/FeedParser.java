@@ -197,8 +197,8 @@ public class FeedParser extends HttpServlet implements Parser {
                     newEntry.setText(entry.getDescription().getValue());
                     newEntry.setTags(new TagsType(tagslist));
                     newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
-                    newEntry.setCreated(entry.getPublishedDate());
-                    newEntry.setModified(entry.getPublishedDate());
+                    newEntry.setCreated(String.valueOf(entry.getPublishedDate()));
+                    newEntry.setModified(String.valueOf(entry.getPublishedDate().getTime()));
                     newEntry.setRelevance(0);
                     if (!json) {
                         newEntry.setVerbatim(gson.toJson(newEntry));
@@ -620,8 +620,8 @@ public class FeedParser extends HttpServlet implements Parser {
     public StringBuffer getContent(String url) throws MalformedURLException, IOException {
 
         URL gotoUrl = new URL(URLDecoder.decode(url, "UTF-8"));
-        HttpURLConnection conn = (HttpURLConnection)gotoUrl.openConnection();
-        conn.setRequestMethod("GET");        
+        HttpURLConnection conn = (HttpURLConnection) gotoUrl.openConnection();
+        conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept-Charset", "UTF-8");
         conn.connect();
         InputStreamReader isr = new InputStreamReader(conn.getInputStream());
@@ -711,7 +711,7 @@ public class FeedParser extends HttpServlet implements Parser {
 
     }
 
-      public static void main(String[] args, PrintStream out) throws Exception {
+    public static void main(String[] args, PrintStream out) throws Exception {
 
 
         String url = args[0];
@@ -721,7 +721,7 @@ public class FeedParser extends HttpServlet implements Parser {
         //System.out.println("Call Main");
 
 
-         for (int i = 1; i < args.length; i++) {
+        for (int i = 1; i < args.length; i++) {
 
             if (args[i].startsWith("-palabras")) {
                 //System.out.println("1-Recibio comando" + args[i]);
@@ -735,9 +735,8 @@ public class FeedParser extends HttpServlet implements Parser {
                         break;
                     }
                 }
-            } else
-            if (args[i].startsWith("-nopalabras")) {
-              //  System.out.println("2-Recibio comando" + args[i]);
+            } else if (args[i].startsWith("-nopalabras")) {
+                //  System.out.println("2-Recibio comando" + args[i]);
                 i++;
                 while (i < args.length) {
                     if (!args[i].startsWith("-")) {
@@ -748,9 +747,8 @@ public class FeedParser extends HttpServlet implements Parser {
                         break;
                     }
                 }
-            } else
-            if (args[i].startsWith("-tags")) {
-              //  System.out.println("3-Recibio comando" + args[i]);
+            } else if (args[i].startsWith("-tags")) {
+                //  System.out.println("3-Recibio comando" + args[i]);
                 i++;
                 while (i < args.length) {
                     if (!args[i].startsWith("-")) {
@@ -761,9 +759,8 @@ public class FeedParser extends HttpServlet implements Parser {
                         break;
                     }
                 }
-            } else
-            if (args[i].startsWith("-json")) {
-             //   System.out.println("4-Recibio comando" + args[i]);
+            } else if (args[i].startsWith("-json")) {
+                //   System.out.println("4-Recibio comando" + args[i]);
                 json = true;
             }
 
@@ -779,12 +776,12 @@ public class FeedParser extends HttpServlet implements Parser {
         }
         if (!"".equals(notwords)) {
             parser.setBlackList(notwords);
-             //System.out.println("Lista de palabras negras"+notwords);
+            //System.out.println("Lista de palabras negras"+notwords);
 
         }
         if (!"".equals(tags)) {
             parser.setTags(tags);
-             //System.out.println("Tags"+tags);
+            //System.out.println("Tags"+tags);
 
         }
 
