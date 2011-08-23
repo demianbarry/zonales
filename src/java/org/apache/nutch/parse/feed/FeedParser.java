@@ -18,11 +18,8 @@ package org.apache.nutch.parse.feed;
 
 // JDK imports
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonWriter;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +27,8 @@ import java.util.Map.Entry;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 // APACHE imports
 import java.util.logging.Level;
@@ -58,6 +57,7 @@ import org.apache.nutch.util.EncodingDetector;
 import org.apache.nutch.util.NutchConfiguration;
 import org.xml.sax.InputSource;
 
+
 // ROME imports
 import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndContent;
@@ -65,14 +65,15 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndPerson;
 import com.sun.syndication.io.SyndFeedInput;
+import java.io.BufferedReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.apache.nutch.parse.generateXZone.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.text.BadLocationException;
@@ -82,7 +83,17 @@ import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import java.net.URL;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.net.URLDecoder;
+import java.util.StringTokenizer;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -96,7 +107,7 @@ import java.io.Reader;
  * </p>
  *
  */
-public class FeedParser implements Parser {
+public class FeedParser extends HttpServlet implements Parser {
 
     public static final String CHARSET_UTF8 = "charset=UTF-8";
     public static final String TEXT_PLAIN_CONTENT_TYPE = "text/plain; "
@@ -111,6 +122,15 @@ public class FeedParser implements Parser {
     public PostType newEntry;
     StringWriter sw = new StringWriter();
     List<PostType> newsList = new ArrayList<PostType>();
+    File archivo = null;
+    FileReader fr = null;
+    BufferedReader br = null;
+    String key_word;
+    String key_tags;
+    List<String> blacklist = new ArrayList<String>();
+    List<String> searchlist = new ArrayList<String>();
+    List<String> tagslist = new ArrayList<String>();
+    static Boolean json = false;
 
     /**
      * Parses the given feed and extracts out and parsers all linked items within
@@ -153,23 +173,40 @@ public class FeedParser implements Parser {
         } catch (Exception e) {
             feedLink = null;
         }
+
+        String feedDesc = stripTags(feed.getDescriptionEx());
+        String feedTitle = stripTags(feed.getTitleEx());
+
         Gson gson = new Gson();
+
         for (Iterator i = entries.iterator(); i.hasNext();) {
+
             SyndEntry entry = (SyndEntry) i.next();
 
-            newEntry = new PostType();
-            newEntry.setSource(feedLink.substring(7));
-           // newEntry.setId(entry.getUri());
-	    newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
-	    newEntry.setFromUser(new User(null, entry.getAuthor(), null, null));
-            newEntry.setTitle(entry.getTitle());
-            newEntry.setText(entry.getDescription().getValue());
+            try {
+                if (findWords(entry.getTitle(), entry.getContents().toString(), entry.getLink(), searchlist, blacklist)) {
 
-	    if(entry.getCategories().isEmpty())
-                newEntry.setTags(new TagsType(entry.getCategories()));
+                    newEntry = new PostType();
+                    newEntry.setSource(feedLink.substring(7));
+                    // newEntry.setId(entry.getUri());
+                    // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
+                    newEntry.setId(entry.getTitle().trim());
+                    newEntry.setFromUser(new User(null, entry.getAuthor(), null, null));
+                    newEntry.setTitle(entry.getTitle());
+                    newEntry.setText(entry.getDescription().getValue());
+                    newEntry.setTags(new TagsType(tagslist));
+                    newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
+                    newEntry.setCreated(entry.getPublishedDate());
+                    newEntry.setModified(entry.getPublishedDate());
+                    newEntry.setRelevance(0);
+                    if (!json) {
+                        newEntry.setVerbatim(gson.toJson(newEntry));
+                    }
 
-	     try {
-                newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
+                    newsList.add(newEntry);
+
+                    // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
+                }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -177,31 +214,22 @@ public class FeedParser implements Parser {
             } catch (BadLocationException ex) {
                 Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            newEntry.setCreated(entry.getPublishedDate());
-	    newEntry.setModified(entry.getPublishedDate());
-            newEntry.setRelevance(0);
-            newEntry.setVerbatim(gson.toJson(newEntry));
-
-            newsList.add(newEntry);
-
-            addToMap(parseResult, feed, feedLink, entry, content,newEntry );
-
         }
 
-        String feedDesc = stripTags(feed.getDescriptionEx());
-        String feedTitle = stripTags(feed.getTitleEx());
+
 
 
         try {
 
             news = new PostsType(newsList);
-            Feed2XML(news, sw);
+            if (!json) {
+                Feed2XML(news, sw);
+            }
         } catch (Exception ex) {
             Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        parseResult.put(content.getUrl(), new ParseText(sw.toString()), new ParseData(
+        parseResult.put(content.getUrl(), new ParseText(json ? gson.toJson(news) : sw.toString()), new ParseData(
                 new ParseStatus(ParseStatus.SUCCESS), feedTitle, new Outlink[0],
                 content.getMetadata()));
 
@@ -240,7 +268,7 @@ public class FeedParser implements Parser {
         this.normalizers = new URLNormalizers(conf, URLNormalizers.SCOPE_OUTLINK);
         this.filters = new URLFilters(conf);
         this.defaultEncoding =
-                conf.get("parser.character.encoding.default", "windows-1252");
+                conf.get("parser.character.encoding.default", "UTF-8");
     }
 
     /**
@@ -262,32 +290,8 @@ public class FeedParser implements Parser {
      * @throws Exception
      *           If any error occurs.
      */
-    public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.err.println("Usage: FeedParser <feed>");
-            System.exit(1);
-        }
-        String name = args[0];
-        String url = "file:" + name;
-        Configuration conf = NutchConfiguration.create();
-        FeedParser parser = new FeedParser();
-        parser.setConf(conf);
-        File file = new File(name);
-        byte[] bytes = new byte[(int) file.length()];
-        DataInputStream in = new DataInputStream(new FileInputStream(file));
-        in.readFully(bytes);
-        ParseResult parseResult = parser.getParse(new Content(url, url, bytes,
-                "application/rss+xml", new Metadata(), conf));
-        for (Entry<Text, Parse> entry : parseResult) {
-            System.out.println("key: " + entry.getKey());
-            Parse parse = entry.getValue();
-            System.out.println("data: " + parse.getData());
-            System.out.println("text: " + parse.getText() + "\n");
-        }
-    }
-
     private void addToMap(ParseResult parseResult, SyndFeed feed,
-            String feedLink, SyndEntry entry, Content content ,PostType newEntry) {
+            String feedLink, SyndEntry entry, Content content, PostType newEntry) {
         String link = entry.getLink(), text = null, title = null;
         Metadata parseMeta = new Metadata(), contentMeta = content.getMetadata();
         Parse parse = null;
@@ -314,7 +318,7 @@ public class FeedParser implements Parser {
             parseMeta.set("feed", feedLink);
         }
 
-        addFields(parseMeta, contentMeta, feed, entry , newEntry);
+        addFields(parseMeta, contentMeta, feed, entry, newEntry);
 
         // some item descriptions contain markup text in them,
         // so we temporarily set their content-type to parse them
@@ -415,10 +419,10 @@ public class FeedParser implements Parser {
         if (newEntry.getId() != null) {
             parseMeta.set(Feed.FEED_ID, newEntry.getId());
         }
-	if (newEntry.getText() != null) {
+        if (newEntry.getText() != null) {
             parseMeta.set(Feed.FEED_TEXT, newEntry.getText());
         }
-        if (String.valueOf(newEntry.getRelevance())!= null) {
+        if (String.valueOf(newEntry.getRelevance()) != null) {
             parseMeta.set(Feed.FEED_RELEVANCE, String.valueOf(newEntry.getRelevance()));
         }
         if (newEntry.getVerbatim() != null) {
@@ -464,17 +468,68 @@ public class FeedParser implements Parser {
         return s != null && !s.equals("");
     }
 
-    public static LinksType getLinks (String ConDatos , String url) throws FileNotFoundException, IOException, BadLocationException{
+    public static boolean findWords(String title, String ConDatos, String url, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
+
+        String contenido;
+        int find = 0;
+        if (ConDatos.indexOf("[]") > -1) {
+            Document doc = Jsoup.connect(url).get();
+            Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
+            // System.out.println(noticias.text());
+            contenido = noticia.text();
+        } else {
+            contenido = ConDatos;
+
+        }
+        if (!slist.isEmpty()) {
+            // System.out.println("Entro slist.isEmpty()");
+            for (String palabra : slist) {
+
+                if (contenido.indexOf(palabra) >= 0 || title.indexOf(palabra) >= 0) {
+                    find++;
+                }
+
+            }
+        }
+        if (!blist.isEmpty()) {
+            // System.out.println("Entro blist.isEmpty()");
+            for (String palabra : blist) {
+
+                if (contenido.indexOf(palabra) > 0 || title.indexOf(palabra) > 0) {
+                    return false;
+                }
+            }
+        }
+        if (!slist.isEmpty()) {
+            if (find >= slist.size()) {
+                //  System.out.println("find >= slist.size() return true");
+                return true;
+            } else {
+                //   System.out.println("find >= slist.size() return false");
+                return false;
+            }
+        }
+        if (slist.isEmpty() && !blist.isEmpty()) {
+            return true;
+        }
+        if (slist.isEmpty() && blist.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    /*************************************/
+    public static LinksType getLinks(String ConDatos, String url) throws FileNotFoundException, IOException, BadLocationException {
 
         InputStream datos = null;
         HTMLDocument doc;
         URL urltemp;
-        String test=null;
-	List<LinkType> list = new ArrayList<LinkType>();
+        String test = null;
+        List<LinkType> list = new ArrayList<LinkType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
-/*************/
-        if(ConDatos != null ){
+        /*************/
+        if (ConDatos != null) {
             datos = new ByteArrayInputStream(ConDatos.getBytes());
             HTMLEditorKit kit = new HTMLEditorKit();
             doc = (HTMLDocument) kit.createDefaultDocument();
@@ -483,12 +538,11 @@ public class FeedParser implements Parser {
             //Reader HTMLReader = new ImputStreamReader (datos);
             kit.read(HTMLReader, doc, 0);
 
-        }
-        else{
+        } else {
 
-           urltemp = new URL(url);
-         //   urltemp = url;
-         //    urltemp = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
+            urltemp = new URL(url);
+            //   urltemp = url;
+            //    urltemp = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
             HTMLEditorKit kit = new HTMLEditorKit();
             doc = (HTMLDocument) kit.createDefaultDocument();
             doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
@@ -496,75 +550,252 @@ public class FeedParser implements Parser {
             kit.read(HTMLReader, doc, 0);
 
         }
-/*************/
-
-
+        /*************/
         ElementIterator it = new ElementIterator(doc);
         Element elem = null;
 
 
-        while( (elem= it.next()) != null  )
-        {
+        while ((elem = it.next()) != null) {
 
-            if( (elem.getName().equals(  "img")) )
-            {
-                String img= "imagen";
+            if ((elem.getName().equals("img"))) {
+                String img = "imagen";
                 String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
                 /***************/
-               if ((s.indexOf("http://www")) == 0){
-                 list.add(new LinkType(img,s));
+                if ((s.indexOf("http://www")) == 0) {
+                    list.add(new LinkType(img, s));
+                }
             }
+
+        }
+
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return new LinksType(list);
         }
 
     }
 
-   if(list.isEmpty())
-       return null;
-   else
-    return new LinksType(list);
-
- }
-
-/*************************************/
-
-    public void getActions(URL url) throws IOException, BadLocationException{
+    /*************************************/
+    public void getActions(URL url) throws IOException, BadLocationException {
 
         InputStream datos = null;
         HTMLDocument doc;
         URL urltemp;
         //FileInputStream datos= new FileInputStream (ConDatos);
-/*************/
+        /*************/
+        //urltemp = new URL(url, ConDatos);
+        //urltemp = url;
+        //URL url = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
+        HTMLEditorKit kit = new HTMLEditorKit();
+        doc = (HTMLDocument) kit.createDefaultDocument();
+        doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
+        Reader HTMLReader = new InputStreamReader(url.openConnection().getInputStream());
+        kit.read(HTMLReader, doc, 0);
 
-
-            //urltemp = new URL(url, ConDatos);
-            //urltemp = url;
-            //URL url = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
-            HTMLEditorKit kit = new HTMLEditorKit();
-            doc = (HTMLDocument) kit.createDefaultDocument();
-            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
-            Reader HTMLReader = new InputStreamReader(url.openConnection().getInputStream());
-            kit.read(HTMLReader, doc, 0);
-
-/*************/
-
-
+        /*************/
         ElementIterator it = new ElementIterator(doc);
         Element elem;
 
 
-        while( (elem= it.next()) != null  )
-        {
+        while ((elem = it.next()) != null) {
 
-            if( (elem.getName().equals(  "comment")) )
-            {
+            if ((elem.getName().equals("comment"))) {
 
                 String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
 
-                if( s != null )
-                    System.out.println (s );
+                if (s != null) {
+                    System.out.println(s);
+                }
             }
         }
 
     }
 
+    private void setParameters(String keyword) {
+        this.key_word = keyword;
+    }
+
+    public StringBuffer getContent(String url) throws MalformedURLException, IOException {
+
+        URL gotoUrl = new URL(URLDecoder.decode(url, "UTF-8"));
+        InputStreamReader isr = new InputStreamReader(gotoUrl.openStream());
+        BufferedReader in = new BufferedReader(isr);
+
+        StringBuffer sb = new StringBuffer();
+        String inputLine;
+
+        //Guarda el contenido de la URL
+        while ((inputLine = in.readLine()) != null) {
+            sb.append(inputLine + "\r\n");
+        }
+        return sb;
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            String query = request.getParameter("url");
+            String tags = request.getParameter("tags");
+            String filters = request.getParameter("filtros");
+            String[] params = {query};
+            //main(params, response.getWriter());
+            System.setOut(new PrintStream(response.getOutputStream()));
+        } catch (Exception ex) {
+            Logger.getLogger(FeedParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        doGet(request, response);
+    }
+
+    public void setSearchList(String filters) {
+
+        List<String> listwords = new ArrayList<String>();
+        StringTokenizer tokens = new StringTokenizer(filters);
+
+        while (tokens.hasMoreTokens()) {
+            listwords.add(tokens.nextToken());
+        }
+
+        for (Iterator i = listwords.iterator(); i.hasNext();) {
+            String words = (String) i.next();
+            this.searchlist.add(words);
+        }
+    }
+
+    public void setBlackList(String filters) {
+
+        List<String> listwords = new ArrayList<String>();
+        StringTokenizer tokens = new StringTokenizer(filters);
+
+        while (tokens.hasMoreTokens()) {
+            listwords.add(tokens.nextToken());
+        }
+
+        for (Iterator i = listwords.iterator(); i.hasNext();) {
+            String words = (String) i.next();
+            this.blacklist.add(words);
+        }
+    }
+
+    public void setTags(String filters) {
+
+        List<String> listwords = new ArrayList<String>();
+        StringTokenizer tokens = new StringTokenizer(filters);
+
+        while (tokens.hasMoreTokens()) {
+            listwords.add(tokens.nextToken());
+        }
+
+        for (Iterator i = listwords.iterator(); i.hasNext();) {
+            String words = (String) i.next();
+            this.tagslist.add(words);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        main(args, System.out);
+
+    }
+
+      public static void main(String[] args, PrintStream out) throws Exception {
+
+
+        String url = args[0];
+        String words = "";
+        String notwords = "";
+        String tags = "";
+        //System.out.println("Call Main");
+
+
+         for (int i = 1; i < args.length; i++) {
+
+            if (args[i].startsWith("-palabras")) {
+                //System.out.println("1-Recibio comando" + args[i]);
+                i++;
+                while (i < args.length) {
+                    if (!args[i].startsWith("-")) {
+                        words += " " + args[i];
+                        i++;
+                    } else {
+                        --i;
+                        break;
+                    }
+                }
+            } else
+            if (args[i].startsWith("-nopalabras")) {
+              //  System.out.println("2-Recibio comando" + args[i]);
+                i++;
+                while (i < args.length) {
+                    if (!args[i].startsWith("-")) {
+                        notwords += " " + args[i];
+                        i++;
+                    } else {
+                        --i;
+                        break;
+                    }
+                }
+            } else
+            if (args[i].startsWith("-tags")) {
+              //  System.out.println("3-Recibio comando" + args[i]);
+                i++;
+                while (i < args.length) {
+                    if (!args[i].startsWith("-")) {
+                        tags += " " + args[i];
+                        i++;
+                    } else {
+                        --i;
+                        break;
+                    }
+                }
+            } else
+            if (args[i].startsWith("-json")) {
+             //   System.out.println("4-Recibio comando" + args[i]);
+                json = true;
+            }
+
+        }
+        Configuration conf = NutchConfiguration.create();
+        FeedParser parser = new FeedParser();
+        parser.setConf(conf);
+
+        if (!"".equals(words)) {
+            parser.setSearchList(words);
+            // System.out.println("Lista de palabras"+words);
+
+        }
+        if (!"".equals(notwords)) {
+            parser.setBlackList(notwords);
+             //System.out.println("Lista de palabras negras"+notwords);
+
+        }
+        if (!"".equals(tags)) {
+            parser.setTags(tags);
+             //System.out.println("Tags"+tags);
+
+        }
+
+        StringBuffer sb = parser.getContent(url);
+        byte[] bytes = new byte[sb.length()];
+        bytes = sb.toString().getBytes();
+
+        ParseResult parseResult = parser.getParse(new Content(url, url,
+                bytes, "application/rss+xml", new Metadata(), conf));
+
+        for (Entry<Text, Parse> entry : parseResult) {
+            //    System.out.println("key: " + entry.getKey());
+            Parse parse = entry.getValue();
+            //    System.out.println("data: " + parse.getData());
+            out.println(parse.getText());
+        }
+
+    }
 }
