@@ -196,7 +196,8 @@ public class FeedParser extends HttpServlet implements Parser {
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescription().getValue());
                     newEntry.setTags(new TagsType(tagslist));
-                    newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
+                    newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));                    
+                    newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink()));
                     newEntry.setCreated(String.valueOf(entry.getPublishedDate()));
                     newEntry.setModified(String.valueOf(entry.getPublishedDate().getTime()));
                     newEntry.setRelevance(0);
