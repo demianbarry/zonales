@@ -33,13 +33,15 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import entities.ActionType;
-import entities.ActionsType;
-import entities.PostType;
-import entities.PostsType;
-import entities.TagsType;
-import entities.ToUsersType;
-import entities.User;
+import org.zonales.entities.ActionType;
+import org.zonales.entities.ActionsType;
+import org.zonales.entities.LinkType;
+import org.zonales.entities.LinksType;
+import org.zonales.entities.PostType;
+import org.zonales.entities.PostsType;
+import org.zonales.entities.TagsType;
+import org.zonales.entities.ToUsersType;
+import org.zonales.entities.User;
 
 /**
  * Example servlet showing request headers
@@ -89,6 +91,8 @@ public class TwitterRetrieval extends HttpServlet {
             List<ActionType> actions;
             List<User> toUsers = new ArrayList();
 
+
+
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 actions = new ArrayList();
                 actions.add(new ActionType("retweets", twitter.getRetweetedByIDs(tweet.getId()).getIDs().length));
@@ -99,7 +103,7 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setId(String.valueOf(tweet.getId()));
                 post.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
-                        tweet.getProfileImageUrl(),
+                        "http://twitter.com/#!/" + tweet.getFromUser(),
                         tweet.getSource()));
 
                 if (tweet.getToUser() != null) {
@@ -118,6 +122,12 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setRelevance(actions.get(0).getCant() * 3 + actions.get(1).getCant());
 
+                List<LinkType> links = new ArrayList<LinkType>();
+                links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
+
+                post.setLinks(getLinks(tweet.getText()));
+                
+                
                 if (tagsArray != null && tagsArray.length > 0) {
                     post.setTags(new TagsType(Arrays.asList(tagsArray)));
                 }
@@ -161,5 +171,22 @@ public class TwitterRetrieval extends HttpServlet {
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(posts, out);
+    }
+
+    private LinksType getLinks(String text) {
+        String pattern = "^http://[a-zA-Z0-9]+(\\.([a-zA-Z0-9])+)+(\\/([a-zA-Z0-9])*)*$";
+        StringTokenizer st = new StringTokenizer(text);
+        String token;
+        List<LinkType> result = new ArrayList<LinkType>();
+        while (st.hasMoreTokens()) {
+            token = st.nextToken();
+            if (token.matches(pattern)) {
+                result.add(new LinkType("link", token));
+            }
+        }
+        if (result.size() > 0) {
+            return new LinksType(result);
+        }
+        return null;
     }
 }
