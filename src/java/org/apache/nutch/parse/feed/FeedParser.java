@@ -562,7 +562,7 @@ public class FeedParser extends HttpServlet implements Parser {
         while ((elem = it.next()) != null) {
 
             if ((elem.getName().equals("img"))) {
-                String img = "imagen";
+                String img = "picture";
                 String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
                 /***************/
                 if ((s.indexOf("http://www")) == 0) {
