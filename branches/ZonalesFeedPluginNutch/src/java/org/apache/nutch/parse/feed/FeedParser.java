@@ -807,8 +807,8 @@ public class FeedParser extends HttpServlet implements Parser {
         connection.setRequestMethod("GET");
         connection.setConnectTimeout(timeout);
         connection.setReadTimeout(timeout);
-        connection.setRequestProperty("Content-type", "application/rss+xml;charset=utf-8");
-        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        connection.setRequestProperty("Content-type", "application/rss+xml;charset=iso-8859-1");
+        connection.setRequestProperty("Accept-Charset", "ISO-8859-1");
         connection.connect();
         return connection;
     }
