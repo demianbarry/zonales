@@ -28,7 +28,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 // APACHE imports
 import java.util.logging.Level;
@@ -83,7 +82,6 @@ import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import java.net.URL;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URLDecoder;
@@ -196,9 +194,10 @@ public class FeedParser extends HttpServlet implements Parser {
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescription().getValue());
                     newEntry.setTags(new TagsType(tagslist));
-                    newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));                    
-                    if(newEntry.getLinks() == null)
+                    newEntry.setLinks(getLinks(entry.getContents().toString(), entry.getLink()));
+                    if (newEntry.getLinks() == null) {
                         newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
+                    }
                     newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink()));
                     newEntry.setCreated(String.valueOf(entry.getPublishedDate().getTime()));
                     newEntry.setModified(String.valueOf(entry.getUpdatedDate() != null ? entry.getUpdatedDate().getTime() : entry.getPublishedDate().getTime()));
@@ -621,11 +620,11 @@ public class FeedParser extends HttpServlet implements Parser {
     }
 
     public StringBuffer getContent(String url) throws MalformedURLException, IOException {
-        
-        HttpURLConnection conn = getURLConnection(URLDecoder.decode(url, "UTF-8"), 60000);       
-        
+
+        HttpURLConnection conn = getURLConnection(URLDecoder.decode(url, "UTF-8"), 60000);
+
         //InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-        
+
         //BufferedReader in = new BufferedReader(isr);
 
         StringBuffer sb = new StringBuffer();
@@ -634,7 +633,7 @@ public class FeedParser extends HttpServlet implements Parser {
 
         /*//Guarda el contenido de la URL
         while ((inputLine = in.readLine()) != null) {
-            sb.append(inputLine + "\r\n");
+        sb.append(inputLine + "\r\n");
         }*/
         return sb;
     }
@@ -802,7 +801,7 @@ public class FeedParser extends HttpServlet implements Parser {
         }
 
     }
-    
+
     private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
         HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
         connection.setRequestMethod("GET");
@@ -812,16 +811,15 @@ public class FeedParser extends HttpServlet implements Parser {
         connection.connect();
         return connection;
     }
-    
-        private String getStringFromInpurStream(InputStream is) {
+
+    private String getStringFromInpurStream(InputStream is) {
         StringBuilder resultado = new StringBuilder();
         int character = 0;
 
-        try {            
+        try {
             while ((character = is.read()) != -1) {
                 resultado.append(Character.toString((char) character));
-             
-            }            
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
