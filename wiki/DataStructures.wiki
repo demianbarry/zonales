@@ -153,7 +153,7 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     "tagsFuente" : true/false,
     "verbatim" : "Consulta original",
     "estado" : "Estado",
-    "periodicidad" : 9 //Número que indica en minutos la periodicidad de extracción
+    "periodicidad" : 9, //Número que indica en minutos la periodicidad de extracción
     "creado" : "Fecha de creación en milisegundos",
     "creadoPor" : "Usuario que creó la extracción",
     "modificado" : "Fecha de última modificación en milisegundos",
