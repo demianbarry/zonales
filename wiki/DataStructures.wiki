@@ -132,6 +132,7 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
         "usuario",
         "usuario"
     ],
+    "incluyeComentarios" : true / false,
     "filtros" : [
         {
             "minShuldMatch" : 9 //Número
@@ -152,8 +153,14 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     "tagsFuente" : true/false,
     "verbatim" : "Consulta original",
     "estado" : "Estado",
+    "periodicidad" : 9 //Número que indica en minutos la periodicidad de extracción
     "creado" : "Fecha de creación en milisegundos",
-    "modificado" : "Fecha de última modificación en milisegundos"
+    "creadoPor" : "Usuario que creó la extracción",
+    "modificado" : "Fecha de última modificación en milisegundos",
+    "modificadoPor" : "Usuario que realizó la última modificación de la extracción",
+    "ultimaExtraccionConDatos" : "Fecha en milisegundos de la ultima extracción que trajo resultados",
+    "ultimoHitDeExtraccion" : "Fecha en milisegundos del último intento de extracción",
+    "ultimoCodigoDeExtraccion" : "Código resultante del último intento de extracción"
 }
 }}}
 
