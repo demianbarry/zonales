@@ -149,7 +149,8 @@ public class FeedParser extends HttpServlet implements Parser {
 
         EncodingDetector detector = new EncodingDetector(conf);
         detector.autoDetectClues(content, true);
-        String encoding = detector.guessEncoding(content, defaultEncoding);
+       // String encoding = detector.guessEncoding(content, defaultEncoding);
+	String encoding = "UTF-8";
         try {
             InputSource input = new InputSource(new ByteArrayInputStream(content.getContent()));
             input.setEncoding(encoding);
@@ -532,7 +533,7 @@ public class FeedParser extends HttpServlet implements Parser {
 
         //FileInputStream datos= new FileInputStream (ConDatos);
         /*************/
-        if (ConDatos != null) {
+        if (ConDatos != null && ConDatos.isEmpty()) {
             datos = new ByteArrayInputStream(ConDatos.getBytes());
             HTMLEditorKit kit = new HTMLEditorKit();
             doc = (HTMLDocument) kit.createDefaultDocument();
