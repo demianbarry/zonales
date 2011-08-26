@@ -61,6 +61,7 @@ Contenidos en formato XML
         <created>Fecha creación</created>
         <modified>Fecha última modificación</modified>
         <relevance>Relevancia</relevance>
+        <zone>Localidad</zone>
         <tags>
             <tag>Tag</tag>
             ...
@@ -84,39 +85,40 @@ Contenidos en formato JSON
 {{{
 [
     "post": {
-        "source": Fuente
-        "id": Post Id
+        "source": Fuente,
+        "id": Post Id,
         "from": {
-            "name": Nombre autor
-            "category": Categoría autor
-            "id": Id Autor
+            "name": Nombre autor,
+            "category": Categoría autor,
+            "id": Id Autor,
             "url": Link al perfil del autor
-        }
+        },
         "to": [
             {
-            "name": Nombre destinatario
-            "category": Categoría destinatario
-            "id": Id detinatario
+            "name": Nombre destinatario,
+            "category": Categoría destinatario,
+            "id": Id detinatario,
             "url": Link al perfil del destinatario
             }
-        ]
-        "title": Título
-        "text": Contenido
+        ],
+        "title": Título,
+        "text": Contenido,
         "links": [
             "link": {
-                "type": link/Picture/Video/Photo/etc.
+                "type": link/Picture/Video/Photo/etc.,
                 "url": Link
             }
         ]
         "actions": [
             "action": {
-                "type": comment/like/retweet/share/favorite/etc.
+                "type": comment/like/retweet/share/favorite/etc.,
                 "cant": Cantidad
             }
-        ]
-        "created": Fecha creación
-        "modified": Fecha última modificación
-        "relevance": Relevancia
+        ],
+        "created": Fecha creación,
+        "modified": Fecha última modificación,
+        "relevance": Relevancia,
+        "zone" : Localidad,
         "tags" : [
             "tag" : Tag
         ]
