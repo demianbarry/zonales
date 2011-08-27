@@ -80,4 +80,11 @@ public class LinksType {
         return this.link;
     }
 
+    @Override
+    public String toString() {
+        return "LinksType{" + "link=" + link + '}';
+    }
+
+
+
 }
