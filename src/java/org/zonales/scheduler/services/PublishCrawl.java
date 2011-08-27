@@ -30,8 +30,8 @@ public class PublishCrawl extends BaseService {
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
         response.setContentType("text/javascript");
         PrintWriter out = response.getWriter();
-        String url = "http://192.168.0.2:8080/solr/";
-        SolrServer server = new CommonsHttpSolrServer(url);
+        String solrUrl = props.getProperty("solr_url");
+        SolrServer server = new CommonsHttpSolrServer(solrUrl);
         String postsJson = request.getParameter("posts");
 
         Gson postGson = new Gson();
