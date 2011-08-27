@@ -80,4 +80,11 @@ public class ActionsType {
         return this.action;
     }
 
+    @Override
+    public String toString() {
+        return "ActionsType{" + "action=" + action + '}';
+    }
+
+
+
 }

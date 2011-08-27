@@ -93,4 +93,11 @@ public class ActionType {
         this.cant = value;
     }
 
+    @Override
+    public String toString() {
+        return "ActionType{" + "type=" + type + "cant=" + cant + '}';
+    }
+
+
+
 }

@@ -102,4 +102,11 @@ public class LinkType {
         this.url = value;
     }
 
+    @Override
+    public String toString() {
+        return "LinkType{" + "type=" + type + "url=" + url + '}';
+    }
+
+
+
 }

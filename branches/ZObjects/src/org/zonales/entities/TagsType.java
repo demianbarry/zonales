@@ -80,4 +80,11 @@ public class TagsType {
         return this.tag;
     }
 
+    @Override
+    public String toString() {
+        return "TagsType{" + "tag=" + tag + '}';
+    }
+
+
+
 }

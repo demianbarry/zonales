@@ -159,4 +159,11 @@ public class User {
         this.category = value;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + "name=" + name + "url=" + url + "category=" + category + '}';
+    }
+
+    
+
 }

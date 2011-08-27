@@ -82,4 +82,10 @@ public class PostsType {
         return this.post;
     }
 
+    @Override
+    public String toString() {
+        return "PostsType{" + "post=" + post + '}';
+    }
+
+
 }

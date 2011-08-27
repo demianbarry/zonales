@@ -80,4 +80,10 @@ public class ToUsersType {
         return this.toUser;
     }
 
+    @Override
+    public String toString() {
+        return "ToUsersType{" + "toUser=" + toUser + '}';
+    }
+
+
 }

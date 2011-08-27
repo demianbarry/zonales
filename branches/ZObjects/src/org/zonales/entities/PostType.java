@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.solr.client.solrj.beans.Field;
 
 /**
  * <p>Java class for postType complex type.
@@ -61,29 +62,54 @@ import javax.xml.bind.annotation.XmlType;
 public class PostType {
 
     @XmlElement(required = true)
+    @Field
     protected String source;
+    
     @XmlElement(required = true)
+    @Field
     protected String id;
+
     @XmlElement(required = true)
+    @Field
     protected User fromUser;
+
     @XmlElement(required = false)
+    @Field
     protected ToUsersType toUsers;
+
     @XmlElement(required = true)
+    @Field
     protected String title;
+
     @XmlElement(required = true)
+    @Field
     protected String text;
+
     @XmlElement(required = false)
+    @Field
     protected LinksType links;
+
     @XmlElement(required = false)
+    @Field
     protected ActionsType actions;
+
     @XmlElement(required = true)
+    @Field
     protected TagsType tags;
+
     @XmlElement(required = true)
+    @Field
     protected String created;
+
     @XmlElement(required = false)
+    @Field
     protected String modified;
+    
+    @Field
     protected int relevance;
+
     @XmlElement(required = true)
+    @Field
     protected String verbatim;
 
     public PostType() {
@@ -400,4 +426,11 @@ public class PostType {
     public void setVerbatim(String value) {
         this.verbatim = value;
     }
+
+    @Override
+    public String toString() {
+        return "PostType{" + "source=" + source + "id=" + id + "fromUser=" + fromUser + "toUsers=" + toUsers + "title=" + title + "text=" + text + "links=" + links + "actions=" + actions + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
+    }
+
+
 }
