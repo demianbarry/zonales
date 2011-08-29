@@ -63,18 +63,7 @@ public abstract class BaseService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
-        props = new Properties();
-        props.load(stream);
-
-        try {
-            serve(request, response, props);
-        } catch (Exception ex) {
-            out.print("Request Error: " + ex.getMessage());
-            //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-        }
-
+        doGet(request, response);
     }
 
     /**
