@@ -15,6 +15,7 @@ public class State {
 
     public static final String GENERATED = "generated";
     public static final String COMPILED = "compiled";
+    public static final String NO_COMPILED = "no-compiled";
     public static final String PUBLISHED = "published";
     public static final String UNPUBLISHED = "unpublished";
     public static final String VOID = "void";
