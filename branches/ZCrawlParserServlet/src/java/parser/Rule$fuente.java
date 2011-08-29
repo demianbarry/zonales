@@ -212,9 +212,12 @@ final public class Rule$fuente extends Rule
     else
       context.index = s0;
 
-    context.pop("fuente", parsed);
-
-    context.getZcrawling().setFuente(rule.spelling.matches("feed.*") ? "feed" : rule.spelling);
+    context.pop("fuente", parsed);    
+        
+    if(rule != null) {
+        context.getZcrawling().setFuente(rule.spelling.matches("feed[x09-x153]*") ? "feed" : rule.spelling);    
+    }
+    
     return (Rule$fuente)rule;
   }
 }

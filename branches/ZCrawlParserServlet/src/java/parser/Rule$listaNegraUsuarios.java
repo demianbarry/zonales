@@ -138,9 +138,11 @@ final public class Rule$listaNegraUsuarios extends Rule {
 
         context.pop("listaNegraUsuarios", parsed);
 
-        Filtro filtro = new Filtro();
-        filtro.setListaNegraDeUsuarios(true);
-        context.getZcrawling().getFiltros().add(filtro);
+        if (rule != null) {
+            Filtro filtro = new Filtro();
+            filtro.setListaNegraDeUsuarios(true);
+            context.getZcrawling().getFiltros().add(filtro);
+        }
 
         return (Rule$listaNegraUsuarios) rule;
     }

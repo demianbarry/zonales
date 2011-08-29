@@ -138,9 +138,11 @@ final public class Rule$listaNegraPalabras extends Rule {
 
         context.pop("listaNegraPalabras", parsed);
 
-        Filtro filtro = new Filtro();
-        filtro.setListaNegraDePalabras(true);
-        context.getZcrawling().getFiltros().add(filtro);
+        if (rule != null) {
+            Filtro filtro = new Filtro();
+            filtro.setListaNegraDePalabras(true);
+            context.getZcrawling().getFiltros().add(filtro);
+        }
 
         return (Rule$listaNegraPalabras) rule;
     }

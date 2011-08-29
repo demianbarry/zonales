@@ -592,6 +592,7 @@ final public class Rule$zcrawling extends Rule {
                                     for (int i2 = 0; i2 < 1 && f2; i2++) {
                                         rule = Terminal$StringValue.parse(context, "comentarios");
                                         if ((f2 = rule != null)) {
+                                            context.getZcrawling().setIncluyeComenterios(true);
                                             e2.add(rule);
                                             c2++;
                                         }
