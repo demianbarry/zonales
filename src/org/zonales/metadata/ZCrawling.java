@@ -257,5 +257,24 @@ public class ZCrawling {
         this.comentarios = comentarios;
     }
 
+    protected boolean incluyeComenterios;
+
+    /**
+     * Get the value of incluyeComenterios
+     *
+     * @return the value of incluyeComenterios
+     */
+    public boolean isIncluyeComenterios() {
+        return incluyeComenterios;
+    }
+
+    /**
+     * Set the value of incluyeComenterios
+     *
+     * @param incluyeComenterios new value of incluyeComenterios
+     */
+    public void setIncluyeComenterios(boolean incluyeComenterios) {
+        this.incluyeComenterios = incluyeComenterios;
+    }
 
 }

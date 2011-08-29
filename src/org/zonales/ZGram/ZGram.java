@@ -5,8 +5,6 @@
 
 package org.zonales.ZGram;
 
-import java.util.Date;
-import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.ZMessage;
 import org.zonales.metadata.ZCrawling;
 
@@ -14,22 +12,22 @@ import org.zonales.metadata.ZCrawling;
  *
  * @author nacho
  */
-public class ZGram {
-    private ZMessage zmessage;
-    private ZCrawling metadata;
+public class ZGram extends ZCrawling {
+    private ZMessage zmessage;    
     private String verbatim;
     private String estado;
-    private Date creado;
-    private Date modificado;
+    private Long creado;
+    private Long modificado;
 
-    public ZGram() {
-    }
-
-    public ZGram(ZMessage zmessage, ZCrawling metadata, String verbatim, String estado) {
+    public ZGram(ZMessage zmessage, String verbatim, String estado, Long creado, Long modificado) {
         this.zmessage = zmessage;
-        this.metadata = metadata;
         this.verbatim = verbatim;
         this.estado = estado;
+        this.creado = creado;
+        this.modificado = modificado;
+    }
+    
+    public ZGram() {
     }
 
     public ZMessage getZmessage() {
@@ -40,14 +38,6 @@ public class ZGram {
         this.zmessage = zmessage;
     }
 
-    public ZCrawling getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(ZCrawling metadata) {
-        this.metadata = metadata;
-    }
-
     public String getVerbatim() {
         return verbatim;
     }
@@ -56,11 +46,11 @@ public class ZGram {
         this.verbatim = verbatim;
     }
 
-    public Date getCreado() {
+    public Long getCreado() {
         return creado;
     }
 
-    public void setCreado(Date creado) {
+    public void setCreado(Long creado) {
         this.creado = creado;
     }
 
@@ -72,11 +62,11 @@ public class ZGram {
         this.estado = estado;
     }
 
-    public Date getModificado() {
+    public Long getModificado() {
         return modificado;
     }
 
-    public void setModificado(Date modificado) {
+    public void setModificado(Long modificado) {
         this.modificado = modificado;
     }
 

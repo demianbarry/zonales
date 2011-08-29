@@ -12,12 +12,18 @@ import java.util.ArrayList;
  * @author nacho
  */
 public class PluginType {
+    
+    public static final String URL_GETTER = "URLGetter";
+    public static final String PUBLISHER = "Publisher";
+    public static final String UNPUBLISHER = "Unpublisher";
+    
 
     public static ArrayList<String> getPluginTypes() {
         ArrayList<String> types = new ArrayList<String>();
 
-        types.add("URLGetter");
-        types.add("Publisher");
+        types.add(URL_GETTER);
+        types.add(PUBLISHER);
+        types.add(UNPUBLISHER);
 
         return types;
     }
