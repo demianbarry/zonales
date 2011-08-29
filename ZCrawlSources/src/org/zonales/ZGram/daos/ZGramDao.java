@@ -47,29 +47,29 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("msg", zgram.getZmessage().getMsg());
         }
 
-        if (zgram.getMetadata().getDescripcion() != null) //opcional
+        if (zgram.getDescripcion() != null) //opcional
         {
-            zgramDoc.put("descripcion", zgram.getMetadata().getDescripcion());
+            zgramDoc.put("descripcion", zgram.getDescripcion());
         }
 
-        zgramDoc.put("localidad", zgram.getMetadata().getLocalidad());
-        zgramDoc.put("fuente", zgram.getMetadata().getFuente());
+        zgramDoc.put("localidad", zgram.getLocalidad());
+        zgramDoc.put("fuente", zgram.getFuente());
 
-        if (zgram.getMetadata().getTags() != null) {
+        if (zgram.getTags() != null) {
             ArrayList tagsToDoc = new ArrayList();
-            for (String tag : zgram.getMetadata().getTags()) {
+            for (String tag : zgram.getTags()) {
                 tagsToDoc.add(tag);
             }
             zgramDoc.put("tags", tagsToDoc);
         }
 
-        if (zgram.getMetadata().getUriFuente() != null) {
-            zgramDoc.put("uriFuente", zgram.getMetadata().getUriFuente());
+        if (zgram.getUriFuente() != null) {
+            zgramDoc.put("uriFuente", zgram.getUriFuente());
         }
 
-        if (zgram.getMetadata().getCriterios() != null) {
+        if (zgram.getCriterios() != null) {
             ArrayList criteriosToDoc = new ArrayList();
-            for (Criterio criterio : zgram.getMetadata().getCriterios()) {
+            for (Criterio criterio : zgram.getCriterios()) {
                 if (criterio.getDeLosUsuarios() != null) {
                     List<String> usuarios = criterio.getDeLosUsuarios();
                     ArrayList usuariosToDoc = new ArrayList();
@@ -100,9 +100,9 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("criterios", criteriosToDoc);
         }
 
-        if (zgram.getMetadata().getNoCriterios() != null) {
+        if (zgram.getNoCriterios() != null) {
             ArrayList nocriteriosToDoc = new ArrayList();
-            for (Criterio nocriterio : zgram.getMetadata().getNoCriterios()) {
+            for (Criterio nocriterio : zgram.getNoCriterios()) {
                 if (nocriterio.getDeLosUsuarios() != null) {
                     List<String> usuarios = nocriterio.getDeLosUsuarios();
                     ArrayList usuariosToDoc = new ArrayList();
@@ -133,18 +133,18 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("noCriterios", nocriteriosToDoc);
         }
 
-        if (zgram.getMetadata().getComentarios() != null) {
+        if (zgram.getComentarios() != null) {
             ArrayList comentariosToDoc = new ArrayList();
-            for (String comentario : zgram.getMetadata().getComentarios()) {
+            for (String comentario : zgram.getComentarios()) {
                 comentariosToDoc.add(comentario);
             }
             zgramDoc.put("comentarios", comentariosToDoc);
         }
 
-        if (zgram.getMetadata().getFiltros() != null) {
+        if (zgram.getFiltros() != null) {
             ArrayList filtrosToDoc = new ArrayList();
             BasicDBObject filtroDoc = new BasicDBObject();
-            for (Filtro filtro : zgram.getMetadata().getFiltros()) {
+            for (Filtro filtro : zgram.getFiltros()) {
                 if (filtro.getMinShuldMatch() != null) {
                     filtroDoc.clear();
                     filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
@@ -174,10 +174,12 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("filtros", filtrosToDoc);
         }
 
-        if (zgram.getMetadata().getTagsFuente() != null) {
-            zgramDoc.put("tagsFuente", zgram.getMetadata().getTagsFuente());
+        if (zgram.getTagsFuente() != null) {
+            zgramDoc.put("tagsFuente", zgram.getTagsFuente());
         }
-
+        
+        zgramDoc.put("incluyeComentarios", zgram.isIncluyeComenterios());
+        
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
@@ -190,12 +192,9 @@ public class ZGramDao extends BaseDao {
 
     public void update(String id, ZGram newZgram) throws MongoException {
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
-        DBObject resp;
-        DBCursor cur;
+        DBObject resp;        
 
-        cur = this.extractions.find(query);
-
-        resp = cur.next();
+        resp = this.extractions.findOne(query);
 
         if (resp != null) {
             BasicDBObject zgramDoc = new BasicDBObject();
@@ -208,24 +207,24 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("msg", (String) resp.get("msg"));
             }
 
-            if (newZgram.getMetadata() != null) {
-                zgramDoc.put("descripcion", newZgram.getMetadata().getDescripcion());
-                zgramDoc.put("localidad", newZgram.getMetadata().getLocalidad());
-                zgramDoc.put("fuente", newZgram.getMetadata().getFuente());
+            if (newZgram != null) {
+                zgramDoc.put("descripcion", newZgram.getDescripcion());
+                zgramDoc.put("localidad", newZgram.getLocalidad());
+                zgramDoc.put("fuente", newZgram.getFuente());
 
-                if (newZgram.getMetadata().getTags() != null) {
+                if (newZgram.getTags() != null) {
                     ArrayList tagsToDoc = new ArrayList();
-                    for (String tag : newZgram.getMetadata().getTags()) {
+                    for (String tag : newZgram.getTags()) {
                         tagsToDoc.add(tag);
                     }
                     zgramDoc.put("tags", tagsToDoc);
                 }
 
-                zgramDoc.put("uriFuente", newZgram.getMetadata().getUriFuente());
+                zgramDoc.put("uriFuente", newZgram.getUriFuente());
 
-                if (newZgram.getMetadata().getCriterios() != null) {
+                if (newZgram.getCriterios() != null) {
                     ArrayList criteriosToDoc = new ArrayList();
-                    for (Criterio criterio : newZgram.getMetadata().getCriterios()) {
+                    for (Criterio criterio : newZgram.getCriterios()) {
                         if (criterio.getDeLosUsuarios() != null) {
                             List<String> usuarios = criterio.getDeLosUsuarios();
                             ArrayList usuariosToDoc = new ArrayList();
@@ -256,9 +255,9 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("criterios", criteriosToDoc);
                 }
 
-                if (newZgram.getMetadata().getNoCriterios() != null) {
+                if (newZgram.getNoCriterios() != null) {
                     ArrayList nocriteriosToDoc = new ArrayList();
-                    for (Criterio nocriterio : newZgram.getMetadata().getNoCriterios()) {
+                    for (Criterio nocriterio : newZgram.getNoCriterios()) {
                         if (nocriterio.getDeLosUsuarios() != null) {
                             List<String> usuarios = nocriterio.getDeLosUsuarios();
                             ArrayList usuariosToDoc = new ArrayList();
@@ -289,18 +288,18 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("noCriterios", nocriteriosToDoc);
                 }
 
-                if (newZgram.getMetadata().getComentarios() != null) {
+                if (newZgram.getComentarios() != null) {
                     ArrayList comentariosToDoc = new ArrayList();
-                    for (String comentario : newZgram.getMetadata().getComentarios()) {
+                    for (String comentario : newZgram.getComentarios()) {
                         comentariosToDoc.add(comentario);
                     }
                     zgramDoc.put("comentarios", comentariosToDoc);
                 }
 
-                if (newZgram.getMetadata().getFiltros() != null) {
+                if (newZgram.getFiltros() != null) {
                     ArrayList filtrosToDoc = new ArrayList();
                     BasicDBObject filtroDoc = new BasicDBObject();
-                    for (Filtro filtro : newZgram.getMetadata().getFiltros()) {
+                    for (Filtro filtro : newZgram.getFiltros()) {
                         if (filtro.getMinShuldMatch() != null) {
                             filtroDoc.clear();
                             filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
@@ -330,9 +329,11 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("filtros", filtrosToDoc);
                 }
 
-                if (newZgram.getMetadata().getTagsFuente() != null) {
-                    zgramDoc.put("tagsFuente", newZgram.getMetadata().getTagsFuente());
+                if (newZgram.getTagsFuente() != null) {
+                    zgramDoc.put("tagsFuente", newZgram.getTagsFuente());
                 }
+                
+                zgramDoc.put("incluyeComentarios", newZgram.isIncluyeComenterios());
 
                 zgramDoc.put("estado", newZgram.getEstado());
 
@@ -347,6 +348,7 @@ public class ZGramDao extends BaseDao {
                 zgramDoc.put("comentarios", (ArrayList) resp.get("comentarios"));
                 zgramDoc.put("filtros", (ArrayList) resp.get("filtros"));
                 zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
+                zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
                 zgramDoc.put("estado", (String) resp.get("estado"));
             }
 

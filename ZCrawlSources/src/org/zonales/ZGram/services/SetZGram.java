@@ -9,6 +9,7 @@ import org.zonales.BaseService;
 import com.mongodb.MongoException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,15 +44,16 @@ public class SetZGram extends BaseService {
         ZMessage zMessage = new ZMessage(cod, msg);
 
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
-        metadata = metadataGson.fromJson(metadataJson, ZCrawling.class);
-
-        ZGram zGram = new ZGram(zMessage, metadata, verbatim, state != null && state.length() > 0 ? state : State.GENERATED);
+        zgram = metadataGson.fromJson(metadataJson, ZGram.class);
+        zgram.setVerbatim(verbatim);
+        zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
+        zgram.setCreado((new Date()).getTime());
 
         try {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Se intentará guardar: {0}", new Object[]{zGram});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Se intentará guardar: {0}", new Object[]{zgram});
             ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-            String id = zGramDao.save(zGram);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción guardada {0}", new Object[]{zGram});
+            String id = zGramDao.save(zgram);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción guardada {0}", new Object[]{zgram});
             out.print(ZMessages.SUCCESS.toString().replace("}", "") + ", \"id\": \"" + id + "\"}");
         } catch (MongoException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error guardando extracción {0}: {1}", new Object[]{zgram,ex.getMessage()});
