@@ -199,12 +199,8 @@ public class SolrPost {
         this.zone = zone;
     }
 
-
     @Override
     public String toString() {
         return "SolrPost{" + "indexTime=" + indexTime + "source=" + source + "id=" + id + "fromUserName=" + fromUserName + "fromUserCategory=" + fromUserCategory + "fromUserId=" + fromUserId + "fromUserUrl=" + fromUserUrl + "title=" + title + "text=" + text + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
     }
-
-
-
 }
