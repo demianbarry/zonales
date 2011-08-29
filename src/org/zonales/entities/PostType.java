@@ -62,54 +62,41 @@ import org.apache.solr.client.solrj.beans.Field;
 public class PostType {
 
     @XmlElement(required = true)
-    @Field
     protected String source;
     
     @XmlElement(required = true)
-    @Field
     protected String id;
 
     @XmlElement(required = true)
-    @Field
     protected User fromUser;
 
     @XmlElement(required = false)
-    @Field
     protected ToUsersType toUsers;
 
     @XmlElement(required = true)
-    @Field
     protected String title;
 
     @XmlElement(required = true)
-    @Field
     protected String text;
 
     @XmlElement(required = false)
-    @Field
     protected LinksType links;
 
     @XmlElement(required = false)
-    @Field
     protected ActionsType actions;
 
     @XmlElement(required = true)
-    @Field
     protected TagsType tags;
 
     @XmlElement(required = true)
-    @Field
     protected String created;
 
     @XmlElement(required = false)
-    @Field
     protected String modified;
     
-    @Field
     protected int relevance;
 
     @XmlElement(required = true)
-    @Field
     protected String verbatim;
 
     public PostType() {
