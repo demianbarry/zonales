@@ -4,12 +4,9 @@ import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
 import it.sauronsoftware.feed4j.bean.FeedItem;
-import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
@@ -19,6 +16,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,24 +25,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.ElementIterator;
 
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import org.zonales.entities.ActionType;
+import org.zonales.entities.ActionsType;
+import org.zonales.entities.FeedSelector;
+import org.zonales.entities.FeedSelectors;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
 import org.zonales.entities.PostType;
 import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
+import org.zonales.feedSelector.daos.FeedSelectorDao;
 
 /*
  * To change this template, choose Tools | Templates
@@ -60,6 +59,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     List<String> searchlist = new ArrayList<String>();
     List<String> tagslist = new ArrayList<String>();
     StringWriter sw = new StringWriter();
+    FeedSelectorDao dao;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -77,6 +77,11 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         String nowords = request.getParameter("nopalabras") != null ? request.getParameter("nopalabras") : "";
         String tags = request.getParameter("tags") != null ? request.getParameter("tags") : "";
         String formato = request.getParameter("formato") != null ? request.getParameter("formato") : "";
+        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+        Properties props = new Properties();
+        props.load(stream);
+
+        dao = new FeedSelectorDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         if (!"".equals(words)) {
             for (String palabra : words.split(",")) {
@@ -128,11 +133,12 @@ public class ZCrawlFeedsServlet extends HttpServlet {
      */
     public String getParse(String url, boolean json) {
         try {
-            URL feedURL = new URL(URLDecoder.decode(url, "UTF-8"));
+            url = URLDecoder.decode(url, "UTF-8");
+            URL feedURL = new URL(url);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, feedURL.openConnection().getContentEncoding());
             Feed feed = FeedParser.parse(feedURL);
-            
-            
+
+
 
             List<PostType> newsList = new ArrayList<PostType>();
             PostType newEntry;
@@ -140,10 +146,15 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
             Gson gson = new Gson();
 
+            Document doc;
+
+            FeedSelectors feedSelectors;
+
             for (int i = 0; i < feed.getItemCount(); i++) {
                 FeedItem entry = feed.getItem(i);
-
-                if (findWords(entry.getTitle(), entry.getDescriptionAsText() != null ? entry.getDescriptionAsText().toString() : entry.getElement("http://purl.org/rss/1.0/modules/content/", "content") != null ? entry.getElement("http://purl.org/rss/1.0/modules/content/", "content").getValue() : "", entry.getLink().toString(), searchlist, blacklist)) {
+                doc = Jsoup.connect(entry.getLink().toString()).get();
+                feedSelectors = dao.retrieve(url);
+                if (findWords(entry.getTitle(), entry.getDescriptionAsText() != null ? entry.getDescriptionAsText().toString() : entry.getElement("http://purl.org/rss/1.0/modules/content/", "content") != null ? entry.getElement("http://purl.org/rss/1.0/modules/content/", "content").getValue() : "", doc, searchlist, blacklist)) {
                     newEntry = new PostType();
                     newEntry.setSource(feed.getHeader().getLink().toString().substring(7));
                     // newEntry.setId(entry.getUri());
@@ -153,11 +164,19 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescriptionAsText());
                     newEntry.setTags(new TagsType(tagslist));
-                    newEntry.setLinks(getLinks(null, entry.getLink().toString()));
+                    
                     if (newEntry.getLinks() == null) {
                         newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
                     }
+                    newEntry.setLinks(getLinks(feedSelectors, doc));
                     newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
+                    
+                    
+                    if (newEntry.getActions() == null) {
+                        newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
+                    }                    
+                    newEntry.setActions(getActions(feedSelectors, doc));                    
+                    
                     newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
                     newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
                     newEntry.setRelevance(0);
@@ -187,54 +206,30 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
     }
 
-    public LinksType getLinks(String ConDatos, String url) throws FileNotFoundException, IOException, BadLocationException {
+    public LinksType getLinks(FeedSelectors feedSelectors, Document doc) throws FileNotFoundException, IOException, BadLocationException {
 
-        InputStream datos = null;
-        HTMLDocument doc;
-        URL urltemp;
-        String test = null;
         List<LinkType> list = new ArrayList<LinkType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
         /*************/
-        if (ConDatos != null) {
-            datos = new ByteArrayInputStream(ConDatos.getBytes());
-            HTMLEditorKit kit = new HTMLEditorKit();
-            doc = (HTMLDocument) kit.createDefaultDocument();
-            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
-            Reader HTMLReader = new InputStreamReader(datos);
-            //Reader HTMLReader = new ImputStreamReader (datos);
-            kit.read(HTMLReader, doc, 0);
-
-        } else {
-
-            urltemp = new URL(url);
-            //   urltemp = url;
-            //    urltemp = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
-            HTMLEditorKit kit = new HTMLEditorKit();
-            doc = (HTMLDocument) kit.createDefaultDocument();
-            doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
-            Reader HTMLReader = new InputStreamReader(urltemp.openConnection().getInputStream());
-            kit.read(HTMLReader, doc, 0);
-
+        if(feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            feedSelectors = dao.retrieve("default");
         }
-        /*************/
-        ElementIterator it = new ElementIterator(doc);
-        Element elem = null;
-
-
-        while ((elem = it.next()) != null) {
-
-            if ((elem.getName().equals("img"))) {
-                String img = "picture";
-                String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
-                /***************/
-                if ((s.indexOf("http://www")) == 0) {
-                    list.add(new LinkType(img, s));
+        
+        Elements elmts;
+        for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
+            if ("picture".equals(feedSelector.getType())) {
+                elmts = doc.select(feedSelector.getSelector());
+                for (Element elmt : elmts) {
+                    list.add(new LinkType("picture", elmt.attr("src")));
+                }
+            } else if ("link".equals(feedSelector.getType())) {
+                elmts = doc.select(feedSelector.getSelector());
+                for (Element elmt : elmts) {
+                    list.add(new LinkType("link", elmt.attr("href")));
                 }
             }
-
-        }
+        }        
 
         if (list.isEmpty()) {
             return null;
@@ -245,37 +240,28 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     }
 
     /*************************************/
-    public void getActions(URL url) throws IOException, BadLocationException {
+    public ActionsType getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
+       List<ActionType> list = new ArrayList<ActionType>();
 
-        InputStream datos = null;
-        HTMLDocument doc;
-        URL urltemp;
         //FileInputStream datos= new FileInputStream (ConDatos);
         /*************/
-        //urltemp = new URL(url, ConDatos);
-        //urltemp = url;
-        //URL url = new URL( "http://www.pagina12.com.ar/diario/suplementos/rosario/11-29219-2011-06-22.html" );
-        HTMLEditorKit kit = new HTMLEditorKit();
-        doc = (HTMLDocument) kit.createDefaultDocument();
-        doc.putProperty("IgnoreCharsetDirective", Boolean.TRUE);
-        Reader HTMLReader = new InputStreamReader(url.openConnection().getInputStream());
-        kit.read(HTMLReader, doc, 0);
-
-        /*************/
-        ElementIterator it = new ElementIterator(doc);
-        Element elem;
-
-
-        while ((elem = it.next()) != null) {
-
-            if ((elem.getName().equals("comment"))) {
-
-                String s = (String) elem.getAttributes().getAttribute(HTML.Attribute.SRC);
-
-                if (s != null) {
-                    System.out.println(s);
-                }
+        if(feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            feedSelectors = dao.retrieve("default");
+        }
+        
+        Elements elmts;
+        for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
+            if ("comments".equals(feedSelector.getType())) {
+                elmts = doc.select(feedSelector.getSelector());                
+                list.add(new ActionType("comments", elmts.size()));
+                
             }
+        }        
+
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return new ActionsType(list);
         }
 
     }
@@ -322,18 +308,14 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
     }
 
-    public static boolean findWords(String title, String ConDatos, String url, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
+    public static boolean findWords(String title, String ConDatos, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
 
         String contenido;
         int find = 0;
-        if ("".equals(ConDatos)) {
-            Document doc = Jsoup.connect(url).get();
-            Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
-            // System.out.println(noticias.text());
-            contenido = noticia.text();
-        } else {
-            contenido = ConDatos;
-        }
+        Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
+        // System.out.println(noticias.text());
+        contenido = noticia.text();
+
         if (!slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
