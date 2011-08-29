@@ -134,8 +134,7 @@ public class TagDao extends BaseDao {
 
         while (cur.hasNext()) {
             resp = cur.next();
-            resp.removeField("_id");
-            System.out.println(resp);
+            resp.removeField("_id");            
             if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
                 if (onlyNames) {
                     ret += resp.get("name") + ",";
