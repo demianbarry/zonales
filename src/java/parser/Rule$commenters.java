@@ -71,8 +71,11 @@ final public class Rule$commenters extends Rule
       context.index = s0;
 
     context.pop("commenters", parsed);
-
-    context.getZcrawling().setComentarios(Arrays.asList(rule.spelling.split(",")));
+    
+    if(rule != null) {
+        context.getZcrawling().setIncluyeComenterios(false);
+        context.getZcrawling().setComentarios(Arrays.asList(rule.spelling.split(",")));
+    }
     
     return (Rule$commenters)rule;
   }
