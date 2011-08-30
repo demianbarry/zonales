@@ -55,7 +55,7 @@ import org.zonales.feedSelector.daos.FeedSelectorDao;
  * @author juanma
  */
 public class ZCrawlFeedsServlet extends HttpServlet {
-    
+
     List<String> blacklist = new ArrayList<String>();
     List<String> searchlist = new ArrayList<String>();
     List<String> tagslist = new ArrayList<String>();
@@ -72,7 +72,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setCharacterEncoding("ISO-8859-1");
+        response.setCharacterEncoding("UTF-8");
         String url = request.getParameter("url") != null ? request.getParameter("url") : "";
         String words = request.getParameter("palabras") != null ? request.getParameter("palabras") : "";
         String nowords = request.getParameter("nopalabras") != null ? request.getParameter("nopalabras") : "";
@@ -81,9 +81,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
         Properties props = new Properties();
         props.load(stream);
-        
+
         dao = new FeedSelectorDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-        
+
         if (!"".equals(words)) {
             for (String palabra : words.split(",")) {
                 searchlist.add(palabra);
@@ -99,7 +99,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 tagslist.add(tag);
             }
         }
-        
+
         try {
             response.getWriter().println(getParse(java.net.URLEncoder.encode(url.toString(), "UTF-8"), "json".equalsIgnoreCase(formato)));
         } catch (Exception ex) {
@@ -110,17 +110,17 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                     "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
-            
+
             response.getWriter().print(ZMessages.NO_DB_FAILED);
         }
     }
-    
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }
-    
+
     private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
         HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
         connection.setRequestMethod("GET");
@@ -145,30 +145,30 @@ public class ZCrawlFeedsServlet extends HttpServlet {
      *
      */
     public String getParse(String url, boolean json) throws Exception {
-        
+
         url = URLDecoder.decode(url, "UTF-8");
         URL feedURL = new URL(url);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encoding del Feed: {0}", new Object[]{feedURL.openConnection().getContentEncoding()});
         Feed feed = FeedParser.parse(feedURL);
-        
-        
-        
+
+
+
         List<PostType> newsList = new ArrayList<PostType>();
         PostType newEntry;
         //SyndFeed feed = null;           
 
         Gson gson = new Gson();
-        
+
         List<LinkType> links;
-        
+
         Document doc;
-        
+
         FeedSelectors feedSelectors;
-        
+
         for (int i = 0; i < feed.getItemCount(); i++) {
             FeedItem entry = feed.getItem(i);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
-            
+
             doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
             feedSelectors = dao.retrieve(url);
@@ -182,56 +182,59 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 newEntry.setTitle(entry.getTitle());
                 newEntry.setText(entry.getDescriptionAsText());
                 newEntry.setTags(new TagsType(tagslist));
-                
+
                 if (newEntry.getLinks() == null) {
                     newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
                 }
-                if((links = getLinks(feedSelectors, doc)) != null)
+                if ((links = getLinks(feedSelectors, doc)) != null) {
                     newEntry.getLinks().getLink().addAll(links);
+                }
                 newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
-                
-                
+
+
                 if (newEntry.getActions() == null) {
                     newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
-                }                
-                newEntry.setActions(getActions(feedSelectors, doc));                
-                
+                }
+                newEntry.setActions(getActions(feedSelectors, doc));
+
                 newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
                 newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
                 newEntry.setRelevance(0);
                 if (!json) {
                     newEntry.setVerbatim(gson.toJson(newEntry));
                 }
-                
+
                 newsList.add(newEntry);
 
                 // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
             }
         }
-        
+
         PostsType news;
-        
-        
+
+
         news = new PostsType(newsList);
         if (!json) {
             Feed2XML(news, sw);
         }
-        
+
         return json ? gson.toJson(news) : sw.toString();
-        
-        
+
+
     }
-    
+
     public List<LinkType> getLinks(FeedSelectors feedSelectors, Document doc) throws FileNotFoundException, IOException, BadLocationException {
-        
+
         List<LinkType> list = new ArrayList<LinkType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
         /*************/
-        if (feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
             feedSelectors = dao.retrieve("default");
         }
-        
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            return null;
+        }
         Elements elmts;
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
             if ("picture".equals(feedSelector.getType())) {
@@ -245,14 +248,14 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                     list.add(new LinkType("link", elmt.attr("href")));
                 }
             }
-        }        
-        
+        }
+
         if (list.isEmpty()) {
             return null;
         } else {
             return list;
         }
-        
+
     }
 
     /*************************************/
@@ -261,91 +264,94 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         //FileInputStream datos= new FileInputStream (ConDatos);
         /*************/
-        if (feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
             feedSelectors = dao.retrieve("default");
         }
-        
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            return null;
+        }
+
         Elements elmts;
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
             if ("comments".equals(feedSelector.getType())) {
-                elmts = doc.select(feedSelector.getSelector());                
+                elmts = doc.select(feedSelector.getSelector());
                 list.add(new ActionType("comments", elmts.size()));
-                
+
             }
-        }        
-        
+        }
+
         if (list.isEmpty()) {
             return null;
         } else {
             return new ActionsType(list);
         }
-        
+
     }
-    
+
     public void setSearchList(String filters) {
-        
+
         List<String> listwords = new ArrayList<String>();
         StringTokenizer tokens = new StringTokenizer(filters);
-        
+
         while (tokens.hasMoreTokens()) {
             listwords.add(tokens.nextToken());
         }
-        
+
         for (String word : listwords) {
             this.searchlist.add(word);
         }
     }
-    
+
     public void setBlackList(String filters) {
-        
+
         List<String> listwords = new ArrayList<String>();
         StringTokenizer tokens = new StringTokenizer(filters);
-        
+
         while (tokens.hasMoreTokens()) {
             listwords.add(tokens.nextToken());
         }
-        
+
         for (String word : listwords) {
             this.blacklist.add(word);
         }
     }
-    
+
     public void setTags(String filters) {
-        
+
         List<String> listwords = new ArrayList<String>();
         StringTokenizer tokens = new StringTokenizer(filters);
-        
+
         while (tokens.hasMoreTokens()) {
             listwords.add(tokens.nextToken());
         }
-        
+
         for (String word : listwords) {
             this.tagslist.add(word);
         }
     }
-    
+
     public static boolean findWords(String title, String ConDatos, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
-        
+
         String contenido;
         int find = 0;
         Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
         // System.out.println(noticias.text());
         contenido = noticia.text();
-        
+
         if (!slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
-                
+
                 if (contenido.indexOf(palabra) >= 0 || title.indexOf(palabra) >= 0) {
                     find++;
                 }
-                
+
             }
         }
         if (!blist.isEmpty()) {
             // System.out.println("Entro blist.isEmpty()");
             for (String palabra : blist) {
-                
+
                 if (contenido.indexOf(palabra) > 0 || title.indexOf(palabra) > 0) {
                     return false;
                 }
@@ -368,7 +374,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
         return false;
     }
-    
+
     public void Feed2XML(PostsType posts, Writer out) throws Exception {
         JAXBContext context = JAXBContext.newInstance(posts.getClass());
         Marshaller marshaller = context.createMarshaller();
