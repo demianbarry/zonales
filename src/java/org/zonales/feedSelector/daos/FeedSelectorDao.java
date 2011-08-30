@@ -98,6 +98,11 @@ public class FeedSelectorDao extends BaseDao {
         FeedSelectors myFeedSelectors = new FeedSelectors();
         ArrayList<BasicDBObject> selectors;
 
+        if(resp == null) {
+            return null;
+        }
+            
+        
         resp.removeField("_id");
 
         System.out.println(resp);
