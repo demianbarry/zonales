@@ -118,7 +118,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        doGet(request, response);
     }
     
     private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
