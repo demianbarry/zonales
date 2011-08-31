@@ -27,7 +27,7 @@
     <!-- Define servlets that are included in the example application -->
     <servlet>
         <servlet-name>ZCrawlParser</servlet-name>
-        <servlet-class>ZCrawlParser</servlet-class>
+        <servlet-class>org.zonales.parser.services.ZCrawlParser</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ZCrawlParser</servlet-name>
