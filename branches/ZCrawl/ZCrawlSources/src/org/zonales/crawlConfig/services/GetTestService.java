@@ -61,7 +61,7 @@ public class GetTestService extends BaseService {
 
             if (getServiceURL != null) {
                 urlServlet = getServiceURL.getURL(metadata, service);
-                out.print(urlServlet);
+                out.print(ZMessages.appendMessage(ZMessages.SUCCESS, "\", url: \"" + urlServlet));
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
                 out.print(ZMessages.DATA_NOT_FOUND);

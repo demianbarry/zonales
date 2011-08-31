@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseService extends HttpServlet {
 
-    InputStream stream;
-    static Properties props = null;
-
     public BaseService() {
     }
 
@@ -38,11 +35,9 @@ public abstract class BaseService extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
-        if (props == null) {
-            props = new Properties();
-            props.load(stream);
-        }
+        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+        Properties props = new Properties();            
+        props.load(stream);
 
         try {
             serve(request, response, props);

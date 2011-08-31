@@ -118,13 +118,11 @@ public class ZoneDao extends BaseDao {
 
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
-        DBObject resp;
-        DBCursor cur;
-
-        resp = this.zones.findOne(query);
+        DBObject resp = this.zones.findOne(query);
         if (resp == null) {
             return null;
         }
+        
         resp.removeField("_id");
         //System.out.println(resp);
 

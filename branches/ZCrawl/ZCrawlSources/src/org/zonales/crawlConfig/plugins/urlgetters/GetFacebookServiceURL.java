@@ -38,7 +38,8 @@ public class GetFacebookServiceURL implements GetServiceURL {
             for (Criterio criterio : metadata.getCriterios()) {
                 //Si hay usuarios, los agrego
                 if (criterio.getDeLosUsuarios() != null) {
-                    for(String usuario : criterio.getDeLosUsuarios()){
+                    users += users.length() > 0 ? "," : "";
+                    for(String usuario : criterio.getDeLosUsuarios()){                        
                         if(criterio.getDeLosUsuarios().indexOf(usuario) != 0)
                             users += ",";
                         users += usuario;
@@ -46,6 +47,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
                 }
                 //Si hay keywords, los agrego
                 if (criterio.getPalabras() != null) {
+                    keywords += keywords.length() > 0 ? "," : "";
                     for (String keyword : criterio.getPalabras()) {
                         keywords += keyword + ",";
                     }
@@ -57,6 +59,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
             for (Criterio criterio : metadata.getNoCriterios()) {
                 //Si hay keywords, las agrego con el signo de admiración adelante
                 if (criterio.getPalabras() != null) {
+                    keywords += keywords.length() > 0 ? "," : "";
                     for (String keyword : criterio.getPalabras()) {
                         keywords += "!" + keyword + ",";
                     }
