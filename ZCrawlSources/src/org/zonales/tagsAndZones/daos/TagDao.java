@@ -109,13 +109,11 @@ public class TagDao extends BaseDao {
 
         BasicDBObject query = new BasicDBObject("name", name);
 
-        DBObject resp;
-
-        DBCursor cur;
-
-        cur = this.tags.find(query);
-
-        resp = cur.next();
+        DBObject resp = this.tags.findOne(query);
+        
+        if(resp == null)
+            return null;
+        
         resp.removeField("_id");
         //System.out.println(resp);
 

@@ -61,10 +61,14 @@ public class GetFeedServiceURL implements GetServiceURL {
             }
         }
 
-        urlServlet += "&tags=" + metadata.getLocalidad();
+        urlServlet += "&zone=" + metadata.getLocalidad();
         if (metadata.getTags() != null) {
             for (String tag : metadata.getTags()) {
-                urlServlet += ",";
+                if (metadata.getTags().indexOf(tag) != 0) {
+                    urlServlet += ",";
+                } else {
+                    urlServlet += "&tags=";
+                }
                 urlServlet += tag;
             }
         }

@@ -21,12 +21,10 @@ public class GetTwitterServiceURL implements GetServiceURL {
             return null;
         }
 
-        String urlServlet = service.getUri() + "?q=";
-
-        /*if (metadata.getLocalidad() != null && !metadata.getLocalidad().equals("")) {
-        first = false;
-        urlServlet += metadata.getLocalidad() + "+AND+";
-        }*/
+        String urlServlet = service.getUri() 
+                                + "?zone="
+                                + metadata.getLocalidad()
+                                + "&q=";
 
         if (metadata.getCriterios() != null) {
 

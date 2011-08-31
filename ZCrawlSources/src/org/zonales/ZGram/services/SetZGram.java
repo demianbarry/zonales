@@ -38,8 +38,7 @@ public class SetZGram extends BaseService {
         String metadataJson = request.getParameter("metadata");
         String verbatim = request.getParameter("verbatim");
         String state = request.getParameter("state");
-        ZGram zgram = new ZGram();
-        ZCrawling metadata = new ZCrawling();
+        ZGram zgram = new ZGram();        
         Gson metadataGson = new Gson();
         ZMessage zMessage = new ZMessage(cod, msg);
 
@@ -48,6 +47,7 @@ public class SetZGram extends BaseService {
         zgram.setVerbatim(verbatim);
         zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
         zgram.setCreado((new Date()).getTime());
+        zgram.setZmessage(zMessage);
 
         try {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Se intentará guardar: {0}", new Object[]{zgram});
