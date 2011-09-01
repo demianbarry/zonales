@@ -24,6 +24,7 @@ public class GetType extends BaseService {
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) {
         PrintWriter out = null;
         try {
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("text/javascript");
             out = response.getWriter();
             String name = request.getParameter("name");
