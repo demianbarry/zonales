@@ -72,4 +72,7 @@ public class ZMessages {
     public static final ZMessage ZPARSER_PARSE_VISITOR_ILEGAL_ERROR = new ZMessage(322, "ZParser - visitor error: illegal access");
     public static final ZMessage ZPARSER_PARSE_VISITOR_INSTANT_ERROR = new ZMessage(323, "ZParser - visitor error: instantiation failure");
     public static final ZMessage ZPARSER_CANNOT_PARSE = new ZMessage(324, "ZParser - No se pudo parsear la consulta");
+    public static final ZMessage ZSCHEDULER_SCHEDULER_ERROR = new ZMessage(350, "ZScheduler - Error en el scheduler");
+    public static final ZMessage ZSCHEDULER_NAMING_ERROR = new ZMessage(351, "ZScheduler - No se pudo obtener el scheduler del contexto");
+    public static final ZMessage ZSCHEDULER_UNKNOW_ERROR = new ZMessage(352, "ZScheduler - Error desconocido");
 }
