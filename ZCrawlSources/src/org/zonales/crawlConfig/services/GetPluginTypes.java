@@ -26,6 +26,7 @@ public class GetPluginTypes  extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/javascript");
         PrintWriter out = response.getWriter();
         ArrayList<String> pluginTypes = PluginType.getPluginTypes();

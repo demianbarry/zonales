@@ -20,7 +20,6 @@ import org.zonales.ZGram.daos.ZGramDao;
 import org.zonales.crawlConfig.daos.ServiceDao;
 import org.zonales.crawlConfig.objets.Plugin;
 import org.zonales.crawlConfig.objets.Service;
-import org.zonales.crawlConfig.plugins.publishers.Publisher;
 import org.zonales.crawlConfig.plugins.unpublishers.Unpublisher;
 import org.zonales.errors.ZMessages;
 
@@ -32,6 +31,7 @@ public class UnpublishService extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         try {
