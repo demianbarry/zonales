@@ -21,7 +21,6 @@ import org.zonales.ZGram.daos.ZGramDao;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.ZMessages;
 import org.zonales.errors.ZMessage;
-import org.zonales.metadata.ZCrawling;
 
 /**
  *
@@ -31,6 +30,7 @@ public class SetZGram extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         int cod = Integer.valueOf(request.getParameter("cod"));
