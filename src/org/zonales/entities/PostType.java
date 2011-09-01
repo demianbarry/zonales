@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.solr.client.solrj.beans.Field;
 
 /**
  * <p>Java class for postType complex type.
@@ -22,6 +21,7 @@ import org.apache.solr.client.solrj.beans.Field;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="zone" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="source" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="fromUser" type="{}user"/>
@@ -45,6 +45,7 @@ import org.apache.solr.client.solrj.beans.Field;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "post", propOrder = {
+    "zone",
     "source",
     "id",
     "fromUser",
@@ -60,6 +61,9 @@ import org.apache.solr.client.solrj.beans.Field;
     "verbatim"
 })
 public class PostType {
+    
+    @XmlElement(required = true)
+    protected String zone;
 
     @XmlElement(required = true)
     protected String source;
@@ -102,7 +106,8 @@ public class PostType {
     public PostType() {
     }
 
-    public PostType(String source, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
+    public PostType(String zone, String source, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
+        this.zone = zone;
         this.source = source;
         this.id = id;
         this.fromUser = fromUser;
@@ -118,6 +123,30 @@ public class PostType {
         this.verbatim = verbatim;
     }
 
+    /**
+     * Gets the value of the zone property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getZone() {
+        return zone;
+    }
+
+    /**
+     * Sets the value of the zone property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setZone(String value) {
+        this.zone = value;
+    }
+    
     /**
      * Gets the value of the source property.
      * 
