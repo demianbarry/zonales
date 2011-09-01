@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.zonales.errors.ZMessages;
 
 /**
  *
@@ -42,7 +45,13 @@ public abstract class BaseService extends HttpServlet {
         try {
             serve(request, response, props);
         } catch (Exception ex) {
-            out.print("Request Error: " + ex.getMessage());
+            StringBuilder stacktrace = new StringBuilder();
+            for (StackTraceElement line : ex.getStackTrace()) {
+                stacktrace.append(line.toString());
+                stacktrace.append("\n");
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+            out.print(ZMessages.UNKNOWN_ERROR);            
             //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
         }
 
