@@ -2,14 +2,60 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>ZCrawlScheduler</display-name>
     <servlet>
-        <servlet-name>PublishCrawl</servlet-name>
-        <servlet-class>org.zonales.scheduler.services.PublishCrawl</servlet-class>
+        <servlet-name>SchedulingJob</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.SchedulingJob</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListJobs</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.ListJobs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StopScheduler</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.StopScheduler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UnschedulingJob</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.UnschedulingJob</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>PublishCrawl</servlet-name>
-        <url-pattern>/publishCrawl</url-pattern>
+        <servlet-name>SchedulingJob</servlet-name>
+        <url-pattern>/schedulingJob</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListJobs</servlet-name>
+        <url-pattern>/listJobs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StopScheduler</servlet-name>
+        <url-pattern>/stopScheduler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UnschedulingJob</servlet-name>
+        <url-pattern>/unschedulingJob</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-</web-app>
+
+    <context-param>
+        <param-name>quartz:shutdown-on-unload</param-name>
+        <param-value>true</param-value>
+    </context-param>
+     <context-param>
+        <param-name>quartz:wait-on-shutdown</param-name>
+        <param-value>false</param-value>
+    </context-param>
+     <context-param>
+        <param-name>quartz:start-scheduler-on-load</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+     <listener>
+        <listener-class>
+             org.quartz.ee.servlet.QuartzInitializerListener
+         </listener-class>
+    </listener>
+
+
+...
+     </web-app>
