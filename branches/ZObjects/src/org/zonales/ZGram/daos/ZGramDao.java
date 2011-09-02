@@ -187,6 +187,7 @@ public class ZGramDao extends BaseDao {
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
         zgramDoc.put("modificado", (new Date()).getTime());
+        zgramDoc.put("periodicidad", zgram.getPeriodicidad());
 
         System.out.println(zgramDoc.toString());
         this.extractions.insert(zgramDoc);
@@ -358,6 +359,7 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("creado", (Long) resp.get("creado"));
             zgramDoc.put("modificado", (new Date()).getTime());
             zgramDoc.put("verbatim", newZgram.getVerbatim());
+            zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
             this.extractions.update(new BasicDBObject().append("_id", new ObjectId(id)), zgramDoc);
         }
     }

@@ -15,6 +15,27 @@ public class ZCrawling {
     public ZCrawling() {
         
     }
+
+    private Long ultimoHitDeExtraccion;
+
+    public Long getUltimoHitDeExtraccion() {
+        return ultimoHitDeExtraccion;
+    }
+
+    public void setUltimoHitDeExtraccion(Long ultimoHitDeExtraccion) {
+        this.ultimoHitDeExtraccion = ultimoHitDeExtraccion;
+    }
+
+    private int periodicidad;  //En minutos
+
+    public int getPeriodicidad() {
+        return periodicidad;
+    }
+
+    public void setPeriodicidad(int periodicidad) {
+        this.periodicidad = periodicidad;
+    }
+
     protected boolean siosi = false;
 
     /**

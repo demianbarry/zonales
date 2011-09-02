@@ -136,13 +136,15 @@ public class ServiceDao extends BaseDao {
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
-        DBCursor cur;
+        //DBCursor cur;
 
-        cur = this.services.find(query);
+        resp = this.services.findOne(query);
 
-        resp = cur.next();
-        resp.removeField("_id");
-        System.out.println(resp);
+        //resp = cur.next();
+        if (resp != null) {
+            resp.removeField("_id");
+            System.out.println(resp);
+        }
 
         return resp.toString();
     }
@@ -180,39 +182,41 @@ public class ServiceDao extends BaseDao {
     public Service retrieve(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp;
-        DBCursor cur;
+        //DBCursor cur;
         Service service = new Service();
         ArrayList<BasicDBObject> params, plugins;
 
-        cur = this.services.find(query);
+        resp = this.services.findOne(query);
 
-        resp = cur.next();
-        resp.removeField("_id");
-        System.out.println(resp);
+        if (resp != null) {
+            resp.removeField("_id");
+            System.out.println(resp);
 
-        service.setName((String)resp.get("name"));
-        service.setUri((String)resp.get("uri"));
-        try {
-            service.setState((String)resp.get("state"));
-        } catch (TypeNotPresentException ex) {
-            service.setState(State.GENERATED);
+            service.setName((String)resp.get("name"));
+            service.setUri((String)resp.get("uri"));
+            try {
+                service.setState((String)resp.get("state"));
+            } catch (TypeNotPresentException ex) {
+                service.setState(State.GENERATED);
+            }
+
+            //service.setPluginName((String)resp.get("pluginName"));
+
+            params = (ArrayList<BasicDBObject>)resp.get("params");
+
+            for (BasicDBObject param: params) {
+                service.addParam((String)param.get("name"), (Boolean)param.get("required"));
+            }
+
+            plugins = (ArrayList<BasicDBObject>)resp.get("plugins");
+
+            for (BasicDBObject plugin: plugins) {
+                service.addPlugin((String)plugin.get("class_name"), (String)plugin.get("type"));
+            }
+            return service;
+        } else {
+            return null;
         }
-
-        //service.setPluginName((String)resp.get("pluginName"));
-
-        params = (ArrayList<BasicDBObject>)resp.get("params");
-
-        for (BasicDBObject param: params) {
-            service.addParam((String)param.get("name"), (Boolean)param.get("required"));
-        }
-
-        plugins = (ArrayList<BasicDBObject>)resp.get("plugins");
-
-        for (BasicDBObject plugin: plugins) {
-            service.addPlugin((String)plugin.get("class_name"), (String)plugin.get("type"));
-        }
-
-        return service;
 
     }
 
