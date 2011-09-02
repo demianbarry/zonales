@@ -373,8 +373,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         for (PostType post : posts.getPost()) {
             if (post.getLinks() != null) {
                 for (LinkType link : post.getLinks().getLink()) {
-                    if (link.getUrl().matches("^/.*")) {
-                        link.setUrl("http://" + post.getSource() + link.getUrl().substring(1));
+                    if(!link.getUrl().matches("^http://.*")){
+                        link.setUrl("http://" + post.getSource() + link.getUrl().substring(link.getUrl().matches("^/.*") ? 1 : 0));
                     }
                 }
             }
