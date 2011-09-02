@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -56,11 +54,12 @@ import org.zonales.feedSelector.daos.FeedSelectorDao;
  */
 public class ZCrawlFeedsServlet extends HttpServlet {
 
-    List<String> blacklist = new ArrayList<String>();
-    List<String> searchlist = new ArrayList<String>();
-    List<String> tagslist = new ArrayList<String>();
+    List<String> blacklist = null;
+    List<String> searchlist = null;
+    List<String> tagslist = null;
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
+    String zone = null;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -74,6 +73,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         String url = request.getParameter("url") != null ? request.getParameter("url") : "";
+        zone = request.getParameter("zone") != null ? request.getParameter("zone") : "";
         String words = request.getParameter("palabras") != null ? request.getParameter("palabras") : "";
         String nowords = request.getParameter("nopalabras") != null ? request.getParameter("nopalabras") : "";
         String tags = request.getParameter("tags") != null ? request.getParameter("tags") : "";
@@ -85,16 +85,19 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         dao = new FeedSelectorDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         if (!"".equals(words)) {
+            searchlist = new ArrayList<String>();
             for (String palabra : words.split(",")) {
                 searchlist.add(palabra);
             }
         }
         if (!"".equals(nowords)) {
+            blacklist = new ArrayList<String>();
             for (String nopalabra : nowords.split(",")) {
                 blacklist.add(nopalabra);
             }
         }
         if (!"".equals(tags)) {
+            tagslist = new ArrayList<String>();
             for (String tag : tags.split(",")) {
                 tagslist.add(tag);
             }
@@ -121,17 +124,6 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
-        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
-        connection.setRequestMethod("GET");
-        connection.setConnectTimeout(timeout);
-        connection.setReadTimeout(timeout);
-        connection.setRequestProperty("Content-type", "application/rss+xml;charset=utf-8");
-        connection.setRequestProperty("Accept-Charset", "UTF-8");
-        connection.connect();
-        return connection;
-    }
-
     /**
      * Parses the given feed and extracts out and parsers all linked items within
      * the feed, using the underlying ROME feed parsing library.
@@ -148,7 +140,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         url = URLDecoder.decode(url, "UTF-8");
         URL feedURL = new URL(url);
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encoding del Feed: {0}", new Object[]{feedURL.openConnection().getContentEncoding()});
+        //Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encoding del Feed: {0}", new Object[]{feedURL.openConnection().getContentEncoding()});
         Feed feed = FeedParser.parse(feedURL);
 
 
@@ -172,9 +164,14 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
             feedSelectors = dao.retrieve(url);
-            if (findWords(entry.getTitle(), entry.getDescriptionAsText() != null ? entry.getDescriptionAsText().toString() : entry.getElementValue("http://purl.org/rss/1.0/modules/content/", "content") != null ? entry.getElement("http://purl.org/rss/1.0/modules/content/", "content").getValue() : "", doc, searchlist, blacklist)) {
+            if (findWords(entry.getTitle(), doc, searchlist, blacklist)) {
                 newEntry = new PostType();
-                newEntry.setSource(feed.getHeader().getLink().toString().substring(7));
+                String source = feed.getHeader().getLink().toString().substring(7);
+                if (source.indexOf("/") != -1) {
+                    source = source.substring(0, source.indexOf("/") + 1);
+                }
+                newEntry.setSource(source);
+                newEntry.setZone(zone);
                 // newEntry.setId(entry.getUri());
                 // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                 newEntry.setId(entry.getGUID());
@@ -212,8 +209,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         PostsType news;
 
-
         news = new PostsType(newsList);
+        completeLinks(news);
+
         if (!json) {
             Feed2XML(news, sw);
         }
@@ -330,49 +328,36 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
     }
 
-    public static boolean findWords(String title, String ConDatos, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
-
+    public static boolean findWords(String title, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
+        Boolean resultado = false;
         String contenido;
-        int find = 0;
+
         Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
         // System.out.println(noticias.text());
         contenido = noticia.text();
 
-        if (!slist.isEmpty()) {
+        if (slist != null && !slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
-
-                if (contenido.indexOf(palabra) >= 0 || title.indexOf(palabra) >= 0) {
-                    find++;
+                if (contenido.indexOf(palabra) != -1 || title.indexOf(palabra) != -1) {
+                    resultado = true;
                 }
 
             }
+        } else {
+            resultado = true;
         }
-        if (!blist.isEmpty()) {
+
+        if (blist != null && !blist.isEmpty()) {
             // System.out.println("Entro blist.isEmpty()");
             for (String palabra : blist) {
-
-                if (contenido.indexOf(palabra) > 0 || title.indexOf(palabra) > 0) {
-                    return false;
+                if (contenido.indexOf(palabra) != -1 || title.indexOf(palabra) != -1) {
+                    resultado = false;
                 }
             }
         }
-        if (!slist.isEmpty()) {
-            if (find >= slist.size()) {
-                //  System.out.println("find >= slist.size() return true");
-                return true;
-            } else {
-                //   System.out.println("find >= slist.size() return false");
-                return false;
-            }
-        }
-        if (slist.isEmpty() && !blist.isEmpty()) {
-            return true;
-        }
-        if (slist.isEmpty() && blist.isEmpty()) {
-            return true;
-        }
-        return false;
+
+        return resultado;
     }
 
     public void Feed2XML(PostsType posts, Writer out) throws Exception {
@@ -382,5 +367,17 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         marshaller.marshal(posts, out);
 
         //System.out.println("data: " + out);
+    }
+
+    private void completeLinks(PostsType posts) {
+        for (PostType post : posts.getPost()) {
+            if (post.getLinks() != null) {
+                for (LinkType link : post.getLinks().getLink()) {
+                    if (link.getUrl().matches("^/.*")) {
+                        link.setUrl("http://" + post.getSource() + link.getUrl().substring(1));
+                    }
+                }
+            }
+        }
     }
 }
