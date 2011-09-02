@@ -4,6 +4,7 @@
  */
 package org.zonales.ZGram.daos;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bson.types.ObjectId;
 import org.zonales.BaseDao;
 import org.zonales.ZGram.Periodo;
@@ -177,9 +180,9 @@ public class ZGramDao extends BaseDao {
         if (zgram.getTagsFuente() != null) {
             zgramDoc.put("tagsFuente", zgram.getTagsFuente());
         }
-        
+
         zgramDoc.put("incluyeComentarios", zgram.isIncluyeComenterios());
-        
+
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
@@ -192,7 +195,7 @@ public class ZGramDao extends BaseDao {
 
     public void update(String id, ZGram newZgram) throws MongoException {
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
-        DBObject resp;        
+        DBObject resp;
 
         resp = this.extractions.findOne(query);
 
@@ -332,7 +335,7 @@ public class ZGramDao extends BaseDao {
                 if (newZgram.getTagsFuente() != null) {
                     zgramDoc.put("tagsFuente", newZgram.getTagsFuente());
                 }
-                
+
                 zgramDoc.put("incluyeComentarios", newZgram.isIncluyeComenterios());
 
                 zgramDoc.put("estado", newZgram.getEstado());
@@ -375,6 +378,7 @@ public class ZGramDao extends BaseDao {
 
     public String retrieveJson(ZGramFilter filtros, Boolean onlyNames) {
         BasicDBObject query = new BasicDBObject();
+        BasicDBList or = new BasicDBList();
         DBObject resp;
         DBCursor cur;
 
@@ -385,8 +389,12 @@ public class ZGramDao extends BaseDao {
             query.put("fuente", filtros.getFuente());
         }
         if (filtros.getLocalidad() != null) {
-            query.put("localidad", filtros.getLocalidad());
+            for (String localidad : filtros.getLocalidad().split(",")) {
+                or.add(new BasicDBObject("localidad", localidad));
+            }
+            query.put("$or", or);
         }
+
         if (filtros.getTags() != null) {
             query.put("tags", filtros.getTags());
         }
@@ -410,6 +418,7 @@ public class ZGramDao extends BaseDao {
                 query.put("modificado", new BasicDBObject("$gt", now.getTime().getTime()));
             }
         }
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "QUERY: {0}", new Object[]{query.toString()});
 
         cur = this.extractions.find(query);
 
