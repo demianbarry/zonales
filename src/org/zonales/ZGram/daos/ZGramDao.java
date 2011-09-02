@@ -379,6 +379,7 @@ public class ZGramDao extends BaseDao {
     public String retrieveJson(ZGramFilter filtros, Boolean onlyNames) {
         BasicDBObject query = new BasicDBObject();
         BasicDBList or = new BasicDBList();
+        BasicDBObject all = new BasicDBObject();
         DBObject resp;
         DBCursor cur;
 
@@ -395,10 +396,11 @@ public class ZGramDao extends BaseDao {
             query.put("$or", or);
         }
 
-        if (filtros.getTags() != null) {
-            query.put("tags", filtros.getTags());
+        if (filtros.getTags() != null) {            
+            all.put("$all", filtros.getTags());
+            query.put("tags", all);
         }
-
+        
         Calendar now = Calendar.getInstance();
         if (filtros.getPeriodo() != null && !filtros.getPeriodo().equals(Periodo.ALL)) {
             System.out.println(now.getTime().getTime());
