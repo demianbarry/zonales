@@ -28,6 +28,8 @@ public class ZMessages {
                 return PARAM_REQUIRED_FAILED;
             case 205:
                 return TAG_TYPE_NOT_FOUND;
+            case 206:
+                return CONFIG_NOT_FOUND;
             case 220:
                 return ZPARSER_ZGRAM_PARTIALLY_PARSED;
             case 300:
@@ -48,6 +50,20 @@ public class ZMessages {
                 return ZPARSER_PARSE_VISITOR_INSTANT_ERROR;
             case 324:
                 return ZPARSER_CANNOT_PARSE;
+            case 350:
+                return ZSCHEDULER_SCHEDULER_ERROR;
+            case 351:
+                return ZSCHEDULER_NAMING_ERROR;
+            case 352:
+                return ZSCHEDULER_UNKNOW_ERROR;
+            case 353:
+                return ZSCHEDULER_CONN_ERROR;
+            case 370:
+                return ZSOURCES_CONN_ERROR;
+            case 380:
+                return ZSERVLETS_CONN_ERROR;
+            case 390:
+                return GSON_CONVERTION_ERROR;
             default:
                 return SUCCESS;
         }
@@ -59,6 +75,7 @@ public class ZMessages {
     public static final ZMessage UPDATE_FAILED = new ZMessage(201, "Update failed");
     public static final ZMessage SAVE_FAILED = new ZMessage(202, "Save failed");
     public static final ZMessage DATA_NOT_FOUND = new ZMessage(203, "Data not found");
+    public static final ZMessage CONFIG_NOT_FOUND = new ZMessage(206, "Crawl Config not found");
     public static final ZMessage PARAM_REQUIRED_FAILED = new ZMessage(204, "Param required failed");
     public static final ZMessage TAG_TYPE_NOT_FOUND = new ZMessage(205, "Declared tag type doesn't exists");
     public static final ZMessage ZPARSER_ZGRAM_PARTIALLY_PARSED = new ZMessage(220, "ZParser - La consulta se parseo parcialmente. La porción correcta se guardó.");
@@ -75,4 +92,8 @@ public class ZMessages {
     public static final ZMessage ZSCHEDULER_SCHEDULER_ERROR = new ZMessage(350, "ZScheduler - Error en el scheduler");
     public static final ZMessage ZSCHEDULER_NAMING_ERROR = new ZMessage(351, "ZScheduler - No se pudo obtener el scheduler del contexto");
     public static final ZMessage ZSCHEDULER_UNKNOW_ERROR = new ZMessage(352, "ZScheduler - Error desconocido");
+    public static final ZMessage ZSCHEDULER_CONN_ERROR = new ZMessage(353, "ZScheduler - Error de conección");
+    public static final ZMessage ZSOURCES_CONN_ERROR = new ZMessage(370, "ZSources - Error de conección");
+    public static final ZMessage ZSERVLETS_CONN_ERROR = new ZMessage(380, "ZServlet - Error de conección");
+    public static final ZMessage GSON_CONVERTION_ERROR = new ZMessage(390, "GSon - Error de Conversión");
 }

@@ -23,9 +23,7 @@ public class ZGram extends ZCrawling {
     private String creadoPor;
     private Long modificado;
     private String modificadoPor;
-    private int periodicidad;  //En minutos
     private Long ultimaExtraccionConDatos;
-    private Long ultimoHitDeExtraccion;
     private int ultimoCodigoDeExtraccion;
 
     public ZGram(ZMessage zmessage, String verbatim, String estado, Long creado, Long modificado) {
@@ -121,14 +119,6 @@ public class ZGram extends ZCrawling {
         this.msg = msg;
     }
 
-    public int getPeriodicidad() {
-        return periodicidad;
-    }
-
-    public void setPeriodicidad(int periodicidad) {
-        this.periodicidad = periodicidad;
-    }
-
     public Long getUltimaExtraccionConDatos() {
         return ultimaExtraccionConDatos;
     }
@@ -144,15 +134,6 @@ public class ZGram extends ZCrawling {
     public void setUltimoCodigoDeExtraccion(int ultimoCodigoDeExtraccion) {
         this.ultimoCodigoDeExtraccion = ultimoCodigoDeExtraccion;
     }
-
-    public Long getUltimoHitDeExtraccion() {
-        return ultimoHitDeExtraccion;
-    }
-
-    public void setUltimoHitDeExtraccion(Long ultimoHitDeExtraccion) {
-        this.ultimoHitDeExtraccion = ultimoHitDeExtraccion;
-    }
-
-    
+   
 
 }
