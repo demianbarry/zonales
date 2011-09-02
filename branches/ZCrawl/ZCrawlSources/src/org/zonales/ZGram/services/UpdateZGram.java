@@ -38,7 +38,10 @@ public class UpdateZGram extends BaseService {
         String msg = request.getParameter("newmsg");
         String metadataJson = request.getParameter("newmetadata");
         String verbatim = request.getParameter("newverbatim");
-        String state = request.getParameter("newstate");        
+        String state = request.getParameter("newstate");
+        Long ultimaExtracciónConDatos = request.getParameter("ultimaExtraccionConDatos") != null ? Long.valueOf(request.getParameter("ultimaExtraccionConDatos")) : null;
+        Long ultimoHitDeExtracción = request.getParameter("ultimoHitDeExtraccion") != null ? Long.valueOf(request.getParameter("ultimoHitDeExtraccion")) : null;
+        Integer ultimoCodigoDeExtraccion = request.getParameter("ultimoCodigoDeExtraccion") != null ? Integer.valueOf(request.getParameter("ultimoCodigoDeExtraccion")) : null;
         Gson metadataGson = new Gson();
         ZMessage zMessage = new ZMessage(cod, msg);
         
@@ -50,6 +53,19 @@ public class UpdateZGram extends BaseService {
         zgram.setVerbatim(verbatim);
         zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
         zgram.setModificado((new Date()).getTime());
+        zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto
+
+        if (ultimaExtracciónConDatos != null) {
+            zgram.setUltimaExtraccionConDatos(ultimaExtracciónConDatos);
+        }
+
+        if (ultimoHitDeExtracción != null) {
+            zgram.setUltimoHitDeExtraccion(ultimoHitDeExtracción);
+        }
+
+        if (ultimoCodigoDeExtraccion != null) {
+            zgram.setUltimoCodigoDeExtraccion(ultimoCodigoDeExtraccion);
+        }
 
         try {
             ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));

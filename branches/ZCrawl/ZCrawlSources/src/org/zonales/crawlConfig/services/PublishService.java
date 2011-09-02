@@ -41,27 +41,32 @@ public class PublishService extends BaseService {
             ZGram zgram = (new Gson()).fromJson(zgramDao.retrieveJson(zgramId), ZGram.class);
             
             Service service;            
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Buscando servicio según metadata {0}", new Object[]{zgram.toString()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Buscando servicio según metadata {0}", new Object[]{zgram.getFuente()});
 
             //Recupero la configuración del servicio
             service = serviceDao.retrieve(zgram.getFuente());
 
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fuente {0}, servicio {1}", new Object[]{zgram.getFuente(), service.toString()});
+            if (service != null) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fuente {0}, servicio {1}", new Object[]{zgram.getFuente(), service.toString()});
 
-            Publisher publisher = null;
-            ArrayList<Plugin> plugins = service.getPlugins();
-            for (Plugin plugin : plugins) {
-                if ("Publisher".equals(plugin.getType())) {
-                    publisher = (Publisher) Class.forName(plugin.getClassName()).newInstance();
-                    break;
+                Publisher publisher = null;
+                ArrayList<Plugin> plugins = service.getPlugins();
+                for (Plugin plugin : plugins) {
+                    if ("Publisher".equals(plugin.getType())) {
+                        publisher = (Publisher) Class.forName(plugin.getClassName()).newInstance();
+                        break;
+                    }
                 }
-            }
 
-            if (publisher != null) {                
-                out.print(publisher.publish(zgram, zgramId, props));
+                if (publisher != null) {
+                    out.print(publisher.publish(zgram, zgramId, props));
+                } else {
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero el plugin de publicación del servicio {0}", new Object[]{service.toString()});
+                    out.print(ZMessages.DATA_NOT_FOUND);
+                }
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero URL del servicio {0}", new Object[]{service.toString()});
-                out.print(ZMessages.DATA_NOT_FOUND);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "No se recupero el servicio {0}");
+                out.print(ZMessages.CONFIG_NOT_FOUND);
             }
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();

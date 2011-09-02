@@ -26,6 +26,10 @@ public class GetTwitterServiceURL implements GetServiceURL {
                                 + metadata.getLocalidad()
                                 + "&q=";
 
+        if (metadata.getUltimoHitDeExtraccion() != null) {
+            urlServlet += "+since:" + metadata.getUltimoHitDeExtraccion();
+        }
+
         if (metadata.getCriterios() != null) {
 
             for (Criterio criterio : metadata.getCriterios()) {
