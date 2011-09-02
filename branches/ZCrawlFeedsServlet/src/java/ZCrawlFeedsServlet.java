@@ -329,7 +329,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     }
 
     public static boolean findWords(String title, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
-        Boolean resultado = false;
+        Boolean resultado = true;
         String contenido;
 
         Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
@@ -339,8 +339,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         if (slist != null && !slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
-                if (contenido.indexOf(palabra) != -1 || title.indexOf(palabra) != -1) {
-                    resultado = true;
+                if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1) ) {
+                    resultado = false;
                 }
 
             }
@@ -351,7 +351,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         if (blist != null && !blist.isEmpty()) {
             // System.out.println("Entro blist.isEmpty()");
             for (String palabra : blist) {
-                if (contenido.indexOf(palabra) != -1 || title.indexOf(palabra) != -1) {
+                if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1) ) {
                     resultado = false;
                 }
             }
