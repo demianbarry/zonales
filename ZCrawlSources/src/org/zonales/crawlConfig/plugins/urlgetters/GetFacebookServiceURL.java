@@ -103,6 +103,10 @@ public class GetFacebookServiceURL implements GetServiceURL {
         if (!"".equals(commenters)) {
             urlServlet += "&commenters=" + commenters.substring(0, commenters.length() - 1);
         }
+
+        if (metadata.getUltimoHitDeExtraccion() != null) {
+            urlServlet += "&since=" + metadata.getUltimoHitDeExtraccion();
+        }
         return urlServlet;
     }
 
