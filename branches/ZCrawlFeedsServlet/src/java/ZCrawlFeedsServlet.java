@@ -164,7 +164,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
             feedSelectors = dao.retrieve(url);
-            if (findWords(entry.getTitle(), doc, searchlist, blacklist)) {
+            if (findWords(entry.getTitle(), doc, searchlist, blacklist, feedSelectors)) {
                 newEntry = new PostType();
                 String source = feed.getHeader().getLink().toString().substring(7);
                 if (source.indexOf("/") != -1) {
@@ -328,36 +328,49 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
     }
 
-    public static boolean findWords(String title, Document doc, List<String> slist, List<String> blist) throws FileNotFoundException, IOException, BadLocationException {
-        Boolean resultado = true;
-        String contenido;
+    public boolean findWords(String title, Document doc, List<String> slist, List<String> blist, FeedSelectors feedSelectors) throws FileNotFoundException, IOException, BadLocationException {
+        String contenido = null;
 
-        Elements noticia = doc.select("p:not([class])");//.not("[class"); // a with href
-        // System.out.println(noticias.text());
-        contenido = noticia.text();
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            feedSelectors = dao.retrieve("default");
+        }
+        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
+            return false;
+        }
+
+        Elements noticia = null;
+        for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
+            if ("content".equals(feedSelector.getType())) {
+                noticia = doc.select(feedSelector.getSelector());
+            }
+        }
+
+        if (noticia != null) {
+            contenido = noticia.text();
+        }
+
 
         if (slist != null && !slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
-                if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1) ) {
-                    resultado = false;
+                if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1)) {
+                    return false;
                 }
 
             }
-        } else {
-            resultado = true;
         }
 
         if (blist != null && !blist.isEmpty()) {
             // System.out.println("Entro blist.isEmpty()");
             for (String palabra : blist) {
-                if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1) ) {
-                    resultado = false;
+                if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1)) {
+                    return false;
                 }
             }
         }
 
-        return resultado;
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "findWords result: {0}", new Object[]{true});
+        return true;
     }
 
     public void Feed2XML(PostsType posts, Writer out) throws Exception {
@@ -373,7 +386,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         for (PostType post : posts.getPost()) {
             if (post.getLinks() != null) {
                 for (LinkType link : post.getLinks().getLink()) {
-                    if(!link.getUrl().matches("^http://.*")){
+                    if (!link.getUrl().matches("^http://.*")) {
                         link.setUrl("http://" + post.getSource() + link.getUrl().substring(link.getUrl().matches("^/.*") ? 1 : 0));
                     }
                 }
