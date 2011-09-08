@@ -8,13 +8,9 @@ package org.zonales.entities;
 
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
 import org.apache.solr.client.solrj.beans.Field;
 
 public class SolrPost {
-
-    @Field
-    protected Date indexTime;
 
     @Field
     protected String source;
@@ -49,7 +45,6 @@ public class SolrPost {
     @Field
     protected Date created;
 
-    @XmlElement(required = false)
     @Field
     protected Date modified;
     
@@ -127,14 +122,6 @@ public class SolrPost {
         this.id = id;
     }
 
-    public Date getIndexTime() {
-        return indexTime;
-    }
-
-    public void setIndexTime(Date indexTime) {
-        this.indexTime = indexTime;
-    }
-
     public Date getModified() {
         return modified;
     }
@@ -201,6 +188,7 @@ public class SolrPost {
 
     @Override
     public String toString() {
-        return "SolrPost{" + "indexTime=" + indexTime + "source=" + source + "id=" + id + "fromUserName=" + fromUserName + "fromUserCategory=" + fromUserCategory + "fromUserId=" + fromUserId + "fromUserUrl=" + fromUserUrl + "title=" + title + "text=" + text + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
+        return "SolrPost{" + "source=" + source + "id=" + id + "fromUserName=" + fromUserName + "fromUserCategory=" + fromUserCategory + "fromUserId=" + fromUserId + "fromUserUrl=" + fromUserUrl + "title=" + title + "text=" + text + "zone=" + zone + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
     }
+
 }

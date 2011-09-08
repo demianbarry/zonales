@@ -60,6 +60,8 @@ public class ZMessages {
                 return ZSCHEDULER_CONN_ERROR;
             case 370:
                 return ZSOURCES_CONN_ERROR;
+            case 371:
+                return ZSOURCES_GETURL_ERROR;
             case 380:
                 return ZSERVLETS_CONN_ERROR;
             case 390:
@@ -94,6 +96,7 @@ public class ZMessages {
     public static final ZMessage ZSCHEDULER_UNKNOW_ERROR = new ZMessage(352, "ZScheduler - Error desconocido");
     public static final ZMessage ZSCHEDULER_CONN_ERROR = new ZMessage(353, "ZScheduler - Error de conección");
     public static final ZMessage ZSOURCES_CONN_ERROR = new ZMessage(370, "ZSources - Error de conección");
+    public static final ZMessage ZSOURCES_GETURL_ERROR = new ZMessage(371, "ZSources - Error obteniendo URL de extracción");
     public static final ZMessage ZSERVLETS_CONN_ERROR = new ZMessage(380, "ZServlet - Error de conección");
     public static final ZMessage GSON_CONVERTION_ERROR = new ZMessage(390, "GSon - Error de Conversión");
 }
