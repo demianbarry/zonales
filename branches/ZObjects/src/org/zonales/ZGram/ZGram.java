@@ -14,7 +14,7 @@ import org.zonales.metadata.ZCrawling;
  */
 public class ZGram extends ZCrawling {
     private Oid _id;
-    private int cod;
+    private Integer cod;
     private String msg;
     //private ZMessage zmessage;
     private String verbatim;
@@ -24,7 +24,7 @@ public class ZGram extends ZCrawling {
     private Long modificado;
     private String modificadoPor;
     private Long ultimaExtraccionConDatos;
-    private int ultimoCodigoDeExtraccion;
+    private Integer ultimoCodigoDeExtraccion;
 
     public ZGram(ZMessage zmessage, String verbatim, String estado, Long creado, Long modificado) {
         this.cod = zmessage.getCod();
@@ -87,11 +87,11 @@ public class ZGram extends ZCrawling {
         this.modificado = modificado;
     }
 
-    public int getCod() {
+    public Integer getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(Integer cod) {
         this.cod = cod;
     }
 
@@ -127,11 +127,11 @@ public class ZGram extends ZCrawling {
         this.ultimaExtraccionConDatos = ultimaExtraccionConDatos;
     }
 
-    public int getUltimoCodigoDeExtraccion() {
+    public Integer getUltimoCodigoDeExtraccion() {
         return ultimoCodigoDeExtraccion;
     }
 
-    public void setUltimoCodigoDeExtraccion(int ultimoCodigoDeExtraccion) {
+    public void setUltimoCodigoDeExtraccion(Integer ultimoCodigoDeExtraccion) {
         this.ultimoCodigoDeExtraccion = ultimoCodigoDeExtraccion;
     }
    

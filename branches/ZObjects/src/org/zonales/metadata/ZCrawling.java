@@ -26,13 +26,13 @@ public class ZCrawling {
         this.ultimoHitDeExtraccion = ultimoHitDeExtraccion;
     }
 
-    private int periodicidad;  //En minutos
+    private Integer periodicidad;  //En minutos
 
-    public int getPeriodicidad() {
+    public Integer getPeriodicidad() {
         return periodicidad;
     }
 
-    public void setPeriodicidad(int periodicidad) {
+    public void setPeriodicidad(Integer periodicidad) {
         this.periodicidad = periodicidad;
     }
 

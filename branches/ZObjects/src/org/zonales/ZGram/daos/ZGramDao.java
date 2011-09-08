@@ -203,18 +203,37 @@ public class ZGramDao extends BaseDao {
         if (resp != null) {
             BasicDBObject zgramDoc = new BasicDBObject();
 
-            if (newZgram.getZmessage() != null) {
-                zgramDoc.put("cod", newZgram.getZmessage().getCod());
-                zgramDoc.put("msg", newZgram.getZmessage().getMsg());
-            } else {
-                zgramDoc.put("cod", (Integer) resp.get("cod"));
-                zgramDoc.put("msg", (String) resp.get("msg"));
-            }
-
             if (newZgram != null) {
-                zgramDoc.put("descripcion", newZgram.getDescripcion());
-                zgramDoc.put("localidad", newZgram.getLocalidad());
-                zgramDoc.put("fuente", newZgram.getFuente());
+
+                if (newZgram.getCod() != null) {
+                    zgramDoc.put("cod", newZgram.getZmessage().getCod());
+                } else {
+                    zgramDoc.put("cod", (Integer) resp.get("cod"));
+                }
+
+                if (newZgram.getMsg() != null) {
+                    zgramDoc.put("msg", newZgram.getZmessage().getMsg());
+                } else {
+                    zgramDoc.put("msg", (String) resp.get("msg"));
+                }
+
+                if (newZgram.getDescripcion() != null) {
+                    zgramDoc.put("descripcion", newZgram.getDescripcion());
+                } else {
+                    zgramDoc.put("descripcion", (String) resp.get("descripcion"));
+                }
+
+                if (newZgram.getLocalidad() != null) {
+                    zgramDoc.put("localidad", newZgram.getLocalidad());
+                } else {
+                    zgramDoc.put("localidad", (String) resp.get("localidad"));
+                }
+
+                if (newZgram.getFuente() != null) {
+                    zgramDoc.put("fuente", newZgram.getFuente());
+                } else {
+                    zgramDoc.put("fuente", (String) resp.get("fuente"));
+                }
 
                 if (newZgram.getTags() != null) {
                     ArrayList tagsToDoc = new ArrayList();
@@ -222,9 +241,15 @@ public class ZGramDao extends BaseDao {
                         tagsToDoc.add(tag);
                     }
                     zgramDoc.put("tags", tagsToDoc);
+                } else {
+                    zgramDoc.put("tags", (ArrayList) resp.get("tags"));
                 }
 
-                zgramDoc.put("uriFuente", newZgram.getUriFuente());
+                if (newZgram.getUriFuente() != null) {
+                    zgramDoc.put("uriFuente", newZgram.getUriFuente());
+                } else {
+                    zgramDoc.put("uriFuente", (String) resp.get("uriFuente"));
+                }
 
                 if (newZgram.getCriterios() != null) {
                     ArrayList criteriosToDoc = new ArrayList();
@@ -257,6 +282,8 @@ public class ZGramDao extends BaseDao {
                         }
                     }
                     zgramDoc.put("criterios", criteriosToDoc);
+                } else {
+                    zgramDoc.put("criterios", (ArrayList) resp.get("criterios"));
                 }
 
                 if (newZgram.getNoCriterios() != null) {
@@ -290,6 +317,8 @@ public class ZGramDao extends BaseDao {
                         }
                     }
                     zgramDoc.put("noCriterios", nocriteriosToDoc);
+                } else {
+                    zgramDoc.put("noCriterios", (ArrayList) resp.get("noCriterios"));
                 }
 
                 if (newZgram.getComentarios() != null) {
@@ -298,6 +327,8 @@ public class ZGramDao extends BaseDao {
                         comentariosToDoc.add(comentario);
                     }
                     zgramDoc.put("comentarios", comentariosToDoc);
+                } else {
+                    zgramDoc.put("comentarios", (ArrayList) resp.get("comentarios"));
                 }
 
                 if (newZgram.getFiltros() != null) {
@@ -331,35 +362,68 @@ public class ZGramDao extends BaseDao {
                         }
                     }
                     zgramDoc.put("filtros", filtrosToDoc);
+                } else {
+                    zgramDoc.put("filtros", (ArrayList) resp.get("filtros"));
                 }
 
                 if (newZgram.getTagsFuente() != null) {
                     zgramDoc.put("tagsFuente", newZgram.getTagsFuente());
+                } else {
+                    zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
                 }
 
-                zgramDoc.put("incluyeComentarios", newZgram.isIncluyeComenterios());
+                if (newZgram.isIncluyeComenterios()) {
+                    zgramDoc.put("incluyeComentarios", newZgram.isIncluyeComenterios());
+                } else {
+                    zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
+                }
 
-                zgramDoc.put("estado", newZgram.getEstado());
+                if (newZgram.getEstado() != null) {
+                    zgramDoc.put("estado", newZgram.getEstado());
+                } else {
+                    zgramDoc.put("estado", (String) resp.get("estado"));
+                }
 
-            } else {
-                zgramDoc.put("descripcion", (String) resp.get("descripcion"));
-                zgramDoc.put("localidad", (String) resp.get("localidad"));
-                zgramDoc.put("fuente", (String) resp.get("fuente"));
-                zgramDoc.put("tags", (ArrayList) resp.get("tags"));
-                zgramDoc.put("uriFuente", (String) resp.get("uriFuente"));
-                zgramDoc.put("criterios", (ArrayList) resp.get("criterios"));
-                zgramDoc.put("noCriterios", (ArrayList) resp.get("noCriterios"));
-                zgramDoc.put("comentarios", (ArrayList) resp.get("comentarios"));
-                zgramDoc.put("filtros", (ArrayList) resp.get("filtros"));
-                zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
-                zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
-                zgramDoc.put("estado", (String) resp.get("estado"));
+                if (newZgram.getVerbatim() != null) {
+                    zgramDoc.put("verbatim", newZgram.getVerbatim());
+                } else {
+                    zgramDoc.put("verbatim", (String ) resp.get("verbatim"));
+                }
+
+                if (newZgram.getPeriodicidad() != null) {
+                    zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
+                } else {
+                    zgramDoc.put("periodicidad", (String) resp.get("periodicidad"));
+                }
+
+                if (newZgram.getSiosi() != null) {
+                    zgramDoc.put("siosi", newZgram.getSiosi());
+                } else {
+                    zgramDoc.put("siosi", (Boolean) resp.get("siosi"));
+                }
+
+                if (newZgram.getUltimaExtraccionConDatos() != null) {
+                    zgramDoc.put("ultimaExtraccionConDatos", newZgram.getUltimaExtraccionConDatos());
+                } else {
+                    zgramDoc.put("ultimaExtraccionConDatos", (Long) resp.get("ultimaExtraccionConDatos"));
+                }
+
+                if (newZgram.getUltimoHitDeExtraccion() != null) {
+                    zgramDoc.put("ultimoHitDeExtraccion", newZgram.getUltimoHitDeExtraccion());
+                } else {
+                    zgramDoc.put("ultimoHitDeExtraccion", (Long) resp.get("ultimoHitDeExtraccion"));
+                }
+
+                if (newZgram.getUltimoCodigoDeExtraccion() != null) {
+                    zgramDoc.put("ultimoCodigoDeExtraccion", newZgram.getUltimoCodigoDeExtraccion());
+                } else {
+                    zgramDoc.put("ultimoCodigoDeExtraccion", (Integer) resp.get("ultimoCodigoDeExtraccion"));
+                }
+
             }
 
             zgramDoc.put("creado", (Long) resp.get("creado"));
             zgramDoc.put("modificado", (new Date()).getTime());
-            zgramDoc.put("verbatim", newZgram.getVerbatim());
-            zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
             this.extractions.update(new BasicDBObject().append("_id", new ObjectId(id)), zgramDoc);
         }
     }
