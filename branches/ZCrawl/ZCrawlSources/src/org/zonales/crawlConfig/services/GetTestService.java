@@ -49,7 +49,7 @@ public class GetTestService extends BaseService {
                 metadata.setUltimoHitDeExtraccion(null);
             }
 
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Buscando servicio según metadata {0}", new Object[]{metadataJson});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Buscando servicio según metadata (Object) {0}", new Object[]{metadata});
 
             //Recupero la configuración del servicio
             service = serviceDao.retrieve(metadata.getFuente());
