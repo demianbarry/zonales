@@ -72,6 +72,8 @@ public class SchedulingJob extends BaseService {
                 //Obtengo la URL para realizar la extracción
                 String metadata = metadataGson.toJson(zcrawling, ZCrawling.class);
 
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando Job: metadata: {0}", metadata);
+
                 Scheduler sched = ZScheduler.getScheduler(this.getServletContext());
 
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando Job para ID: {0}", zGramId);
