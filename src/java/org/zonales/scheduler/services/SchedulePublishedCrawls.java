@@ -56,7 +56,8 @@ public class SchedulePublishedCrawls extends HttpServlet {
         public void run() {
             try {
                 for (String id : idList) {
-                    ZScheduler.scheduleJob(id, props, contex);
+                    String resp = ZScheduler.scheduleJob(id, props, contex);
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Schedule Job, respuesta: {0}", resp);
                     Thread.sleep(60000);
                 }
             } catch (MalformedURLException ex) {
