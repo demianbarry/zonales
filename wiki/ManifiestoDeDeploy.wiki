@@ -15,8 +15,6 @@ Cada servicio está asociado a un conjunto de páginas HTML, código Javascript 
 *URL*
 http://host_http:port_http/CMUtils/crud_crawl_configs.html
 
-
-
 *ARCHIVOS Javascript (.js)*
   * mootools.js
   * cmutils.js
@@ -28,7 +26,7 @@ http://host_http:port_http/CMUtils/crud_crawl_configs.html
 *SERVICIOS*
 El servlet que atiende los servicios para la administración de fuentes se encuentra ubicado en http://tomcat_host:tomcat_port/ZCrawlSources/
 
-*Servicio:* getConfig
+====Servicio getConfig====
 
 *Descripcion:* Dado un nombre obtiene una configuración de fuentes de extracción a recuperar. Si se especifica _*all*_ como name trae todas las configuraciones, _*allNames*_ trae todos los nombres.
 
@@ -38,7 +36,7 @@ El servlet que atiende los servicios para la administración de fuentes se encue
 
 *Respuesta:* Configuración de la/s fuente/s de extracción solicitada 
 
-*Servicio:* setConfig
+====Servicio setConfig====
 
 *Descripcion:* Dado una serie de parámetros persiste una nueva configuración de fuentes de extracción.
 
@@ -46,7 +44,7 @@ El servlet que atiende los servicios para la administración de fuentes se encue
 
 *Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false  
 
-*Servicio:* updateConfig
+====Servicio updateConfig====
 
 *Descripcion:* Actualiza una configuración de fuentes de extracción.
 
@@ -56,12 +54,13 @@ El servlet que atiende los servicios para la administración de fuentes se encue
 
 *Respuesta:* success / error 
 
-*Servicio:* getPluginTypes 
+====Servicio getPluginTypes====
 
 *Descripcion:* Obtiene los tipos de plugins disponibles, por ejemplo, URLGetters (obtiene la url de extracción para una configuración determinada), Publishers y Unpublishers (generan las rutinas de publicación y despublicación de extracciones).
+
 *Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/getPluginTypes 
 
-*Servicio:* publishConfig 
+====Servicio publishConfig====
 
 *Descripcion:* Publica o despublica una configuración.
 
@@ -69,8 +68,10 @@ El servlet que atiende los servicios para la administración de fuentes se encue
 
 *Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/publishConfig?name=facebook&publish=true 
 
-*Servicio:* RemoveConfig
+====Servicio RemoveConfig====
 
 *Descripcion:* Borra una configuración.
+
 *Parametros:* name
+
 *Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook
