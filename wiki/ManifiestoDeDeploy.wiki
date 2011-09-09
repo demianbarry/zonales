@@ -12,49 +12,65 @@ Los servicios para Content Managers incluyen:
 Cada servicio está asociado a un conjunto de páginas HTML, código Javascript y hojas de estilo CSS, e interactúan con servicios de backend que persisten y recuperan datos.
 
 ===Administración de fuentes de extracción (Facebook, Twitter, Feeds)===
-  * *URL*
+*URL*
 http://host_http:port_http/CMUtils/crud_crawl_configs.html
 
 
 
-  * *ARCHIVOS Javascript (.js)*
+*ARCHIVOS Javascript (.js)*
   * mootools.js
   * cmutils.js
 
-  * *ARCHIVOS CSS (.css)*
+*ARCHIVOS CSS (.css)*
   * content.css
   * global.css
 
-  * *SERVICIOS*
+*SERVICIOS*
 El servlet que atiende los servicios para la administración de fuentes se encuentra ubicado en http://tomcat_host:tomcat_port/ZCrawlSources/
 
 *Servicio:* getConfig
+
 *Descripcion:* Dado un nombre obtiene una configuración de fuentes de extracción a recuperar. Si se especifica _*all*_ como name trae todas las configuraciones, _*allNames*_ trae todos los nombres.
+
 *Parametros:* name
+
 *Ejemplo:* http://200.69.225.53:38080/ZCrawlSources/getConfig?name=facebook 
+
 *Respuesta:* Configuración de la/s fuente/s de extracción solicitada 
 
 *Servicio:* setConfig
+
 *Descripcion:* Dado una serie de parámetros persiste una nueva configuración de fuentes de extracción.
+
 *Parametros:* name, uri, plugins, params  
-Ejemplo: http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false  
 
-Servicio: updateConfig 
+*Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false  
+
+*Servicio:* updateConfig
+
 *Descripcion:* Actualiza una configuración de fuentes de extracción.
-*Parametros:* name, newname, newuri, newplugins, newparams
-* Ejemplo:* http://200.69.225.53:38080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
-Respuesta: success / error 
 
-Servicio: getPluginTypes 
+*Parametros:* name, newname, newuri, newplugins, newparams
+
+*Ejemplo:* http://200.69.225.53:38080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada
+
+*Respuesta:* success / error 
+
+*Servicio:* getPluginTypes 
+
 *Descripcion:* Obtiene los tipos de plugins disponibles, por ejemplo, URLGetters (obtiene la url de extracción para una configuración determinada), Publishers y Unpublishers (generan las rutinas de publicación y despublicación de extracciones).
-Ejemplo: http://200.69.225.53:8080/ZCrawlSources/getPluginTypes 
+*Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/getPluginTypes 
 
 *Servicio:* publishConfig 
+
 *Descripcion:* Publica o despublica una configuración.
+
 *Parametros:* name, publish
+
 *Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/publishConfig?name=facebook&publish=true 
 
-Servicio: RemoveConfig
+*Servicio:* RemoveConfig
+
 *Descripcion:* Borra una configuración.
-Parametros:name
-Ejemplo: http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook 
+*Parametros:* name
+*Ejemplo:* http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook
