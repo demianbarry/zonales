@@ -40,9 +40,9 @@ public class GetFacebookServiceURL implements GetServiceURL {
                 if (criterio.getDeLosUsuarios() != null) {
                     users += users.length() > 0 ? "," : "";
                     for(String usuario : criterio.getDeLosUsuarios()){                        
-                        if(criterio.getDeLosUsuarios().indexOf(usuario) != 0)
-                            users += ",";
-                        users += usuario;
+                        /*if(criterio.getDeLosUsuarios().indexOf(usuario) != 0)
+                            users += ",";*/
+                        users += usuario + ",";
                     }
                 }
                 //Si hay keywords, los agrego

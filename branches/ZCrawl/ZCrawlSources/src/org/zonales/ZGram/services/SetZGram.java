@@ -48,6 +48,7 @@ public class SetZGram extends BaseService {
         zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
         zgram.setCreado((new Date()).getTime());
         zgram.setZmessage(zMessage);
+        zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto
 
         try {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Se intentará guardar: {0}", new Object[]{zgram});
