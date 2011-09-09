@@ -34,41 +34,61 @@ public class UpdateZGram extends BaseService {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String id = request.getParameter("id");
-        int cod = Integer.valueOf(request.getParameter("newcod"));
+        String codStr = request.getParameter("newcod"); // != null ? Integer.valueOf(request.getParameter("newcod")) : null;
         String msg = request.getParameter("newmsg");
         String metadataJson = request.getParameter("newmetadata");
         String verbatim = request.getParameter("newverbatim");
         String state = request.getParameter("newstate");
-        Long ultimaExtracciónConDatos = request.getParameter("ultimaExtraccionConDatos") != null ? Long.valueOf(request.getParameter("ultimaExtraccionConDatos")) : null;
-        Long ultimoHitDeExtracción = request.getParameter("ultimoHitDeExtraccion") != null ? Long.valueOf(request.getParameter("ultimoHitDeExtraccion")) : null;
+        Long ultimaExtraccionConDatos = request.getParameter("ultimaExtraccionConDatos") != null ? Long.valueOf(request.getParameter("ultimaExtraccionConDatos")) : null;
+        Long ultimoHitDeExtraccion = request.getParameter("ultimoHitDeExtraccion") != null ? Long.valueOf(request.getParameter("ultimoHitDeExtraccion")) : null;
         Integer ultimoCodigoDeExtraccion = request.getParameter("ultimoCodigoDeExtraccion") != null ? Integer.valueOf(request.getParameter("ultimoCodigoDeExtraccion")) : null;
-        Gson metadataGson = new Gson();
-        ZMessage zMessage = new ZMessage(cod, msg);
-        
+        ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+
+        Gson metadataGson = new Gson();     
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Verbatim {0}", new Object[]{verbatim});
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
-        ZGram zgram = metadataGson.fromJson(metadataJson, ZGram.class);
-        zgram.setZmessage(zMessage);
-        zgram.setVerbatim(verbatim);
-        zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
-        zgram.setModificado((new Date()).getTime());
-        zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto
+        Gson zGramGson = new Gson();
+        ZGram zgram;
 
-        if (ultimaExtracciónConDatos != null) {
-            zgram.setUltimaExtraccionConDatos(ultimaExtracciónConDatos);
+        if (metadataJson != null) {
+            zgram = metadataGson.fromJson(metadataJson, ZGram.class);
+        } else {
+            zgram = new ZGram();
         }
 
-        if (ultimoHitDeExtracción != null) {
-            zgram.setUltimoHitDeExtraccion(ultimoHitDeExtracción);
+        if (codStr != null) {
+            Integer cod = Integer.valueOf(request.getParameter("newcod"));
+            zgram.setCod(cod);
+        }
+
+        if (msg != null) {
+            zgram.setMsg(msg);
+        }
+
+        if (verbatim != null) {
+            zgram.setVerbatim(verbatim);
+        }
+
+        if (state != null) {
+            zgram.setEstado(state);
+        }
+
+        if (ultimaExtraccionConDatos != null) {
+            zgram.setUltimaExtraccionConDatos(ultimaExtraccionConDatos);
+        }
+
+        if (ultimoHitDeExtraccion != null) {
+            zgram.setUltimoHitDeExtraccion(ultimoHitDeExtraccion);
         }
 
         if (ultimoCodigoDeExtraccion != null) {
             zgram.setUltimoCodigoDeExtraccion(ultimoCodigoDeExtraccion);
         }
 
+        zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto, siempre que actualizo la seteo en 20
+
         try {
-            ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             zGramDao.update(id, zgram);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción actualizada {0}", new Object[]{zgram});
             out.print(ZMessages.SUCCESS.toString().replace("}", "") + ", \"id\": \"" + id + "\"}");
