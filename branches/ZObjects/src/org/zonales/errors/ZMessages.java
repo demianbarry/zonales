@@ -58,6 +58,8 @@ public class ZMessages {
                 return ZSCHEDULER_UNKNOW_ERROR;
             case 353:
                 return ZSCHEDULER_CONN_ERROR;
+            case 354:
+                return ZSCHEDULER_URL_ERROR;
             case 370:
                 return ZSOURCES_CONN_ERROR;
             case 371:
@@ -95,6 +97,7 @@ public class ZMessages {
     public static final ZMessage ZSCHEDULER_NAMING_ERROR = new ZMessage(351, "ZScheduler - No se pudo obtener el scheduler del contexto");
     public static final ZMessage ZSCHEDULER_UNKNOW_ERROR = new ZMessage(352, "ZScheduler - Error desconocido");
     public static final ZMessage ZSCHEDULER_CONN_ERROR = new ZMessage(353, "ZScheduler - Error de conección");
+    public static final ZMessage ZSCHEDULER_URL_ERROR = new ZMessage(354, "ZScheduler - Error en URL");
     public static final ZMessage ZSOURCES_CONN_ERROR = new ZMessage(370, "ZSources - Error de conección");
     public static final ZMessage ZSOURCES_GETURL_ERROR = new ZMessage(371, "ZSources - Error obteniendo URL de extracción");
     public static final ZMessage ZSERVLETS_CONN_ERROR = new ZMessage(380, "ZServlet - Error de conección");

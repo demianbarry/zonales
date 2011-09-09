@@ -21,6 +21,7 @@ import org.zonales.BaseDao;
 import org.zonales.ZGram.Periodo;
 import org.zonales.ZGram.ZGram;
 import org.zonales.ZGram.ZGramFilter;
+import org.zonales.crawlConfig.objets.State;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
 
@@ -440,6 +441,23 @@ public class ZGramDao extends BaseDao {
         System.out.println(resp);
 
         return resp.toString();
+    }
+
+    public List<String> getPublished() {
+        List<String> idList = new ArrayList<String>();
+        BasicDBObject query = new BasicDBObject();
+        DBObject resp;
+        DBCursor cur;
+
+        query.put("estado", State.PUBLISHED);
+        cur = this.extractions.find(query);
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            idList.add(resp.get("_id").toString());
+        }
+
+        return idList;
     }
 
     public String retrieveJson(ZGramFilter filtros, Boolean onlyNames) {
