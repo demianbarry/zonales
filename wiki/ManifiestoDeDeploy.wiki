@@ -1,0 +1,67 @@
+#Archivo de manifiesto para el deploy de Zonales
+
+=Servicios de Zonales=
+
+==Servicios para Content Managers==
+Los servicios para Content Managers incluyen:
+  * Administración de fuentes de extracción (Facebook, Twitter, Feeds)
+  * Generación de extracciones
+  * Búsqueda de extracciones
+  * Administración de tags (pendiente)
+  * Administración de zonas (pendiente)
+Cada servicio está asociado a un conjunto de páginas HTML, código Javascript y hojas de estilo CSS, e interactúan con servicios de backend que persisten y recuperan datos.
+
+===Administración de fuentes de extracción (Facebook, Twitter, Feeds)===
+  * *URL*
+http://host_http:port_http/CMUtils/crud_crawl_configs.html
+
+  * *SERVICIOS*
+El servlet que atiende los servicios para la administración de fuentes se encuentra ubicado en http://tomcat_host:tomcat_port/ZCrawlSources/
+*Servicio:* getConfig
+*Parametros:* name 
+*Descripcion:* Nombre de la configuración de la fuente de extracción a recuperar. Si se especifica _*all*_ como name trae todas las configuraciones, _*allNames*_ trae todos los nombres
+*Ejemplo:* http://200.69.225.53:38080/ZCrawlSources/getConfig?name=facebook 
+*Respuesta:* Configuración de la/s fuente/s de extracción solicitada 
+
+Servlet: SetConfig
+Servicio: /setConfig
+Parametros:name, uri, plugins, params 
+Descripcion:  
+Ejemplo: http://200.69.225.53:8080/ZCrawlSources/setConfig?name=facebook&uri=http://200.69.225.53:30080/fb/index.php&plugins=GetFacebookServiceURL,URLGetter&params=users,false;keywords,false;zone,true;tags,false;commenters,false;limit,false;since,false;format,false;minactions,false  
+
+Servlet: UpdateConfig
+Servicio: /updateConfig 
+Parametros:name, newname, newuri, newplugins, newparams
+Ejemplo: http://200.69.225.53:38080/ZCrawlSources/updateConfig?name=facebook&newplugins=GetFacebookServiceURL,URLGetter&newstate=Generada 
+Respuesta: success / error 
+
+Servlet: GetPluginTypes
+Servicio: /getPluginTypes 
+Ejemplo: http://200.69.225.53:8080/ZCrawlSources/getPluginTypes 
+
+Servlet: PublishConfig
+Servicio: /publishConfig 
+Parametros: name, publish
+Ejemplo: http://200.69.225.53:8080/ZCrawlSources/publishConfig?name=facebook&publish=true 
+
+Servlet: RemoveConfig
+Servicio:/RemoveConfig
+Parametros:name
+Ejemplo: http://200.69.225.53:8080/ZCrawlSources/removeConfig?name=facebook 
+
+
+ARCHIVOS .js
+--mootools.js
+--cmutils.js
+
+ARCHIVOS .css
+--content.css
+--global.css
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
