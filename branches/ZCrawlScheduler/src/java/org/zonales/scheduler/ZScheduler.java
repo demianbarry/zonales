@@ -91,7 +91,7 @@ public class ZScheduler {
         }
 
         //Hago un mínimo control, porque si no está compilada la gramática no puedo extraer, por ende tampo puedo crear el Job
-        if (zgram.getEstado().equals(State.COMPILED) || zgram.getEstado().equals(State.PUBLISHED)) {
+        //if (zgram.getEstado().equals(State.COMPILED) || zgram.getEstado().equals(State.PUBLISHED)) {
             ZCrawling zcrawling = zgram;
             Gson metadataGson = new Gson();
             //Obtengo la URL para realizar la extracción
@@ -126,7 +126,7 @@ public class ZScheduler {
 
             zScheduler.scheduleJob(job, trigger);
             resp = ZMessages.SUCCESS.toString();
-        }
+        //}
 
         return resp;
     }
