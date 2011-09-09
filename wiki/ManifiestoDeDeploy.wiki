@@ -29,8 +29,11 @@ El servlet que atiende los servicios para la administración de fuentes se encue
 ====Servicio getConfig====
 
 *Descripcion:* Dado un nombre obtiene una configuración de fuentes de extracción a recuperar. Si se especifica _*all*_ como name trae todas las configuraciones, _*allNames*_ trae todos los nombres.
+
 *Parametros:* name
+
 *Ejemplo:* http://200.69.225.53:38080/ZCrawlSources/getConfig?name=facebook 
+
 *Respuesta:* Configuración de la/s fuente/s de extracción solicitada 
 
 ====Servicio setConfig====
