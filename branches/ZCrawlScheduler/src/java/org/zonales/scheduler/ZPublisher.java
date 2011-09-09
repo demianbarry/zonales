@@ -56,14 +56,16 @@ public class ZPublisher implements Job {
                 parameters += "&ultimaExtraccionConDatos=" + ultimaExtraccionConDatos;
             }
 
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Parámetros actualizacion ZGram: ", parameters);
-            
-            HttpURLConnection connection = ConnHelper.getURLConnection(zCrawlSourcesURL + "updateZGram" + parameters, timeout);
+            String url = zCrawlSourcesURL + "updateZGram?" + parameters;
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Actualizacion ZGram URL: {0}", url);
+
+            HttpURLConnection connection = ConnHelper.getURLConnection(url, timeout);
             String zMessageJson;
             Gson zMessageGson = new Gson();
             ZMessage zmessage = new ZMessage();
 
             int code = connection.getResponseCode();
+            
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Actualización gramática - Código de respuesta: {0}", code);
             if (code == 200) {
                 zMessageJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
@@ -75,20 +77,20 @@ public class ZPublisher implements Job {
                 return;
             }
 
-            Gson postGson = new Gson();
-            String postsJson = postGson.toJson(posts, Posts.class);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts: {0}", postsJson);
-            try {
-                server.indexPosts(posts);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts indexados");
-            } catch (SolrServerException ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error indexando posts: {0}", ex);
-            }
-        } catch (MalformedURLException ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts recuperados: {0}", posts.getPost().size());
+
+            server.indexPosts(posts);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts indexados");
+
+        } catch (SolrServerException ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error indexando posts: {0}", ex);
+        }
+        catch (MalformedURLException ex) {
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, "Error en JOB Malformen URL: ", ex);
         } catch (IOException ex) {
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, "Error en JOB IO: ", ex);
         } catch (ExtractException ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extract Exeption: {0}", ex.getZmessage());
             Long ultimoHitDeExtraccion = new Date().getTime();
             Integer ultimoCodigoDeExtraccion = ex.getZmessage().getCod();
 
