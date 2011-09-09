@@ -9,7 +9,7 @@ Los servicios para Content Managers incluyen:
   * Búsqueda de extracciones
   * Administración de tags (pendiente)
   * Administración de zonas (pendiente)
-Cada servicio está asociado a un conjunto de páginas HTML, código Javascript y hojas de estilo CSS, e interactúan con servicios de backend que persisten y recuperan datos.
+Cada servicio está asociado a un conjunto de páginas HTML, código Javascript y hojas de estilo CSS, e interactuan con servicios de backend que persisten y recuperan datos.
 
 ===Administración de fuentes de extracción (Facebook, Twitter, Feeds)===
 *URL*
