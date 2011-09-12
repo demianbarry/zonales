@@ -44,7 +44,7 @@ public class ZPublisher implements Job {
             zCrawlSourcesURL = jobDetail.getJobDataMap().getString("ZCrawlSourcesURL");
             timeout = jobDetail.getJobDataMap().getInt("timeout");
             ZExtractor extractor = new ZExtractor();
-            Posts posts = extractor.extract(metadata, zCrawlSourcesURL, timeout);
+            Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
 
             Long ultimoHitDeExtraccion = new Date().getTime();
             Integer ultimoCodigoDeExtraccion = ZMessages.SUCCESS.getCod();
