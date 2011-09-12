@@ -31,25 +31,62 @@ public class ListJobs extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
+        response.setHeader("link", "type=\"text/css\" rel=\"stylesheet\" href=\"/css/content.css\">");
+
         PrintWriter out = response.getWriter();
+
+        String pathVar = "css/content.css";
+
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>SimpleServlet</title>");
+        out.println("<link rel='stylesheet' type='text/css' href= '" + pathVar + "' />");
+        out.println("</head>");
+        out.println("<body>");
+
+        //String result = "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/content.css\">";
+
+        String result = "<table id=\"jobTable\" class=\"resultTable\">"
+                + "<tr class\"tableRowHeader\">"
+                + "<td>Grupo</td>"
+                + "<td>Job Id</td>"
+                + "<td>Estado</td>"
+                + "</tr>";
 
         try {
             Scheduler sched = ZScheduler.getScheduler(this.getServletContext());
 
             for (JobExecutionContext jobExc : sched.getCurrentlyExecutingJobs()) {
-                out.print("JobExc Id: " + jobExc.getJobDetail().getKey() + "<br>");
+                result += "<tr id=\"" + jobExc.getJobDetail().getKey().getName() + "\" class=\"tableRow\">"
+                        + "<td>" + jobExc.getJobDetail().getKey().getGroup().substring(0, jobExc.getJobDetail().getKey().getGroup().length() - 1) +"</td>"
+                        + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobExc.getJobDetail().getKey().getName() + "\">" + jobExc.getJobDetail().getKey().getName() + "</a></td>"
+                        + "<td>En Ejecución</td>"
+                        + "</tr>";
+                //out.print("JobExc Id: " + jobExc.getJobDetail().getKey() + "<br>");
             }
 
             // enumerate each job group
             for(String group: sched.getJobGroupNames()) {
                 // enumerate each job in group
                 for(JobKey jobKey : sched.getJobKeys(groupEquals(group))) {
-                    out.print("Found job identified by: " + jobKey + "<br>");
+                    result += "<tr id=\"" + jobKey.getName() + "\" class=\"tableRow\">"
+                        + "<td>" + jobKey.getGroup().substring(0, jobKey.getGroup().length() - 1) +"</td>"
+                        + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
+                        + "<td>Programado</td>"
+                        + "</tr>";
+                    //out.print("Found job identified by: " + jobKey + "<br>");
                 }
             }
 
-            out.print(ZMessages.SUCCESS);
+            result += "</table>";
+
+            out.println(result);
+
+            out.println("</body>");
+            out.println("</html>");
+
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Success: Schedules successfully listed");
 
         } catch (SchedulerException e) {
