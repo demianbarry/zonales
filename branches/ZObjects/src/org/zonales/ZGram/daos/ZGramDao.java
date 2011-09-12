@@ -432,15 +432,25 @@ public class ZGramDao extends BaseDao {
     public String retrieveJson(String id) {
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
         DBObject resp;
-        DBCursor cur;
+        
+        resp = this.extractions.findOne(query);
 
-        cur = this.extractions.find(query);
-
-        resp = cur.next();
-        //resp.removeField("_id");
         System.out.println(resp);
 
         return resp.toString();
+    }
+
+    public Long retrieveLastExtractionHit(String id) {
+        BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
+        DBObject resp;
+
+        resp = this.extractions.findOne(query);
+
+        if (resp != null) {
+            return (Long) resp.get("ultimoHitDeExtraccion");
+        } else {
+            return null;
+        }
     }
 
     public List<String> getPublished() {
