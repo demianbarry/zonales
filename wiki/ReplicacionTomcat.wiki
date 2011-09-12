@@ -8,7 +8,7 @@ Breve resumen de comandos para generar una copia exacta de un servidor Tomcat. U
 = Copia de directorio =
 Copia recursivamente el contenido del directorio del servidor Tomcat de test en un nuevo directorio de Tomcat QA.
 
-*cp -pR /opt/tomcat6-test /opt/tomcat6-q*
+*cp -pR /opt/tomcat6-test /opt/tomcat6-qa*
 
 = Reemplazo de nombre y puertos =
 Se deben reemplazar en el nuevo directorio el nombre del directorio y los puertos de escucha de Tomcat.
