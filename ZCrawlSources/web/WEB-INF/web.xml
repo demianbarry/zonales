@@ -73,6 +73,10 @@
         <servlet-name>UnpublishService</servlet-name>
         <servlet-class>org.zonales.crawlConfig.services.UnpublishService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetLastHit</servlet-name>
+        <servlet-class>org.zonales.ZGram.services.GetLastHit</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -144,6 +148,10 @@
     <servlet-mapping>
         <servlet-name>UnpublishService</servlet-name>
         <url-pattern>/unpublishService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetLastHit</servlet-name>
+        <url-pattern>/getLastHit</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
