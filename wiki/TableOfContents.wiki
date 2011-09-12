@@ -29,7 +29,7 @@
       * [Creacion_de_instaladores_joomla Creación de Instaladores Joomla]
       * [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
       * [CrearNuevaInstanciaMongo Crear una nueva instancia de Mongo]
-      * [ReplicarTomcat Replicar una instalación de Tomcat como un servidor independiente]
+      * [ReplicacionTomcat Replicar una instalación de Tomcat como un servidor independiente]
     * [FrontEnd]
     * [MiddleZone]
     * [MenuPracticas Buenas Practicas]
