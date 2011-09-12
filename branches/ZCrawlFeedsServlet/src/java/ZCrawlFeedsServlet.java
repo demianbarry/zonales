@@ -349,7 +349,6 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             contenido = noticia.text();
         }
 
-
         if (slist != null && !slist.isEmpty()) {
             // System.out.println("Entro slist.isEmpty()");
             for (String palabra : slist) {
