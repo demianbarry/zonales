@@ -22,3 +22,6 @@ Se deben reemplazar en el nuevo directorio el nombre del directorio y los puerto
 *grep '38009' -lHIRZ /opt/tomcat6-qa/ | xargs -0 -l  sed -i 's/38009/38010/g'*
 
 *grep '38443' -lHIRZ /opt/tomcat6-qa/ | xargs -0 -l  sed -i 's/38443/38444/g'*
+
+= Solr =
+En nuestro caso y dado que Apache Solr está localizado dentro del directorio de Tomcat este proceso también duplica la instalación de Solr.
