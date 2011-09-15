@@ -7,6 +7,9 @@ package org.zonales.scheduler;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
@@ -49,7 +52,7 @@ public class ZExtractor {
             connection = ConnHelper.getURLConnection(url, timeout);
             code = connection.getResponseCode();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Recuperación URL extracción - Código de respuesta: {0}", code);
-            if (code == 200) {
+            if (code == 200) {                
                 String urlServiceJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Recuperación URL extracción - Respuesta: {0}", urlServiceJson);
                 Gson urlServiceGson = new Gson();
@@ -62,12 +65,15 @@ public class ZExtractor {
                 connection.disconnect();
 
                 if (urlService.getCod() == 100) {
+                    
                     //Realizo la extracción
                     connection = ConnHelper.getURLConnection(urlService.getUrl(), timeout);
                     code = connection.getResponseCode();
                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Código de respuesta: {0}", code);
                     if (code == 200) {
-                        String postsJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
+                        InputStream in = connection.getInputStream();            
+                        Reader reader = new InputStreamReader(in, connection.getContentEncoding() != null ? connection.getContentEncoding() : "UTF-8");                        
+                        String postsJson = ConnHelper.getStringFromReader(reader);
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Respuesta {0}s", postsJson);
                         connection.disconnect();
                         try {
