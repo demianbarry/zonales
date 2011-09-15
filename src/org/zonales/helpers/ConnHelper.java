@@ -7,6 +7,7 @@ package org.zonales.helpers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,6 +21,24 @@ import java.util.logging.Logger;
 public class ConnHelper {
 
     public static String getStringFromInpurStream(InputStream is) {
+        
+        StringBuilder resultado = new StringBuilder();
+        int character = 0;
+
+        try {
+            //System.out.println("-------------");
+            while ((character = is.read()) != -1) {
+                resultado.append(Character.toString((char) character));
+                //System.out.print(Character.toString((char) character));
+            }
+            //System.out.println("-------------");
+        } catch (Exception ex) {
+            Logger.getLogger("ConnHelper").log(Level.SEVERE, null, ex);
+        }
+        return resultado.toString();
+    }
+    
+        public static String getStringFromReader(Reader is) {
         
         StringBuilder resultado = new StringBuilder();
         int character = 0;
