@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class ConnHelper {
 
     public static String getStringFromInpurStream(InputStream is) {
+        
         StringBuilder resultado = new StringBuilder();
         int character = 0;
 
@@ -36,11 +37,12 @@ public class ConnHelper {
         return resultado.toString();
     }
 
-    public static HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
-        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
+    public static HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {        
+        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();        
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
         connection.setRequestMethod("GET");
         connection.setConnectTimeout(timeout);
-        connection.setReadTimeout(timeout);
+        connection.setReadTimeout(timeout);        
         connection.connect();
         return connection;
     }

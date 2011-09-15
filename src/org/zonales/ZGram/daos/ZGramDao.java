@@ -336,28 +336,23 @@ public class ZGramDao extends BaseDao {
                     ArrayList filtrosToDoc = new ArrayList();
                     BasicDBObject filtroDoc = new BasicDBObject();
                     for (Filtro filtro : newZgram.getFiltros()) {
-                        if (filtro.getMinShuldMatch() != null) {
-                            filtroDoc.clear();
+                        if (filtro.getMinShuldMatch() != null) {                            
                             filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getDispersion() != null) {
-                            filtroDoc.clear();
+                        if (filtro.getDispersion() != null) {                            
                             filtroDoc.put("dispersion", filtro.getDispersion());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDeUsuarios() != null) {
-                            filtroDoc.clear();
+                        if (filtro.getListaNegraDeUsuarios() != null) {                            
                             filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDePalabras() != null) {
-                            filtroDoc.clear();
+                        if (filtro.getListaNegraDePalabras() != null) {                            
                             filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getMinActions() != null) {
-                            filtroDoc.clear();
+                        if (filtro.getMinActions() != null) {                            
                             filtroDoc.put("minActions", filtro.getMinActions());
                             filtrosToDoc.add(filtroDoc);
                         }
