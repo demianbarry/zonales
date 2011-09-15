@@ -99,7 +99,12 @@ public class GetFacebookServiceURL implements GetServiceURL {
         if (!"".equals(tags)) {
             urlServlet += "&tags=" + tags.substring(0, tags.length() - 1);
         }
+
         //Si agregué commenters, los pongo en la URL
+        if (metadata.isIncluyeComenterios()) {
+            urlServlet += "&commenters=all";
+        }
+
         if (!"".equals(commenters)) {
             urlServlet += "&commenters=" + commenters.substring(0, commenters.length() - 1);
         }
