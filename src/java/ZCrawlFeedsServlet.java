@@ -37,6 +37,7 @@ import org.zonales.entities.FeedSelector;
 import org.zonales.entities.FeedSelectors;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
+import org.zonales.entities.Post;
 import org.zonales.entities.PostType;
 import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
@@ -144,9 +145,11 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         Feed feed = FeedParser.parse(feedURL);
 
 
-
         List<PostType> newsList = new ArrayList<PostType>();
+        List<Post> newsListSolr = new ArrayList<Post>();
+
         PostType newEntry;
+        Post newEntrySolr;
         //SyndFeed feed = null;           
 
         Gson gson = new Gson();
@@ -192,7 +195,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 if (newEntry.getActions() == null) {
                     newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
                 }
-                newEntry.setActions(getActions(feedSelectors, doc));
+                newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
 
                 newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
                 newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
@@ -207,6 +210,57 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             }
         }
 
+        for (int i = 0; i < feed.getItemCount(); i++) {
+            FeedItem entry = feed.getItem(i);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
+
+            doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
+            feedSelectors = dao.retrieve(url);
+            if (findWords(entry.getTitle(), doc, searchlist, blacklist, feedSelectors)) {
+                newEntrySolr = new Post();
+                String source = feed.getHeader().getLink().toString().substring(7);
+                if (source.indexOf("/") != -1) {
+                    source = source.substring(0, source.indexOf("/") + 1);
+                }
+                newEntrySolr.setSource(source);
+                newEntrySolr.setZone(zone);
+                // newEntry.setId(entry.getUri());
+                // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
+                newEntrySolr.setId(entry.getGUID());
+                newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
+                newEntrySolr.setTitle(entry.getTitle());
+                newEntrySolr.setText(entry.getDescriptionAsText());
+                newEntrySolr.setTags(new ArrayList<String>(tagslist));
+
+                if (newEntrySolr.getLinks() == null) {
+                    newEntrySolr.setLinks(new ArrayList<LinkType>());
+                }
+                if ((links = getLinks(feedSelectors, doc)) != null) {
+                    newEntrySolr.getLinks().addAll(links);
+                }
+                newEntrySolr.getLinks().add(new LinkType("source", entry.getLink().toString()));
+
+
+                if (newEntrySolr.getActions() == null) {
+                    newEntrySolr.setActions(new ArrayList<ActionType>());
+                }
+                newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
+
+                newEntrySolr.setCreated((entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
+                newEntrySolr.setModified((entry.getModDate() != null ? entry.getModDate().getTime() : newEntrySolr.getCreated()));
+                newEntrySolr.setRelevance(0);
+                if (!json) {
+                    newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
+                }
+
+                newsListSolr.add(newEntrySolr);
+
+                // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
+            }
+        }
+
+
         PostsType news;
 
         news = new PostsType(newsList);
@@ -216,7 +270,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             Feed2XML(news, sw);
         }
 
-        return json ? gson.toJson(news) : sw.toString();
+        return json ? "{post: " + gson.toJson(newsListSolr) + "}" : sw.toString();
 
 
     }
@@ -257,7 +311,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     }
 
     /*************************************/
-    public ActionsType getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
+    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
         List<ActionType> list = new ArrayList<ActionType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
@@ -279,9 +333,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
 
         if (list.isEmpty()) {
-            return null;
+            return new ArrayList();
         } else {
-            return new ActionsType(list);
+            return new ArrayList(list);
         }
 
     }
@@ -329,7 +383,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     }
 
     public boolean findWords(String title, Document doc, List<String> slist, List<String> blist, FeedSelectors feedSelectors) throws FileNotFoundException, IOException, BadLocationException {
-        String contenido = null;
+        return true;
+        /*String contenido = null;
 
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
             feedSelectors = dao.retrieve("default");
@@ -369,7 +424,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "findWords result: {0}", new Object[]{true});
-        return true;
+        return true;*/
     }
 
     public void Feed2XML(PostsType posts, Writer out) throws Exception {
