@@ -110,7 +110,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
         }
 
         if (metadata.getUltimoHitDeExtraccion() != null) {
-            urlServlet += "&since=" + metadata.getUltimoHitDeExtraccion();
+            urlServlet += "&since=" + (metadata.getUltimoHitDeExtraccion() / 1000);
         }
         return urlServlet;
     }
