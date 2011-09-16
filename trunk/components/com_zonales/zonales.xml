@@ -33,6 +33,11 @@
     <filename>views/zonal/tmpl/default.xml</filename>
     <filename>views/zonal/tmpl/default.php</filename>
 
+    <filename>views/enlared/view.html.php</filename>
+    <filename>views/enlared/index.html</filename>    
+    <filename>views/enlared/tmpl/index.html</filename>    
+    <filename>views/enlared/tmpl/default.php</filename>
+
     <filename>views/mapa/view.html.php</filename>
     <filename>views/mapa/index.html</filename>
     <filename>views/mapa/metadata.xml</filename>
