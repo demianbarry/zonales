@@ -410,12 +410,6 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("ultimoHitDeExtraccion", (Long) resp.get("ultimoHitDeExtraccion"));
                 }
 
-                if (newZgram.getUltimoCodigoDeExtraccion() != null) {
-                    zgramDoc.put("ultimoCodigoDeExtraccion", newZgram.getUltimoCodigoDeExtraccion());
-                } else {
-                    zgramDoc.put("ultimoCodigoDeExtraccion", (Integer) resp.get("ultimoCodigoDeExtraccion"));
-                }
-
             }
 
             zgramDoc.put("creado", (Long) resp.get("creado"));

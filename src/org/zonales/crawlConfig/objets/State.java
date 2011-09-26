@@ -18,6 +18,7 @@ public class State {
     public static final String NO_COMPILED = "no-compiled";
     public static final String PUBLISHED = "published";
     public static final String UNPUBLISHED = "unpublished";
+    public static final String STANDBY = "stand-by";
     public static final String VOID = "void";
 
     public static ArrayList<String> getCrawlConfigStates() {
@@ -27,7 +28,8 @@ public class State {
         states.add(PUBLISHED);
         states.add(UNPUBLISHED);
         states.add(COMPILED);
-        states.add(VOID);        
+        states.add(STANDBY);
+        states.add(VOID);
 
         return states;
     }

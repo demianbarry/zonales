@@ -9,17 +9,24 @@
 package org.zonales.entities;
 
 import java.util.ArrayList;
+import org.zonales.errors.ZMessage;
 
 
 public class Posts {
 
+    protected ZMessage message;
     protected ArrayList<Post> post;
 
     public Posts() {
     }
 
-    public Posts(ArrayList<Post> posts) {
-        this.post = posts;
+    /*public Posts(ArrayList<Post> post) {
+        this.post = post;
+    }*/
+
+    public Posts(ZMessage message, ArrayList<Post> post) {
+        this.message = message;
+        this.post = post;
     }
 
     public ArrayList<Post> getPost() {
@@ -30,12 +37,17 @@ public class Posts {
         this.post = post;
     }
 
+    public ZMessage getMessage() {
+        return message;
+    }
+
+    public void setMessage(ZMessage message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "Posts{" + "posts=" + post + '}';
     }
-
-    
-
-
+ 
 }
