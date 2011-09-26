@@ -41,7 +41,6 @@ public class UpdateZGram extends BaseService {
         String state = request.getParameter("newstate");
         Long ultimaExtraccionConDatos = request.getParameter("ultimaExtraccionConDatos") != null ? Long.valueOf(request.getParameter("ultimaExtraccionConDatos")) : null;
         Long ultimoHitDeExtraccion = request.getParameter("ultimoHitDeExtraccion") != null ? Long.valueOf(request.getParameter("ultimoHitDeExtraccion")) : null;
-        Integer ultimoCodigoDeExtraccion = request.getParameter("ultimoCodigoDeExtraccion") != null ? Integer.valueOf(request.getParameter("ultimoCodigoDeExtraccion")) : null;
         ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
         Gson metadataGson = new Gson();     
@@ -80,10 +79,6 @@ public class UpdateZGram extends BaseService {
 
         if (ultimoHitDeExtraccion != null) {
             zgram.setUltimoHitDeExtraccion(ultimoHitDeExtraccion);
-        }
-
-        if (ultimoCodigoDeExtraccion != null) {
-            zgram.setUltimoCodigoDeExtraccion(ultimoCodigoDeExtraccion);
         }
 
         zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto, siempre que actualizo la seteo en 20
