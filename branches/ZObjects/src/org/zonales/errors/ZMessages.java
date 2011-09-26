@@ -68,6 +68,10 @@ public class ZMessages {
                 return ZSERVLETS_CONN_ERROR;
             case 390:
                 return GSON_CONVERTION_ERROR;
+            case 400:
+                return FACEBOOK_GENERAL_ERROR;
+            case 401:
+                return FACEBOOK_API_EXCEPTION;
             default:
                 return SUCCESS;
         }
@@ -102,4 +106,6 @@ public class ZMessages {
     public static final ZMessage ZSOURCES_GETURL_ERROR = new ZMessage(371, "ZSources - Error obteniendo URL de extracción");
     public static final ZMessage ZSERVLETS_CONN_ERROR = new ZMessage(380, "ZServlet - Error de conección");
     public static final ZMessage GSON_CONVERTION_ERROR = new ZMessage(390, "GSon - Error de Conversión");
+    public static final ZMessage FACEBOOK_GENERAL_ERROR = new ZMessage(400, "Facebook Information Retrieval - Error no identificado");
+    public static final ZMessage FACEBOOK_API_EXCEPTION = new ZMessage(401, "Facebook Information Retrieval - Error en Api de Facebook");
 }

@@ -24,7 +24,6 @@ public class ZGram extends ZCrawling {
     private Long modificado;
     private String modificadoPor;
     private Long ultimaExtraccionConDatos;
-    private Integer ultimoCodigoDeExtraccion;
 
     public ZGram(ZMessage zmessage, String verbatim, String estado, Long creado, Long modificado) {
         this.cod = zmessage.getCod();
@@ -127,13 +126,6 @@ public class ZGram extends ZCrawling {
         this.ultimaExtraccionConDatos = ultimaExtraccionConDatos;
     }
 
-    public Integer getUltimoCodigoDeExtraccion() {
-        return ultimoCodigoDeExtraccion;
-    }
-
-    public void setUltimoCodigoDeExtraccion(Integer ultimoCodigoDeExtraccion) {
-        this.ultimoCodigoDeExtraccion = ultimoCodigoDeExtraccion;
-    }
    
 
 }
