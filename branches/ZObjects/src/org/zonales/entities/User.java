@@ -51,8 +51,9 @@ public class User {
     protected String name;
     @XmlElement(required = true)
     protected String url;
-    protected String category;
+    protected String category;    
 
+    
     public User() {
     }
  
@@ -164,6 +165,43 @@ public class User {
         return "User{" + "id=" + id + "name=" + name + "url=" + url + "category=" + category + '}';
     }
 
-    
+    protected double latitude;
 
+    /**
+     * Get the value of latitude
+     *
+     * @return the value of latitude
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * Set the value of latitude
+     *
+     * @param latitude new value of latitude
+     */
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    protected double longitude;
+
+    /**
+     * Get the value of longitude
+     *
+     * @return the value of longitude
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * Set the value of longitude
+     *
+     * @param longitude new value of longitude
+     */
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 }
