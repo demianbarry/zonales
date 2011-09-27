@@ -71,6 +71,48 @@ public class Criterio {
     public void setDeLosUsuarios(List<String> usuarios) {
         this.deLosUsuarios = usuarios;
     }
+        
+    protected List<Double> deLosUsuariosLatitudes;
+
+    /**
+     * Get the value of deLosUsuariosLatitudes
+     *
+     * @return the value of deLosUsuariosLatitudes
+     */
+    public List<Double> getDeLosUsuariosLatitudes() {
+        return deLosUsuariosLatitudes;
+    }
+
+    /**
+     * Set the value of deLosUsuariosLatitudes
+     *
+     * @param deLosUsuariosLatitudes new value of deLosUsuariosLatitudes
+     */
+    public void setDeLosUsuariosLatitudes(List<Double> deLosUsuariosLatitudes) {
+        this.deLosUsuariosLatitudes = deLosUsuariosLatitudes;
+    }
+
+    protected List<Double> deLosUsuariosLongitudes;
+
+    /**
+     * Get the value of deLosUsuariosLongitudes
+     *
+     * @return the value of deLosUsuariosLongitudes
+     */
+    public List<Double> getDeLosUsuariosLongitudes() {
+        return deLosUsuariosLongitudes;
+    }
+
+    /**
+     * Set the value of deLosUsuariosLongitudes
+     *
+     * @param deLosUsuariosLongitudes new value of deLosUsuariosLongitudes
+     */
+    public void setDeLosUsuariosLongitudes(List<Double> deLosUsuariosLongitudes) {
+        this.deLosUsuariosLongitudes = deLosUsuariosLongitudes;
+    }
+
+    
     protected String amigosDe;
 
     /**

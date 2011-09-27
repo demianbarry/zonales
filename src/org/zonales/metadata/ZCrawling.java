@@ -303,6 +303,43 @@ public class ZCrawling {
         return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "periodicidad=" + periodicidad + "siosi=" + siosi + "nocriterio=" + nocriterio + "descripcion=" + descripcion + "localidad=" + localidad + "tags=" + tags + "fuente=" + fuente + "uriFuente=" + uriFuente + "criterios=" + criterios + "noCriterios=" + noCriterios + "filtros=" + filtros + "tagsFuente=" + tagsFuente + "comentarios=" + comentarios + "incluyeComenterios=" + incluyeComenterios + '}';
     }
 
-    
+    protected double sourceLatitude;
 
+    /**
+     * Get the value of sourceLatitude
+     *
+     * @return the value of sourceLatitude
+     */
+    public double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    /**
+     * Set the value of sourceLatitude
+     *
+     * @param sourceLatitude new value of sourceLatitude
+     */
+    public void setSourceLatitude(double sourceLatitude) {
+        this.sourceLatitude = sourceLatitude;
+    }
+
+    protected double sourceLongitude;
+
+    /**
+     * Get the value of sourceLongitude
+     *
+     * @return the value of sourceLongitude
+     */
+    public double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    /**
+     * Set the value of sourceLongitude
+     *
+     * @param sourceLongitude new value of sourceLongitude
+     */
+    public void setSourceLongitude(double sourceLongitude) {
+        this.sourceLongitude = sourceLongitude;
+    }
 }

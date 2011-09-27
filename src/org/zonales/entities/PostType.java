@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "post", propOrder = {
     "zone",
     "source",
+    "geoSource",
     "id",
     "fromUser",
     "toUsers",
@@ -67,6 +68,12 @@ public class PostType {
 
     @XmlElement(required = true)
     protected String source;
+    
+    @XmlElement(required = true)
+    protected double sourceLatitude;
+    
+    @XmlElement(required = true)
+    protected double sourceLongitude;
     
     @XmlElement(required = true)
     protected String id;
@@ -106,9 +113,11 @@ public class PostType {
     public PostType() {
     }
 
-    public PostType(String zone, String source, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
+    public PostType(String zone, String source, double latitude, double longitude, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
         this.zone = zone;
         this.source = source;
+        this.sourceLatitude = latitude;
+        this.sourceLongitude = longitude;
         this.id = id;
         this.fromUser = fromUser;
         this.toUsers = toUsers;
@@ -169,6 +178,54 @@ public class PostType {
      */
     public void setSource(String value) {
         this.source = value;
+    }
+    
+    /**
+     * Gets the value of the source property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    /**
+     * Sets the value of the source property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSourceLatitude(double value) {
+        this.sourceLatitude = value;
+    }
+    
+    /**
+     * Gets the value of the source property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    /**
+     * Sets the value of the source property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSourceLongitude(double value) {
+        this.sourceLongitude = value;
     }
 
     /**

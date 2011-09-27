@@ -16,6 +16,12 @@ public class SolrPost {
     protected String source;
     
     @Field
+    protected double sourceLatitude;
+    
+    @Field
+    protected double sourceLongitude;
+    
+    @Field
     protected String id;
 
     @Field
@@ -29,6 +35,12 @@ public class SolrPost {
 
     @Field
     protected String fromUserUrl;
+    
+    @Field
+    protected double fromUserLatitude;
+    
+    @Field
+    protected double fromUserLongitude;
 
     @Field
     protected String title;
@@ -57,13 +69,17 @@ public class SolrPost {
     public SolrPost() {
     }
 
-    public SolrPost(String source, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, String title, String text, String zone, List<String> tags, Date created, Date modified, int relevance, String verbatim) {
+    public SolrPost(String source, double latitude, double longitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, double fromUserLatitude, double fromUserLongitude, String title, String text, String zone, List<String> tags, Date created, Date modified, int relevance, String verbatim) {
         this.source = source;
+        this.sourceLatitude = latitude;
+        this.sourceLongitude = longitude;
         this.id = id;
         this.fromUserName = fromUserName;
         this.fromUserCategory = fromUserCategory;
         this.fromUserId = fromUserId;
         this.fromUserUrl = fromUserUrl;
+        this.fromUserLatitude = fromUserLatitude;
+        this.fromUserLongitude = fromUserLongitude;
         this.title = title;
         this.text = text;
         this.zone = zone;
