@@ -106,7 +106,7 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
             "deLosUsuariosLongitudes" : [
                 -64.1905, //Double values
                 -60.1256,
-                -61.2552"
+                -61.2552
             ]
         },
         {
