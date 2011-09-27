@@ -33,6 +33,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 		<?php endforeach; ?>
                 <?php endif;?>
                 <li id="s30"><a><?php echo JText::_('En la Red'); ?></a></li>
+                <li id="s45"><a><?php echo JText::_('Mapa'); ?></a></li>
 	</ul>
 </div>
 <div id="sublinks">
@@ -49,6 +50,12 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
         <ul id="s30_m">
             <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
             <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
+        </ul>
+        <ul id="s45_m">
+            <li><a href="">Zonales Activos</a></li>
+            <li><a href="">Contenido Relevante</a></li>
+            <li><a href="">Contenido Nuevo</a></li>
+            <li><a href="">Contenido Cercano</a></li>
         </ul>
 </div>
 <!-- glassmenu -->
