@@ -174,7 +174,8 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
     "modificadoPor" : "Usuario que realizó la última modificación de la extracción",
     "ultimaExtraccionConDatos" : "Fecha en milisegundos de la ultima extracción que trajo resultados",
     "ultimoHitDeExtraccion" : "Fecha en milisegundos del último intento de extracción",
-    "ultimoCodigoDeExtraccion" : "Código resultante del último intento de extracción"
+    "sourceLatitude" : -31.2556, //double value
+    "sourceLongitude" : -64.2211, //double value
 }
 }}}
 
