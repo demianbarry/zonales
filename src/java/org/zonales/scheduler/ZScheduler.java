@@ -19,11 +19,13 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.jdbcjobstore.FiredTriggerRecord;
 import org.zonales.ZGram.ZGram;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.errors.ZMessages;
@@ -65,6 +67,21 @@ public class ZScheduler {
         }
     }
 
+    public static void pauseJob(JobKey jobkey) throws SchedulerException {
+        zScheduler.pauseJob(jobkey);
+    }
+
+    public static void resumeJob(JobKey jobkey) throws SchedulerException {
+        zScheduler.resumeJob(jobkey);
+    }
+
+    public static void scheduleJob(JobDetail job, Trigger trigger, ServletContext contex) throws SchedulerException, NamingException {
+        if (zScheduler == null) {
+            createScheduler(contex);
+        }
+        zScheduler.scheduleJob(job, trigger);
+    }
+
     public static String scheduleJob(String zGramId, Properties props, ServletContext contex) throws MalformedURLException, IOException, SchedulerException, NamingException {
         String resp = "";
 
@@ -103,6 +120,17 @@ public class ZScheduler {
 
             Logger.getLogger("ZCheduler").log(Level.INFO, "Creando Job para ID: {0}", zGramId);
 
+            String tags = "";
+            Boolean first = true;
+            for (String tag : zgram.getTags()) {
+                if (first) {
+                    tags += tag;
+                    first = false;
+                } else {
+                    tags += ", " + tag;
+                }
+            }
+
             // define the job and tie it to our ZPublisher class
             JobDetail job = newJob(ZPublisher.class)
                 .withIdentity(zGramId, props.getProperty("schedulerJobsGroup"))
@@ -111,6 +139,10 @@ public class ZScheduler {
                 .usingJobData("ZCrawlSourcesURL", props.getProperty("ZCrawlSourcesURL"))
                 .usingJobData("timeout", Integer.valueOf(props.getProperty("timeout")))
                 .usingJobData("solrURL", props.getProperty("solr_url"))
+                .usingJobData("zGramDescription", zgram.getDescripcion())
+                .usingJobData("zGramLocalidad", zgram.getLocalidad())
+                .usingJobData("zGramFuente", zgram.getFuente())
+                .usingJobData("zGramTags", tags)
                 .build();
 
 
@@ -120,7 +152,7 @@ public class ZScheduler {
                 .withIdentity(zGramId, props.getProperty("schedulerJobsGroup"))
                 .startNow()
                 .withSchedule(simpleSchedule()
-                    .withIntervalInMinutes(zgram.getPeriodicidad()) //zgram.getPeriodicidad() ** Acá se debe recupearar la periodicidad desde la ZGram **
+                    .withIntervalInMinutes(zgram.getPeriodicidad())
                     .repeatForever())
                 .build();
 

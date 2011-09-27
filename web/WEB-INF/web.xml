@@ -18,8 +18,8 @@
         <servlet-class>org.zonales.scheduler.services.UnschedulingJob</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SchedulePublishedCrawls</servlet-name>
-        <servlet-class>org.zonales.scheduler.services.SchedulePublishedCrawls</servlet-class>
+        <servlet-name>StartTasks</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.StartTasks</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -39,8 +39,8 @@
         <url-pattern>/unschedulingJob</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SchedulePublishedCrawls</servlet-name>
-        <url-pattern>/schedulePublishedCrawls</url-pattern>
+        <servlet-name>StartTasks</servlet-name>
+        <url-pattern>/startTasks</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -60,6 +60,6 @@
     <listener>
         <listener-class>
              org.quartz.ee.servlet.QuartzInitializerListener
-         </listener-class>
+        </listener-class>
     </listener>
 </web-app>

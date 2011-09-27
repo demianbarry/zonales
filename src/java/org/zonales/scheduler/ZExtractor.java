@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.entities.Posts;
+import org.zonales.errors.ZMessage;
 import org.zonales.errors.ZMessages;
 import org.zonales.helpers.ConnHelper;
 import org.zonales.scheduler.exceptions.ExtractException;
@@ -49,6 +50,7 @@ public class ZExtractor {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Since: {0}", lastHit);
                 url += "&since=" + lastHit;
             }
+
             connection = ConnHelper.getURLConnection(url, timeout);
             code = connection.getResponseCode();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Recuperación URL extracción - Código de respuesta: {0}", code);
@@ -65,25 +67,37 @@ public class ZExtractor {
                 connection.disconnect();
 
                 if (urlService.getCod() == 100) {
-                    
-                    //Realizo la extracción
-                    connection = ConnHelper.getURLConnection(urlService.getUrl(), timeout);
-                    code = connection.getResponseCode();
-                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Código de respuesta: {0}", code);
-                    if (code == 200) {
-                        InputStream in = connection.getInputStream();            
-                        Reader reader = new InputStreamReader(in, connection.getContentEncoding() != null ? connection.getContentEncoding() : "UTF-8");                        
-                        String postsJson = ConnHelper.getStringFromReader(reader);
-                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Respuesta {0}s", postsJson);
-                        connection.disconnect();
-                        try {
-                            posts = postsGson.fromJson(postsJson, Posts.class);
-                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Se obtuvieron {0} posts", posts.getPost().size());
-                        } catch (Exception e) {
-                            throw new ExtractException(ZMessages.GSON_CONVERTION_ERROR);
+
+                    //Capturo en este try si hay excepciones vinculadas con la URL del servlet obtenida, en caso afirmativo lanzo una ExtractException con el código correspondiente
+                    try {
+                        //Realizo la extracción
+                        connection = ConnHelper.getURLConnection(urlService.getUrl(), timeout);
+                        code = connection.getResponseCode();
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Código de respuesta: {0}", code);
+                        if (code == 200) {
+                            InputStream in = connection.getInputStream();
+                            Reader reader = new InputStreamReader(in, connection.getContentEncoding() != null ? connection.getContentEncoding() : "UTF-8");
+                            String postsJson = ConnHelper.getStringFromReader(reader);
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Respuesta {0}s", postsJson);
+                            connection.disconnect();
+                            try {
+                                posts = postsGson.fromJson(postsJson, Posts.class);
+                                if (posts.getMessage() != null) {
+                                    Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error en servlet de extracción: {0}", posts.getMessage());
+                                        throw new ExtractException(posts.getMessage());
+                                } else {
+                                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Se obtuvieron {0} posts", posts.getPost().size());
+                                }
+                            } catch (Exception e) {
+                                throw new ExtractException(ZMessages.GSON_CONVERTION_ERROR);
+                            }
+                        } else {
+                            throw new ExtractException(ZMessages.ZSERVLETS_CONN_ERROR);
                         }
-                    } else {
-                        throw new ExtractException(ZMessages.ZSERVLETS_CONN_ERROR);
+                    } catch (MalformedURLException ex) {
+                        throw new ExtractException(ZMessages.ZSOURCES_GETURL_ERROR);
+                    } catch (IOException ex) {
+                        throw new ExtractException(ZMessages.ZSOURCES_GETURL_ERROR);
                     }
                 } else {
                     throw new ExtractException(ZMessages.ZSOURCES_GETURL_ERROR);
