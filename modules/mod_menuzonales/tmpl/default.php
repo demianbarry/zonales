@@ -32,6 +32,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 		<li id="s<?php echo $field->id; ?>"><a href="<?php echo($field->link ? $field->link : '#'); ?>"><?php echo $field->label; ?></a></li>
 		<?php endforeach; ?>
                 <?php endif;?>
+                <li id="s30"><a><?php echo JText::_('En la Red'); ?></a></li>
 	</ul>
 </div>
 <div id="sublinks">
@@ -45,5 +46,9 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	</ul>
 	<?php endforeach; ?>
         <?php endif;?>
+        <ul id="s30_m">
+            <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
+            <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
+        </ul>
 </div>
 <!-- glassmenu -->
