@@ -56,10 +56,14 @@ public class ConnHelper {
         return resultado.toString();
     }
 
-    public static HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {        
-        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();        
+    public static HttpURLConnection getURLConnection(String url, int timeout) throws MalformedURLException, IOException {
+        return getURLConnection(url, timeout, "GET");
+    }
+
+    public static HttpURLConnection getURLConnection(String url, int timeout, String method) throws MalformedURLException, IOException {
+        HttpURLConnection connection = (HttpURLConnection) (new URL(url.replace(" ", "+"))).openConnection();
         connection.setRequestProperty("Accept-Charset", "UTF-8");
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod(method);
         connection.setConnectTimeout(timeout);
         connection.setReadTimeout(timeout);        
         connection.connect();
