@@ -19,6 +19,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.zonales.BaseService;
 import org.zonales.errors.ZMessages;
 import org.zonales.scheduler.ZScheduler;
@@ -41,7 +42,7 @@ public class ListJobs extends BaseService {
 
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>SimpleServlet</title>");
+        out.println("<title>Zonales Scheduler Job Manager</title>");
         out.println("<link rel='stylesheet' type='text/css' href= '" + pathVar + "' />");
         out.println("</head>");
         out.println("<body>");
@@ -49,9 +50,13 @@ public class ListJobs extends BaseService {
         //String result = "<link type=\"text/css\" rel=\"stylesheet\" href=\"/css/content.css\">";
 
         String result = "<table id=\"jobTable\" class=\"resultTable\">"
-                + "<tr class\"tableRowHeader\">"
+                + "<tr class=\"tableRowHeader\">"
                 + "<td>Grupo</td>"
                 + "<td>Job Id</td>"
+                + "<td>Descripción</td>"
+                + "<td>Localidad</td>"
+                + "<td>Fuente</td>"
+                + "<td>Tags</td>"
                 + "<td>Estado</td>"
                 + "</tr>";
 
@@ -60,11 +65,14 @@ public class ListJobs extends BaseService {
 
             for (JobExecutionContext jobExc : sched.getCurrentlyExecutingJobs()) {
                 result += "<tr id=\"" + jobExc.getJobDetail().getKey().getName() + "\" class=\"tableRow\">"
-                        + "<td>" + jobExc.getJobDetail().getKey().getGroup().substring(0, jobExc.getJobDetail().getKey().getGroup().length() - 1) +"</td>"
+                        + "<td>" + jobExc.getJobDetail().getKey().getGroup() +"</td>"
                         + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobExc.getJobDetail().getKey().getName() + "\">" + jobExc.getJobDetail().getKey().getName() + "</a></td>"
-                        + "<td>En Ejecución</td>"
+                        + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramDescription") + "</td>"
+                        + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramLocalidad") + "</td>"
+                        + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramFuente") + "</td>"
+                        + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramTags") + "</td>"
+                        + "<td>RUNNING</td>"
                         + "</tr>";
-                //out.print("JobExc Id: " + jobExc.getJobDetail().getKey() + "<br>");
             }
 
             // enumerate each job group
@@ -72,11 +80,14 @@ public class ListJobs extends BaseService {
                 // enumerate each job in group
                 for(JobKey jobKey : sched.getJobKeys(groupEquals(group))) {
                     result += "<tr id=\"" + jobKey.getName() + "\" class=\"tableRow\">"
-                        + "<td>" + jobKey.getGroup().substring(0, jobKey.getGroup().length() - 1) +"</td>"
+                        + "<td>" + jobKey.getGroup() +"</td>"
                         + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
-                        + "<td>Programado</td>"
+                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "</td>"
+                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramLocalidad") + "</td>"
+                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramFuente") + "</td>"
+                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramTags") + "</td>"
+                        + "<td>" + sched.getTriggerState(sched.getTriggersOfJob(jobKey).get(0).getKey()) + "</td>"
                         + "</tr>";
-                    //out.print("Found job identified by: " + jobKey + "<br>");
                 }
             }
 

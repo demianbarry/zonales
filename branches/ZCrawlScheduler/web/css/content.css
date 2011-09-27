@@ -250,9 +250,8 @@ a#fdbk_close:hover {
 }
 
 .resultTable td {
-	border: 1px solid;
+    border: 1px solid;
     padding: 5px;
-    width: 25%;
     text-align: center;
 }
 

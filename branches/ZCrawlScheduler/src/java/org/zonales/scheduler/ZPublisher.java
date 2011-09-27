@@ -17,6 +17,7 @@ import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.SchedulerException;
 import org.zonales.entities.Posts;
 import org.zonales.errors.ZMessage;
 import org.zonales.errors.ZMessages;
@@ -34,7 +35,7 @@ public class ZPublisher implements Job {
         String zGramId = "";
         String zCrawlSourcesURL = "";
         Integer timeout = 0;
-        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "SCHEDULER: Ejecutando Job: ");
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SCHEDULER: Ejecutando Job: {0} - Class: {1}", new Object[]{jec.getJobDetail().getKey(), jec.getJobDetail().getJobClass()});
         try {
             JobDetail jobDetail = jec.getJobDetail();
             zGramId = jobDetail.getJobDataMap().getString("zGramId");
@@ -49,7 +50,7 @@ public class ZPublisher implements Job {
             Long ultimoHitDeExtraccion = new Date().getTime();
             Integer ultimoCodigoDeExtraccion = ZMessages.SUCCESS.getCod();
 
-            String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&ultimoCodigoDeExtraccion=" + ultimoCodigoDeExtraccion;
+            String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&newcod=" + ZMessages.SUCCESS.getCod() + "&newmsg=" + ZMessages.SUCCESS.getMsg();
 
             if (!posts.getPost().isEmpty()) {
                 Long ultimaExtraccionConDatos = new Date().getTime();
@@ -65,7 +66,7 @@ public class ZPublisher implements Job {
             ZMessage zmessage = new ZMessage();
 
             int code = connection.getResponseCode();
-            
+
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Actualización gramática - Código de respuesta: {0}", code);
             if (code == 200) {
                 zMessageJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
@@ -83,19 +84,33 @@ public class ZPublisher implements Job {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts indexados");
 
         } catch (SolrServerException ex) {
+            //Error en solr, el JOB no pasa a Stand-by
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error indexando posts: {0}", ex);
-        }
-        catch (MalformedURLException ex) {
+        } catch (MalformedURLException ex) {
+            //Error en la URL de solr, el JOB no pasa a Stand-by
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, "Error en JOB Malformen URL: ", ex);
         } catch (IOException ex) {
+            //Error de URLs, el JOB no pasa a Stand-by
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, "Error en JOB IO: ", ex);
         } catch (ExtractException ex) {
+
+            try {
+                //Analizo los códigos de mensaje obtenidos del extractor en casos de error, trato los que generan stand-by
+                if (ex.getZmessage().getCod() == ZMessages.ZSOURCES_GETURL_ERROR.getCod() ||   //Si la URL de extracción es incorercta
+                        ex.getZmessage().getCod() == ZMessages.GSON_CONVERTION_ERROR.getCod() ||  //Si el Json de los post es incorrecto o malformado
+                        ex.getZmessage().getCod() >= 400 || ex.getZmessage().getCod() < 500  //Si el extractor dio error TODO: falta contemplar el caso de error de conexión
+                        ) {
+                    ZScheduler.pauseJob(jec.getJobDetail().getKey());
+                }
+            } catch (SchedulerException ex1) {
+                Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+
+            //Actualizado la gramática con el intento de extracción
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extract Exeption: {0}", ex.getZmessage());
             Long ultimoHitDeExtraccion = new Date().getTime();
             Integer ultimoCodigoDeExtraccion = ex.getZmessage().getCod();
-
-            String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&ultimoCodigoDeExtraccion=" + ultimoCodigoDeExtraccion;
-
+            String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&newcod=" + ex.getZmessage().getCod() + "&newmsg=" + ex.getZmessage().getMsg();
             HttpURLConnection connection;
             try {
                 connection = ConnHelper.getURLConnection(zCrawlSourcesURL + "updateZGram" + parameters, timeout);
