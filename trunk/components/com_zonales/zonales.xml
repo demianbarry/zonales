@@ -43,6 +43,11 @@
     <filename>views/relevantes/tmpl/index.html</filename>
     <filename>views/relevantes/tmpl/default.php</filename>
 
+    <filename>views/geolocacion/view.html.php</filename>
+    <filename>views/geolocacion/index.html</filename>
+    <filename>views/geolocacion/tmpl/index.html</filename>
+    <filename>views/geolocacion/tmpl/default.php</filename>
+
     <filename>views/mapa/view.html.php</filename>
     <filename>views/mapa/index.html</filename>
     <filename>views/mapa/metadata.xml</filename>
