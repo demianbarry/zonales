@@ -96,6 +96,20 @@ Se detallan en esta sección las estructuras de datos diseñadas para persistir 
             ]
         },
         {
+            "deLosUsuariosLatitudes" : [
+                -31.4098, //Double values
+                -30.4452,
+                -33.5546
+            ]
+        },
+        {
+            "deLosUsuariosLongitudes" : [
+                -64.1905, //Double values
+                -60.1256,
+                -61.2552"
+            ]
+        },
+        {
             "amigosDe" : "Usuario"
         },
         {
