@@ -25,7 +25,7 @@
     function loadPost(){
 		if(searching)
 			return;
-        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '')+ <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?>;
+        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+($('tempoSelect').value) : '*')+'+TO+*]' : '')+ <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?>;
         var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
@@ -305,7 +305,7 @@
 	[86400, 'horas', 3600], // 60*60*24, 60*60
 	[172800, '1 dia', 'mañana'], // 60*60*24*2
 	[604800, 'dias', 86400], // 60*60*24*7, 60*60*24
-	[1209600, 'ultima semana', 'proxima semana'], // 60*60*24*7*4*2
+	[1209600, ' ultima semana', 'proxima semana'], // 60*60*24*7*4*2
 	[2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
 	[4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
 	[29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
@@ -353,6 +353,14 @@
 						Twitter
 					</td>
 				</tr>
+                                <tr>
+                                    <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); loadPost();">
+                                        <option value="24HOURS">Hoy</option>
+                                        <option value="7DAYS">Ultima Semana</option>
+                                        <option value="30DAYS">Ultimo Mes</option>
+                                        <option value="0">Historico</option>
+                                    </select>
+                                </tr>
 				</tbody>
 			</table>
 <div id="postsContainer">
