@@ -1,9 +1,9 @@
 /* -----------------------------------------------------------------------------
- * Rule$localidad.java
+ * Rule$geoFeed.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Thu Aug 04 12:08:11 ART 2011
+ * Produced : Fri Sep 23 12:10:58 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -11,11 +11,10 @@ package org.zonales.parser.parser;
 
 import java.util.ArrayList;
 import org.zonales.metadata.ZCrawling;
-import org.zonales.tagsAndZones.daos.ZoneDao;
 
-final public class Rule$localidad extends Rule {
+final public class Rule$geoFeed extends Rule {
 
-    private Rule$localidad(String spelling, ArrayList<Rule> rules) {
+    private Rule$geoFeed(String spelling, ArrayList<Rule> rules) {
         super(spelling, rules);
     }
 
@@ -23,8 +22,8 @@ final public class Rule$localidad extends Rule {
         return visitor.visit(zcrawling, this);
     }
 
-    public static Rule$localidad parse(ParserContext context) {
-        context.push("localidad");
+    public static Rule$geoFeed parse(ParserContext context) {
+        context.push("geoFeed");
 
         boolean parsed = true;
         int s0 = context.index;
@@ -41,16 +40,7 @@ final public class Rule$localidad extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Rule$cadena.parse(context);
-                        if (rule != null) {
-                            ZoneDao zoneDao = new ZoneDao(Globals.host, Globals.port, Globals.db);
-
-                            if (zoneDao.retrieve(rule.spelling.replace(" ", "_").replace("\"", "").toLowerCase()) == null) {
-                                rule = null;
-                                context.setMessage("La localidad no existe en la base de datos."
-                                        + " Por favor, utilice las sugerencias que le ofrece la interfaz.\n");
-                            }
-                        }
+                        rule = Rule$geo.parse(context);
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -68,17 +58,26 @@ final public class Rule$localidad extends Rule {
 
         rule = null;
         if (parsed) {
-            rule = new Rule$localidad(context.text.substring(s0, context.index), e0);
+            rule = new Rule$geoFeed(context.text.substring(s0, context.index), e0);
         } else {
             context.index = s0;
         }
-        
-        if(rule != null)
-            context.getZcrawling().setLocalidad(rule.spelling.trim());
 
-        context.pop("localidad", parsed);
+        context.pop("geoFeed", parsed);
 
-        return (Rule$localidad) rule;
+        if (rule != null) {
+            int index = 0;
+            
+            while (rule.spelling.charAt(index) != '[') {
+                index++;
+            }
+            if (rule.spelling.charAt(index) == '[') {
+                context.getZcrawling().setSourceLatitude(Double.valueOf(rule.spelling.substring(index + 1, (index = rule.spelling.indexOf(',')) - 1)));
+                context.getZcrawling().setSourceLongitude(Double.valueOf(rule.spelling.substring(index + 1, rule.spelling.indexOf(']') - 1)));
+            }
+        }
+
+        return (Rule$geoFeed) rule;
     }
 }
 

@@ -65,7 +65,8 @@ final public class Rule$descripcion extends Rule {
 
         context.pop("descripcion", parsed);
 
-        context.getZcrawling().setDescripcion(rule.spelling);
+        if(rule != null)
+            context.getZcrawling().setDescripcion(rule.spelling);
 
         return (Rule$descripcion) rule;
     }

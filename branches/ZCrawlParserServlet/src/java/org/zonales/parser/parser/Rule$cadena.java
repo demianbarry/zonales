@@ -25,8 +25,7 @@ final public class Rule$cadena extends Rule
     return visitor.visit(zcrawling, this);
   }
 
-  public static Rule$cadena parse(ParserContext context)
-  {
+  public static Rule$cadena parse(ParserContext context) {  
     context.push("cadena");
 
     boolean parsed = true;
@@ -63,6 +62,33 @@ final public class Rule$cadena extends Rule
           while (f1)
           {
             parsed = false;
+            if (!parsed)
+            {
+              {
+                ArrayList<Rule> e2 = new ArrayList<Rule>();
+                int s2 = context.index;
+                parsed = true;
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Rule$ALPHA.parse(context);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                  e1.addAll(e2);
+                else
+                  context.index = s2;
+              }
+            }
             if (!parsed)
             {
               {
