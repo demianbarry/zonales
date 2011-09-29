@@ -84,6 +84,26 @@ public class ZGramDao extends BaseDao {
                     usuariosDoc.put("deLosUsuarios", usuariosToDoc);
                     criteriosToDoc.add(usuariosDoc);
                 }
+                if (criterio.getDeLosUsuariosLatitudes() != null) {
+                    List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
+                    ArrayList usuariosLatToDoc = new ArrayList();
+                    for (Double usuarioLat : usuariosLat) {
+                        usuariosLatToDoc.add(usuarioLat);
+                    }
+                    BasicDBObject usuariosLatDoc = new BasicDBObject();
+                    usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
+                    criteriosToDoc.add(usuariosLatDoc);
+                }
+                if (criterio.getDeLosUsuariosLongitudes() != null) {
+                    List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
+                    ArrayList usuariosLonToDoc = new ArrayList();
+                    for (Double usuarioLon : usuariosLon) {
+                        usuariosLonToDoc.add(usuarioLon);
+                    }
+                    BasicDBObject usuariosLonDoc = new BasicDBObject();
+                    usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
+                    criteriosToDoc.add(usuariosLonDoc);
+                }
                 if (criterio.getAmigosDe() != null) {
                     BasicDBObject amigosDoc = new BasicDBObject();
                     amigosDoc.put("amigosDe", amigosDoc);
@@ -182,13 +202,27 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("tagsFuente", zgram.getTagsFuente());
         }
 
-        zgramDoc.put("incluyeComentarios", zgram.isIncluyeComenterios());
+        zgramDoc.put("incluyeComentarios", zgram.getIncluyeComentarios());
 
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
         zgramDoc.put("creado", (new Date()).getTime());
+        if (zgram.getCreadoPor() != null) {
+            zgramDoc.put("creadoPor", zgram.getCreadoPor());
+            zgramDoc.put("modificadoPor", zgram.getModificadoPor());
+        } else {
+            zgramDoc.put("creadoPor", "Anonimo"); //TODO: Chanchada, corregir luego de que esté implementado el Middleware
+            zgramDoc.put("modificadoPor", "Anonimo");
+        }
         zgramDoc.put("modificado", (new Date()).getTime());
+        
         zgramDoc.put("periodicidad", zgram.getPeriodicidad());
+        if ((Double)zgram.getSourceLatitude() != null) {
+            zgramDoc.put("sourceLatitude", zgram.getSourceLatitude());
+        }
+        if ((Double)zgram.getSourceLongitude() != null) {
+            zgramDoc.put("sourceLongitude", zgram.getSourceLongitude());
+        }
 
         System.out.println(zgramDoc.toString());
         this.extractions.insert(zgramDoc);
@@ -264,6 +298,26 @@ public class ZGramDao extends BaseDao {
                             BasicDBObject usuariosDoc = new BasicDBObject();
                             usuariosDoc.put("deLosUsuarios", usuariosToDoc);
                             criteriosToDoc.add(usuariosDoc);
+                        }
+                        if (criterio.getDeLosUsuariosLatitudes() != null) {
+                            List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
+                            ArrayList usuariosLatToDoc = new ArrayList();
+                            for (Double usuarioLat : usuariosLat) {
+                                usuariosLatToDoc.add(usuarioLat);
+                            }
+                            BasicDBObject usuariosLatDoc = new BasicDBObject();
+                            usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
+                            criteriosToDoc.add(usuariosLatDoc);
+                        }
+                        if (criterio.getDeLosUsuariosLongitudes() != null) {
+                            List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
+                            ArrayList usuariosLonToDoc = new ArrayList();
+                            for (Double usuarioLon : usuariosLon) {
+                                usuariosLonToDoc.add(usuarioLon);
+                            }
+                            BasicDBObject usuariosLonDoc = new BasicDBObject();
+                            usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
+                            criteriosToDoc.add(usuariosLonDoc);
                         }
                         if (criterio.getAmigosDe() != null) {
                             BasicDBObject amigosDoc = new BasicDBObject();
@@ -368,8 +422,8 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
                 }
 
-                if (newZgram.isIncluyeComenterios()) {
-                    zgramDoc.put("incluyeComentarios", newZgram.isIncluyeComenterios());
+                if (newZgram.getIncluyeComentarios()) {
+                    zgramDoc.put("incluyeComentarios", newZgram.getIncluyeComentarios());
                 } else {
                     zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
                 }
@@ -410,10 +464,28 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("ultimoHitDeExtraccion", (Long) resp.get("ultimoHitDeExtraccion"));
                 }
 
+                if ((Double)newZgram.getSourceLatitude() != null) {
+                    zgramDoc.put("sourceLatitude", newZgram.getSourceLatitude());
+                } else {
+                    zgramDoc.put("sourceLatitude", (Double) resp.get("sourceLatitude"));
+                }
+
+                if ((Double)newZgram.getSourceLongitude() != null) {
+                    zgramDoc.put("sourceLongitude", newZgram.getSourceLongitude());
+                } else {
+                    zgramDoc.put("sourceLongitude", (Double) resp.get("sourceLongitude"));
+                }
+
             }
 
             zgramDoc.put("creado", (Long) resp.get("creado"));
+            zgramDoc.put("creadoPor", (String) resp.get("creadoPor"));
             zgramDoc.put("modificado", (new Date()).getTime());
+            if (newZgram.getModificadoPor() != null) {
+                zgramDoc.put("modificadoPor", newZgram.getModificadoPor());
+            } else {
+                zgramDoc.put("modificadoPor", "Anonimo");  //TODO: Chanchada, corregir luego de que esté implementado el Middleware
+            }
             this.extractions.update(new BasicDBObject().append("_id", new ObjectId(id)), zgramDoc);
         }
     }

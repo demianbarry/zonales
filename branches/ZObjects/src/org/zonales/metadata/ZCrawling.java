@@ -278,15 +278,15 @@ public class ZCrawling {
         this.comentarios = comentarios;
     }
 
-    protected boolean incluyeComenterios;
+    protected boolean incluyeComentarios = false;
 
     /**
      * Get the value of incluyeComenterios
      *
      * @return the value of incluyeComenterios
      */
-    public boolean isIncluyeComenterios() {
-        return incluyeComenterios;
+    public Boolean getIncluyeComentarios() {
+        return incluyeComentarios;
     }
 
     /**
@@ -294,13 +294,13 @@ public class ZCrawling {
      *
      * @param incluyeComenterios new value of incluyeComenterios
      */
-    public void setIncluyeComenterios(boolean incluyeComenterios) {
-        this.incluyeComenterios = incluyeComenterios;
+    public void setIncluyeComentarios(Boolean incluyeComentarios) {
+        this.incluyeComentarios = incluyeComentarios;
     }
 
     @Override
     public String toString() {
-        return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "periodicidad=" + periodicidad + "siosi=" + siosi + "nocriterio=" + nocriterio + "descripcion=" + descripcion + "localidad=" + localidad + "tags=" + tags + "fuente=" + fuente + "uriFuente=" + uriFuente + "criterios=" + criterios + "noCriterios=" + noCriterios + "filtros=" + filtros + "tagsFuente=" + tagsFuente + "comentarios=" + comentarios + "incluyeComenterios=" + incluyeComenterios + '}';
+        return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "periodicidad=" + periodicidad + "siosi=" + siosi + "nocriterio=" + nocriterio + "descripcion=" + descripcion + "localidad=" + localidad + "tags=" + tags + "fuente=" + fuente + "uriFuente=" + uriFuente + "criterios=" + criterios + "noCriterios=" + noCriterios + "filtros=" + filtros + "tagsFuente=" + tagsFuente + "comentarios=" + comentarios + "incluyeComentarios=" + incluyeComentarios + '}';
     }
 
     protected double sourceLatitude;
