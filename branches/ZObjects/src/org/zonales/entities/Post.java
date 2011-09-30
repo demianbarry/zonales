@@ -10,9 +10,11 @@ import java.util.ArrayList;
 
 
 public class Post {
-
-    protected String source;
+    
     protected String id;
+    protected String source;
+    protected double sourceLatitude;
+    protected double sourceLongitude;
     protected User fromUser;
     protected ArrayList<User> toUsers;
     protected String title;
@@ -29,9 +31,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(String source, String id, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> tags, Long created, Long modified, int relevance, String verbatim) {
-        this.source = source;
+    public Post(String id, String source, double sourceLatitude, double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> tags, Long created, Long modified, int relevance, String verbatim) {
         this.id = id;
+        this.source = source;
+        this.sourceLatitude = sourceLatitude;
+        this.sourceLongitude = sourceLongitude;
         this.fromUser = fromUser;
         this.toUsers = toUsers;
         this.title = title;
@@ -44,6 +48,22 @@ public class Post {
         this.modified = modified;
         this.relevance = relevance;
         this.verbatim = verbatim;
+    }
+
+    public double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    public void setSourceLatitude(double sourceLatitude) {
+        this.sourceLatitude = sourceLatitude;
+    }
+
+    public double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    public void setSourceLongitude(double sourceLongitude) {
+        this.sourceLongitude = sourceLongitude;
     }
 
     public ArrayList<ActionType> getActions() {
