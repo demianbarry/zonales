@@ -109,4 +109,11 @@ public class Filtro {
     public void setMinActions(Integer minActions) {
         this.minActions = minActions;
     }
+
+    @Override
+    public String toString() {
+        return "Filtro{" + "minShuldMatch=" + minShuldMatch + " - dispersion=" + dispersion + " - listaNegraDeUsuarios=" + listaNegraDeUsuarios + " - listaNegraDePalabras=" + listaNegraDePalabras + " - minActions=" + minActions + '}';
+    }
+
+
 }

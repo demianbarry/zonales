@@ -162,8 +162,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + "name=" + name + "url=" + url + "category=" + category + '}';
+        return "User{" + "id=" + id + " - name=" + name + " - url=" + url + " - category=" + category + " - latitude=" + latitude + " - longitude=" + longitude + '}';
     }
+
 
     protected double latitude;
 
