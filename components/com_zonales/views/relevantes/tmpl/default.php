@@ -23,8 +23,8 @@
     }
 
     function loadPost(){
-		if(searching)
-			return;
+        if(searching)
+            return;
         var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+($('tempoSelect').value) : '*')+'+TO+*]' : '')+ <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?>;
         var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
@@ -32,13 +32,13 @@
             method: 'get',
             onRequest: function(){
                 //status.set('innerHTML', 'Recuperando posts...');
-				searching = true;
+                searching = true;
             },
             onComplete: function(jsonObj) {
                 // actualizar pagina
-				searching = false;
-				if(typeof jsonObj != 'undefined')
-                updatePosts(jsonObj);
+                searching = false;
+                if(typeof jsonObj != 'undefined')
+                    updatePosts(jsonObj);
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -61,8 +61,8 @@
             },
             onComplete: function(jsonObj) {
                 // actualizar pagina
-				if(typeof jsonObj != 'undefined')
-                updatePosts(jsonObj, true);
+                if(typeof jsonObj != 'undefined')
+                    updatePosts(jsonObj, true);
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -92,7 +92,7 @@
         return ret;
     }
 
-  function getVerMas(text){
+    function getVerMas(text){
         if(text.length > 255){
             var i=255;
             for( ;text.charAt(i) != ' ';i--);
@@ -121,8 +121,8 @@
 
         json.response.docs.each(function(doc){
 
-			var time = new Date(doc.indexTime).getTime();
-			lastIndexTime = time > lastIndexTime ||  lastIndexTime == null ? time : lastIndexTime;
+            var time = new Date(doc.indexTime).getTime();
+            lastIndexTime = time > lastIndexTime ||  lastIndexTime == null ? time : lastIndexTime;
 
             var post = eval('('+doc.verbatim+')');
             var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
@@ -156,8 +156,8 @@
                 'target': '_blank',
                 'href': post.fromUser.url
             }).setHTML(post.source).inject(li_story_submitter),
- 	    span_storyitem_modified = new Element('span', {}).setHTML(prettyDate(parseInt(post.modified))).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
-	    span_storyitem_fromuser = new Element('span', {}).setHTML(post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+            span_storyitem_modified = new Element('span', {}).setHTML(prettyDate(parseInt(post.modified))).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+            span_storyitem_fromuser = new Element('span', {}).setHTML(post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
             div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
             div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
             div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
@@ -167,20 +167,20 @@
                     switch (action.type) {
                         case 'comment':
                             var li_story_item_comments = new Element('li', {}).setHTML(action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
-                           new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
-                           break;
+                            new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
+                            break;
                         case 'like':
                             var li_story_item_likes = new Element('li', {}).setHTML(action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
                             new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
                             break;
                         case 'retweets':
                             var li_story_item_retweets = new Element('li', {}).setHTML(action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
-			    new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
-			    break;
+                            new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
+                            break;
                         case 'replies':
                             var li_story_item_replies = new Element('li', {}).setHTML(action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
-                           new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
-			   break;
+                            new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
+                            break;
                     }
                 });
             }
@@ -233,12 +233,12 @@
             }
 
             //  var date = new Date(parseInt(post.created));
-          //  new Element('li', {}).setHTML('Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
+            //  new Element('li', {}).setHTML('Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
 
-           // date = new Date(parseInt(post.modified));
+            // date = new Date(parseInt(post.modified));
 
 
-	    var tags = post.tags;
+            var tags = post.tags;
             new Element('li', {}).setHTML(tags).addClass('story-item-tag').inject(ul_story_item_meta);
 
             if(!$('chk'+post.source)) {
@@ -247,13 +247,23 @@
                 new Element('td', {}).setHTML(post.source).inject(tr);
                 tr.inject($("chkFilter"));
             }
-
+            var insertado = false;
             div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
-			if(typeof more == 'undefined' || !more) {
-				div_story_item.injectTop($('postsContainer'));
-			} else {
-				div_story_item.injectInside($('postsContainer'));
-			}
+            
+            var counts = $$('span.zonales-count');
+            if(typeOf(counts) == 'array') {
+                $$('span.zonales-count').each(function(count){
+                    if (post.relevance > parseInt(count.innerHTML)){
+                        insertado = true;
+                        div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
+                    }
+
+                });
+            }
+
+            if(!insertado){
+                div_story_item.injectInside($('postsContainer'));
+            }
         });
     }
 
@@ -292,77 +302,77 @@
         return finalDate;
     }
 
-//	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
+    //	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
 
-//	2010-08-28T20:24:17Z
+    //	2010-08-28T20:24:17Z
 
     function prettyDate(time){
-	var time_formats = [
-	[60, 'segundos', 1], // 60
-	[120, ' hace 1 minuto', 'hace 1 minuto'], // 60*2
-	[3600, 'minutos', 60], // 60*60, 60
-	[7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
-	[86400, 'horas', 3600], // 60*60*24, 60*60
-	[172800, '1 dia', 'mañana'], // 60*60*24*2
-	[604800, 'dias', 86400], // 60*60*24*7, 60*60*24
-	[1209600, ' ultima semana', 'proxima semana'], // 60*60*24*7*4*2
-	[2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-	[4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
-	[29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-	[58060800, 'ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-	[2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-	[5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
-	[58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
-	];
-	//var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-	//if(time.substr(time.length-4,1)==".") time =time.substr(0,time.length-4);
-	var seconds = (new Date - new Date(time)) / 1000;
-	var token = ' hace', list_choice = 1;
-	if (seconds < 0) {
-		seconds = Math.abs(seconds);
-		//token = 'desde ahora';
-		list_choice = 2;
-	}
-	var i = 0, format;
-	while (format = time_formats[i++])
-		if (seconds < format[0]) {
-			if (typeof format[2] == 'string')
-				return format[list_choice];
-			else
-				return (token+ ' ' + Math.floor(seconds / format[2]) + ' ' + format[1]);
-		}
-	return time;
-}
+        var time_formats = [
+            [60, 'segundos', 1], // 60
+            [120, ' hace 1 minuto', 'hace 1 minuto'], // 60*2
+            [3600, 'minutos', 60], // 60*60, 60
+            [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
+            [86400, 'horas', 3600], // 60*60*24, 60*60
+            [172800, '1 dia', 'mañana'], // 60*60*24*2
+            [604800, 'dias', 86400], // 60*60*24*7, 60*60*24
+            [1209600, ' ultima semana', 'proxima semana'], // 60*60*24*7*4*2
+            [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
+            [4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
+            [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
+            [58060800, 'ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+            [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+            [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
+            [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
+        ];
+        //var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        //if(time.substr(time.length-4,1)==".") time =time.substr(0,time.length-4);
+        var seconds = (new Date - new Date(time)) / 1000;
+        var token = ' hace', list_choice = 1;
+        if (seconds < 0) {
+            seconds = Math.abs(seconds);
+            //token = 'desde ahora';
+            list_choice = 2;
+        }
+        var i = 0, format;
+        while (format = time_formats[i++])
+            if (seconds < format[0]) {
+                if (typeof format[2] == 'string')
+                    return format[list_choice];
+                else
+                    return (token+ ' ' + Math.floor(seconds / format[2]) + ' ' + format[1]);
+            }
+        return time;
+    }
     //-->
 </script>
 <table>
-				<tbody id="chkFilter">
-				<tr>
-					<td>
-						<input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
-					</td>
-					<td>
+    <tbody id="chkFilter">
+        <tr>
+            <td>
+                <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
+            </td>
+            <td>
 						Facebook
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
-					</td>
-					<td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
+            </td>
+            <td>
 						Twitter
-					</td>
-				</tr>
-                                <tr>
-                                    <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); loadPost();">
-                                        <option value="24HOURS">Hoy</option>
-                                        <option value="7DAYS">Ultima Semana</option>
-                                        <option value="30DAYS">Ultimo Mes</option>
-                                        <option value="0">Historico</option>
-                                    </select>
-                                </tr>
-				</tbody>
-			</table>
+            </td>
+        </tr>
+        <tr>
+    <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); loadPost();">
+        <option value="24HOURS">Hoy</option>
+        <option value="7DAYS">Ultima Semana</option>
+        <option value="30DAYS">Ultimo Mes</option>
+        <option value="0">Historico</option>
+    </select>
+</tr>
+</tbody>
+</table>
 <div id="postsContainer">
 </div>
 <div>
