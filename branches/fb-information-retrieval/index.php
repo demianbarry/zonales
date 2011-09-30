@@ -7,10 +7,12 @@ include_once "arrayToXML.php";
 include_once "stemmer-es/stemm_es.php";
 
 /* * ************** Configuraciones ************** */
-$config['baseurl'] = "http://200.69.225.53:30080/facebook-test/index.php";
+//$config['baseurl'] = "http://200.69.225.53:30080/facebook-test/index.php";
+
+log_action("REQUEST: ");
 
 //Límite de post a recuperar por defecto
-define("_DEFAULT_LIMIT_", 200);
+define("_DEFAULT_LIMIT_", 20);
 define("_DEFAULT_FORMAT_", "json");
 define("_DEFAULT_MIN_ACTIONS_", 0);
 
@@ -33,31 +35,64 @@ $getCommenters = FormTools::getParameter('getCommenters');
 //Formato de respuesta
 switch ($format) {
     case "json":
-        header('Content-Type: application/x-javascript; charset=utf-8');
+        header('Content-Type: text/javascript; charset=utf-8');
         break;
     case "xml":
-        header("Content-Type:application/xml; charset=utf-8");
-        //header("Content-Type:text/plain; charset=utf-8");
+        header("Content-Type: application/xml; charset=utf-8");
         break;
     default:
-        header("Content-Type:text/plain; charset=utf-8");
+        header("Content-Type: text/plain; charset=utf-8");
 }
+
+$since = substr($since, 0, strlen($since) - 3);
+
+$users = false;
+$usersLat = false;
+$usersLon = false;
 
 //Procesamiento de usuarios
 if ($usersStr) {
     $users = array();
+    $usersLat = array();
+    $usersLon = array();
     $tok = strtok($usersStr, ",");
-    $users[] = $tok;
+    
+
+    if (strpos($tok, "[") > 0) {
+        $user = substr($tok, 0, strpos($tok, "["));
+        $lat = substr($tok, strpos($tok, "[") + 1, strpos($tok, ";") - strpos($tok, "[") - 1);
+        $lon = substr($tok, strpos($tok, ";") + 1, strpos($tok, "]") - strpos($tok, ";") - 1);
+    } else {
+        $user = $tok;
+        $lat = "";
+        $lon = "";
+    }
+    
+    $users[] = $user;
+    $usersLat[] = $lat != "" ? $lat : "";
+    $usersLon[] = $lon != "" ? $lon : "";
 
     while ($tok !== false) {
         $tok = strtok(",");
+
         if ($tok !== false) {
-            $users[] = $tok;
+            if (strpos($tok, "[") > 0) {
+                $user = substr($tok, 0, strpos($tok, "["));
+                $lat = substr($tok, strpos($tok, "[") + 1, strpos($tok, ";") - strpos($tok, "[") - 1);
+                $lon = substr($tok, strpos($tok, ";") + 1, strpos($tok, "]") - strpos($tok, ";") - 1);
+            } else {
+                $user = $tok;
+                $lat = "";
+                $lon = "";
+            }
+
+            $users[] = $user;
+            $usersLat[] = $lat != "" ? $lat : "";
+            $usersLon[] = $lon != "" ? $lon : "";
         }
     }
-} else {
-    $users = false;
 }
+
 
 //Procesamiento de keywords
 if ($keywordsStr) {
@@ -136,7 +171,7 @@ try {
     //Si se especifican usuarios
     if ($usersStr) {
         //Traigo el los post del muro de cada uno de los usuarios utilizando la API Graph de Facebook
-        foreach ($users as $user) {
+        foreach ($users as $key => $user) {
 
             /* Llamado a la API */
             $api = '/' . $user . '/feed?limit=' . $limit;
@@ -186,7 +221,7 @@ try {
                 if ($validPost) {
                     if (checkActions($feed, $minActions)) {
                         if (checkKeywords($feed, $keywords)) {
-                            $posts[] = processFeed($feed, $zone, $tags);
+                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key]);
                         }
                     }
                 }
@@ -208,7 +243,7 @@ try {
 
             $api .= '&type=post&init=srp';
 
-            if (limit) {
+            if ($limit) {
                 $api .= '&limit=' . $limit;
             }
 
@@ -224,9 +259,23 @@ try {
             //Proceso cada post recuperado
             foreach ($feeds['data'] as $feed) {
                 if (checkActions($feed, $minActions)) {
-                    if (checkKeywords($feed, $keywords)) {
+                    //if (checkKeywords($feed, $keywords)) {
+                        if ($getCommenters) {
+                            if ($feed['from']['id'] != $user) {
+                                if (!array_key_exists($feed['from']['id'], $retCommentersInc)) {
+                                    $addCommenter = array();
+                                    $addCommenter['id'] = $feed['from']['id'];
+                                    $addCommenter['name'] = $feed['from']['name'];
+                                    $addCommenter['url'] = "http://www.facebook.com/profile.php?id=" . $feed['from']['id'];
+                                    $retCommenters[] = $addCommenter;
+                                    $retCommentersInc[$feed['from']['id']] = 1;
+                                } else {
+                                    $retCommentersInc[$feed['from']['id']] = $retCommentersInc[$feed['from']['id']] + 1;
+                                }
+                            }
+                        }
                         $posts[] = processFeed($feed, $zone, $tags);
-                    }
+                    //}
                 }
             }
         }
@@ -247,8 +296,15 @@ try {
       fclose($handle);
      *
      */
-} catch (Exception $o) {
-    showArrays($o);
+} catch (FacebookApiException $ex) {
+    header('Content-Type: text/javascript; charset=utf-8');
+    $result = $ex->getResult();
+    echo '{"cod": 401, "msg": "' . $result['error']['message'] . '"}';
+    return;
+} catch (Exception $ex) {
+    header('Content-Type: text/javascript; charset=utf-8');
+    echo '{"cod": 400, "msg": "' . $result['error']['message'] . '"}';
+    return;
 }
 
 /* * ****************** Respuesta **************** */
@@ -270,6 +326,7 @@ if ($getCommenters) {
     switch ($format) {
         //Convierto el array de posts en JSON
         case "json":
+            log_action("RESPONSE: " . '{"post":' . indent(json_encode($posts)) . "}");
             echo '{"post":' . indent(json_encode($posts)) . "}";
             break;
         //Convierto el array de posts en XML, utilizando la librería
@@ -289,7 +346,7 @@ if ($getCommenters) {
 
 /* * ****************** Procesamiento de feeds **************** */
 
-function processFeed($feed, $zone = null, $tags = null) {
+function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null) {
     global $stop, $min, $since;  //$max
 
     $post = array();
@@ -298,6 +355,12 @@ function processFeed($feed, $zone = null, $tags = null) {
     if (isset($feed['from'])) {
         $post['fromUser'] = $feed['from'];
         $post['fromUser']['url'] = "http://www.facebook.com/profile.php?id=" . $feed['from']['id'];
+        if ($lat != null) {
+            $post['fromUser']['latitude'] = $lat;
+        }
+        if ($lon != null) {
+            $post['fromUser']['longitude'] = $lon;
+        }
     }
     if (isset($feed['to'])) {
         $post['toUsers'] = array();
@@ -352,13 +415,12 @@ function processFeed($feed, $zone = null, $tags = null) {
         $action['cant'] = $feed['comments']['count'];
         $post['actions'][] = $action;
     }
-    $post['created'] = $feed['created_time'];
-    $post['modified'] = $feed['updated_time'];
+    $post['created'] = strtotime($feed['created_time']) . "000";
+    $post['modified'] = strtotime($feed['updated_time']) . "000";
     $post['relevance'] = ($feed['comments']['count'] * 3) + $feed['likes']['count'];
 
     if ($zone) {
-        $post['tags'] = array();
-        $post['tags'][] = $zone;
+        $post['zone'] = $zone;
     }
 
     if ($tags) {
@@ -367,15 +429,9 @@ function processFeed($feed, $zone = null, $tags = null) {
         }
     }
 
-    /*
-      $modified = strtotime($post['modified']);
-      if ($modified > $max) {
-      $max = $modified;
-      }
-     *
-     */
-
-    $post['verbatim'] = indent(json_encode($post));
+    if ($format == "xml") {
+        $post['verbatim'] = indent(json_encode($post));
+    }
     return $post;
 }
 
@@ -467,6 +523,15 @@ function checkActions($feed, $minActions) {
     } else {
         return false;
     }
+}
+
+function log_action($msg) {
+    $today = date("d.m.Y");
+    $filename = "logs/$today.txt";
+    $fd = fopen($filename, "a");
+    $str = "[" . date("d/m/Y h:i:s", mktime()) . "] " . $msg;
+    fwrite($fd, $str . PHP_EOL);
+    fclose($fd);
 }
 
 /*
