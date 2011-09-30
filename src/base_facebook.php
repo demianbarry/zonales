@@ -126,9 +126,10 @@ abstract class BaseFacebook
    * Default options for curl.
    */
   public static $CURL_OPTS = array(
-    CURLOPT_CONNECTTIMEOUT => 10,
+    CURLOPT_SSL_VERIFYPEER => false,
+    CURLOPT_CONNECTTIMEOUT => 120,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT        => 60,
+    CURLOPT_TIMEOUT        => 120,
     CURLOPT_USERAGENT      => 'facebook-php-3.0',
   );
 
@@ -149,6 +150,7 @@ abstract class BaseFacebook
     'api'       => 'https://api.facebook.com/',
     'api_video' => 'https://api-video.facebook.com/',
     'api_read'  => 'https://api-read.facebook.com/',
+    //'api_read'  => 'https://api.facebook.com/',
     'graph'     => 'https://graph.facebook.com/',
     'www'       => 'https://www.facebook.com/',
   );
