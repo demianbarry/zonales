@@ -17,7 +17,7 @@ body{
 	/*background-color:#eee;*/
 }
 
-a, a:link, a:visited {color: #0059D0;}
+a {color: #0059D0;}
 a:hover {}
 
 img{border:0;}
@@ -137,19 +137,29 @@ h4 {
 	clear:both;
 }
 
-table.advanced_search td{
-	padding-bottom:4px;
+table.advanced_search td {
+	PADDING: 4px;
 }
 
-input{padding:4px;}
+table.advanced_search td.input {
+	width: 70%;	
+}
+
+table.advanced_search td.input input { 
+	width: 100%;	
+}
+
+table.advanced_search td.label {
+	width: 30%;
+}
 select{padding:1px;}
 
 #footer {
-border-top:1px solid #ddd;
-clear:both;
-color:#838E96;
-font-size:0.9sem;
-line-height:19px;
-padding:10px 0 0;
-margin-top:20px;
+	border-top:1px solid #ddd;
+	clear:both;
+	color:#838E96;
+	font-size:0.9sem;
+	line-height:19px;
+	padding:10px 0 0;
+	margin-top:20px;
 }

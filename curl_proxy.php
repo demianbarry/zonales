@@ -1,61 +1,45 @@
 <?php
-$port = array_key_exists($_POST,'port') && $_POST['port'] ? $_POST['port'] : $_GET['port'];
-$host = "http://". (array_key_exists($_POST,'host') && $_POST['host'] ? $_POST['host'] : $_GET['host']);
-$host .=":". $port . "/";
+$port = array_key_exists("port",$_POST) && $_POST["port"] ? $_POST["port"] : $_GET["port"];
+$host = "http://". (array_key_exists("host",$_POST) && $_POST["host"] ? $_POST["host"] : $_GET["host"]);
+$path = array_key_exists("ws_path",$_POST) && $_POST["ws_path"] ? $_POST["ws_path"] : $_GET["ws_path"];
+$url = $host .":". $port . "/".$path;
 
-define ('HOSTNAME', $host);
-
-
-
-$path = array_key_exists($_POST,'ws_path') && $_POST['ws_path'] ? $_POST['ws_path'] : $_GET['ws_path'];
-//echo $path;
-$url = HOSTNAME.$path;
-
-
-
-// Open the Curl session
+//$url = "http://".$_POST["host"].":".$_POST["port"]."/".$_POST['ws_path'];
 //echo $url;
-$session = curl_init($url);
-
-
-if (array_key_exists($_POST,'ws_path') && $_POST['ws_path']) {
-
-     $postvars = '';
-
-     while ($element = current($_POST)) {
-
-          $postvars .= key($_POST).'='.$element.'&';
-
-          next($_POST);
-
-     }
-
-     curl_setopt ($session, CURLOPT_POST, true);
-
-     curl_setopt ($session, CURLOPT_POSTFIELDS, $postvars);
-
+$session = curl_init();
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+	//extract data from the post
+	$params = substr($url, strpos($url, "?") + 1);//'port='.$port.'&host='.$host.'&ws_path='.$path;
+	$fields = explode("&",$params);			
+	//set the url, number of POST vars, POST data
+	curl_setopt($session,CURLOPT_URL,substr($url, 0, strpos($url, "?") != -1 ? strpos($url, "?") : strlen($url) - 1));
+	curl_setopt($session,CURLOPT_POST,count($fields));
+	curl_setopt($session,CURLOPT_POSTFIELDS,$params);	
+} else {
+	// Return the call not the headers
+	curl_setopt($session,CURLOPT_URL,$url);	
 }
-
-
-
-// Return the call not the headers
-
-curl_setopt($session, CURLOPT_HEADER, false);
 
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-
-
-
+curl_setopt($session, CURLOPT_HEADER, false);
+//curl_setopt($session, CURLOPT_HEADER, true);
 // call the data
+$output ="";
 $output = curl_exec($session);
-$info = curl_getinfo($session);
+$httpcode = curl_getinfo($session, CURLINFO_HTTP_CODE);
 
-if ($info['http_code'] == 500) {
-	header("Content-Type: text/html", true, 500);
-} else {
-	header("Content-Type: text/javascript");
-}
+//var_dump($info);
+//echo "CODE: " . $info;
+header("Content-Type: text/html", true, $httpcode);
+
+//var_dump($session);
+//var_dump($output);
 curl_close($session);
 
-echo $output;
+if($httpcode == 200) {
+	echo $output;
+} else {
+	echo $output;
+}
+//echo $output;
 ?>

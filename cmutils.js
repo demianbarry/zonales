@@ -1,6 +1,8 @@
 window.addEvent('domready', function() {
     getPluginTypes();
     getAllConfig();
+    getFuenteTypes();
+    getResultTimes();
 });
 
 var cantParams = 0;
@@ -9,12 +11,13 @@ var params = new Array();
 var plugins = new Array();
 var configEdited;
 var proxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=';
-var servletUri = '';
+var servletUri = '/ZCrawlSources';
+var fbServletURL = '/fb/index.php';
 
 function getFacebookUserId() {
     if ($('getIdUsername').get('value') != "") {
         var reqId = new Request({
-            url: "/fb/index.php?getId=" + $('getIdUsername').get('value'),
+            url: fbServletURL + "?getId=" + $('getIdUsername').get('value'),
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();
@@ -159,6 +162,62 @@ function getPluginTypes(){
 
     }).send();
 
+}
+
+function getFuenteTypes(){          //carga las fuentes 
+    var url = ""; //falta URL
+    var urlProxy = proxy + encodeURIComponent(url);
+    var reqId = new Request.JSON({
+        url: urlProxy,
+        method: 'get',
+        onRequest: function(){
+
+        },
+        onSuccess: function(jsonObj) {
+            jsonObj.each(function(fuentetype) {
+                new Element('option', {'html': fuentetype}).inject($('fuentetypes'));
+            });
+        },
+
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+
+        }
+
+    }).send();
+
+}
+
+function getResultTimes(){          //resultados por tiempo.. ultima hr ... etc. 
+    var url = ""; //falta URL
+    var urlProxy = proxy + encodeURIComponent(url);
+    var reqId = new Request.JSON({
+        url: urlProxy,
+        method: 'get',
+        onRequest: function(){
+
+        },
+        onSuccess: function(jsonObj) {
+            jsonObj.each(function(resulttime) {
+                new Element('option', {'html': resulttime}).inject($('resulttimes'));
+            });
+        },
+
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+
+        }
+
+    }).send();
+
+}
+
+function addCriterios() {
+    
+        $('resultslist_content').set('style', 'display:block');
+    
 }
 
 function addParam(name, required){
@@ -411,7 +470,7 @@ function showFacebookUserProfile() {
 function showFacebookUserCommenters() {
     if ($('getCommentersUserId').get('value') != "") {
         var reqId = new Request.JSON({
-            url: "/fb/index.php?getCommenters=true&users=" + $('getCommentersUserId').get('value'),
+            url: fbServletURL + "?getCommenters=true&users=" + $('getCommentersUserId').get('value'),
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();
@@ -473,7 +532,7 @@ function showFacebookUserCommenters() {
 function showFacebookCommentersByKeywords() {
     if ($('getCommentersKeywords').get('value') != "") {
         var reqId = new Request.JSON({
-            url: "/fb/index.php?getCommenters=true&keywords=" + $('getCommentersKeywords').get('value'),
+            url: fbServletURL + "?getCommenters=true&keywords=" + $('getCommentersKeywords').get('value'),
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();

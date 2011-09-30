@@ -1,0 +1,5 @@
+AuthName "Ingrese el password de acceso por favor"
+AuthType Basic
+AuthUserFile /var/www/html/CMUtils/.htpasswd
+AuthGroupFile /dev/null
+require user zonales
