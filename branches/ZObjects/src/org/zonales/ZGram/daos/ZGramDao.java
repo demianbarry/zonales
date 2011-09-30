@@ -422,7 +422,7 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("tagsFuente", (Boolean) resp.get("tagsFuente"));
                 }
 
-                if (newZgram.getIncluyeComentarios()) {
+                if (newZgram.getIncluyeComentarios() != null) {
                     zgramDoc.put("incluyeComentarios", newZgram.getIncluyeComentarios());
                 } else {
                     zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
