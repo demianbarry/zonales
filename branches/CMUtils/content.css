@@ -23,6 +23,17 @@
     margin-right: 25px;
 }
 
+#view_content {    
+    float: left;
+    margin-right: 25px;
+	width:40%;
+}
+
+#resultslist_content {
+	width: 55%;
+	float: left;
+}
+
 #edit_content{
     width: 45%;
     height: 100%;
@@ -30,6 +41,25 @@
     margin-left: 25px;
 }
 
+#resultlist_content{    
+    height: 100%;
+    float: left;
+    margin-left: 25px;
+}
+
+#gram_content{
+    width: 45%;
+    height: 100%;
+    float: left;
+    margin-left: 25px;
+}
+
+#resultsgram_content{
+    width: 45%;
+    height: 100%;
+    float: right;
+    margin-left: 25px;
+}
 #results {
 
 }
@@ -220,7 +250,9 @@ a#fdbk_close:hover {
 }
 
 .resultTable td {
-    width: 20%;
+	border: 1px solid;
+    padding: 5px;
+    width: 25%;
     text-align: center;
 }
 
@@ -237,3 +269,34 @@ a#fdbk_close:hover {
     text-align: center;
 }
 
+div#wrapper p {
+	margin: 0px;
+	text-align: justify;
+}
+
+div#wrapper p.selected {
+	background: lightgrey;
+	cursor: pointer;
+}
+
+.tableRowHeader {
+	background-color: #58ACFA;
+}
+
+.tableRow {
+	background-color: #E0E0F8;
+	font-size: small;
+}
+
+.generateButtonDiv {
+	float: right;
+}
+
+.textExtractionDiv {
+	float: left;
+}
+
+div.suggestions {
+	position: absolute; 
+	background: none repeat scroll 0% 0% grey;
+}
