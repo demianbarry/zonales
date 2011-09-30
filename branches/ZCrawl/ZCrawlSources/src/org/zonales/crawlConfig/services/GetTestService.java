@@ -43,7 +43,9 @@ public class GetTestService extends BaseService {
             String urlServlet = "";
 
             //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "GETURL: MedatadaJSON {0}", metadataJson);
             metadata = metadataGson.fromJson(metadataJson, ZCrawling.class);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "GETURL: Medatada {0}", metadata);
 
             if (since == null) {
                 metadata.setUltimoHitDeExtraccion(null);
