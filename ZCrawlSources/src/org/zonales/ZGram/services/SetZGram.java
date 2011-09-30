@@ -38,6 +38,7 @@ public class SetZGram extends BaseService {
         String metadataJson = request.getParameter("metadata");
         String verbatim = request.getParameter("verbatim");
         String state = request.getParameter("state");
+        String creadoPor = request.getParameter("creadoPor");
         ZGram zgram = new ZGram();        
         Gson metadataGson = new Gson();
         ZMessage zMessage = new ZMessage(cod, msg);
@@ -49,6 +50,10 @@ public class SetZGram extends BaseService {
         zgram.setCreado((new Date()).getTime());
         zgram.setZmessage(zMessage);
         zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto
+        
+        if (creadoPor != null) {
+            zgram.setCreadoPor(creadoPor);
+        }
 
         try {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Se intentará guardar: {0}", new Object[]{zgram});

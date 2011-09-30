@@ -5,6 +5,10 @@
 
 package org.zonales.crawlConfig.plugins.urlgetters;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
@@ -24,6 +28,8 @@ public class GetFacebookServiceURL implements GetServiceURL {
         String tags = "";
         String commenters = "";
 
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "FB: Medatada {0}", metadata);
+
         //Agrego uri del servicio
         urlServlet += service.getUri() + "?";
         //Si la localidad es nula, retorno error (Zone es el único campo oblicatorio en facebook)
@@ -34,17 +40,34 @@ public class GetFacebookServiceURL implements GetServiceURL {
             urlServlet += "zone=" + metadata.getLocalidad();
         }
         //Si hay criterios, voy agregando los parámetros
+        List<String> usuarios = new ArrayList<String>();
+        List<Double> latitudes = new ArrayList<Double>();
+        List<Double> longitudes = new ArrayList<Double>();
+
         if (metadata.getCriterios() != null) {
+
             for (Criterio criterio : metadata.getCriterios()) {
                 //Si hay usuarios, los agrego
                 if (criterio.getDeLosUsuarios() != null) {
-                    users += users.length() > 0 ? "," : "";
-                    for(String usuario : criterio.getDeLosUsuarios()){                        
-                        /*if(criterio.getDeLosUsuarios().indexOf(usuario) != 0)
-                            users += ",";*/
-                        users += usuario + ",";
+                    for(String usuario : criterio.getDeLosUsuarios()){
+                        usuarios.add(usuario);
                     }
                 }
+                
+                //Agrego las latitudes
+                if (criterio.getDeLosUsuariosLatitudes() != null) {
+                    for(Double latitud : criterio.getDeLosUsuariosLatitudes()){
+                        latitudes.add(latitud);
+                    }
+                }
+                
+                //Agrego las longitudes
+                if (criterio.getDeLosUsuariosLongitudes() != null) {
+                    for(Double longitud : criterio.getDeLosUsuariosLongitudes()){
+                        longitudes.add(longitud);
+                    }
+                }
+
                 //Si hay keywords, los agrego
                 if (criterio.getPalabras() != null) {
                     keywords += keywords.length() > 0 ? "," : "";
@@ -54,6 +77,20 @@ public class GetFacebookServiceURL implements GetServiceURL {
                 }
             }
         }
+
+        if (usuarios.size() > 0) {
+            int key = 0;
+            for (String usuario : usuarios) {
+                users += users.length() > 0 ? "," : "";
+                users += usuario;
+                if (latitudes.size() == usuarios.size() && longitudes.size() == usuarios.size()) {
+                    if (latitudes.get(key) != null && longitudes.get(key) != null)
+                        users += "[" + latitudes.get(key) + ";" + longitudes.get(key) + "]";
+                }
+                key++;
+            }
+        }
+
         //Si hay no-criterios, voy agregando los parámetros
         if (metadata.getNoCriterios() != null) {
             for (Criterio criterio : metadata.getNoCriterios()) {
@@ -89,7 +126,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
 
         //Si agregué usuarios, los pongo en la URL
         if (!"".equals(users)) {
-            urlServlet += "&users=" + users.substring(0, users.length() - 1);
+            urlServlet += "&users=" + users; //users.substring(0, users.length() - 1);
         }
         //Si agregué keywords, los pongo en la URL
         if (!"".equals(keywords)) {
@@ -101,7 +138,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
         }
 
         //Si agregué commenters, los pongo en la URL
-        if (metadata.isIncluyeComenterios()) {
+        if (metadata.getIncluyeComentarios()) {
             urlServlet += "&commenters=all";
         }
 
