@@ -151,4 +151,12 @@ public class Criterio {
     public void setDeTodo(Boolean deTodo) {
         this.deTodo = deTodo;
     }
+
+    @Override
+    public String toString() {
+        return "Criterio{" + "siosi=" + siosi + " - palabras=" + palabras + " - deLosUsuarios=" + deLosUsuarios + " - deLosUsuariosLatitudes=" + deLosUsuariosLatitudes + " - deLosUsuariosLongitudes=" + deLosUsuariosLongitudes + " - amigosDe=" + amigosDe + " - deTodo=" + deTodo + '}';
+    }
+
+
+
 }

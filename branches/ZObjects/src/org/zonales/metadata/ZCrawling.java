@@ -300,7 +300,7 @@ public class ZCrawling {
 
     @Override
     public String toString() {
-        return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "periodicidad=" + periodicidad + "siosi=" + siosi + "nocriterio=" + nocriterio + "descripcion=" + descripcion + "localidad=" + localidad + "tags=" + tags + "fuente=" + fuente + "uriFuente=" + uriFuente + "criterios=" + criterios + "noCriterios=" + noCriterios + "filtros=" + filtros + "tagsFuente=" + tagsFuente + "comentarios=" + comentarios + "incluyeComentarios=" + incluyeComentarios + '}';
+        return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + " - periodicidad=" + periodicidad + " - siosi=" + siosi + " - nocriterio=" + nocriterio + " - descripcion=" + descripcion + " - localidad=" + localidad + " - tags=" + tags + " - fuente=" + fuente + " - uriFuente=" + uriFuente + " - criterios=" + criterios + " - noCriterios=" + noCriterios + " - filtros=" + filtros + " - tagsFuente=" + tagsFuente + " - comentarios=" + comentarios + " - incluyeComentarios=" + incluyeComentarios + '}';
     }
 
     protected double sourceLatitude;
