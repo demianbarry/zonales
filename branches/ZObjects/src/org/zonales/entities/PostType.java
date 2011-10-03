@@ -70,10 +70,10 @@ public class PostType {
     protected String source;
     
     @XmlElement(required = true)
-    protected double sourceLatitude;
+    protected Double sourceLatitude;
     
     @XmlElement(required = true)
-    protected double sourceLongitude;
+    protected Double sourceLongitude;
     
     @XmlElement(required = true)
     protected String id;
@@ -113,7 +113,7 @@ public class PostType {
     public PostType() {
     }
 
-    public PostType(String zone, String source, double latitude, double longitude, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
+    public PostType(String zone, String source, Double latitude, Double longitude, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
         this.zone = zone;
         this.source = source;
         this.sourceLatitude = latitude;
@@ -188,7 +188,7 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public double getSourceLatitude() {
+    public Double getSourceLatitude() {
         return sourceLatitude;
     }
 
@@ -200,7 +200,7 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public void setSourceLatitude(double value) {
+    public void setSourceLatitude(Double value) {
         this.sourceLatitude = value;
     }
     
@@ -212,7 +212,7 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public double getSourceLongitude() {
+    public Double getSourceLongitude() {
         return sourceLongitude;
     }
 
@@ -224,7 +224,7 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public void setSourceLongitude(double value) {
+    public void setSourceLongitude(Double value) {
         this.sourceLongitude = value;
     }
 
