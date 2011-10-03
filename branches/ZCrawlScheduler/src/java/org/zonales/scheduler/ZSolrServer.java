@@ -70,7 +70,7 @@ public final class ZSolrServer {
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando objeto SolrPost");
 
-            SolrPost solrPost = new SolrPost(post.getSource(), post.getId(), post.getFromUser().getName(), post.getFromUser().getCategory(), post.getFromUser().getId(), post.getFromUser().getUrl(), post.getTitle(), post.getText(), post.getZone(), post.getTags(), created, modified, post.getRelevance(), verbatim);
+            SolrPost solrPost = new SolrPost(post.getSource(), post.getSourceLatitude(), post.getSourceLongitude(), post.getId(), post.getFromUser().getName(), post.getFromUser().getCategory(), post.getFromUser().getId(), post.getFromUser().getUrl(), post.getFromUser().getLatitude(), post.getFromUser().getLongitude(), post.getTitle(), post.getText(), post.getZone(), post.getTags(), created, modified, post.getRelevance(), verbatim);
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Objeto SolrPost creado: {0}", solrPost);
 
