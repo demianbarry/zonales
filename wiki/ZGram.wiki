@@ -19,14 +19,15 @@
 <localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
 <tags>		::= 	<tag> {","<tag>} 
 <tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
-<fuente>	::=	"facebook" | "twitter" | "feed ubicado en" <uri_fuente>
+<fuente>	::=	"facebook" | "twitter" | "feed ubicado en" <uri_fuente> [ubicacion]
 <uri_fuente>	::=	? uri de rss o atom bien formada ?
 <criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
 <criterio>	::=     "de los usuarios" <usuarios> |
 			"de amigos de los usuarios" <usuarios> |
 			["si o si"] "de las palabras" <palabras>
-<usuarios>      ::=      <usuario> {"," <usuario>}
+<usuarios>      ::=      <usuario> [ubicacion] {"," <usuario> [ubicacion]}
 <usuario>	::= 	? string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple?
+<ubicacion>     ::=     "[" latitud "," longitud "]"
 <palabras>	::= 	<palabra> {"," <palabra>}
 <palabra>	::=	? cualquier palabra ?
 <filtros>	::=	<filtro> {"y" <filtro>}
