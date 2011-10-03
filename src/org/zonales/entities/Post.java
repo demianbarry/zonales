@@ -13,8 +13,8 @@ public class Post {
     
     protected String id;
     protected String source;
-    protected double sourceLatitude;
-    protected double sourceLongitude;
+    protected Double sourceLatitude;
+    protected Double sourceLongitude;
     protected User fromUser;
     protected ArrayList<User> toUsers;
     protected String title;
@@ -31,7 +31,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(String id, String source, double sourceLatitude, double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> tags, Long created, Long modified, int relevance, String verbatim) {
+    public Post(String id, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> tags, Long created, Long modified, int relevance, String verbatim) {
         this.id = id;
         this.source = source;
         this.sourceLatitude = sourceLatitude;
@@ -50,19 +50,19 @@ public class Post {
         this.verbatim = verbatim;
     }
 
-    public double getSourceLatitude() {
+    public Double getSourceLatitude() {
         return sourceLatitude;
     }
 
-    public void setSourceLatitude(double sourceLatitude) {
+    public void setSourceLatitude(Double sourceLatitude) {
         this.sourceLatitude = sourceLatitude;
     }
 
-    public double getSourceLongitude() {
+    public Double getSourceLongitude() {
         return sourceLongitude;
     }
 
-    public void setSourceLongitude(double sourceLongitude) {
+    public void setSourceLongitude(Double sourceLongitude) {
         this.sourceLongitude = sourceLongitude;
     }
 

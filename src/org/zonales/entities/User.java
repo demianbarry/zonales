@@ -166,14 +166,14 @@ public class User {
     }
 
 
-    protected double latitude;
+    protected Double latitude;
 
     /**
      * Get the value of latitude
      *
      * @return the value of latitude
      */
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -182,18 +182,18 @@ public class User {
      *
      * @param latitude new value of latitude
      */
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    protected double longitude;
+    protected Double longitude;
 
     /**
      * Get the value of longitude
      *
      * @return the value of longitude
      */
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
@@ -202,7 +202,7 @@ public class User {
      *
      * @param longitude new value of longitude
      */
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 }
