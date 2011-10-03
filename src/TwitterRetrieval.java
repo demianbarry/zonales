@@ -37,6 +37,7 @@ import org.zonales.entities.ActionType;
 import org.zonales.entities.ActionsType;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
+import org.zonales.entities.Post;
 import org.zonales.entities.PostType;
 import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
@@ -67,14 +68,18 @@ public class TwitterRetrieval extends HttpServlet {
             // addition of a PathInfo issue
 
             ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setDebugEnabled(true).setOAuthConsumerKey("56NAE9lQHSOZIGXRktd5Qw").setOAuthConsumerSecret("zJjJrUUs1ubwKjtPOyYzrwBJzpwq7ud8Aryq1VhYH2E").setOAuthAccessTokenURL("https://api.twitter.com/oauth/access_token").setOAuthRequestTokenURL("https://api.twitter.com/oauth/request_token").setOAuthAuthorizationURL("https://api.twitter.com/oauth/authorize").setOAuthAccessToken("234742739-I1l0VGTTjRUbZrfH1jvKnTVFU9ZEvkxxUDpvsAJ2").setOAuthAccessTokenSecret("jLe3imI3JiPgmHCatt6SqYgRAcX5q8s6z38oUrqMc");
+            System.setProperty("twitter4j.http.httpClient", "twitter4j.internal.http.HttpClientImpl");
+            cb.setOAuthConsumerKey("56NAE9lQHSOZIGXRktd5Qw").setOAuthConsumerSecret("zJjJrUUs1ubwKjtPOyYzrwBJzpwq7ud8Aryq1VhYH2E").setOAuthAccessTokenURL("https://api.twitter.com/oauth/access_token").setOAuthRequestTokenURL("https://api.twitter.com/oauth/request_token").setOAuthAuthorizationURL("https://api.twitter.com/oauth/authorize").setOAuthAccessToken("234742739-I1l0VGTTjRUbZrfH1jvKnTVFU9ZEvkxxUDpvsAJ2").setOAuthAccessTokenSecret("jLe3imI3JiPgmHCatt6SqYgRAcX5q8s6z38oUrqMc");
 
             TwitterFactory tf = new TwitterFactory(cb.build());
             Twitter twitter = tf.getInstance();
 
-            Query query = new Query(request.getParameter("q"));
+            Query query = new Query(request.getParameter("q"));         
 
             String tags = request.getParameter("tags");
+
+            String zone = request.getParameter("zone");
+
             String[] tagsArray = null;
             if (tags != null) {
                 tagsArray = tags.split(",");
@@ -84,22 +89,71 @@ public class TwitterRetrieval extends HttpServlet {
 
             result = twitter.search(query);
 
+            List<Post> postList = new ArrayList();
             List<PostType> postsList = new ArrayList();
 
+            Post solrPost;
             PostType post;
             //List<LinkType> links = new ArrayList();
             List<ActionType> actions;
-            List<User> toUsers = new ArrayList();
+            ArrayList<User> toUsers = new ArrayList();
 
-
+            ArrayList<LinkType> links;
 
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 actions = new ArrayList();
-                actions.add(new ActionType("retweets", twitter.getRetweetedByIDs(tweet.getId()).getIDs().length));
-                actions.add(new ActionType("replies", twitter.getRelatedResults(tweet.getId()).getTweetsWithReply().size()));
+                try {
+                    actions.add(new ActionType("retweets", twitter.getRetweets(tweet.getId()).size()));
+                    actions.add(new ActionType("replies", twitter.getRelatedResults(tweet.getId()).getTweetsWithReply().size()));
+                } catch (TwitterException ex) {
+                    Logger.getLogger(TwitterRetrieval.class.getName()).log(Level.SEVERE, "Error intentando obtener retweets o replies: {0}", new Object[]{ex});
+                }
+
+                solrPost = new Post();
+                solrPost.setZone(zone);
+                solrPost.setSource("Twitter");
+
+                solrPost.setId(String.valueOf(tweet.getId()));
+                solrPost.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
+                        tweet.getFromUser(),
+                        "http://twitter.com/#!/" + tweet.getFromUser(),
+                        tweet.getSource()));
+
+                if (tweet.getToUser() != null) {
+                    toUsers.add(new User(String.valueOf(tweet.getToUserId()),
+                            tweet.getToUser(),
+                            null,
+                            tweet.getSource()));
+                    solrPost.setToUsers(toUsers);
+                }
+
+                solrPost.setTitle(tweet.getText().substring(0, tweet.getText().length() > 30 ? 30 : tweet.getText().length() - 1));
+                solrPost.setText(tweet.getText());
+                //post.setLinks(new LinksType(links));
+                solrPost.setActions((ArrayList<ActionType>) actions);
+                solrPost.setCreated(tweet.getCreatedAt().getTime());
+                solrPost.setModified(tweet.getCreatedAt().getTime());
+                solrPost.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
+
+                links = new ArrayList<LinkType>();
+                links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
+                links.addAll(getLinks(tweet.getText()));
+
+                if (solrPost.getLinks() == null) {
+                    solrPost.setLinks(new ArrayList<LinkType>());
+                }
+                solrPost.setLinks(links);
+
+                if (tagsArray != null && tagsArray.length > 0) {
+                    solrPost.setTags(new ArrayList<String>(Arrays.asList(tagsArray)));
+                }
+
+                postList.add(solrPost);
 
                 post = new PostType();
+                post.setZone(zone);
                 post.setSource("Twitter");
+
                 post.setId(String.valueOf(tweet.getId()));
                 post.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
@@ -120,14 +174,14 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setActions(new ActionsType(actions));
                 post.setCreated(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
-                post.setRelevance(actions.get(0).getCant() * 3 + actions.get(1).getCant());
+                post.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
 
-                List<LinkType> links = new ArrayList<LinkType>();
+                links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
 
-                post.setLinks(getLinks(tweet.getText()));
-                
-                
+                post.setLinks(new LinksType(getLinks(tweet.getText())));
+
+
                 if (tagsArray != null && tagsArray.length > 0) {
                     post.setTags(new TagsType(Arrays.asList(tagsArray)));
                 }
@@ -150,7 +204,7 @@ public class TwitterRetrieval extends HttpServlet {
             } else {
                 response.setContentType("text/javascript");
                 out = response.getWriter();
-                out.println(gson.toJson(posts));
+                out.println("{post: " + gson.toJson(postList) + "}");
             }
 
 
@@ -173,7 +227,7 @@ public class TwitterRetrieval extends HttpServlet {
         marshaller.marshal(posts, out);
     }
 
-    private LinksType getLinks(String text) {
+    private List<LinkType> getLinks(String text) {
         String pattern = "^http://[a-zA-Z0-9]+(\\.([a-zA-Z0-9])+)+(\\/([a-zA-Z0-9])*)*$";
         StringTokenizer st = new StringTokenizer(text);
         String token;
@@ -185,7 +239,7 @@ public class TwitterRetrieval extends HttpServlet {
             }
         }
         if (result.size() > 0) {
-            return new LinksType(result);
+            return result;
         }
         return null;
     }
