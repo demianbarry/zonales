@@ -18,10 +18,12 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
+import org.zonales.entities.Post;
 import org.zonales.entities.Posts;
 import org.zonales.errors.ZMessage;
 import org.zonales.errors.ZMessages;
 import org.zonales.helpers.ConnHelper;
+import org.zonales.metadata.ZCrawling;
 import org.zonales.scheduler.exceptions.ExtractException;
 
 /**
@@ -47,9 +49,16 @@ public class ZPublisher implements Job {
             ZExtractor extractor = new ZExtractor();
             Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
 
-            Long ultimoHitDeExtraccion = new Date().getTime();
-            Integer ultimoCodigoDeExtraccion = ZMessages.SUCCESS.getCod();
-
+            Long ultimoHitDeExtraccion = 0L;
+            // Si la fuente es Twitter, el since_id es el mayor id de tweet recuperado
+            if("Twitter".equalsIgnoreCase(((ZCrawling)(new Gson()).fromJson(metadata, ZCrawling.class)).getFuente())) {
+                for(Post post : posts.getPost()){
+                    ultimoHitDeExtraccion = Integer.valueOf(post.getId()) > ultimoHitDeExtraccion ? Integer.valueOf(post.getId()) : ultimoHitDeExtraccion;
+                }
+            } else {
+                ultimoHitDeExtraccion = new Date().getTime();   
+            }
+             
             String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&newcod=" + ZMessages.SUCCESS.getCod() + "&newmsg=" + ZMessages.SUCCESS.getMsg();
 
             if (!posts.getPost().isEmpty()) {
