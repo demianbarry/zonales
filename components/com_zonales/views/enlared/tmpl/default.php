@@ -43,10 +43,12 @@
                     else {
 
                         updatePosts(jsonObj,$('newPostsContainer'));
-
+                       
                         if($('newPostsContainer').childNodes.length > 0){
                             $('verNuevos').value= $('newPostsContainer').childNodes.length+' nuevos...';
                             $('verNuevos').setStyle('display','block');
+                          
+
                         }
                         else{
                             $('verNuevos').setStyle('display','none');
@@ -118,9 +120,10 @@
         return text;
     }
     function verNuevos(){
-        $$('div#newPostsContainer div.story-item').reverse().each(function(post){
+        $$('div#newPostsContainer div.story-item').set({ style: 'background:red'}).reverse().each(function(post){
             post.clone().injectTop($('postsContainer'));
         });
+      //  $('postsContainer').setStyle('color', '#900');
         $('verNuevos').setStyle('display','none');
         $('newPostsContainer').empty();
     }
