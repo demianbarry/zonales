@@ -7,9 +7,9 @@
 
     window.addEvent('domready', function() {
         setInterval(function () {
-            loadPost();
+            loadPost(false);
         }, 10000);
-        loadPost();
+        loadPost(true);
     });
 
     function getSolrDate(millis){
@@ -22,7 +22,7 @@
         return (number > 9 ? ''+number : '0'+number);
     }
 
-    function loadPost(){
+     function loadPost(first){
         if(searching)
             return;
         var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+($('tempoSelect').value) : '*')+'+TO+*]' : '')+ <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?>;
@@ -37,8 +37,21 @@
             onComplete: function(jsonObj) {
                 // actualizar pagina
                 searching = false;
-                if(typeof jsonObj != 'undefined')
-                    updatePosts(jsonObj);
+                if(typeof jsonObj != 'undefined'){
+                    if(first)
+                        updatePosts(jsonObj,$('postsContainer'));
+                    else {
+                        updatePosts(jsonObj,$('newPostsContainer'));
+                        if($('newPostsContainer').childNodes.length > 0){
+                            $('verNuevos').value= $('newPostsContainer').childNodes.length+' nuevos...';
+                            $('verNuevos').setStyle('display','block');
+                        }
+                        else{
+                            $('verNuevos').setStyle('display','none');
+                        }
+
+                    }
+                }
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -374,6 +387,9 @@
 </tr>
 </tbody>
 </table>
+<input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
+<div id="newPostsContainer" style="display:none">
+</div>
 <div id="postsContainer">
 </div>
 <div>
