@@ -1,6 +1,6 @@
 
 import com.google.gson.Gson;
-import com.sun.syndication.feed.rss.Content;
+//import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
 import it.sauronsoftware.feed4j.bean.FeedItem;
@@ -61,8 +61,10 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
     String zone = null;
+    String latitud = null;
+    String longitud = null;
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -79,6 +81,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         String nowords = request.getParameter("nopalabras") != null ? request.getParameter("nopalabras") : "";
         String tags = request.getParameter("tags") != null ? request.getParameter("tags") : "";
         String formato = request.getParameter("formato") != null ? request.getParameter("formato") : "";
+        latitud = request.getParameter("latitud") != null ? request.getParameter("latitud") : "0.0";
+        longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
         InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
         Properties props = new Properties();
         props.load(stream);
@@ -175,6 +179,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 }
                 newEntry.setSource(source);
                 newEntry.setZone(zone);
+
+                newEntry.setSourceLatitude(Double.parseDouble(latitud));
+                newEntry.setSourceLongitude(Double.parseDouble(longitud));
                 // newEntry.setId(entry.getUri());
                 // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                 newEntry.setId(entry.getGUID());
@@ -387,40 +394,40 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         /*String contenido = null;
 
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
-            feedSelectors = dao.retrieve("default");
+        feedSelectors = dao.retrieve("default");
         }
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
-            return false;
+        return false;
         }
 
         Elements noticia = null;
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
-            if ("content".equals(feedSelector.getType())) {
-                noticia = doc.select(feedSelector.getSelector());
-            }
+        if ("content".equals(feedSelector.getType())) {
+        noticia = doc.select(feedSelector.getSelector());
+        }
         }
 
         if (noticia != null) {
-            contenido = noticia.text();
+        contenido = noticia.text();
         }
 
         if (slist != null && !slist.isEmpty()) {
-            // System.out.println("Entro slist.isEmpty()");
-            for (String palabra : slist) {
-                if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1)) {
-                    return false;
-                }
+        // System.out.println("Entro slist.isEmpty()");
+        for (String palabra : slist) {
+        if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1)) {
+        return false;
+        }
 
-            }
+        }
         }
 
         if (blist != null && !blist.isEmpty()) {
-            // System.out.println("Entro blist.isEmpty()");
-            for (String palabra : blist) {
-                if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1)) {
-                    return false;
-                }
-            }
+        // System.out.println("Entro blist.isEmpty()");
+        for (String palabra : blist) {
+        if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1)) {
+        return false;
+        }
+        }
         }
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "findWords result: {0}", new Object[]{true});
