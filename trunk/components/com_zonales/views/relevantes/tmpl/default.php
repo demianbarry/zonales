@@ -41,12 +41,12 @@
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
-		    }
+                    }
                     else {
 
                         updatePosts(jsonObj,$('newPostsContainer'));
-                        if($('newPostsContainer').childNodes.length > 0){
-                            $('verNuevos').value= $('newPostsContainer').childNodes.length+' nuevos...';
+                        if($('newPostsContainer').getChildren('div').length > 0){
+                            $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
                             $('verNuevos').setStyle('display','block');
                         }
                         else{
@@ -67,7 +67,7 @@
     }
 
     function loadMorePost(){
-        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' + <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?>;
+        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' + <?php echo strlen($this->zonal_id) > 0 ? "'&q=zone:$this->zonal_id'" : "''"; ?> + '&fq=relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']';
         var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
@@ -268,7 +268,7 @@
             }
             var insertado = false;
             div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
-
+            
             //var counts = $$('span.zonales-count');
             var counts = component.getElements('span.zonales-count');
             if(typeOf(counts) == 'array') {
@@ -289,8 +289,8 @@
 
     function verNuevos(){
         $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
-	$$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'});
-	$('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
+        $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'});
+        $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
             var insertado = false;
             $('postsContainer').getElements('span.zonales-count').each(function(count){
                 if (parseInt(newCount.innerHTML) > parseInt(count.innerHTML) && !insertado) {
@@ -391,7 +391,7 @@
                 <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
             </td>
             <td>
-                                                Facebook
+                Facebook
             </td>
         </tr>
         <tr>
@@ -399,18 +399,20 @@
                 <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
             </td>
             <td>
-                                                Twitter
+                Twitter
             </td>
         </tr>
         <tr>
-    <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
-        <option value="24HOURS">Hoy</option>
-        <option value="7DAYS">Ultima Semana</option>
-        <option value="30DAYS">Ultimo Mes</option>
-        <option value="0">Historico</option>
-    </select>
-</tr>
-</tbody>
+            <td>
+                <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
+                    <option value="24HOURS">Hoy</option>
+                    <option value="7DAYS">Ultima Semana</option>
+                    <option value="30DAYS">Ultimo Mes</option>
+                    <option value="0">Historico</option>
+                </select>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
@@ -420,3 +422,4 @@
 <div>
     <input value="Ver Mas" onclick="loadMorePost();" type="button">
 </div>
+

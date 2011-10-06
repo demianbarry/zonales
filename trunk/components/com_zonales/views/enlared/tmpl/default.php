@@ -36,19 +36,16 @@
             },
             onComplete: function(jsonObj) {
                 // actualizar pagina
-		searching = false;
+                searching = false;
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
-		    }
+                    }	
                     else {
-
                         updatePosts(jsonObj,$('newPostsContainer'));
                         if($('newPostsContainer').childNodes.length > 0){
-                            $('verNuevos').value= $('newPostsContainer').childNodes.length+' nuevos...';
+                            $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
                             $('verNuevos').setStyle('display','block');
-
-
                         }
                         else{
                             $('verNuevos').setStyle('display','none');
@@ -120,15 +117,15 @@
         return text;
     }
     function verNuevos(){
-	$$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
-	$$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
+        $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
+        $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
             post.clone().injectTop($('postsContainer'));
         });
         //$('postsContainer').set({ style: 'background:#FFFFFF'});
         $('verNuevos').setStyle('display','none');
         $('newPostsContainer').empty();
-       // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
-
+        // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
+	
     }
 
 
@@ -146,8 +143,7 @@
         } else {
             firstIndexTime = json.response.docs.getLast().indexTime;
         }
-
-
+		
         json.response.docs.each(function(doc){
 
             var time = new Date(doc.indexTime).getTime();
@@ -371,7 +367,7 @@
                 <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
             </td>
             <td>
-						Facebook
+                Facebook
             </td>
         </tr>
         <tr>
@@ -379,7 +375,7 @@
                 <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
             </td>
             <td>
-						Twitter
+                Twitter
             </td>
         </tr>
     </tbody>
