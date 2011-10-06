@@ -36,18 +36,18 @@
             },
             onComplete: function(jsonObj) {
                 // actualizar pagina
-                searching = false;
+		searching = false;
                 if(typeof jsonObj != 'undefined'){
-                    if(first)
+                    if(first){
                         updatePosts(jsonObj,$('postsContainer'));
+		    }
                     else {
 
                         updatePosts(jsonObj,$('newPostsContainer'));
-                       
                         if($('newPostsContainer').childNodes.length > 0){
                             $('verNuevos').value= $('newPostsContainer').childNodes.length+' nuevos...';
                             $('verNuevos').setStyle('display','block');
-                          
+
 
                         }
                         else{
@@ -120,12 +120,15 @@
         return text;
     }
     function verNuevos(){
-        $$('div#newPostsContainer div.story-item').set({ style: 'background:red'}).reverse().each(function(post){
+	$$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
+	$$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
             post.clone().injectTop($('postsContainer'));
         });
-      //  $('postsContainer').setStyle('color', '#900');
+        //$('postsContainer').set({ style: 'background:#FFFFFF'});
         $('verNuevos').setStyle('display','none');
         $('newPostsContainer').empty();
+       // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
+
     }
 
 
