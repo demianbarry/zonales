@@ -1,0 +1,116 @@
+/* CSS del modulo 'Ecualizador de Interes' */
+
+.moduletable_formEq_bodyDiv {
+    background:none repeat scroll 0 0 #F8F8F1;
+    border-bottom:1px dotted #CCCCCC;
+    font-size:11px;
+    line-height:16px;
+    padding:10px;
+    text-align:justify;
+    margin-bottom: 10px;
+}
+
+.moduletable_formEq h1 {
+    display:block;
+    padding:10px;    
+    background-color: #009CCF; /*#D7EBFF;*/
+    font-family: Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#FFF;
+    font-weight:bold;
+    cursor: pointer;
+    text-transform:uppercase;
+}
+
+.moduletable_formEq .toggler_1 {
+    position: relative;
+    height: 20px;
+    padding: 5px 0 2px 25px;
+    font-weight: bold;
+    color: white;
+    background: #00506c url(../images/icon_accordion_closed.png) no-repeat;
+    cursor: pointer;
+    border-top: 1px solid #e6e2af;
+}
+
+.moduletable_formEq div .open {
+    background-image: url(../images/icon_accordion_open.png);
+}
+
+.moduletable_formEq p {
+    line-height:13px;
+    font-family:Tahoma;
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_formEq p strong{
+    font-weight:bold;
+}
+
+.moduletable_formEq .splitter, .moduletable_formEq #formEq .splitter{
+    display:block;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-top:1px solid #ECECD9;
+    border-bottom:1px solid #FFFFFF;
+}
+
+.moduletable_formEq label{
+    display:block;
+    margin-top:10px;
+    margin-bottom:4px;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_formEq label span{
+    color:#999999;
+}
+
+.moduletable_formEq #formEq input, .moduletable_formEq #formEq select, .moduletable_formEq #formEq textarea{
+    border:1px solid #CCCCCC;margin:0;padding:0;
+    font-family:"trebuchet MS";
+    font-size:11px;
+    color:#666666;
+}
+
+.moduletable_formEq ul {
+    margin-bottom:10px;
+}
+
+.moduletable_formEq .knob {
+    background: transparent none no-repeat scroll center;
+    background-image: url(../images/eq/eq_wheel_12_x_12.gif);
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+.moduletable_formEq .slider {
+    background: transparent url(../images/eq/eq_bar_194_x_1.gif) repeat-x scroll 0;
+    height: 16px;
+    width: 90%;
+    float: left;
+}
+
+.moduletable_formEq .slider-value {
+    float: right;
+    width: 10%;
+}
+
+.moduletable_formeq .slider-container {
+    margin: 5px 5px;
+}
+#formEq .slider-container p {
+	font-weight:bold;
+}
+
+#formEq .button{
+	background:#97bf0f;
+	color:#FFF !important;
+	border:none !important;
+	padding:2px !important;
+	font-weight:bold;
+}
