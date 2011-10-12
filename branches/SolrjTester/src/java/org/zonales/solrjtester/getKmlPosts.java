@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -26,15 +25,16 @@ import org.zonales.BaseService;
  *
  * @author nacho
  */
-public class SolrjTester extends BaseService {
+public class getKmlPosts extends BaseService {
 
     @Override
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) throws ServletException, IOException, Exception {
-        response.setContentType("text/javascript");
+        response.setContentType("text/xml");
         PrintWriter out = response.getWriter();
-        String text = request.getParameter("text");
-        Integer start = Integer.valueOf(request.getParameter("start"));
-        Integer cant = Integer.valueOf(request.getParameter("cant"));
+        Double minLat = Double.valueOf(request.getParameter("minLat"));
+        Double minLon = Double.valueOf(request.getParameter("minLon"));
+        Double maxLat = Double.valueOf(request.getParameter("maxLat"));
+        Double maxLon = Double.valueOf(request.getParameter("maxLon"));
         String url = "http://localhost:8080/solr-geo";
         UpdateResponse ur = new UpdateResponse();
 
@@ -54,37 +54,18 @@ public class SolrjTester extends BaseService {
             server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
             server.setParser(new XMLResponseParser()); // binary parser is used by default
 
-            /*SolrQuery query = new SolrQuery();
+            SolrQuery query = new SolrQuery();
             query.setQuery("*");
             query.setSortField("id", SolrQuery.ORDER.desc);
             query.setRows(1);
 
             QueryResponse rsp = server.query( query );
-            List<SolrGeoPost> maxIndexPost = rsp.getBeans(SolrGeoPost.class);
 
-            int index = maxIndexPost.size() > 0 ? maxIndexPost.get(0).getId() : 0;*/
-            double lat = 0.0;
-            double lon = 0.0;
-
-            SolrGeoPost geoPost;
-            Random generator = new Random();
-
-            for (int i = start; i < cant; i++) {
-                lat = (generator.nextDouble() * 0.20056511 + 34.533604) * -1;
-                lon = (generator.nextDouble() * 0.209427 + 58.327921) * -1;
-                String location[] = {String.valueOf(lat),String.valueOf(lon)};
-                geoPost = new SolrGeoPost(String.valueOf(i), text, location);
-                ur = server.addBean(geoPost);
-                out.print(ur);
-                server.commit();
-            }
-
-            out.print("Indexación correcta");
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Error en SolrjTester: {0} - {1}", new Object[]{ex, ur});
             out.print(ex);
         }
-
     }
+
 
 }

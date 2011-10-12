@@ -17,15 +17,25 @@ public class SolrGeoPost {
     protected String text;
 
     @Field
-    protected String[] location;
+    protected double latitude;
+
+    @Field
+    protected double longitude;
+
+    @Field
+    protected String localidad;
+
+    @Field
+    protected String provincia;
 
     public SolrGeoPost() {
     }
 
-    public SolrGeoPost(String id, String text, String[] location) {
+    public SolrGeoPost(String id, String text, double latitude, double longitude) {
         this.id = id;
         this.text = text;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getId() {
@@ -36,15 +46,21 @@ public class SolrGeoPost {
         this.id = id;
     }
 
-    public String[] getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(String[] location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getText() {
         return text;
@@ -53,6 +69,22 @@ public class SolrGeoPost {
     public void setText(String text) {
         this.text = text;
     }
-    
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
 
 }
