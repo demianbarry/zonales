@@ -2,11 +2,35 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>SolrjTester</display-name>
     <servlet>
-        <servlet-name>SolrjTester</servlet-name>
-        <servlet-class>org.zonales.solrjtester.SolrjTester</servlet-class>
+        <servlet-name>IndexData</servlet-name>
+        <servlet-class>org.zonales.solrjtester.indexTestData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetAlfaFromGeo</servlet-name>
+        <servlet-class>org.zonales.solrjtester.getAlfaFromGeoData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProvince</servlet-name>
+        <servlet-class>org.zonales.solrjtester.getProvince</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetPost</servlet-name>
+        <servlet-class>org.zonales.solrjtester.getPosts</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SolrjTester</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <servlet-name>IndexData</servlet-name>
+        <url-pattern>/indexData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAlfaFromGeo</servlet-name>
+        <url-pattern>/getAlfaFromGeo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProvince</servlet-name>
+        <url-pattern>/getProvince</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPost</servlet-name>
+        <url-pattern>/getPost</url-pattern>
     </servlet-mapping>
 </web-app>
