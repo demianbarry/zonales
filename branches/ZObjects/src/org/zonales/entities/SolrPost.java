@@ -202,6 +202,38 @@ public class SolrPost {
         this.zone = zone;
     }
 
+    public Double getFromUserLatitude() {
+        return fromUserLatitude;
+    }
+
+    public void setFromUserLatitude(Double fromUserLatitude) {
+        this.fromUserLatitude = fromUserLatitude;
+    }
+
+    public Double getFromUserLongitude() {
+        return fromUserLongitude;
+    }
+
+    public void setFromUserLongitude(Double fromUserLongitude) {
+        this.fromUserLongitude = fromUserLongitude;
+    }
+
+    public Double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    public void setSourceLatitude(Double sourceLatitude) {
+        this.sourceLatitude = sourceLatitude;
+    }
+
+    public Double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    public void setSourceLongitude(Double sourceLongitude) {
+        this.sourceLongitude = sourceLongitude;
+    }
+
     @Override
     public String toString() {
         return "SolrPost{" + "source=" + source + "id=" + id + "fromUserName=" + fromUserName + "fromUserCategory=" + fromUserCategory + "fromUserId=" + fromUserId + "fromUserUrl=" + fromUserUrl + "title=" + title + "text=" + text + "zone=" + zone + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';

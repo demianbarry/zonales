@@ -172,6 +172,14 @@ public class ZoneDao extends BaseDao {
         return getZone(query);
     }
 
+    public Zone retrieve(String name, String type) {
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Buscando zone por nombre y tipo: {0}, {1}", new Object[]{name, type});
+        BasicDBObject query = new BasicDBObject();
+        query.put("name", name);
+        query.put("type", type);
+        return getZone(query);
+    }
+
     private Zone getZone(BasicDBObject query) {
         DBObject resp;
 
@@ -200,11 +208,11 @@ public class ZoneDao extends BaseDao {
         }
 
         if (resp.get("centerLat") != null) {
-            zone.setCenterLat(Float.parseFloat((String) resp.get("centerLat")));
+            zone.setCenterLat((Double)resp.get("centerLat"));
         }
 
         if (resp.get("centerLon") != null) {
-            zone.setCenterLon(Float.parseFloat((String) resp.get("centerLon")));
+            zone.setCenterLon((Double) resp.get("centerLon"));
         }
 
         if (resp.get("zoomLevel") != null) {

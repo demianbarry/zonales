@@ -10,8 +10,8 @@ package org.zonales.tagsAndZones.objects;
  * @author nacho
  */
 public class Zone extends Tag {
-    private float centerLat;
-    private float centerLon;
+    private Double centerLat;
+    private Double centerLon;
     private int zoomLevel;
 
     public Zone() {
@@ -25,31 +25,31 @@ public class Zone extends Tag {
         super(id,name);
     }
 
-    public Zone(float ScenterLat, float centerLon, int zoomLevel) {
+    public Zone(Double ScenterLat, Double centerLon, int zoomLevel) {
         this.centerLat = ScenterLat;
         this.centerLon = centerLon;
         this.zoomLevel = zoomLevel;
     }
 
-    public Zone(int id, String name, Tag parent, Type type, String state, float ScenterLat, float centerLon, int zoomLevel) {
+    public Zone(int id, String name, Tag parent, Type type, String state, Double ScenterLat, Double centerLon, int zoomLevel) {
         this.centerLat = ScenterLat;
         this.centerLon = centerLon;
         this.zoomLevel = zoomLevel;
     }
 
-    public float getCenterLat() {
+    public Double getCenterLat() {
         return centerLat;
     }
 
-    public void setCenterLat(float ScenterLat) {
+    public void setCenterLat(Double ScenterLat) {
         this.centerLat = ScenterLat;
     }
 
-    public float getCenterLon() {
+    public Double getCenterLon() {
         return centerLon;
     }
 
-    public void setCenterLon(float centerLon) {
+    public void setCenterLon(Double centerLon) {
         this.centerLon = centerLon;
     }
 
@@ -59,6 +59,11 @@ public class Zone extends Tag {
 
     public void setZoomLevel(int zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + super.getName() + " - CenterLat: " + centerLat + " - CenterLon: " + centerLon;
     }
 
     
