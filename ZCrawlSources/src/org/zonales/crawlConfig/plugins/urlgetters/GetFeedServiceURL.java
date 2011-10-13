@@ -73,11 +73,11 @@ public class GetFeedServiceURL implements GetServiceURL {
             }
         }
 
-        if (metadata.getSourceLatitude() != null) {
+        if ((Double)metadata.getSourceLatitude() != null) {
              urlServlet += "&latitud="+ metadata.getSourceLatitude();
         }
 
-         if (metadata.getSourceLongitude()!= null) {
+         if ((Double)metadata.getSourceLongitude()!= null) {
              urlServlet += "&longitud="+ metadata.getSourceLongitude();
         }
         
