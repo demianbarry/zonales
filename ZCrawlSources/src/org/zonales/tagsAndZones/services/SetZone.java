@@ -73,7 +73,7 @@ public class SetZone extends BaseService {
         }
 
         if (centerlat != null && centerlon != null && zoomlevel != null) {
-            zone = new Zone(Float.parseFloat(centerlat), Float.parseFloat(centerlon), Integer.parseInt(zoomlevel));
+            zone = new Zone(Double.parseDouble(centerlat), Double.parseDouble(centerlon), Integer.parseInt(zoomlevel));
 
         } else {
             zone = new Zone(name);           
