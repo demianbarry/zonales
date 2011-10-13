@@ -61,8 +61,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
     String zone = null;
-    String latitud = null;
-    String longitud = null;
+    String latitud = "0.0";
+    String longitud = "0.0";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -232,6 +232,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 }
                 newEntrySolr.setSource(source);
                 newEntrySolr.setZone(zone);
+
+                newEntrySolr.setSourceLatitude(Double.parseDouble(latitud));
+                newEntrySolr.setSourceLongitude(Double.parseDouble(longitud));
                 // newEntry.setId(entry.getUri());
                 // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                 newEntrySolr.setId(entry.getGUID());
