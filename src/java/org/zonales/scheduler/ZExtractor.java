@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.entities.Posts;
-import org.zonales.errors.ZMessage;
 import org.zonales.errors.ZMessages;
 import org.zonales.helpers.ConnHelper;
 import org.zonales.scheduler.exceptions.ExtractException;
