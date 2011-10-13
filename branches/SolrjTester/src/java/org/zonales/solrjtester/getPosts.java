@@ -5,6 +5,7 @@
 
 package org.zonales.solrjtester;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -18,7 +19,11 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.zonales.BaseService;
+import org.zonales.entities.Post;
+import org.zonales.entities.SolrPost;
 
 /**
  *
@@ -54,20 +59,29 @@ public class getPosts extends BaseService {
 
             SolrQuery query = new SolrQuery();
             query.setQueryType("zonalesContent");
+            query.setFields("*");
             query.setRows(cant);
             query.setSortField(sortField, sortOrder.equals("desc") ? SolrQuery.ORDER.desc : SolrQuery.ORDER.asc);
-            query.setQuery("latitude:[-300.0 TO 300.0] AND longitude:[-300.0 TO 300.0]");
+            query.setQuery("fromUserLatitude:[-300.0 TO 300.0] AND fromUserLongitude:[-300.0 TO 300.0]");
 
             QueryResponse rsp = server.query( query );
 
-            List<SolrGeoPost> geoPosts = rsp.getBeans(SolrGeoPost.class);
+            SolrDocumentList postList = rsp.getResults();
 
-            for  (SolrGeoPost post : geoPosts) {
+            //List<SolrPost> geoPosts = rsp.getBeans(SolrPost.class);
+            String postJSON = "";
+            Gson postGSON = new Gson();
+            Post post;
+
+            for  (SolrDocument solrdoc : postList) {
+                    postJSON = (String) solrdoc.getFieldValue("verbatim");
+                    post = postGSON.fromJson(postJSON, Post.class);
+
                     ret += "<Placemark>"
-                            + "<name>" + post.getProvincia() + "</name>"
-                            + "<description>" + post.getText() + "</description>"
+                            + "<name>" + post.getId() + "</name>"
+                            + "<description>" + post.getSource() + "</description>"
                             + "<Point><coordinates>"
-                            + post.getLongitude() + "," + post.getLatitude()
+                            + post.getFromUser().getLongitude() + "," + post.getFromUser().getLatitude()
                             + "</coordinates></Point>"
                             + "</Placemark>";
             }
