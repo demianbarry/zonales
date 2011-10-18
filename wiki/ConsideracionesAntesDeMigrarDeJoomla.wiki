@@ -129,7 +129,8 @@ File		robots.txt
 
 File		web.config.txt      	
 
- * Estructura Directorio Joomla 1,7 Template*
+
+*Estructura de directorio Template Joomla 1.7*
 
 Folder		css/
 
@@ -153,7 +154,7 @@ File		index.php
 
 File		templateDetails.xml    	
 
- * Estructura Directorio Joomla 1,7 Component*
+*Estructura de directorio Componente Joomla 1.7*
 
 File		helloworld.xml 
 
