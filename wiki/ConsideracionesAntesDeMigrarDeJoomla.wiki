@@ -21,17 +21,21 @@ Joomla ha previsto una utilidad de migración, llamada jUpgrade, pero antes de e
 
 
 *Install JUpgrade*
+
 http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6
 http://extensions.joomla.org/extensions/migration-a-conversion/joomla-migration
 
 *Comparacion de menus de back Joomla 1,5 y 1,7*
+
 http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
 
 
 *Adaptar una extension Joomla 1,5 a 1,7*
+
 http://docs.joomla.org/Upgrading_a_Joomla_1.5_extension_to_Joomla_1.6#global_.24option_is_gone
 
 *Actualizacion template Joomla 1,5 a 1,7*
+
 http://docs.joomla.org/Upgrading_a_Joomla_1.5_template_to_Joomla_1.6
 http://community.joomla.org/blogs/community/1257-16-templates.html
 
@@ -80,104 +84,197 @@ http://community.joomla.org/blogs/community/1257-16-templates.html
  *Estructura Directorio Joomla 1,7*
 
 Folder		./
+
 Folder		administrator/
+
 Folder		cache/
+
 Folder		cli/
+
 Folder		components/
+
 Folder		images/
+
 Folder		includes/
+
 Folder		installation/
+
 Folder		language/
+
 Folder		libraries/
+
 Folder		logs/
+
 Folder		media/
+
 Folder		modules/
+
 Folder		plugins/
+
 Folder		templates/
+
 Folder		tmp/
+
 File		LICENSE.txt      	
+
 File		README.txt       	
+
 File		htaccess.txt      	
+
 File		index.php         	
+
 File		joomla.xml       	
+
 File		robots.txt          	
+
 File		web.config.txt      	
 
  *Estructura Directorio Joomla 1,7 Template*
 
 Folder		css/
+
 Folder		fonts/
+
 Folder		html/
+
 Folder		images/
+
 Folder		javascript/
+
 Folder		language/
+
 File		component.php           	
+
 File		error.php              	
+
 File		index.html             	
+
 File		index.php             	
+
 File		templateDetails.xml    	
 
  *Estructura Directorio Joomla 1,7 Component*
 
-{{{{File		helloworld.xml 
+File		helloworld.xml 
+
 File		script.php 
+
 Folder		site/index.html 
+
 Folder		site/helloworld.php 
+
 Folder		site/controller.php 
+
 Folder		site/views/index.html 
+
 Folder		site/views/helloworld/index.html 
+
 Folder		site/views/helloworld/view.html.php 
+
 Folder		site/views/helloworld/tmpl/index.html 
+
 Folder		site/views/helloworld/tmpl/default.php 
+
 Folder		site/views/helloworld/tmpl/default.xml 
+
 Folder		site/models/index.html 
+
 Folder		site/models/helloworld.php 
+
 Folder		site/language/index.html 
+
 Folder		site/language/en-GB/index.html 
+
 Folder		site/language/en-GB/en-GB.com_helloworld.ini 
+
 Folder		admin/index.html 
+
 Folder		admin/helloworld.php 
+
 Folder		admin/controller.php 
+
 Folder		admin/config.xml 
+
 Folder		admin/helpers/index.html 
+
 Folder		admin/helpers/helloworld.php 
+
 Folder		admin/controllers/index.html 
+
 Folder		admin/controllers/helloworld.php 
+
 Folder		admin/controllers/helloworlds.php 
+
 Folder		admin/models/index.html 
+
 Folder		admin/models/helloworld.php 
+
 Folder		admin/models/helloworlds.php 
+
 Folder		admin/models/fields/index.html 
+
 Folder		admin/models/fields/helloworld.php 
+
 Folder		admin/models/forms/index.html 
+
 Folder		admin/models/forms/helloworld.xml 
+
 Folder		admin/models/rules/index.html 
+
 Folder		admin/models/rules/greeting.php 
+
 Folder		admin/models/helloworld.php 
+
 Folder		admin/views/index.html 
+
 Folder		admin/views/helloworld/index.html 
+
 Folder		admin/views/helloworld/view.html.php 
+
 Folder		admin/views/helloworld/tmpl/index.html 
+
 Folder		admin/views/helloworld/tmpl/edit.php 
+
 Folder		admin/views/helloworlds/index.html 
+
 Folder		admin/views/helloworlds/view.html.php 
+
 Folder		admin/views/helloworlds/tmpl/index.html 
+
 Folder		admin/views/helloworlds/tmpl/default.php 
+
 Folder		admin/views/helloworlds/tmpl/default_head.php 
+
 Folder		admin/views/helloworlds/tmpl/default_body.php 
+
 Folder		admin/views/helloworlds/tmpl/default_foot.php 
+
 Folder		admin/tables/index.html 
+
 Folder		admin/tables/helloworld.php 
+
 Folder		admin/sql/index.html 
+
 Folder		admin/sql/install.mysql.utf8.sql 
+
 Folder		admin/sql/uninstall.mysql.utf8.sql 
+
 Folder		admin/language/index.html 
+
 Folder		admin/language/en-GB/index.html 
+
 Folder		admin/language/en-GB/en-GB.com_helloworld.ini 
+
 Folder		admin/language/en-GB/en-GB.com_helloworld.sys.ini 
+
 Folder		media/index.html 
+
 Folder		media/images/index.html 
+
 Folder		media/images/tux-16x16.png 
+
 Folder		media/images/tux-48x48.png 
+
 Folder		media/js/index.html 
+
 Folder		media/js/helloworld.js }}}
