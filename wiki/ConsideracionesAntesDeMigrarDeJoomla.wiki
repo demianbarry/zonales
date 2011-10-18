@@ -80,6 +80,7 @@ http://community.joomla.org/blogs/community/1257-16-templates.html
  *Estructura Directorio Joomla 1,7*
 
 Folder		./
+
 Folder		administrator/
 Folder		cache/
 Folder		cli/
