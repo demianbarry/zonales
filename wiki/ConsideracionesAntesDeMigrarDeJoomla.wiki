@@ -22,15 +22,13 @@ Joomla ha previsto una utilidad de migración, llamada jUpgrade, pero antes de e
 *¿Qué se necesita para migrar a Joomla 1.7? .*
 
 
+
+==*Links de Interes para la actualizacion*==
+
 *Install JUpgrade*
 
 http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6
 http://extensions.joomla.org/extensions/migration-a-conversion/joomla-migration
-
-*Comparacion de menus de back Joomla 1,5 y 1,7*
-
-http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
-
 
 *Adaptar una extension Joomla 1,5 a 1,7*
 
@@ -41,9 +39,13 @@ http://docs.joomla.org/Upgrading_a_Joomla_1.5_extension_to_Joomla_1.6#global_.24
 http://docs.joomla.org/Upgrading_a_Joomla_1.5_template_to_Joomla_1.6
 http://community.joomla.org/blogs/community/1257-16-templates.html
 
+*Comparacion de menus de back Joomla 1,5 y 1,7*
+
+http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
 
 
-*Como obtener parametros de plugins, modulos, componentes y templates en Joomla 1,7*
+
+==*Como obtener parametros de plugins, modulos, componentes y templates en Joomla 1,7*==
 
 *Plugin parameters from inside a plugin*
    $param = $this->params->get('paramName', defaultValue);
