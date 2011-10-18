@@ -80,7 +80,6 @@ http://community.joomla.org/blogs/community/1257-16-templates.html
  *Estructura Directorio Joomla 1,7*
 
 Folder		./
-
 Folder		administrator/
 Folder		cache/
 Folder		cli/
@@ -120,7 +119,7 @@ File		templateDetails.xml
 
  *Estructura Directorio Joomla 1,7 Component*
 
-File		helloworld.xml 
+{{{{File		helloworld.xml 
 File		script.php 
 Folder		site/index.html 
 Folder		site/helloworld.php 
@@ -181,4 +180,4 @@ Folder		media/images/index.html
 Folder		media/images/tux-16x16.png 
 Folder		media/images/tux-48x48.png 
 Folder		media/js/index.html 
-Folder		media/js/helloworld.js 
+Folder		media/js/helloworld.js }}}
