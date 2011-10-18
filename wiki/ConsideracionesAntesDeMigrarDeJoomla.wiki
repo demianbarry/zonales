@@ -85,7 +85,7 @@ http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
 
 
 
-*Estructura de directorio Joomla 1.7*
+===*Estructura de directorio Joomla 1.7*===
 
 Folder		./
 
