@@ -11,7 +11,7 @@
       * [autenticacion_de_usuarios ZLogin]
     * [Joomla]
       * [Dependencias Dependencias]
-      * [Consideraciones Antes De Migrar De Joomla]  
+      * [ConsideracionesAntesDeMigrarDeJoomla]  
     * [Crawling]
       * [Nutch Nutch]
       * [NutchSteps WF de Nutch paso a paso]
