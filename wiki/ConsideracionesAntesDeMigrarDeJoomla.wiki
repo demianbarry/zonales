@@ -1,10 +1,12 @@
 =Consideraciones antes de migrar a Joomla 1,7=
 
 
-Requerimientos Joomla 1,7
+*Requerimientos Joomla 1,7*
 
 Apache: v2.x or Microsoft IIS: v7 
+
 PHP: v5.2.4 + 
+
 MySQL: v5.0.4+ 
 
 Joomla ha previsto una utilidad de migración, llamada jUpgrade, pero antes de empezar, hay algunas cosas que revisar y / o pensar acerca de:
@@ -81,7 +83,7 @@ http://community.joomla.org/blogs/community/1257-16-templates.html
 
 
 
- *Estructura Directorio Joomla 1,7*
+*Estructura de directorio Joomla 1.7*
 
 Folder		./
 
