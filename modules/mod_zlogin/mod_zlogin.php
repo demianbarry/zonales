@@ -39,8 +39,8 @@ $elementsHTML = array();
 // esto es en caso de que se desee registrar un nuevo alias
 $providerid = JRequest::getInt('providerid', '0', 'method');
 $externalid = JRequest::getVar('externalid', '', 'method', 'string');
-$aliasemail = JRequest::getVar('email', '', 'method', 'string');
-$aliaslabel = JRequest::getVar('label', '', 'method', 'string');
+//$aliasemail = JRequest::getVar('email', '', 'method', 'string');
+//$aliaslabel = JRequest::getVar('label', '', 'method', 'string');
 
 // parsea e interpreta la entrada requerida por cada proveedor
 // se lograra crear los elementos html necesarios de entrada

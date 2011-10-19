@@ -6,9 +6,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <script type="text/javascript" defer="defer">
 	// <![CDATA[
 	window.addEvent('domready', function(){
-
-		// hide all submenu links
-		$('sublinks').getElements('ul').setStyle('display', 'none');
+            
 		// show by default the first submenu
 		$('s0_m').setStyle('display', 'block');
 
@@ -16,6 +14,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 			el.getElement('a').addEvent('mouseover', function(subLinkId){
 				var layer = subLinkId+"_m";
 				$('sublinks').getElements('ul').setStyle('display', 'none');
+                                if($(layer).getChildren('li').length > 0){
+                                    $(layer).getParent().getParent().setStyle('height','35px');
+                                } else {
+                                    $(layer).getParent().getParent().setStyle('height','18px');
+                                }
 				$(layer).setStyle('display', 'block');
 			}.pass(el.id));
 		});
@@ -37,7 +40,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	</ul>
 </div>
 <div id="sublinks">
-	<ul id="s0_m"><li /></ul>
+	<ul id="s0_m"></ul>
         <?php if (isset ($eq->fields)): ?>
 	<?php foreach ($eq->fields as $field): ?>
 	<ul id="s<?php echo $field->id; ?>_m">

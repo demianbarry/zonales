@@ -1,9 +1,9 @@
 <?php
 /**
- * @version	$Id$
- * @package	Zonales
- * @copyright	Copyright (C) 2009 Mediabit. All rights reserved.
- * @license	GNU/GPL, see LICENSE.php
+ * @version     $Id$
+ * @package     Zonales
+ * @copyright   Copyright (C) 2009 Mediabit. All rights reserved.
+ * @license     GNU/GPL, see LICENSE.php
  *
  * Zonales is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -11,17 +11,16 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die ( 'Restricted Access' );
+defined('_JEXEC') or die('Restricted Access');
 ?>
 
-    <div>
-        <?php echo $htmlMessage ?>
-    </div>
+<div>
+    <?php echo $htmlMessage ?>
+</div>
 <!-- no tocar este display -->
 <div id="zlogin" style="display: <?php echo ($userislogged) ? 'none' : 'block' ?>; float: left;" class="moduletable_zlogin">
-    <h1><?php echo $module->title; ?></h1>    
+    <h1><?php echo $module->title; ?></h1>
     <form id="formzlogin" name="formzlogin" action="<?php echo $routeAction ?>" method="post">
 
         <div style="margin-left:10px; margin-right:10px; margin-bottom: 10px">
@@ -29,33 +28,36 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <p class="connect-message"><?php echo $connectMessage ?></p>
 
             <!-- aqui va el selector de proveedores -->
-            <select class="providers" id="formzlogin_selprovider" name="selprovider" onchange="setElements();">
+            <select class="providers" id="formzlogin_selprovider" name="selprovider" onchange="setElements();" style="display:none;">
                 <?php foreach ($providerslist as $provider): ?>
                     <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                <option value="" style="background-image: url(<?php if(isset($provider->icon_url)) echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
-                        class="providers-option" <?php if($provider->name == "Zonales") echo "selected='selected'" ?>>
-                                    <?php echo $provider->name ?>
-                </option>
+                        <option value="" style="background-image: url(<?php if (isset($provider->icon_url))
+                    echo $provider->icon_url ?>); background-repeat: no-repeat; background-position: right;"
+                                class="providers-option" <?php if ($provider->name == "Zonales")
+                    echo "selected='selected'" ?>>
+                        <?php echo $provider->name ?>
+                        </option>
                     <?php endif ?>
-                <?php endforeach ?>
+<?php endforeach ?>
             </select>
 
             <!-- aqui va el modulo o el boton de conexion -->
             <?php foreach ($providerslist as $provider): ?>
                 <?php if (!(!$user->guest && $provider->groupname == 'Guest')): ?>
-                    <?php foreach ($inputData[$provider->name] as $inputElement):
+                    <?php
+                    foreach ($inputData[$provider->name] as $inputElement):
                         $name = $inputElement['name'];
                         $type = $inputElement['type'];
                         $message = $inputElement['message'];
                         $callback = $inputElement['callback'];
                         $value = '';
-                        if (!isset ($elementsHTML[$inputElement['name']]) && strlen($inputElement['name']) > 0) : ?>
-            <!-- no tocar este display -->
-            <div style="display: none; margin-top: 10px;" id="formzlogin_<?php echo $inputElement['name']?>set">
+                        if (!isset($elementsHTML[$inputElement['name']]) && strlen($inputElement['name']) > 0) :
+                            ?>
+                            <!-- no tocar este display -->
+                            <div style="display: none; margin-top: 10px;" id="formzlogin_<?php echo $inputElement['name'] ?>set">
                                 <?php
-
                                 $elementsHTML[$name] = 1;
-                                $value = sprintf(JText::_($message),$provider->name);
+                                $value = sprintf(JText::_($message), $provider->name);
                                 $show = 'none';
 
                                 if ($type != 'button') {
@@ -64,27 +66,27 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                                     $show = 'block';
                                 }
 
-                                echo '<input type="'. $type .'" name="'. $name . '" id="formzlogin_'. $name .'" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="'. $callback .'" value="'.$value.'"/>';
-
+                                echo '<input type="' . $type . '" name="' . $name . '" id="formzlogin_' . $name . '" onfocus="onFocus(this);" onblur="onBlur(this);" onclick="' . $callback . '" value="' . $value . '"/>';
                                 ?>
 
-                                <?php if (strcasecmp($inputElement['name'], 'password') == 0): ?>
-                                <div id="formzlogin_useroptions" >
-                                    <a id="forgotpass" href="<?php echo $routeReset ?>"><?php echo $forgotPasswordMessage ?></a>
-                                    <a id="forgotusername" href="<?php echo $routeRemind ?>"><?php echo $forgotUsernameMessage ?></a>
+                            </div>
+                <?php if (strcasecmp($inputElement['name'], 'password') == 0): ?>
+                                <div id="formzlogin_useroptions">
+                                    <a id="forgotpass" href="<?php echo $routeReset ?>"><?php echo $forgotPasswordMessage ?></a> <br/>
+                                    <a id="forgotusername" href="<?php echo $routeRemind ?>"><?php echo $forgotUsernameMessage ?></a> <br/>
                                     <?php if ($allowRegistration) : ?>
-                                    <a id="registeruser" href="<?php echo $routeRegister; ?>"><?php echo $registerMessage ?></a>
-                                    <?php endif; ?>
-                                </div>
+                                        <a id="registeruser" href="<?php echo $routeRegister; ?>"><?php echo $registerMessage ?></a> <br/>
                                 <?php endif; ?>
-            </div>
+                                </div>
+                            <?php endif; ?>
+
                         <?php endif ?>
                     <?php endforeach ?>
 
                 <?php endif ?>
-            <?php endforeach ?>
-            <input id="formzlogin_submit" type="submit" name="confirm" class="button" value="<?php echo $providerConnectMessage ?>" />
-        </div>        
+<?php endforeach ?>
+            <input id="formzlogin_submit" type="submit" name="Submit" class="button" value="<?php echo $providerConnectMessage ?>" />
+        </div>
 
         <fieldset class="input">
             <input name="option" type="hidden" value="com_user" />
@@ -92,10 +94,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <input name="return" type="hidden" value="<?php echo base64_encode(JRoute::_('index.php')) ?>" />
             <input name="providerid" type="hidden" value=<?php echo $providerid ?> />
             <input name="externalid" type="hidden"  value="<?php echo urlencode($externalid) ?>" />
-            <input name="email" type="hidden"  value="<?php echo $aliasemail ?>" />
-            <input name="label" type="hidden"  value="<?php echo $aliaslabel ?>" />
             <input name="provider" type="hidden" value="OpenID" id="formzlogin_provider"/>
-            <?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHTML::_('form.token'); ?>
         </fieldset>
     </form>
 </div>
@@ -122,29 +122,31 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
         $('formzlogin_submit').setStyle('display', 'none');
 
 
-<?php foreach ($providerslist as $provider) {
+<?php
+foreach ($providerslist as $provider) {
     echo "providers.push({
             name: '$provider->name',
             inputs: [";
     $first = true;
-    foreach($inputData[$provider->name] as $input) {
+    foreach ($inputData[$provider->name] as $input) {
         if (!(!$user->guest && $provider->groupname == 'Guest')) {
-            if($first) {
+            if ($first) {
                 $first = false;
             } else {
                 echo ',';
             }
             echo "  {
-                    type: '".$input['type']."',
-                    name: '".$input['name']."',
-                    message: '".JText::_($input['message'])."',
-                    callback: '".$input['callback']."'
+                    type: '" . $input['type'] . "',
+                    name: '" . $input['name'] . "',
+                    message: '" . JText::_($input['message']) . "',
+                    callback: '" . $input['callback'] . "'
                  }";
         }
     }
     echo "]";
     echo "});";
-} ?>
+}
+?>
         setElements();
         setDefaultProvider();
     });
@@ -190,21 +192,20 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
         setSelectedIndex();
         var provider = providers[index];
         $('formzlogin_provider').value=provider.name;
-        $('formzlogin_submit').value=sprintf(<?php echo "'$buttonMessage'"?>,provider.name);
+        $('formzlogin_submit').value=sprintf(<?php echo "'$buttonMessage'" ?>,provider.name);
 
         var elements = provider.inputs;
 <?php
 foreach ($providerslist as $prov) {
     foreach ($inputData[$prov->name] as $input) {
         if (!(!$user->guest && $prov->groupname == 'Guest')) {
-            if (!isset ($elements[$input['name']]) && strlen($input['name']) > 0) {
+            if (!isset($elements[$input['name']]) && strlen($input['name']) > 0) {
                 $elements[$input['name']] = 1;
-                echo '$(\'formzlogin_'. $input['name'] . 'set\').setStyle(\'display\',\'none\');';
+                echo '$(\'formzlogin_' . $input['name'] . 'set\').setStyle(\'display\',\'none\');';
             }
         }
     }
 }
-
 ?>
         $('formzlogin_submit').setStyle('display', index != 0 ? 'block' : 'none');
         for(i=0 ; i < elements.length ; i++){
@@ -223,5 +224,5 @@ foreach ($providerslist as $prov) {
         }
 
     }
--->
+    -->
 </script>
