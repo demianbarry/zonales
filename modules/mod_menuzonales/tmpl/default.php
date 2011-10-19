@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
         </ul>
         <ul id="s45_m">
-            <li><a href="">Zonales Activos</a></li>
+            <li><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos">Zonales Activos</a></li>
             <li><a href="">Contenido Relevante</a></li>
             <li><a href="">Contenido Nuevo</a></li>
             <li><a href="">Contenido Cercano</a></li>
