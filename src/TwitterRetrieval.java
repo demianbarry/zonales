@@ -51,6 +51,9 @@ import org.zonales.entities.User;
  */
 public class TwitterRetrieval extends HttpServlet {
 
+    String[]  latitud, longitud, usuarios;
+    String temp;
+
     @Override
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -80,9 +83,34 @@ public class TwitterRetrieval extends HttpServlet {
 
             String zone = request.getParameter("zone");
 
+            String users = request.getParameter("users");
+
+
             String[] tagsArray = null;
             if (tags != null) {
                 tagsArray = tags.split(",");
+            }
+
+            String[] useArray = null;
+            
+            if (users != null){
+                useArray = users.split(",");
+                int count = useArray.length;
+                usuarios= new String[count];
+                latitud= new String[count];
+                longitud= new String[count];
+                for (int i= 0; i < useArray.length; i++){
+                    temp = useArray[i];
+                    if(temp != null){
+                        int hit1=temp.indexOf("[");
+                        int hit2= temp.indexOf(";");
+                        int hit3=temp.indexOf("]");
+
+                        usuarios[i]=temp.substring(0,hit1);
+                        latitud[i]=temp.substring(hit1+1,hit2);
+                        longitud[i]=temp.substring(hit2+1,hit3);
+                    }
+                }
             }
 
             QueryResult result;
@@ -114,11 +142,17 @@ public class TwitterRetrieval extends HttpServlet {
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
-                solrPost.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
+                User usersolr= new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource()));
-
+                        tweet.getSource());
+                for(int i =0; i < usuarios.length;i++){
+                    if(tweet.getFromUser().equals(usuarios[i])){
+                        usersolr.setLatitude(Double.parseDouble(latitud[i]));
+                        usersolr.setLongitude(Double.parseDouble(longitud[i]));
+                    }
+                }
+                solrPost.setFromUser(usersolr);
                 if (tweet.getToUser() != null) {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
                             tweet.getToUser(),
@@ -137,7 +171,8 @@ public class TwitterRetrieval extends HttpServlet {
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
-                links.addAll(getLinks(tweet.getText()));
+                if (tweet.getText() != null && getLinks(tweet.getText()) != null)
+                    links.addAll(getLinks(tweet.getText()));
 
                 if (solrPost.getLinks() == null) {
                     solrPost.setLinks(new ArrayList<LinkType>());
@@ -155,10 +190,17 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
-                post.setFromUser(new User(String.valueOf(tweet.getFromUserId()),
+                User user= new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource()));
+                        tweet.getSource());
+                for(int i =0; i < usuarios.length;i++){
+                    if(tweet.getFromUser().equals(usuarios[i])){
+                        user.setLatitude(Double.parseDouble(latitud[i]));
+                        user.setLongitude(Double.parseDouble(longitud[i]));
+                    }
+                }
+                post.setFromUser(user);
 
                 if (tweet.getToUser() != null) {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
@@ -187,6 +229,7 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 postsList.add(post);
+                
             }
             PostsType posts = new PostsType(postsList);
             Gson gson = new Gson();
