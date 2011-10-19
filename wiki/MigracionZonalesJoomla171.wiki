@@ -1,0 +1,15 @@
+#summary Proceso de migración a Joomla 1.7.1
+
+= Introducción =
+
+Con el objetivo de estabilizar la instalación de Joomla en producción se comienza el proceso de migración a Joomla 1.7.1
+
+= Proceso =
+
+El proceso se desarrolla ordenadamente partiendo de una instalación fresca de Joomla 1.7.1 y agregando las extensiones, librerías y demás componentes necesarios.
+
+== Instalación ==
+
+Previo a la instalación de Joomla 1.7.1 se realizó una copia de la instancia de *test* de Zonales. 
+A continuación se utilizó la extensión [http://redcomponent.com/jupgrade jUpgrade] para llevar los componentes _core_ de esta nueva copia a la nueva versión pero sobre todo para tener una versión actualizada de los datos de la base de datos.
+Finalmente, se descargó el paquete full de Joomla 1.7.1, se limpió la carpeta de la instancia nueva, se descomprimió Joomla 1.7.1 en dicha carpeta y se realizó el proceso estándar de instalación.
