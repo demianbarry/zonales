@@ -9,12 +9,15 @@
             <web-module-libraries>
                 <library dirs="200">
                     <file>${libs.Gson.classpath}</file>
-                </library>
-                <library dirs="200">
-                    <file>${libs.Twitter4J.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.jaxb.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.twitter4j-core-2.2.2.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${reference.ZObjects.jar}</file>
