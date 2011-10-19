@@ -17,7 +17,7 @@ Joomla ha previsto una utilidad de migración, llamada jUpgrade, pero antes de e
 
 *¿Se han modificado los archivos del Core?* Cualquier cambio que se haya hecho a los archivos del núcleo de Joomla se perderá.
 
-*¿Existe una plantilla de Joomla 1.7 compatible disponible ?* Hay que tener en cuenta que aunque jUpgrade no es capaz de actualizar las plantillas.
+*¿Existe una plantilla de Joomla 1.7 compatible disponible ?* Hay que tener en cuenta que aun jUpgrade no es capaz de actualizar las plantillas.
 
 *¿Qué se necesita para migrar a Joomla 1.7? .*
 
