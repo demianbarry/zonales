@@ -27,6 +27,7 @@
       * [Infraestructura Infraestructura]
       * [Joomla16 Joomla 1.6]
       * [ConsideracionesAntesDeMigrarDeJoomla Consideraciones a tener en cuenta para migrar a Joomla 1.7]      
+      * [MigracionZonalesJoomla171  Migración de Zonales a Joomla! 1.7.1]
       * [Creacion_de_instaladores_joomla Creación de Instaladores Joomla]
       * [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
       * [CrearNuevaInstanciaMongo Crear una nueva instancia de Mongo]
