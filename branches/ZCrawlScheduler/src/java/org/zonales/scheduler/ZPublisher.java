@@ -48,16 +48,19 @@ public class ZPublisher implements Job {
             timeout = jobDetail.getJobDataMap().getInt("timeout");
             ZExtractor extractor = new ZExtractor();
             Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Sali de extractor");
 
             Long ultimoHitDeExtraccion = 0L;
             // Si la fuente es Twitter, el since_id es el mayor id de tweet recuperado
             if("Twitter".equalsIgnoreCase(((ZCrawling)(new Gson()).fromJson(metadata, ZCrawling.class)).getFuente())) {
                 for(Post post : posts.getPost()){
-                    ultimoHitDeExtraccion = Integer.valueOf(post.getId()) > ultimoHitDeExtraccion ? Integer.valueOf(post.getId()) : ultimoHitDeExtraccion;
+                    ultimoHitDeExtraccion = Long.valueOf(post.getId()) > ultimoHitDeExtraccion ? Long.valueOf(post.getId()) : ultimoHitDeExtraccion;
                 }
             } else {
                 ultimoHitDeExtraccion = new Date().getTime();   
             }
+
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts size: {0}", posts.getPost().size());
              
             String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&newcod=" + ZMessages.SUCCESS.getCod() + "&newmsg=" + ZMessages.SUCCESS.getMsg();
 
@@ -144,6 +147,8 @@ public class ZPublisher implements Job {
                 Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
             }
             
+        } catch (Exception ex1) {
+            Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
         }
     }
 
