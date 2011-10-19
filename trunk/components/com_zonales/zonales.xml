@@ -38,6 +38,11 @@
     <filename>views/enlared/tmpl/index.html</filename>    
     <filename>views/enlared/tmpl/default.php</filename>
 
+    <filename>views/geoactivos/view.html.php</filename>
+    <filename>views/geoactivos/index.html</filename>
+    <filename>views/geoactivos/tmpl/index.html</filename>
+    <filename>views/geoactivos/tmpl/default.php</filename>
+
     <filename>views/relevantes/view.html.php</filename>
     <filename>views/relevantes/index.html</filename>
     <filename>views/relevantes/tmpl/index.html</filename>

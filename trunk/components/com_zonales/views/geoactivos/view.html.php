@@ -13,14 +13,16 @@ jimport('joomla.application.component.view');
  * @subpackage	Users
  * @since	1.0
  */
-class ZonalesViewEnlared extends JView {
+class ZonalesViewGeoactivos extends JView {
 
     function display($tpl = null) {
         global $mainframe, $option;
 
         $document = &JFactory::getDocument();
         //$document->addScript( '/media/system/js/viewutils.js');
-        $document->addScript('/media/system/js/mootools1.js');
+        //$document->addScript('/media/system/js/mootools1.js');
+        $document->addScript('/media/system/js/OpenLayers.js');
+        $document->addScript('http://maps.google.com/maps/api/js?sensor=false');
         //$document->addStyleSheet('/media/system/css/global.css');
         //$document->addStyleSheet('/media/system/css/content.css');
         $document->addStyleSheet('/media/system/css/ZoneStyle.css');
