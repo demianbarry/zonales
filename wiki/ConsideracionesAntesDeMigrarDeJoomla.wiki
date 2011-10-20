@@ -84,6 +84,18 @@ http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
    $param = $template->params->get('paramName', defaultValue);
 
 
+==Nuevo estilo de seteo de parametros para modulos, componentes:==
+
+config.xml
+
+<config>
+<fields name="params">
+<fieldset name="basic" label="Module Parameters" description="Module settings">
+  <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="Module class suffix"></field>
+  <field name="limit" type="text" default="5" label="# of items to show" description="display a certain number of items"></field>
+  </fieldset>
+</fields>
+</config>
 
 ===*Estructura de directorio Joomla 1.7*===
 
