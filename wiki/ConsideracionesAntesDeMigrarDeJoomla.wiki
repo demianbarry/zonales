@@ -97,6 +97,62 @@ config.xml
 </fields>
 </config>
 
+==Archivos de plugin en lugares diferentes==
+
+Joomla 1.7 ahora crea una estructura de jerarquía diferente para los plugins El cambio ha sido que ahora los plugins se encuentran en un subdirectorio adicional.
+
+ *Joomla 1.5 example location*
+
+JPATH_SITE . DS . 'plugins' . DS . 'authentication' . DS . 'example.php';
+
+*    Joomla 1.6 example locatio*n
+
+JPATH_SITE . DS . 'plugins' . DS . 'authentication' . DS . 'example'. DS . 'example.php';
+
+==Eventos renombrados==
+
+Un gran número de eventos de Joomla 1.5 han cambiado de nombre. Aquí está la lista de eventos de cambiar el nombre.
+
+onContentAfterSave
+onContentAfterTitle
+onContentAfterDisplay
+onContentBeforeDisplay
+onContentBeforeSave
+onContentSearch
+onContentSearchAreas
+onUserAuthenticate
+onUserAfterDelete
+onUserAfterSave
+onUserBeforeDelete
+onUserBeforeSave
+onUserLogin
+onUserLogout
+
+En Joomla 1.7 se llaman:
+
+onLoginUser
+onLogoutUser
+onAfterDeleteUser
+onBeforeStoreUser
+onUserAfterSave
+onAfterStoreUser
+
+etc..
+
+==Cambios en las llamadas JavaScript==
+
+joomla 1.5
+
+function submitbutton(pressbutton) {}
+
+
+joomla 1.7
+
+Joomla.submitbutton = function(pressbutton) {}
+
+
+
+
 ===*Estructura de directorio Joomla 1.7*===
 
 Folder		./
