@@ -59,7 +59,7 @@
 	         projection: new OpenLayers.Projection('EPSG:4326'),
 	         protocol: new OpenLayers.Protocol.HTTP({
 	             url: 'http://localhost:8080/ZCrawlGeoExtractor/getPost',
-	             params: {'cant':'3000', 'sortField':'indexTime', 'sortOrder':'desc'},
+	             params: {'cant':'10000', 'sortField':'indexTime', 'sortOrder':'desc',  'since':'NOW-24HOURS'},
 	             format: new OpenLayers.Format.KML({
 	                 extractAttributes: true, extractStyles:true
 	             })
@@ -157,7 +157,7 @@
 	                 + "<br>";
 	         }
 
-	         popupContentHTML += "<br><img src='ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
+	         popupContentHTML += "<br><img src='/images/ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
 
 				//Armo el popup
 	         var lonlat = new OpenLayers.LonLat(event.feature.geometry.x,event.feature.geometry.y);
@@ -210,6 +210,10 @@
                     }
 	     }
 
+             function on_features_added(event){
+                 document.getElementById('ajaxLoader').style.display = "none";
+	     }
+
 		  //on unselect function
 	     /*function on_dblclick_feature(event){
                  var popupContentHTML = "<br>Prueba</br>";
@@ -219,11 +223,13 @@
 
 	     vector_layer.events.register('featureselected', this, on_select_feature);
 	     vector_layer.events.register('featureunselected', this, on_unselect_feature);
+             vector_layer.events.register('featuresadded', this, on_features_added);
 	     //vector_layer.events.register('dblclick', this, on_dblclick_feature);
 
 	     if(!map.getCenter()){
 	         map.zoomToMaxExtent();
 	     }
+
 
 	     //-------------------------------
 	     //HTML Related
@@ -231,25 +237,27 @@
 	     //Function to be called that updates vector layer when submit
 	     //  is clicked
 	     function update_vector_layer(){
-	         //Change URL based on input tags
-	         vector_layer.protocol.options.params['cant'] = document.getElementById('input_cant').value
-	         vector_layer.protocol.options.params['sortfield'] = document.getElementById('input_field').value
-				vector_layer.protocol.options.params['sortOrder'] = document.getElementById('input_order').value
-
-	         //Refresh the layer with the new params
+                 document.getElementById('ajaxLoader').style.display = "inline";
+                 vector_layer.protocol.options.params['since'] = document.getElementById('tempoSelect').value;
 	         vector_layer.refresh();
 
-	         //Lastly, clear out the div that shows photo info
-	         document.getElementById('photo_info_wrapper').innerHTML = '';
 	     }
 
 	     //Add events to HTML input element
-	     /*document.getElementById('input_submit').addEventListener(
-	         'click',
+	     document.getElementById('tempoSelect').addEventListener(
+	         'change',
 	         update_vector_layer,
-	         false);+*/
+	         false);
 
 	 }
     //-->
 </script>
-<div id='map_element' style="width: 100%; height: 650px"></div>
+<label>Seleccione temporalidad:</label>
+<select id="tempoSelect" class="tempoclass">
+                    <option value="NOW-24HOURS">Hoy</option>
+                    <option value="NOW-7DAYS">Ultima Semana</option>
+                    <option value="NOW-30DAYS">Ultimo Mes</option>
+                    <option value="0">Historico</option>
+                </select>
+<img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: none"/>
+<div id='map_element' style="width: 96%; height: 650px; border: solid 9px #F1F2F3;"></div>
