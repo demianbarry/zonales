@@ -35,8 +35,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 		<li id="s<?php echo $field->id; ?>"><a href="<?php echo($field->link ? $field->link : '#'); ?>"><?php echo $field->label; ?></a></li>
 		<?php endforeach; ?>
                 <?php endif;?>
-                <li id="s30"><a><?php echo JText::_('En la Red'); ?></a></li>
-                <li id="s45"><a><?php echo JText::_('Mapa'); ?></a></li>
+                <li id="s30"><a href="/index.php?option=com_zonales&task=zonal&view=enlared"><?php echo JText::_('En la Red'); ?></a></li>
+                <li id="s45"><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos"><?php echo JText::_('Mapa'); ?></a></li>
 	</ul>
 </div>
 <div id="sublinks">
@@ -54,11 +54,11 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
             <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
         </ul>
-        <ul id="s45_m">
+        <!--<ul id="s45_m">
             <li><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos">Zonales Activos</a></li>
             <li><a href="">Contenido Relevante</a></li>
             <li><a href="">Contenido Nuevo</a></li>
             <li><a href="">Contenido Cercano</a></li>
-        </ul>
+        </ul>-->
 </div>
 <!-- glassmenu -->

@@ -132,12 +132,12 @@ include ('nocache.php');
 		
 		<div id="wrapper-content">
 			 <div id="equalizer-bt">
-								<div id="eq-link">
-										<img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/eq.png" alt="Ecualizador" />
-								</div>
-								<div id="equalizer" style="opacity:0;">
- 								   <jdoc:include type="modules" name="equalizer" />
-								</div>
+                                <div id="eq-link">
+                                                <img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/images/eq.png" alt="Ecualizador" />
+                                </div>
+                                <div id="equalizer" style="opacity:0;">
+                                   <jdoc:include type="modules" name="equalizer" />
+                                </div>
 				<script type="text/javascript">
 				var equalizer_fx=new Fx.Styles($('equalizer-bt'), {duration: 1000});
 				var module_fx=new Fx.Styles($('equalizer'), {duration: 1000});

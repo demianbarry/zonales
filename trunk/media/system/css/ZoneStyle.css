@@ -220,7 +220,7 @@ h1.big-title {
 }
 .thumb img {
     display: block;
-    width: 100%
+	width: 100%
 }
 .thumb-xs {
     height: 24px;
@@ -269,7 +269,7 @@ h1.big-title {
     width: 61px;
 }
 .story-item .thumb {
-    width: 100px;
+	width: 100px;
     border-width: 4px;
 }
 .rounded-img {
@@ -1890,15 +1890,15 @@ label {
     cursor: pointer;
     height: 68px;
     position: relative;
-    text-align: center;    
+    text-align: center;
 }
 .zonales-count-wrapper {
     color: #716B14;
     display: block;
     font-size: 18px;
     font-weight: bold;
-    height: 18px;
-    padding: 12px 0 9px;
+    height: 80px;
+    padding: 0px;
     position: relative;
 }
 .zonales-count-wrapper.big-count {
@@ -1925,14 +1925,14 @@ label {
     height: 19px;
     overflow: hidden;
     position: relative;
-    text-align: center;
+	text-align: center;
 }
 .zonales-count span {
     left: 0;
     letter-spacing: -0.035em;
     position: absolute;
     text-align: center;
-    top: 0;    
+    top: 0;
 }
 .zonales-count .new-count {
     opacity: 0;
@@ -2226,7 +2226,7 @@ label {
     margin-bottom: 7px;
 }
 .story-item-title {
-    float: left;
+    /*float: left;*/
     font-size: 1.33333em;
     line-height: 1.125em;
     margin-bottom: 4px;
@@ -4297,54 +4297,92 @@ html body.hide-uprrail1 .uprrail1 * {
 }
 
 .loading {
-    background-image: url('loading.gif');
-    background-repeat: no-repeat;
+	background-image: url('loading.gif');
+	background-repeat: no-repeat;
 }
 
 .fallo {
-    color: red;
-    font-size: 20px;
-    font-weight: bold;
+	color: red;
+	font-size: 20px;
+	font-weight: bold;
 }
 
 .resultado {
-    width: 100%;
-    color: black;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: left;
+	width: 100%;
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: left;
 }
 
 .oculto {
-    display: none;
+	display: none;
+}
+
+.story-item-comments-icon {
+  background-image: url("http://newaah.allabouthorses.com/wp-content/themes/pbs/images/comments_icon.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+  float: right;
+  height: 15px;
+  width: 18px;
 }
 
 .story-item-likes-icon {
-    background-image: url("http://www.vjc.moe.edu.sg/vcsd/misc/like.png");
-    background-position: right center;
-    background-repeat: no-repeat;
-    background-size: 15px auto;
-    float: right;
-    height: 12px;
-    width: 18px;
+  background-image: url("http://www.vjc.moe.edu.sg/vcsd/misc/like.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+  float: right;
+  height: 12px;
+  width: 18px;
+}
+
+.story-item-retweets-icon {
+  background-image: url("http://www.theinternetpatrol.com/twitter-retweet-icon-20091113-144324.jpg");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+  float: right;
+  height: 12px;
+  width: 18px;
+}
+
+.story-item-replies-icon {
+  background-image: url("http://files.softicons.com/download/internet-cons/social-media-icons-by-icondock/png/16/retweet.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+  float: right;
+  height: 12px;
+  width: 18px;
 }
 
 .story-item-video-icon {
-    width: 20px;
+  width: 20px;
 }
 
 div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-up  {
-    margin-bottom: 10px;
-    background-image: url("/images/arrow_up.png");
+	margin-bottom: 10px;
+	background-image: url("/images/arrow_up.png");
 }
 
 div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-down {
-    margin-top: 10px;
-    background-image: url("/images/arrow_down.png");
+	margin-top: 10px;
+	background-image: url("/images/arrow_down.png");
 }
 
-.zonales-count-wrapper-up, .zonales-count-wrapper-down {	
-    background-position: center center;
-    background-repeat: no-repeat;
-    height: 20px;	
+.zonales-count-wrapper-up, .zonales-count-wrapper-down {
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 20px;
+}
+
+div.newPosts {
+	background-color: #DCEFF4;
+}
+
+.olLayerGoogleCopyright {
+    display: none;
 }

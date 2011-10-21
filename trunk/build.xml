@@ -195,6 +195,11 @@
         <include name="**" />
     </fileset>
 
+    <!-- tmpl_z20 -->
+    <fileset dir="${src_templates}/tmpl_z20" id="tmpl_z20_files">
+        <include name="**" />
+    </fileset>
+
 
 
     <!-- ======================================================
@@ -609,6 +614,14 @@
         <echo message="Creando archivo de distribución de template z1"/>
         <zip destfile="${src_dist_dir}/${dist.tmpl_z1.file}.zip">
             <fileset refid="tmpl_z1_files"/>
+        </zip>
+    </target>
+
+    <!-- template z20 -->
+    <target name="dist_tmpl_z20" description="Crea archivo de distribución Joomla para el template z20">
+        <echo message="Creando archivo de distribución de template z20"/>
+        <zip destfile="${src_dist_dir}/${dist.tmpl_z20.file}.zip">
+            <fileset refid="tmpl_z20_files"/>
         </zip>
     </target>
 

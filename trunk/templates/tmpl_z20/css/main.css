@@ -21,7 +21,7 @@ a{
     font-size:12px;
 }
 
-h3{ /* títulos de módulos */
+h3{ /* tï¿½tulos de mï¿½dulos */
 	display:block;
 	color:#444;
 	background:#D7EBFF;
@@ -282,6 +282,14 @@ h3{ /* títulos de módulos */
 	background:#f1f2f3;
 	margin:15px 0 15px 0;
 	max-width:448px;
+}
+
+html body div#wrapper-web div#wrapper-body div#wrapper-content div#otherContent div.moduletable_lavozdelvecino div.moduletable_lavozdelvecino_bodyDiv div table.contentpaneopen tbody tr td div.img1 img {
+	display:block;
+	padding:9px;
+	background:#f1f2f3;
+	margin:15px 0 15px 0;
+	max-width:260px;
 }
 
 .img1 p.pie, .img1 .pie{
