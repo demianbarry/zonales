@@ -27,6 +27,7 @@ $eq_actual=$eq_z_com->retrieveUserEqImpl($user->id);
 	endif;
 
 include ('nocache.php');
+$mainframe = JFactory::getApplication();
 ?>
 <!-- 26042011 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -139,8 +140,8 @@ include ('nocache.php');
                                    <jdoc:include type="modules" name="equalizer" />
                                 </div>
 				<script type="text/javascript">
-				var equalizer_fx=new Fx.Styles($('equalizer-bt'), {duration: 1000});
-				var module_fx=new Fx.Styles($('equalizer'), {duration: 1000});
+				var equalizer_fx=new Fx.Morph($('equalizer-bt'), {duration: 1000});
+				var module_fx=new Fx.Morph($('equalizer'), {duration: 1000});
 				
 				window.addEvent('domready', function(){
 					$('ver_portada').addEvent('click', function(){
