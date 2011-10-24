@@ -32,5 +32,6 @@ Vista en la red, archivo default.php en version de moootools existente no tiene 
 
 grep 'setHTML(' -lHIRZ /var/www/html/zonales-nuevo/components/com_zonales/views/enlared/tmpl/default.php | xargs -0 -l sed -i 's/setHTML(/set("html"/g'
 
-Se deben unificar imagenes.
+  * Se deben unificar imagenes.
 
+  * Se deben parametrizar datos de conexión a Solr.
