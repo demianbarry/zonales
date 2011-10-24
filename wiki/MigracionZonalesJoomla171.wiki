@@ -1,6 +1,5 @@
-#labels Featured
-
 #summary Proceso de migración a Joomla 1.7.1
+#labels Featured
 
 = Introducción =
 
@@ -100,6 +99,6 @@ Se debe reemplazar o directamente suprimir. No existe versión nativa para Jooml
   * Generar front view para administración de tags de mongo.
   * Generar front view para administración de zonas mongo.
 
-== Com Eq Zonales (Ecualizador) ==
-  * Vinculación con bandas y ecualizador del usuario.
-  * 
+== Com Eq Zonales (Ecualizador)? ==
+  * Vinculación con bandas y ecualizador del usuario ?.
+  * Probar consulta con ecualizador.
