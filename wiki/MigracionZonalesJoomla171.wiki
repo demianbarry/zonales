@@ -1,3 +1,5 @@
+#labels Featured
+
 #summary Proceso de migración a Joomla 1.7.1
 
 = Introducción =
@@ -61,3 +63,43 @@ Cambios del archivo de configuración config.xml. La estructura nueva es:
         </fieldset>
     </fields>
 </config>
+
+= PENDIENTES =
+
+== Login ==
+  * Chequear funcionamiento estándar: registro de usuario, activación y login.
+  * Agregar y/o modificar estilos de módulo de login para template z20.
+  * Chequear funcionamiento de com_aapu.
+  * En función de lo anterior, agregar seteo de zona del usuario.
+  * Agregar plugin para seteo de la zona del usuario on login.
+
+== Content ==
+  * Chequear funcionamiento estándar de carga de noticias en front.
+    * Instalar plugin editor CKEditor o similar.
+    * Crear usuario autor.
+    * Cargar noticia con imágenes y estilos complejos.
+    * Publicar noticia.
+  * Indexado
+    * Capturar evento onContentAfterSave mediante plugin para indexar en Solr en formato JZone con campo fuente seteado en "Zonales".
+  * Metadata
+    * Incorporar mediante plugin seteo de localidad a la noticia.
+    * Incorporar mediante plugin seteo de GeoPoint.
+    * Incorporar mediante plugin seteo de tags.
+  * Recuperación
+    * Analizar funcionalidad del helper que pueda ser útil.
+
+== Com Zonales ==
+  * Agregar vista similar a Nuevos y Relevantes, pero con fuente "Zonales".
+  * Incorporar filtro por zona.
+  * Incoporar ecualizador?
+  * Incorporar fuente al ecualizador?
+
+== Custom Properties ==
+Se debe reemplazar o directamente suprimir. No existe versión nativa para Joomla 1.7.
+  * Evaluar vinculación de tags con contenido en mysql.
+  * Generar front view para administración de tags de mongo.
+  * Generar front view para administración de zonas mongo.
+
+== Com Eq Zonales (Ecualizador) ==
+  * Vinculación con bandas y ecualizador del usuario.
+  * 
