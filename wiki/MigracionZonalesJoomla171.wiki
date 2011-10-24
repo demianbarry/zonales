@@ -33,6 +33,8 @@ Correcion de variable option, antes era global ahora hay que setearla, $option =
 
 == Instalacion de mod_menuzonales. ==
 
+== Isntalación de com_eqzonales ==
+
 == Instalación de com_zonales ==
 
 Vista en la red, archivo default.php en version de moootools existente no tiene sentido la funcion setHTML, se reemplaza por set('html',html):
@@ -65,39 +67,47 @@ Cambios del archivo de configuración config.xml. La estructura nueva es:
 
 = PENDIENTES =
 
+== Seteo de zona ? ==
+  * Crear módulo que recupere zonas de MongoDB y permita seleccionar una ?.
+  * Crear módulo que permita seleccionar punto desde el mapa?
+
 == Login ==
-  * Chequear funcionamiento estándar: registro de usuario, activación y login.
-  * Agregar y/o modificar estilos de módulo de login para template z20.
-  * Chequear funcionamiento de com_aapu.
-  * En función de lo anterior, agregar seteo de zona del usuario.
-  * Agregar plugin para seteo de la zona del usuario on login.
+  * Chequear funcionamiento estándar: registro de usuario, activación y login. (1/2 h)
+  * Agregar y/o modificar estilos de módulo de login para template z20 (2 hs). 
+  * Chequear funcionamiento y evaluar refactoring de com_aapu (2 hs).
+  * En función de lo anterior, agregar seteo de zona del usuario (1 hs).
+  * Agregar plugin para seteo de la zona del usuario on login (2 hs).
+  * SSO ?
+    * Incorporar plugin de autenticación múltiple (mínimo Facebook, Twitter, Google, Microsoft Live, Yahoo).
+    * Chequear funcionamiento de com_alias e integrar.
+    
 
 == Content ==
   * Chequear funcionamiento estándar de carga de noticias en front.
-    * Instalar plugin editor CKEditor o similar.
-    * Crear usuario autor.
-    * Cargar noticia con imágenes y estilos complejos.
-    * Publicar noticia.
+    * Instalar plugin editor CKEditor o similar (1 h).
+    * Crear usuario autor (1/2 h).
+    * Cargar noticia con imágenes y estilos complejos (1/2 h).
+    * Publicar noticia (1/2 h).
   * Indexado
-    * Capturar evento onContentAfterSave mediante plugin para indexar en Solr en formato JZone con campo fuente seteado en "Zonales".
+    * Capturar evento onContentAfterSave mediante plugin para indexar en Solr en formato JZone con campo fuente seteado en "Zonales" (8 hs).
   * Metadata
-    * Incorporar mediante plugin seteo de localidad a la noticia.
-    * Incorporar mediante plugin seteo de GeoPoint.
-    * Incorporar mediante plugin seteo de tags.
+    * Incorporar mediante plugin seteo de localidad a la noticia (8 hs).
+    * Incorporar mediante plugin seteo de GeoPoint (8 hs).
+    * Incorporar mediante plugin seteo de tags (8 hs).
   * Recuperación
-    * Analizar funcionalidad del helper que pueda ser útil.
+    * Analizar funcionalidad del helper que pueda ser útil (2 hs).
 
 == Com Zonales ==
-  * Agregar vista similar a Nuevos y Relevantes, pero con fuente "Zonales".
-  * Incorporar filtro por zona.
+  * Agregar vista similar a Nuevos y Relevantes, pero con fuente "Zonales" (4 hs).
+  * Incorporar filtro por zona (2 hs).
   * Incoporar ecualizador?
   * Incorporar fuente al ecualizador?
 
 == Custom Properties ==
 Se debe reemplazar o directamente suprimir. No existe versión nativa para Joomla 1.7.
-  * Evaluar vinculación de tags con contenido en mysql.
-  * Generar front view para administración de tags de mongo.
-  * Generar front view para administración de zonas mongo.
+  * Evaluar vinculación de tags con contenido en mysql (2 hs).
+  * Generar front view para administración de tags de mongo (4 hs).
+  * Generar front view para administración de zonas mongo (8 hs).
 
 == Com Eq Zonales (Ecualizador)? ==
   * Vinculación con bandas y ecualizador del usuario ?.
