@@ -78,16 +78,23 @@ Cambios del archivo de configuración config.xml. La estructura nueva es:
   * En función de lo anterior, agregar seteo de zona del usuario (1 hs).
   * Agregar plugin para seteo de la zona del usuario on login (2 hs).
   * SSO ?
-    * Incorporar plugin de autenticación múltiple (mínimo Facebook, Twitter, Google, Microsoft Live, Yahoo).
-    * Chequear funcionamiento de com_alias e integrar.
-    
+    * Incorporar plugin de autenticación múltiple (mínimo Facebook, Twitter, Google, Microsoft Live, Yahoo) (6 hs).
+      * Evaluar y decidir herramienta de SSO.
+      * Instalar y probar.
+      * Plan de migración.
+      * Puesta en marcha.
+      * Integración con el resto de las extensiones.
+    * Chequear funcionamiento de com_alias e integrar (no por ahora).
 
 == Content ==
-  * Chequear funcionamiento estándar de carga de noticias en front.
+  * Chequear funcionamiento estándar de carga de noticias en front (garantizando criterios de satisfacción de User Stories de Zonales).
     * Instalar plugin editor CKEditor o similar (1 h).
     * Crear usuario autor (1/2 h).
-    * Cargar noticia con imágenes y estilos complejos (1/2 h).
-    * Publicar noticia (1/2 h).
+    * Cargar noticias con imágenes y estilos complejos tomando las ya cargadas en Zonales (1/2 h).
+    * Revisar noticias sin publicar (1/2 h).
+    * Editar noticias tanto sin publicar como publicadas (1/2).
+    * Publicar noticias (1/2 h).
+    * Despublicar noticia (1/2 h).
   * Indexado
     * Capturar evento onContentAfterSave mediante plugin para indexar en Solr en formato JZone con campo fuente seteado en "Zonales" (8 hs).
   * Metadata
