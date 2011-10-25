@@ -103,6 +103,9 @@ Cambios del archivo de configuración config.xml. La estructura nueva es:
     * Incorporar mediante plugin seteo de tags (8 hs).
   * Recuperación
     * Analizar funcionalidad del helper que pueda ser útil (2 hs).
+  * Migración
+    * Migrar contenido a nuevas tablas.
+    * Ejecutar proceso de indexación de contenido.
 
 == Com Zonales ==
   * Agregar vista similar a Nuevos y Relevantes, pero con fuente "Zonales" (4 hs).
