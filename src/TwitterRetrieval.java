@@ -168,6 +168,8 @@ public class TwitterRetrieval extends HttpServlet {
                 solrPost.setCreated(tweet.getCreatedAt().getTime());
                 solrPost.setModified(tweet.getCreatedAt().getTime());
                 solrPost.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
+                solrPost.setSourceLatitude(null);
+                solrPost.setSourceLongitude(null);
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
@@ -217,6 +219,8 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setCreated(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
+                post.setSourceLatitude(null);
+                post.setSourceLongitude(null);
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
