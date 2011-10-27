@@ -386,7 +386,7 @@
 </script>
 <table>
     <tbody id="chkFilter">
-        <tr>
+        <!--<tr>
             <td>
                 <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
             </td>
@@ -401,7 +401,7 @@
             <td>
                 Twitter
             </td>
-        </tr>
+        </tr>-->
         <tr>
             <td>
                 <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
