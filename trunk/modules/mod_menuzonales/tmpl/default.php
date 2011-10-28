@@ -36,7 +36,8 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 		<?php endforeach; ?>
                 <?php endif;?>
                 <li id="s30"><a href="/index.php?option=com_zonales&task=zonal&view=enlared"><?php echo JText::_('En la Red'); ?></a></li>
-                <li id="s45"><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos"><?php echo JText::_('Mapa'); ?></a></li>
+                <li id="s45"><a href="/index.php?option=com_zonales&task=zonal&view=noticiasenlared"><?php echo JText::_('Noticias en la Red'); ?></a></li>
+                <li id="s50"><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos"><?php echo JText::_('Mapa'); ?></a></li>
 	</ul>
 </div>
 <div id="sublinks">
@@ -54,7 +55,12 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
             <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
         </ul>
-        <!--<ul id="s45_m">
+
+        <ul id="s45_m">
+            <li><a href="/index.php?option=com_zonales&task=zonal&view=noticiasenlared">Nuevos</a></li>
+            <li><a href="/index.php?option=com_zonales&task=zonal&view=noticiasenlaredrelevantes">Relevantes</a></li>
+        </ul>
+        <!--<ul id="s50_m">
             <li><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos">Zonales Activos</a></li>
             <li><a href="">Contenido Relevante</a></li>
             <li><a href="">Contenido Nuevo</a></li>
