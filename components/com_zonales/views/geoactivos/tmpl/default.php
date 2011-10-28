@@ -525,7 +525,7 @@
 	     vector_layer.events.register('featureselected', this, on_select_feature);
 	     vector_layer.events.register('featureunselected', this, on_unselect_feature);
              vector_layer.events.register('featuresadded', this, on_features_added);
-             map.events.register('zoomend', this, on_zoom);
+             map.events.register('moveend', this, on_zoom);
 	     //vector_layer.events.register('dblclick', this, on_dblclick_feature);
 
 	     if(!map.getCenter()){
