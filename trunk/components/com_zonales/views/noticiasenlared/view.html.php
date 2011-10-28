@@ -13,7 +13,7 @@ jimport('joomla.application.component.view');
  * @subpackage	Users
  * @since	1.0
  */
-class ZonalesViewEnlared extends JView {
+class ZonalesViewNoticiasenlared extends JView {
 
     function display($tpl = null) {
         global $mainframe, $option;
