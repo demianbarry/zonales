@@ -48,6 +48,16 @@
     <filename>views/relevantes/tmpl/index.html</filename>
     <filename>views/relevantes/tmpl/default.php</filename>
 
+    <filename>views/noticiasenlared/view.html.php</filename>
+    <filename>views/noticiasenlared/index.html</filename>
+    <filename>views/noticiasenlared/tmpl/index.html</filename>
+    <filename>views/noticiasenlared/tmpl/default.php</filename>
+
+    <filename>views/noticiasenlaredrelevantes/view.html.php</filename>
+    <filename>views/noticiasenlaredrelevantes/index.html</filename>
+    <filename>views/noticiasenlaredrelevantes/tmpl/index.html</filename>
+    <filename>views/noticiasenlaredrelevantes/tmpl/default.php</filename>
+
     <filename>views/geolocacion/view.html.php</filename>
     <filename>views/geolocacion/index.html</filename>
     <filename>views/geolocacion/tmpl/index.html</filename>
