@@ -82,6 +82,8 @@ en archivo */libraries/joomla/form/form.php*. Además la función removeChild($n
   * Crear módulo que recupere zonas de MongoDB y permita seleccionar una ?.
   * Crear módulo que permita seleccionar punto desde el mapa?
 
+== Revisar internacionalizacion de Login ==
+
 == Login ==
   * Chequear funcionamiento estándar: registro de usuario, activación y login. (1/2 h)
   * Agregar y/o modificar estilos de módulo de login para template z20 (2 hs). 
