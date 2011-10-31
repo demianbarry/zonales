@@ -413,9 +413,13 @@
                                         cant++;
                                 }
 
-	         var popupContentHTML = "<br>";
+	         var popupContentHTML = "";
 
-				//Muestro los contadores de fuentes
+		 popupContentHTML += "<h3 id='popupTitle' style='height:28px'></h3>";
+
+                 popupContentHTML += "<br>";
+
+                 //Muestro los contadores de fuentes
 	         for(var i = 0; i < sources.length; i++) {
 	         	popupContentHTML += "<strong>"
 	                 + sources[i][0]
@@ -449,6 +453,9 @@
 	         popup = new OpenLayers.Popup.FramedCloud("countPopup", lonlat, size, popupContentHTML, null, true, null);
 	         popup.displayClass = OpenLayers.Popup.FramedCloud
 	         map.addPopup(popup);
+                 var point = new OpenLayers.Geometry.Point(event.feature.geometry.x, event.feature.geometry.y);
+                 point.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+                 alfaFromGeo(point.y, point.x);
 
 	         //"<img src='" + cluster[i].style.externalGraphic + "' />"
 
@@ -504,11 +511,9 @@
                  alert("Hice doble click, pero el evento capturado es de JavaScript y no sirve para nada");
 	     }*/
 
-             function on_zoom(event) {
-                 if (map.getZoom() < maxZoomOut) map.zoomIn();
-
+             function alfaFromGeo(lat, lon) {
                  //"http://nominatim.openstreetmap.org/reverse?
-                 var url = "/reverse?lat=" + map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lat + "&lon=" + map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lon + "&format=json";
+                 var url = "/reverse?lat=" + lat + "&lon=" + lon + "&format=json";
 
                  var urlProxy = '/curl_proxy.php?host=nominatim.openstreetmap.org&port=80&ws_path=' + encodeURIComponent(url);
 
@@ -517,9 +522,27 @@
                         //update: 'alias_progress',
                         onComplete: function(response) {
                             var jsonObj = JSON.parse(response);
-                            document.getElementById('cercaDe').innerHTML = jsonObj.display_name;
+                            var mostrar = "Zona indefinida";
+                            if (typeof jsonObj.address.city != 'undefined') {
+                                mostrar = jsonObj.address.city;
+                            } else {
+                                if (typeof jsonObj.address.state != 'undefined') {
+                                    mostrar = "Provincia de " + jsonObj.address.state;
+                                } else {
+                                    if (typeof jsonObj.address.country != 'undefined') {
+                                        mostrar = jsonObj.address.country;
+                                    }
+                                }
+                            }
+                            document.getElementById('cercaDe').innerHTML = mostrar;
+                            document.getElementById('popupTitle').innerHTML = mostrar;
                         }
                     }).request();
+             }
+
+             function on_zoom(event) {
+                 if (map.getZoom() < maxZoomOut) map.zoomIn();
+                 alfaFromGeo(map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lat, map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lon);
              }
 
 	     vector_layer.events.register('featureselected', this, on_select_feature);
@@ -563,7 +586,7 @@
                 </select>
 <img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: none"/>
 <br>
-<label>Ud. está cerca de: </label><label id="cercaDe"></label>
+<label>Ud. está cerca de: </label><label id="cercaDe">Argentina</label>
 <!--
 <br>
 <label>Localdiad: </label><label id="localidad"/>
