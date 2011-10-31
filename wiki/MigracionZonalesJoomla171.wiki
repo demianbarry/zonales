@@ -65,6 +65,17 @@ Cambios del archivo de configuración config.xml. La estructura nueva es:
     </fields>
 </config>
 
+== Instalación CKEditor ==
+Conflicto con función de la librería _simplephp_ de php. Joomla! usa la función dom_import_simplexml(), pero en la versión de php instalada la función es simplexml_dom_import(). 
+Se incorporó función:
+{{{
+function dom_import_simplexml($el){
+                return simplexml_import_dom($el);
+}
+}}}
+
+en archivo */libraries/joomla/form/form.php*. Además la función removeChild($nodo) ya no existe, por lo que se reemplazó por unset($nodo).
+
 = PENDIENTES =
 
 == Seteo de zona ? ==
