@@ -447,4 +447,38 @@ class comZonalesHelper {
             $session->set('zonales_zonal_label', NULL);
         }
     }
+
+    /**
+     * Setea o actualiza la variable de sesión de filtros
+     */
+    function setFilter($id, $selected) {
+        $session = JFactory::getSession();
+        $filters = $session->get('filters');
+
+        if (!isset($filters)) {
+            $filters = array();
+        }
+        $filters[$id] = $selected;
+        $session->set('filters', $filters);
+    }
+
+    static function setFilters($filtros) {
+        $session = JFactory::getSession();
+        $filters = $session->get('filters');
+
+        if (!isset($filters)) {
+            $filters = array();
+        }
+
+        foreach ($filtros as $key => $value) {
+            $filters[$key] = $value;
+        }
+
+        $session->set('filters', $filters);
+    }
+
+    static function getFilters() {
+        $session = JFactory::getSession();
+        return $session->get('filters');
+    }
 }

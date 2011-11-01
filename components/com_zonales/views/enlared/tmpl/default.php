@@ -270,7 +270,7 @@
                 var tr = new Element('tr');
                 new Element('input', {'id': 'chk'+post.source, 'type': 'checkbox', 'checked': true, 'value': post.source, 'onclick':'filtrar(this.value, this.checked);'}).inject(new Element('td').inject(tr));
                 new Element('td', {}).setHTML(post.source).inject(tr);
-                tr.inject($("chkFilter"));
+                tr.inject($("enLaRed"));
             }
 
             div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
@@ -358,6 +358,7 @@
             }
         return time;
     }
+
     //-->
 </script>
 <!--<table>
