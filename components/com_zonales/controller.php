@@ -398,6 +398,8 @@ class ZonalesController extends JController {
 
     function setFilters() {
         $filters = JRequest::getVar('filters', 0, '', 'array');
-        comZonalesHelper::setFilters($filters);
+        if (isset($filters)) {
+            comZonalesHelper::setFilters($filters);
+        }
     }
 }

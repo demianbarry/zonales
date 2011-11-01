@@ -463,18 +463,21 @@ class comZonalesHelper {
     }
 
     static function setFilters($filtros) {
-        $session = JFactory::getSession();
-        $filters = $session->get('filters');
+        if (isset($filtros)) {
 
-        if (!isset($filters)) {
-            $filters = array();
+            $session = JFactory::getSession();
+            $filters = $session->get('filters');
+
+            if (!isset($filters)) {
+                $filters = array();
+            }
+
+            foreach ($filtros as $key => $value) {
+                $filters[$key] = $value;
+            }
+
+            $session->set('filters', $filters);
         }
-
-        foreach ($filtros as $key => $value) {
-            $filters[$key] = $value;
-        }
-
-        $session->set('filters', $filters);
     }
 
     static function getFilters() {
