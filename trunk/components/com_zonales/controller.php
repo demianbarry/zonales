@@ -395,4 +395,9 @@ class ZonalesController extends JController {
             echo JText::_('USERNAME_ERROR_MESSAGE');
         return;
     }
+
+    function setFilters() {
+        $filters = JRequest::getVar('filters', 0, '', 'array');
+        comZonalesHelper::setFilters($filters);
+    }
 }

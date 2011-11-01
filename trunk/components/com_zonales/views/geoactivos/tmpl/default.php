@@ -503,6 +503,20 @@
 
              function on_features_added(event){
                  document.getElementById('ajaxLoader').style.display = "none";
+                 vector_layer.features.each(function(feature){
+                     feature.cluster.each(function(cluster){
+                        if(!$('chk'+cluster.attributes.name)) {
+                            var tr = new Element('tr');
+                            new Element('input', {'id': 'chk'+cluster.attributes.name, 'type': 'checkbox', 'checked': true, 'value': cluster.attributes.name, 'onclick':'filtrar(this.value, this.checked);'}).inject(new Element('td').inject(tr));
+                            new Element('td', {}).setHTML(cluster.attributes.name).inject(tr);
+                            if (cluster.attributes.name == 'Facebook' || cluster.attributes.name == 'Twitter') {
+                                tr.inject($("enLaRed"));
+                            } else {
+                                tr.inject($("noticiasEnLaRed"));
+                            }
+                        }
+                     });
+                 });
 	     }
 
 		  //on unselect function
@@ -563,7 +577,7 @@
 	     //  is clicked
 	     function update_vector_layer(){
                  document.getElementById('ajaxLoader').style.display = "inline";
-                 vector_layer.protocol.options.params['since'] = document.getElementById('tempoSelect').value;
+                 vector_layer.protocol.options.params['since'] = "NOW-" + document.getElementById('tempoSelect').value;
 	         vector_layer.refresh();
 
 	     }
@@ -578,13 +592,15 @@
     //-->
 </script>
 <label>Seleccione temporalidad:</label>
+<!--
 <select id="tempoSelect" class="tempoclass">
                     <option value="NOW-24HOURS">Hoy</option>
                     <option value="NOW-7DAYS">Ultima Semana</option>
                     <option value="NOW-30DAYS">Ultimo Mes</option>
                     <option value="0">Historico</option>
                 </select>
-<img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: none"/>
+-->
+<img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: inline"/>
 <br>
 <label>Ud. está cerca de: </label><label id="cercaDe">Argentina</label>
 <!--
