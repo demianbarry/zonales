@@ -8,10 +8,21 @@
             url += "&filters[" + element.id.substring(3) + "]=" + element.checked;
         });
 
-        new Ajax(url, {
-            method: 'get'
+        new XHR({
+            method: 'get',
+            async: false
             //update: 'alias_progress',
-        }).request();
+        }).send(url);
+    });
+
+    window.addEvent('domready', function() {
+        $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
+            if(element.name == "true") {
+                element.checked = true;
+            } else {
+                element.checked = false;
+            }
+        });
     });
 
     //-->
@@ -71,9 +82,9 @@ JHTML::_('behavior.formvalidation');
                         foreach ($filters as $key => $value) {
                             if ($key == 'Facebook' || $key == 'Twitter') {
                                 echo '<tr><td>';
-                                echo '<input id="chk' . $key . '" type="checkbox" checked=' . $value . ' value="' . $key . '" onclick: "filtrar(this.value, this.checked);"';
+                                echo "<input id='chk$key' type='checkbox' name='$value' value='$key' onclick='filtrar(this.value,this.checked);'>";
                                 echo '</td><td>' . $key . '</td>';
-                                echo '</td></tr>';
+                                echo '</tr>';
                             }
                         }
                     }
@@ -87,9 +98,9 @@ JHTML::_('behavior.formvalidation');
                         foreach ($filters as $key => $value) {
                             if ($key != 'Facebook' && $key != 'Twitter') {
                                 echo '<tr><td>';
-                                echo '<input id="chk' . $key . '" type="checkbox" checked=' . $value . ' value="' . $key . '" onclick: "filtrar(this.value, this.checked);"';
+                                echo "<input id='chk$key' type='checkbox' name='$value' value='$key' onclick='filtrar(this.value,this.checked);'>";
                                 echo '</td><td>' . $key . '</td>';
-                                echo '</td></tr>';
+                                echo '</tr>';
                             }
                         }
                     }
