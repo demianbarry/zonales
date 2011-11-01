@@ -1,3 +1,22 @@
+<script language="javascript" type="text/javascript">
+    <!--
+
+    window.addEvent('unload', function() {
+        var url = "/index.php?option=com_zonales&task=setFilters";
+
+        $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
+            url += "&filters[" + element.id.substring(3) + "]=" + element.checked;
+        });
+
+        new Ajax(url, {
+            method: 'get'
+            //update: 'alias_progress',
+        }).request();
+    });
+
+    //-->
+</script>
+
 <?php
 /**
  * @version	$Id$
@@ -22,62 +41,76 @@ JHTML::_('behavior.formvalidation');
         <p><?php echo $description; ?></p>
         <div class="splitter"></div>
 
-        <div>
-            <table>
-                <tbody id="chkFilter">
-                    <?php if($pestaña == 'relevantes'):?>
-                    <tr>
-                        <td>
-                            <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
-                                <option value="24HOURS">Hoy</option>
-                                <option value="7DAYS">Ultima Semana</option>
-                                <option value="30DAYS">Ultimo Mes</option>
-                                <option value="0">Historico</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <?php endif;?>
-                    <?php if($pestaña == 'enlared'):?>
-                        <tr>
-                            <td>
-                                <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
-                            </td>
-                            <td>
-                                Facebook
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
-                            </td>
-                            <td>
-                                Twitter
-                            </td>
-                        </tr>   
-                    <?php endif;?>
-                   
-                    <?php if($pestaña == 'noticiasenlared'):?>
-                    
-                    <?php endif;?>
-                    
-                    <?php if($pestaña == 'noticiasenlaredrelevantes'):?>
-                    <tr>
-                        <td>
-                            <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
-                                <option value="24HOURS">Hoy</option>
-                                <option value="7DAYS">Ultima Semana</option>
-                                <option value="30DAYS">Ultimo Mes</option>
-                                <option value="0">Historico</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <?php endif;?>
+        <?php
+          if($pestaña == 'enlared' || $pestaña == 'relevantes') {
+              $enLaRed = "inline";
+              $noticiasEnLaRed = "none";
+              if($pestaña == 'enlared') {
+                  $temporalidad = "none";
+              } else {
+                  $temporalidad = "inline";
+              }
+          }
 
-                </tbody>
+          if($pestaña == 'noticiasenlared' || $pestaña == 'noticiasenlaredrelevantes') {
+              $enLaRed = "none";
+              $noticiasEnLaRed = "inline";
+              if($pestaña == 'noticiasenlared') {
+                  $temporalidad = "none";
+              } else {
+                  $temporalidad = "inline";
+              }
+          }
+         ?>
+        <div id="filtersDiv">
+            <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
+                <?php
+                    $session = JFactory::getSession();
+                    $filters = $session->get('filters');
+                    if (isset($filters)) {
+                        foreach ($filters as $key => $value) {
+                            if ($key == 'Facebook' || $key == 'Twitter') {
+                                echo '<tr><td>';
+                                echo '<input id="chk' . $key . '" type="checkbox" checked=' . $value . ' value="' . $key . '" onclick: "filtrar(this.value, this.checked);"';
+                                echo '</td><td>' . $key . '</td>';
+                                echo '</td></tr>';
+                            }
+                        }
+                    }
+                ?>
+            </table>
+            <table id="noticiasEnLaRed" style="display: <?php echo $noticiasEnLaRed ?>">
+                <?php
+                    $session = JFactory::getSession();
+                    $filters = $session->get('filters');
+                    if (isset($filters)) {
+                        foreach ($filters as $key => $value) {
+                            if ($key != 'Facebook' && $key != 'Twitter') {
+                                echo '<tr><td>';
+                                echo '<input id="chk' . $key . '" type="checkbox" checked=' . $value . ' value="' . $key . '" onclick: "filtrar(this.value, this.checked);"';
+                                echo '</td><td>' . $key . '</td>';
+                                echo '</td></tr>';
+                            }
+                        }
+                    }
+                ?>
+            </table>
+            <table id="temporalidad" style="display: <?php echo $temporalidad ?>">
+                    <tr>
+                        <td>
+                            <select id="tempoSelect" class="tempoclass">
+                                <option value="24HOURS">Hoy</option>
+                                <option value="7DAYS">Ultima Semana</option>
+                                <option value="30DAYS">Ultimo Mes</option>
+                                <option value="0">Historico</option>
+                            </select>
+                        </td>
+                    </tr>
             </table>
         </div>
 
     </div>
 
-</div><!-- end #moduletable_formVecinos -->
+</div>
+<!-- end #moduletable_formVecinos -->
 <!-- form -->
