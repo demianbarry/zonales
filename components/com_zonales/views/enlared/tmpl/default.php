@@ -303,6 +303,7 @@
                     post.setStyle('display', visible ? 'block' : 'none');
             });
         }
+        sendFilter(source,visible);
     }
 
     function addMilli(date) {
@@ -365,22 +366,12 @@
     <tbody id="chkFilter">
         <tr>
             <td>
-                <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
+               <p>Noticias en la red de Facebook</p>
             </td>
-            <td>
-                Facebook
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
-            </td>
-            <td>
-                Twitter
-            </td>
+            
         </tr>
     </tbody>
-</table>-->
+</table> -->
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>

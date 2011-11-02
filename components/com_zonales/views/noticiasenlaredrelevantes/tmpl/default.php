@@ -327,6 +327,7 @@
                     post.setStyle('display', visible ? 'block' : 'none');
             });
         }
+        sendFilter(source,visible);
     }
 
     function addMilli(date) {
