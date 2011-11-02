@@ -1,19 +1,14 @@
 <script language="javascript" type="text/javascript">
     <!--
 
-    window.addEvent('unload', function() {
-        var url = "/index.php?option=com_zonales&task=setFilters";
+    function sendFilter(id, checked) {
+        var url = "/index.php?option=com_zonales&task=setFilters&filters["+id+"]="+checked;
 
-        $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
-            url += "&filters[" + element.id.substring(3) + "]=" + element.checked;
-        });
-
-        new XHR({
-            method: 'get',
-            async: false
+        new Ajax(url,{
+            method: 'get'
             //update: 'alias_progress',
-        }).send(url);
-    });
+        }).request();
+    }
 
     window.addEvent('domready', function() {
         $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
