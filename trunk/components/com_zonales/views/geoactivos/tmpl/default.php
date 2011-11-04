@@ -5,7 +5,8 @@
         var cantMax = '1000';
         var maxZoomOut = 4;
         var openLayersProxyHost = '/cgi-bin/proxy.cgi?url=';
-        var proxyUri = '/curl_proxy.php?host=localhost&port=8080&ws_path=';
+        var proxyUri = '/curl_proxy.php?host=localhost&port=38081&ws_path=';
+        var geoExtractorUrl = 'http://localhost:38081/ZCrawlGeoExtractor/getPost';
         var defaultSortField = 'modified';
         var strategyDistance = 30;
 
@@ -30,6 +31,17 @@
 	 var tags = new Array();
          var ids = new Array();
          var cant = 0;
+         var ignoredSources = new Array();
+
+         function actualizarFiltros() {
+             ignoredSources = new Array();
+             //Chequeo los filtros inactivos para ignorarlos la fuente en la query
+             $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
+                    if(!element.checked) {
+                        ignoredSources.push(element.id.substring(3));
+                    }
+                });
+         }
 
          function updatePosts(json, component) {
                 if(json.response.docs.length == 0)
@@ -155,7 +167,7 @@
                     var tags = post.tags;
                     new Element('li', {}).setHTML(tags).addClass('story-item-tag').inject(ul_story_item_meta);
 
-                    
+
                     var insertado = false;
                     div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
 
@@ -175,6 +187,43 @@
                         div_story_item.injectInside(component);
                     }
                 });
+            }
+
+         //-------------------------------
+	     //HTML Related
+	     //-------------------------------
+	     //Function to be called that updates vector layer when submit
+	     //  is clicked
+	     function update_vector_layer(){
+                 document.getElementById('ajaxLoader').style.display = "inline";
+                 vector_layer.protocol.options.params['since'] = "NOW-" + document.getElementById('tempoSelect').value;
+                 if (ignoredSources.length > 0) {
+                     vector_layer.protocol.options.params['ignoredSources'] = ignoredSources.toString();
+                 } else {
+                     delete(vector_layer.protocol.options.params['ignoredSources']);
+                 }
+                 var bounds = map.getExtent().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+                 vector_layer.protocol.options.params['minLat'] = bounds.bottom;
+                 vector_layer.protocol.options.params['maxLat'] = bounds.top;
+                 vector_layer.protocol.options.params['minLon'] = bounds.left;
+                 vector_layer.protocol.options.params['maxLon'] = bounds.right;
+	         vector_layer.refresh();
+
+	     }
+
+             function filtrar(source, visible) {
+                var posts = $$('div#postsContainer div.story-item');
+
+                if(typeof(posts) == 'array') {
+                    posts.each(function(post){
+                        if(post.hasClass(source))
+                            post.setStyle('display', visible ? 'block' : 'none');
+                    });
+                }
+
+                actualizarFiltros();
+                update_vector_layer();
+                sendFilter(source, visible);
             }
 
 	 function setZone(lon, lat, zoomLevel) {
@@ -326,14 +375,16 @@
 	     {
 	         projection: new OpenLayers.Projection('EPSG:4326'),
 	         protocol: new OpenLayers.Protocol.HTTP({
-	             url: 'http://localhost:8080/ZCrawlGeoExtractor/getPost',
-	             params: {'cant':cantMax, 'sortField':defaultSortField, 'sortOrder':'desc',  'since':'NOW-24HOURS', 'minLon':'-78.969515', 'minLat':'-59.155008', 'maxLon':'-48.295686','maxLat':'-17.017761'},
+	             url: geoExtractorUrl,
+ 	             params: {'cant':cantMax, 'sortField':defaultSortField, 'sortOrder':'desc',  'since':'NOW-24HOURS'},  //, 'minLon':'-78.969515', 'minLat':'-59.155008', 'maxLon':'-48.295686','maxLat':'-17.017761'
 	             format: new OpenLayers.Format.KML({
 	                 extractAttributes: true, extractStyles:true
 	             })
 	         }),
 	         strategies: [new OpenLayers.Strategy.Fixed(), strategy]   //new OpenLayers.Strategy.Fixed(),
 	     });
+             actualizarFiltros();
+             update_vector_layer();
 	     map.addLayer(vector_layer);
 
 	     //Let's style the features
@@ -552,6 +603,7 @@
              function on_zoom(event) {
                  if (map.getZoom() < maxZoomOut) map.zoomIn();
                  alfaFromGeo(map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lat, map.getCenter().transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")).lon);
+                 update_vector_layer();
              }
 
 	     vector_layer.events.register('featureselected', this, on_select_feature);
@@ -564,19 +616,6 @@
 	         map.zoomToMaxExtent();
 	     }
 
-
-	     //-------------------------------
-	     //HTML Related
-	     //-------------------------------
-	     //Function to be called that updates vector layer when submit
-	     //  is clicked
-	     function update_vector_layer(){
-                 document.getElementById('ajaxLoader').style.display = "inline";
-                 vector_layer.protocol.options.params['since'] = "NOW-" + document.getElementById('tempoSelect').value;
-	         vector_layer.refresh();
-
-	     }
-
 	     //Add events to HTML input element
 	     document.getElementById('tempoSelect').addEventListener(
 	         'change',
@@ -586,17 +625,7 @@
 	 }
     //-->
 </script>
-<label>Seleccione temporalidad:</label>
-<!--
-<select id="tempoSelect" class="tempoclass">
-                    <option value="NOW-24HOURS">Hoy</option>
-                    <option value="NOW-7DAYS">Ultima Semana</option>
-                    <option value="NOW-30DAYS">Ultimo Mes</option>
-                    <option value="0">Historico</option>
-                </select>
--->
 <img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: inline"/>
-<br>
 <label>Ud. está cerca de: </label><label id="cercaDe">Argentina</label>
 <!--
 <br>
