@@ -26,7 +26,7 @@
         if(searching)
             return;
         var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '')+"&q=!source:(Facebook+OR+Twitter)"+ <?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?>;
-        var urlProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=' + encodeURIComponent(urlSolr);
+        var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
             method: 'get',
@@ -40,7 +40,8 @@
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
-                    }	
+			armarTitulo();
+                    }
                     else {
                         updatePosts(jsonObj,$('newPostsContainer'));
                         if($('newPostsContainer').childNodes.length > 0){
@@ -62,11 +63,12 @@
             }
 
         }).send();
-    }
 
+
+   }
     function loadMorePost(){
         var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' +"&q=!source:(Facebook+OR+Twitter)"+ <?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?>;
-        var urlProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=' + encodeURIComponent(urlSolr);
+        var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
             method: 'get',
@@ -77,7 +79,8 @@
                 // actualizar pagina
                 if(typeof jsonObj != 'undefined')
                     updatePosts(jsonObj, $('postsContainer'),true);
-            },
+                    armarTitulo();
+},
 
             // Our request will most likely succeed, but just in case, we'll add an
             // onFailure method which will let the user know what happened.
@@ -119,13 +122,16 @@
     function verNuevos(){
         $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
         $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
-            post.clone().injectTop($('postsContainer'));
+           var post = post.clone();
+
+            post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
+            post.injectTop($('postsContainer'));
         });
         //$('postsContainer').set({ style: 'background:#FFFFFF'});
         $('verNuevos').setStyle('display','none');
         $('newPostsContainer').empty();
         // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
-	
+
     }
 
 
@@ -143,7 +149,7 @@
         } else {
             firstIndexTime = json.response.docs.getLast().indexTime;
         }
-		
+
         json.response.docs.each(function(doc){
 
             var time = new Date(doc.indexTime).getTime();
@@ -304,6 +310,8 @@
             });
         }
         sendFilter(source,visible);
+        armarTitulo();
+
     }
 
     function addMilli(date) {
@@ -359,9 +367,27 @@
             }
         return time;
     }
+    function armarTitulo(){
+	var temp = 0;
+        document.getElementById('tituloSup').innerHTML = "";
+	$('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element) {
+            if(element.checked && temp < 5 ) {
+		temp++;
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine:"
+                document.getElementById('tituloSup').innerHTML += element.value + ", ";
+            }
+            else{
+		document.getElementById('tituloSup').innerHTML = "";
+		document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de mas de 5 diarios ";
+
+            }
+	});
+
+
+    }
     //-->
 </script>
-
+    <label id="titulo1"></label><label id="tituloSup"></label>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>
