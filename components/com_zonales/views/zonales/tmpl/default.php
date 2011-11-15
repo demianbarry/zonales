@@ -4,7 +4,6 @@
     var searching = false;
     var firstIndexTime = null;
     var lastIndexTime = null;
-    var minRelevance = null;
 
     window.addEvent('domready', function() {
         setInterval(function () {
@@ -26,8 +25,8 @@
     function loadPost(first){
         if(searching)
             return;
-        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+($('tempoSelect').value) : '*')+'+TO+*]')+"&q=!source:(Facebook+OR+Twitter)"+ <?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?> + '&fq=relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]';
-        var urlProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=' + encodeURIComponent(urlSolr);
+        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl='+(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '')+ "&q=source:(Zonales)"+<?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?>;
+        var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
             method: 'get',
@@ -41,12 +40,12 @@
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
+
                         armarTitulo();
                     }
                     else {
-
                         updatePosts(jsonObj,$('newPostsContainer'));
-                        if($('newPostsContainer').getChildren('div').length > 0){
+                        if($('newPostsContainer').childNodes.length > 0){
                             $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
                             $('verNuevos').setStyle('display','block');
                         }
@@ -68,7 +67,7 @@
     }
 
     function loadMorePost(){
-        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' + "&q=!source:(Facebook+OR+Twitter)"+<?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?> + '&fq=relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']';
+        var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' + "&q=source:(Zonales)"+<?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?>;
         var urlProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
@@ -79,8 +78,7 @@
             onComplete: function(jsonObj) {
                 // actualizar pagina
                 if(typeof jsonObj != 'undefined')
-                    updatePosts(jsonObj, $('postsContainer'), true);
-                    armarTitulo();
+                    updatePosts(jsonObj, $('postsContainer'),true);
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -120,6 +118,22 @@
         }
         return text;
     }
+    function verNuevos(){
+        $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
+        $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
+            var post = post.clone();
+
+            post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
+            post.injectTop($('postsContainer'));
+        });
+
+        //$('postsContainer').set({ style: 'background:#FFFFFF'});
+        $('verNuevos').setStyle('display','none');
+        $('newPostsContainer').empty();
+        // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
+
+    }
+
 
     function updatePosts(json, component, more) {
         if(json.response.docs.length == 0)
@@ -136,16 +150,12 @@
             firstIndexTime = json.response.docs.getLast().indexTime;
         }
 
-
         json.response.docs.each(function(doc){
-
-            var post = eval('('+doc.verbatim+')');
 
             var time = new Date(doc.indexTime).getTime();
             lastIndexTime = time > lastIndexTime ||  lastIndexTime == null ? time : lastIndexTime;
 
-            minRelevance = parseInt(post.relevance) < minRelevance || minRelevance == null ? parseInt(post.relevance) : minRelevance;
-
+            var post = eval('('+doc.verbatim+')');
             var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
             div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
             div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
@@ -210,10 +220,10 @@
 
             switch(post.source.toLowerCase()) {
                 case 'facebook':
-                    postLinks = post.links;
+                    postLinks =	post.links;
                     break;
                 default:
-                    postLinks = post.links;
+                    postLinks =	post.links;
             }
 
             if(typeOf(postLinks) == 'array') {
@@ -266,46 +276,16 @@
                 var tr = new Element('tr');
                 new Element('input', {'id': 'chk'+post.source, 'type': 'checkbox', 'checked': true, 'value': post.source, 'onclick':'filtrar(this.value, this.checked);'}).inject(new Element('td').inject(tr));
                 new Element('td', {}).setHTML(post.source).inject(tr);
-                tr.inject($("noticiasEnLaRed"));
+                tr.inject($("enLaRed"));
             }
-            var insertado = false;
+
             div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
-            
-            //var counts = $$('span.zonales-count');
-            var counts = component.getElements('span.zonales-count');
-            if(typeOf(counts) == 'array') {
-                counts.each(function(count){
-                    if (parseInt(post.relevance) > parseInt(count.innerHTML) && !insertado){
-                        insertado = true;
-                        div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                    }
-
-                });
-            }
-
-            if(!insertado){
+            if(typeof more == 'undefined' || !more) {
+                div_story_item.injectTop(component);
+            } else {
                 div_story_item.injectInside(component);
             }
         });
-    }
-
-    function verNuevos(){
-        $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
-        $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'});
-        $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
-            var insertado = false;
-            $('postsContainer').getElements('span.zonales-count').each(function(count){
-                if (parseInt(newCount.innerHTML) > parseInt(count.innerHTML) && !insertado) {
-                    insertado = true;
-                    newCount.getParent().getParent().getParent().getParent().getParent().injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                }
-            });
-            if(!insertado){
-                newCount.getParent().getParent().getParent().getParent().getParent().injectInside($('postsContainer'));
-            }
-        });
-        $('verNuevos').setStyle('display','none');
-        $('newPostsContainer').empty();
     }
 
     function spanishDate(d){
@@ -327,10 +307,22 @@
             posts.each(function(post){
                 if(post.hasClass(source))
                     post.setStyle('display', visible ? 'block' : 'none');
+
+
             });
         }
         sendFilter(source,visible);
+        /*	document.getElementById('tituloSup').innerHTML = "";
+        $('enLaRed').getElements('input[id^=chk]').each(function(element) {
+              if(element.checked) {
+                  document.getElementById('tituloSup').innerHTML += element.value + ", ";
+                }
+                });*/
+        armarTitulo();
+
     }
+
+
 
     function addMilli(date) {
         var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
@@ -344,9 +336,9 @@
         return finalDate;
     }
 
-    //  Fri Sep 23 2011 09:51:35 GM /0300 (AR )
+    //	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
 
-    //  2010-08-28T20:24:17Z
+    //	2010-08-28T20:24:17Z
 
     function prettyDate(time){
         var time_formats = [
@@ -386,40 +378,29 @@
         return time;
     }
 
-    function on_tempo_change(){
-        $('postsContainer').empty();
-        $('newPostsContainer').empty();
-        lastIndexTime = null;
-        loadPost(true);
-    }
-
     function armarTitulo(){
-        var temp = 0;
         document.getElementById('tituloSup').innerHTML = "";
-        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element) {
-            if(element.checked && temp < 5 ) {
-                temp++;
-                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine: "
+        $('enLaRed').getElements('input[id^=chk]').each(function(element) {
+            if(element.checked) {
                 document.getElementById('tituloSup').innerHTML += element.value + ", ";
-            }
-            else{
-                document.getElementById('tituloSup').innerHTML = "";
-                document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de Mayor Relevancia de mas de 5 diarios ";
-
             }
         });
 
 
     }
-    //Add events to HTML input element
-    document.getElementById('tempoSelect').addEventListener(
-    'change',
-    on_tempo_change,
-    false);
     //-->
 </script>
+<!--<table>
+    <tbody id="chkFilter">
+        <tr>
+            <td>
+               <p>Noticias en la red de Facebook</p>
+            </td>
 
-<label id="titulo1"></label><label id="tituloSup"></label>
+        </tr>
+    </tbody>
+</table> -->
+<label>Ud. esta viendo Noticias de la red: </label><label id="tituloSup"></label>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>
@@ -428,4 +409,3 @@
 <div>
     <input value="Ver Mas" onclick="loadMorePost();" type="button">
 </div>
-

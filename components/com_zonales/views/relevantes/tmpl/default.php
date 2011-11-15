@@ -41,6 +41,7 @@
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
+                        armarTitulo();
                     }
                     else {
 
@@ -79,6 +80,7 @@
                 // actualizar pagina
                 if(typeof jsonObj != 'undefined')
                     updatePosts(jsonObj, $('postsContainer'), true);
+                    armarTitulo();
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -328,6 +330,7 @@
             });
         }
         sendFilter(source,visible);
+        armarTitulo();
     }
 
     function addMilli(date) {
@@ -391,6 +394,17 @@
         loadPost(true);
     }
 
+        function armarTitulo(){
+        document.getElementById('tituloSup').innerHTML = "";
+	$('enLaRed').getElements('input[id^=chk]').each(function(element) {
+	if(element.checked) {
+	    document.getElementById('tituloSup').innerHTML += element.value + ", ";
+	}
+	});
+
+
+}
+
      //Add events to HTML input element
      document.getElementById('tempoSelect').addEventListener(
          'change',
@@ -428,6 +442,7 @@
         </tr>
     </tbody>
 </table>-->
+<label>Ud. esta viendo las Noticias mas Relevantes de la Red Social: </label><label id="tituloSup"></label>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>
