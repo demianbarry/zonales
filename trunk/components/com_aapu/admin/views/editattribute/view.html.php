@@ -9,7 +9,8 @@ class AapuViewEditAttribute extends JView
 
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 
 		$this->_attribute =& $this->get('Data');
 

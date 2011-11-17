@@ -6,7 +6,8 @@ class AapuViewListAttributes extends AapuBaseView
 {
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 
 		$this->_context = $option . 'ListAttributes';		// nombre del contexto
 		$this->_orderfield = 'a.label';                         // campo de ordenamiento

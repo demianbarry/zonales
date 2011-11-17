@@ -17,7 +17,8 @@ class AapuBaseView extends JView
 	 */
 	function configure()
 	{
-		global $option, $mainframe;
+		$option = JRequest::getCMD('option'); 
+                $mainframe = JFactory::getApplication();
 
 		// orden
 		$filter_order		= $mainframe->getUserStateFromRequest( $this->_context.'filter_order', 'filter_order', $this->_orderfield, 'cmd' );

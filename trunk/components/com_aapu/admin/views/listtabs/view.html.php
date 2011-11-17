@@ -6,7 +6,8 @@ class AapuViewListTabs extends AapuBaseView
 {
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 
 		$this->_context = $option . 'ListTabs';		// nombre del contexto
 		$this->_orderfield = 'ac.label';		// campo de ordenamiento
