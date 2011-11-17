@@ -9,8 +9,8 @@ class AapuViewEditTab extends JView
 
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
-
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 		$this->_tab =& $this->get('Data');
 
 		// Setea la barra de menúes y el titulo del documento según la accion

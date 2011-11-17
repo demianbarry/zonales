@@ -8,7 +8,8 @@ class AapuViewEditUser extends JView {
     var $_user;
 
     function display($tpl = null, $userId = null) {
-        global $option, $mainframe;
+        $option = JRequest::getCMD('option');
+        $mainframe = JFactory::getApplication(); 
 
         // Setea la barra de menúes y el titulo del documento según la accion
         $document = & JFactory::getDocument();

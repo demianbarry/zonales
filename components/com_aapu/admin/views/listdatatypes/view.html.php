@@ -6,8 +6,8 @@ class AapuViewListDataTypes extends AapuBaseView
 {
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
-
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 		$this->_context = $option . 'ListDataTypes';		// nombre del contexto
 		$this->_orderfield = 'dt.label';		// campo de ordenamiento
 		$this->_searchfield = 'dt.label';		// campo de búsqueda

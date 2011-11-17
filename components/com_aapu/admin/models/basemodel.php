@@ -32,7 +32,9 @@ abstract class AapuModelBaseModel extends JModel {
     function __construct() {
         parent::__construct();
 
-        global $mainframe, $option;
+        $option = JRequest::getCMD('option'); 
+
+        $mainframe=JFactory::getApplication();
 
         // obtenemos las variables para paginacion
         $limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );

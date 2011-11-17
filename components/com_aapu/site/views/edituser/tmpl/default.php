@@ -23,7 +23,9 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 
 	ret = <?php echo $this->user->attrCount; ?>;
 
-        $each([<?php echo $this->user->validString ?>], function(id, index){
+        var attrs = new Array();
+
+        Array.each([<?php echo $this->user->validString ?>], function(id, index){
             validate_attr($(id));
         });
 
@@ -35,8 +37,8 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
         if (attr.id == 'name' || attr.id == 'username' || attr.id == 'email') {
             ret--;
             if (attr.hasClass('required')) {
-                if (!attr.getValue()) {
-                        $('valid_'+attr.id).innerHTML = "<?= JText::_('REQUIRED FIELD');?>"; //user;
+                if (!attr.get('value')) {
+                       $('valid_'+attr.id).innerHTML = "<?= JText::_('REQUIRED FIELD');?>"; //user;
                         return false;
                 } else {
                     $('valid_'+attr.id).innerHTML = "";
@@ -54,7 +56,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 
             // If the field is required make sure it has a value
             if ($(attr).hasClass('required')) {
-                    if (!($(attr).getValue())) {
+                    if (!($(attr).get('value'))) {
                             $('valid_'+attr.id.substring(5)).innerHTML = "<?= JText::_('REQUIRED FIELD');?>";
                             return false;
                     }
@@ -62,7 +64,8 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 
             var url="index.php?option=com_aapu&format=raw&task=validateAttr&attrId="+attr.id+"&attrValue="+attr.value;
 
-            new Ajax(url, {
+            new Request({
+		url: url,
                 method: 'get',
                 update: $('valid_'+attr.id.substring(5)),
                 onComplete: function(response) {
@@ -79,7 +82,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
                          }
                     }
                 }
-            }).request();
+            }).send();
         }
     }
 
@@ -159,7 +162,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate">
 
     <?php
-    
+
     $panel =& JPANE::getInstance('Tabs');
 
     echo $panel->startPane('panel');
@@ -313,7 +316,7 @@ JHTML::stylesheet('aapu.css', 'administrator/components/com_aapu/css/');
     <div class="clr"></div>
 
     <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
-    <input type="hidden" name="option" value="<?php echo $option;?>" />
+    <input type="hidden" name="option" value="<?php echo $option ? $option : 'com_aapu';?>" />
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="aapu_task" value=""/>
     <input type="button" class="aapu_button" value="<?php echo JText::_('Save'); ?>" onclick="submitbutton('saveUser');"/>

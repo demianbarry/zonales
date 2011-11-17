@@ -15,9 +15,9 @@ jimport('joomla.application.component.helper'); // include libraries/application
 class AapuController extends JController {
 
     /**
-     * Constructor
-     *
-     * @param array $default
+     Constructor
+
+     *  El controlador mantiene el registro de todas las tareas y metodos
      */
     function __construct($default = array()) {
         parent::__construct($default);        //llamada al construcutor de la clase base
@@ -32,6 +32,7 @@ class AapuController extends JController {
         $this->registerTask('cancelUser', 'cancelUser');
         $this->registerTask('removeUser', 'removeUser');
 
+        //Tabs
         $this->registerTask('listTabs', 'listTabs');
         $this->registerTask('editTab', 'editTab');
         $this->registerTask('addTab', 'editTab');
@@ -40,6 +41,7 @@ class AapuController extends JController {
         $this->registerTask('cancelTab', 'cancelTab');
         $this->registerTask('removeTab', 'removeTab');
 
+        //Atributos
         $this->registerTask('listAttributes', 'listAttributes');
         $this->registerTask('editAttribute', 'editAttribute');
         $this->registerTask('addAttribute', 'editAttribute');
@@ -48,12 +50,14 @@ class AapuController extends JController {
         $this->registerTask('cancelAttribute', 'cancelAttribute');
         $this->registerTask('removeAttribute', 'removeAttribute');
 
+        //Publicar, validar, Bloquear
         $this->registerTask( 'publish', 'publish' );
         $this->registerTask( 'unpublish', 'publish' );
         $this->registerTask( 'block', 'block' );
         $this->registerTask( 'unblock', 'block' );
         $this->registerTask( 'validateAttr', 'validateAttr' );
 
+        //Tipos de datos
         $this->registerTask('listDataTypes', 'listDataTypes');
         $this->registerTask('editDataType', 'editDataType');
         $this->registerTask('addDataType', 'editDataType');
@@ -87,6 +91,7 @@ class AapuController extends JController {
         // no se ejecuta si se accede al backend
         $app = JFactory::getApplication();      //obtiene referencia al objeto
 
+        //Llama a baseDisplayTask dependiendo el usuario
         if ($app->isAdmin()) {
             $this->baseDisplayTask($view, 'Users', 'default', 1);
         } else {
@@ -106,7 +111,8 @@ class AapuController extends JController {
     }
 
     function removeUser() {
-        global $option;
+        $option = JRequest::getCMD('option');
+
 
         $model = &$this->getModel('users');  //obtiene el modelo
         $cids = $_POST['cid'];
@@ -139,7 +145,7 @@ class AapuController extends JController {
     }
 
     function saveUser() {
-        global $option;
+       $option = JRequest::getCMD('option');
 
         $postData = JRequest::get('post');
         
@@ -268,7 +274,8 @@ class AapuController extends JController {
     }
 
     function removeTab() {
-        global $option;
+       $option = JRequest::getCMD('option');
+
         $flag = true;
 
         $model = &$this->getModel('tabs');
@@ -299,7 +306,7 @@ class AapuController extends JController {
     }
 
     function saveTab() {
-        global $option;
+      $option = JRequest::getCMD('option');
 
         $model	= &$this->getModel('tabs');
 
@@ -360,7 +367,8 @@ class AapuController extends JController {
     }
 
     function removeAttribute() {
-        global $option;
+        $option = JRequest::getCMD('option');
+
         $flag = true;
 
         $model = &$this->getModel('attributes');
@@ -412,7 +420,7 @@ class AapuController extends JController {
     }
 
     function saveAttribute() {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
 
         $model	= &$this->getModel('attributes');
 
@@ -481,7 +489,7 @@ class AapuController extends JController {
     }
 
     function removeDataType() {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
         $flag = true;
 
         $model = &$this->getModel('datatypes');
@@ -512,7 +520,7 @@ class AapuController extends JController {
     }
 
     function saveDataType() {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
 
         $model	= &$this->getModel('datatypes');
 
@@ -557,10 +565,11 @@ class AapuController extends JController {
 
     /*
          * FUNCIONES GENERICAS
+          Se redefien el metodo Display para mostrar la vista
     */
 
     function baseDisplayTask($view, $modelName, $layout = 'default', $hidemainmenu = 0, $vars = array()) {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
 
         $document = &JFactory::getDocument();   //obiene la referencia al objeto.
         $vLayout = JRequest::getCmd( 'layout', $layout );
@@ -576,25 +585,25 @@ class AapuController extends JController {
 
         $model = &$this->getModel(JRequest::getCmd('model', $modelName));
         if ($model) {
-            $view->setModel($model, true);
+            $view->setModel($model, true);  // Agrega el modelo a la vista
         }
 
-        // Desactiva el menú principal
-        JRequest::setVar('hidemainmenu', $hidemainmenu);
+        
+        JRequest::setVar('hidemainmenu', $hidemainmenu); // Desactiva el menú principal
 
-        // Set the layout
-        $view->setLayout($vLayout);
+       
+        $view->setLayout($vLayout); // Setea el layout
 
-        // Display the view
+        
         if (array_key_exists('userId', $vars)) {
-            $view->display(null, $vars['userId']);
+            $view->display(null, $vars['userId']); // Despliega la vista con el userId
         } else {
             $view->display();
         }
     }
 
     function baseRemoveTask($model, $task) {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
 
         $model = &$this->getModel($model);
 
@@ -610,14 +619,14 @@ class AapuController extends JController {
     }
 
     function redirectTask($task, $msg) {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
 
         $redirect = 'index.php?option=' . $option . '&task=' . $task;
         $this->setRedirect($redirect, $msg);
     }
 
     function baseCancelTask($msg, $task) {
-        global $option;
+        $option = JRequest::getCMD('option'); ;
         $this->setRedirect('index.php?option='.$option.'&task='.$task, $msg);
     }
 

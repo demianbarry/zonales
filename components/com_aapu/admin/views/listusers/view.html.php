@@ -6,7 +6,8 @@ class AapuViewListUsers extends AapuBaseView
 {
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$option = JRequest::getCMD('option');
+                $mainframe = JFactory::getApplication();
 
 		$this->_context = $option . 'ListUsers';		// nombre del contexto
 		$this->_orderfield = 'u.name';		// campo de ordenamiento

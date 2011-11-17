@@ -11,7 +11,7 @@ JHTML::_('behavior.formvalidation');
     var pressButton;
 
     function submitbutton(pressbutton) {
-        
+
 	pressButton = pressbutton;
 
         if (pressbutton == 'cancelUser') {
@@ -33,7 +33,7 @@ JHTML::_('behavior.formvalidation');
         if (attr.id == 'name' || attr.id == 'username' || attr.id == 'email' || attr.id == 'passwordt' || attr.id == 'password2') {
             ret--;
             if (attr.hasClass('required')) {
-                if (!attr.getValue()) {
+                if (!attr.get('value')) {
                         $('valid_'+attr.id).innerHTML = "campo requerido";
                         return false;
                 } else {
@@ -52,15 +52,16 @@ JHTML::_('behavior.formvalidation');
 
             // If the field is required make sure it has a value
             if ($(attr).hasClass('required')) {
-                    if (!($(attr).getValue())) {
+                    if (!($(attr).get('value'))) {
                             $('valid_'+attr.id.substring(5)).innerHTML = "Campo requerido";
                             return false;
                     }
             }
-            
+
             var url="index.php?option=com_aapu&format=raw&task=validateAttr&attrId="+attr.id+"&attrValue="+attr.value;
 
-            new Ajax(url, {
+           new Request({
+		url: url,
                 method: 'get',
                 update: $('valid_'+attr.id.substring(5)),
                 onComplete: function(response) {
@@ -77,7 +78,7 @@ JHTML::_('behavior.formvalidation');
                          }
                     }
                 }
-            }).request();
+            }).send();
         }
     }
 
