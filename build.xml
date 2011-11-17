@@ -65,6 +65,10 @@
     <fileset dir="${src_modules}/mod_eq" id="mod_eq_files">
         <include name="**" />
     </fileset>
+    <!-- mod_eq -->
+    <fileset dir="${src_modules}/mod_filtro" id="mod_filtro_files">
+        <include name="**" />
+    </fileset>
     <!-- mod_alias -->
     <fileset dir="${src_modules}/mod_alias" id="mod_alias_files">
         <include name="**" />
@@ -301,6 +305,15 @@
         <echo message="Creando archivo de distribución de modulo Ecualizador de Interés"/>
         <zip destfile="${src_dist_dir}/${dist.mod_eq.file}.zip" >
             <fileset refid="mod_eq_files"/>
+            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_eq.ini" prefix="language" />
+        </zip>
+    </target>
+
+    <!-- modulo filtro -->
+    <target name="dist_mod_filtro" description="Crea archivo de distribución Joomla para el modulo Filtro de Fuente">
+        <echo message="Creando archivo de distribución de modulo Filtro de Fuente"/>
+        <zip destfile="${src_dist_dir}/${dist.mod_filtro.file}.zip" >
+            <fileset refid="mod_filtro_files"/>
             <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_eq.ini" prefix="language" />
         </zip>
     </target>
