@@ -39,6 +39,15 @@ defined('_JEXEC') or die('Restricted access');
     <input type="hidden" name="option" value="com_zonales" />
 <?php //echo JHTML::_('form.token');  ?>
 </form>-->
+<style>
+span#z_provincias_container{
+	margin-right:10px;
+}
+
+span#municipio_container{
+	float:right;
+}
+</style>
 <form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form" style="margin: 0; padding: 0;">
     <!--<strong>UBICACIÓN: </strong>-->
     <span id="z_provincias_container" style="width:219px;">
@@ -50,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
           <input class="combo_zonal_button" type="<?php echo ($zonal ? 'submit' : 'hidden')?>" value="<?php echo JText::_('Ver portada');?>" id="clearZonal" name="clearZonal" onclick="$('formComboZona').task.value='clearZonal'"/>
          */ ?>
     </span>
-    <!--input class="combo_zonal_button" type="submit" value="Enviar"/-->	
+    <!--input class="combo_zonal_button" type="submit" value="Enviar"/-->
 
     <input type="hidden" name="task" value="setZonalById" />
     <input type="hidden" name="option" value="com_zonales" />
@@ -67,46 +76,38 @@ defined('_JEXEC') or die('Restricted access');
         $('provincias').addEvent('change', function() {
             loadMunicipios();
         });
-        
-        var newElement =  new Element('option');    
+
+        var newElement =  new Element('option');
 	newElement.inject($('provincias'), 'top');
 	newElement.setProperty('value','0');
 	newElement.appendText('Seleccione una provincia...');
 	$('provincias').selectedIndex = 0;
-		
+
 	<?php if (!empty($selectedParent)) {?>
             $('provincias').value = <?php echo $selectedParent;?>;
-        <?php } ?>	
-        
-        loadMunicipios(<?php echo "$selectedOption" ?>);        
-        
+        <?php } ?>
+
+        loadMunicipios(<?php echo "$selectedOption" ?>);
+
     });
-    
-    
+
+
 
     function loadMunicipios(selected){
-        /*$('z_localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
-        new Ajax(url, {
-            method: 'get',
-            onComplete: function(response) {
-                $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
-                $('municipio_container').setStyle('display','block');
-            }
-        }).request();*/
         $('z_localidad_container').empty().addClass('ajax-loading');
-        var url='index.php?option=com_zonales&format=raw&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
-        new Ajax(url, {
+        var url='index.php?option=com_zonales&tmpl=component&task=getItemsAjax&id='+$('provincias').value+'&name=zonalid&selected='+selected;
+        new Request({
+	    url:url,
             method: 'get',
             onComplete: function(response) {
-                $('z_localidad_container').removeClass('ajax-loading').setHTML(response);
+                $('z_localidad_container').removeClass('ajax-loading').set('html',response);
                 $('zonalid').setStyle('width','219px');
-                var newElement =  new Element('option');    
+                var newElement =  new Element('option');
                 newElement.inject($('zonalid'), 'top');
                 newElement.setProperty('value','0');
                 newElement.appendText('Seleccione un municipio...');
                 $('zonalid').selectedIndex = 0;
-                if($('provincias').value==0){ 
+                if($('provincias').value==0){
                     $('zonalid').disabled = true;
                 }else{
                     $('zonalid').value = selected;
@@ -115,9 +116,10 @@ defined('_JEXEC') or die('Restricted access');
                 $('zonalid').addEvent('change', function() {
                     $('formComboZona').submit();
                 });
-				
+
             }
-        }).request();
+
+        }).send();
     }
     //-->
 </script>
