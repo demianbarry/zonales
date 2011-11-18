@@ -77,6 +77,14 @@
         <servlet-name>GetLastHit</servlet-name>
         <servlet-class>org.zonales.ZGram.services.GetLastHit</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getGeoZone</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.GetGeoZone</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setGeoZone</servlet-name>
+        <servlet-class>org.zonales.tagsAndZones.services.SetGeoZone</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetConfig</servlet-name>
         <url-pattern>/getConfig</url-pattern>
@@ -152,6 +160,14 @@
     <servlet-mapping>
         <servlet-name>GetLastHit</servlet-name>
         <url-pattern>/getLastHit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getGeoZone</servlet-name>
+        <url-pattern>/getGeoZone</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setGeoZone</servlet-name>
+        <url-pattern>/setGeoZone</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
