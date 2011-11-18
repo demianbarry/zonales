@@ -82,7 +82,7 @@ Datos alfanuméricos de cada lugar.
 }
 }}}
 
-== GeoJson ==
+== [http://geojson.org/ GeoJson] ==
 
 Representa la locación geográfica de un tipo de datos. Puede ser asociado a zonas, lugares o cualquier otro tipo de dato que se defina en el futuro.
 Respeta el formato GeoJson definido en [http://geojson.org/geojson-spec.html].
