@@ -12,6 +12,7 @@ import com.mongodb.MongoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.zonales.BaseDao;
 import org.zonales.crawlConfig.objets.State;
 import org.zonales.tagsAndZones.objects.Type;
@@ -118,6 +119,50 @@ public class ZoneDao extends BaseDao {
         return this.zones.find(query).count() > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    public String retrieveJsonById(String id) {
+        BasicDBObject query = new BasicDBObject("id", id);
+        DBObject resp = this.zones.findOne(query);
+        if (resp == null) {
+            return null;
+        }
+
+        //resp.removeField("_id");
+        //System.out.println(resp);
+
+        return resp.toString();
+    }
+    
+    public String retrieveJsonByType(String type, Boolean onlyNames) {
+        BasicDBObject query = new BasicDBObject("type", type);
+        DBObject resp;
+        DBCursor cur;
+        Boolean nothing = true;
+
+        cur = this.zones.find(query);
+        String ret = "[";
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            if (onlyNames) {
+                ret += "{\"id\": \"" + resp.get("id") + "\",";
+                ret += "\"name\": \"" + resp.get("name") + "\"},";
+            } else {
+                ret += resp + ",";
+            }
+            if (nothing) {
+                nothing = false;
+            }
+        }
+
+        if (!nothing) {
+            ret = ret.substring(0, ret.length() - 1);
+        }
+
+        ret += "]";
+
+        return ret;
+    }
+
     public String retrieveJson(String name) {
         BasicDBObject query = new BasicDBObject("name", name);
         DBObject resp = this.zones.findOne(query);
@@ -131,7 +176,49 @@ public class ZoneDao extends BaseDao {
         return resp.toString();
     }
 
-      public String retrieveAll() {
+    public String retrieveJson(String zone, String state, Boolean onlyNames) {
+        BasicDBObject query = new BasicDBObject();
+        Pattern name = Pattern.compile("^.*" + zone + ".*$", Pattern.CASE_INSENSITIVE);
+        DBObject resp;
+        DBCursor cur;
+
+        if (zone != null) {
+            query.put("name", name);
+        }
+
+        if (state != null && !state.equals("all")) {
+            query.put("state", state);
+        }
+
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "QUERY: {0}", new Object[]{query.toString()});
+
+        cur = this.zones.find(query);
+
+        String ret = "[";
+        Boolean nothing = true;
+        while (cur.hasNext()) {
+            resp = cur.next();
+            if (onlyNames) {
+                ret += "{\"id\": \"" + resp.get("id") + "\",";
+                ret += "\"name\": \"" + resp.get("name") + "\",";
+                ret += "\"type\": \"" + resp.get("type") + "\",";
+                ret += "\"state\": \"" + resp.get("state") + "\"},";
+            } else {
+                ret += resp + ",";
+            }
+            if (nothing) {
+                nothing = false;
+            }
+        }
+        if (!nothing) {
+            ret = ret.substring(0, ret.length() - 1);
+        }
+        ret += "]";
+
+        return ret;
+    }
+
+    public String retrieveAll() {
         return retrieveAll(false);
     }
 
