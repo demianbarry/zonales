@@ -28,24 +28,47 @@ public class GetZone extends BaseService {
             response.setContentType("text/javascript");
             out = response.getWriter();
 
+            String id = request.getParameter("id");
             String name = request.getParameter("name");
+            String type = request.getParameter("type");
+            String zone = request.getParameter("zone");
+            String state = request.getParameter("state");
+
             ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             String retrieve;
+
             if (zoneDao == null) {
                 out.print(ZMessages.NO_DB_FAILED);
                 return;
             }
 
-             if ("all".equals(name)) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos las zonas");
-                retrieve = zoneDao.retrieveAll();
-            } else if ("allNames".equals(name)) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de las zonas");
-                retrieve = zoneDao.retrieveAll(true);
+            if (id != null) {
+                retrieve = zoneDao.retrieveJsonById(id);
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la zona {0}", new Object[]{name});
-                retrieve = zoneDao.retrieveJson(name);
+                if (type != null) {
+                    if ("allNames".equals(name)) {
+                        retrieve = zoneDao.retrieveJsonByType(type, true);
+                    } else {
+                        retrieve = zoneDao.retrieveJsonByType(type, false);
+                    }
+                } else {
+                    if ("all".equals(name)) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos las zonas");
+                        retrieve = zoneDao.retrieveAll();
+                    } else if ("allNames".equals(name)) {
+                        if (zone == null && state == null) {
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de las zonas");
+                            retrieve = zoneDao.retrieveAll(true);
+                         } else {
+                            retrieve = zoneDao.retrieveJson(zone, state, true);
+                         }
+                    } else {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la zona {0}", new Object[]{name});
+                        retrieve = zoneDao.retrieveJson(name);
+                    }
+                }
             }
+
             if (retrieve != null) {
                 out.print(retrieve);
             } else {
