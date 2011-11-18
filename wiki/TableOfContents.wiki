@@ -32,6 +32,8 @@
       * [MultiplesInstanciasMySQL Múltiples Instancias MySQL]
       * [CrearNuevaInstanciaMongo Crear una nueva instancia de Mongo]
       * [ReplicacionTomcat Replicar una instalación de Tomcat como un servidor independiente]
+    * [Geolocalización]
+      * [GeoStructures Estructuras de datos]
     * [FrontEnd]
     * [MiddleZone]
     * [MenuPracticas Buenas Practicas]
