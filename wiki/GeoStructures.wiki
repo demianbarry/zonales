@@ -207,3 +207,52 @@ La especificación permite utilizar varios tipos de datos geográficos, se lista
     "ref": []  //Iden FeaturesCollection
 }
 }}}
+
+== Formato devuelto por la [http://wikimapia.org/api API de Wikimapia] ==
+
+{{{
+{
+	"version":"1.0",
+	"language":"en",
+	"has_deeper_tiles":false,
+	"folder": [
+		{
+			"id":"18219856",
+			"name":"Güemes (es)",
+			"url":"http://wikimapia.org/18219856/en/Güemes_(es)",
+			"location":
+				{
+					"north":-31.4180063,
+					"south":-31.439337,
+					"east":-64.1888665,
+					"west":-64.199826,
+					"lon":null,
+					"lat":null
+				},
+			"polygon":[
+				{
+					"x":-64.1967094,
+					"y":-31.4180063
+				},
+				{
+					"x":-64.1922569,
+					"y":-31.4192149
+				},
+				{
+					"x":-64.1888666,
+					"y":-31.4202403
+				},
+				{
+					"x":-64.1913986,
+					"y":-31.4266124
+				}
+			]
+		},
+		{
+			"id":"18228899","name":"Alberdi (es)",
+			"url":"http://wikimapia.org/18228899/en/Alberdi_(es)",
+			"location": ...
+		}
+	]
+}
+}}}
