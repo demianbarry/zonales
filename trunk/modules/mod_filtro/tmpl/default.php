@@ -4,10 +4,11 @@
     function sendFilter(id, checked) {
         var url = "/index.php?option=com_zonales&task=setFilters&filters["+id+"]="+checked;
 
-        new Ajax(url,{
+        new Request({
+            url: url,
             method: 'get'
             //update: 'alias_progress',
-        }).request();
+        }).send();
     }
 
     window.addEvent('domready', function() {
@@ -45,28 +46,35 @@ JHTML::_('behavior.formvalidation');
     <h1 id="title_eq"><?php echo $use_module_title ? $module->title : $title; ?></h1>
     <div id="mod_eq_main_div" class="moduletable_formEq_bodyDiv">
         <p><?php echo $description; ?></p>
+<p><?php echo "pestana: ". $pestana; ?></p>
         <div class="splitter"></div>
 
         <?php
-          if($pestaña == 'enlared' || $pestaña == 'relevantes') {
+          if($pestana == 'enlared' || $pestana == 'relevantes') {
               $enLaRed = "inline";
               $noticiasEnLaRed = "none";
-              if($pestaña == 'enlared') {
+              if($pestana == 'enlared') {
                   $temporalidad = "none";
               } else {
                   $temporalidad = "inline";
               }
           }
 
-          if($pestaña == 'noticiasenlared' || $pestaña == 'noticiasenlaredrelevantes') {
+          if($pestana == 'noticiasenlared' || $pestana == 'noticiasenlaredrelevantes') {
               $enLaRed = "none";
               $noticiasEnLaRed = "inline";
-              if($pestaña == 'noticiasenlared') {
+              if($pestana == 'noticiasenlared') {
                   $temporalidad = "none";
               } else {
                   $temporalidad = "inline";
               }
           }
+	  if($pestana == 'zonales') {
+	     $enLaRed = "none";
+             $noticiasEnLaRed = "none";
+             $temporalidad = "none";
+          }
+
          ?>
         <div id="filtersDiv">
             <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
