@@ -40,7 +40,6 @@
                 if(typeof jsonObj != 'undefined'){
                     if(first){
                         updatePosts(jsonObj,$('postsContainer'));
-
                         armarTitulo();
                     }
                     else {
@@ -62,7 +61,6 @@
             onFailure: function(){
                 //status.set('innerHTML', 'Twitter: The request failed.');
             }
-
         }).send();
     }
 
@@ -79,6 +77,7 @@
                 // actualizar pagina
                 if(typeof jsonObj != 'undefined')
                     updatePosts(jsonObj, $('postsContainer'),true);
+                    armarTitulo();
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
@@ -86,7 +85,6 @@
             onFailure: function(){
                 //status.set('innerHTML', 'Twitter: The request failed.');
             }
-
         }).send();
     }
 
@@ -118,27 +116,23 @@
         }
         return text;
     }
+
     function verNuevos(){
         $$('div#postsContainer div.story-item').set({ style: 'background:#FFFFFF'});
         $$('div#newPostsContainer div.story-item').set({ style: 'background:#DCEFF4'}).reverse().each(function(post){
             var post = post.clone();
-
             post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
             post.injectTop($('postsContainer'));
         });
-
         //$('postsContainer').set({ style: 'background:#FFFFFF'});
         $('verNuevos').setStyle('display','none');
         $('newPostsContainer').empty();
         // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
-
     }
-
 
     function updatePosts(json, component, more) {
         if(json.response.docs.length == 0)
             return;
-
         if(typeof(json) == 'undefined')
             return;
         if(typeof more == 'undefined' || !more) {
@@ -149,12 +143,9 @@
         } else {
             firstIndexTime = json.response.docs.getLast().indexTime;
         }
-
         json.response.docs.each(function(doc){
-
             var time = new Date(doc.indexTime).getTime();
             lastIndexTime = time > lastIndexTime ||  lastIndexTime == null ? time : lastIndexTime;
-
             var post = eval('('+doc.verbatim+')');
             var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
             div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
@@ -312,17 +303,8 @@
             });
         }
         sendFilter(source,visible);
-        /*	document.getElementById('tituloSup').innerHTML = "";
-        $('enLaRed').getElements('input[id^=chk]').each(function(element) {
-              if(element.checked) {
-                  document.getElementById('tituloSup').innerHTML += element.value + ", ";
-                }
-                });*/
         armarTitulo();
-
     }
-
-
 
     function addMilli(date) {
         var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
@@ -390,16 +372,6 @@
     }
     //-->
 </script>
-<!--<table>
-    <tbody id="chkFilter">
-        <tr>
-            <td>
-               <p>Noticias en la red de Facebook</p>
-            </td>
-
-        </tr>
-    </tbody>
-</table> -->
 <label>Ud. esta viendo Noticias de la red social: </label><label id="tituloSup"></label>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
