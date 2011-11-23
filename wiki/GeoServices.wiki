@@ -1,6 +1,60 @@
 = Introduction =
 
-Listado de los servicios necesarios para el manejo de entidades geográficas y contenidos georreferenciados.
+Listado de los servicios necesarios para el manejo de zonas.
+
+<br>
+----
+== Obtener todas las zonas ==
+----
+
+*_PATH_*: /zone/getAll <br>
+*_Respuesta_*: Id y nombre de todas las zonas <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener zonas ==
+----
+
+*_PATH_*: /zone/get <br>
+*_Respuesta_*: Conjunto de zonas según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de zonas || JSON || El filtro es una cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener zonas por nombre ==
+----
+
+*_PATH_*: /zone/getLikeName <br>
+*_Respuesta_*: Conjunto de zonas según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre de la zona a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear una nueva zona ==
+----
+
+*_PATH_*: /zone/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre de la zona a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
 
 
-= Lista de Servicios =
