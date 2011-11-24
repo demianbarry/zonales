@@ -224,7 +224,7 @@ class ZonalesController extends JController {
         // librería recaptcha
         jimport('recaptcha.recaptchalib');
         // parametros del componente
-        $zonalesParams = &JComponentHelper::getParams('com_zonales');
+        $zonalesParams = &JFactory::getApplication('site')->getParams('com_zonales');
         $privatekey = $zonalesParams->get('recaptcha_privatekey', null);
 
         if (!$privatekey) {

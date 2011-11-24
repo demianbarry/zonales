@@ -6,7 +6,7 @@ class ZonalesViewListaMenu extends ZonalesViewBaseView
 {
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
 
 		$this->_context = $option . 'ListaMenu';		// nombre del contexto
 		$this->_orderfield = 'm.id';				// campo de ordenamiento

@@ -9,7 +9,7 @@ class ZonalesViewEditaTipoTag extends JView
 
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
 
 		$this->_tipotag =& $this->get('Data');
 

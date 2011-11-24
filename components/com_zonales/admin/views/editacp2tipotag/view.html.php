@@ -9,7 +9,7 @@ class ZonalesViewEditaCp2TipoTag extends JView
 
 	function display($tpl = null)
 	{
-		global $option, $mainframe;
+		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
 
 		$this->_cp2tipotag =& $this->get('Data');
 

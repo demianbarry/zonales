@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @version	$Id$
  * @package	Zonales
@@ -11,16 +12,16 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
-
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die ( 'Restricted Access' );
+defined('_JEXEC') or die('Restricted Access');
 
 class comZonalesHelper {
+
     /** @var JCache */
     var $_cache = null;
 
     function __construct($default = array()) {
-        $this->_cache =& JFactory::getCache('com_zonales');
+        $this->_cache = & JFactory::getCache('com_zonales');
     }
 
     /**
@@ -56,14 +57,15 @@ class comZonalesHelper {
     function getZonal($zonal_name = null) {
         if (is_null($zonal_name)) {
             $zonal_name = $this->getZonalActual();
-            if (is_null($zonal_name)) return null;
+            if (is_null($zonal_name))
+                return null;
         }
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '.
-                $dbo->nameQuote('v.parent_id') .', '. $dbo->nameQuote('v.label')
-                .' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
-                .' WHERE '. $dbo->nameQuote('v.name') .' = '. $dbo->quote($zonal_name);
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.id') . ', ' . $dbo->nameQuote('v.name') . ', ' .
+                $dbo->nameQuote('v.parent_id') . ', ' . $dbo->nameQuote('v.label')
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+                . ' WHERE ' . $dbo->nameQuote('v.name') . ' = ' . $dbo->quote($zonal_name);
         $dbo->setQuery($query);
 
         $zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
@@ -79,11 +81,11 @@ class comZonalesHelper {
      */
     function getZonalById($zonal_id) {
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT ' . $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '.
-                $dbo->nameQuote('v.parent_id') .', '. $dbo->nameQuote('v.label')
-                .' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
-                .' WHERE '. $dbo->nameQuote('v.id') .' = '. $dbo->quote($zonal_id);
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.id') . ', ' . $dbo->nameQuote('v.name') . ', ' .
+                $dbo->nameQuote('v.parent_id') . ', ' . $dbo->nameQuote('v.label')
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+                . ' WHERE ' . $dbo->nameQuote('v.id') . ' = ' . $dbo->quote($zonal_id);
         $dbo->setQuery($query);
 
         $zonal = $this->_cache->get(array($dbo, 'loadObject'), array());
@@ -132,10 +134,10 @@ class comZonalesHelper {
             return null;
         }
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT ' . $dbo->nameQuote('t.id') .', '. $dbo->nameQuote('t.tipo')
-                .' FROM ' . $dbo->nameQuote('#__zonales_tipotag') . ' t'
-                .' WHERE '. $dbo->nameQuote('t.tipo') .' = '. $dbo->quote($tipo);
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('t.id') . ', ' . $dbo->nameQuote('t.tipo')
+                . ' FROM ' . $dbo->nameQuote('#__zonales_tipotag') . ' t'
+                . ' WHERE ' . $dbo->nameQuote('t.tipo') . ' = ' . $dbo->quote($tipo);
         $dbo->setQuery($query);
 
         return $this->_cache->get(array($dbo, 'loadObject'), array());
@@ -152,15 +154,15 @@ class comZonalesHelper {
             return null;
         }
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT ' . $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '. $dbo->nameQuote('f.label')
-                .' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
-                .' INNER JOIN '. $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
-                .' ON '. $dbo->nameQuote('c.field_id') .' = '. $dbo->nameQuote('f.id')
-                .' AND '. $dbo->nameQuote('c.tipo_id') .' = '. $tipo->id;
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('f.id') . ', ' . $dbo->nameQuote('f.name') . ', ' . $dbo->nameQuote('f.label')
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
+                . ' INNER JOIN ' . $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
+                . ' ON ' . $dbo->nameQuote('c.field_id') . ' = ' . $dbo->nameQuote('f.id')
+                . ' AND ' . $dbo->nameQuote('c.tipo_id') . ' = ' . $tipo->id;
         $dbo->setQuery($query);
 
-        return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
+        return $this->_cache->get(array($dbo, 'loadObjectList'), array());
     }
 
     /**
@@ -176,15 +178,15 @@ class comZonalesHelper {
      */
     function getValuesZonales() {
 
-        $dbo	= & JFactory::getDBO();
+        $dbo = & JFactory::getDBO();
         $query = 'SELECT v.id, v.name, v.label'
-                .' FROM #__custom_properties_values v '
-                .' WHERE v.field_id = '
-                .' (SELECT f.id FROM #__custom_properties_fields f'
-                .' WHERE f.name = "root_zonales")';
+                . ' FROM #__custom_properties_values v '
+                . ' WHERE v.field_id = '
+                . ' (SELECT f.id FROM #__custom_properties_fields f'
+                . ' WHERE f.name = "root_zonales")';
         $dbo->setQuery($query);
 
-        return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
+        return $this->_cache->get(array($dbo, 'loadObjectList'), array());
     }
 
     /**
@@ -195,11 +197,11 @@ class comZonalesHelper {
      */
     function getLocalidadesByPartido($id) {
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT v.id, v.name, v.label FROM #__custom_properties_values v WHERE v.parent_id  = '.$id;
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT v.id, v.name, v.label FROM #__custom_properties_values v WHERE v.parent_id  = ' . $id;
         $dbo->setQuery($query);
 
-        return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
+        return $this->_cache->get(array($dbo, 'loadObjectList'), array());
     }
 
     /**
@@ -213,10 +215,10 @@ class comZonalesHelper {
             return null;
         }
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT '. $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', ' .$dbo->nameQuote('v.label')
-                .' FROM '. $dbo->nameQuote('#__custom_properties_values') . ' v'
-                .' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.id') . ', ' . $dbo->nameQuote('v.name') . ', ' . $dbo->nameQuote('v.label')
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+                . ' WHERE ' . $dbo->nameQuote('v.field_id') . ' = ' . $id;
         $dbo->setQuery($query);
 
         return $this->_cache->get(array($dbo, 'loadObjectList'), array());
@@ -231,7 +233,6 @@ class comZonalesHelper {
         //$tipo = $this->getTipo('zonal');
         //return $this->getFields($tipo);
         return $this->getValuesZonales();
-
     }
 
     /**
@@ -254,22 +255,22 @@ class comZonalesHelper {
          *      mediante el INNER JOIN con cp2tipotag.
          * 2) Recupera el menú asociado con la tupla field/value.
          */
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT '. $dbo->nameQuote('f.id') .', '. $dbo->nameQuote('f.name') .', '
-                . $dbo->nameQuote('f.label') .', '. $dbo->nameQuote('m.id') .' as itemid, '
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('f.id') . ', ' . $dbo->nameQuote('f.name') . ', '
+                . $dbo->nameQuote('f.label') . ', ' . $dbo->nameQuote('m.id') . ' as itemid, '
                 . $dbo->nameQuote('m.link')
-                .' FROM '. $dbo->nameQuote('#__custom_properties_fields') . ' f'
-                .' INNER JOIN '. $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
-                .' ON '. $dbo->nameQuote('c.field_id') .' = '. $dbo->nameQuote('f.id')
-                .' AND '. $dbo->nameQuote('c.tipo_id') .' = '. $tipo->id
-                .' LEFT JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
-                .' ON '. $dbo->nameQuote('zm.field_id') .' = '. $dbo->nameQuote('f.id')
-                .' AND '. $dbo->nameQuote('zm.value_id') .' = 0'
-                .' LEFT JOIN '. $dbo->nameQuote('#__menu') .' m'
-                .' ON '. $dbo->nameQuote('m.id') .' = '. $dbo->nameQuote('zm.menu_id');
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_fields') . ' f'
+                . ' INNER JOIN ' . $dbo->nameQuote('#__zonales_cp2tipotag') . ' c'
+                . ' ON ' . $dbo->nameQuote('c.field_id') . ' = ' . $dbo->nameQuote('f.id')
+                . ' AND ' . $dbo->nameQuote('c.tipo_id') . ' = ' . $tipo->id
+                . ' LEFT JOIN ' . $dbo->nameQuote('#__zonales_menu') . ' zm'
+                . ' ON ' . $dbo->nameQuote('zm.field_id') . ' = ' . $dbo->nameQuote('f.id')
+                . ' AND ' . $dbo->nameQuote('zm.value_id') . ' = 0'
+                . ' LEFT JOIN ' . $dbo->nameQuote('#__menu') . ' m'
+                . ' ON ' . $dbo->nameQuote('m.id') . ' = ' . $dbo->nameQuote('zm.menu_id');
         $dbo->setQuery($query);
 
-        return  $this->_cache->get(array($dbo, 'loadObjectList'), array());
+        return $this->_cache->get(array($dbo, 'loadObjectList'), array());
     }
 
     /**
@@ -283,40 +284,40 @@ class comZonalesHelper {
             return null;
         }
 
-        $dbo	= & JFactory::getDBO();
-        $query = 'SELECT '. $dbo->nameQuote('v.id') .', '. $dbo->nameQuote('v.name') .', '
-                .$dbo->nameQuote('v.label') .', '. $dbo->nameQuote('jm.link') .', '
-                .$dbo->nameQuote('zm.menu_id')
-                .($eq ? ', b.peso' : '')
-                .' FROM '. $dbo->nameQuote('#__custom_properties_values') . ' v'
-                .' INNER JOIN '. $dbo->nameQuote('#__zonales_menu') . ' zm'
-                .' ON '. $dbo->nameQuote('zm.value_id') .' = '. $dbo->nameQuote('v.id')
-                .' INNER JOIN '. $dbo->nameQuote('#__menu') . ' jm'
-                .' ON '. $dbo->nameQuote('jm.id') .' = '. $dbo->nameQuote('zm.menu_id');
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.id') . ', ' . $dbo->nameQuote('v.name') . ', '
+                . $dbo->nameQuote('v.label') . ', ' . $dbo->nameQuote('jm.link') . ', '
+                . $dbo->nameQuote('zm.menu_id')
+                . ($eq ? ', b.peso' : '')
+                . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v'
+                . ' INNER JOIN ' . $dbo->nameQuote('#__zonales_menu') . ' zm'
+                . ' ON ' . $dbo->nameQuote('zm.value_id') . ' = ' . $dbo->nameQuote('v.id')
+                . ' INNER JOIN ' . $dbo->nameQuote('#__menu') . ' jm'
+                . ' ON ' . $dbo->nameQuote('jm.id') . ' = ' . $dbo->nameQuote('zm.menu_id');
 
         // ecualiza
         if ($eq) {
-            require_once(JPATH_BASE.DS.'components'.DS.'com_eqzonales'.DS.'controllers'.DS.'eq.php');
-            JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'tables');
+            require_once(JPATH_BASE . DS . 'components' . DS . 'com_eqzonales' . DS . 'controllers' . DS . 'eq.php');
+            JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_eqzonales' . DS . 'tables');
 
             $ctrlEq = new EqZonalesControllerEq();
-            $ctrlEq->addModelPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_eqzonales'.DS.'models' );
+            $ctrlEq->addModelPath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_eqzonales' . DS . 'models');
 
             // recupera ecualizador del usuario
-            $user =& JFactory::getUser();
+            $user = & JFactory::getUser();
             $result = $ctrlEq->retrieveUserEqImpl($user->id);
 
             if (!is_null($result) && !empty($result)) {
                 $eq = $result[0];
 
-                $query .= ' LEFT JOIN '. $dbo->nameQuote('#__eqzonales_banda') . ' b'
-                        .' ON '. $dbo->nameQuote('v.id') .' = '. $dbo->nameQuote('b.cp_value_id')
-                        .' AND '. $dbo->nameQuote('b.eq_id') .' = '. $eq->eq->id;
+                $query .= ' LEFT JOIN ' . $dbo->nameQuote('#__eqzonales_banda') . ' b'
+                        . ' ON ' . $dbo->nameQuote('v.id') . ' = ' . $dbo->nameQuote('b.cp_value_id')
+                        . ' AND ' . $dbo->nameQuote('b.eq_id') . ' = ' . $eq->eq->id;
             }
         }
 
         // where
-        $query .= ' WHERE '. $dbo->nameQuote('v.field_id') .' = '. $id;
+        $query .= ' WHERE ' . $dbo->nameQuote('v.field_id') . ' = ' . $id;
 
         // ordena según ecualización
         if ($eq) {
@@ -360,13 +361,13 @@ class comZonalesHelper {
      * @return String sentencia inner join
      */
     function _buildCustomPropertiesJoinByTable($id_field, $ref_table = 'content', $alias = 'jcp') {
-        $join = ' INNER JOIN #__custom_properties ' .$alias. ' ON ' .$id_field. ' = ' .$alias. '.content_id'.
-                ' AND ' .$alias. '.ref_table = \''. $ref_table .'\' ';
+        $join = ' INNER JOIN #__custom_properties ' . $alias . ' ON ' . $id_field . ' = ' . $alias . '.content_id' .
+                ' AND ' . $alias . '.ref_table = \'' . $ref_table . '\' ';
 
         $helper = new comZonalesHelper();
         $zonal = $helper->getZonal();
         if ($zonal) {
-            $join .= ' AND ' .$alias. '.field_id = ' . $zonal->id;
+            $join .= ' AND ' . $alias . '.field_id = ' . $zonal->id;
         }
 
         return $join;
@@ -388,7 +389,7 @@ class comZonalesHelper {
      * @return boolean
      */
     function showMap() {
-        $show = JRequest::getInt('map','1','method');
+        $show = JRequest::getInt('map', '1', 'method');
         return ($show == 1);
     }
 
@@ -399,7 +400,7 @@ class comZonalesHelper {
     function _buildCustomPropertiesJoin() {
         $join = ' INNER JOIN #__custom_properties p ON a.id = p.content_id';
         if (($zonal = $this->getZonal())) {
-            $join .= ' AND p.value_id IN (SELECT v.id FROM #__custom_properties_values v WHERE v.parent_id = '.$zonal->id.') ' ;
+            $join .= ' AND p.value_id IN (SELECT v.id FROM #__custom_properties_values v WHERE v.parent_id = ' . $zonal->id . ') ';
         }
 
         return $join;
@@ -413,10 +414,10 @@ class comZonalesHelper {
      * @return array con hijos directos del identificador padre
      */
     function getItems($id) {
-        $dbo =& JFactory::getDBO();
+        $dbo = & JFactory::getDBO();
 
         // Recupera todos las etiquetas jerarquicas de primer nivel bajo el grupo noticias
-        $query = "SELECT id, label FROM `#__custom_properties_values`".
+        $query = "SELECT id, label FROM `#__custom_properties_values`" .
                 " WHERE `parent_id` = $id";
 
         $dbo->setQuery($query);
@@ -429,7 +430,7 @@ class comZonalesHelper {
      * Retorna el parámetro Root value para la selección de zonas
      */
     function getRoot() {
-        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+        $zonalesParams = &JFactory::getApplication('site')->getParams('com_zonales');
         $root = $zonalesParams->get('root_value');
         return $root;
     }
@@ -448,40 +449,15 @@ class comZonalesHelper {
         }
     }
 
-    /**
-     * Setea o actualiza la variable de sesión de filtros
-     */
-    function setFilter($id, $selected) {
-        $session = JFactory::getSession();
-        $filters = $session->get('filters');
+    function getIdGrandfather($id) {
+        $dbo = & JFactory::getDBO();
+        $query = 'SELECT ' . $dbo->nameQuote('v.parent_id') . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v '
+                . ' WHERE ' . $dbo->nameQuote('v.id') . ' = (SELECT ' . $dbo->nameQuote('v1.parent_id') . ' FROM ' . $dbo->nameQuote('#__custom_properties_values') . ' v1 '
+                . ' WHERE ' . $dbo->nameQuote(' v1.id') . ' = ' . $dbo->quote($id) . ')';
+        $dbo->setQuery($query);
 
-        if (!isset($filters)) {
-            $filters = array();
-        }
-        $filters[$id] = $selected;
-        $session->set('filters', $filters);
+        $abuelo = $dbo->loadObjectList();
+        return ($abuelo[0]->parent_id);
     }
 
-    static function setFilters($filtros) {
-        if (isset($filtros)) {
-
-            $session = JFactory::getSession();
-            $filters = $session->get('filters');
-
-            if (!isset($filters)) {
-                $filters = array();
-            }
-
-            foreach ($filtros as $key => $value) {
-                $filters[$key] = $value;
-            }
-
-            $session->set('filters', $filters);
-        }
-    }
-
-    static function getFilters() {
-        $session = JFactory::getSession();
-        return $session->get('filters');
-    }
 }

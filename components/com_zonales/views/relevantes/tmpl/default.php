@@ -69,7 +69,7 @@
 
     function loadMorePost(){
         var urlSolr = '/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=relevance+desc&wt=json&explainOther=&hl.fl=&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']' +"&q=source:(Facebook+OR+Twitter)"+ <?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:$this->zonal_id'" : "''"; ?> + '&fq=relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']';
-        var urlProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=' + encodeURIComponent(urlSolr);
+        var urlProxy = '/curl_proxy.php?host=localhost&port=8080&ws_path=' + encodeURIComponent(urlSolr);
         var reqTwitter = new Request.JSON({
             url: urlProxy,
             method: 'get',
@@ -396,11 +396,11 @@
 
         function armarTitulo(){
         document.getElementById('tituloSup').innerHTML = "";
-	$('enLaRed').getElements('input[id^=chk]').each(function(element) {
-	if(element.checked) {
-	    document.getElementById('tituloSup').innerHTML += element.value + ", ";
-	}
-	});
+    $('enLaRed').getElements('input[id^=chk]').each(function(element) {
+    if(element.checked) {
+        document.getElementById('tituloSup').innerHTML += element.value + ", ";
+    }
+    });
 
 
 }
@@ -412,36 +412,7 @@
          false);
     //-->
 </script>
-<!--<table>
-    <tbody id="chkFilter">
-        <tr>
-            <td>
-                <input type="checkbox" id="chkFacebook" checked="true" value="Facebook" onclick="filtrar(this.value, this.checked);">
-            </td>
-            <td>
-                Facebook
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="checkbox" id="chkTwitter" checked="true" value="Twitter" onclick="filtrar(this.value, this.checked);">
-            </td>
-            <td>
-                Twitter
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select id="tempoSelect" class="tempoclass" onchange="$('postsContainer').empty(); $('newPostsContainer').empty(); lastIndexTime = null; loadPost(true);">
-                    <option value="24HOURS">Hoy</option>
-                    <option value="7DAYS">Ultima Semana</option>
-                    <option value="30DAYS">Ultimo Mes</option>
-                    <option value="0">Historico</option>
-                </select>
-            </td>
-        </tr>
-    </tbody>
-</table>-->
+
 <label>Ud. esta viendo las Noticias mas Relevantes de la Red Social: </label><label id="tituloSup"></label>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
@@ -451,4 +422,3 @@
 <div>
     <input value="Ver Mas" onclick="loadMorePost();" type="button">
 </div>
-
