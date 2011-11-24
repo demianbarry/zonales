@@ -3,7 +3,7 @@
 Listado de los servicios necesarios para el manejo de lugares (places).
 
 <br>
-= Places =
+= Lugares =
 <br>
 ----
 == Obtener todos los lugares ==
