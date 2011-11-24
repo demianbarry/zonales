@@ -3,6 +3,8 @@
 Listado de los servicios necesarios para el manejo de zonas.
 
 <br>
+= Zonas =
+<br>
 ----
 == Obtener todas las zonas ==
 ----
@@ -59,7 +61,7 @@ Sin parámetros
 
 <br>
 ----
-== Actualiza una zona existente ==
+== Actualizar una zona existente ==
 ----
 
 *_PATH_*: /zone/update <br>
@@ -75,7 +77,7 @@ Sin parámetros
 
 <br>
 ----
-== Elimina una zona existente ==
+== Eliminar una zona existente ==
 ----
 
 *_PATH_*: /zone/remove <br>
@@ -86,3 +88,90 @@ Sin parámetros
 
 || *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
 || id || SI || Id de la zona a eliminar || String ||  ||
+
+<br>
+= Tipos de zonas =
+<br>
+----
+== Obtener todos los tipos de zonas ==
+----
+
+*_PATH_*: /zoneType/getAll <br>
+*_Respuesta_*: Nombre de todos los tipos zonas <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener tipos de zonas ==
+----
+
+*_PATH_*: /zoneType/get <br>
+*_Respuesta_*: Conjunto de tipos de zonas según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de tipos de zonas || JSON || Cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener tipos de zonas por nombre ==
+----
+
+*_PATH_*: /zoneType/getLikeName <br>
+*_Respuesta_*: Conjunto de tipos de zonas según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de zona a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear un nuevo tipo de zona ==
+----
+
+*_PATH_*: /zoneType/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| zoneType || SI || Tipo de zona a crear || JSON || Campos obligatorios: name ||
+
+<br>
+----
+== Actualizar un tipo de zona existente ==
+----
+
+*_PATH_*: /zoneType/update <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de zona a actualizar || String ||  ||
+|| data || SI || Datos a actualizar || JSON || Cadena JSON con pares key=value a actualizar ||
+
+
+<br>
+----
+== Eliminar un tipo de zona existente ==
+----
+
+*_PATH_*: /zoneType/remove <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de zona a eliminar || String ||  ||
