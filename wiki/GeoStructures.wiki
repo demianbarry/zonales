@@ -125,16 +125,16 @@ La especificación permite utilizar varios tipos de datos geográficos, se lista
     ],
     "ref": [  //Todos las zonas, lugares, etc, a los que hace referencia el objeto geográfico
         {
-            "zone": { //Array de zonas a la que hace referencia el objeto geográfico
+            "zone": [ //Array de zonas a la que hace referencia el objeto geográfico
                 "String",
                 "String"
             }
-        },
+        ],
         {
-            "place": { //Array de lugares a la que hace referencia el objeto geográfico
+            "place": [ //Array de lugares a la que hace referencia el objeto geográfico
                 "String",
                 "String"
-            }
+            ]
         }
     ]
 }
