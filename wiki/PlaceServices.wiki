@@ -1,0 +1,177 @@
+= Introduction =
+
+Listado de los servicios necesarios para el manejo de lugares (places).
+
+<br>
+= Places =
+<br>
+----
+== Obtener todos los lugares ==
+----
+
+*_PATH_*: /place/getAll <br>
+*_Respuesta_*: Id y nombre de todos los lugares <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener lugares ==
+----
+
+*_PATH_*: /place/get <br>
+*_Respuesta_*: Conjunto de lugares según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de lugares || JSON || Cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener lugares por nombre ==
+----
+
+*_PATH_*: /place/getLikeName <br>
+*_Respuesta_*: Conjunto de lugares según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del lugar a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear un nuevo lugar ==
+----
+
+*_PATH_*: /place/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| place || SI || Lugar a crear || JSON || Campos obligatorios: id, name, zone, type ||
+
+<br>
+----
+== Actualizar un lugar existente ==
+----
+
+*_PATH_*: /place/update <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| id || SI || Id del lugar a actualizar || String ||  ||
+|| data || SI || Datos a actualizar || JSON || Cadena JSON con pares key=value a actualizar ||
+
+
+<br>
+----
+== Eliminar un lugar existente ==
+----
+
+*_PATH_*: /place/remove <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| id || SI || Id del lugar a eliminar || String ||  ||
+
+<br>
+= Tipos de lugares =
+<br>
+----
+== Obtener todos los tipos de lugares ==
+----
+
+*_PATH_*: /placeType/getAll <br>
+*_Respuesta_*: Nombre de todos los tipos de lugares <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener tipos de lugares ==
+----
+
+*_PATH_*: /placeType/get <br>
+*_Respuesta_*: Conjunto de tipos de lugares según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de tipos de lugares || JSON || Cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener tipos de lugares por nombre ==
+----
+
+*_PATH_*: /placeType/getLikeName <br>
+*_Respuesta_*: Conjunto de tipos de lugares según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de lugar a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear un nuevo tipo de lugar ==
+----
+
+*_PATH_*: /placeType/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| placeType || SI || Tipo de lugar a crear || JSON || Campos obligatorios: name ||
+
+<br>
+----
+== Actualizar un tipo de lugar existente ==
+----
+
+*_PATH_*: /placeType/update <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de lugar a actualizar || String ||  ||
+|| data || SI || Datos a actualizar || JSON || Cadena JSON con pares key=value a actualizar ||
+
+
+<br>
+----
+== Eliminar un tipo de lugar existente ==
+----
+
+*_PATH_*: /placeType/remove <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de lugar a eliminar || String ||  ||
