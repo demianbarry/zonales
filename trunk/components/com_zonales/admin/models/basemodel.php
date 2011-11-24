@@ -89,7 +89,7 @@ abstract class ZonalesModelBaseModel extends JModel {
     function __construct() {
         parent::__construct();
 
-        global $mainframe, $option;
+        $mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
 
         // obtenemos las variables para paginacion
         $limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );

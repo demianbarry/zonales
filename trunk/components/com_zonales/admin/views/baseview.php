@@ -17,7 +17,7 @@ class ZonalesViewBaseView extends JView
 	 */
 	function configure()
 	{
-		global $option, $mainframe;
+		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
 
 		// orden
 		$filter_order		= $mainframe->getUserStateFromRequest( $this->_context.'filter_order', 'filter_order', $this->_orderfield, 'cmd' );
