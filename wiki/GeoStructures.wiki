@@ -98,7 +98,7 @@ La especificación permite utilizar varios tipos de datos geográficos, se lista
             "type": "Feature",
             "properties": { //Libre, pueden setearse las propiedades necesarios
             },
-            "geometry": {  //Un feature puede tener una collection de objetos geométricos
+            "geometry": {  //Un feature contiene un objeto geométrico
                 "type": "Polygon",
                 "coordinates": [
                     [
