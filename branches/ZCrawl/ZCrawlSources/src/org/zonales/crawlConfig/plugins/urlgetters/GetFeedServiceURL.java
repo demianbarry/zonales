@@ -4,6 +4,8 @@
  */
 package org.zonales.crawlConfig.plugins.urlgetters;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.ZCrawling;
@@ -73,14 +75,18 @@ public class GetFeedServiceURL implements GetServiceURL {
             }
         }
 
-        if ((Double)metadata.getSourceLatitude() != null) {
+        if (Double.valueOf(metadata.getSourceLatitude()) != null) {
              urlServlet += "&latitud="+ metadata.getSourceLatitude();
+             
         }
 
-         if ((Double)metadata.getSourceLongitude()!= null) {
+         if (Double.valueOf(metadata.getSourceLongitude()) != null) {
              urlServlet += "&longitud="+ metadata.getSourceLongitude();
         }
         
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "FEED URL GETTER RESULT: {0}", new Object[]{urlServlet});
+         
         return urlServlet;
     }
 }
