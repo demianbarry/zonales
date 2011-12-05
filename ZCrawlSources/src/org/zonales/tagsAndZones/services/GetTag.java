@@ -25,7 +25,7 @@ public class GetTag extends BaseService {
     public void serve(HttpServletRequest request, HttpServletResponse response, Properties props) {
         PrintWriter out = null;
         try {
-            response.setContentType("text/javascript;charset=utf-8");
+            response.setContentType("text/javascript;");
             response.setCharacterEncoding("UTF-8");
             out = response.getWriter();
             String name = request.getParameter("name");
