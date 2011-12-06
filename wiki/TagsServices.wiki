@@ -1,0 +1,177 @@
+= Introduction =
+
+Listado de los servicios necesarios para el manejo de tags.
+
+<br>
+= Tags =
+<br>
+----
+== Obtener todos los tags ==
+----
+
+*_PATH_*: /tag/getAll <br>
+*_Respuesta_*: Id y nombre de todos los tags <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener tags ==
+----
+
+*_PATH_*: /tag/get <br>
+*_Respuesta_*: Conjunto de tag según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de tags || JSON || Cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener tags por nombre ==
+----
+
+*_PATH_*: /tag/getLikeName <br>
+*_Respuesta_*: Conjunto de tags según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tag a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear un nuevo tag ==
+----
+
+*_PATH_*: /tag/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| tag || SI || Tag a crear || JSON || Campos obligatorios: id, name, tpye ||
+
+<br>
+----
+== Actualizar un tag existente ==
+----
+
+*_PATH_*: /tag/update <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| id || SI || Id del tag a actualizar || String ||  ||
+|| data || SI || Datos a actualizar || JSON || Cadena JSON con pares key=value a actualizar ||
+
+
+<br>
+----
+== Eliminar un tag existente ==
+----
+
+*_PATH_*: /tag/remove <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| id || SI || Id del tag a eliminar || String ||  ||
+
+<br>
+= Tipos de tags =
+<br>
+----
+== Obtener todos los tipos de tag ==
+----
+
+*_PATH_*: /tagType/getAll <br>
+*_Respuesta_*: Nombre de todos los tipos de tags <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+Sin parámetros
+
+<br>
+----
+== Obtener tipos de tags ==
+----
+
+*_PATH_*: /tagType/get <br>
+*_Respuesta_*: Conjunto de tipos de tags según filtros <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtros para búsqueda de tipos de tags || JSON || Cadena JSON con pares key=value a buscar ||
+
+<br>
+----
+== Obtener tipos de tags por nombre ==
+----
+
+*_PATH_*: /tagType/getLikeName <br>
+*_Respuesta_*: Conjunto de tipos de tags según nombre <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de tags a buscar || String || Puede ser una parte del nombre, funciona similar al LIKE de SQL ||
+
+<br>
+----
+== Crear un nuevo tipo de tags ==
+----
+
+*_PATH_*: /tagType/set <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| tagType || SI || Tipo de tag a crear || JSON || Campos obligatorios: name ||
+
+<br>
+----
+== Actualizar un tipo de tag existente ==
+----
+
+*_PATH_*: /tagType/update <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de tag a actualizar || String ||  ||
+|| data || SI || Datos a actualizar || JSON || Cadena JSON con pares key=value a actualizar ||
+
+
+<br>
+----
+== Eliminar un tipo de tag existente ==
+----
+
+*_PATH_*: /tagType/remove <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| name || SI || Nombre del tipo de tag a eliminar || String ||  ||
