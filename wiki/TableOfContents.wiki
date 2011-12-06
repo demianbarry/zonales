@@ -22,6 +22,7 @@
       * [DataStructures Estructuras de datos]
       * [PersistenceServices Servicios para la configuración de fuentes de extracción]
       * [ZGramPersistence Servicios para la persistencia de extracciones]
+      * [TagsServices Servicios para la gestión de Tags]
     * [Herramientas Infraestructura]
       * [resetMySQLRoot Reiniciar pass MySQL root]
       * [Infraestructura Infraestructura]
