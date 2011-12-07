@@ -1,0 +1,31 @@
+var io = require('socket.io');
+
+//----------------------- SOCKET.IO -----------------------
+
+io.sockets.on('connection', function(client) {
+
+	client.on('getZones', function(name, fn) {
+		console.log('Recibi el evento getZones desde el cliente');
+		zoneModel.zone.find({}, ['id', 'name'], function(err, docs) {
+		  if (err) {
+			  console.log('SocketIO: Error obteniendo zonas --> ' + err);
+			  return;
+		  }
+		  fn(JSON.stringify(docs));
+	   });
+	});
+
+	client.on('getZonesByName', function(name, fn) {
+		console.log('Recibi el evento getZonesByName desde el cliente');
+		var myregex = RegExp(name.replace(' ', '_').toLowerCase());
+		zoneModel.zone.find({"name": myregex}, function(err, docs) {
+		  if (err) {
+			  console.log('SocketIO: Error obteniendo zonas --> ' + err);
+			  return;
+		  }
+		  fn(JSON.stringify(docs));
+	   });		
+	});
+	
+});
+
