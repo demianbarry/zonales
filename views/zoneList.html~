@@ -1,0 +1,71 @@
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Content Manager Utilities - Zonales</title>
+    <link href="/css/ZoneStyle.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="/css/content.css">
+    <link type="text/css" rel="stylesheet" href="/css/global.css">
+    <script type="text/javascript" src="/js/mootools.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	 <script type="text/javascript" src="/js/viewutils.js"></script>     
+	 <script type="text/javascript" src="/js/zoneList.js"></script> 
+</head>
+
+<body>
+    <div id="container"/>
+    <div id="header">
+        <div id="logo">
+            <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
+        </div>
+        <a style="float:right" href="index.php">Gestión de Extracciones</a>
+        <br>
+        <a style="float:right" href="crud_crawl_configs.php">Gestión de Fuentes de Extracción</a>
+        <br>
+        <a style="float:right" href="http://192.168.0.2:8080/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
+        <br>
+        <a style="float:right" href="fbutils.php">Facebook Utilities</a>
+        <br>
+        <a style="float:right" href="twutils.php">Twitter Utilities</a>
+    </div>
+    <div class="clearfix" id="wrapper">
+        <div id="view_content">
+            <div id="search_div">
+                <table class="advanced_search">
+                    <tbody>
+                        <tr><td colspan="2"><h1 style="margin-top: 0.7em;">Gestión de Zonas</h1></td></tr>
+                        <tr><td colspan="2"><h2 style="margin-top: 0.7em;">Criterios</h2></td></tr>
+                        <tr>
+                            <td width="35%" class="label"><label>Zona</label></td>
+                            <td>
+                                <div>
+                                    <input id="zoneNameFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="35%" class="label"><label>Estado</label></td>
+                            <td>
+                                <select id="zoneStateFilter">
+                                    <option value="all">Todos</option>
+                                    <option value="generated">Generado</option>
+                                    <option value="published">Publicado</option>
+                                    <option value="unpublished">Despublicado</option>
+                                    <option value="void">Anulado</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="input">
+                                <input type="button" style="width: 33%; float: left;" value="Buscar" onclick="searchZones();">
+                                <input type="button" style="width: 33%;  float: left;" value="Nuevo" onclick="window.location.href = 'zoneEdit.php'">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="resultado" style="width: 100%; float: left; height: 100px; background-repeat: no-repeat;"></div>
+            <div id="postsContainer"></div>
+        </div>
+        <div id="resultslist_content" style="float: right;">
+        </div>
+    </div>
+</body>

@@ -1,0 +1,296 @@
+//Definiciones manejo pantalla
+var socket;
+var edit = false;
+var geoedit = false;
+
+//Parámetros globales
+var cantMax = '1000';
+var maxZoomOut = 4;
+var openLayersProxyHost = '/cgi-bin/proxy.cgi?url=';
+var proxyUri = '/curl_proxy.php?host=localhost&port=38081&ws_path=';
+var geoExtractorUrl = 'http://localhost:38081/ZCrawlGeoExtractor/getPost';
+var defaultSortField = 'modified';
+var strategyDistance = 30;
+
+//BOUNDS - Definidos para Argentina
+var minLon = -9289807.96207;
+var minLat = -8036517.191029;
+var maxLon = -5053362.107152;
+var maxLat = -2019394.325498;
+
+//CENTER - Definidos para Argentina
+var centerLon = -64.423444488507;
+var centerLat = -41.105773412891;
+
+var zone = null;
+var geoZoneId = null;
+var parent_id;
+
+var map;
+var vectors;
+var formats;
+var popup;
+var ids = new Array();
+var cant = 0;
+
+window.addEvent('domready', function() {
+	  init();
+	  socket = io.connect();
+  	  socket.on('connect', function () { 
+	    socket.emit('getZonesTypes', '', function (data) {			  		
+	  		data.each(function(type) {
+	  			if (typeof(type.name) != 'undefined') { 
+	  				new Element('option', {'value' : type.name, 'html' : type.name}).inject($('tipo'));
+	  			}
+	  		});
+	  		if(gup('id') != null && gup('id') != '') {
+		        getZone(gup('id'), false);
+		     }
+	    });
+	  });
+});
+
+function getZone(id, parent){
+	  var jid = '{"id":"' + id + '"}';
+	  socket.emit('getZoneByFilters', jid, function (data) {
+       	var jsonObj = data[0];			  		
+	  		if (parent) {
+             $('padre').value = jsonObj.name;
+         } else {
+             if (typeof($('id').value) != 'undefined') {
+             	$('id').value = jsonObj.id;
+             	edit = true;
+             } else {
+             	$('id').value = "";
+             }
+             typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name : $('nombre').value = "";
+             if (typeof(jsonObj.type) != 'undefined') {
+             	  //alert(typeOf($('tipo').getElement('option[value=' + jsonObj.type + ']'))); //.set('selected');
+                 $('tipo').value = jsonObj.type;
+                 //alert($('tipo').value);
+                 getParentTypes(jsonObj.type);
+             } else {
+                 $('tipo').value = "";
+             }
+             if (typeof(jsonObj.parent) != 'undefined') {
+                 parent_id = jsonObj.parent;
+             }
+             if (typeof(jsonObj.geoData) != 'undefined') {
+             	geoedit = true;
+              	geoZoneId = jsonObj.geoData;
+              	socket.emit('getGeoData', geoZoneId, function(data) {
+						$('geoJson').value = JSON.stringify(data[0]);
+            		deserialize();              		
+              	});
+             }  
+         }	
+	  });
+}
+
+function getParents(type) {
+	 console.log(type);
+	 var jtype = '{"type":"' + type + '"}';
+	 socket.emit('getZoneByFilters', jtype, function (jsonObj) {
+    		jsonObj.each(function(parent) {
+              var el = new Element('option', {'value' : parent.id, 'html' : parent.name}).inject($('padre'));
+              if (parent.id == parent_id) {
+                  el.selected = true;
+              }
+         });
+    });
+}
+
+function getParentTypes(type) {
+ 	 var jtype = '{"name":"' + type + '"}';
+ 	 $('padre').empty();
+	 socket.emit('getParentTypes', jtype, function (jsonObj) {
+	 		console.log("PARENT TYPESSSS: " + JSON.stringify(jsonObj));
+    		jsonObj.each(function(parentType) {
+              getParents(parentType);
+         });
+    });	  		        
+}
+
+function saveZone() {
+
+    var jsonZone = '{"name":"' + $('nombre').value + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
+    if(geoedit) {
+    	jsonZone += ',"geoData":"' + geoZoneId + '"';
+    	socket.emit('updateGeoData', $('geoJson').value, function (data) {
+    		var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha actualizado el dato geográfico"); 
+    		} else {
+    			alert("Error al actualizar el dato geográfico");
+    		}
+    	});	
+    } else {
+    	  if (typeof(geoZoneId) != 'undefined') {
+    	  		jsonZone += ',"geoData":"' + geoZoneId + '"';
+		    	socket.emit('saveGeoData', $('geoJson').value, function (data) {
+		    		var resp = eval('(' + data + ')'); 
+    				if (resp.cod == 100) {
+		    			alert("Se ha guardado el dato geográfico"); 
+		    		} else {
+		    			alert("Error al guardar el dato geográfico");
+		    		}
+		    	});	
+    	  }
+    }
+    jsonZone += '}';
+    
+	 if (edit) {
+    	socket.emit('updateZone', jsonZone, function (data) {
+    		var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha actualizado la zona"); 
+    		} else {
+    			alert("Error al actualizar la zona");
+    		}
+    	});	
+    } else {
+    	socket.emit('saveZone', jsonZone, function (data) {
+    		var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha guardado la zona"); 
+    		} else {
+    			alert("Error al guardar la zona");
+    		}
+    	});
+    }    
+    
+}
+
+//Funciones de manejo del mapa
+
+function on_move(event) {
+    if (map.getZoom() < maxZoomOut) map.zoomIn();
+}
+
+
+function updateFormats() {
+    var in_options = {
+        'internalProjection': map.baseLayer.projection,
+        'externalProjection': new OpenLayers.Projection('EPSG:4326')
+    };
+    var out_options = {
+        'internalProjection': map.baseLayer.projection,
+        'externalProjection': new OpenLayers.Projection('EPSG:4326')
+    };
+    formats = {
+      'in': {
+        geojson: new OpenLayers.Format.GeoJSON(in_options)
+      },
+      'out': {
+        geojson: new OpenLayers.Format.GeoJSON(out_options)
+      }
+    };
+}
+
+function serialize(event) {
+    var type = 'geojson';
+    var str = formats['out'][type].write(vectors.features, true);
+    if (typeof(geoZoneId) == 'undefined' || geoZoneId == null) {
+    	geoZoneId = '40000' + $('id').value;
+    }
+    str = str.substring(0, str.length-2) + ',\n    "id": "' + geoZoneId + '"\n}';
+    document.getElementById('geoJson').value = str;
+}
+
+function deserialize() {
+    var element = document.getElementById('geoJson');
+    var type = "geojson";
+    var features = formats['in'][type].read(element.value);
+    var bounds;
+    if(features) {
+        if(features.constructor != Array) {
+            features = [features];
+        }
+        for(var i=0; i<features.length; ++i) {
+            if (!bounds) {
+                bounds = features[i].geometry.getBounds();
+            } else {
+                bounds.extend(features[i].geometry.getBounds());
+            }
+        }
+        vectors.addFeatures(features);
+        map.zoomToExtent(bounds);
+        /*var plural = (features.length > 1) ? 's' : '';
+        element.value = features.length + ' feature' + plural + ' added';*/
+    } else {
+        element.value = 'Bad input ' + type;
+    }
+}
+
+function clearMap() {
+    $('geoJson').value = "";
+    vectors.destroyFeatures();
+}
+
+function on_unselect() {
+    document.getElementById('geoJson').value = "";
+}
+
+function init() {
+
+    map = new OpenLayers.Map('map_element', {
+        maxExtent : new OpenLayers.Bounds(minLon, minLat, maxLon, maxLat),
+        restrictedExtent : new OpenLayers.Bounds(minLon, minLat, maxLon, maxLat),
+        units : 'm',
+        projection : new OpenLayers.Projection('EPSG:4326'),
+        displayProjection : new OpenLayers.Projection("EPSG:4326")
+    });
+
+    //Create a base layer
+    var google_map = new OpenLayers.Layer.Google(
+        'Google Layer',
+        {}
+    );
+
+    vectors = new OpenLayers.Layer.Vector("Vector Layer");
+
+    map.addLayers([google_map, vectors]);
+    map.addControl(new OpenLayers.Control.MousePosition());
+    map.addControl(new OpenLayers.Control.EditingToolbar(vectors));
+
+    /*var options = {
+        hover: true,
+        onSelect: serialize,
+        onUnselect: on_unselect
+    };*/
+
+    var select = new OpenLayers.Control.SelectFeature(vectors, {});
+    map.addControl(select);
+    select.activate();
+
+    //Let's style the features
+    //Create a style object to be used by a StyleMap object
+    var vector_style = new OpenLayers.Style({
+     'fillColor': '#669933',
+     'fillOpacity': .8,
+     'strokeColor': '#aaee77',
+     'strokeWidth': 3
+     });
+
+    var vector_style_select = new OpenLayers.Style({
+     'fillColor': '#cdcdcd',
+     'fillOpacity': .9,
+     'strokeColor': '#ffffff'
+    })
+
+    //Create a style map object and set the 'default' intent to the
+    var vector_style_map = new OpenLayers.StyleMap({
+     'default': vector_style,
+     'select': vector_style_select
+    });
+
+    //Add the style map to the vector layer
+    vectors.styleMap = vector_style_map;
+
+    updateFormats();
+
+    map.setCenter(new OpenLayers.LonLat(centerLon, centerLat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), maxZoomOut);
+
+    map.events.register('moveend', this, on_move);
+    vectors.events.register('featuresadded', this, serialize);
+}

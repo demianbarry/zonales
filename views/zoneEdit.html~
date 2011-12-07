@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Content Manager Utilities - Zonales</title>
+        <link href="/css/ZoneStyle.css" rel="stylesheet" type="text/css" />
+        <link type="text/css" rel="stylesheet" href="/css/content.css">
+        <link type="text/css" rel="stylesheet" href="/css/global.css">
+ 		  <script type="text/javascript" src="/js/mootools.js"></script>
+		  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/OpenLayers/OpenLayers.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="/js/zones.js"></script>
+        <script type="text/javascript" src="/js/viewutils.js"></script>
+		  <script type="text/javascript" src="/js/zoneEdit.js"></script>
+       
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <table style="width: 100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="logo">
+                                    <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
+                                </div>
+                            </td>
+                            <td>
+                                <h1 style="margin-top: 0.7em; text-align: center">Edición de Zonas</h1>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <a style="float:right" href="crud_crawl_configs.php">Gestión de Fuentes de Extracción</a>
+                                <br>
+                                <a style="float:right" href="http://<?php echo $tomcat_host; ?>:<?php echo $tomcat_port; ?>/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
+                                <br>
+                                <a style="float:right" href="fbutils.php">Facebook Utilities</a>
+                                <br>
+                                <a style="float:right" href="twutils.php">Twitter Utilities</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="clearfix" id="wrapper">
+                <div id="container_content">
+                    <table class="advanced_search" style="width: 100%">
+                        <tbody>
+                            <tr><td colspan="4"><h2 style="margin-top: 0.7em;">Datos Alfanuméricos</h2></td></tr>
+                            <tr>
+                                <td class="label"><label>Id</label></td>
+                                <td class="input"><input type="text" id="id" value=""></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Nombre</label></td>
+                                <td class="input"><input type="text" id="nombre" value=""></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Tipo</label></td>
+                                <td class="input">
+                                    <select id="tipo" onchange="getParentTypes(this.value);">
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Padre</label></td>
+                                <td class="input">
+                                    <select id="padre" onchange="">
+                                    </select>
+				</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input id="guardarButton" value="Guardar" type="button" onclick="saveZone();">
+                                    <input id="publicarButton" value="Publicar" type="button" onclick="">
+				    							<input id="despublicarButton" value="Despublicar" type="button" onclick="">
+				    							<input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'zoneEdit'">
+                                    <input id="volverButton" value="Volver" type="button" onclick="history.back();">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="table_content">
+                    <table class="advanced_search" style="width: 54%">
+                        <tbody>
+                            <tr><td colspan="2"><h2 style="margin-top: 0.7em;">Datos Geográficos</h2></td></tr>
+                            <tr>
+                                <td width="100%">
+                                    <div id='map_element' style="width: 95%; height: 650px; border: solid 9px #F1F2F3;"></div>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input id="clear" value="Limpiar" style="width: 100%" type="button" onclick="clearMap();">
+                                    <textarea id="geoJson" cols="30" rows="30" style="float: right;" onchange="deserialize();"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
