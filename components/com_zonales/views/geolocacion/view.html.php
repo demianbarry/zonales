@@ -16,8 +16,9 @@ jimport('joomla.application.component.view');
 class ZonalesViewEnlared extends JView {
 
     function display($tpl = null) {
-        global $mainframe, $option;
+        $option = JRequest::getCMD('option');
 
+        $mainframe=JFactory::getApplication();
         $document = &JFactory::getDocument();
         //$document->addScript( '/media/system/js/viewutils.js');
         //$document->addScript( '/media/system/js/zgram.js');        

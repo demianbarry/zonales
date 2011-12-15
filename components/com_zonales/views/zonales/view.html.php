@@ -4,7 +4,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
-//JHTML::_("behavior.mootools");
+JHTML::_("behavior.mootools");
 
 /**
  * User component login view class
@@ -16,11 +16,12 @@ jimport('joomla.application.component.view');
 class ZonalesViewZonales extends JView {
 
     function display($tpl = null) {
-        global $mainframe, $option;
+       $option = JRequest::getCMD('option'); 
 
+        $mainframe=JFactory::getApplication();
         $document = &JFactory::getDocument();
         //$document->addScript( '/media/system/js/viewutils.js');
-        $document->addScript('/media/system/js/mootools1.js');
+       
         //$document->addStyleSheet('/media/system/css/global.css');
         //$document->addStyleSheet('/media/system/css/content.css');
         $document->addStyleSheet('/media/system/css/ZoneStyle.css');

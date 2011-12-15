@@ -9,8 +9,8 @@ class ZonalesViewEditaMenu extends JView
 
 	function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
-
+		$option = JRequest::getCMD('option'); 
+                $mainframe=JFactory::getApplication();
 		$this->_menu =& $this->get('Data');
 
 		// Setea la barra de menúes y el titulo del documento según la accion

@@ -54,7 +54,7 @@ class ZonalesController extends JController
 
 	function saveTipoTag()
 	{
-		global $option;
+		$option = JRequest::getCMD('option');
 
 		$model	= &$this->getModel('TipoTag');
 
@@ -103,7 +103,7 @@ class ZonalesController extends JController
 
 	function saveCp2TipoTag()
 	{
-		global $option;
+		$option = JRequest::getCMD('option');
 
 		$model	= &$this->getModel('Cp2TipoTag');
 
@@ -152,7 +152,7 @@ class ZonalesController extends JController
 
 	function saveMenu()
 	{
-		global $option;
+		$option = JRequest::getCMD('option');
 
 		$model = &$this->getModel('Menu');
 
@@ -182,7 +182,7 @@ class ZonalesController extends JController
 
 	function baseDisplayTask($view, $modelName, $layout = 'default', $hidemainmenu = 0, $vars = array())
 	{
-		global $option;
+		$option = JRequest::getCMD('option');
 
 		$document = &JFactory::getDocument();
 		$vType = $document->getType();
@@ -211,7 +211,7 @@ class ZonalesController extends JController
 
 	function baseRemoveTask($model, $task)
 	{
-		global $option;
+		$option = JRequest::getCMD('option');
 
 		$model = &$this->getModel($model);
 
@@ -230,7 +230,7 @@ class ZonalesController extends JController
 
 	function baseCancelTask($msg, $task)
 	{
-		global $option;
+		$option = JRequest::getCMD('option'); 
 		$this->setRedirect('index.php?option='.$option.'&task='.$task, $msg);
 	}
 

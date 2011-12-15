@@ -6,8 +6,8 @@ class ZonalesViewListaCp2TipoTag extends ZonalesViewBaseView
 {
 	function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
-
+		$option = JRequest::getCMD('option'); 
+                $mainframe=JFactory::getApplication();
 		$this->_context = $option . 'ListaCp2TipoTag';		// nombre del contexto
 		$this->_orderfield = 'c.id';					// campo de ordenamiento
 		$this->_searchfield = 'c.id';				// campo de búsqueda

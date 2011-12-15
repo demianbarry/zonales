@@ -16,8 +16,9 @@ class ZonalesViewMapa extends JView
 
 	function display($tpl = null)
 	{
-		global $mainframe, $option;
+		$option = JRequest::getCMD('option'); 
 
+                $mainframe=JFactory::getApplication();
 		$app =& JFactory::getApplication();
 		$helper = new comZonalesHelper();
 
