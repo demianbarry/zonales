@@ -9,7 +9,7 @@ var zones = new Array();
 var tab = "";
 var host = "";
 var port = "";
-
+var zUserGroups = new Array();
 window.addEvent('domready', function() {
     setInterval(function () {
         loadPost(false);
@@ -116,7 +116,7 @@ function loadPost(first){
             if(typeof jsonObj != 'undefined'){
                 if(first){
                     updatePosts(jsonObj,$('postsContainer'));
-                    armarTitulo();
+                    armarTitulo(tab);
                 }
                 else {
                     updatePosts(jsonObj,$('newPostsContainer'));
@@ -162,7 +162,7 @@ function loadMorePost(){
             // actualizar pagina
             if(typeof jsonObj != 'undefined')
                 updatePosts(jsonObj, $('postsContainer'),true);
-            armarTitulo();
+            	armarTitulo(tab);
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
@@ -246,7 +246,8 @@ function updatePosts(json, component, more) {
         div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
         div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
         div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
-        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(div_story_item_details),
+	div_story_item_idPost = new Element('div', {'html': post.id, 'id':'idPostDiv'}).addClass('group').inject(div_story_item).setStyle('display','none'),
+	h3_story_item_title = new Element('h3').addClass('story-item-title').inject(div_story_item_details),
         a_title = new Element('a', {
             'target': '_blank',
             'href' : getTarget(post)
@@ -350,7 +351,7 @@ function updatePosts(json, component, more) {
 
 
         var tags = post.tags;
-        new Element('li', {}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
+        new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -362,7 +363,12 @@ function updatePosts(json, component, more) {
                 'onclick':'filtrar(this.value, this.checked);'
             }).inject(new Element('td').inject(tr));
             new Element('td', {}).set('html',post.source).inject(tr);
-            tr.inject($("enLaRed"));
+            if (tab == "enlared" || tab == "relevantes" )
+		tr.inject($("enLaRed"));
+
+  	    else
+		tr.inject($("noticiasEnLaRed"));
+
         }
 
         div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
@@ -371,15 +377,63 @@ function updatePosts(json, component, more) {
         } else {
             div_story_item.injectInside(component);
         }
-	//new Element('button',{}).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
-	 a_story_item_button = new Element('button', {
-                            'onclick':'assignTag();' }).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
+
+	if(zUserGroups.indexOf("4") != -1){
+         a_story_item_button = new Element('button', {
+            'onclick':'saveContent("'+$('idPostDiv').innerHTML+'","'+$('tagsPostLi').innerHTML+'");'
+        }).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
+	}
     });
 }
 
-function assignTag(){
-	alert("Paso");
+function saveContent(idPost,tags){
+    //\"tags\":[\"Espectaculos\"]
+
+   //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
+   var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
+   var urlProxy = 'curl_proxy.php';
+    new Request({
+        url: encodeURIComponent(urlProxy),
+        method: 'post',
+        data: {
+            'host': host ? host : "localhost",
+            'port': port ? port : "38080",
+            'ws_path':url
+        },
+        onRequest: function(){
+        },
+        onSuccess: function(response) {
+            commit();
+        },
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+        }
+    }).send();
 }
+
+function commit(){
+    var url = '/solr/update/json?commit=true';
+    var urlProxy = 'curl_proxy.php';
+    new Request({
+        url: encodeURIComponent(urlProxy),
+        method: 'post',
+        data: {
+            'host': host ? host : "localhost",
+            'port': port ? port : "38080",
+            'ws_path':url
+        },
+        onRequest: function(){
+        },
+        onSuccess: function(response) {
+        },
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+        }
+    }).send();
+}
+
 
 function spanishDate(d){
     var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
@@ -395,17 +449,14 @@ function fixTime(i) {
 
 function filtrar(source, visible) {
     var posts = $$('div#postsContainer div.story-item');
-
-    if(typeOf(posts) == 'array') {
+    if(typeOf(posts) == 'elements') {
         posts.each(function(post){
             if(post.hasClass(source))
                 post.setStyle('display', visible ? 'block' : 'none');
-
-
         });
     }
     sendFilter(source,visible);
-    armarTitulo();
+    armarTitulo(tab);
 }
 
 function addMilli(date) {
@@ -470,55 +521,64 @@ function prettyDate(time){
         }
     });
 */
-function armarTitulo(){
-	var temp = 0;
-       document.getElementById('tituloSup').innerHTML = "";
-	if (tab == 'noticiasenlared'){
-		$('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element) {
-            		if(element.checked && temp < 5 ) {
-				temp++;
-                		document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine:"
-                		document.getElementById('tituloSup').innerHTML += element.value + ", ";
-            		}
-            		else{
-				document.getElementById('tituloSup').innerHTML = "";
-				document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de mas de 5 diarios ";
+function armarTitulo(tabTemp){
+    var temp = 0;
+    tabTemp = tab
+    document.getElementById('tituloSup').innerHTML = "";
+    if (tabTemp == 'noticiasenlared'){
+        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked && temp < 5 ) {
+                temp++;
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
+                document.getElementById('tituloSup').innerHTML += element.value;
+                if(index != 0)
+                    document.getElementById('tituloSup').innerHTML += ", ";
+            }
+            else if (element.checked && temp > 5 ){
+                document.getElementById('tituloSup').innerHTML = "";
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de mas de 5 diarios";
 
-            		}
-		});
-    	}
-	if (tab == 'noticiasenlaredrelevantes'){
-		$('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element) {
-            		if(element.checked && temp < 5 ) {
-				temp++;
-                		document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine:"
-                		document.getElementById('tituloSup').innerHTML += element.value + ", ";
-            		}
-            		else{
-				document.getElementById('tituloSup').innerHTML = "";
-				document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de Mayor Relevancia de mas de 5 diarios ";
+            }
+        });
+    }
+    if (tab == 'noticiasenlaredrelevantes'){
+        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked && temp < 5 ) {
+                temp++;
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine: "
+                document.getElementById('tituloSup').innerHTML += element.value;
+                if(index != 0)
+                    document.getElementById('tituloSup').innerHTML += ", ";
+            }
+            else{
+                document.getElementById('tituloSup').innerHTML = "";
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de Mayor Relevancia de mas de 5 diarios";
 
-            		}
-		});
-    	}
-	if (tab == 'enlared'){
-	alert(tab);
-		$('enLaRed').getElements('input[id^=chk]').each(function(element) {
-		if(element.checked) {
-            		document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de la Red Social:"
-                	document.getElementById('tituloSup').innerHTML += element.value + ", ";
-        	}
-    		});
+            }
+        });
+    }
+    if (tab == 'enlared'){
 
-	}
-	if (tab == 'releventes'){
-		$('enLaRed').getElements('input[id^=chk]').each(function(element) {
-		if(element.checked) {
-            		document.getElementById('titulo1').innerHTML = "Ud. esta viendo las Noticias mas Relevantes de la Red Social:"
-                	document.getElementById('tituloSup').innerHTML += element.value + ", ";
-        	}
-    		});
+        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked) {
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de la Red Social: "
+                document.getElementById('tituloSup').innerHTML += element.value;
+                if(index != 0)
+                    document.getElementById('tituloSup').innerHTML += ", ";
+            }
+        });
 
-	}
+    }
+    if (tab == 'releventes'){
+        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked) {
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo las Noticias mas Relevantes de la Red Social: "
+                document.getElementById('tituloSup').innerHTML += element.value;
+                if(index != 0)
+                    document.getElementById('tituloSup').innerHTML += ", ";
+            }
+        });
+
+    }
 }
 

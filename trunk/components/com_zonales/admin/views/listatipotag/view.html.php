@@ -6,8 +6,8 @@ class ZonalesViewListaTipoTag extends ZonalesViewBaseView
 {
 	function display($tpl = null)
 	{
-		$mainframe = JFactory::getApplication(); $option = JRequest::getCMD('option');
-
+		$option = JRequest::getCMD('option'); 
+                $mainframe=JFactory::getApplication();
 		$this->_context = $option . 'ListaTipoTag';		// nombre del contexto
 		$this->_orderfield = 't.tipo';					// campo de ordenamiento
 		$this->_searchfield = 't.tipo';				// campo de búsqueda

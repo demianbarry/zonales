@@ -33,7 +33,7 @@ class ZonalesController extends JController {
     }
 
     function zonal() {
-        global $option;
+       $option = JRequest::getCMD('option');
         $document = &JFactory::getDocument();
         $vType = $document->getType();
         $vName = JRequest::getCmd('view', 'zonal');
@@ -45,7 +45,7 @@ class ZonalesController extends JController {
     }
 
     function mapa() {
-        global $option;
+        $option = JRequest::getCMD('option');
 
         $document = & JFactory::getDocument();
 
@@ -64,7 +64,7 @@ class ZonalesController extends JController {
      * especificada.
      */
     function setZonal($zname = null) {
-        global $option;
+        $option = JRequest::getCMD('option');
 
         // parametros
         if (is_null($zname)) {
@@ -195,7 +195,8 @@ class ZonalesController extends JController {
      * del módulo mod_soycorresponsal.
      */
     function saveCorresponsalContent() {
-        global $mainframe;
+
+        $mainframe=JFactory::getApplication();
         jimport('json.json');
         $helper = new comZonalesHelper();
 
@@ -224,7 +225,7 @@ class ZonalesController extends JController {
         // librería recaptcha
         jimport('recaptcha.recaptchalib');
         // parametros del componente
-        $zonalesParams = &JFactory::getApplication('site')->getParams('com_zonales');
+        $zonalesParams = &JComponentHelper::getParams('com_zonales');
         $privatekey = $zonalesParams->get('recaptcha_privatekey', null);
 
         if (!$privatekey) {
