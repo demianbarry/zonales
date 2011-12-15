@@ -323,9 +323,9 @@ class ZonalesController extends JController {
 
                 $query = "REPLACE INTO #__custom_properties (ref_table, content_id,field_id,value_id)
 					SELECT 'content','$row->id',v.field_id AS field, v.id AS value
-					FROM #__custom_properties_values v 
+					FROM #__custom_properties_values v
                                         WHERE v.parent_id = $partidoId
-					AND v.id = $zonaId 
+					AND v.id = $zonaId
                                         OR v.name = 'la_voz_del_vecino'";
                 $database = JFactory::getDBO();
                 $database->setQuery($query);
