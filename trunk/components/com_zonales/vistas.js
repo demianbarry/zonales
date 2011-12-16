@@ -390,10 +390,13 @@ function saveContent(idPost,tags){
     //\"tags\":[\"Espectaculos\"]
 
    //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
-   var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
+   //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
+   var url = 'ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
+   //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
+
    var urlProxy = 'curl_proxy.php';
     new Request({
-        url: encodeURIComponent(urlProxy),
+        urlProxy: encodeURIComponent(url),
         method: 'post',
         data: {
             'host': host ? host : "localhost",
@@ -402,8 +405,8 @@ function saveContent(idPost,tags){
         },
         onRequest: function(){
         },
-        onSuccess: function(response) {
-            commit();
+        onSuccess: function() {
+            //commit();
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -484,11 +487,11 @@ function prettyDate(time){
     [86400, 'horas', 3600], // 60*60*24, 60*60
     [172800, '1 dia', 'mañana'], // 60*60*24*2
     [604800, 'dias', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' ultima semana', 'proxima semana'], // 60*60*24*7*4*2
+    [1209600, ' en la ultima semana', 'proxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
     [4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, 'ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
     [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
