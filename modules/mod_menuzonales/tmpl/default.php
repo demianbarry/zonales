@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 <!-- glassmenu -->
 <div id="navigation">
 	<ul id="mymenu">
-		<li id="s0"><a href="<?php echo JURI::base(); ?>"><?php echo JText::_('Inicio'); ?></a></li>
+		<li id="s0"><a href="/index.php?option=com_zonales&task=zonal&view=portada"><?php echo JText::_('Portada'); ?></a></li>
                 <?php if (isset ($eq->fields)): ?>
 		<?php foreach ($eq->fields as $field): ?>
 		<li id="s<?php echo $field->id; ?>"><a href="<?php echo($field->link ? $field->link : '#'); ?>"><?php echo $field->label; ?></a></li>
@@ -38,7 +38,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
                 <li id="s30"><a href="/index.php?option=com_zonales&task=zonal&view=enlared"><?php echo JText::_('En la Red'); ?></a></li>
                 <li id="s45"><a href="/index.php?option=com_zonales&task=zonal&view=noticiasenlared"><?php echo JText::_('Noticias en la Red'); ?></a></li>
                 <li id="s50"><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos"><?php echo JText::_('Mapa'); ?></a></li>
-                <li id="s65"><a href="/index.php?option=com_zonales&task=zonal&view=zonales"><?php echo JText::_('Zonales'); ?></a></li>
 	</ul>
 </div>
 <div id="sublinks">
@@ -67,9 +66,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
             <li><a href="">Contenido Nuevo</a></li>
             <li><a href="">Contenido Cercano</a></li>
         </ul>-->
-        <ul id="s65_m">
-            <li><a href="/index.php?option=com_zonales&task=zonal&view=zonales">Nuevos</a></li>
-
-        </ul>
+        
 </div>
 <!-- glassmenu -->
