@@ -45,8 +45,12 @@ function getSolrSources(myTab){
     if (myTab == "enlared" || myTab == "relevantes"){
         res = "q=source:(Facebook+OR+Twitter)";
     }
-    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes")
+    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
         res = "q=!source:(Facebook+OR+Twitter)";
+    }
+    if (myTab == "portada"){
+        res = "q=tags:(Portada)";
+    }
 
     return res;
 
@@ -69,7 +73,7 @@ function getSolrRange(myTab, more){
 
     var res = "";
 
-    if (myTab == "enlared" || myTab == "noticiasenlared" ){
+    if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada" ){
         if (!more)
             res = (lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '');
         else
