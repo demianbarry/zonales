@@ -63,6 +63,7 @@ span#municipio_container{
 
     <input type="hidden" name="task" value="setZonalById" />
     <input type="hidden" name="option" value="com_zonales" />
+
     <?php echo JHTML::_('form.token'); ?>
 
 </form>
