@@ -34,6 +34,11 @@
     <filename>views/zonal/tmpl/default.xml</filename>
     <filename>views/zonal/tmpl/default.php</filename>
 
+    <filename>views/editor/view.html.php</filename>
+    <filename>views/editor/index.html</filename>    
+    <filename>views/editor/tmpl/index.html</filename>    
+    <filename>views/editor/tmpl/default.php</filename>
+
     <filename>views/enlared/view.html.php</filename>
     <filename>views/enlared/index.html</filename>    
     <filename>views/enlared/tmpl/index.html</filename>    
