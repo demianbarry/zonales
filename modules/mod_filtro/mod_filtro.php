@@ -17,5 +17,5 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view');
 
-$pestaña = JRequest::getVar('view', 'enlared');
+$pestana = JRequest::getVar('view', 'enlared');
 require(JModuleHelper::getLayoutPath('mod_filtro'));
