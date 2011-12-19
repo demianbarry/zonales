@@ -2,8 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.scheduler.services;
+
 import static org.quartz.impl.matchers.GroupMatcher.groupEquals;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.zonales.BaseService;
 import org.zonales.errors.ZMessages;
 import org.zonales.scheduler.ZScheduler;
@@ -65,7 +65,7 @@ public class ListJobs extends BaseService {
 
             for (JobExecutionContext jobExc : sched.getCurrentlyExecutingJobs()) {
                 result += "<tr id=\"" + jobExc.getJobDetail().getKey().getName() + "\" class=\"tableRow\">"
-                        + "<td>" + jobExc.getJobDetail().getKey().getGroup() +"</td>"
+                        + "<td>" + jobExc.getJobDetail().getKey().getGroup() + "</td>"
                         + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobExc.getJobDetail().getKey().getName() + "\">" + jobExc.getJobDetail().getKey().getName() + "</a></td>"
                         + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramDescription") + "</td>"
                         + "<td>" + jobExc.getJobDetail().getJobDataMap().getString("zGramLocalidad") + "</td>"
@@ -76,18 +76,18 @@ public class ListJobs extends BaseService {
             }
 
             // enumerate each job group
-            for(String group: sched.getJobGroupNames()) {
+            for (String group : sched.getJobGroupNames()) {
                 // enumerate each job in group
-                for(JobKey jobKey : sched.getJobKeys(groupEquals(group))) {
+                for (JobKey jobKey : sched.getJobKeys(GroupMatcher.jobGroupEquals(group))) {
                     result += "<tr id=\"" + jobKey.getName() + "\" class=\"tableRow\">"
-                        + "<td>" + jobKey.getGroup() +"</td>"
-                        + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
-                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "</td>"
-                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramLocalidad") + "</td>"
-                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramFuente") + "</td>"
-                        + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramTags") + "</td>"
-                        + "<td>" + sched.getTriggerState(sched.getTriggersOfJob(jobKey).get(0).getKey()) + "</td>"
-                        + "</tr>";
+                            + "<td>" + jobKey.getGroup() + "</td>"
+                            + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
+                            + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "</td>"
+                            + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramLocalidad") + "</td>"
+                            + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramFuente") + "</td>"
+                            + "<td>" + sched.getJobDetail(jobKey).getJobDataMap().getString("zGramTags") + "</td>"
+                            + "<td>" + sched.getTriggerState(sched.getTriggersOfJob(jobKey).get(0).getKey()) + "</td>"
+                            + "</tr>";
                 }
             }
 
@@ -102,14 +102,13 @@ public class ListJobs extends BaseService {
 
         } catch (SchedulerException e) {
             out.print(ZMessages.ZSCHEDULER_SCHEDULER_ERROR);
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error: {0} Ex: {1}",  new Object[]{ZMessages.ZSCHEDULER_SCHEDULER_ERROR, e.getMessage()});
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error: {0} Ex: {1}", new Object[]{ZMessages.ZSCHEDULER_SCHEDULER_ERROR, e.getMessage()});
         } catch (NamingException e) {
             out.print(ZMessages.ZSCHEDULER_NAMING_ERROR);
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error: {0} Ex: {1}",  new Object[]{ZMessages.ZSCHEDULER_NAMING_ERROR, e.getMessage()});
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error: {0} Ex: {1}", new Object[]{ZMessages.ZSCHEDULER_NAMING_ERROR, e.getMessage()});
         } catch (Exception e) {
             out.print(ZMessages.ZSCHEDULER_UNKNOW_ERROR);
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error: {0} Ex: {1}",  new Object[]{ZMessages.ZSCHEDULER_UNKNOW_ERROR, e.getMessage()});
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error: {0} Ex: {1}", new Object[]{ZMessages.ZSCHEDULER_UNKNOW_ERROR, e.getMessage()});
         }
     }
-
 }

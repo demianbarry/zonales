@@ -22,6 +22,11 @@
         <servlet-class>org.zonales.scheduler.services.StartTasks</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>IndexPosts</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.ZSolrServer</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SchedulingJob</servlet-name>
         <url-pattern>/schedulingJob</url-pattern>
@@ -41,6 +46,10 @@
     <servlet-mapping>
         <servlet-name>StartTasks</servlet-name>
         <url-pattern>/startTasks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexPosts</servlet-name>
+        <url-pattern>/indexPosts</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

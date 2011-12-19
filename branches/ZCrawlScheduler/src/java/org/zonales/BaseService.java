@@ -47,6 +47,7 @@ public abstract class BaseService extends HttpServlet {
         try {
             serve(request, response, props);
         } catch (Exception ex) {
+            ex.printStackTrace();
             out.print("Request Error: " + ex.getMessage());
             //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
         }
@@ -71,6 +72,7 @@ public abstract class BaseService extends HttpServlet {
         try {
             serve(request, response, props);
         } catch (Exception ex) {
+            ex.printStackTrace();
             out.print("Request Error: " + ex.getMessage());
             //response.sendError(javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
         }
