@@ -72,7 +72,7 @@ public final class ZSolrServer extends BaseService {
             SolrPingResponse spr = server.ping();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta ping: {0}", spr.getStatus());
             
-            if(solrPost.getId() == null || solrPost.getId().trim() == "") {
+            if(solrPost.getId() == null || solrPost.getId().trim().equals("")) {
                 solrPost.setId(UUID.randomUUID().toString().toLowerCase(Locale.ENGLISH));
             }
             
