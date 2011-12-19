@@ -2,14 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.scheduler;
-
 
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 
-import static org.quartz.impl.matchers.GroupMatcher.groupEquals;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -22,6 +19,7 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.zonales.helpers.ConnHelper;
 
 /**
@@ -29,7 +27,6 @@ import org.zonales.helpers.ConnHelper;
  * @author nacho
  */
 public class MailSender implements Job {
-
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
@@ -40,7 +37,7 @@ public class MailSender implements Job {
             //String[] to = jobDetail.getJobDataMap().getString("mail.to").split(",");
             String to = jec.getJobDetail().getJobDataMap().getString("mail.to");
             String subject = "Zonales Scheduler - Informe diario de Extracciones";
-            ServletContext contex = (ServletContext)jec.getJobDetail().getJobDataMap().get("contex");
+            ServletContext contex = (ServletContext) jec.getJobDetail().getJobDataMap().get("contex");
             String sendMailURL = jec.getJobDetail().getJobDataMap().getString("sendMailURL");
             String extractUtilURL = jec.getJobDetail().getJobDataMap().getString("extractUtilURL");
             Integer timeout = jec.getJobDetail().getJobDataMap().getInt("timeout");
@@ -51,32 +48,32 @@ public class MailSender implements Job {
                     + "Las siguientes extracciones se encuentran pausadas: <br><br>";
 
             mailContent += "<table id=\"jobTable\" style=\"border: 1px solid #CCCCCC;border-spacing: 0;border-collapse: separate;width: 1000px;"
-                            + "td {border: 1px solid;padding: 5px;text-align: center;}\">"
-                + "<tr style=\"background-color: #58ACFA;\">"
-                + "<td>Grupo</td>"
-                + "<td>Job Id</td>"
-                + "<td>Descripción</td>"
-                + "<td>Localidad</td>"
-                + "<td>Fuente</td>"
-                + "<td>Tags</td>"
-                + "<td>Estado</td>"
-                + "</tr>";
-            
+                    + "td {border: 1px solid;padding: 5px;text-align: center;}\">"
+                    + "<tr style=\"background-color: #58ACFA;\">"
+                    + "<td>Grupo</td>"
+                    + "<td>Job Id</td>"
+                    + "<td>Descripción</td>"
+                    + "<td>Localidad</td>"
+                    + "<td>Fuente</td>"
+                    + "<td>Tags</td>"
+                    + "<td>Estado</td>"
+                    + "</tr>";
+
             // enumerate each job group
-            for(String group: scheduler.getJobGroupNames()) {
+            for (String group : scheduler.getJobGroupNames()) {
                 // enumerate each job in group
-                for(JobKey jobKey : scheduler.getJobKeys(groupEquals(group))) {
-                    for(Trigger trigger : scheduler.getTriggersOfJob(jobKey)){
+                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group))) {
+                    for (Trigger trigger : scheduler.getTriggersOfJob(jobKey)) {
                         if (scheduler.getTriggerState(trigger.getKey()) == Trigger.TriggerState.PAUSED) {
                             mailContent += "<tr id=\"" + jobKey.getName() + "\" style=\"background-color: #E0E0F8;font-size: small;\">"
-                                            + "<td>" + jobKey.getGroup() +"</td>"
-                                            + "<td><a href=\"" + extractUtilURL + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
-                                            + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "</td>"
-                                            + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramLocalidad") + "</td>"
-                                            + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramFuente") + "</td>"
-                                            + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramTags") + "</td>"
-                                            + "<td>" + scheduler.getTriggerState(scheduler.getTriggersOfJob(jobKey).get(0).getKey()) + "</td>"
-                                            + "</tr>";
+                                    + "<td>" + jobKey.getGroup() + "</td>"
+                                    + "<td><a href=\"" + extractUtilURL + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
+                                    + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "</td>"
+                                    + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramLocalidad") + "</td>"
+                                    + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramFuente") + "</td>"
+                                    + "<td>" + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramTags") + "</td>"
+                                    + "<td>" + scheduler.getTriggerState(scheduler.getTriggersOfJob(jobKey).get(0).getKey()) + "</td>"
+                                    + "</tr>";
                             /*mailContent += "- " + jobKey.getName() + "<br>";
                             mailContent += "- " + scheduler.getJobDetail(jobKey).getJobDataMap().getString("zGramDescription") + "<br>";
                             mailContent += "- " + scheduler.getJobDetail(jobKey).getJobDataMap().getString("metadata") + "<br>";*/
@@ -86,8 +83,8 @@ public class MailSender implements Job {
             }
 
             mailContent += "</table><br><br><br>Mail enviado automáticamente por el planificador de Zonales<br><br>"
-                            + "Si rebibe por error este mail, comuniquese con el administrador de su zona<br>";
-            
+                    + "Si rebibe por error este mail, comuniquese con el administrador de su zona<br>";
+
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "MAIL: Antes de enviar mail");
 
             HttpURLConnection connection;
@@ -99,7 +96,7 @@ public class MailSender implements Job {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "MAIL: Mail enviado");
             } else {
                 Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "MAIL: Mail no enviado");
-            }            
+            }
 
         } catch (SchedulerException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "MAIL: SchedulerException: ", ex);
@@ -109,5 +106,4 @@ public class MailSender implements Job {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "MAIL: Exception: ", ex);
         }
     }
-
 }

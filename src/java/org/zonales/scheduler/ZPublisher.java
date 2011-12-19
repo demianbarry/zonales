@@ -5,6 +5,7 @@
 
 package org.zonales.scheduler;
 
+import org.zonales.scheduler.services.ZSolrServer;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.HttpURLConnection;
