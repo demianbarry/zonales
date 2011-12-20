@@ -34,9 +34,10 @@ app.set('view options',{layout: true});
 
 io.sockets.on('connection', function(client) {
 
+	//EVENTOS RELACIONADOS CON LA GESTION DE ZONAS
 	client.on('getZones', function(name, fn) {
 		console.log('Recibi el evento getZones desde el cliente');
-		zoneService.getAll(function(data){
+		zoneService.getAll(name, function(data){
 		  if (typeof(data) != 'undefined') {
 		  	 fn(data);
 		  }
@@ -52,9 +53,9 @@ io.sockets.on('connection', function(client) {
 	   });		
 	});
 	
-	client.on('getZonesTypes', function(name, fn) {
-		console.log('Recibi el evento getZonesTypes desde el cliente');
-		zoneTypeService.getAll(function(data) {
+	client.on('searchZones', function(filters, fn) {
+		console.log('Recibi el evento searchZones desde el cliente'); 
+		zoneService.searchZones(filters, function(data){
 		  if (typeof(data) != 'undefined') {
 		    fn(data);
 		  }
@@ -66,15 +67,6 @@ io.sockets.on('connection', function(client) {
 		zoneService.get(filters, function(data){
 		  if (typeof(data) != 'undefined') {		    
 		    fn(data);
-		  }
-	   });		
-	});
-	
-	client.on('getParentTypes', function(name, fn) {
-		console.log('Recibi el evento getParentTypes desde el cliente');
-		zoneTypeService.get(name, function(data) {
-		  if (typeof(data) != 'undefined' && typeof(data[0].parents) != 'undefined') {
-		  	 fn(data[0].parents);
 		  }
 	   });		
 	});
@@ -98,6 +90,90 @@ io.sockets.on('connection', function(client) {
 	   });
 	});
 	
+	client.on('removeZone', function(id, fn) {
+		console.log('Recibi el evento removeZone desde el cliente');
+		zoneService.remove(id, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	//EVENTOS RELACIONADOS CON LA GESTION DE TIPOS DE ZONAS
+	client.on('getZonesTypes', function(name, fn) {
+		console.log('Recibi el evento getZonesTypes desde el cliente');
+		zoneTypeService.getAll(name, function(data) {
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getZoneTypesByName', function(name, fn) {
+		console.log('Recibi el evento getZoneTypesByName desde el cliente');
+		zoneTypeService.getLikeName(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('searchZoneTypes', function(filters, fn) {
+		console.log('Recibi el evento searchZoneTypes desde el cliente'); 
+		zoneTypeService.searchZoneTypes(filters, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getZoneTypeByFilters', function(filters, fn) {
+		console.log('Recibi el evento getZoneTypeByFilters desde el cliente');
+		zoneTypeService.get(filters, function(data){
+		  if (typeof(data) != 'undefined') {		    
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getParentTypes', function(name, fn) {
+		console.log('Recibi el evento getParentTypes desde el cliente');
+		zoneTypeService.get(name, function(data) {
+		  if (typeof(data) != 'undefined' && typeof(data[0].parents) != 'undefined') {
+		  	 fn(data[0].parents);
+		  }
+	   });		
+	});
+	
+	client.on('saveZoneType', function(name, fn) {
+		console.log('Recibi el evento saveZoneType desde el cliente');
+		zoneTypeService.set(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('updateZoneType', function(name, fn) {
+		console.log('Recibi el evento updateZoneType desde el cliente');
+		var obj = eval('(' + name + ')');
+		zoneTypeService.update(obj.name, name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('removeZoneType', function(name, fn) {
+		console.log('Recibi el evento removeZoneType desde el cliente');
+		zoneTypeService.remove(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	//EVENTOS RELACIONADOS CON LA GESTION DE DATOS GEOGRAFICOS
 	client.on('getGeoData', function(filters, fn) {
 		console.log('Recibi el evento getGeoData desde el cliente');
 		geoDataService.get(filters, function(data){
@@ -126,6 +202,145 @@ io.sockets.on('connection', function(client) {
 	   });
 	});
 	
+	//EVENTOS RELACIONADOS CON LA GESTION DE TAGS
+	client.on('getTags', function(name, fn) {
+		console.log('Recibi el evento getTags desde el cliente');
+		tagService.getAll(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		  	 fn(data);
+		  }
+	   });
+	});
+
+	client.on('getTagsByName', function(name, fn) {
+		console.log('Recibi el evento getTagsByName desde el cliente');
+		tagService.getLikeName(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('searchTags', function(filters, fn) {
+		console.log('Recibi el evento searchTags desde el cliente'); 
+		tagService.searchTags(filters, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getTagByFilters', function(filters, fn) {
+		console.log('Recibi el evento getTagByFilters desde el cliente');
+		tagService.get(filters, function(data){
+		  if (typeof(data) != 'undefined') {		    
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('saveTag', function(name, fn) {
+		console.log('Recibi el evento saveTag desde el cliente');
+		tagService.set(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('updateTag', function(name, fn) {
+		console.log('Recibi el evento updateTag desde el cliente');
+		var obj = eval('(' + name + ')');
+		tagService.update(obj.id, name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('removeTag', function(id, fn) {
+		console.log('Recibi el evento removeTag desde el cliente');
+		tagService.remove(id, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	//EVENTOS RELACIONADOS CON LA GESTION DE TIPOS DE TAGS
+	client.on('getTagsTypes', function(name, fn) {
+		console.log('Recibi el evento getTagsTypes desde el cliente');
+		tagTypeService.getAll(name, function(data) {
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getTagTypesByName', function(name, fn) {
+		console.log('Recibi el evento getTagTypesByName desde el cliente');
+		tagTypeService.getLikeName(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('searchTagTypes', function(filters, fn) {
+		console.log('Recibi el evento searchTagTypes desde el cliente'); 
+		tagTypeService.searchTagTypes(filters, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getTagTypeByFilters', function(filters, fn) {
+		console.log('Recibi el evento getTagTypeByFilters desde el cliente');
+		tagTypeService.get(filters, function(data){
+		  if (typeof(data) != 'undefined') {		    
+		    fn(data);
+		  }
+	   });		
+	});
+	
+	client.on('getTagParentTypes', function(name, fn) {
+		console.log('Recibi el evento getParentTypes desde el cliente');
+		tagTypeService.get(name, function(data) {
+		  if (typeof(data) != 'undefined' && typeof(data[0].parents) != 'undefined') {
+		  	 fn(data[0].parents);
+		  }
+	   });		
+	});
+	
+	client.on('saveTagType', function(name, fn) {
+		console.log('Recibi el evento saveTagType desde el cliente');
+		tagTypeService.set(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('updateTagType', function(name, fn) {
+		console.log('Recibi el evento updateTagType desde el cliente');
+		var obj = eval('(' + name + ')');
+		tagTypeService.update(obj.name, name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
+	client.on('removeTagType', function(name, fn) {
+		console.log('Recibi el evento removeTagType desde el cliente');
+		tagTypeService.remove(name, function(data){
+		  if (typeof(data) != 'undefined') {
+		    fn(data);
+		  }
+	   });
+	});
+	
 });
 
 
@@ -135,6 +350,12 @@ app.get('/', function(req,res) {
 });
 
 //----------------------- CMUTILS PAGES -----------------------
+
+app.get('/CMUtils', function(req,res) {
+	fs.readFile(__dirname + '/views/index.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
 
 app.get('/CMUtils/zoneList', function(req,res) {
 	fs.readFile(__dirname + '/views/zoneList.html', 'utf8', function(err, text){
@@ -148,6 +369,45 @@ app.get('/CMUtils/zoneEdit', function(req,res) {
 	});
 });
 
+app.get('/CMUtils/zoneTypeList', function(req,res) {
+	fs.readFile(__dirname + '/views/zoneTypeList.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+app.get('/CMUtils/zoneTypeEdit', function(req,res) {
+	fs.readFile(__dirname + '/views/zoneTypeEdit.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+
+app.get('/CMUtils/tagList', function(req,res) {
+	fs.readFile(__dirname + '/views/tagList.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+app.get('/CMUtils/tagEdit', function(req,res) {
+	fs.readFile(__dirname + '/views/tagEdit.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+app.get('/CMUtils/tagTypeList', function(req,res) {
+	fs.readFile(__dirname + '/views/tagTypeList.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+app.get('/CMUtils/tagTypeEdit', function(req,res) {
+	fs.readFile(__dirname + '/views/tagTypeEdit.html', 'utf8', function(err, text){
+	    res.send(text);
+	});
+});
+
+
+
 //----------------------- SERVICES SWITCH -----------------------
 
 //----------------------- ZONES -----------------------
@@ -156,7 +416,7 @@ app.get('/CMUtils/zoneEdit', function(req,res) {
 app.get('/zone/getAll', function(req,res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		zoneService.getAll(function(data){
+		zoneService.getAll(req.query.short, function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});
@@ -266,7 +526,7 @@ app.get('/zone/remove', function(req, res) {
 app.get('/zoneType/getAll', function(req,res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		zoneTypeService.getAll(function(data){
+		zoneTypeService.getAll(req.query.short, function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});
@@ -376,7 +636,7 @@ app.get('/zoneType/remove', function(req, res) {
 app.get('/tag/getAll', function(req,res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		tagService.getAll(function(data){
+		tagService.getAll(req.query.short, function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});
@@ -486,7 +746,7 @@ app.get('/tag/remove', function(req, res) {
 app.get('/tagType/getAll', function(req,res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		tagTypeService.getAll(function(data){
+		tagTypeService.getAll(req.query.short, function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});

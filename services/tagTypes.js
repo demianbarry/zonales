@@ -21,25 +21,35 @@ var tagTypes = mongoose.model('tagTypes', tagTypeSchema);
 //module.exports.zoneType = zoneTypes;
 
 //Retorna nombre de todos los tipos de tags
-module.exports.getAll = function getAll(callback) {
+module.exports.getAll = function getAll(short, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 	
 	try {
-		tagTypes.find({}, ['name'], function(err, docs) {
-		  if (err) {
-			  console.log('Error obteniendo tipos de tags --> ' + err);
-		  	  throw errors.apiError; 
-		  }
-		  callback(docs);
-		  return(this);
-	   });
+		if (short) {
+			tagTypes.find({}, ['id', 'name'], function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo tipos de tags --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		} else {
+			tagTypes.find({}, function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo tipos de tags --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		}
 	} catch (err) {
 		console.log('Error --> ' + err);
 		throw errors.apiError;
 	}
 }
-
 //Retorna un conjunto de tipos de tags de acuerdo a los filtros utilizados 
 module.exports.get = function get(filters, callback) {
 	// Make sure a callback is defined.
@@ -81,6 +91,27 @@ module.exports.getLikeName = function getLikeName(name, callback) {
 		console.log('Error --> ' + err);
 		throw errors.apiError;
 	}
+}		
+//Retorna un conjunto de tipos de tags con nombre similar al parámetro
+module.exports.searchTagTypes = function searchTagTypes(filters, callback) {
+	// Make sure a callback is defined.
+	callback = (callback || noop);
+
+	try {
+		//var myregex = RegExp(name);
+		filters.name = RegExp(filters.name);
+		tagTypes.find(filters, function(err, docs) { 
+		  if (err) {
+			  console.log('Error obteniendo tipos de tags --> ' + err);
+			  throw errors.apiError;
+		  }
+		  callback(docs);
+		  return(this);
+	   });
+	} catch (err) {
+		console.log('Error --> ' + err);
+		throw errors.apiError;
+	}
 }
 
 //Crea un nuevo tipo de tag
@@ -106,14 +137,14 @@ module.exports.set = function set(tagType, callback) {
 
 
 //Actualiza un tipo de tag existente (búsqueda por nombre)
-module.exports.update = function update(id, data, callback) {
+module.exports.update = function update(name, data, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 	
 	try {
-		var oid = JSON.parse('{"id":"' + id + '"}');
+		var oname = JSON.parse('{"name":"' + name + '"}');
 		var odata = JSON.parse(data);
-		tagTypes.update(oid, odata, function(err) {
+		tagTypes.update(oname, odata, function(err) {
 			if (err) {
 				  console.log('Error actualizando el tipo de tag --> ' + err);
 				  throw errors.apiError;
@@ -128,13 +159,13 @@ module.exports.update = function update(id, data, callback) {
 }
 
 //Elimina un tipo de tag existente (búsqueda por Nombre)
-module.exports.remove = function remove(id, callback) {
+module.exports.remove = function remove(name, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 	
 	try {
-		var oid = JSON.parse('{"id":"' + id + '"}');
-		tagTypes.findOne(oid, function(err, tagType) {
+		var oname = JSON.parse('{"name":"' + name + '"}');
+		tagTypes.findOne(oname, function(err, tagType) {
 		  if (err) {
 			  console.log('Error eliminando el tipo de tag --> ' + err);
 			  throw errors.apiError;
