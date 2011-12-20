@@ -25,19 +25,30 @@ var zones = mongoose.model('zones', zoneSchema);
 //module.exports.zone = zones;
 
 //Retorna id y nombre de todas las zonas
-module.exports.getAll = function getAll(callback) {
+module.exports.getAll = function getAll(short, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 	
 	try {
-		zones.find({}, ['id', 'name'], function(err, docs) {
-		  if (err) {
-			  console.log('Error obteniendo zonas --> ' + err);
-		  	  throw errors.apiError; 
-		  }
-		  callback(docs);
-		  return(this);
-	   });
+		if (short) {
+			zones.find({}, ['id', 'name'], function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo zones --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		} else {
+			zones.find({}, function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo zones --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		}
 	} catch (err) {
 		console.log('Error --> ' + err);
 		throw errors.apiError;
@@ -71,8 +82,30 @@ module.exports.getLikeName = function getLikeName(name, callback) {
 	callback = (callback || noop);
 
 	try {
-		var myregex = RegExp(name.replace(' ', '_').toLowerCase());
+		var myregex = RegExp(name);
 		zones.find({"name": myregex}, function(err, docs) {
+		  if (err) {
+			  console.log('Error obteniendo zonas --> ' + err);
+			  throw errors.apiError;
+		  }
+		  callback(docs);
+		  return(this);
+	   });
+	} catch (err) {
+		console.log('Error --> ' + err);
+		throw errors.apiError;
+	}
+}
+
+//Retorna un conjunto de zonas con nombre similar al parámetro
+module.exports.searchZones = function searchZones(filters, callback) {
+	// Make sure a callback is defined.
+	callback = (callback || noop);
+
+	try {
+		//var myregex = RegExp(name);
+		filters.name = RegExp(filters.name);
+		zones.find(filters, function(err, docs) { 
 		  if (err) {
 			  console.log('Error obteniendo zonas --> ' + err);
 			  throw errors.apiError;

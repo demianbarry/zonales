@@ -23,19 +23,30 @@ var tags = mongoose.model('tags', tagSchema);
 //module.exports.zone = zones;
 
 //Retorna id y nombre de todas los tags
-module.exports.getAll = function getAll(callback) {
+module.exports.getAll = function getAll(short, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 	
 	try {
-		tags.find({}, ['id', 'name'], function(err, docs) {
-		  if (err) {
-			  console.log('Error obteniendo tags --> ' + err);
-		  	  throw errors.apiError; 
-		  }
-		  callback(docs);
-		  return(this);
-	   });
+		if (short) {
+			tags.find({}, ['id', 'name'], function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo tags --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		} else {
+			tags.find({}, function(err, docs) {
+			  if (err) {
+				  console.log('Error obteniendo tags --> ' + err);
+			  	  throw errors.apiError; 
+			  }
+			  callback(docs);
+			  return(this);
+		   });
+		}
 	} catch (err) {
 		console.log('Error --> ' + err);
 		throw errors.apiError;
@@ -64,13 +75,35 @@ module.exports.get = function get(filters, callback) {
 }
 
 //Retorna un conjunto de tags con nombre similar al parámetro
-module.exports.getLikeName = function getLikeName(name, callback) {
+module.exports.searchTags = function searchTags(filters, callback) {
 	// Make sure a callback is defined.
 	callback = (callback || noop);
 
 	try {
-		var myregex = RegExp(name.replace(' ', '_').toLowerCase());
-		tags.find({"name": myregex}, function(err, docs) {
+		//var myregex = RegExp(name);
+		filters.name = RegExp(filters.name);
+		tags.find(filters, function(err, docs) { 
+		  if (err) {
+			  console.log('Error obteniendo tags --> ' + err);
+			  throw errors.apiError;
+		  }
+		  callback(docs);
+		  return(this);
+	   });
+	} catch (err) {
+		console.log('Error --> ' + err);
+		throw errors.apiError;
+	}
+}
+
+//Retorna un conjunto de tags con nombre similar al parámetro
+module.exports.getLikeNameAndStatus = function getLikeNameAndStatus(name, status, callback) {
+	// Make sure a callback is defined.
+	callback = (callback || noop);
+
+	try {
+		var myregex = RegExp(name);
+		tags.find({"name": myregex, "state": status}, function(err, docs) { 
 		  if (err) {
 			  console.log('Error obteniendo tags --> ' + err);
 			  throw errors.apiError;

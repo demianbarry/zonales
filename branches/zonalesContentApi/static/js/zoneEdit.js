@@ -32,20 +32,33 @@ var formats;
 var popup;
 var ids = new Array();
 var cant = 0;
+var zoneFilter = "";
+var stateFilter = "";
+var zoneTypeFilter = "";
 
 window.addEvent('domready', function() {
 	  init();
 	  socket = io.connect();
   	  socket.on('connect', function () { 
-	    socket.emit('getZonesTypes', '', function (data) {			  		
+	    socket.emit('getZonesTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
-	  				new Element('option', {'value' : type.name, 'html' : type.name}).inject($('tipo'));
+	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('tipo'));
 	  			}
 	  		});
 	  		if(gup('id') != null && gup('id') != '') {
 		        getZone(gup('id'), false);
 		     }
+			if(gup('zone') != null && gup('zone') != '') {
+		        zoneFilter = gup('zone');
+		     }
+		   if(gup('state') != null && gup('state') != '') {
+		        stateFilter = gup('state');
+		     }
+		   if(gup('zoneType') != null && gup('zoneType') != '') {
+		        zoneTypeFilter = gup('zoneType');
+		     }  
+		   $('backAnchor').href = '/CMUtils/zoneList?zone=' + zoneFilter + '&state=' + stateFilter + '&zoneType=' + zoneTypeFilter;
 	    });
 	  });
 });
@@ -63,7 +76,7 @@ function getZone(id, parent){
              } else {
              	$('id').value = "";
              }
-             typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name : $('nombre').value = "";
+             typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('nombre').value = "";
              if (typeof(jsonObj.type) != 'undefined') {
              	  //alert(typeOf($('tipo').getElement('option[value=' + jsonObj.type + ']'))); //.set('selected');
                  $('tipo').value = jsonObj.type;
@@ -78,7 +91,8 @@ function getZone(id, parent){
              if (typeof(jsonObj.geoData) != 'undefined') {
              	geoedit = true;
               	geoZoneId = jsonObj.geoData;
-              	socket.emit('getGeoData', geoZoneId, function(data) {
+              	var gzid = '{"id":"' + geoZoneId + '"}';
+              	socket.emit('getGeoData', gzid, function(data) {
 						$('geoJson').value = JSON.stringify(data[0]);
             		deserialize();              		
               	});
@@ -92,7 +106,7 @@ function getParents(type) {
 	 var jtype = '{"type":"' + type + '"}';
 	 socket.emit('getZoneByFilters', jtype, function (jsonObj) {
     		jsonObj.each(function(parent) {
-              var el = new Element('option', {'value' : parent.id, 'html' : parent.name}).inject($('padre'));
+              var el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
               if (parent.id == parent_id) {
                   el.selected = true;
               }
@@ -113,7 +127,7 @@ function getParentTypes(type) {
 
 function saveZone() {
 
-    var jsonZone = '{"name":"' + $('nombre').value + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
+    var jsonZone = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
     if(geoedit) {
     	jsonZone += ',"geoData":"' + geoZoneId + '"';
     	socket.emit('updateGeoData', $('geoJson').value, function (data) {

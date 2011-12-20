@@ -1,70 +1,69 @@
 var socket;
-var zones = Array();
+var tags = Array();
 
 window.addEvent('domready', function() {
  	  socket = io.connect();
   	  socket.on('connect', function () { 
-	    socket.emit('getZones', true, function (data) {			  		
-	  		data.each(function(zone) {
-	  			if (typeof(zone.name) != 'undefined') { 
-	  				zones.include(zone.name.replace(/_/g, ' ').capitalize());
+	    socket.emit('getTags', true, function (data) {			  		
+	  		data.each(function(tag) {
+	  			if (typeof(tag.name) != 'undefined') { 
+	  				tags.include(tag.name.replace(/_/g, ' ').capitalize());
 	  			}
 	  		});
 	    });
-	    socket.emit('getZonesTypes', true, function (data) {			  		
+	  	 socket.emit('getTagsTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
 	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('tipo'));
 	  			}
 	  		});
-	  		if(gup('zoneType') != null && gup('zoneType') != '') {
-	        $('tipo').value = gup('zoneType');
-	        if ($('zoneNameFilter').value == '' && $('zoneStateFilter').value == 'all') {
-			   	searchZones();
+	  		if(gup('tagType') != null && gup('tagType') != '') {
+	        $('tipo').value = gup('tagType');
+	        if ($('tagNameFilter').value == '' && $('tagStateFilter').value == 'all') {
+			   	searchTags();
 			   }
 	      }
 	  	 });
 	  });	  	  
-	  if(gup('zone') != null && gup('zone') != '') {
-	        $('zoneNameFilter').value = gup('zone').replace(/_/g, ' ').capitalize();
+	  if(gup('tag') != null && gup('tag') != '') {
+	        $('tagNameFilter').value = gup('tag').replace(/_/g, ' ').capitalize();
 	     }
 	  if(gup('state') != null && gup('state') != '') {
-	        $('zoneStateFilter').value = gup('state');
+	        $('tagStateFilter').value = gup('state');
 	     }
-	   if ($('zoneNameFilter').value != '' && $('zoneStateFilter').value != 'all') {
-	   	searchZones();
-	   }
+	   if ($('tagNameFilter').value != '' && $('tagStateFilter').value != 'all') {
+	   	searchTags();
+	   }	  	  
 });
 
-function searchZones(){
+function searchTags(){
 
-	 var filters = '{"name": "' + $('zoneNameFilter').value.replace(/ /g, '_').toLowerCase() + '"';
- 	 if ($('zoneStateFilter').value != 'all') {
- 	 	filters += ', "state": "' + $('zoneStateFilter').value + '"'; 
+	 var filters = '{"name": "' + $('tagNameFilter').value.replace(/ /g, '_').toLowerCase() + '"';
+ 	 if ($('tagStateFilter').value != 'all') {
+ 	 	filters += ', "state": "' + $('tagStateFilter').value + '"'; 
  	 }
  	 if ($('tipo').value != 'all') {
- 	 	filters += ', "type": "' + $('tipo').value.replace(/ /g, '_').toLowerCase() + '"'; 
+ 	 	filters += ', "type": "' + $('tipo').value + '"'; 
  	 }
  	 filters += '}';
  	 
-    socket.emit('searchZones', eval('(' + filters + ')'), function (data) {			  		
-  		makeZonesTable(data);
+    socket.emit('searchTags', eval('(' + filters + ')'), function (data) {			  		
+  		makeTagsTable(data);
   	 });
- 	 
 }
 
-function removeZone(id) {
-	 socket.emit('removeZone', id, function (data) {
+function removeTag(id) {
+	 socket.emit('removeTag', id, function (data) {
     		var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			$('resultTable').removeChild($('tr_'+ id)); 
     		} else {
-    			alert("Error al eliminar la zona");
+    			alert("Error al eliminar el tag");
     		}
     	});	
 }
 
-function makeZonesTable(jsonObj){
+function makeTagsTable(jsonObj){
 
     $('resultslist_content').empty();
 
@@ -90,44 +89,44 @@ function makeZonesTable(jsonObj){
         'html' : 'Editar/Eliminar'
     }).inject(config_title_tr);
 
-    jsonObj.each(function(zone){
+    jsonObj.each(function(tag){
         var config_title_tr = new Element('tr', {
-				'id': 'tr_' + zone.id,            
+        		'id': 'tr_' + tag.id,
             'class': 'tableRow'
         }).inject(configs_table);
         new Element('td', {
-            'html' : zone.id
+            'html' : tag.id
             }).inject(config_title_tr);
         new Element('td', {
-            'html' : zone.name.replace(/_/g, ' ').capitalize()
+            'html' : tag.name.replace(/_/g, ' ').capitalize()
             }).inject(config_title_tr);
         new Element('td', {
-            'html' : zone.type
+            'html' : tag.type
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : zone.state
+            'html' : tag.state
             }).inject(config_title_tr);
         var editRemoveTd = new Element('td').inject(config_title_tr);
         new Element('img', {
         		'width' : '16', 
         		'height' : '16',
         		'border': '0', 
-        		'alt': zone.name, 
+        		'alt': tag.name, 
         		'title': 'Editar', 
         		'src': '/images/addedit.png', 
-        		'onclick' : "window.location.href = 'zoneEdit?id=" + zone.id 
-        						+ "&zone=" + $('zoneNameFilter').value 
-        						+ "&state=" + $('zoneStateFilter').value 
-        						+ "&zoneType=" + $('tipo').value + "';"
+        		'onclick' : "window.location.href = 'tagEdit?id="+tag.id
+        						+ "&tag=" + $('tagNameFilter').value 
+        						+ "&state=" + $('tagStateFilter').value 
+        						+ "&tagType=" + $('tipo').value + "';"
         		}).inject(editRemoveTd);
         new Element('img', {
         		'width' : '16', 
         		'height' : '16', 
         		'border': '0', 
-        		'alt': zone.name, 
+        		'alt': tag.name, 
         		'title': 'Eliminar', 
         		'src': '/images/publish_x.png', 
-        		'onclick' : 'removeZone(' + zone.id + ')'
+        		'onclick' : 'removeTag(' + tag.id + ')'
         		}).inject(editRemoveTd);
     });
 }
