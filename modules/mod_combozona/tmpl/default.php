@@ -13,6 +13,7 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+JHTML::_('behavior.formvalidation');
 ?>
 <!--<div id="mod_combozonal" class="moduletable_combozonal">-->
     <!--h1><?php echo $module->title; ?></h1-->
@@ -49,7 +50,7 @@ span#municipio_container{
 }
 </style>
 <form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form" style="margin: 0; padding: 0;">
-    <!--<strong>UBICACIÓN: </strong>-->
+    <!--<strong>UBICACIÃN: </strong>-->
     <span id="z_provincias_container" style="width:219px;">
         <?php echo $lists['provincias_select']; ?>
     </span>
@@ -63,7 +64,6 @@ span#municipio_container{
 
     <input type="hidden" name="task" value="setZonalById" />
     <input type="hidden" name="option" value="com_zonales" />
-
     <?php echo JHTML::_('form.token'); ?>
 
 </form>
@@ -75,7 +75,8 @@ span#municipio_container{
 
     window.addEvent('domready', function() {
         $('provincias').addEvent('change', function() {
-            loadMunicipios();
+
+	    loadMunicipios(<?php echo "$selectedOption" ?>);
         });
 
         var newElement =  new Element('option');
@@ -87,8 +88,7 @@ span#municipio_container{
 	<?php if (!empty($selectedParent)) {?>
             $('provincias').value = <?php echo $selectedParent;?>;
         <?php } ?>
-
-        loadMunicipios(<?php echo "$selectedOption" ?>);
+        loadMunicipios();
 
     });
 
@@ -100,8 +100,11 @@ span#municipio_container{
         new Request({
 	    url:url,
             method: 'get',
-            onComplete: function(response) {
-                $('z_localidad_container').removeClass('ajax-loading').set('html',response);
+	    onComplete: function(response) {
+                $('z_localidad_container').removeClass('ajax-loading');
+            },
+            onSuccess: function(response) {
+		$('z_localidad_container').set('html',response);
                 $('zonalid').setStyle('width','219px');
                 var newElement =  new Element('option');
                 newElement.inject($('zonalid'), 'top');
@@ -115,12 +118,24 @@ span#municipio_container{
                 }
                 $('municipio_container').setStyles({display:'',width:'219px'});
                 $('zonalid').addEvent('change', function() {
-                    $('formComboZona').submit();
+                    setZone();
                 });
 
             }
 
         }).send();
     }
-    //-->
+
+function setZone(){
+        var url='index.php?option=com_zonales&tmpl=component&task=setZonalById&zonalid='+$('zonalid').value+'&provincias='+$('provincias').value;
+        new Request({
+	    url:url,
+            method: 'post',
+            onSuccess: function(response) {
+		alert(response);
+            }
+
+        }).send();
+    }
+    -->
 </script>
