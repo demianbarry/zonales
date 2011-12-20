@@ -106,8 +106,8 @@ public class ZPublisher implements Job {
             //Error de URLs, el JOB no pasa a Stand-by
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, "Error en JOB IO: ", ex);
         } catch (ExtractException ex) {
-
-            try {
+            //TODO: Definir criterios de pausado de extracciones antes de volver a habilitar esta sección
+            /*try {
                 //Analizo los códigos de mensaje obtenidos del extractor en casos de error, trato los que generan stand-by
                 if (ex.getZmessage().getCod() == ZMessages.ZSOURCES_GETURL_ERROR.getCod() ||   //Si la URL de extracción es incorercta
                         ex.getZmessage().getCod() == ZMessages.GSON_CONVERTION_ERROR.getCod() ||  //Si el Json de los post es incorrecto o malformado
@@ -117,7 +117,7 @@ public class ZPublisher implements Job {
                 }
             } catch (SchedulerException ex1) {
                 Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+            }*/
 
             //Actualizado la gramática con el intento de extracción
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extract Exeption: {0}", ex.getZmessage());
