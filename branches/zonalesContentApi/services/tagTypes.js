@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
+var baseService = require('./baseService');
 
 //Esquema JSON para los tipos de tags
 var tagTypeSchema = new Schema(
@@ -22,166 +23,36 @@ var tagTypes = mongoose.model('tagTypes', tagTypeSchema);
 
 //Retorna nombre de todos los tipos de tags
 module.exports.getAll = function getAll(short, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		if (short) {
-			tagTypes.find({}, ['id', 'name'], function(err, docs) {
-			  if (err) {
-				  console.log('Error obteniendo tipos de tags --> ' + err);
-			  	  throw errors.apiError; 
-			  }
-			  callback(docs);
-			  return(this);
-		   });
-		} else {
-			tagTypes.find({}, function(err, docs) {
-			  if (err) {
-				  console.log('Error obteniendo tipos de tags --> ' + err);
-			  	  throw errors.apiError; 
-			  }
-			  callback(docs);
-			  return(this);
-		   });
-		}
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.getAll(tagTypes, short, '["name"]', callback);
 }
 //Retorna un conjunto de tipos de tags de acuerdo a los filtros utilizados 
 module.exports.get = function get(filters, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var filtros = JSON.parse(filters);
-		tagTypes.find(filtros, function(err, docs) {
-		  if (err) {
-		  	  console.log('Error obteniendo tipos de tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.get(tagTypes, filters, callback);
 }
 
 
 //Retorna un conjunto de tipos de tags con nombre similar al parámetro
 module.exports.getLikeName = function getLikeName(name, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		var myregex = RegExp(name);
-		tagTypes.find({"name": myregex}, function(err, docs) {
-		  if (err) {
-			  console.log('Error obteniendo tipos de tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.getLikeName(tagTypes, name, callback);
 }		
 //Retorna un conjunto de tipos de tags con nombre similar al parámetro
 module.exports.searchTagTypes = function searchTagTypes(filters, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		//var myregex = RegExp(name);
-		filters.name = RegExp(filters.name);
-		tagTypes.find(filters, function(err, docs) { 
-		  if (err) {
-			  console.log('Error obteniendo tipos de tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.searchData(tagTypes, filters, callback);
 }
 
 //Crea un nuevo tipo de tag
 module.exports.set = function set(tagType, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		var tagType = new tagTypes(JSON.parse(tagType));
-		tagType.save(function(err) {
-		  if (err) {
-			  console.log('Error guardando el tipo de tag --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(errors.success);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.set(tagTypes, tagType, callback);
 }
 
 
 //Actualiza un tipo de tag existente (búsqueda por nombre)
 module.exports.update = function update(name, data, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var oname = JSON.parse('{"name":"' + name + '"}');
-		var odata = JSON.parse(data);
-		tagTypes.update(oname, odata, function(err) {
-			if (err) {
-				  console.log('Error actualizando el tipo de tag --> ' + err);
-				  throw errors.apiError;
-			  }
-			  callback(errors.success);
-		  	  return(this);
-		});
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.update(tagTypes, 'name', name, data, callback);
 }
 
 //Elimina un tipo de tag existente (búsqueda por Nombre)
 module.exports.remove = function remove(name, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var oname = JSON.parse('{"name":"' + name + '"}');
-		tagTypes.findOne(oname, function(err, tagType) {
-		  if (err) {
-			  console.log('Error eliminando el tipo de tag --> ' + err);
-			  throw errors.apiError;
-		  }
-		  tagType.remove(function(err) {
-			  if (err) {
-				  console.log('Error eliminando el tipo de tag --> ' + err);
-				  throw errors.apiError;
-			  }
-			  callback(errors.success);
-		  	  return(this);
-		  });
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.remove(tagTypes, 'name', name, callback);
 }
 

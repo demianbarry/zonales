@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
+var baseService = require('./baseService');
 
 //Esquema JSON para los tags
 var tagSchema = new Schema(
@@ -24,166 +25,36 @@ var tags = mongoose.model('tags', tagSchema);
 
 //Retorna id y nombre de todas los tags
 module.exports.getAll = function getAll(short, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		if (short) {
-			tags.find({}, ['id', 'name'], function(err, docs) {
-			  if (err) {
-				  console.log('Error obteniendo tags --> ' + err);
-			  	  throw errors.apiError; 
-			  }
-			  callback(docs);
-			  return(this);
-		   });
-		} else {
-			tags.find({}, function(err, docs) {
-			  if (err) {
-				  console.log('Error obteniendo tags --> ' + err);
-			  	  throw errors.apiError; 
-			  }
-			  callback(docs);
-			  return(this);
-		   });
-		}
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.getAll(tags, short, '["id", "name"]', callback);
 }
 
 //Retorna un conjunto de tags de acuerdo a los filtros utilizados 
 module.exports.get = function get(filters, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var filtros = JSON.parse(filters);
-		tags.find(filtros, function(err, docs) {
-		  if (err) {
-		  	  console.log('Error obteniendo tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.get(tags, filters, callback);
 }
 
 //Retorna un conjunto de tags con nombre similar al parámetro
 module.exports.searchTags = function searchTags(filters, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		//var myregex = RegExp(name);
-		filters.name = RegExp(filters.name);
-		tags.find(filters, function(err, docs) { 
-		  if (err) {
-			  console.log('Error obteniendo tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.getLikeName(tags, name, callback);
 }
 
 //Retorna un conjunto de tags con nombre similar al parámetro
-module.exports.getLikeNameAndStatus = function getLikeNameAndStatus(name, status, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		var myregex = RegExp(name);
-		tags.find({"name": myregex, "state": status}, function(err, docs) { 
-		  if (err) {
-			  console.log('Error obteniendo tags --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(docs);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+module.exports.searchTags = function searchTags(filters, callback) {
+	return baseService.searchData(tags, filters, callback);
 }
 
 //Crea un nuevo tag
 module.exports.set = function set(tag, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-
-	try {
-		var tag = new tags(JSON.parse(tag));
-		tag.save(function(err) {
-		  if (err) {
-			  console.log('Error guardando el tag --> ' + err);
-			  throw errors.apiError;
-		  }
-		  callback(errors.success);
-		  return(this);
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.set(tags, tag, callback);
 }
 
 //Actualiza un tag existente (búsqueda por ID)
 module.exports.update = function update(id, data, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var oid = JSON.parse('{"id":"' + id + '"}');
-		var odata = JSON.parse(data);
-		tags.update(oid, odata, function(err) {
-			if (err) {
-				  console.log('Error actualizando el tag --> ' + err);
-				  throw errors.apiError;
-			  }
-			  callback(errors.success);
-		  	  return(this);
-		});
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.update(tags, 'id', id, data, callback);
 }
 
 //Elimina un tag existente (búsqueda por ID) 
 module.exports.remove = function remove(id, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var oid = JSON.parse('{"id":"' + id + '"}');
-		tags.findOne(oid, function(err, tag) {
-		  if (err) {
-			  console.log('Error eliminando el tag --> ' + err);
-			  throw errors.apiError;
-		  }
-		  tag.remove(function(err) {
-			  if (err) {
-				  console.log('Error eliminando el tag --> ' + err);
-				  throw errors.apiError;
-			  }
-			  callback(errors.success);
-		  	  return(this);
-		  });
-	   });
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
+	return baseService.remove(tags, 'id', id, callback);
 }
 
