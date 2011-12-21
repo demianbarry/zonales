@@ -137,7 +137,7 @@ function getContent(id){
 
 function saveContent(){
     refreshContent();
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+JSON.stringify(contentToSolr(zContent));
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+JSON.encode(zContent);
     var urlProxy = 'curl_proxy.php';
     new Request({
         url: encodeURIComponent(urlProxy),
@@ -147,13 +147,18 @@ function saveContent(){
             'port': port,
             'ws_path':url
         },        
-        encoding: 'utf-8',
         onRequest: function(){            
         },
         onSuccess: function(response) {			
-    //        commit();
-            if(response && response.length != 0)
-                  alert(response);
+            //        commit();
+            if(response && response.length != 0){
+                if(response.id){
+                    zContent.id = response.id;
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);
+                } else {
+                    alert("Ocurrió un error al intentar guardar el documento: "+response);
+                }
+            }
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -196,7 +201,8 @@ function voidContent(){
 
 function makeContentTable(jsonObj, container){
 
-    container.empty();
+    if(typeOf(container) == 'element')
+        container.empty();
 
     var configs_table = new Element('table', {
         'id' : 'resultTable'
