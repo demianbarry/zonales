@@ -4,7 +4,7 @@ var firstIndexTime = null;
 var lastIndexTime = null;
 var minRelevance = null;
 var sources = new Array();
-var tags = new Array();
+//var tags = new Array();
 var zones = new Array();
 var tab = "";
 var host = "";
@@ -43,7 +43,13 @@ function getSolrSources(myTab){
     res += ")";*/
     var res = "";
     if (myTab == "enlared" || myTab == "relevantes"){
-        res = "q=source:(Facebook+OR+Twitter)";
+        res = "q=source:(facebook+OR+twitter)";
+    }
+    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
+        res = "q=!source:(facebook+OR+twitter)";
+    }
+    if (myTab == "portada"){
+        res = "q=tags:(Portada)";
     }
     if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
         res = "q=!source:(Facebook+OR+Twitter)";
@@ -342,7 +348,7 @@ function updatePosts(json, component, more) {
                         a_story_item_link = new Element('a', {
                             'href': link.url,
                             'target': '_blank'
-                        }).set('html','Más info...').addClass('story-item-link').inject(li_story_item_link);
+                        }).set('html','MÃ¡s info...').addClass('story-item-link').inject(li_story_item_link);
                         break;
                 }
             });
@@ -355,7 +361,16 @@ function updatePosts(json, component, more) {
 
 
         var tags = post.tags;
-        new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
+        //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
+	
+	if(typeOf(tags) == 'array') {
+	                tags.each(function(tag){
+            new Element('a', {'id':'tagsPostLi',
+                                'href': '',
+                            'target': '_blank'}).set('html',tag).addClass('story-item-tag').inject(ul_story_item_meta);
+			      
+            });
+        }
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -395,12 +410,12 @@ function saveContent(idPost,tags){
 
    //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
    //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
-   var url = 'ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
+   var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
    //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
 
-   var urlProxy = 'curl_proxy.php';
+   var urlProxy = '/curl_proxy.php';
     new Request({
-        urlProxy: encodeURIComponent(url),
+        url: urlProxy,
         method: 'post',
         data: {
             'host': host ? host : "localhost",
@@ -418,29 +433,6 @@ function saveContent(idPost,tags){
         }
     }).send();
 }
-
-function commit(){
-    var url = '/solr/update/json?commit=true';
-    var urlProxy = 'curl_proxy.php';
-    new Request({
-        url: encodeURIComponent(urlProxy),
-        method: 'post',
-        data: {
-            'host': host ? host : "localhost",
-            'port': port ? port : "38080",
-            'ws_path':url
-        },
-        onRequest: function(){
-        },
-        onSuccess: function(response) {
-        },
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        }
-    }).send();
-}
-
 
 function spanishDate(d){
     var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
@@ -489,14 +481,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
     [604800, 'dias', 86400], // 60*60*24*7, 60*60*24
     [1209600, ' en la ultima semana', 'proxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
     [4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
+    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -588,4 +580,3 @@ function armarTitulo(tabTemp){
 
     }
 }
-
