@@ -45,6 +45,8 @@ class ZonalesViewEditor extends JView {
 
         $this->assignRef('template', $mainframe->getTemplate());
         $this->assignRef('user', $user);
+        $this->assignRef('tomcat_host', 'localhost');
+        $this->assignRef('tomcat_port', '38080');
         $this->assignRef('zonal_id', ucwords(str_replace("_", "+", $helper->getZonalActual())));
 
         parent::display($tpl);

@@ -20,6 +20,16 @@ function gup( name ) {
         return results[1];
 }
 
+function emptyChildren(comp){
+    alert(typeOf(comp));
+    if ( comp.hasChildNodes()) {
+        while ( comp.childNodes.length >= 1 ) {
+            comp.removeChild( comp.firstChild );       
+        } 
+    }
+    return comp;
+}
+
 function fixTime(i) {
     return (i<10 ? "0" + i : i);
 }
@@ -181,10 +191,10 @@ function populateOptions(event, field, add, elmts){
                 else
                     field.set('value', value);
             }
-            container.empty();            
+            emptyChildren(container);
             break;
         case 27:
-            container.empty();
+            emptyChildren(container);
             break;
         case 38:
             if(container.getElement('.selected') != container.getFirst()){
@@ -202,7 +212,7 @@ function populateOptions(event, field, add, elmts){
             break;
         default:
             
-            container.empty();
+            emptyChildren(container);
             var query = field.get('value').toLowerCase();
             if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
                 return;
