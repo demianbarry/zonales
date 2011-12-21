@@ -7,27 +7,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     <head> 
         <title>Carga de noticias Zonales</title>
         <meta content="text/html; charset=utf-8" http-equiv="content-type" />
-        <link type="text/css" rel="stylesheet" href="components/com_zonales/content.css"></link>
-        <link type="text/css" rel="stylesheet" href="components/com_zonales/global.css"></link>        
+        <!--<link type="text/css" rel="stylesheet" href="components/com_zonales/content.css"></link>
+        <link type="text/css" rel="stylesheet" href="components/com_zonales/global.css"></link>
+        <link type="text/css" rel="stylesheet" href="components/com_zonales/sample.css"></link>-->
         <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ckeditor.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>        
         <script type="text/javascript">
-            var host = '<?php echo $tomcat_host; ?>';
-            var port = '<?php echo $tomcat_port; ?>';
+            var host = '<?php echo $this->tomcat_host; ?>';
+            var port = '<?php echo $this->tomcat_port; ?>';
             window.addEvent('domready', function(){                
                 $('table_content').getElements('input').each(function(el){
                     el.addEvent('change', function(){
                         switchButtons(['guardarButton']);
                     });
-                });
+                });                
 <?php if (array_key_exists('id', $_GET)): ?>
             getContent('<?php echo $_GET['id'] ?>');
 <?php endif; ?>
     });
         </script>        
-        <link href="sample.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <h1 class="samples">
