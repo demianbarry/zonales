@@ -1,18 +1,25 @@
 <script language="javascript" type="text/javascript">
     <!--
-    zctx = {
-        "filters":[
-
-            //"source":[],
-            //"temp":"24HOURS",
-            //"tags":["Actualidad","Política"]
-        ],
-        "zTabs":["Portada","En La Red","Noticias En La Red","Mi Tab"],
-        "zTab":"Mi Tab",
-        "selZone":"puerto_madryn",
-        "efZone":"chubut"
-
-    };
+    
+    function Filters(){
+        this.source = new Array();
+        this.temp = "";
+        this.tags = new Array();
+    }
+    
+    function ZContext(){
+        this.filters = new Filters();
+        this.zTabs = new Array();
+        this.zTab = "";
+        this.selZone = "";
+        this.efZone = "";
+    }
+    
+    if(!zctx) {
+        var zctx = new ZContext();
+        
+    }
+    
 
     -->
 </script>
