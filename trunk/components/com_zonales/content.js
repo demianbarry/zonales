@@ -137,10 +137,10 @@ function getContent(id){
 
 function saveContent(){
     refreshContent();
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+JSON.encode(zContent);
-    var urlProxy = 'curl_proxy.php';
-    new Request({
-        url: encodeURIComponent(urlProxy),
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+encodeURIComponent(JSON.encode(zContent));
+    var urlProxy = '/curl_proxy.php';
+    new Request.JSON({
+        url: urlProxy,
         method: 'post',
         data: {
             'host': host,
@@ -154,7 +154,8 @@ function saveContent(){
             if(response && response.length != 0){
                 if(response.id){
                     zContent.id = response.id;
-                    alert("Se guardó correctamente el documento con el ID "+zContent.id);
+                    refreshForm();
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
                 } else {
                     alert("Ocurrió un error al intentar guardar el documento: "+response);
                 }
