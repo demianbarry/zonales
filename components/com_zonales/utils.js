@@ -1,6 +1,6 @@
 document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
 
-var proxy = 'curl_proxy.php?host='+host+'&port='+port+'&ws_path=';
+var proxy = 'curl_proxy.php?host='+host ? host : 'localhost'+'&port='+port ? port : '38080'+'&ws_path=';
 var servletUri = 'ZCrawlSources';
 
 String.prototype.capitalize = function(){

@@ -6,6 +6,12 @@
 zones.push(<?php echo strlen($this->zonal_id) > 0 ? "$this->zonal_id" : "";  ?>);
 zUserGroups.push('<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>');
 tab ="portada";
+window.addEvent('domready', function() {
+    setInterval(function () {
+        loadPost(false);
+    }, 60000);
+    loadPost(true);
+});
 -->
 
 </script>

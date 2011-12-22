@@ -10,12 +10,6 @@ var tab = "";
 var host = "";
 var port = "";
 var zUserGroups = new Array();
-window.addEvent('domready', function() {
-    setInterval(function () {
-        loadPost(false);
-    }, 60000);
-    loadPost(true);
-});
 
 function getSolrDate(millis){
     var date = new Date(millis);
