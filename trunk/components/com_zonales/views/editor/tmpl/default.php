@@ -4,30 +4,28 @@ Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head> 
+    <head>
         <title>Carga de noticias Zonales</title>
         <meta content="text/html; charset=utf-8" http-equiv="content-type" />
-        <!--<link type="text/css" rel="stylesheet" href="components/com_zonales/content.css"></link>
-        <link type="text/css" rel="stylesheet" href="components/com_zonales/global.css"></link>
-        <link type="text/css" rel="stylesheet" href="components/com_zonales/sample.css"></link>-->
         <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ckeditor.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>        
+        <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>
         <script type="text/javascript">
-            var host = '<?php echo $this->tomcat_host; ?>';
-            var port = '<?php echo $this->tomcat_port; ?>';
-            window.addEvent('domready', function(){                
+            var host = 'localhost';
+            var port = '38080';
+            window.addEvent('domready', function(){
                 $('table_content').getElements('input').each(function(el){
                     el.addEvent('change', function(){
                         switchButtons(['guardarButton']);
                     });
-                });                
+                });
 <?php if (array_key_exists('id', $_GET)): ?>
             getContent('<?php echo $_GET['id'] ?>');
 <?php endif; ?>
     });
-        </script>        
+        </script>
+        <link href="sample.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <h1 class="samples">
@@ -61,22 +59,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         <form action="" method="post">
             <input type="hidden" id="id" value=""></input>
             <input type="hidden" id="fromUserName" value="<?php echo $this->user->get('username') ?>"></input>
-            <input type="hidden" id="fromUserId" value="<?php echo $this->user->get('id') ?>"></input>            
+            <input type="hidden" id="fromUserId" value="<?php echo $this->user->get('id') ?>"></input>
             <div id="table_content">
                 <table class="advanced_search">
-                    <tbody>  
+                    <tbody>
                         <tr>
                             <td class="label"><label>Título</label></td>
                             <td class="input"><input type="text" id="title" value=""></input></td>
-                        </tr>                        
+                        </tr>
                         <tr>
                             <td class="label"><label>Creado</label></td>
                             <td class="input"><input type="text" id="created" value="" readonly="true"></input></td>
                         </tr>
                         <tr>
                             <td class="label"><label>Modificado</label></td>
-                            <td class="input"><input type="text" id="modified" value=""></input></td>
-                        </tr>                                                    
+                            <td class="input"><input type="text" id="modified" value="" readonly="true"></input></td>
+                        </tr>
 
                         <tr>
                             <td class="label">
@@ -98,7 +96,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Tags</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zTags);" autocomplete="off">                                    
+                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zTags);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
@@ -107,7 +105,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">                                    
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>

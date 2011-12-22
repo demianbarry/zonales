@@ -13,7 +13,7 @@ JHTML::_("behavior.mootools");
  * @subpackage	Users
  * @since	1.0
  */
-class ZonalesViewEditor extends JView {
+class ZonalesViewEditorList extends JView {
 
     function display($tpl = null) {
         $option = JRequest::getCMD('option');

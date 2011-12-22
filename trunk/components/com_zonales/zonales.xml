@@ -27,6 +27,7 @@
     <filename>sample.js</filename>
     <filename>utils.js</filename>
     <filename>content.css</filename>
+    <filename>contents.css</filename>
     <filename>global.css</filename>
     <filename>sample.css</filename>
     <filename>index.html</filename>
@@ -45,6 +46,11 @@
     <filename>views/editor/index.html</filename>    
     <filename>views/editor/tmpl/index.html</filename>    
     <filename>views/editor/tmpl/default.php</filename>
+    
+    <filename>views/editorList/view.html.php</filename>
+    <filename>views/editorList/index.html</filename>    
+    <filename>views/editorList/tmpl/index.html</filename>    
+    <filename>views/editorList/tmpl/default.php</filename>
 
     <filename>views/enlared/view.html.php</filename>
     <filename>views/enlared/index.html</filename>    
