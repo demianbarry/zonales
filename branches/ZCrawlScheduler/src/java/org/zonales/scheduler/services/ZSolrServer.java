@@ -44,6 +44,7 @@ public final class ZSolrServer extends BaseService {
 
     public ZSolrServer(String solrUrl) throws MalformedURLException {
         setServer(solrUrl);
+        gson = new Gson();
     }
 
     public ZSolrServer() {
