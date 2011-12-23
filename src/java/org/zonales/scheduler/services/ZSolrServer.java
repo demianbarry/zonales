@@ -47,6 +47,7 @@ public final class ZSolrServer extends BaseService {
     }
 
     public ZSolrServer() {
+        gson = new Gson();
     }
 
     public SolrServer getServer() {
@@ -111,13 +112,9 @@ public final class ZSolrServer extends BaseService {
             created = new Date(post.getCreated());
         }
 
-        Date modified = null;
-        if (modified != null) {
-            modified = new Date(post.getModified());
-        }
+        Date modified = new Date();
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando objeto SolrPost");
-
 
         SolrPost solrPost = new SolrPost(post.getSource(), post.getSourceLatitude(), post.getSourceLongitude(), post.getId(), post.getFromUser() != null ? post.getFromUser().getName() : null, post.getFromUser() != null ? post.getFromUser().getCategory() : null, post.getFromUser() != null ? post.getFromUser().getId() : null, post.getFromUser() != null ? post.getFromUser().getUrl() : null, post.getFromUser() != null ? post.getFromUser().getLatitude() : null, post.getFromUser() != null ? post.getFromUser().getLongitude() : null, post.getTitle(), post.getText(), post.getZone(), post.getTags(), created, modified, post.getRelevance(), verbatim);
 
@@ -164,9 +161,9 @@ public final class ZSolrServer extends BaseService {
                     if (!post.getTags().contains(tag)) {
                         post.getTags().add(tag);
                     }
-                    solrPost.setTags(post.getTags());
                 }
-                solrPost.setVerbatim(gson.toJson(post, Post.class));
+                postToSolr(solrPost, post);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(solrPost));
                 indexSolrPost(solrPost);
             }
         } catch (SolrServerException ex) {
@@ -185,8 +182,7 @@ public final class ZSolrServer extends BaseService {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
                 Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
                 post.getTags().remove(tag);
-                solrPost.setTags(post.getTags());
-                solrPost.setVerbatim(gson.toJson(post, Post.class));
+                postToSolr(solrPost, post);
                 indexSolrPost(solrPost);
             }
 
@@ -196,14 +192,36 @@ public final class ZSolrServer extends BaseService {
         }
     }
 
+    public void postToSolr(SolrPost solrPost, Post post) {
+        solrPost.setCreated(new Date(post.getCreated()));
+        solrPost.setFromUserCategory(post.getFromUser().getCategory());
+        solrPost.setFromUserId(post.getFromUser().getId());
+        solrPost.setFromUserLatitude(post.getFromUser().getLatitude());
+        solrPost.setFromUserLongitude(post.getFromUser().getLongitude());
+        solrPost.setFromUserName(post.getFromUser().getName());
+        solrPost.setFromUserUrl(post.getFromUser().getUrl());
+        solrPost.setModified(new Date(post.getModified()));
+        solrPost.setRelevance(post.getRelevance());
+        solrPost.setSource(post.getSource());
+        solrPost.setSourceLatitude(post.getSourceLatitude());
+        solrPost.setSourceLongitude(post.getSourceLongitude());
+        solrPost.setText(post.getText());
+        solrPost.setTitle(post.getTitle());
+        solrPost.setTags(post.getTags());
+        solrPost.setVerbatim(gson.toJson(post, Post.class));
+    }
+
     @Override
     public void serve(HttpServletRequest req, HttpServletResponse resp, Properties props) throws ServletException, IOException, Exception {
         gson = new Gson();
 
         try {
+            req.setCharacterEncoding("UTF-8");
+            resp.setCharacterEncoding("UTF-8");
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String json = req.getParameter("doc");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}", json);
             JsonReader jr = new JsonReader(new StringReader(json));
             jr.setLenient(true);
             Post post = gson.fromJson(jr, Post.class);
