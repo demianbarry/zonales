@@ -62,7 +62,7 @@ public class MailSender implements Job {
             // enumerate each job group
             for (String group : scheduler.getJobGroupNames()) {
                 // enumerate each job in group
-                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.groupEquals(group))) {
+                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group))) {
                     for (Trigger trigger : scheduler.getTriggersOfJob(jobKey)) {
                         if (scheduler.getTriggerState(trigger.getKey()) == Trigger.TriggerState.PAUSED) {
                             mailContent += "<tr id=\"" + jobKey.getName() + "\" style=\"background-color: #E0E0F8;font-size: small;\">"

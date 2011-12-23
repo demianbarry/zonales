@@ -77,7 +77,7 @@ public class ListJobs extends BaseService {
             // enumerate each job group
             for (String group : sched.getJobGroupNames()) {
                 // enumerate each job in group
-                for (JobKey jobKey : sched.getJobKeys(GroupMatcher.groupEquals(group))) {
+                for (JobKey jobKey : sched.getJobKeys(GroupMatcher.jobGroupEquals(group))) {
                     result += "<tr id=\"" + jobKey.getName() + "\" class=\"tableRow\">"
                             + "<td>" + jobKey.getGroup() + "</td>"
                             + "<td><a href=\"" + props.getProperty("extractUtilURL") + "?id=" + jobKey.getName() + "\">" + jobKey.getName() + "</a></td>"
