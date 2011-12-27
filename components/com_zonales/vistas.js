@@ -133,11 +133,9 @@ function loadPost(first){
                     if($('newPostsContainer').childNodes.length > 0){
                         $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
                         $('verNuevos').setStyle('display','block');
-                    }
-                    else{
+                    } else{
                         $('verNuevos').setStyle('display','none');
                     }
-
                 }
             }
         },
@@ -172,7 +170,7 @@ function loadMorePost(){
             // actualizar pagina
             if(typeof jsonObj != 'undefined')
                 updatePosts(jsonObj, $('postsContainer'),true);
-            	armarTitulo(tab);
+            armarTitulo(tab);
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
@@ -256,12 +254,23 @@ function updatePosts(json, component, more) {
         div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
         div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
         div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
-	div_story_item_idPost = new Element('div', {'html': post.id, 'id':'idPostDiv'}).addClass('group').inject(div_story_item).setStyle('display','none'),
-	h3_story_item_title = new Element('h3').addClass('story-item-title').inject(div_story_item_details),
+        div_story_item_idPost = new Element('div', {
+            'html': post.id, 
+            'id':'idPostDiv'
+        }).addClass('group').inject(div_story_item).setStyle('display','none'),
+        div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
+        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(div_story_item_header),
         a_title = new Element('a', {
             'target': '_blank',
             'href' : getTarget(post)
         }).set('html',post.title).inject(h3_story_item_title),
+        a_edit = new Element('a', {
+            'target': '_blank',
+            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+post.id
+        }).inject(div_story_item_header),
+        a_edit_image = new Element('img',{
+            'src': '/media/system/images/edit.png'
+        }).inject(a_edit).addClass('edit_img'),
         span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
         p_story_item_description = new Element('p').addClass('story-item-description').inject(h3_story_item_title, 'after'),
         a_story_item_source = new Element('a', {
@@ -363,11 +372,13 @@ function updatePosts(json, component, more) {
         var tags = post.tags;
         //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
 
-	if(typeOf(tags) == 'array') {
-	                tags.each(function(tag){
-            new Element('a', {'id':'tagsPostLi',
-                                'href': '',
-                            'target': '_blank'}).set('html',tag).addClass('story-item-tag').inject(ul_story_item_meta);
+        if(typeOf(tags) == 'array') {
+            tags.each(function(tag){
+                new Element('a', {
+                    'id':'tagsPostLi',
+                    'href': '',
+                    'target': '_blank'
+                }).set('html',tag).addClass('story-item-tag').inject(ul_story_item_meta);
 
             });
         }
@@ -383,10 +394,10 @@ function updatePosts(json, component, more) {
             }).inject(new Element('td').inject(tr));
             new Element('td', {}).set('html',post.source).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
-		tr.inject($("enLaRed"));
+                tr.inject($("enLaRed"));
 
-  	    else
-		tr.inject($("noticiasEnLaRed"));
+            else
+                tr.inject($("noticiasEnLaRed"));
 
         }
 
@@ -397,23 +408,23 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-	if(zUserGroups.indexOf("4") != -1){
-         a_story_item_button = new Element('button', {
-            'onclick':'saveContent("'+$('idPostDiv').innerHTML+'","'+$('tagsPostLi').innerHTML+'");'
-        }).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
-	}
+        if(zUserGroups.indexOf("4") != -1){
+            a_story_item_button = new Element('button', {
+                'onclick':'saveContent("'+$('idPostDiv').innerHTML+'","'+$('tagsPostLi').innerHTML+'");'
+            }).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
+        }
     });
 }
 
 function saveContent(idPost,tags){
     //\"tags\":[\"Espectaculos\"]
 
-   //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
-   //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
-   var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
-   //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
+    //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
+    //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
+    //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
 
-   var urlProxy = '/curl_proxy.php';
+    var urlProxy = '/curl_proxy.php';
     new Request({
         url: urlProxy,
         method: 'post',
@@ -425,7 +436,7 @@ function saveContent(idPost,tags){
         onRequest: function(){
         },
         onSuccess: function() {
-            //commit();
+        //commit();
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
