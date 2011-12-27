@@ -14,7 +14,6 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
 jimport( 'joomla.application.component.view');
 
 $pestana = JRequest::getVar('view', 'enlared');
