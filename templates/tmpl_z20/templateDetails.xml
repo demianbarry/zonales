@@ -18,15 +18,16 @@
         <file>raw.php</file>
         <folder>html</folder>
         <folder>javafx</folder>-->
-        <file>component_only.php</file>        
-        <file>favicon.ico</file>        
+        <file>component_edit.php</file>
+        <file>component_only.php</file>
+        <file>favicon.ico</file>
         <file>index.php</file>
         <file>index.html</file>
-        <file>params.ini</file>        
+        <file>params.ini</file>
         <file>templateDetails.xml</file>
         <file>template_thumbnail.png</file>
-        <folder>css</folder>        
-        <folder>images</folder>        
+        <folder>css</folder>
+        <folder>images</folder>
         <folder>js</folder>
         <folder>swf</folder>
     </files>
