@@ -1,29 +1,3 @@
-<script language="javascript" type="text/javascript">
-    <!--
-
-    function Filters(){
-        this.source = new Array();
-        this.temp = "";
-        this.tags = new Array();
-    }
-
-    function ZContext(){
-        this.filters = new Filters();
-        this.zTabs = new Array();
-        this.zTab = "";
-        this.selZone = "";
-        this.efZone = "";
-    }
-
-    if(!zctx) {
-        var zctx = new ZContext();
-
-    }
-
-
-    -->
-</script>
-
 <?php
 /**
  * @version	$Id$
@@ -55,7 +29,7 @@ class ZContext {
     var $selectedZone = null;
     var $effectiveZone = null;
 
-    function __construct() {
+   public function __construct() {
         $this->filters = new stdClass();
         $this->filters->source = array();
         $this->filters->temporalidad = "";
@@ -66,64 +40,62 @@ class ZContext {
         $this->effectiveZone = "";
     }
 
-    function getTemporalidad() {
+   public function getTemporalidad() {
         return $this->filters->temporalidad;
     }
 
-    function setTemporalidad($temporalidad) {
+   public function setTemporalidad($temporalidad) {
         $this->filters->temporalidad = $temporalidad;
     }
 
-    function getSource() {
+   public function getSource() {
         return $this->filters->source;
     }
 
-    function setSource($sources) {
+   public function setSource($sources) {
         $this->filters->source = $sources;
     }
 
-    function getTags() {
+   public function getTags() {
         return $this->filters->tags;
     }
 
-    function setTags($tags) {
+   public function setTags($tags) {
         $this->filters->tags = $tags;
     }
 
-    function getZtab() {
+   public function getZtab() {
         return $this->zTab;
     }
 
-    function setZtab($zTab) {
+   public function setZtab($zTab) {
         $this->zTab = $zTab;
     }
 
-    function getSelectedZone() {
+   public function getSelectedZone() {
         return $this->selectedZone;
     }
 
-    function setSelectedZone($zone) {
+   public function setSelectedZone($zone) {
         $this->selectedZone = $zone;
     }
 
-    function getEffectiveZone() {
+   public function getEffectiveZone() {
         return $this->effectiveZone;
     }
 
-    function setEffectiveZone($zone) {
+   public function setEffectiveZone($zone) {
         $this->effectiveZone = $zone;
     }
 
-    function getFilters() {
+   public function getFilters() {
         return $this->filters;
     }
 
-    function setFilters($filters) {
+   public function setFilters($filters) {
         $this->filters = $filters;
     }
 
-    function setFilters(filters) {
-        $this->filters = filters;
-    }
+    
 
 }
