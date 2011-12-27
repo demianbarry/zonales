@@ -74,6 +74,25 @@ class comZonalesHelper {
         return $zonal;
     }
 
+    /*     * ********** */
+
+    function getZone($zonal_name) {
+        if (isset($zonal_name)) {
+            $zonal_name = $this->getZonalActual();
+            $session = JFactory::getSession();
+            $zCtx = $session->get('zCtx');
+            if (!$zCtx) {
+                $zCtx = new ZContext();
+            }
+            $zCtx->selectedZone($zonal_name);
+            $session->set('zCtx', $zCtx);
+            /*
+             */
+        }
+    }
+
+    /*     * ********* */
+
     /**
      * Recupera información acerca de un zonal a partir de su Id
      *
@@ -464,34 +483,36 @@ class comZonalesHelper {
         $session->set('filters', $filters);
     }
 
+    /* static function setFilters($filtros) {
+      if (isset($filtros)) {
+
+      $session = JFactory::getSession();
+      $filters = $session->get('filters');
+
+      if (!isset($filters)) {
+      $filters = array();
+      }
+
+      foreach ($filtros as $key => $value) {
+      $filters[$key] = $value;
+      }
+
+      $session->set('filters', $filters);
+      }
+      } */
+
     static function setFilters($filtros) {
         if (isset($filtros)) {
-
-            $session = JFactory::getSession();
-            $filters = $session->get('filters');
-
-            if (!isset($filters)) {
-                $filters = array();
-            }
-
-            foreach ($filtros as $key => $value) {
-                $filters[$key] = $value;
-            }
-
-            $session->set('filters', $filters);
-        }
-    }
-
-    static function setFilters($filtros) {
-        if (isset($filtros)) {
-
+            $filters = json_decode($filtros);
             $session = JFactory::getSession();
             $zCtx = $session->get('zCtx');
-            if(!$zCtx){
+            if (!$zCtx) {
                 $zCtx = new ZContext();
             }
-            $zCtx->setFilters($filtros);
-
+            // $zCtx->setFilters($filtros);
+            $zCtx->setSource($filters->source);
+            $zCtx->setTemporalidad($filters->temporalidad);
+            $zCtx->setTags($filters->tags);
             $session->set('zCtx', $zCtx);
         }
     }
@@ -499,6 +520,65 @@ class comZonalesHelper {
     static function getFilters() {
         $session = JFactory::getSession();
         return $session->get('filters');
+    }
+
+    static function addSource($source) {
+        $session = JFactory::getSession();
+        $zCtx = $session->get('zCtx');
+        if (!$zCtx) {
+            $zCtx = new ZContext();
+        }
+        $sources = $zCtx->getSource();
+        if (!in_array($source, $sources)) {
+            $sources[] = $source;
+        };
+        $zCtx->setSource($sources);
+        $session->set('zCtx',$zCtx);
+    }
+
+    static function removeSource($source) {
+        $session = JFactory::getSession();
+        $zCtx = $session->get('zCtx');
+        if (!$zCtx) {
+            $zCtx = new ZContext();
+        }
+        $sources = $zCtx->getSource();
+        if (in_array($source, $sources)) {
+            unset($sources[array_search($source, $sources)]);
+        };
+        $sources = array_values($sources);
+        $zCtx->setSource($sources);
+        $session->set('zCtx',$zCtx);
+    }
+
+    static function addTags($tag) {
+        $session = JFactory::getSession();
+        $zCtx = $session->get('zCtx');
+        if (!$zCtx) {
+            $zCtx = new ZContext();
+        }
+        $tags = $zCtx->getTags();
+        if (!in_array($tag, $tags)) {
+            $tags[] = $tag;
+        };
+        $zCtx->setSource($tags);
+        $session->set('zCtx',$zCtx);
+
+    }
+
+    static function removeTags($tag) {
+        $session = JFactory::getSession();
+        $zCtx = $session->get('zCtx');
+        if (!$zCtx) {
+            $zCtx = new ZContext();
+        }
+        $tags = $zCtx->getTags();
+        if (in_array($tag, $tags)) {
+            unset($tags[array_search($tag, $tags)]);
+        };
+        $tags = array_values($tags);
+        $zCtx->setSource($tags);
+        $session->set('zCtx',$zCtx);
     }
 
 }
