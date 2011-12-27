@@ -440,7 +440,7 @@ function fixTime(i) {
     return (i<10 ? "0" + i : i);
 }
 
-function filtrar(source, visible) {
+/*function filtrar(source, visible) {
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
@@ -450,7 +450,34 @@ function filtrar(source, visible) {
     }
     sendFilter(source,visible);
     armarTitulo(tab);
-}
+}*/
+
+    function setSource(source, checked){
+     var url
+     if(checked){
+         url = "/index.php?option=com_zonales&task=removeSource&"+source;
+     }else{
+        url = "/index.php?option=com_zonales&task=addSource&"+source;
+     }
+
+     new Request({
+        url: url,
+        method: 'get'
+        }).send();
+    }
+
+    function setTag(tag, checked){
+    var url
+    if(checked){
+        url = "/index.php?option=com_zonales&task=removeTag&"+tag;
+    }else{
+        url = "/index.php?option=com_zonales&task=addTag&"+tag;
+    }
+    new Request({
+        url: url,
+            method: 'get'
+        }).send();
+    }
 
 function addMilli(date) {
     var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);

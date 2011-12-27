@@ -1,12 +1,12 @@
 <script language="javascript" type="text/javascript">
     <!--
-    
+
     function Filters(){
         this.source = new Array();
         this.temp = "";
         this.tags = new Array();
     }
-    
+
     function ZContext(){
         this.filters = new Filters();
         this.zTabs = new Array();
@@ -14,12 +14,12 @@
         this.selZone = "";
         this.efZone = "";
     }
-    
+
     if(!zctx) {
         var zctx = new ZContext();
-        
+
     }
-    
+
 
     -->
 </script>
@@ -80,9 +80,16 @@ class ZContext {
 
     function setSource($sources) {
         $this->filters->source = $sources;
-    }    
-    
-    
+    }
+
+    function getTags() {
+        return $this->filters->tags;
+    }
+
+    function setTags($tags) {
+        $this->filters->tags = $tags;
+    }
+
     function getZtab() {
         return $this->zTab;
     }
@@ -114,7 +121,7 @@ class ZContext {
     function setFilters($filters) {
         $this->filters = $filters;
     }
-    
+
     function setFilters(filters) {
         $this->filters = filters;
     }

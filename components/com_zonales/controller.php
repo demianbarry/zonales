@@ -414,4 +414,11 @@ class ZonalesController extends JController {
         }
     }
 
+    function addSource(){
+        $source = JRequest::getVar('source', 0, '', 'array');
+        if (isset($source)){
+            comZonalesHelper::addSource($source);
+        }
+    }
+
 }
