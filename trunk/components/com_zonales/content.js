@@ -155,9 +155,9 @@ function saveContent(){
                 if(response.id){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guardÃ³ correctamente el documento con el ID "+zContent.id);                    
                 } else {
-                    alert("Ocurrió un error al intentar guardar el documento: "+response);
+                    alert("OcurriÃ³ un error al intentar guardar el documento: "+response);
                 }
             }
         },
@@ -212,7 +212,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'Título'
+        'html' : 'TÃ­tulo'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
@@ -257,13 +257,13 @@ function makeContentTable(jsonObj, container){
             'html' : post.zone
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : post.tags
+            'html' : post.tags.join(',')
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : post.created
+            'html' : getReadableDate(post.created)
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : post.modified
+            'html' : getReadableDate(post.modified)
         }).inject(config_title_tr);        
         var checktd = new Element('td').inject(config_title_tr);
         new Element ('input',{
@@ -275,7 +275,7 @@ function makeContentTable(jsonObj, container){
             'type':'submit',
             'value':'Editar',
             'name':post.id,
-            'onclick':"window.location.href = 'content.php?id="+id+"';"
+            'onclick':"window.location.href = 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id="+id+"';"
         }).inject(editbutton);
         				
     /*tags = tags.toLowerCase().replace(/ /g,'_');				

@@ -1,6 +1,6 @@
 document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
 
-var proxy = 'curl_proxy.php?host='+host ? host : 'localhost'+'&port='+port ? port : '38080'+'&ws_path=';
+var proxy = 'curl_proxy.php?host='+(host ? host : 'localhost')+'&port='+(port ? port : '38080')+'&ws_path=';
 var servletUri = 'ZCrawlSources';
 
 String.prototype.capitalize = function(){
@@ -18,16 +18,6 @@ function gup( name ) {
         return "";
     else
         return results[1];
-}
-
-function emptyChildren(comp){
-    alert(typeOf(comp));
-    if ( comp.hasChildNodes()) {
-        while ( comp.childNodes.length >= 1 ) {
-            comp.removeChild( comp.firstChild );       
-        } 
-    }
-    return comp;
 }
 
 function fixTime(i) {
@@ -191,10 +181,10 @@ function populateOptions(event, field, add, elmts){
                 else
                     field.set('value', value);
             }
-            emptyChildren(container);
+            container.empty();
             break;
         case 27:
-            emptyChildren(container);
+            container.empty();
             break;
         case 38:
             if(container.getElement('.selected') != container.getFirst()){
@@ -212,7 +202,7 @@ function populateOptions(event, field, add, elmts){
             break;
         default:
             
-            emptyChildren(container);
+            container.empty();
             var query = field.get('value').toLowerCase();
             if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
                 return;
