@@ -34,6 +34,7 @@
         <filename>index.html</filename>
         <filename>controller.php</filename>
         <filename>helper.php</filename>
+        <filename>ZContext.php</filename>
 
         <filename>views/index.html</filename>
         <filename>views/zonal/view.html.php</filename>

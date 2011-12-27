@@ -15,7 +15,8 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted Access');
-require_once 'ZContext.php';
+require_once (JPATH_BASE . DS . 'components' . DS . 'com_zonales' . DS . 'ZContext.php');
+
 class comZonalesHelper {
 
     /** @var JCache */
@@ -474,13 +475,13 @@ class comZonalesHelper {
      */
     function setFilter($id, $selected) {
         $session = JFactory::getSession();
-        $filters = $session->get('filters');
+        $filters = unserialize($session->get('filters'));
 
         if (!isset($filters)) {
             $filters = array();
         }
         $filters[$id] = $selected;
-        $session->set('filters', $filters);
+        $session->set('filters', serialize($filters));
     }
 
     /* static function setFilters($filtros) {
@@ -505,7 +506,7 @@ class comZonalesHelper {
         if (isset($filtros)) {
             $filters = json_decode($filtros);
             $session = JFactory::getSession();
-            $zCtx = $session->get('zCtx');
+            $zCtx = unserialize($session->get('zCtx'));
             if (!$zCtx) {
                 $zCtx = new ZContext();
             }
@@ -513,7 +514,7 @@ class comZonalesHelper {
             $zCtx->setSource($filters->source);
             $zCtx->setTemporalidad($filters->temporalidad);
             $zCtx->setTags($filters->tags);
-            $session->set('zCtx', $zCtx);
+            $session->set('zCtx', serialize($zCtx));
         }
     }
 
@@ -524,7 +525,7 @@ class comZonalesHelper {
 
     static function addSource($source) {
         $session = JFactory::getSession();
-        $zCtx = $session->get('zCtx');
+        $zCtx = unserialize($session->get('zCtx'));
         if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
@@ -533,12 +534,12 @@ class comZonalesHelper {
             $sources[] = $source;
         };
         $zCtx->setSource($sources);
-        $session->set('zCtx',$zCtx);
+        $session->set('zCtx', serialize($zCtx));
     }
 
     static function removeSource($source) {
         $session = JFactory::getSession();
-        $zCtx = $session->get('zCtx');
+        $zCtx = unserialize($session->get('zCtx'));
         if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
@@ -548,12 +549,12 @@ class comZonalesHelper {
         };
         $sources = array_values($sources);
         $zCtx->setSource($sources);
-        $session->set('zCtx',$zCtx);
+        $session->set('zCtx', serialize($zCtx));
     }
 
     static function addTags($tag) {
         $session = JFactory::getSession();
-        $zCtx = $session->get('zCtx');
+        $zCtx = unserialize($session->get('zCtx'));
         if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
@@ -562,13 +563,12 @@ class comZonalesHelper {
             $tags[] = $tag;
         };
         $zCtx->setSource($tags);
-        $session->set('zCtx',$zCtx);
-
+        $session->set('zCtx', serialize($zCtx));
     }
 
     static function removeTags($tag) {
         $session = JFactory::getSession();
-        $zCtx = $session->get('zCtx');
+        $zCtx = unserialize($session->get('zCtx'));
         if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
@@ -578,7 +578,7 @@ class comZonalesHelper {
         };
         $tags = array_values($tags);
         $zCtx->setSource($tags);
-        $session->set('zCtx',$zCtx);
+        $session->set('zCtx', serialize($zCtx));
     }
 
 }
