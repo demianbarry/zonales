@@ -3,6 +3,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.user.helper');
 jimport('joomla.application.component.view');
 JHTML::_("behavior.mootools");
 
@@ -13,7 +14,7 @@ JHTML::_("behavior.mootools");
  * @subpackage	Users
  * @since	1.0
  */
-class ZonalesViewEditorList extends JView {
+class ZonalesViewList extends JView {
 
     function display($tpl = null) {
         $option = JRequest::getCMD('option');
@@ -39,14 +40,16 @@ class ZonalesViewEditorList extends JView {
         //$document->addScript('/media/system/js/mootools1.js');
         //$document->addStyleSheet('/media/system/css/global.css');
         //$document->addStyleSheet('/media/system/css/content.css');
-        //$document->addStyleSheet('/media/system/css/ZoneStyle.css');
+        $document->addStyleSheet('/media/system/css/ZoneStyle.css');
 
         $helper = new comZonalesHelper();
 
         $this->assignRef('template', $mainframe->getTemplate());
         $this->assignRef('user', $user);
-        $this->assignRef('tomcat_host', 'localhost');
-        $this->assignRef('tomcat_port', '38080');
+        $host = 'localhost';
+        $this->assignRef('tomcat_host', $host);
+        $port = '38080';
+        $this->assignRef('tomcat_port', $port);
         $this->assignRef('zonal_id', ucwords(str_replace("_", "+", $helper->getZonalActual())));
 
         parent::display($tpl);
