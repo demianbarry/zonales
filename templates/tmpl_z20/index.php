@@ -2,7 +2,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+
 require_once (JPATH_BASE . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php');
+require_once (JPATH_BASE . DS . 'components' . DS . 'com_zonales' . DS . 'ZContext.php');
 require (JPATH_BASE . DS . 'components' . DS . 'com_eqzonales' . DS . 'helper.php');
 require_once(JPATH_BASE . DS . 'components' . DS . 'com_eqzonales' . DS . 'controllers' . DS . 'eq.php');
 require_once(JPATH_BASE . DS . 'components' . DS . 'com_eqzonales' . DS . 'controllers' . DS . 'band.php');
@@ -18,32 +20,38 @@ $user = &JFactory::getUser();
 
 $eq_actual = $eq_z_com->retrieveUserEqImpl($user->id);
 
-if (!$zonal):
+if (!isset($zonal) || !$zonal):
     $zonal_com = new comZonalesHelper;
     $zonal_actual_label = $zonal_com->getZonalActualLabel();
 else:
     $zonal_actual_label = $zonal->label;
 endif;
 
-include ('nocache.php');
+//include ('nocache.php');
 $mainframe = JFactory::getApplication();
+$session = JFactory::getSession();
+$zCtx = $session->get('zCtx');
+if (!isset($zCtx)) {
+    $zCtx = new ZContext();
+    $session->set('zCtx', $zCtx);
+}
 ?>
 <!-- 26042011 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
-    <head>	
+    <head>
         <jdoc:include type="modules" name="head" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />
         <!--[if lt IE 8]>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/ie.css" />
-        <![endif]-->	
+        <![endif]-->
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />	
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />	
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script> 
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/zonales.js"></script>
     </head>
@@ -58,7 +66,7 @@ $mainframe = JFactory::getApplication();
             <form name="ver_portada" action="/" method="post" style="display:none">
                 <input type="hidden" name="task" value="clearZonal" />
                 <input type="hidden" name="option" value="com_zonales" />
-                <?php echo JHTML::_('form.token'); ?>
+<?php echo JHTML::_('form.token'); ?>
             </form>
             <div id="header">
                 <div id="logo-header">
@@ -74,25 +82,25 @@ $mainframe = JFactory::getApplication();
                     <div id="wrapper-search">
                         <div id="share">
 
-                            <?php if (isset($zonal_actual_label)): ?>
-                                <div id="zonal-actual"><p><?php echo $zonal_actual_label; ?></p></div>
-                            <?php endif; ?>
+<?php if (isset($zonal_actual_label)): ?>
+                            <div id="zonal-actual"><p><?php echo $zonal_actual_label; ?></p></div>
+<?php endif; ?>
 
-                            <?php
-                            $arr_codificacion = iconv_get_encoding();
-                            $codificacion = $arr_codificacion['internal_encoding'];
-                            ?>
+<?php
+    $arr_codificacion = iconv_get_encoding();
+    $codificacion = $arr_codificacion['internal_encoding'];
+?>
                             <p>
-                                <?php echo utf8_encode(ucfirst(strftime("%A %d.%m.%Y"))); ?><br /><span id="hora"></span></p>
+<?php echo utf8_encode(ucfirst(strftime("%A %d.%m.%Y"))); ?><br /><span id="hora"></span></p>
                             <!--
                                                   <p style="text-transform:uppercase;">
-                                                          <strong>Compartinos:</strong> 
+                                                          <strong>Compartinos:</strong>
                                                           <a href="http://www.facebook.com/pages/Zonales/139612986080624">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/facebook_16x16.png" alt="Zonales en Facebook" />
-                                                          </a> 
+                                                          </a>
                                                           <a href="http://twitter.com/zonalizate">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/twitter_16x16.png" alt="Zonales en Twitter" />
-                                                          </a> 
+                                                          </a>
                                                           <a href="mailto:contacto@zonales.com">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/email_16x16.png" alt="Contactanos por Email" />
                                                           </a>
@@ -143,7 +151,7 @@ $mainframe = JFactory::getApplication();
                         <script type="text/javascript">
                             var equalizer_fx=new Fx.Morph($('equalizer-bt'), {duration: 1000});
                             var module_fx=new Fx.Morph($('equalizer'), {duration: 1000});
-				
+
                             window.addEvent('domready', function(){
                                 $('ver_portada').addEvent('click', function(){
                                     document.forms['ver_portada'].submit();
@@ -164,34 +172,34 @@ $mainframe = JFactory::getApplication();
                                         display:'block'
                                     });
 <?php
-if (isset($eq_actual) && $eq_actual != null):
-    $eq = $eq_actual[0]->eq;
-    $bands = $eq_actual[0]->bands;
-    $bands_js;
+    if (isset($eq_actual) && $eq_actual != null):
+        $eq = $eq_actual[0]->eq;
+        $bands = $eq_actual[0]->bands;
+        $bands_js;
 
-    if (!empty($eq) && !empty($bands)) {
+        if (!empty($eq) && !empty($bands)) {
 
-        foreach ($bands as $band):
+            foreach ($bands as $band):
 
-            $bands_js.="var mySlide" . $band->id . " = new Slider($('area" . $band->id . "'), $('knob" . $band->id . "'), {\n" .
-                    "	steps: 100,\n" .
-                    "	onChange: function(step) {\n" .
-                    "		$('upd" . $band->id . "').setHTML(step);\n" .
-                    "		$('" . $band->id . "-" . $band->cp_value_id . "').value = '" . $band->id . "-" . $band->cp_value_id . "-' + step +'-MOD';\n" .
-                    "	}\n" .
-                    "}).set(" . $band->peso . ");\n";
+                $bands_js.="var mySlide" . $band->id . " = new Slider($('area" . $band->id . "'), $('knob" . $band->id . "'), {\n" .
+                        "	steps: 100,\n" .
+                        "	onChange: function(step) {\n" .
+                        "		$('upd" . $band->id . "').setHTML(step);\n" .
+                        "		$('" . $band->id . "-" . $band->cp_value_id . "').value = '" . $band->id . "-" . $band->cp_value_id . "-' + step +'-MOD';\n" .
+                        "	}\n" .
+                        "}).set(" . $band->peso . ");\n";
 
-        endforeach;
+            endforeach;
 
-        echo $bands_js;
-    }
+            echo $bands_js;
+        }
 
-endif;
+    endif;
 ?>
-						
-        }else{	
+
+        }else{
             equalizer_fx.start({width:'350px'});
-						
+
             module_fx.start({opacity:'0'}).chain(function(){
                 $('equalizer').setStyles({
                     display:'none',
@@ -199,13 +207,13 @@ endif;
                 });
             });
         }
-					
+
     });
 
 
                         </script>
 
-                    </div>		
+                    </div>
 
                     <div id="mainContent">
                         <jdoc:include type="component" />
@@ -244,7 +252,7 @@ endif;
                             <!-- # acá van las notas de los vecinos... ver index_tmpl.html -->
 
                         </div><!-- end #lavoz -->
-                        <jdoc:include type="modules" name="other" />	 
+                        <jdoc:include type="modules" name="other" />
 
                     </div><!-- end #otherContent -->
 
@@ -283,10 +291,10 @@ endif;
             </div><!-- end #footer -->
             <script type="text/javascript">
                 window.addEvent('domready', function() {
-                    updateClock(); 
+                    updateClock();
                     setInterval('updateClock()', 1000 );
                 });
-            </script>	
+            </script>
         </div><!-- end #wrapper-web -->
     </body>
 </html>
