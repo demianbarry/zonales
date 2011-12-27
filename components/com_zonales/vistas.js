@@ -10,6 +10,12 @@ var tab = "";
 var host = "";
 var port = "";
 var zUserGroups = new Array();
+window.addEvent('domready', function() {
+    setInterval(function () {
+        loadPost(false);
+    }, 60000);
+    loadPost(true);
+});
 
 function getSolrDate(millis){
     var date = new Date(millis);
@@ -356,13 +362,13 @@ function updatePosts(json, component, more) {
 
         var tags = post.tags;
         //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
-	
+
 	if(typeOf(tags) == 'array') {
 	                tags.each(function(tag){
             new Element('a', {'id':'tagsPostLi',
                                 'href': '',
                             'target': '_blank'}).set('html',tag).addClass('story-item-tag').inject(ul_story_item_meta);
-			      
+
             });
         }
 
@@ -373,7 +379,7 @@ function updatePosts(json, component, more) {
                 'type': 'checkbox',
                 'checked': true,
                 'value': post.source,
-                'onclick':'filtrar(this.value, this.checked);'
+                'onclick':'setSource(this.value, this.checked);'
             }).inject(new Element('td').inject(tr));
             new Element('td', {}).set('html',post.source).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
@@ -451,7 +457,7 @@ function fixTime(i) {
     sendFilter(source,visible);
     armarTitulo(tab);
 }*/
-
+/*
     function setSource(source, checked){
      var url
      if(checked){
@@ -478,7 +484,7 @@ function fixTime(i) {
             method: 'get'
         }).send();
     }
-
+*/
 function addMilli(date) {
     var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
     var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';

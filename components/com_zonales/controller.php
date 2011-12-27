@@ -421,4 +421,11 @@ class ZonalesController extends JController {
         }
     }
 
+
+    function removeSource(){
+        $source = JRequest::getVar('source', 0, '', 'array');
+        if (isset($source)){
+            comZonalesHelper::removeSource($source);
+        }
+    }
 }

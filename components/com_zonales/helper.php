@@ -15,7 +15,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted Access');
-
+require_once 'ZContext.php';
 class comZonalesHelper {
 
     /** @var JCache */
@@ -525,7 +525,7 @@ class comZonalesHelper {
     static function addSource($source) {
         $session = JFactory::getSession();
         $zCtx = $session->get('zCtx');
-        if (!$zCtx) {
+        if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
         $sources = $zCtx->getSource();
@@ -539,7 +539,7 @@ class comZonalesHelper {
     static function removeSource($source) {
         $session = JFactory::getSession();
         $zCtx = $session->get('zCtx');
-        if (!$zCtx) {
+        if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
         $sources = $zCtx->getSource();
@@ -554,7 +554,7 @@ class comZonalesHelper {
     static function addTags($tag) {
         $session = JFactory::getSession();
         $zCtx = $session->get('zCtx');
-        if (!$zCtx) {
+        if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
         $tags = $zCtx->getTags();
@@ -569,7 +569,7 @@ class comZonalesHelper {
     static function removeTags($tag) {
         $session = JFactory::getSession();
         $zCtx = $session->get('zCtx');
-        if (!$zCtx) {
+        if (!isset($zCtx) || !$zCtx) {
             $zCtx = new ZContext();
         }
         $tags = $zCtx->getTags();
