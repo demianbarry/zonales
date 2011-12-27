@@ -43,7 +43,7 @@ $mainframe = JFactory::getApplication();
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />	
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />	
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script> 
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/zonales.js"></script>
     </head>
@@ -207,46 +207,9 @@ endif;
 
                     </div>		
 
-                    <div id="mainContent">
+                    <div id="mainContent" style="width: 100%">
                         <jdoc:include type="component" />
-                    </div>
-
-                    <div id="otherContent">
-
-                        <!-- -->
-
-
-                        <div id="fl_grindetti" style="margin-bottom:10px;">zonales.com</div>
-
-                        <script type="text/javascript">// <![CDATA[
-                            var so = new SWFObject("/images/banners/grindetti_zonales_300_x_250.swf", "grindetti", "300", "250", "8");
-                            so.addParam("scale", "noscale");
-                            so.addParam("allowScriptAccess", "sameDomain");
-                            so.addVariable("clickTag", "http://www.nestorgrindetti2011.com.ar/");
-                            so.write("fl_grindetti");
-                            // ]]></script>
-
-
-                        <div id="fl_cdba" style="margin-bottom:10px;">zonales.com</div>
-
-                        <script type="text/javascript">// <![CDATA[
-                            var so = new SWFObject("/images/banners/cdba_300x250.swf", "cdba", "300", "250", "8");
-                            so.addParam("scale", "noscale");
-                            so.addParam("allowScriptAccess", "sameDomain");
-                            so.addVariable("clickTag", "http://agendacultural.buenosaires.gob.ar/");
-                            so.write("fl_cdba");
-                            // ]]></script>
-
-                        <!-- -->
-
-                        <div id="lavoz">
-
-                            <!-- # acá van las notas de los vecinos... ver index_tmpl.html -->
-
-                        </div><!-- end #lavoz -->
-                        <jdoc:include type="modules" name="other" />	 
-
-                    </div><!-- end #otherContent -->
+                    </div>	  
 
                     <div class="clear"></div>
 

@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css">
 <!--link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css"-->
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css">
-<?php JHTML::_('behavior.mootools'); ?> 
+<?php JHtml::_('behavior.framework', true); ?> 
 <?php JHTML::stylesheet('general.css',"administrator/templates/khepri/css/");?>
 <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/swfobject.js"></script>
 
