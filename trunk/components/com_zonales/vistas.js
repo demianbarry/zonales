@@ -12,6 +12,7 @@ var port = "";
 var zUserGroups = new Array();
 window.addEvent('domready', function() {
     setInterval(function () {
+        getAllTags();
         loadPost(false);
     }, 60000);
     loadPost(true);
@@ -369,19 +370,24 @@ function updatePosts(json, component, more) {
         // date = new Date(parseInt(post.modified));
 
 
-        var tags = post.tags;
+      var tags = post.tags;
         //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
-
-        if(typeOf(tags) == 'array') {
-            tags.each(function(tag){
-                new Element('a', {
-                    'id':'tagsPostLi',
-                    'href': '',
-                    'target': '_blank'
-                }).set('html',tag).addClass('story-item-tag').inject(ul_story_item_meta);
+	var div_story_tags = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Tags: ').inject(div_story_tags);
+	if(typeOf(tags) == 'array') {
+	                tags.each(function(tag){
+	    var span_tags = new Element('span').inject(div_story_tags);
+            new Element('a', {'id':'tagsPostLi',
+                                'href': ''}).set('html',tag).inject(span_tags);
 
             });
         }
+        var idInputTag = '_'+post.id;
+        var span_addTags = new Element('span').inject(div_story_tags);
+	new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).set('html','Add Tags').inject(span_addTags);
+	var selectedTag = new Element('input',{'id':idInputTag,'style':'display:none','onkeyup':'populateOptions(event,this,true,zTags)','value':''}).inject(span_addTags);
+	new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).inject(span_addTags);
+	new Element('button', {'onclick':'show_confirm("' + post.id + '",$(\'' + idInputTag + '\').value,"'+tags+'")'}).set('html','Add').addClass('story-item-button').inject(div_story_tags, 'after');
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -416,12 +422,25 @@ function updatePosts(json, component, more) {
     });
 }
 
-function saveContent(idPost,tags){
+function show_confirm(idInputTag,selectedTag,tags)
+{
+var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
+	if (r==true)
+  	{
+		saveContent(idInputTag,tags,selectedTag);
+  		alert("Confirmado");
+  	}
+	else
+ 	 {
+  		alert("Cancelado");
+  	}
+}
+function saveContent(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
     //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
     //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+',Portada';
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+','+selectedTag;
     //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
 
     var urlProxy = '/curl_proxy.php';
@@ -444,6 +463,7 @@ function saveContent(idPost,tags){
         }
     }).send();
 }
+
 
 function spanishDate(d){
     var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
