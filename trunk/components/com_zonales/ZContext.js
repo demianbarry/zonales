@@ -1,6 +1,7 @@
+var zctx = new ZContext();
 
 function Filters(){
-    this.source = new Array();
+    this.sources = new Array();
     this.temp = "";
     this.tags = new Array();
 }
@@ -13,9 +14,32 @@ function ZContext(){
     this.efZone = "";
 }
 
-if(!zctx) {
-    var zctx = new ZContext();
-
+function zcAddSource(source){
+    if(zctx.filters.sources.contains(source)){
+        zctx.filters.sources.push(source); 
+    }
 }
 
+function zcAddTag(tag){
+    if(zctx.filters.tags.contains(tag)){
+        zctx.filters.tags.push(tag); 
+    }
+}
 
+function zcRemoveSource(source){
+    zctx.filters.sources.erase(source); 
+}
+
+function zcRemoveTag(tag){
+    zctx.filters.tags.erase(tag); 
+}
+
+function zcAddTab(tab){
+    if(zctx.zTabs.contains(tag)){
+        zctx.zTabs.push(tag); 
+    }
+}
+
+function zcRemoveTab(tab){
+    zctx.zTabs.erase(tab); 
+}
