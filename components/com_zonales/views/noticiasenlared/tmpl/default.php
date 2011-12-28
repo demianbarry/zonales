@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="/media/system/css/ZoneStyle.css" type="text/css"/>
 <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
