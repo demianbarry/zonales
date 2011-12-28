@@ -104,7 +104,7 @@ las fuentes de informacion mostradas"; ?></p>
                 <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
 <?php
             $session = JFactory::getSession();
-            $zCtx = $session->get('zCtx');
+            $zCtx = unserialize($session->get('zCtx'));
             if (isset($zCtx)) {
                 foreach ($zCtx->filters->source as $source) {
                     if ($source == 'Facebook' || $source == 'Twitter') {
@@ -120,7 +120,7 @@ las fuentes de informacion mostradas"; ?></p>
             <table id="noticiasEnLaRed" style="display: <?php echo $noticiasEnLaRed ?>">
 <?php
                 $session = JFactory::getSession();
-                $zCtx = $session->get('zCtx');
+                $zCtx = unserialize($session->get('zCtx'));
                 if (isset($zCtx)) {
                     foreach ($zCtx->filters->source as $source) {
                         if ($source != 'Facebook' && $source != 'Twitter') {
