@@ -415,7 +415,7 @@ class ZonalesController extends JController {
     }
 
     function addSource(){
-        $source = JRequest::getVar('source', 0, '', 'array');
+        $source = JRequest::getVar('source', 0, '', 'string');
         if (isset($source)){
             comZonalesHelper::addSource($source);
         }
@@ -423,9 +423,13 @@ class ZonalesController extends JController {
 
 
     function removeSource(){
-        $source = JRequest::getVar('source', 0, '', 'array');
+        $source = JRequest::getVar('source', 0, '', 'string');
         if (isset($source)){
             comZonalesHelper::removeSource($source);
         }
+    }
+    
+    function getZCtx(){
+        comZonalesHelper::getZCtx();
     }
 }

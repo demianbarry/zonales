@@ -33,7 +33,7 @@ class comZonalesHelper {
      * @return  string Identificador del zonal actual
      */
     function getZonalActual() {
-        $session = JFactory::getSession();
+        $session = &JFactory::getSession();
         return $session->get('zonales_zonal_name', null);
     }
 
@@ -44,7 +44,7 @@ class comZonalesHelper {
      * @return  string Identificador del zonal actual
      */
     function getZonalActualLabel() {
-        $session = JFactory::getSession();
+        $session = &JFactory::getSession();
         return $session->get('zonales_zonal_label', null);
     }
 
@@ -80,13 +80,13 @@ class comZonalesHelper {
     function getZone($zonal_name) {
         if (isset($zonal_name)) {
             $zonal_name = $this->getZonalActual();
-            $session = JFactory::getSession();
-            $zCtx = $session->get('zCtx');
+            $session = &JFactory::getSession();
+            $zCtx = unserialize($session->get('zCtx'));
             if (!$zCtx) {
                 $zCtx = new ZContext();
             }
             $zCtx->selectedZone($zonal_name);
-            $session->set('zCtx', $zCtx);
+            $session->set('zCtx', serialize($zCtx));
             /*
              */
         }
@@ -400,7 +400,7 @@ class comZonalesHelper {
      * @return boolean
      */
     function isAuthenticationOnProgress() {
-        $session = JFactory::getSession();
+        $session = &JFactory::getSession();
         $onProgress = $session->get('authenticationonprogress');
         return ($onProgress == 'true');
     }
@@ -460,7 +460,7 @@ class comZonalesHelper {
      * Setea o actualiza la variable de sesión con el zonal indicado.
      */
     static function setZonal($zonal) {
-        $session = JFactory::getSession();
+        $session = &JFactory::getSession();
         if ($zonal) {
             $session->set('zonales_zonal_name', $zonal->name);
             $session->set('zonales_zonal_label', $zonal->label);
@@ -474,7 +474,7 @@ class comZonalesHelper {
      * Setea o actualiza la variable de sesión de filtros
      */
     function setFilter($id, $selected) {
-        $session = JFactory::getSession();
+        $session = &JFactory::getSession();
         $filters = unserialize($session->get('filters'));
 
         if (!isset($filters)) {
@@ -487,7 +487,7 @@ class comZonalesHelper {
     /* static function setFilters($filtros) {
       if (isset($filtros)) {
 
-      $session = JFactory::getSession();
+      $session = &JFactory::getSession();
       $filters = $session->get('filters');
 
       if (!isset($filters)) {
@@ -505,10 +505,10 @@ class comZonalesHelper {
     static function setFilters($filtros) {
         if (isset($filtros)) {
             $filters = json_decode($filtros);
-            $session = JFactory::getSession();
-            $zCtx = unserialize($session->get('zCtx'));
-            if (!$zCtx) {
-                $zCtx = new ZContext();
+            $session = &JFactory::getSession();
+            $zCtx = new ZContext();
+            if ($session->has('zCtx')) {
+                $zCtx = unserialize($session->get('zCtx'));
             }
             // $zCtx->setFilters($filtros);
             $zCtx->setSource($filters->source);
@@ -519,44 +519,64 @@ class comZonalesHelper {
     }
 
     static function getFilters() {
-        $session = JFactory::getSession();
-        return $session->get('filters');
+        $session = &JFactory::getSession();
+        return unserialize($session->get('filters'));
     }
 
     static function addSource($source) {
-        $session = JFactory::getSession();
-        $zCtx = unserialize($session->get('zCtx'));
-        if (!isset($zCtx) || !$zCtx) {
-            $zCtx = new ZContext();
+        $session = &JFactory::getSession();
+        $zCtx = new ZContext();
+        if ($session->has('zCtx')) {
+            try {
+                $zCtx = unserialize($session->get('zCtx'));
+            } catch (Exception $ex) {
+                echo 'Excepción capturada: ', $e->getMessage(), "\n";
+                $zCtx = new ZContext();
+            }
         }
         $sources = $zCtx->getSource();
         if (!in_array($source, $sources)) {
             $sources[] = $source;
-        };
+        }
         $zCtx->setSource($sources);
         $session->set('zCtx', serialize($zCtx));
     }
 
     static function removeSource($source) {
-        $session = JFactory::getSession();
-        $zCtx = unserialize($session->get('zCtx'));
-        if (!isset($zCtx) || !$zCtx) {
-            $zCtx = new ZContext();
+        $session = &JFactory::getSession();
+        $zCtx = new ZContext();
+        if ($session->has('zCtx')) {
+            try {
+                $zCtx = unserialize($session->get('zCtx'));
+            } catch (Exception $ex) {
+                echo 'Excepción capturada: ', $e->getMessage(), "\n";
+                $zCtx = new ZContext();
+            }
         }
         $sources = $zCtx->getSource();
         if (in_array($source, $sources)) {
-            unset($sources[array_search($source, $sources)]);
-        };
-        $sources = array_values($sources);
+            echo "ENTROOOOOOOOOOOOOOOOOOOOOOOO";
+            foreach ($sources as $key => $value) {
+                if ($source == $value) {
+                    unset($sources[$key]);
+                    echo "ACATAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+                    var_dump($sources);
+                }
+            }
+            $sources = array_values($sources);
+            var_dump($sources);
+        } else {
+            echo "NOOOOOO        ENTROOOOOOOOOOOOOOOOOOOOOOOO";
+        }
         $zCtx->setSource($sources);
         $session->set('zCtx', serialize($zCtx));
     }
 
     static function addTags($tag) {
-        $session = JFactory::getSession();
-        $zCtx = unserialize($session->get('zCtx'));
-        if (!isset($zCtx) || !$zCtx) {
-            $zCtx = new ZContext();
+        $session = &JFactory::getSession();
+        $zCtx = new ZContext();
+        if ($session->has('zCtx')) {
+            $zCtx = unserialize($session->get('zCtx'));
         }
         $tags = $zCtx->getTags();
         if (!in_array($tag, $tags)) {
@@ -567,10 +587,10 @@ class comZonalesHelper {
     }
 
     static function removeTags($tag) {
-        $session = JFactory::getSession();
-        $zCtx = unserialize($session->get('zCtx'));
-        if (!isset($zCtx) || !$zCtx) {
-            $zCtx = new ZContext();
+        $session = &JFactory::getSession();
+        $zCtx = new ZContext();
+        if ($session->has('zCtx')) {
+            $zCtx = unserialize($session->get('zCtx'));
         }
         $tags = $zCtx->getTags();
         if (in_array($tag, $tags)) {
@@ -579,6 +599,14 @@ class comZonalesHelper {
         $tags = array_values($tags);
         $zCtx->setSource($tags);
         $session->set('zCtx', serialize($zCtx));
+    }
+
+    static function getZCtx() {
+        $session = &JFactory::getSession();
+        if ($session->has('zCtx')) {
+            $zCtx = unserialize($session->get('zCtx'));
+            echo json_encode($zCtx);
+        }
     }
 
 }
