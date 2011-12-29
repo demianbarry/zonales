@@ -267,8 +267,8 @@ function updatePosts(json, component, more) {
         }).set('html',post.title).inject(h3_story_item_title),
         a_edit = new Element('a', {
             'target': '_blank',
-            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+post.id
-        }).inject(div_story_item_header),
+            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+post.id            
+        }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
         a_edit_image = new Element('img',{
             'src': '/media/system/images/edit.png'
         }).inject(a_edit).addClass('edit_img'),
@@ -377,8 +377,10 @@ function updatePosts(json, component, more) {
 	if(typeOf(tags) == 'array') {
 	                tags.each(function(tag){
 	    var span_tags = new Element('span').inject(div_story_tags);
-            new Element('a', {'id':'tagsPostLi',
-                                'href': ''}).set('html',tag).inject(span_tags);
+            new Element('a', {
+                    'id':'tagsPostLi',
+                    'href': ''
+                }).set('html',tag).inject(span_tags);
 
             });
         }
