@@ -1,29 +1,31 @@
 <?php
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die ( 'Restricted Access' );
+defined('_JEXEC') or die('Restricted Access');
 ?>
 
 <script type="text/javascript" defer="defer">
-	// <![CDATA[
-	window.addEvent('domready', function(){
+    // <![CDATA[
+    window.addEvent('domready', function(){
             
-		// show by default the first submenu
-		$('s0_m').setStyle('display', 'block');
+        // show by default the first submenu
+        $('s0_m').setStyle('display', 'block');
 
-		$$('#mymenu li').each(function(el){
-			el.getElement('a').addEvent('mouseover', function(subLinkId){
-				var layer = subLinkId+"_m";
-				$('sublinks').getElements('ul').setStyle('display', 'none');
-                                if($(layer).getChildren('li').length > 0){
-                                    $(layer).getParent().getParent().setStyle('height','35px');
-                                } else {
-                                    $(layer).getParent().getParent().setStyle('height','18px');
-                                }
-				$(layer).setStyle('display', 'block');
-			}.pass(el.id));
-		});
-	});
-	// ]]>
+        $$('#mymenu li').each(function(el){
+            el.getElement('a').addEvent('mouseover', function(subLinkId){
+                var layer = subLinkId+"_m";
+                $('sublinks').getElements('ul').setStyle('display', 'none');
+                if($(layer)){
+                    if($(layer).getChildren('li').length > 0){
+                        $(layer).getParent().getParent().setStyle('height','42px');
+                    } else {
+                        $(layer).getParent().getParent().setStyle('height','18px');
+                    }
+                    $(layer).setStyle('display', 'block');
+                }
+            }.pass(el.id));
+        });
+    });
+    // ]]>
 </script>
 
 <!-- glassmenu -->
@@ -41,20 +43,20 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 	</ul>
 </div>
 <div id="sublinks">
-	<ul id="s0_m"></ul>
-        <?php if (isset ($eq->fields)): ?>
-	<?php foreach ($eq->fields as $field): ?>
-	<ul id="s<?php echo $field->id; ?>_m">
-		<?php foreach ($field->bands as $band): ?>
-		<li><a href="<?php echo $band->link; ?>"><?php echo $band->band_label; ?></a></li>
-		<?php endforeach; ?>
-	</ul>
-	<?php endforeach; ?>
-        <?php endif;?>
-        <ul id="s30_m">
-            <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
-            <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
-        </ul>
+    <ul id="s0_m"></ul>
+    <?php if (isset($eq->fields)): ?>
+        <?php foreach ($eq->fields as $field): ?>
+            <ul id="s<?php echo $field->id; ?>_m">
+                <?php foreach ($field->bands as $band): ?>
+                    <li><a href="<?php echo $band->link; ?>"><?php echo $band->band_label; ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <ul id="s30_m">
+        <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
+        <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
+    </ul>
 
         <ul id="s45_m">
             <li><a href="/index.php?option=com_zonales&task=zonal&view=noticiasenlared">Nuevos</a></li>
