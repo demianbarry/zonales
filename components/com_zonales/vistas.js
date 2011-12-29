@@ -13,6 +13,7 @@ var zUserGroups = new Array();
 window.addEvent('domready', function() {
     setInterval(function () {
         getAllTags();
+        getAllZones();
         loadPost(false);
     }, 60000);
     loadPost(true);
@@ -218,7 +219,7 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-        var post = post.clone();
+        var post = post.clone(true, true);
         post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
         post.injectTop($('postsContainer'));
     });
@@ -256,7 +257,7 @@ function updatePosts(json, component, more) {
         div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
         div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
         div_story_item_idPost = new Element('div', {
-            'html': post.id, 
+            'html': doc.id, 
             'id':'idPostDiv'
         }).addClass('group').inject(div_story_item).setStyle('display','none'),
         div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
@@ -267,7 +268,7 @@ function updatePosts(json, component, more) {
         }).set('html',post.title).inject(h3_story_item_title),
         a_edit = new Element('a', {
             'target': '_blank',
-            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+post.id            
+            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
         }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
         a_edit_image = new Element('img',{
             'src': '/media/system/images/edit.png'
@@ -331,7 +332,7 @@ function updatePosts(json, component, more) {
             postLinks.each(function(link){
                 switch (link.type) {
                     case 'picture':
-                        if(div_story_item_media.childNodes.length == 0) {
+                        if(div_story_item_media.childNodes.length == 0 && link.url) {
                             var a_thumb = new Element('a', {
                                 'href': getTarget(post),
                                 'target': '_blank'
@@ -358,7 +359,7 @@ function updatePosts(json, component, more) {
                         a_story_item_link = new Element('a', {
                             'href': link.url,
                             'target': '_blank'
-                        }).set('html','MÃ¡s info...').addClass('story-item-link').inject(li_story_item_link);
+                        }).set('html','MÃƒÂ¡s info...').addClass('story-item-link').inject(li_story_item_link);
                         break;
                 }
             });
@@ -370,26 +371,59 @@ function updatePosts(json, component, more) {
         // date = new Date(parseInt(post.modified));
 
 
-      var tags = post.tags;
+        var tags = post.tags;
         //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
-	var div_story_tags = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        var div_story_tags = new Element('div').addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Tags: ').inject(div_story_tags);
-	if(typeOf(tags) == 'array') {
-	                tags.each(function(tag){
-	    var span_tags = new Element('span').inject(div_story_tags);
-            new Element('a', {
+        if(typeOf(tags) == 'array') {
+            tags.each(function(tag){
+                var span_tags = new Element('span').inject(div_story_tags);
+                new Element('a', {
                     'id':'tagsPostLi',
                     'href': ''
                 }).set('html',tag).inject(span_tags);
 
             });
         }
-        var idInputTag = '_'+post.id;
+        var idInputTag = '_'+doc.id;
         var span_addTags = new Element('span').inject(div_story_tags);
-	new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).set('html','Add Tags').inject(span_addTags);
-	var selectedTag = new Element('input',{'id':idInputTag,'style':'display:none','onkeyup':'populateOptions(event,this,true,zTags)','value':''}).inject(span_addTags);
-	new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).inject(span_addTags);
-	new Element('button', {'onclick':'show_confirm("' + post.id + '",$(\'' + idInputTag + '\').value,"'+tags+'")'}).set('html','Add').addClass('story-item-button').inject(div_story_tags, 'after');
+        new Element('a',{
+            'onclick':"$('"+idInputTag+"').setStyle('display','inline')"
+        }).set('html','Add Tags').inject(span_addTags);
+        var selectedTag = new Element('input',{
+            'id':idInputTag,
+            'style':'display:none',
+            'onkeyup':'populateOptions(event,this,true,zTags)',
+            'value':''
+        }).inject(span_addTags);
+        //new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).inject(span_addTags);
+        new Element('button', {
+            'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'")'
+        }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
+
+        var zone = post.zone;
+        var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Zona: ').inject(div_story_zone);
+        var span_zone = new Element('span').inject(div_story_zone);
+        new Element('a', {
+            'id':'zonePost',
+            'href': ''
+        }).set('html',zone).inject(span_zone);
+        var idInputZone = 'zone_'+doc.id;
+        var span_addZone = new Element('span').inject(div_story_zone);
+        new Element('a',{
+            'onclick':"$('"+idInputZone+"').setStyle('display','inline')"
+        }).set('html','Set Zone').inject(span_addZone);
+        var selectedZone = new Element('input',{
+            'id':idInputZone,
+            'style':'display:none',
+            'onkeyup':'populateOptions(event,this,true,allZones)',
+            'value':''
+        }).inject(span_addZone);
+        new Element('button', {
+            'onclick':'show_confirm("' + idInputZone + '",$(\'' + idInputZone + '\').value,"'+zone+'")'
+        }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
+
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -426,16 +460,16 @@ function updatePosts(json, component, more) {
 
 function show_confirm(idInputTag,selectedTag,tags)
 {
-var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
-	if (r==true)
-  	{
-		saveContent(idInputTag,tags,selectedTag);
-  		alert("Confirmado");
-  	}
-	else
- 	 {
-  		alert("Cancelado");
-  	}
+    var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
+    if (r==true)
+    {
+        saveContent(idInputTag,tags,selectedTag);
+        alert("Confirmado");
+    }
+    else
+    {
+        alert("Cancelado");
+    }
 }
 function saveContent(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
@@ -466,7 +500,6 @@ function saveContent(idPost,tags,selectedTag){
     }).send();
 }
 
-
 function spanishDate(d){
     var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
 
@@ -479,7 +512,7 @@ function fixTime(i) {
     return (i<10 ? "0" + i : i);
 }
 
-/*function filtrar(source, visible) {
+function filtrar(source, visible) {
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
@@ -487,9 +520,9 @@ function fixTime(i) {
                 post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-    sendFilter(source,visible);
+    //    sendFilter(source,visible);
     armarTitulo(tab);
-}*/
+}
 /*
     function setSource(source, checked){
      var url
@@ -541,14 +574,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
+    [172800, '1 dia', 'maÃƒÂ±ana'], // 60*60*24*2
     [604800, 'dias', 86400], // 60*60*24*7, 60*60*24
     [1209600, ' en la ultima semana', 'proxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
     [4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo aÃƒÂ±o', 'proximo aÃƒÂ±o'], // 60*60*24*7*4*12*2
+    [2903040000, 'aÃƒÂ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -637,6 +670,5 @@ function armarTitulo(tabTemp){
                     document.getElementById('tituloSup').innerHTML += ", ";
             }
         });
-
     }
 }
