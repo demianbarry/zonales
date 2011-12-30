@@ -15,7 +15,7 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 				var layer = subLinkId+"_m";
 				$('sublinks').getElements('ul').setStyle('display', 'none');
                                 if($(layer).getChildren('li').length > 0){
-                                    $(layer).getParent().getParent().setStyle('height','35px');
+                                    $(layer).getParent().getParent().setStyle('height','42px');
                                 } else {
                                     $(layer).getParent().getParent().setStyle('height','18px');
                                 }
@@ -37,15 +37,6 @@ defined( '_JEXEC' ) or die ( 'Restricted Access' );
 </div>
 <div id="sublinks">
 	<ul id="s0_m"></ul>
-        <?php if (isset ($eq->fields)): ?>
-	<?php foreach ($eq->fields as $field): ?>
-	<ul id="s<?php echo $field->id; ?>_m">
-		<?php foreach ($field->bands as $band): ?>
-		<li><a href="<?php echo $band->link; ?>"><?php echo $band->band_label; ?></a></li>
-		<?php endforeach; ?>
-	</ul>
-	<?php endforeach; ?>
-        <?php endif;?>
         <ul id="s30_m">
             <li><a href="/index.php?option=com_zonales&task=zonal&view=enlared">Nuevos</a></li>
             <li><a href="/index.php?option=com_zonales&task=zonal&view=relevantes">Relevantes</a></li>
