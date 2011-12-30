@@ -285,9 +285,11 @@ public class ZoneDao extends BaseDao {
         zone.setState((String) resp.get("state"));
 
         if (resp.get("type") != null) {
-            DBObject obj = this.db.getCollection("tagTypes").findOne(new BasicDBObject("name", (String) resp.get("type")));
-            Type type = new Type((String) obj.get("name"), (ArrayList<String>) obj.get("parents"), (String) obj.get("state"));
-            zone.setType(type);
+            DBObject obj = this.db.getCollection("zonetypes").findOne(new BasicDBObject("name", (String) resp.get("type")));
+            if (obj != null) {
+                Type type = new Type((String) obj.get("name"), (ArrayList<String>) obj.get("parents"), (String) obj.get("state"));
+                zone.setType(type);
+            }
         }
 
         if (resp.get("parent") != null) {
