@@ -9,16 +9,9 @@
  */
 package org.zonales.parser.parser;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.zonales.metadata.ZCrawling;
 import org.zonales.tagsAndZones.daos.TagDao;
-import org.zonales.tagsAndZones.daos.ZoneDao;
 
 final public class Rule$tag extends Rule {
 
@@ -50,7 +43,7 @@ final public class Rule$tag extends Rule {
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
                         rule = Rule$cadena.parse(context);
                         if (rule != null) {
-                            TagDao tagDao = new TagDao("localhost", 27017, "crawl");
+                            TagDao tagDao = new TagDao(Globals.host, Globals.port, Globals.db);
                             if (tagDao.retrieve(rule.spelling.replace(" ", "_").replace("\"", "").toLowerCase()) == null) {
                                 rule = null;
                                 context.setMessage("Alguno de los tags indicados no existen en la base de datos."

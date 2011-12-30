@@ -18,15 +18,16 @@ package org.zonales.parser.services;
 /* $Id$
  *
  */
-
 import com.google.gson.Gson;
 import java.io.*;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import org.zonales.errors.ZMessages;
 import org.zonales.metadata.ZCrawling;
+import org.zonales.parser.parser.Globals;
 import org.zonales.parser.parser.Parser;
 import org.zonales.parser.parser.ParserException;
 
@@ -44,10 +45,18 @@ public class ZCrawlParser extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
+        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+        Properties props = new Properties();
+        props.load(stream);
+        Globals.host = props.getProperty("db_host");
+        Globals.port = Integer.valueOf(props.getProperty("db_port"));
+        Globals.db = props.getProperty("db_name");
+
+
         ZCrawling zcrawling = new ZCrawling();
         String extraction = request.getParameter("q");
         try {
-            String[] args = {"-visitor", "org.zonales.parser.parser.ZMetaDisplayer", "-string", extraction};
+            String[] args = {"-string", extraction.replace("\\\"", "\"")};
             Parser.main(zcrawling, out, args);
             out.print("{\"cod\": \"" + ZMessages.SUCCESS.getCod() + "\", \"msg\": \"" + ZMessages.SUCCESS.getMsg() + "\", meta: \"" + (new Gson()).toJson(zcrawling).replace("\\\"", "").replace("\"", "\\\"") + "\"}");
         } catch (ParserException ex) {
@@ -68,5 +77,4 @@ public class ZCrawlParser extends HttpServlet {
             throws IOException, ServletException {
         doGet(request, response);
     }
-
 }
