@@ -62,6 +62,10 @@ ul#mymenu li a {
     padding-right: 5px;
 }
 
+div#navigation {
+    margin-top: 2px;
+}
+
 div#sublinks ul li {
     display: inline;
 }
@@ -83,7 +87,7 @@ div#sublinks ul li a:hover {
 }
 
 div#sublinks {
-    margin-top: 4px;
+    margin-top: 12px;
 }
 
 div#sublinks ul {
