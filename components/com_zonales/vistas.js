@@ -372,8 +372,9 @@ function updatePosts(json, component, more) {
 
 
         var tags = post.tags;
-        //new Element('li', {'id':'tagsPostLi'}).set('html',tags).addClass('story-item-tag').inject(ul_story_item_meta);
-        var div_story_tags = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        var div_story_tags = new Element('div',{
+            'id':'tagsDiv_'+doc.id
+        }).addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Tags: ').inject(div_story_tags);
         if(typeOf(tags) == 'array') {
             tags.each(function(tag){
@@ -386,22 +387,30 @@ function updatePosts(json, component, more) {
             });
         }
         var idInputTag = '_'+doc.id;
-        var span_addTags = new Element('span').inject(div_story_tags);
-       new Element('a',{
-            'onclick':'if ( $("'+idInputTag+'").style.display == "none") $("'+idInputTag+'").setStyle("display","inline");else $("'+idInputTag+'").setStyle("display","none");'
-        }).set('html','Add Tags').inject(span_addTags);
-        var selectedTag = new Element('input',{
-            'id':idInputTag,
-            'style':'display:none',
-            'onkeyup':'populateOptions(event,this,true,zTags)',
-            'value':''
-        }).inject(span_addTags);
-        //new Element('a',{'id':'inputTag','onclick':"$('"+idInputTag+"').setStyle('display','inline')"}).inject(span_addTags);
-        new Element('button', {
-            'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'")'
-        }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
+        var idButtonAddTags = 'buttonTags_'+doc.id;
+        if(zUserGroups.indexOf("4") != -1){
+            var span_addTags = new Element('span',{
+                'id':'addTags_'+doc.id
+            }).inject(div_story_tags);
+            new Element('a',{
+                'onclick':'if ( $("'+idInputTag+'").style.display == "none"){ $("'+idInputTag+'").setStyle("display","inline"); $("'+idButtonAddTags+'").setStyle("display","inline"); }else {$("'+idInputTag+'").setStyle("display","none"); $("'+idButtonAddTags+'").setStyle("display","none");}'
+            }).set('html','Add Tags').inject(span_addTags);
+            var selectedTag = new Element('input',{
+                'id':idInputTag,
+                'style':'display:none',
+                'onkeyup':'populateOptions(event,this,true,zTags)',
+                'value':''
+            }).inject(span_addTags);
 
+            new Element('img', {
+                'id':idButtonAddTags,
+                'style':'display:none',
+                'src': '/CMUtils/addIcon.gif',
+                'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'")'
+            }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
+        }
         var zone = post.zone;
+        var idButtonSetZone = 'buttonZone'+doc.id;
         var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Zona: ').inject(div_story_zone);
         var span_zone = new Element('span').inject(div_story_zone);
@@ -411,19 +420,24 @@ function updatePosts(json, component, more) {
         }).set('html',zone).inject(span_zone);
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
-        new Element('a',{
-            'onclick':"$('"+idInputZone+"').setStyle('display','inline')"
-        }).set('html','Set Zone').inject(span_addZone);
-        var selectedZone = new Element('input',{
-            'id':idInputZone,
-            'style':'display:none',
-            'onkeyup':'populateOptions(event,this,true,allZones)',
-            'value':''
-        }).inject(span_addZone);
-        new Element('button', {
-            'onclick':'show_confirm("' + idInputZone + '",$(\'' + idInputZone + '\').value,"'+zone+'")'
-        }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
 
+        if(zUserGroups.indexOf("4") != -1){
+            new Element('a',{
+                'onclick':'if ( $("'+idInputZone+'").style.display == "none"){ $("'+idInputZone+'").setStyle("display","inline"); $("'+idButtonSetZone+'").setStyle("display","inline");}else{ $("'+idInputZone+'").setStyle("display","none"); $("'+idButtonSetZone+'").setStyle("display","none");}'
+            }).set('html','Set Zone').inject(span_addZone);
+            var selectedZone = new Element('input',{
+                'id':idInputZone,
+                'style':'display:none',
+                'onkeyup':'populateOptions(event,this,true,allZones)',
+                'value':''
+            }).inject(span_addZone);
+            new Element('img', {
+                'id':idButtonSetZone,
+                'style':'display:none',
+                'src': '/CMUtils/addIcon.gif',
+                'onclick':'show_confirm("' + idInputZone + '",$(\'' + idInputZone + '\').value,"'+zone+'")'
+            }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
+        }
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -450,11 +464,9 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-        if(zUserGroups.indexOf("4") != -1){
-            a_story_item_button = new Element('button', {
-                'onclick':'saveContent("'+$('idPostDiv').innerHTML+'","'+$('tagsPostLi').innerHTML+'");'
-            }).set('html','Portada').addClass('story-item-button').inject(ul_story_item_meta, 'after');
-        }
+        
+           
+        
     });
 }
 
