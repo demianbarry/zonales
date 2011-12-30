@@ -74,7 +74,10 @@ final public class Rule$deLosUsuarios extends Rule {
             Pattern pattern = Pattern.compile("\\[([-|+]?([0-9]*\\.[0-9]+)),([-|+]?([0-9]*\\.[0-9]+))\\]");            
 
             Criterio criterio = new Criterio();
-            List<String> usuarios = Arrays.asList(pattern.matcher(rule.spelling).replaceAll("").split(","));
+            List<String> usuarios = new ArrayList<String>();
+            for(String usuario : Arrays.asList(pattern.matcher(rule.spelling).replaceAll("").split(","))){
+                usuarios.add(usuario.trim());
+            }
             List<Double> latitudes = new ArrayList<Double>();
             List<Double> longitudes = new ArrayList<Double>();
 
@@ -85,8 +88,8 @@ final public class Rule$deLosUsuarios extends Rule {
                     index++;
                 }
                 if(index < rule.spelling.length() && rule.spelling.charAt(index) == '['){                    
-                    latitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(','))-1)));
-                    longitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(']'))-1)));
+                    latitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(',', index)))));
+                    longitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(']', index)))));
                 } else {
                     latitudes.add(null);
                     longitudes.add(null);

@@ -106,6 +106,11 @@ public class Displayer implements Visitor
     return visitRules(zcrawling, rule.rules);
   }
   
+  public Object visit(ZCrawling zcrawling, Rule$incluyeComentarios rule)
+  {
+    return visitRules(zcrawling, rule.rules);
+  }
+  
   public Object visit(ZCrawling zcrawling, Rule$pnum rule)
   {
     return visitRules(zcrawling, rule.rules);
