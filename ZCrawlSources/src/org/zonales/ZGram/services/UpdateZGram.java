@@ -52,7 +52,7 @@ public class UpdateZGram extends BaseService {
         ZGram zgram;
 
         if (metadataJson != null) {
-            zgram = metadataGson.fromJson(metadataJson, ZGram.class);
+            zgram = metadataGson.fromJson(metadataJson.replace("\\\"", "\""), ZGram.class);
         } else {
             zgram = new ZGram();
         }
