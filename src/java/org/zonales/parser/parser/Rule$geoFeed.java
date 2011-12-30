@@ -72,8 +72,8 @@ final public class Rule$geoFeed extends Rule {
                 index++;
             }
             if (rule.spelling.charAt(index) == '[') {
-                context.getZcrawling().setSourceLatitude(Double.valueOf(rule.spelling.substring(index + 1, (index = rule.spelling.indexOf(',')) - 1)));
-                context.getZcrawling().setSourceLongitude(Double.valueOf(rule.spelling.substring(index + 1, rule.spelling.indexOf(']') - 1)));
+                context.getZcrawling().setSourceLatitude(Double.valueOf(rule.spelling.substring(index + 1, (index = rule.spelling.indexOf(',')))));
+                context.getZcrawling().setSourceLongitude(Double.valueOf(rule.spelling.substring(index + 1, rule.spelling.indexOf(']'))));
             }
         }
 
