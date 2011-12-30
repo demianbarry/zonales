@@ -387,8 +387,8 @@ function updatePosts(json, component, more) {
         }
         var idInputTag = '_'+doc.id;
         var span_addTags = new Element('span').inject(div_story_tags);
-        new Element('a',{
-            'onclick':"$('"+idInputTag+"').setStyle('display','inline')"
+       new Element('a',{
+            'onclick':'if ( $("'+idInputTag+'").style.display == "none") $("'+idInputTag+'").setStyle("display","inline");else $("'+idInputTag+'").setStyle("display","none");'
         }).set('html','Add Tags').inject(span_addTags);
         var selectedTag = new Element('input',{
             'id':idInputTag,
