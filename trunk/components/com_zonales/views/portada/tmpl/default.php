@@ -5,7 +5,7 @@
 <!--
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
-zones.push(<?php echo strlen($this->zonal_id) > 0 ? "$this->zonal_id" : "";  ?>);
+zones.push(<?php echo $this->zCtx->selectedZone ?>);
 zUserGroups.push('<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>');
 tab ="portada";
 window.addEvent('domready', function() {

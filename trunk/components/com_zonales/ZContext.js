@@ -35,8 +35,8 @@ function zcRemoveTag(tag){
 }
 
 function zcAddTab(tab){
-    if(zctx.zTabs.contains(tag)){
-        zctx.zTabs.push(tag); 
+    if(zctx.zTabs.contains(tab)){
+        zctx.zTabs.push(tab);
     }
 }
 
