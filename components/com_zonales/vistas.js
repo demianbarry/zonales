@@ -645,7 +645,7 @@ function armarTitulo(tabTemp){
             }
         });
     }
-    if (tab == 'noticiasenlaredrelevantes'){
+    if (tabTemp == 'noticiasenlaredrelevantes'){
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked && temp < 5 ) {
                 temp++;

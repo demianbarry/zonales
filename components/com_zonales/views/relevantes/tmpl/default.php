@@ -5,7 +5,7 @@
 <!--
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
-zones.push(<?php echo strlen($this->zonal_id) > 0 ? "'$this->zonal_id'" : "";  ?>);
+zones.push(<?php echo $this->zCtx->selectedZone ?>);
 tab = "relevantes";
 window.addEvent('domready', function() {
     setInterval(function () {

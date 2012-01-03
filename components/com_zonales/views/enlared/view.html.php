@@ -26,11 +26,14 @@ class ZonalesViewEnlared extends JView {
         $document->addStyleSheet('/media/system/css/ZoneStyle.css');
 
         $app = & JFactory::getApplication();
+        $session = JFactory::getSession();
+        $zCtx = unserialize($session->get('zCtx'));
         $helper = new comZonalesHelper();
 
+        $this->assignref('zCtx', $zCtx);
         $this->assignRef('template', $app->getTemplate());
         $this->assignRef('zonal_id', ucwords(str_replace("_", "+", $helper->getZonalActual())));
-
+        
         parent::display($tpl);
     }
 
