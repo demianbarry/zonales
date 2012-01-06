@@ -109,7 +109,7 @@ las fuentes de informacion mostradas"; ?></p>
                 foreach ($zCtx->filters->source as $source) {
                     if ($source == 'Facebook' || $source == 'Twitter') {
                         echo '<tr><td>';
-                        echo "<input id='chk$source' type='checkbox' checked name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
+                        echo "<input id='chk$source' type='checkbox' checked='checked' name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
                         echo '</td><td>' . $source . '</td>';
                         echo '</tr>';
                     }
@@ -125,7 +125,7 @@ las fuentes de informacion mostradas"; ?></p>
                     foreach ($zCtx->filters->source as $source) {
                         if ($source != 'Facebook' && $source != 'Twitter') {
                             echo '<tr><td>';
-                            echo "<input id='chk$source' type='checkbox' name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
+                            echo "<input id='chk$source' type='checkbox' checked='checked' name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
                             echo '</td><td>' . $source . '</td>';
                             echo '</tr>';
                         }

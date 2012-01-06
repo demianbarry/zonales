@@ -1,4 +1,4 @@
-var zctx = new ZContext();
+//var zctx = new ZContext();
 
 function Filters(){
     this.sources = new Array();

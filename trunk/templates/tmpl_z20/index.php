@@ -55,6 +55,7 @@ if (!isset($zCtx)) {
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/zonales.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
+        <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
     </head>
 
     <body>
