@@ -126,7 +126,7 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 	});*/
 }
 
-var zones = new Array();
+var allZones = new Array();
 var zTags = new Array();
 
 function getAllZones(){
@@ -137,7 +137,7 @@ function getAllZones(){
         method: 'get',        
         onSuccess: function(response) {
             response.replace('[','').replace(']','').split(',').each(function(zone) {
-                zones.include(zone.replace(/_/g, ' ').capitalize());
+                allZones.include(zone.replace(/_/g, ' ').capitalize());
             });
         },
         onFailure: function(){

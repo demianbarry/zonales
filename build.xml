@@ -65,10 +65,6 @@
     <fileset dir="${src_modules}/mod_eq" id="mod_eq_files">
         <include name="**" />
     </fileset>
-    <!-- mod_eq -->
-    <fileset dir="${src_modules}/mod_filtro" id="mod_filtro_files">
-        <include name="**" />
-    </fileset>
     <!-- mod_alias -->
     <fileset dir="${src_modules}/mod_alias" id="mod_alias_files">
         <include name="**" />
@@ -107,6 +103,10 @@
     </fileset>
     <!-- mod_userregister -->
     <fileset dir="${src_modules}/mod_menueditor" id="mod_menueditor_files">
+        <include name="**" />
+    </fileset>
+    <!-- mod_filtro -->
+    <fileset dir="${src_modules}/mod_filtro" id="mod_filtro_files">
         <include name="**" />
     </fileset>
 

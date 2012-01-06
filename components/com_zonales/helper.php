@@ -537,6 +537,8 @@ class comZonalesHelper {
         $sources = $zCtx->getSource();
         if (!in_array($source, $sources)) {
             $sources[] = $source;
+            echo "Dentro de addSource del Helper";
+                    var_dump($sources);
         }
         $zCtx->setSource($sources);
         $session->set('zCtx', serialize($zCtx));
@@ -602,11 +604,17 @@ class comZonalesHelper {
     }
 
     static function getZCtx() {
+        $ret = "";
         $session = &JFactory::getSession();
         if ($session->has('zCtx')) {
             $zCtx = unserialize($session->get('zCtx'));
-            echo json_encode($zCtx);
+            if ($zCtx == "") {
+                $zCtx = new ZContext();
+                $session->set('zCtx', serialize($zCtx));
+            }
+            $ret = json_encode($zCtx);
         }
+        echo $ret;
     }
 
 }

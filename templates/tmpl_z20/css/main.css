@@ -426,6 +426,7 @@ html body div#wrapper-web div#wrapper-body div#wrapper-content div#otherContent 
     width: 350px;
     margin: 0 0 0 -345px;
     padding-left: 25px;
+        z-index: 500;
 }
 
 #equalizer-bt #equalizer {

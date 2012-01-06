@@ -35,6 +35,7 @@
         <filename>controller.php</filename>
         <filename>helper.php</filename>
         <filename>ZContext.php</filename>
+        <filename>ZContext.js</filename>
 
         <filename>views/index.html</filename>
         <filename>views/zonal/view.html.php</filename>

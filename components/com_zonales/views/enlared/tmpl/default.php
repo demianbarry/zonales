@@ -14,6 +14,7 @@ window.addEvent('domready', function() {
     }, 60000);
     loadPost(true);
 });
+
 -->
 
 </script>

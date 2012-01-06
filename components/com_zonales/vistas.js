@@ -1,4 +1,4 @@
-
+var nodeURL = 'http://192.168.0.2:4000';
 var searching = false;
 var firstIndexTime = null;
 var lastIndexTime = null;
@@ -17,7 +17,27 @@ window.addEvent('domready', function() {
         loadPost(false);
     }, 60000);
     loadPost(true);
+    initZCtx();
 });
+
+function initZCtx() {
+    socket = io.connect(nodeURL);
+    socket.on('connect', function () {
+       socket.emit('getCtx', true, function(ZCtx) {
+          alert(JSON.stringify(ZCtx));
+       });
+    });
+}
+
+ function setSource(source, checked){
+
+        var url = "/index.php?option=com_zonales&task="+(checked ? 'add' : 'remove')+"Source&source="+source;
+
+        new Request({
+            url: url,
+            method: 'get'
+        }).send();
+    }
 
 function getSolrDate(millis){
     var date = new Date(millis);
@@ -257,7 +277,7 @@ function updatePosts(json, component, more) {
         div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
         div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
         div_story_item_idPost = new Element('div', {
-            'html': doc.id, 
+            'html': doc.id,
             'id':'idPostDiv'
         }).addClass('group').inject(div_story_item).setStyle('display','none'),
         div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
@@ -444,16 +464,16 @@ function updatePosts(json, component, more) {
             new Element('input', {
                 'id': 'chk'+post.source,
                 'type': 'checkbox',
-                'checked': true,
+                'checked': 'checked',
                 'value': post.source,
                 'onclick':'setSource(this.value, this.checked);'
             }).inject(new Element('td').inject(tr));
             new Element('td', {}).set('html',post.source).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
                 tr.inject($("enLaRed"));
-
             else
                 tr.inject($("noticiasEnLaRed"));
+            setSource(post.source, true);
 
         }
 
@@ -464,9 +484,9 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-        
-           
-        
+
+
+
     });
 }
 
@@ -524,7 +544,7 @@ function fixTime(i) {
     return (i<10 ? "0" + i : i);
 }
 
-function filtrar(source, visible) {
+function setSourceVisible(source, visible) {
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
