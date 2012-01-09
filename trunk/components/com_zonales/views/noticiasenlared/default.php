@@ -5,7 +5,7 @@
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
 zones.push(<?php echo $this->zCtx->selectedZone ?>);
-tab = "noticiasenlaredrelevantes";
+tab = "noticiasenlared";
 
 -->
 </script>
@@ -18,4 +18,3 @@ tab = "noticiasenlaredrelevantes";
 <div>
     <input value="Ver Mas" onclick="loadMorePost();" type="button">
 </div>
-
