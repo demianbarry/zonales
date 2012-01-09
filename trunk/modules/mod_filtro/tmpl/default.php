@@ -72,6 +72,10 @@ las fuentes de informacion mostradas"; ?></p>
                     </td>
                 </tr>
             </table>
+
+            <table id="tagsFilterTable">
+
+            </table>
         </div>
 
     </div>

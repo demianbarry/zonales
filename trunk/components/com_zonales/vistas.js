@@ -435,7 +435,7 @@ function updatePosts(json, component, more) {
                     'id':'tagsPostLi',
                     'href': ''
                 }).set('html',tag).inject(span_tags);
-
+                div_story_item.addClass(tag);
             });
         }
         var idInputTag = doc.id;
@@ -511,7 +511,29 @@ function updatePosts(json, component, more) {
                    var resp = eval('(' + response + ')');
                 });
             }
+        }
 
+        if (typeof (post.tags) != 'undefined') {
+          post.tags.each(function(tag) {
+            if(!$('chkt'+tag)) {
+                var tr = new Element('tr');
+                new Element('input', {
+                    'id': 'chkt'+tag,
+                    'type': 'checkbox',
+                    'checked': 'checked',
+                    'value': tag,
+                    'onclick':'setTagVisible(this.value, this.checked);'
+                }).inject(new Element('td').inject(tr));
+                new Element('td', {'html': tag}).inject(tr);
+                tr.inject($('tagsFilterTable'));
+
+                if (zCtx.filters.tags.indexOf(tag) == -1) {
+                    socket.emit('addTagToZCtx', {sessionId: sessionId, tag: tag}, function(response) {
+                       var resp = eval('(' + response + ')');
+                    });
+                }
+            }
+          });
         }
 
         div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
@@ -596,34 +618,27 @@ function setSourceVisible(source, visible) {
         });
     }
 }
-/*
-    function setSource(source, checked){
-     var url
-     if(checked){
-         url = "/index.php?option=com_zonales&task=removeSource&"+source;
-     }else{
-        url = "/index.php?option=com_zonales&task=addSource&"+source;
-     }
 
-     new Request({
-        url: url,
-        method: 'get'
-        }).send();
+function setTagVisible(tag, visible) {
+    var posts = $$('div#postsContainer div.story-item');
+    if(typeOf(posts) == 'elements') {
+        posts.each(function(post){
+            if(post.hasClass(tag))
+                post.setStyle('display', visible ? 'block' : 'none');
+        });
     }
+    //    sendFilter(source,visible);
+    if (visible) {
+        socket.emit('addTagToZCtx', {sessionId: sessionId, tag: tag}, function(response) {
+           var resp = eval('(' + response + ')');
+        });
+    } else {
+        socket.emit('uncheckTagFromZCtx', {sessionId: sessionId, tag: tag}, function(response) {
+           var resp = eval('(' + response + ')');
+        });
+    }
+}
 
-    function setTag(tag, checked){
-    var url
-    if(checked){
-        url = "/index.php?option=com_zonales&task=removeTag&"+tag;
-    }else{
-        url = "/index.php?option=com_zonales&task=addTag&"+tag;
-    }
-    new Request({
-        url: url,
-            method: 'get'
-        }).send();
-    }
-*/
 function addMilli(date) {
     var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
     var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
