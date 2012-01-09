@@ -18,7 +18,7 @@ JHTML::_("behavior.mootools");
 class ZonalesViewRelevantes extends JView {
 
     function display($tpl = null) {
-       $option = JRequest::getCMD('option'); 
+       $option = JRequest::getCMD('option');
         $mainframe=JFactory::getApplication();
         $document = &JFactory::getDocument();
         //$document->addScript( '/media/system/js/viewutils.js');
@@ -29,9 +29,10 @@ class ZonalesViewRelevantes extends JView {
         $document->addStyleSheet('/media/system/css/ZoneStyle.css');
 
         $app = & JFactory::getApplication();
+        $session = JFactory::getSession();
         $helper = new comZonalesHelper();
         $zCtx = unserialize($session->get('zCtx'));
-        $helper = new comZonalesHelper();
+
 
         $this->assignref('zCtx', $zCtx);
         $this->assignRef('template', $app->getTemplate());
