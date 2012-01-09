@@ -5,27 +5,57 @@ var lastIndexTime = null;
 var minRelevance = null;
 var sources = new Array();
 //var tags = new Array();
+var zCtx;
 var zones = new Array();
 var tab = "";
 var host = "";
 var port = "";
 var zUserGroups = new Array();
+var socket;
 window.addEvent('domready', function() {
-    setInterval(function () {
-        getAllTags();
-        getAllZones();
-        loadPost(false);
-    }, 60000);
-    loadPost(true);
     initZCtx();
 });
 
 function initZCtx() {
     socket = io.connect(nodeURL);
     socket.on('connect', function () {
-       socket.emit('getCtx', true, function(ZCtx) {
-          alert(JSON.stringify(ZCtx));
+       socket.emit('getCtx', true, function(zCtxFromServer) {
+          alert(JSON.stringify(zCtxFromServer));
+          zCtx = zCtxFromServer;
+          alert("Asigne zCtx");
+          init();
+          initFiltersFromZCtx();
        });
+    });
+}
+
+function init() {
+   setInterval(function () {
+       loadPost(false);
+   }, 60000);
+   getAllTags();
+   getAllZones();
+   alert("Antes de llamar a loadPost");
+   loadPost(true);
+}
+
+function initFiltersFromZCtx() {
+    zCtx.filters.sources.each(function(source) {
+       var sourcesTr = new Element('tr');
+       var sourceChkBoxTd = new Element('td').inject(sourcesTr);
+       new Element('input', {
+           'id': 'chk' + source.name,
+           'type': 'checkbox',
+           'checked': (source.checked ? 'checked' : ''),
+           'name': source.name,
+           'value': source.name,
+           'onclick': 'setSourceVisible(this.value,this.checked);'
+       }).inject(sourceChkBoxTd);
+       new Element('td', {'html': source.name}).inject(sourcesTr);
+       if (source.name == 'Facebook' || source.name == 'Twitter')
+            sourcesTr.inject($('enLaRed'));
+        else
+            sourcesTr.inject($('noticiasEnLaRed'));
     });
 }
 
@@ -398,7 +428,7 @@ function updatePosts(json, component, more) {
         new Element('span').set('html','Tags: ').inject(div_story_tags);
         if(typeOf(tags) == 'array') {
             tags.each(function(tag){
-                var span_tags = new Element('span').inject(div_story_tags);
+                var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
                 new Element('a', {
                     'id':'tagsPostLi',
                     'href': ''
@@ -406,7 +436,7 @@ function updatePosts(json, component, more) {
 
             });
         }
-        var idInputTag = '_'+doc.id;
+        var idInputTag = doc.id;
         var idButtonAddTags = 'buttonTags_'+doc.id;
         if(zUserGroups.indexOf("4") != -1){
             var span_addTags = new Element('span',{
@@ -466,14 +496,20 @@ function updatePosts(json, component, more) {
                 'type': 'checkbox',
                 'checked': 'checked',
                 'value': post.source,
-                'onclick':'setSource(this.value, this.checked);'
+                'onclick':'setSourceVisible(this.value, this.checked);'
             }).inject(new Element('td').inject(tr));
-            new Element('td', {}).set('html',post.source).inject(tr);
+            new Element('td', {'html': post.source}).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
-                tr.inject($("enLaRed"));
+                tr.inject($('enLaRed'));
             else
-                tr.inject($("noticiasEnLaRed"));
-            setSource(post.source, true);
+                tr.inject($('noticiasEnLaRed'));
+
+            if (zCtx.filters.sources.indexOf(post.source) == -1) {
+                socket.emit('addSourceToZCtx', post.source, function(response) {
+                   var resp = eval('(' + response + ')');
+                   alert('Fuente ' + post.source + ", respuesta: " + resp.msg) ;
+                });
+            }
 
         }
 
@@ -506,11 +542,7 @@ function show_confirm(idInputTag,selectedTag,tags)
 function saveContent(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
-    //http://200.69.225.53:38080/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={'id':'08fde351-c53b-49db-8123-9f9f3c622d85'}&aTags=prueba1,prueba2
-    //var url = '/solr/update/json?{"add":[{"id":"'+idPost+'","tags":"['+tags+',Politica]"}]}';
     var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+','+selectedTag;
-    //	ZCrawlScheduler/indexPosts?url=solr&doc={"id":"87545580838_10150442552210839"}&aTags="Interes General,Portada"
-
     var urlProxy = '/curl_proxy.php';
     new Request({
         url: urlProxy,
@@ -554,6 +586,17 @@ function setSourceVisible(source, visible) {
     }
     //    sendFilter(source,visible);
     armarTitulo(tab);
+    if (visible) {
+        socket.emit('addSourceToZCtx', source, function(response) {
+           var resp = eval('(' + response + ')');
+           alert('Fuente ' + source + ", respuesta: " + resp.msg) ;
+        });
+    } else {
+        socket.emit('uncheckSourceFromZCtx', source, function(response) {
+           var resp = eval('(' + response + ')');
+           alert('Fuente ' + source + ", respuesta: " + resp.msg) ;
+        });
+    }
 }
 /*
     function setSource(source, checked){

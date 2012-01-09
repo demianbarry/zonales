@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="/media/system/css/ZoneStyle.css" type="text/css"/>
-<script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
@@ -7,12 +6,7 @@
 //tags = new Array();
 zones.push(<?php echo $this->zCtx->selectedZone ?>);
 tab = "relevantes";
-window.addEvent('domready', function() {
-    setInterval(function () {
-        loadPost(false);
-    }, 60000);
-    loadPost(true);
-});
+
 -->
 </script>
 <label>Ud. esta viendo las Noticias mas Relevantes de la Red Social: </label><label id="tituloSup"></label>
