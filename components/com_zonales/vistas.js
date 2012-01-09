@@ -12,18 +12,17 @@ var host = "";
 var port = "";
 var zUserGroups = new Array();
 var socket;
+var sessionId;
 window.addEvent('domready', function() {
     initZCtx();
 });
 
 function initZCtx() {
+    sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
     socket = io.connect(nodeURL);
     socket.on('connect', function () {
-       socket.emit('getCtx', true, function(zCtxFromServer) {
-          alert(JSON.stringify(zCtxFromServer));
+       socket.emit('getCtx', sessionId, function(zCtxFromServer) {
           zCtx = zCtxFromServer;
-          alert("Asigne zCtx");
-          init();
           initFiltersFromZCtx();
        });
     });
@@ -35,28 +34,31 @@ function init() {
    }, 60000);
    getAllTags();
    getAllZones();
-   alert("Antes de llamar a loadPost");
    loadPost(true);
 }
 
 function initFiltersFromZCtx() {
     zCtx.filters.sources.each(function(source) {
-       var sourcesTr = new Element('tr');
-       var sourceChkBoxTd = new Element('td').inject(sourcesTr);
-       new Element('input', {
-           'id': 'chk' + source.name,
-           'type': 'checkbox',
-           'checked': (source.checked ? 'checked' : ''),
-           'name': source.name,
-           'value': source.name,
-           'onclick': 'setSourceVisible(this.value,this.checked);'
-       }).inject(sourceChkBoxTd);
-       new Element('td', {'html': source.name}).inject(sourcesTr);
-       if (source.name == 'Facebook' || source.name == 'Twitter')
-            sourcesTr.inject($('enLaRed'));
-        else
-            sourcesTr.inject($('noticiasEnLaRed'));
+       var sourceChk = $('chk'+source.name);
+       if (!sourceChk) {
+           var sourcesTr = new Element('tr');
+           var sourceChkBoxTd = new Element('td').inject(sourcesTr);
+           new Element('input', {
+               'id': 'chk' + source.name,
+               'type': 'checkbox',
+               'checked': (source.checked ? 'checked' : ''),
+               'name': source.name,
+               'value': source.name,
+               'onclick': 'setSourceVisible(this.value,this.checked);'
+           }).inject(sourceChkBoxTd);
+           new Element('td', {'html': source.name}).inject(sourcesTr);
+           if (source.name == 'Facebook' || source.name == 'Twitter')
+                sourcesTr.inject($('enLaRed'));
+            else
+                sourcesTr.inject($('noticiasEnLaRed'));
+       }
     });
+    init();
 }
 
  function setSource(source, checked){
@@ -505,9 +507,8 @@ function updatePosts(json, component, more) {
                 tr.inject($('noticiasEnLaRed'));
 
             if (zCtx.filters.sources.indexOf(post.source) == -1) {
-                socket.emit('addSourceToZCtx', post.source, function(response) {
+                socket.emit('addSourceToZCtx', {sessionId: sessionId, source: post.source}, function(response) {
                    var resp = eval('(' + response + ')');
-                   alert('Fuente ' + post.source + ", respuesta: " + resp.msg) ;
                 });
             }
 
@@ -532,7 +533,6 @@ function show_confirm(idInputTag,selectedTag,tags)
     if (r==true)
     {
         saveContent(idInputTag,tags,selectedTag);
-        alert("Confirmado");
     }
     else
     {
@@ -587,14 +587,12 @@ function setSourceVisible(source, visible) {
     //    sendFilter(source,visible);
     armarTitulo(tab);
     if (visible) {
-        socket.emit('addSourceToZCtx', source, function(response) {
+        socket.emit('addSourceToZCtx', {sessionId: sessionId, source: source}, function(response) {
            var resp = eval('(' + response + ')');
-           alert('Fuente ' + source + ", respuesta: " + resp.msg) ;
         });
     } else {
-        socket.emit('uncheckSourceFromZCtx', source, function(response) {
+        socket.emit('uncheckSourceFromZCtx', {sessionId: sessionId, source: source}, function(response) {
            var resp = eval('(' + response + ')');
-           alert('Fuente ' + source + ", respuesta: " + resp.msg) ;
         });
     }
 }

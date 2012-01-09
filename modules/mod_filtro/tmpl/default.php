@@ -1,52 +1,5 @@
 <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
-<script language="javascript" type="text/javascript">
-    <!--
 
-    /* function sendFilter(source, temp, tags) {
-        var url = "/index.php?option=com_zonales&task=setFilters&filters["+id+"]="+checked;
-
-        new Request({
-            url: url,
-            method: 'get'
-            //update: 'alias_progress',
-        }).send();
-    }*/
-
-    function setSource(source, checked){
-     
-        var url = "/index.php?option=com_zonales&task="+(checked ? 'add' : 'remove')+"Source&source="+source;
-     
-
-        new Request({
-            url: url,
-            method: 'get'
-        }).send();
-    }
-
-    function setTag(tag, checked){
-        if(checked){
-            var url = "/index.php?option=com_zonales&task=removeTag&"+tag;
-        }else{
-            var url = "/index.php?option=com_zonales&task=addTag&"+tag;
-        }
-        new Request({
-            url: url,
-            method: 'get'
-        }).send();
-    }
-
-    window.addEvent('domready', function() {
-        $('filtersDiv').getElements('input[id^=chk]').each(function(element) {
-            if(element.name == "true") {
-                element.checked = true;
-            } else {
-                element.checked = false;
-            }
-        });
-    });
-
-    -->
-</script>
 
 <?php
 /**
@@ -102,36 +55,10 @@ las fuentes de informacion mostradas"; ?></p>
         ?>
             <div id="filtersDiv">
                 <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
-<?php
-            $session = JFactory::getSession();
-            $zCtx = unserialize($session->get('zCtx'));
-            if (isset($zCtx)) {
-                foreach ($zCtx->filters->source as $source) {
-                    if ($source == 'Facebook' || $source == 'Twitter') {
-                        echo '<tr><td>';
-                        echo "<input id='chk$source' type='checkbox' checked='checked' name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
-                        echo '</td><td>' . $source . '</td>';
-                        echo '</tr>';
-                    }
-                }
-            }
-?>
+
             </table>
             <table id="noticiasEnLaRed" style="display: <?php echo $noticiasEnLaRed ?>">
-<?php
-                $session = JFactory::getSession();
-                $zCtx = unserialize($session->get('zCtx'));
-                if (isset($zCtx)) {
-                    foreach ($zCtx->filters->source as $source) {
-                        if ($source != 'Facebook' && $source != 'Twitter') {
-                            echo '<tr><td>';
-                            echo "<input id='chk$source' type='checkbox' checked='checked' name='$source' value='$source' onclick='setSource(this.value,this.checked);'>";
-                            echo '</td><td>' . $source . '</td>';
-                            echo '</tr>';
-                        }
-                    }
-                }
-?>
+
             </table>
             <table id="temporalidad" style="display: <?php echo $temporalidad ?>">
                 <tr>
