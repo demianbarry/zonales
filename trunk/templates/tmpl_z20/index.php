@@ -50,10 +50,13 @@ if (!isset($zCtx)) {
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/zonales.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
         <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
     </head>
