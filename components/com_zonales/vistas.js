@@ -5,30 +5,22 @@ var lastIndexTime = null;
 var minRelevance = null;
 var sources = new Array();
 //var tags = new Array();
-var zCtx;
 var zones = new Array();
 var tab = "";
 var host = "";
 var port = "";
 var zUserGroups = new Array();
-var socket;
-var sessionId;
 window.addEvent('domready', function() {
-    initZCtx();
+    init();
 });
 
-function initZCtx() {
-    sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
-    socket = io.connect(nodeURL);
-    socket.on('connect', function () {
-       socket.emit('getCtx', sessionId, function(zCtxFromServer) {
-          zCtx = zCtxFromServer;
-          initFiltersFromZCtx();
-       });
+function init() {
+    initZCtx(function(zCtx) {
+        initFilters(zCtx);
     });
 }
 
-function init() {
+function initPost() {
    setInterval(function () {
        loadPost(false);
    }, 60000);
@@ -37,7 +29,14 @@ function init() {
    loadPost(true);
 }
 
-function initFiltersFromZCtx() {
+function initFilters(zCtx) {
+    initSourceFilters(zCtx);
+    initTagFilters(zCtx);
+    initPost();
+}
+
+function initSourceFilters(zCtx) {
+    //Actualizo filtros de fuente desde contexto
     zCtx.filters.sources.each(function(source) {
        var sourceChk = $('chk'+source.name);
        if (!sourceChk) {
@@ -58,7 +57,27 @@ function initFiltersFromZCtx() {
                 sourcesTr.inject($('noticiasEnLaRed'));
        }
     });
-    init();
+}
+
+function initTagFilters(zCtx) {
+    //Actualizo filtros de tags desde contexto
+    zCtx.filters.tags.each(function(tag) {
+       var tagChk = $('chkt'+tag.name);
+       if (!tagChk) {
+           var tagTr = new Element('tr');
+           var tagChkBoxTd = new Element('td').inject(tagTr);
+           new Element('input', {
+               'id': 'chkt' + tag.name,
+               'type': 'checkbox',
+               'checked': (tag.checked ? 'checked' : ''),
+               'name': tag.name,
+               'value': tag.name,
+               'onclick': 'setTagVisible(this.value,this.checked);'
+           }).inject(tagChkBoxTd);
+           new Element('td', {'html': tag.name}).inject(tagTr);
+           tagTr.inject($('tagsFilterTable'));
+       }
+    });
 }
 
  function setSource(source, checked){
@@ -411,7 +430,7 @@ function updatePosts(json, component, more) {
                         a_story_item_link = new Element('a', {
                             'href': link.url,
                             'target': '_blank'
-                        }).set('html','MÃƒÂ¡s info...').addClass('story-item-link').inject(li_story_item_link);
+                        }).set('html','Más info...').addClass('story-item-link').inject(li_story_item_link);
                         break;
                 }
             });
@@ -432,9 +451,9 @@ function updatePosts(json, component, more) {
             tags.each(function(tag){
                 var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
                 new Element('a', {
-                    'id':'tagsPostLi',
-                    'href': ''
-                }).set('html',tag).inject(span_tags);
+                    'html': tag,
+                    'onclick': 'ckeckOnlyTag("' + tag + '");'
+                }).inject(span_tags);
                 div_story_item.addClass(tag);
             });
         }
@@ -506,11 +525,7 @@ function updatePosts(json, component, more) {
             else
                 tr.inject($('noticiasEnLaRed'));
 
-            if (zCtx.filters.sources.indexOf(post.source) == -1) {
-                socket.emit('addSourceToZCtx', {sessionId: sessionId, source: post.source}, function(response) {
-                   var resp = eval('(' + response + ')');
-                });
-            }
+            zcAddSource(post.source);
         }
 
         if (typeof (post.tags) != 'undefined') {
@@ -527,11 +542,7 @@ function updatePosts(json, component, more) {
                 new Element('td', {'html': tag}).inject(tr);
                 tr.inject($('tagsFilterTable'));
 
-                if (zCtx.filters.tags.indexOf(tag) == -1) {
-                    socket.emit('addTagToZCtx', {sessionId: sessionId, tag: tag}, function(response) {
-                       var resp = eval('(' + response + ')');
-                    });
-                }
+                zcAddTag(tag);
             }
           });
         }
@@ -609,34 +620,55 @@ function setSourceVisible(source, visible) {
     //    sendFilter(source,visible);
     armarTitulo(tab);
     if (visible) {
-        socket.emit('addSourceToZCtx', {sessionId: sessionId, source: source}, function(response) {
-           var resp = eval('(' + response + ')');
-        });
+        zcAddSource(source);
     } else {
-        socket.emit('uncheckSourceFromZCtx', {sessionId: sessionId, source: source}, function(response) {
-           var resp = eval('(' + response + ')');
-        });
+        zcUncheckSource(source);
     }
 }
 
-function setTagVisible(tag, visible) {
+function ckeckOnlyTag(tag) {
+    var zCtxChkTags = zcGetCheckedTags();
+    
+    zCtxChkTags.each(function (chkTag) {
+       if (chkTag != tag) {
+           zcUncheckTag(chkTag);
+       }
+    });
+
+    var tagFilters = $$('table#tagsFilterTable input');
+    tagFilters.each(function(input) {
+        if (input.id == 'chkt' + tag) {
+            input.checked = true;
+        } else {
+            input.checked = false;
+        }
+    });
+    setTagVisible(tag, true);
+}
+
+function setTagVisible(tag, checked) {
+
+    //Actualizo el contexto
+    if (checked) {
+        zcAddTag(tag);
+    } else {
+        zcUncheckTag(tag);
+    }
+    
+    //Refresco visibilidad de Posts
+    var zCtxChkTags = zcGetCheckedTags();
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
-            if(post.hasClass(tag))
-                post.setStyle('display', visible ? 'block' : 'none');
+            var visible = false;
+            zCtxChkTags.each(function (tag) {
+                if(post.hasClass(tag))
+                    visible = true;
+            });
+            post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-    //    sendFilter(source,visible);
-    if (visible) {
-        socket.emit('addTagToZCtx', {sessionId: sessionId, tag: tag}, function(response) {
-           var resp = eval('(' + response + ')');
-        });
-    } else {
-        socket.emit('uncheckTagFromZCtx', {sessionId: sessionId, tag: tag}, function(response) {
-           var resp = eval('(' + response + ')');
-        });
-    }
+   
 }
 
 function addMilli(date) {
@@ -760,3 +792,4 @@ function armarTitulo(tabTemp){
         });
     }
 }
+
