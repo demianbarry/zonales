@@ -625,6 +625,9 @@
 	 }
     //-->
 </script>
+<link rel="stylesheet" href="/media/system/css/ZoneStyle.css" type="text/css" />
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
 <img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: inline"/>
 <label>Ud. está cerca de: </label><label id="cercaDe">Argentina</label>
 <!--
