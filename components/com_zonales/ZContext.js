@@ -32,7 +32,7 @@ function initZCtx(callback) {
     socket.on('connect', function () {
        socket.emit('getCtx', sessionId, function(zCtxFromServer) {
           zCtx = zCtxFromServer;
-          callback(zCtx)
+          callback(zCtx);
           return(this);
        });
     });
@@ -42,11 +42,21 @@ function initZCtx(callback) {
     zCtx = context;
 }*/
 
+function setSelectedZone(zone) {
+   //Actualizo en contexto en el cliente
+    zCtx.selZone = zone;
+
+    //Persisto el contexto en el servidor
+    socket.emit('setSelectedZoneToCtx', {sessionId: sessionId, zone: zone}, function(response) {
+       var resp = eval('(' + response + ')');
+    });
+}
+
 function zcGetContext() {
     return zCtx;
 }
 
-function zcAddSource(source){   
+function zcAddSource(source){
     //Actualizo el contexto en el mismo cliente
     var index = zcSearchSource(zCtx, source);
     if (index == -1) {
@@ -151,4 +161,32 @@ function zcSearchTag(zCtx, tagStr) {
 		}
 	}
 	return -1;
+}
+
+function getAllZones(callback) {
+    socket.emit('getZones', true, function(response) {
+       callback(response);
+       return(this);
+    });
+}
+
+function getProvincias(callback) {
+    socket.emit('getZoneByFilters', {"type":"provincia"}, function(response) {
+       callback(response);
+       return(this);
+    });
+}
+
+function getZonesByProvincia(id_provincia, callback) {
+    socket.emit('getZoneByFilters', {"parent":id_provincia}, function(response) {
+       callback(response);
+       return(this);
+    });
+}
+
+function getZoneById(id, callback) {
+    socket.emit('getZoneByFilters', {"id":id}, function(response) {
+       callback(response[0]);
+       return(this);
+    });
 }

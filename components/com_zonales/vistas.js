@@ -6,10 +6,13 @@ var minRelevance = null;
 var sources = new Array();
 //var tags = new Array();
 var zones = new Array();
+var allZones = new Array();
 var tab = "";
 var host = "";
 var port = "";
+var zoneInitiated = false;
 var zUserGroups = new Array();
+
 window.addEvent('domready', function() {
     init();
 });
@@ -17,6 +20,7 @@ window.addEvent('domready', function() {
 function init() {
     initZCtx(function(zCtx) {
         initFilters(zCtx);
+        initZonas(zCtx.selZone);
     });
 }
 
@@ -25,7 +29,6 @@ function initPost() {
        loadPost(false);
    }, 60000);
    getAllTags();
-   getAllZones();
    loadPost(true);
 }
 
@@ -33,6 +36,36 @@ function initFilters(zCtx) {
     initSourceFilters(zCtx);
     initTagFilters(zCtx);
     initPost();
+}
+
+function initZonas(selZone) {
+    if (!zoneInitiated) {
+        zoneInitiated = true;
+        getProvincias(function(provincias) {
+            provincias.each(function(provincia) {
+                new Element('option', {
+                       'value': provincia.id,
+                       'html': provincia.name.replace(/_/g, ' ').capitalize(),
+                       'onclick': 'loadMunicipios(this.value, null);'
+                   }).inject($('provincias'));
+            });
+        });
+
+        getAllZones(function(zones) {
+           zones.each(function(zone) {
+               allZones.push(zone.name.replace(/_/g, ' ').capitalize());
+            });
+        });
+
+        if (selZone != "") {
+            getZoneById(selZone, function(zone) {
+                loadMunicipios(zone.parent, zone.id);
+                getZoneById(zone.parent, function(parent) {
+                    $('provincias').value = parent.id;
+                });
+            });
+        }
+    }
 }
 
 function initSourceFilters(zCtx) {
@@ -80,6 +113,22 @@ function initTagFilters(zCtx) {
     });
 }
 
+function loadMunicipios(id_provincia, selZone) {
+    $('zonalid').empty();
+    getZonesByProvincia(id_provincia, function(zones) {
+        zones.each(function(zone) {
+            new Element('option', {
+                   'value': zone.id,
+                   'html': zone.name.replace(/_/g, ' ').capitalize(),
+                   'onclick': 'setSelectedZone(this.value)'
+               }).inject($('zonalid'));
+        });
+        if (selZone != null) {
+            $('zonalid').value = selZone;
+        }
+    });
+}
+
  function setSource(source, checked){
 
         var url = "/index.php?option=com_zonales&task="+(checked ? 'add' : 'remove')+"Source&source="+source;
@@ -124,12 +173,6 @@ function getSolrSources(myTab){
     if (myTab == "portada"){
         res = "q=tags:(Portada)";
     }
-    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
-        res = "q=!source:(Facebook+OR+Twitter)";
-    }
-    if (myTab == "portada"){
-        res = "q=tags:(Portada)";
-    }
 
     return res;
 
@@ -162,7 +205,7 @@ function getSolrRange(myTab, more){
     if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" ){
         if (!more){
             res =(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
-                ($('tempoSelect').value) : '*')+'+TO+*]');
+                ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]' ;
 
         }
         else
@@ -182,7 +225,7 @@ function loadPost(first){
     getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
     getSolrSources(tab)+
     getSolrZones(zones)+
-    getSolrRange(tab);
+    getSolrRange(tab,false);
 
     var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(urlSolr);
 
@@ -290,9 +333,26 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-        var post = post.clone(true, true);
-        post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
-        post.injectTop($('postsContainer'));
+        if (tab == "enlared" || tab == "relevantes" || tab == "portada"){
+            var post = post.clone(true, true);
+            post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
+            post.injectTop($('postsContainer'));
+        }
+
+        if (tab == "noticiasenlared" || tab == "noticiasenlaredrelevantes"){
+            $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
+                var insertado = false;
+                $('postsContainer').getElements('span.zonales-count').each(function(count){
+                    if (parseInt(newCount.innerHTML) > parseInt(count.innerHTML) && !insertado) {
+                        insertado = true;
+                        newCount.getParent().getParent().getParent().getParent().getParent().injectBefore(count.getParent().getParent().getParent().getParent().getParent());
+                    }
+                });
+                if(!insertado){
+                    newCount.getParent().getParent().getParent().getParent().getParent().injectInside($('postsContainer'));
+                }
+            });
+        }
     });
     //$('postsContainer').set({ style: 'background:#FFFFFF'});
     $('verNuevos').setStyle('display','none');
@@ -547,15 +607,41 @@ function updatePosts(json, component, more) {
           });
         }
 
-        div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
-        if(typeof more == 'undefined' || !more) {
-            div_story_item.injectTop(component);
+        if (minRelevance != null) {
+            if (parseInt(post.relevance) < minRelevance) {
+                minRelevance = parseInt(post.relevance);
+            }
         } else {
-            div_story_item.injectInside(component);
+            minRelevance = parseInt(post.relevance);
         }
 
+        div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
 
+        if (tab == "enlared" || tab == "relevantes" || tab == "portada"){
+            if(typeof more == 'undefined' || !more) {
+                div_story_item.injectTop(component);
+            } else {
+                div_story_item.injectInside(component);
+            }
+        }
 
+        if (tab == "noticiasenlared" || tab == "noticiasenlaredrelevantes"){
+            var insertado = false;
+            var counts = component.getElements('span.zonales-count');
+            if(typeOf(counts) == 'array') {
+                counts.each(function(count){
+                    if (parseInt(post.relevance) > parseInt(count.innerHTML) && !insertado){
+                        insertado = true;
+                        div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
+                    }
+
+                });
+            }
+
+            if(!insertado){
+                div_story_item.injectInside(component);
+            }
+        }
 
     });
 }
@@ -628,7 +714,7 @@ function setSourceVisible(source, visible) {
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-    
+
     zCtxChkTags.each(function (chkTag) {
        if (chkTag != tag) {
            zcUncheckTag(chkTag);
@@ -654,7 +740,7 @@ function setTagVisible(tag, checked) {
     } else {
         zcUncheckTag(tag);
     }
-    
+
     //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var posts = $$('div#postsContainer div.story-item');
@@ -668,7 +754,7 @@ function setTagVisible(tag, checked) {
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-   
+
 }
 
 function addMilli(date) {
@@ -694,14 +780,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃƒÂ±ana'], // 60*60*24*2
-    [604800, 'dias', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'proxima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, 'ultimo mes', 'proximo mes'], // 60*60*24*7*4*2
+    [4838400, 'ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃƒÂ±o', 'proximo aÃƒÂ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃƒÂ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -734,17 +820,19 @@ function prettyDate(time){
     });
 */
 function armarTitulo(tabTemp){
-    var temp = 0;
+    var temp;
     tabTemp = tab
     document.getElementById('tituloSup').innerHTML = "";
     if (tabTemp == 'noticiasenlared'){
+        temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked && temp < 5 ) {
                 temp++;
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
-                document.getElementById('tituloSup').innerHTML += element.value;
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
+                document.getElementById('tituloSup').innerHTML += element.value;
+
             }
             else if (element.checked && temp > 5 ){
                 document.getElementById('tituloSup').innerHTML = "";
@@ -754,13 +842,15 @@ function armarTitulo(tabTemp){
         });
     }
     if (tabTemp == 'noticiasenlaredrelevantes'){
+        temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked && temp < 5 ) {
                 temp++;
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine: "
-                document.getElementById('tituloSup').innerHTML += element.value;
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
+                document.getElementById('tituloSup').innerHTML += element.value;
+
             }
             else{
                 document.getElementById('tituloSup').innerHTML = "";
@@ -769,25 +859,26 @@ function armarTitulo(tabTemp){
             }
         });
     }
-    if (tab == 'enlared'){
+    if (tabTemp == 'enlared'){
 
         $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked) {
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de la Red Social: "
-                document.getElementById('tituloSup').innerHTML += element.value;
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
+                document.getElementById('tituloSup').innerHTML += element.value+" ";
+
             }
         });
 
     }
-    if (tab == 'releventes'){
+    if (tabTemp == 'releventes'){
         $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked) {
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo las Noticias mas Relevantes de la Red Social: "
-                document.getElementById('tituloSup').innerHTML += element.value;
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
+                document.getElementById('tituloSup').innerHTML += element.value;
             }
         });
     }
