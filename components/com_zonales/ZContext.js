@@ -1,6 +1,8 @@
 var zCtx;
 var socket;
 var sessionId;
+var selZoneName = "";
+var efZoneName = "";
 
 function Source() {
 	this.name = "";
@@ -32,8 +34,18 @@ function initZCtx(callback) {
     socket.on('connect', function () {
        socket.emit('getCtx', sessionId, function(zCtxFromServer) {
           zCtx = zCtxFromServer;
-          callback(zCtx);
-          return(this);
+          getZoneById(zCtx.selZone, function(selZone) {
+              if (typeof(selZone) != 'undefined' && selZone != null) {
+                  selZoneName = selZone.name;
+              }
+              getZoneById(zCtx.efZone, function(efZone) {
+                  if (typeof(efZone) != 'undefined' && efZone != null) {
+                      efZoneName = efZone.name;
+                  }
+                  callback(zCtx);
+                  return(this);
+              });
+          });
        });
     });
 }
@@ -42,13 +54,22 @@ function initZCtx(callback) {
     zCtx = context;
 }*/
 
-function setSelectedZone(zone) {
+function setSelectedZone(zone, zoneName, callback) {
    //Actualizo en contexto en el cliente
     zCtx.selZone = zone;
+    selZoneName = zoneName;
 
     //Persisto el contexto en el servidor
     socket.emit('setSelectedZoneToCtx', {sessionId: sessionId, zone: zone}, function(response) {
-       var resp = eval('(' + response + ')');
+       if (typeof(response) != 'undefined' && response != null) {
+           zCtx.efZone = response.id;
+           efZoneName = response.name.replace(/_/g, ' ').capitalize();
+       } else {
+           zCtx.efZone = null;
+           efZoneName = "";
+       }
+       callback();
+       return(this);
     });
 }
 
@@ -56,7 +77,7 @@ function zcGetContext() {
     return zCtx;
 }
 
-function zcAddSource(source){
+function zcAddSource(source){   
     //Actualizo el contexto en el mismo cliente
     var index = zcSearchSource(zCtx, source);
     if (index == -1) {
@@ -188,5 +209,33 @@ function getZoneById(id, callback) {
     socket.emit('getZoneByFilters', {"id":id}, function(response) {
        callback(response[0]);
        return(this);
+    });
+}
+
+function zcGetSelectedZoneName() {
+    return selZoneName;
+}
+
+function zcGetEfectiveZoneName() {
+    return efZoneName;
+}
+
+function zcSetTemp(temp) {
+    //Actualizo el contexto en el cliente
+    zCtx.filters.temp = temp;
+
+    //Persisto el contexto en el servidor
+    socket.emit('setTempToCtx', {sessionId: sessionId, temp: temp}, function(response) {
+       var resp = eval('(' + response + ')');
+    });
+}
+
+function zcSetTab(tab) {
+    //Actualizo el contexto en el cliente
+    zCtx.zTab = tab;
+
+    //Persisto el contexto en el servidor
+    socket.emit('setTabToCtx', {sessionId: sessionId, tab: tab}, function(response) {
+       var resp = eval('(' + response + ')');
     });
 }

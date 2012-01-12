@@ -1,15 +1,9 @@
 var nodeURL = 'http://192.168.0.2:4000';
-var searching = false;
-var firstIndexTime = null;
-var lastIndexTime = null;
-var minRelevance = null;
 var sources = new Array();
 //var tags = new Array();
 var zones = new Array();
 var allZones = new Array();
 var tab = "";
-var host = "";
-var port = "";
 var zoneInitiated = false;
 var zUserGroups = new Array();
 
@@ -21,6 +15,10 @@ function init() {
     initZCtx(function(zCtx) {
         initFilters(zCtx);
         initZonas(zCtx.selZone);
+        zcSetTab(tab);
+        if (typeof(zCtx.selZone) != 'undefined' && zCtx.selZone != '' && zCtx.selZone != null) {
+            setZone(zCtx.selZone, zcGetSelectedZoneName());
+        }
     });
 }
 
@@ -28,13 +26,14 @@ function initPost() {
    setInterval(function () {
        loadPost(false);
    }, 60000);
-   getAllTags();
    loadPost(true);
+   getAllTags();
 }
 
 function initFilters(zCtx) {
     initSourceFilters(zCtx);
     initTagFilters(zCtx);
+    initTempFilters(zCtx);
     initPost();
 }
 
@@ -113,6 +112,11 @@ function initTagFilters(zCtx) {
     });
 }
 
+function initTempFilters(zCtx) {
+    $('tempoSelect').value = zCtx.filters.temp;
+    $('tempoSelect').addEventListener('change', onTempoChange, false);
+}
+
 function loadMunicipios(id_provincia, selZone) {
     $('zonalid').empty();
     getZonesByProvincia(id_provincia, function(zones) {
@@ -120,7 +124,7 @@ function loadMunicipios(id_provincia, selZone) {
             new Element('option', {
                    'value': zone.id,
                    'html': zone.name.replace(/_/g, ' ').capitalize(),
-                   'onclick': 'setSelectedZone(this.value)'
+                   'onclick': "setZone(this.value, this.innerHTML.replace(/ /g, '_').toLowerCase())"
                }).inject($('zonalid'));
         });
         if (selZone != null) {
@@ -129,89 +133,23 @@ function loadMunicipios(id_provincia, selZone) {
     });
 }
 
- function setSource(source, checked){
-
-        var url = "/index.php?option=com_zonales&task="+(checked ? 'add' : 'remove')+"Source&source="+source;
-
-        new Request({
-            url: url,
-            method: 'get'
-        }).send();
-    }
-
-function getSolrDate(millis){
-    var date = new Date(millis);
-    return date.getFullYear() + '-' + complete(date.getMonth() + 1) + '-' + complete(date.getDate()) + 'T' +
-    complete(date.getHours()) + ':' + complete(date.getMinutes()) + ':' + complete(date.getSeconds()) + '.' + date.getMilliseconds() + 'Z';
+function setZone(zoneId, zoneName) {
+    setFirstIndexTime(null);
+    setLastIndexTime(null);
+    setMinRelevance(null);
+    $('postsContainer').empty();
+    $('newPostsContainer').empty();
+    setSelectedZone(zoneId, zoneName, function() {
+        loadPost(true);
+    });
 }
 
-function getSolrSort(myTab){
-
-    var res = "";
-
-    if (myTab == "enlared" || myTab == "noticiasenlared"){
-        res = "max(modified,created)+desc";
-    }
-    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
-        res = "relevance+desc";
-
-    return res;
-}
-
-function getSolrSources(myTab){
-
-    /*var res  = "(";
-    res += mySources.join("+OR+");
-    res += ")";*/
-    var res = "";
-    if (myTab == "enlared" || myTab == "relevantes"){
-        res = "q=source:(facebook+OR+twitter)";
-    }
-    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
-        res = "q=!source:(facebook+OR+twitter)";
-    }
-    if (myTab == "portada"){
-        res = "q=tags:(Portada)";
-    }
-
-    return res;
-
-
-}
-function getSolrZones(myZones)
-{
-    if(!myZones || myZones.length==0)
-        return "";
-
-    var res  = "+AND+zone:(";
-    res += myZones.join("+OR+");
-    res += ")";
-
-    return res;
-
-
-}
-function getSolrRange(myTab, more){
-
-    var res = "";
-
-    if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada" ){
-        if (!more)
-            res = (lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '');
-        else
-            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']';
-    }
-
-    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" ){
-        if (!more){
-            res =(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + 10800001)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
-                ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]' ;
-
-        }
-        else
-            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']'+'&fq=relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']' ;
-    }
-    return res;
+function onTempoChange() {
+    $('postsContainer').empty();
+    $('newPostsContainer').empty();
+    setLastIndexTime(null);
+    zcSetTemp($('tempoSelect').value);
+    loadPost(true);
 }
 
 function complete(number){
@@ -219,82 +157,32 @@ function complete(number){
 }
 
 function loadPost(first){
-    if(searching)
-        return;
-    urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort="+
-    getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
-    getSolrSources(tab)+
-    getSolrZones(zones)+
-    getSolrRange(tab,false);
-
-    var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(urlSolr);
-
-    var reqTwitter = new Request.JSON({
-        url: urlProxy,
-        method: 'get',
-        onRequest: function(){
-            //status.set('innerHTML', 'Recuperando posts...');
-            searching = true;
-        },
-        onComplete: function(jsonObj) {
-            // actualizar pagina
-            searching = false;
-            if(typeof jsonObj != 'undefined'){
-                if(first){
-                    updatePosts(jsonObj,$('postsContainer'));
-                    armarTitulo(tab);
-                }
-                else {
-                    updatePosts(jsonObj,$('newPostsContainer'));
-                    if($('newPostsContainer').childNodes.length > 0){
-                        $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
-                        $('verNuevos').setStyle('display','block');
-                    } else{
-                        $('verNuevos').setStyle('display','none');
-                    }
+    //alert("LoadPost: " + JSON.stringify(zcGetContext()));
+    loadSolrPost(tab, false, function(jsonObj) {
+        if(typeof jsonObj != 'undefined'){
+            if(first){
+                updatePosts(jsonObj,$('postsContainer'));
+                armarTitulo(tab);
+            }
+            else {
+                updatePosts(jsonObj,$('newPostsContainer'));
+                if($('newPostsContainer').childNodes.length > 0){
+                    $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
+                    $('verNuevos').setStyle('display','block');
+                } else{
+                    $('verNuevos').setStyle('display','none');
                 }
             }
-        },
-
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        //status.set('innerHTML', 'Twitter: The request failed.');
         }
-    }).send();
+    });
 }
 
 function loadMorePost(){
-
-    // urlSolrLoadMore += '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']';
-    //"/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Facebook+OR+Twitter)"+(<?php echo strlen($this->zonal_id) > 0 ? "'+AND+zone:".$this->zonal_id."'" : "''"; ?>);
-    urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort="+
-    getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
-    getSolrSources(tab)+
-    getSolrZones(zones)+
-    getSolrRange(tab,true);
-
-    var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(urlSolr);
-
-    var reqTwitter = new Request.JSON({
-        url: urlProxy,
-        method: 'get',
-        onRequest: function(){
-        //status.set('innerHTML', 'Recuperando posts...');
-        },
-        onComplete: function(jsonObj) {
-            // actualizar pagina
-            if(typeof jsonObj != 'undefined')
-                updatePosts(jsonObj, $('postsContainer'),true);
-            armarTitulo(tab);
-        },
-
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        //status.set('innerHTML', 'Twitter: The request failed.');
-        }
-    }).send();
+    loadSolrPost(tab, true, function(jsonObj) {
+        if(typeof jsonObj != 'undefined')
+            updatePosts(jsonObj, $('postsContainer'),true);
+        armarTitulo(tab);
+    });
 }
 
 function getTarget(post) {
@@ -367,15 +255,15 @@ function updatePosts(json, component, more) {
         return;
     if(typeof more == 'undefined' || !more) {
         json.response.docs.reverse();
-        if(!firstIndexTime) {
-            firstIndexTime = json.response.docs.pick().indexTime;
+        if(!getFirstIndexTime()) {
+            setFirstIndexTime(json.response.docs.pick().indexTime);
         }
     } else {
-        firstIndexTime = json.response.docs.getLast().indexTime;
+        setFirstIndexTime(json.response.docs.getLast().indexTime);
     }
     json.response.docs.each(function(doc){
         var time = new Date(doc.indexTime).getTime();
-        lastIndexTime = time > lastIndexTime ||  lastIndexTime == null ? time : lastIndexTime;
+        setLastIndexTime((time > getLastIndexTime()) ||  getLastIndexTime() == null ? time : getLastIndexTime());
         var post = eval('('+doc.verbatim+')');
         var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
         div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
@@ -607,12 +495,12 @@ function updatePosts(json, component, more) {
           });
         }
 
-        if (minRelevance != null) {
-            if (parseInt(post.relevance) < minRelevance) {
-                minRelevance = parseInt(post.relevance);
+        if (getMinRelevance() != null) {
+            if (parseInt(post.relevance) < getMinRelevance()) {
+                setMinRelevance(parseInt(post.relevance));
             }
         } else {
-            minRelevance = parseInt(post.relevance);
+            setMinRelevance(parseInt(post.relevance));
         }
 
         div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
@@ -714,7 +602,7 @@ function setSourceVisible(source, visible) {
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-
+    
     zCtxChkTags.each(function (chkTag) {
        if (chkTag != tag) {
            zcUncheckTag(chkTag);
@@ -740,7 +628,7 @@ function setTagVisible(tag, checked) {
     } else {
         zcUncheckTag(tag);
     }
-
+    
     //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var posts = $$('div#postsContainer div.story-item');
@@ -754,7 +642,7 @@ function setTagVisible(tag, checked) {
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-
+   
 }
 
 function addMilli(date) {
@@ -819,22 +707,41 @@ function prettyDate(time){
         }
     });
 */
+
+
 function armarTitulo(tabTemp){
     var temp;
     tabTemp = tab
     document.getElementById('tituloSup').innerHTML = "";
+
+    if (tabTemp == 'relevantes'){
+        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked) {
+                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de la Red Social: "
+                if(index != 0)
+                    document.getElementById('tituloSup').innerHTML += ", ";
+                document.getElementById('tituloSup').innerHTML += element.value+" ";
+
+            }
+        });
+    }
+
     if (tabTemp == 'noticiasenlared'){
+        
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            if(element.checked && temp < 5 ) {
-                temp++;
+           temp++;
+           if(temp < 5 && element.checked ) {
+                
+              //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-
+                
             }
-            else if (element.checked && temp > 5 ){
+
+            else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de mas de 5 diarios";
 
@@ -844,15 +751,15 @@ function armarTitulo(tabTemp){
     if (tabTemp == 'noticiasenlaredrelevantes'){
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            temp++;
             if(element.checked && temp < 5 ) {
-                temp++;
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-
+                
             }
-            else{
+            else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de Mayor Relevancia de mas de 5 diarios";
 
@@ -867,12 +774,12 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value+" ";
-
+                
             }
         });
 
     }
-    if (tabTemp == 'releventes'){
+   /* if (tabTemp == 'releventes'){
         $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked) {
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo las Noticias mas Relevantes de la Red Social: "
@@ -881,6 +788,8 @@ function armarTitulo(tabTemp){
                 document.getElementById('tituloSup').innerHTML += element.value;
             }
         });
-    }
+    }*/
+    
 }
 
+//zcSetTemp($('tempoSelect').value);
