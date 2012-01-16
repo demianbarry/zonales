@@ -42,7 +42,7 @@ function getSolrSort(myTab){
     var res = "";
 
     if (myTab == "enlared" || myTab == "noticiasenlared"){
-        res = "max(modified,created)+desc";
+        res = "modified+desc";
     }
     if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
         res = "relevance+desc";

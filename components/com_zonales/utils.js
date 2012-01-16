@@ -30,7 +30,7 @@ function spanishDate(d){
 
     var monthname=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
-    return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear();
+    return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear(); 
 }
 
 function getSolrDate(d){
@@ -98,7 +98,7 @@ function formatJson(val) {
     return retval;
 }
 
-function lookupGeoData(latitude,longitude,localidad,user) {
+function lookupGeoData(latitude,longitude,localidad,user) {            
     var geoObj = new Object();
     var returnFieldMap = new Object();
     geoObj['startAddress'] = localidad;
@@ -121,7 +121,7 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 			latitude : '<LAT>',
             longitude : '<LNG>',
             'geoposition1c' : '<CITY>',   ...or <COUNTRY>, <STATE>, <DISTRICT>,
-            <CITY>, <SUBURB>, <ZIP>, <STREET>, <STREETNUMBER>
+            <CITY>, <SUBURB>, <ZIP>, <STREET>, <STREETNUMBER> 
 			'geoposition1d' : '<ADDRESS>'
 		}
 	});*/
@@ -134,7 +134,7 @@ function getAllTags(){
     var urlProxy = proxy + encodeURIComponent(url);
     new Request({
         url: urlProxy,
-        method: 'get',
+        method: 'get',        
         onSuccess: function(response) {
             response.replace('[','').replace(']','').split(',').each(function(tag) {
                 zTags.include(tag.replace(/_/g, ' ').capitalize());
@@ -146,7 +146,7 @@ function getAllTags(){
 }
 
 getAllTags();
-function populateOptions(event, field, add, elmts){
+function populateOptions(event, field, add, elmts){	
     var container;
     if((container = field.getNext()) == null) {
         container = new Element('div', {
@@ -154,7 +154,7 @@ function populateOptions(event, field, add, elmts){
         }).inject(field, 'after');
     }
     switch(event.keyCode){
-        case 13:
+        case 13:			
             if(!add) {
                 field.set('value', container.getElement('.selected').get('html'));
             } else {
@@ -185,7 +185,7 @@ function populateOptions(event, field, add, elmts){
             }
             break;
         default:
-
+            
             container.empty();
             var query = field.get('value').toLowerCase();
             if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
@@ -193,17 +193,17 @@ function populateOptions(event, field, add, elmts){
             elmts = eval(JSON.stringify(Array.from(elmts)));
             Array.each(elmts,function(el){
                 if(add && query.lastIndexOf(',') != -1)
-                    query = query.substr(query.lastIndexOf(',')+1).trim();
+                    query = query.substr(query.lastIndexOf(',')+1).trim();                                
                 if(el.toLowerCase().indexOf(query) != -1) {
                     new Element('p', {
                         'html': el
-                    }).inject(container);
+                    }).inject(container);				
                 }
             });
             if(container.childNodes.length > 0)
                 container.firstChild.addClass('selected');
-            break;
-    }
+            break;            
+    }    
 }
 
 function switchButtons(buttons){

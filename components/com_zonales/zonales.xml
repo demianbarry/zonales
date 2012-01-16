@@ -36,6 +36,7 @@
         <filename>helper.php</filename>
         <filename>ZContext.php</filename>
         <filename>ZContext.js</filename>
+        <filename>solr.js</filename>
 
         <filename>views/index.html</filename>
         <filename>views/zonal/view.html.php</filename>
@@ -63,6 +64,7 @@
         <filename>views/portada/view.html.php</filename>
         <filename>views/portada/index.html</filename>
         <filename>views/portada/tmpl/index.html</filename>
+        <filename>views/portada/tmpl/default.xml</filename>
         <filename>views/portada/tmpl/default.php</filename>
 
         <filename>views/geoactivos/view.html.php</filename>
