@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -55,14 +56,8 @@ import org.zonales.feedSelector.daos.FeedSelectorDao;
  */
 public class ZCrawlFeedsServlet extends HttpServlet {
 
-    List<String> blacklist = null;
-    List<String> searchlist = null;
-    List<String> tagslist = null;
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
-    String zone = null;
-    String latitud = "0.0";
-    String longitud = "0.0";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -75,14 +70,29 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+
         String url = request.getParameter("url") != null ? request.getParameter("url") : "";
-        zone = request.getParameter("zone") != null ? request.getParameter("zone") : "";
+
+        String zone = request.getParameter("zone") != null ? request.getParameter("zone") : "";
+        params.put("zone", zone);
+
         String words = request.getParameter("palabras") != null ? request.getParameter("palabras") : "";
         String nowords = request.getParameter("nopalabras") != null ? request.getParameter("nopalabras") : "";
         String tags = request.getParameter("tags") != null ? request.getParameter("tags") : "";
         String formato = request.getParameter("formato") != null ? request.getParameter("formato") : "";
-        latitud = request.getParameter("latitud") != null ? request.getParameter("latitud") : "0.0";
-        longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
+
+        String latitud = request.getParameter("latitud") != null ? request.getParameter("latitud") : "0.0";
+        params.put("latitud", latitud);
+
+        String longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
+        params.put("longitud", longitud);
+
+        List<String> searchlist = new ArrayList<String>();
+        List<String> blacklist = new ArrayList<String>();
+        List<String> tagslist = new ArrayList<String>();
+
         InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
         Properties props = new Properties();
         props.load(stream);
@@ -95,21 +105,26 @@ public class ZCrawlFeedsServlet extends HttpServlet {
                 searchlist.add(palabra);
             }
         }
+        params.put("searchlist", searchlist);
+
         if (!"".equals(nowords)) {
             blacklist = new ArrayList<String>();
             for (String nopalabra : nowords.split(",")) {
                 blacklist.add(nopalabra);
             }
         }
+        params.put("blacklist", blacklist);
+
         if (!"".equals(tags)) {
             tagslist = new ArrayList<String>();
             for (String tag : tags.split(",")) {
                 tagslist.add(tag);
             }
         }
+        params.put("tagslist", tagslist);
 
         try {
-            response.getWriter().println(getParse(java.net.URLEncoder.encode(url.toString(), "UTF-8"), "json".equalsIgnoreCase(formato)));
+            response.getWriter().println(getParse(java.net.URLEncoder.encode(url.toString(), "UTF-8"), "json".equalsIgnoreCase(formato), params));
         } catch (Exception ex) {
             StringBuilder stacktrace = new StringBuilder();
             for (StackTraceElement line : ex.getStackTrace()) {
@@ -141,7 +156,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
      *         were present in the feed file that this {@link Parser} dealt with.
      *
      */
-    public String getParse(String url, boolean json) throws Exception {
+    public String getParse(String url, boolean json, HashMap<String, Object> params) throws Exception {
 
         url = URLDecoder.decode(url, "UTF-8");
         URL feedURL = new URL(url);
@@ -164,125 +179,121 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         FeedSelectors feedSelectors;
 
-        for (int i = 0; i < feed.getItemCount(); i++) {
-            FeedItem entry = feed.getItem(i);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
-
-            doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
-            feedSelectors = dao.retrieve(url);
-            if (findWords(entry.getTitle(), doc, searchlist, blacklist, feedSelectors)) {
-                newEntry = new PostType();
-                String source = feed.getHeader().getLink().toString().substring(7);
-                if (source.indexOf("/") != -1) {
-                    source = source.substring(0, source.indexOf("/") + 1);
-                }
-                newEntry.setSource(source);
-                newEntry.setZone(zone);
-
-                newEntry.setSourceLatitude(Double.parseDouble(latitud));
-                newEntry.setSourceLongitude(Double.parseDouble(longitud));
-                // newEntry.setId(entry.getUri());
-                // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
-                newEntry.setId(entry.getGUID());
-                newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
-                newEntry.setTitle(entry.getTitle());
-                newEntry.setText(entry.getDescriptionAsText());
-                newEntry.setTags(new TagsType(tagslist));
-
-                if (newEntry.getLinks() == null) {
-                    newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
-                }
-                if ((links = getLinks(feedSelectors, doc)) != null) {
-                    newEntry.getLinks().getLink().addAll(links);
-                }
-                newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
-
-
-                if (newEntry.getActions() == null) {
-                    newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
-                }
-                newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
-
-                newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
-                newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
-                newEntry.setRelevance(0);
-                if (!json) {
-                    newEntry.setVerbatim(gson.toJson(newEntry));
-                }
-
-                newsList.add(newEntry);
-
-                // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
-            }
-        }
-
-        for (int i = 0; i < feed.getItemCount(); i++) {
-            FeedItem entry = feed.getItem(i);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
-
-            doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
-            feedSelectors = dao.retrieve(url);
-            if (findWords(entry.getTitle(), doc, searchlist, blacklist, feedSelectors)) {
-                newEntrySolr = new Post();
-                String source = feed.getHeader().getLink().toString().substring(7);
-                if (source.indexOf("/") != -1) {
-                    source = source.substring(0, source.indexOf("/") + 1);
-                }
-                newEntrySolr.setSource(source);
-                newEntrySolr.setZone(zone);
-
-                newEntrySolr.setSourceLatitude(Double.parseDouble(latitud));
-                newEntrySolr.setSourceLongitude(Double.parseDouble(longitud));
-                // newEntry.setId(entry.getUri());
-                // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
-                newEntrySolr.setId(entry.getGUID());
-                newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
-                newEntrySolr.setTitle(entry.getTitle());
-                newEntrySolr.setText(entry.getDescriptionAsText());
-                newEntrySolr.setTags(new ArrayList<String>(tagslist));
-
-                if (newEntrySolr.getLinks() == null) {
-                    newEntrySolr.setLinks(new ArrayList<LinkType>());
-                }
-                if ((links = getLinks(feedSelectors, doc)) != null) {
-                    newEntrySolr.getLinks().addAll(links);
-                }
-                newEntrySolr.getLinks().add(new LinkType("source", entry.getLink().toString()));
-
-
-                if (newEntrySolr.getActions() == null) {
-                    newEntrySolr.setActions(new ArrayList<ActionType>());
-                }
-                newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
-
-                newEntrySolr.setCreated((entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
-                newEntrySolr.setModified((entry.getModDate() != null ? entry.getModDate().getTime() : newEntrySolr.getCreated()));
-                newEntrySolr.setRelevance(0);
-                if (!json) {
-                    newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
-                }
-
-                newsListSolr.add(newEntrySolr);
-
-                // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
-            }
-        }
-
-
-        PostsType news;
-
-        news = new PostsType(newsList);
-        completeLinks(news);
-
         if (!json) {
+            for (int i = 0; i < feed.getItemCount(); i++) {
+                FeedItem entry = feed.getItem(i);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
+
+                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
+                feedSelectors = dao.retrieve(url);
+                if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
+                    newEntry = new PostType();
+                    String source = feed.getHeader().getLink().toString().substring(7);
+                    if (source.indexOf("/") != -1) {
+                        source = source.substring(0, source.indexOf("/") + 1);
+                    }
+                    newEntry.setSource(source);
+                    newEntry.setZone((String) params.get("zone"));
+
+                    newEntry.setSourceLatitude(Double.parseDouble((String) params.get("latitud")));
+                    newEntry.setSourceLongitude(Double.parseDouble((String) params.get("longitud")));
+                    // newEntry.setId(entry.getUri());
+                    // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
+                    newEntry.setId(entry.getGUID());
+                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
+                    newEntry.setTitle(entry.getTitle());
+                    newEntry.setText(entry.getDescriptionAsText());
+                    newEntry.setTags(new TagsType((ArrayList) params.get("tagslist")));
+
+                    if (newEntry.getLinks() == null) {
+                        newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
+                    }
+                    if ((links = getLinks(feedSelectors, doc)) != null) {
+                        newEntry.getLinks().getLink().addAll(links);
+                    }
+                    newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
+
+
+                    if (newEntry.getActions() == null) {
+                        newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
+                    }
+                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
+
+                    newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
+                    newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
+                    newEntry.setRelevance(0);
+                    if (!json) {
+                        newEntry.setVerbatim(gson.toJson(newEntry));
+                    }
+
+                    newsList.add(newEntry);
+
+                    // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
+                }
+            }
+
+            PostsType news;
+
+            news = new PostsType(newsList);
+            completeLinks(news);
             Feed2XML(news, sw);
+            return sw.toString();
+        } else {
+            for (int i = 0; i < feed.getItemCount(); i++) {
+                FeedItem entry = feed.getItem(i);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
+
+                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
+                feedSelectors = dao.retrieve(url);
+                if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
+                    newEntrySolr = new Post();
+                    String source = feed.getHeader().getLink().toString().substring(7);
+                    if (source.indexOf("/") != -1) {
+                        source = source.substring(0, source.indexOf("/") + 1);
+                    }
+                    newEntrySolr.setSource(source);
+                    newEntrySolr.setZone((String) params.get("zone"));
+
+                    newEntrySolr.setSourceLatitude(Double.parseDouble((String) params.get("latitud")));
+                    newEntrySolr.setSourceLongitude(Double.parseDouble((String) params.get("longitud")));
+                    // newEntry.setId(entry.getUri());
+                    // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
+                    newEntrySolr.setId(entry.getGUID());
+                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
+                    newEntrySolr.setTitle(entry.getTitle());
+                    newEntrySolr.setText(entry.getDescriptionAsText());
+                    newEntrySolr.setTags(new ArrayList<String>((ArrayList) params.get("tagslist")));
+
+                    if (newEntrySolr.getLinks() == null) {
+                        newEntrySolr.setLinks(new ArrayList<LinkType>());
+                    }
+                    if ((links = getLinks(feedSelectors, doc)) != null) {
+                        newEntrySolr.getLinks().addAll(links);
+                    }
+                    newEntrySolr.getLinks().add(new LinkType("source", entry.getLink().toString()));
+
+
+                    if (newEntrySolr.getActions() == null) {
+                        newEntrySolr.setActions(new ArrayList<ActionType>());
+                    }
+                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
+
+                    newEntrySolr.setCreated((entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
+                    newEntrySolr.setModified((entry.getModDate() != null ? entry.getModDate().getTime() : newEntrySolr.getCreated()));
+                    newEntrySolr.setRelevance(0);
+                    if (!json) {
+                        newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
+                    }
+
+                    newsListSolr.add(newEntrySolr);
+
+                    // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
+                }
+            }
+            return "{post: " + gson.toJson(newsListSolr) + "}";
         }
-
-        return json ? "{post: " + gson.toJson(newsListSolr) + "}" : sw.toString();
-
-
     }
 
     public List<LinkType> getLinks(FeedSelectors feedSelectors, Document doc) throws FileNotFoundException, IOException, BadLocationException {
@@ -350,80 +361,38 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
     }
 
-    public void setSearchList(String filters) {
-
-        List<String> listwords = new ArrayList<String>();
-        StringTokenizer tokens = new StringTokenizer(filters);
-
-        while (tokens.hasMoreTokens()) {
-            listwords.add(tokens.nextToken());
-        }
-
-        for (String word : listwords) {
-            this.searchlist.add(word);
-        }
-    }
-
-    public void setBlackList(String filters) {
-
-        List<String> listwords = new ArrayList<String>();
-        StringTokenizer tokens = new StringTokenizer(filters);
-
-        while (tokens.hasMoreTokens()) {
-            listwords.add(tokens.nextToken());
-        }
-
-        for (String word : listwords) {
-            this.blacklist.add(word);
-        }
-    }
-
-    public void setTags(String filters) {
-
-        List<String> listwords = new ArrayList<String>();
-        StringTokenizer tokens = new StringTokenizer(filters);
-
-        while (tokens.hasMoreTokens()) {
-            listwords.add(tokens.nextToken());
-        }
-
-        for (String word : listwords) {
-            this.tagslist.add(word);
-        }
-    }
-
     public boolean findWords(String title, Document doc, List<String> slist, List<String> blist, FeedSelectors feedSelectors) throws FileNotFoundException, IOException, BadLocationException {
         return true;
         /*String contenido = null;
-
+        
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
         feedSelectors = dao.retrieve("default");
         }
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
         return false;
         }
-
+        
         Elements noticia = null;
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
         if ("content".equals(feedSelector.getType())) {
         noticia = doc.select(feedSelector.getSelector());
         }
         }
-
+        
         if (noticia != null) {
         contenido = noticia.text();
         }
-
+        
         if (slist != null && !slist.isEmpty()) {
         // System.out.println("Entro slist.isEmpty()");
         for (String palabra : slist) {
         if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1)) {
         return false;
         }
-
+        
         }
         }
-
+        
         if (blist != null && !blist.isEmpty()) {
         // System.out.println("Entro blist.isEmpty()");
         for (String palabra : blist) {
@@ -432,7 +401,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
         }
         }
-
+        
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "findWords result: {0}", new Object[]{true});
         return true;*/
     }
