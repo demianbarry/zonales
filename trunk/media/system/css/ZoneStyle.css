@@ -208,7 +208,7 @@ h1.big-title {
 }
 .thumb {
     border: 2px solid #E5ECF3;
-    display: block;
+    display: inline;
     overflow: hidden;
     position: relative;
 }
@@ -220,7 +220,7 @@ h1.big-title {
 }
 .thumb img {
     display: block;
-	width: 100%
+    width: 130px;
 }
 .thumb-xs {
     height: 24px;
@@ -269,8 +269,10 @@ h1.big-title {
     width: 61px;
 }
 .story-item .thumb {
-	width: 100px;
+    width: 130px;
     border-width: 4px;
+    float: left;
+    margin-right: 10px;
 }
 .rounded-img {
     background-color: #FFFFFF;
@@ -1890,7 +1892,7 @@ label {
     cursor: pointer;
     height: 68px;
     position: relative;
-    text-align: center;
+    text-align: center;    
 }
 .zonales-count-wrapper {
     color: #716B14;
@@ -1932,7 +1934,7 @@ label {
     letter-spacing: -0.035em;
     position: absolute;
     text-align: center;
-    top: 0;
+    top: 0;    
 }
 .zonales-count .new-count {
     opacity: 0;
@@ -2226,7 +2228,7 @@ label {
     margin-bottom: 7px;
 }
 .story-item-title {
-    /*float: left;*/
+    float: left;
     font-size: 1.33333em;
     line-height: 1.125em;
     margin-bottom: 4px;
@@ -4350,10 +4352,10 @@ html body.hide-uprrail1 .uprrail1 * {
 }
 
 .story-item-replies-icon {
-  background-image: url("http://files.softicons.com/download/internet-cons/social-media-icons-by-icondock/png/16/retweet.png");
+  background-image: url("http://www.thecurerecords.com/images/IconReply.gif");
   background-position: right center;
   background-repeat: no-repeat;
-  background-size: 15px auto;
+  background-size: 11px auto;
   float: right;
   height: 12px;
   width: 18px;
@@ -4373,16 +4375,23 @@ div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-down {
 	background-image: url("/images/arrow_down.png");
 }
 
-.zonales-count-wrapper-up, .zonales-count-wrapper-down {
+.zonales-count-wrapper-up, .zonales-count-wrapper-down {	
 	background-position: center center;
 	background-repeat: no-repeat;
-	height: 20px;
-}
-
-div.newPosts {
-	background-color: #DCEFF4;
+	height: 20px;	
 }
 
 .olLayerGoogleCopyright {
     display: none;
+}
+
+div.suggestions {
+	position: absolute; 
+	background: none repeat scroll 0% 0% #D3FFF3;
+        z-index: 999;
+}
+
+div.suggestions .selected{
+	position: absolute; 
+	background: none repeat scroll 0% 0% #AEFFE9;
 }

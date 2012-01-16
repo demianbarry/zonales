@@ -3,6 +3,7 @@ var socket;
 var sessionId;
 var selZoneName = "";
 var efZoneName = "";
+var provinceName = "";
 
 function Source() {
 	this.name = "";
@@ -36,11 +37,11 @@ function initZCtx(callback) {
           zCtx = zCtxFromServer;
           getZoneById(zCtx.selZone, function(selZone) {
               if (typeof(selZone) != 'undefined' && selZone != null) {
-                  selZoneName = selZone.name;
+                  selZoneName = selZone.name.replace(/_/g, ' ').capitalize();;
               }
               getZoneById(zCtx.efZone, function(efZone) {
                   if (typeof(efZone) != 'undefined' && efZone != null) {
-                      efZoneName = efZone.name;
+                      efZoneName = efZone.name.replace(/_/g, ' ').capitalize();;
                   }
                   callback(zCtx);
                   return(this);
@@ -54,18 +55,29 @@ function initZCtx(callback) {
     zCtx = context;
 }*/
 
-function setSelectedZone(zone, zoneName, callback) {
+function setSelectedZone(zone, zoneName, parent, parentName, callback) {
+   //alert("EN CONTEXT: SetZone. zoneId: " + zone + " zoneName: " + zoneName + " parendId: " + parent + " parentName: " + parentName);
    //Actualizo en contexto en el cliente
-    zCtx.selZone = zone;
-    selZoneName = zoneName;
+    if (zone == '' && parent == '') {
+        zCtx.selZone = '';
+        selZoneName = '';
+    } else if (zone == '' && parent != '') {
+        zCtx.selZone = parent;
+        selZoneName = parentName;
+        zone = parent;
+    } else {
+        zCtx.selZone = zone;
+        selZoneName = zoneName;
+    }
 
     //Persisto el contexto en el servidor
+    //alert("ZONE: " + zone + " ZONE NAME: " + zoneName);
     socket.emit('setSelectedZoneToCtx', {sessionId: sessionId, zone: zone}, function(response) {
        if (typeof(response) != 'undefined' && response != null) {
            zCtx.efZone = response.id;
            efZoneName = response.name.replace(/_/g, ' ').capitalize();
        } else {
-           zCtx.efZone = null;
+           zCtx.efZone = "";
            efZoneName = "";
        }
        callback();
@@ -75,6 +87,14 @@ function setSelectedZone(zone, zoneName, callback) {
 
 function zcGetContext() {
     return zCtx;
+}
+
+function zcSetProvinceName(name) {
+    provinceName = name;
+}
+
+function zcGetProvinceName(){
+    return provinceName;
 }
 
 function zcAddSource(source){   

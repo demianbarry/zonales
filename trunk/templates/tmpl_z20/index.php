@@ -59,7 +59,12 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
-        <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
+        <script language="javascript" type="text/javascript" src="http://192.168.1.2:4000/socket.io/socket.io.js"></script>
+        <script language="javascript" type="text/javascript">
+            /*var borrame = '<?php var_dump(JUserHelper::getUserGroups(JFactory::getUser()->get('id')))?>';*/
+            var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
+        </script>
+
     </head>
 
     <body>

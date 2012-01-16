@@ -3,13 +3,14 @@
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
 zones.push(<?php echo $this->zCtx->selectedZone ?>);
-zUserGroups.push('<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>');
 tab ="enlared";
 
 -->
 
 </script>
 <label id= "titulo1"></label><label id="tituloSup"></label>
+<label id= "tituloZone"></label>
+
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>

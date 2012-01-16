@@ -1,4 +1,4 @@
-var nodeURL = 'http://192.168.0.2:4000';
+var nodeURL = 'http://192.168.1.2:4000';
 var sources = new Array();
 //var tags = new Array();
 var zones = new Array();
@@ -8,25 +8,25 @@ var zoneInitiated = false;
 var zUserGroups = new Array();
 
 window.addEvent('domready', function() {
-    init();
+    initAll();
 });
 
-function init() {
+function initAll() {
     initZCtx(function(zCtx) {
         initFilters(zCtx);
         initZonas(zCtx.selZone);
         zcSetTab(tab);
-        if (typeof(zCtx.selZone) != 'undefined' && zCtx.selZone != '' && zCtx.selZone != null) {
-            setZone(zCtx.selZone, zcGetSelectedZoneName());
-        }
+        //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+        setZone(zCtx.selZone, zcGetSelectedZoneName());
     });
+    zUserGroups = loguedUser;
 }
 
 function initPost() {
    setInterval(function () {
        loadPost(false);
    }, 60000);
-   loadPost(true);
+   //loadPost(true);
    getAllTags();
 }
 
@@ -45,9 +45,22 @@ function initZonas(selZone) {
                 new Element('option', {
                        'value': provincia.id,
                        'html': provincia.name.replace(/_/g, ' ').capitalize(),
-                       'onclick': 'loadMunicipios(this.value, null);'
+                       'onclick': 'loadMunicipios(this.value, null);zcSetProvinceName(this.innerHTML);'
                    }).inject($('provincias'));
             });
+            if (selZone != "" && typeof(selZone) != 'undefined') {
+                getZoneById(selZone, function(zone) {
+                    if (zone.type != 'provincia') {
+                        loadMunicipios(zone.parent, zone.id);
+                        getZoneById(zone.parent, function(parent) {
+                            $('provincias').value = parent.id;
+                        });
+                    } else {
+                        loadMunicipios(zone.id, null);
+                        $('provincias').value = zone.id;
+                    }
+                });
+            }
         });
 
         getAllZones(function(zones) {
@@ -55,15 +68,6 @@ function initZonas(selZone) {
                allZones.push(zone.name.replace(/_/g, ' ').capitalize());
             });
         });
-
-        if (selZone != "") {
-            getZoneById(selZone, function(zone) {
-                loadMunicipios(zone.parent, zone.id);
-                getZoneById(zone.parent, function(parent) {
-                    $('provincias').value = parent.id;
-                });
-            });
-        }
     }
 }
 
@@ -119,27 +123,38 @@ function initTempFilters(zCtx) {
 
 function loadMunicipios(id_provincia, selZone) {
     $('zonalid').empty();
-    getZonesByProvincia(id_provincia, function(zones) {
-        zones.each(function(zone) {
-            new Element('option', {
-                   'value': zone.id,
-                   'html': zone.name.replace(/_/g, ' ').capitalize(),
-                   'onclick': "setZone(this.value, this.innerHTML.replace(/ /g, '_').toLowerCase())"
-               }).inject($('zonalid'));
+    new Element('option', {
+        'value': '',
+        'html': 'Seleccione un municipio...',
+        'onclick': "setZone(this.value, '', $('provincias').value, zcGetProvinceName())"
+    }).inject($('zonalid'));
+
+    if (id_provincia != '') {
+        getZonesByProvincia(id_provincia, function(zones) {
+            zones.each(function(zone) {
+                new Element('option', {
+                       'value': zone.id,
+                       'html': zone.name.replace(/_/g, ' ').capitalize(),
+                       'onclick': "setZone(this.value, this.innerHTML, $('provincias').value, zcGetProvinceName())"
+                   }).inject($('zonalid'));
+            });
+            if (selZone != null) {
+                $('zonalid').value = selZone;
+            }
         });
-        if (selZone != null) {
-            $('zonalid').value = selZone;
-        }
-    });
+    }
 }
 
-function setZone(zoneId, zoneName) {
+function setZone(zoneId, zoneName, parentId, parentName) {
+    //alert("SetZone. zoneId: " + zoneId + " zoneName: " + zoneName + " parendId: " + parentId + " parentName: " + parentName);
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
     $('postsContainer').empty();
     $('newPostsContainer').empty();
-    setSelectedZone(zoneId, zoneName, function() {
+    setSelectedZone(zoneId, zoneName, parentId, parentName, function() {
+        //var zCtx = zcGetContext();
+        //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
         loadPost(true);
     });
 }
@@ -221,13 +236,13 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-        if (tab == "enlared" || tab == "relevantes" || tab == "portada"){
+        if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var post = post.clone(true, true);
             post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
             post.injectTop($('postsContainer'));
         }
 
-        if (tab == "noticiasenlared" || tab == "noticiasenlaredrelevantes"){
+        if (tab == "relevantes" || tab == "noticiasenlaredrelevantes"){
             $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
                 var insertado = false;
                 $('postsContainer').getElements('span.zonales-count').each(function(count){
@@ -264,6 +279,7 @@ function updatePosts(json, component, more) {
     json.response.docs.each(function(doc){
         var time = new Date(doc.indexTime).getTime();
         setLastIndexTime((time > getLastIndexTime()) ||  getLastIndexTime() == null ? time : getLastIndexTime());
+        var modified = doc.modified;
         var post = eval('('+doc.verbatim+')');
         var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
         div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
@@ -280,11 +296,6 @@ function updatePosts(json, component, more) {
             'id':'idPostDiv'
         }).addClass('group').inject(div_story_item).setStyle('display','none'),
         div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
-        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(div_story_item_header),
-        a_title = new Element('a', {
-            'target': '_blank',
-            'href' : getTarget(post)
-        }).set('html',post.title).inject(h3_story_item_title),
         a_edit = new Element('a', {
             'target': '_blank',
             'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
@@ -292,8 +303,19 @@ function updatePosts(json, component, more) {
         a_edit_image = new Element('img',{
             'src': '/media/system/images/edit.png'
         }).inject(a_edit).addClass('edit_img'),
+        table_story_item = new Element('table').inject(div_story_item_header),
+        tr_story_title = new Element('tr').inject(table_story_item),
+        td_story_title = new Element('td').inject(tr_story_title),
+        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
+        a_title = new Element('a', {
+            'target': '_blank',
+            'href' : getTarget(post)
+        }).set('html',post.title).inject(h3_story_item_title),
         span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
-        p_story_item_description = new Element('p').addClass('story-item-description').inject(h3_story_item_title, 'after'),
+        tr_story_description = new Element('tr').inject(table_story_item),
+        //td_story_image = new Element('td').inject(tr_story_description),
+        td_story_description = new Element('td').inject(tr_story_description),
+        p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
         a_story_item_source = new Element('a', {
             'target': '_blank'
         }).set('html','').addClass('story-item-source').inject(p_story_item_description),
@@ -308,7 +330,7 @@ function updatePosts(json, component, more) {
             'target': '_blank',
             'href': post.fromUser.url
         }).set('html',post.source).inject(li_story_submitter),
-        span_storyitem_modified = new Element('span', {}).set('html',prettyDate(parseInt(post.modified))).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+        span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
         span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
         div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
         div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
@@ -347,15 +369,17 @@ function updatePosts(json, component, more) {
                 postLinks =	post.links;
         }
 
+        var a_thumb = new Element('a', {
+            'href': getTarget(post),
+            'target': '_blank'
+        });
+
         if(typeOf(postLinks) == 'array') {
             postLinks.each(function(link){
                 switch (link.type) {
                     case 'picture':
-                        if(div_story_item_media.childNodes.length == 0 && link.url) {
-                            var a_thumb = new Element('a', {
-                                'href': getTarget(post),
-                                'target': '_blank'
-                            }).inject(div_story_item_media).addClass('thumb').addClass('thumb-s'),
+                        if(a_thumb.childNodes.length == 0 && link.url) {
+                            a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
                             img = new Element('img', {
                                 'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
                             }).inject(a_thumb);
@@ -425,7 +449,7 @@ function updatePosts(json, component, more) {
                 'id':idButtonAddTags,
                 'style':'display:none',
                 'src': '/CMUtils/addIcon.gif',
-                'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'")'
+                'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'");' + "$('" + idInputTag + "').value = ''"
             }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
         }
         var zone = post.zone;
@@ -505,31 +529,13 @@ function updatePosts(json, component, more) {
 
         div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
 
-        if (tab == "enlared" || tab == "relevantes" || tab == "portada"){
-            if(typeof more == 'undefined' || !more) {
-                div_story_item.injectTop(component);
-            } else {
-                div_story_item.injectInside(component);
-            }
+        if(typeof more == 'undefined' || !more) {
+            div_story_item.injectTop(component);
+        } else {
+            div_story_item.injectInside(component);
         }
 
-        if (tab == "noticiasenlared" || tab == "noticiasenlaredrelevantes"){
-            var insertado = false;
-            var counts = component.getElements('span.zonales-count');
-            if(typeOf(counts) == 'array') {
-                counts.each(function(count){
-                    if (parseInt(post.relevance) > parseInt(count.innerHTML) && !insertado){
-                        insertado = true;
-                        div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                    }
-
-                });
-            }
-
-            if(!insertado){
-                div_story_item.injectInside(component);
-            }
-        }
+        
 
     });
 }
@@ -684,9 +690,10 @@ function prettyDate(time){
     var seconds = (new Date - new Date(time)) / 1000;
     var token = ' hace', list_choice = 1;
     if (seconds < 0) {
-        seconds = Math.abs(seconds);
+        seconds += 10800;
+        //seconds = Math.abs(seconds);
         //token = 'desde ahora';
-        list_choice = 2;
+        //list_choice = 2;
     }
     var i = 0, format;
     while (format = time_formats[i++])
@@ -699,19 +706,13 @@ function prettyDate(time){
     return time;
 }
 
-/*function armarTitulo(){
-    document.getElementById('tituloSup').innerHTML = "";
-    $('enLaRed').getElements('input[id^=chk]').each(function(element) {
-        if(element.checked) {
-            document.getElementById('tituloSup').innerHTML += element.value + ", ";
-        }
-    });
-*/
-
 
 function armarTitulo(tabTemp){
     var temp;
-    tabTemp = tab
+    tabTemp = tab;
+    var zoneSeltemp = zcGetSelectedZoneName();
+    var zoneEfectemp = zcGetEfectiveZoneName();
+    
     document.getElementById('tituloSup').innerHTML = "";
 
     if (tabTemp == 'relevantes'){
@@ -724,6 +725,7 @@ function armarTitulo(tabTemp){
 
             }
         });
+        
     }
 
     if (tabTemp == 'noticiasenlared'){
@@ -778,17 +780,18 @@ function armarTitulo(tabTemp){
             }
         });
 
+
     }
-   /* if (tabTemp == 'releventes'){
-        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            if(element.checked) {
-                document.getElementById('titulo1').innerHTML = "Ud. esta viendo las Noticias mas Relevantes de la Red Social: "
-                if(index != 0)
-                    document.getElementById('tituloSup').innerHTML += ", ";
-                document.getElementById('tituloSup').innerHTML += element.value;
-            }
-        });
-    }*/
+    if (zoneEfectemp == zoneSeltemp){
+            document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
+        }
+        if (zoneEfectemp != zoneSeltemp){
+            document.getElementById('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
+            if(zoneEfectemp == "")
+                document.getElementById('tituloZone').innerHTML += "todas las noticias";
+            else document.getElementById('tituloZone').innerHTML += "noticias de "+zoneEfectemp;
+        }
+   
     
 }
 
