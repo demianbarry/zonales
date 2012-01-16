@@ -40,7 +40,7 @@ class ZonalesViewEditor extends JView {
         //$document->addScript('/media/system/js/mootools1.js');
         //$document->addStyleSheet('/media/system/css/global.css');
         //$document->addStyleSheet('/media/system/css/content.css');
-        $document->addStylesheet('/media/system/css/ZoneStyle.css');
+        //$document->addStylesheet('/media/system/css/ZoneStyle.css');
 
         $helper = new comZonalesHelper();
 

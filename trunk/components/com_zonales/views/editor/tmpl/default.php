@@ -7,19 +7,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     <head>
         <title>Carga de noticias Zonales</title>
         <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+        <script type="text/javascript">
+            var host = 'localhost';
+            var port = '38080';
+        </script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ckeditor.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>
-        <script type="text/javascript">
-            var host = 'localhost';
-            var port = '38080';
+        <link rel="stylesheet" href="components/com_zonales/content.css" type="text/css" />	
+        <script type="text/javascript">            
             window.addEvent('domready', function(){
-                $('table_content').getElements('input').each(function(el){
+                $('editorForm').getElements('input').each(function(el){
                     el.addEvent('change', function(){
                         switchButtons(['guardarButton']);
                     });
                 });
+                switchButtons(['guardarButton']);
 <?php if (array_key_exists('id', $_GET)): ?>
             getContent('<?php echo $_GET['id'] ?>');
 <?php endif; ?>
@@ -56,7 +60,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 </p>
             </noscript>
         </div>
-        <form action="" method="post">
+        <form id="editorForm" action="" method="post">
             <input type="hidden" id="id" value=""></input>
             <input type="hidden" id="fromUserName" value="<?php echo $this->user->get('username') ?>"></input>
             <input type="hidden" id="fromUserId" value="<?php echo $this->user->get('id') ?>"></input>
@@ -105,7 +109,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, allZones);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>

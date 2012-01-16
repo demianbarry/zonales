@@ -110,9 +110,9 @@ function refreshForm(){
 
 function getContent(id){
     var url = '/solr/select?qt=zonalesContent&wt=json&q=id:'+id;
-    var urlProxy = 'curl_proxy.php';
+    var urlProxy = '/curl_proxy.php';
     new Request.JSON({
-        url: encodeURIComponent(urlProxy),
+        url: urlProxy,
         method: 'get',
         data: {
             'host': host,
@@ -127,6 +127,7 @@ function getContent(id){
             if(!zContent.id)
                 zContent.id = doc.id;
             refreshForm();
+            switchButtonsByWF();
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -149,15 +150,17 @@ function saveContent(){
         },        
         onRequest: function(){            
         },
-        onSuccess: function(response) {			
-            //        commit();
+        onSuccess: function(response) {            
             if(response && response.length != 0){
                 if(response.id){
                     zContent.id = response.id;
+                    if(zContent.state =='created')
+                        zContent.state = 'saved';
                     refreshForm();
-                    alert("Se guardÃ³ correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
+                    switchButtonsByWF();
                 } else {
-                    alert("OcurriÃ³ un error al intentar guardar el documento: "+response);
+                    alert("Ocurrió un error al intentar guardar el documento: "+response);
                 }
             }
         },
@@ -191,7 +194,7 @@ function commit(){
 }
 
 function publishContent(publish){
-    zContent.state = publish ? true : false;
+    zContent.state = publish ? 'published' : 'saved';
     saveContent();
 }
 
@@ -212,7 +215,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'TÃ­tulo'
+        'html' : 'TÃƒÂ­tulo'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
@@ -260,10 +263,10 @@ function makeContentTable(jsonObj, container){
             'html' : post.tags.join(',')
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : getReadableDate(post.created)
+            'html' : getReadableDate(new Date(post.created))
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : getReadableDate(post.modified)
+            'html' : getReadableDate(new Date(post.modified))
         }).inject(config_title_tr);        
         var checktd = new Element('td').inject(config_title_tr);
         new Element ('input',{
@@ -311,4 +314,23 @@ function loadPost(container){
         //status.set('innerHTML', 'Twitter: The request failed.');
         }
     }).send();
+}
+function switchButtonsByWF(){    
+    $$('input[type=button]').each(function(submit){
+        submit.setStyle('display','none');
+    });
+    if(zContent.state == 'created') {
+        $('guardarButton').setStyle('display','inline');        
+    }
+    if(zContent.state == 'saved') {        
+        $('publicarButton').setStyle('display','inline');
+        $('anularButton').setStyle('display','inline');
+    }
+    if(zContent.state == 'published'){
+        $('despublicarButton').setStyle('display','inline');
+        $('anularButton').setStyle('display','inline');
+    }    
+        
+    $('volverButton').setStyle('display','inline');
+    
 }

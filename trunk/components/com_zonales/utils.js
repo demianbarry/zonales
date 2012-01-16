@@ -1,7 +1,7 @@
 //document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
 
 
-var proxy = 'curl_proxy.php?host=localhost&port=38080&ws_path=';
+var proxy = '/curl_proxy.php?host='+(host ? host : 'localhost')+'&port='+(port ? port : '38080')+'&ws_path=';
 var servletUri = 'ZCrawlSources';
 
 String.prototype.capitalize = function(){
@@ -127,7 +127,24 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 	});*/
 }
 
+var allZones = new Array();
 var zTags = new Array();
+
+function getAllZones(){
+    var url = servletUri + "/getZone?name=allNames";
+    var urlProxy = proxy + encodeURIComponent(url);
+    new Request({
+        url: urlProxy,
+        method: 'get',        
+        onSuccess: function(response) {
+            response.replace('[','').replace(']','').split(',').each(function(zone) {
+                allZones.include(zone.replace(/_/g, ' ').capitalize());
+            });
+        },
+        onFailure: function(){
+        }
+    }).send();
+}
 
 function getAllTags(){
     var url = servletUri + "/getTag?name=allNames";
@@ -206,8 +223,8 @@ function populateOptions(event, field, add, elmts){
     }    
 }
 
-function switchButtons(buttons){
-    $$('input[type=submit]').each(function(submit){
+function switchButtons(buttons){    
+    $$('input[type=button]').each(function(submit){
         submit.setStyle('display','none');
     });
     buttons.each(function(button){
