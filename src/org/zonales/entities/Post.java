@@ -26,8 +26,9 @@ public class Post {
     protected Long created;
     protected Long modified;
     protected int relevance;
+    protected String state;
     protected String verbatim;
-
+    
     public Post() {
     }
 
@@ -183,7 +184,21 @@ public class Post {
         return "Post{" + "source=" + source + "id=" + id + "fromUser=" + fromUser + "toUsers=" + toUsers + "title=" + title + "text=" + text + "links=" + links + "actions=" + actions + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
     }
 
-    
+    /**
+     * Get the value of state
+     *
+     * @return the value of state
+     */
+    public String getState() {
+        return state;
+    }
 
-
+    /**
+     * Set the value of state
+     *
+     * @param state new value of state
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
 }
