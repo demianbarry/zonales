@@ -102,7 +102,7 @@ if (!isset($zCtx)) {
     $codificacion = $arr_codificacion['internal_encoding'];
 ?>
                             <p>
-<?php echo utf8_encode(ucfirst(strftime("%A %d.%m.%Y"))); ?><br /><span id="hora"></span></p>
+<?php echo ucfirst(strftime("%A %d.%m.%Y")); ?><br /><span id="hora"></span></p>
                             <!--
                                                   <p style="text-transform:uppercase;">
                                                           <strong>Compartinos:</strong>
