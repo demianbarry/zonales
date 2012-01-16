@@ -61,7 +61,6 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
         <script language="javascript" type="text/javascript" src="http://192.168.1.2:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
-            /*var borrame = '<?php var_dump(JUserHelper::getUserGroups(JFactory::getUser()->get('id')))?>';*/
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
         </script>
 
@@ -120,7 +119,13 @@ if (!isset($zCtx)) {
 
                         </div>
                         <div id="module-searchTop">
+                            <div class="searchbox">
+                                <button class="button" value="Search" type="submit">BUSCAR</button>
+                                <input class="text" type="text" name="searchword" maxlength="125" alt="buscar..." size="20" value="buscar..." onblur="if(this.value=='') this.value='buscar...';" onfocus="if(this.value=='buscar...') this.value='';">
+                            </div>
+                            <!--
                             <jdoc:include type="modules" name="topSearch" /><br/>
+                            -->
 
                             <div>
                                 <a href="http://www.facebook.com/zonales" title="Facebook" target="_blank"><img src="<?php echo $this->baseurl ?>/templates/z20/images/btn_facebook.jpg" alt="Facebook" style="margin-top:5px;" /></a>
@@ -232,7 +237,7 @@ if (!isset($zCtx)) {
 
                     <div id="otherContent">
 
-                        <!-- -->
+                        <!-- 
 
 
                         <div id="fl_grindetti" style="margin-bottom:10px;">zonales.com</div>
@@ -245,6 +250,7 @@ if (!isset($zCtx)) {
                             so.write("fl_grindetti");
                             // ]]></script>
 
+                        -->
 
                         <div id="fl_cdba" style="margin-bottom:10px;">zonales.com</div>
 

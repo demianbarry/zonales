@@ -23,9 +23,11 @@ function initAll() {
 }
 
 function initPost() {
-   setInterval(function () {
-       loadPost(false);
-   }, 60000);
+   if (tab != 'geoActivos') {
+        setInterval(function () {
+            loadPost(false);
+        }, 60000);
+   }
    //loadPost(true);
    getAllTags();
 }
@@ -150,21 +152,29 @@ function setZone(zoneId, zoneName, parentId, parentName) {
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
-    $('postsContainer').empty();
-    $('newPostsContainer').empty();
+    if (tab != 'geoActivos') {
+        $('postsContainer').empty();
+        $('newPostsContainer').empty();
+    }
     setSelectedZone(zoneId, zoneName, parentId, parentName, function() {
         //var zCtx = zcGetContext();
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-        loadPost(true);
+        if (tab != 'geoActivos') {
+            loadPost(true);
+        }
     });
 }
 
 function onTempoChange() {
-    $('postsContainer').empty();
-    $('newPostsContainer').empty();
+    if (tab != 'geoActivos') {
+        $('postsContainer').empty();
+        $('newPostsContainer').empty();
+    }
     setLastIndexTime(null);
     zcSetTemp($('tempoSelect').value);
-    loadPost(true);
+    if (tab != 'geoActivos') {
+        loadPost(true);
+    }
 }
 
 function complete(number){
@@ -535,7 +545,7 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-        
+
 
     });
 }
@@ -608,7 +618,7 @@ function setSourceVisible(source, visible) {
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-    
+
     zCtxChkTags.each(function (chkTag) {
        if (chkTag != tag) {
            zcUncheckTag(chkTag);
@@ -634,7 +644,7 @@ function setTagVisible(tag, checked) {
     } else {
         zcUncheckTag(tag);
     }
-    
+
     //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var posts = $$('div#postsContainer div.story-item');
@@ -648,7 +658,7 @@ function setTagVisible(tag, checked) {
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-   
+
 }
 
 function addMilli(date) {
@@ -712,7 +722,7 @@ function armarTitulo(tabTemp){
     tabTemp = tab;
     var zoneSeltemp = zcGetSelectedZoneName();
     var zoneEfectemp = zcGetEfectiveZoneName();
-    
+
     document.getElementById('tituloSup').innerHTML = "";
 
     if (tabTemp == 'relevantes'){
@@ -725,22 +735,22 @@ function armarTitulo(tabTemp){
 
             }
         });
-        
+
     }
 
     if (tabTemp == 'noticiasenlared'){
-        
+
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
            temp++;
            if(temp < 5 && element.checked ) {
-                
+
               //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
 
             else if (temp > 5 && element.checked ){
@@ -759,7 +769,7 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
             else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
@@ -776,7 +786,7 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value+" ";
-                
+
             }
         });
 
@@ -791,8 +801,8 @@ function armarTitulo(tabTemp){
                 document.getElementById('tituloZone').innerHTML += "todas las noticias";
             else document.getElementById('tituloZone').innerHTML += "noticias de "+zoneEfectemp;
         }
-   
-    
+
+
 }
 
 //zcSetTemp($('tempoSelect').value);
