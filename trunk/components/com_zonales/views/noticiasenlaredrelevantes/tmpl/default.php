@@ -2,7 +2,6 @@
 <!--
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
-zones.push(<?php echo $this->zCtx->selectedZone ?>);
 tab = "noticiasenlaredrelevantes";
 
 -->
