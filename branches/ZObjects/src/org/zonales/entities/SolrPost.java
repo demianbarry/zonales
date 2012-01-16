@@ -62,6 +62,9 @@ public class SolrPost {
     
     @Field
     protected int relevance;
+    
+    @Field
+    protected String state;
 
     @Field
     protected String verbatim;
@@ -184,6 +187,14 @@ public class SolrPost {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.verbatim = state;
     }
 
     public String getVerbatim() {
