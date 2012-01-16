@@ -109,7 +109,7 @@ public final class ZSolrServer extends BaseService {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando post: {0}", verbatim);
 
         SolrQuery query = new SolrQuery();
-        query.setQuery("id:" + post.getId());
+        query.setQuery("id:\"" + post.getId().replace(' ', '+') + "\"");
         QueryResponse rsp = server.query(query);
         if (rsp.getResults().getNumFound() == 1) {
             SolrPost solrP = rsp.getBeans(SolrPost.class).get(0);
@@ -191,7 +191,7 @@ public final class ZSolrServer extends BaseService {
     public void removeTag(String id, String tag) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:" + id);
+            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
 
 
@@ -210,6 +210,8 @@ public final class ZSolrServer extends BaseService {
     }
 
     public void postToSolr(SolrPost solrPost, Post post) {
+        solrPost.setZone(post.getZone());
+        solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
         solrPost.setFromUserCategory(post.getFromUser().getCategory());
         solrPost.setFromUserId(post.getFromUser().getId());
