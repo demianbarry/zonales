@@ -165,7 +165,7 @@ public final class ZSolrServer extends BaseService {
     public void addTags(String id, List<String> tags) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:" + id);
+            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
