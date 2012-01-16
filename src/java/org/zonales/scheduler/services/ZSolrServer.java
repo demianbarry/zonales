@@ -108,6 +108,22 @@ public final class ZSolrServer extends BaseService {
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando post: {0}", verbatim);
 
+        SolrQuery query = new SolrQuery();
+        query.setQuery("id:" + post.getId());
+        QueryResponse rsp = server.query(query);
+        if (rsp.getResults().getNumFound() == 1) {
+            SolrPost solrP = rsp.getBeans(SolrPost.class).get(0);
+            Post postIn = gson.fromJson(solrP.getVerbatim(), Post.class);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrP));
+            if (postIn.getTags() != null) {
+                for (String tag : postIn.getTags()) {
+                    if (!post.getTags().contains(tag)) {
+                        post.getTags().add(tag);
+                    }
+                }
+            }
+        }
+
         Date created = null;
         if (post.getCreated() != null) {
             created = new Date(post.getCreated());
