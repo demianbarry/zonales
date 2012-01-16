@@ -7,7 +7,9 @@ tab = "noticiasenlared";
 -->
 </script>
 <label id="titulo1"></label><label id="tituloSup"></label>
+<div>
 <label id= "tituloZone"></label>
+</div>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>
