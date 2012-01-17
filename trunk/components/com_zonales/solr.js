@@ -117,11 +117,11 @@ function getSolrRange(myTab, more){
     if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" ){
         if (!more){
             res =(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + timeInterval)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
-                ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]' ;
+                ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=!relevance:0+AND+relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]' ;
 
         }
         else
-            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']'+'&fq=relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']' ;
+            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']'+'&fq=!relevance:0+AND+relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']' ;
     }
     return res;
 }
