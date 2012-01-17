@@ -13,9 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.zonales.errors.ZMessages;
-import org.zonales.feedSelector.daos.FeedSelectorDao;
+
 
 /*
  * To change this template, choose Tools | Templates
@@ -28,7 +27,6 @@ import org.zonales.feedSelector.daos.FeedSelectorDao;
 public class ZCrawlFeedsServlet extends HttpServlet {
 
     StringWriter sw = new StringWriter();
-    FeedSelectorDao dao;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -68,8 +66,6 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         Properties props = new Properties();
         props.load(stream);
 
-        dao = new FeedSelectorDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-
         if (!"".equals(words)) {
             searchlist = new ArrayList<String>();
             for (String palabra : words.split(",")) {
@@ -94,7 +90,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
         params.put("tagslist", tagslist);
 
-        ZCrawlFeedsHelper helper = new ZCrawlFeedsHelper();
+        ZCrawlFeedsHelper helper = new ZCrawlFeedsHelper(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         try {
             response.getWriter().println(helper.getParse(java.net.URLEncoder.encode(url.toString(), "UTF-8"), "json".equalsIgnoreCase(formato), params));
         } catch (Exception ex) {
