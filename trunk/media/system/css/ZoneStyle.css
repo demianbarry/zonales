@@ -4385,13 +4385,17 @@ div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-down {
     display: none;
 }
 
+span.story-item-teaser img {
+    width:30%;
+    float: right;
+}
+
 div.suggestions {
 	position: absolute; 
 	background: none repeat scroll 0% 0% #D3FFF3;
         z-index: 999;
 }
 
-div.suggestions .selected{
-	position: absolute; 
+div.suggestions .selected{	
 	background: none repeat scroll 0% 0% #AEFFE9;
 }
