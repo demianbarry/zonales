@@ -27,8 +27,9 @@ class ZonalesViewEnlared extends JView {
 
         $app = & JFactory::getApplication();
         $session = JFactory::getSession();
-        $zCtx = unserialize($session->get('zCtx'));
         $helper = new comZonalesHelper();
+        $zCtx = unserialize($session->get('zCtx'));
+
 
         $this->assignref('zCtx', $zCtx);
         $this->assignRef('template', $app->getTemplate());

@@ -1,6 +1,7 @@
 var host = "localhost";
 var port = "38080";
 var searching = false;
+var searchKeyword = "";
 var firstIndexTime = null;
 var lastIndexTime = null;
 var minRelevance = null;
@@ -31,6 +32,14 @@ function getMinRelevance() {
     return minRelevance;
 }
 
+function setSearchKeyword(keyword) {
+    searchKeyword = keyword;
+}
+
+function getSearchKeyword() {
+    return searchKeyword;
+}
+
 function getSolrDate(millis){
     var date = new Date(millis);
     return date.getFullYear() + '-' + complete(date.getMonth() + 1) + '-' + complete(date.getDate()) + 'T' +
@@ -41,7 +50,7 @@ function getSolrSort(myTab){
 
     var res = "";
 
-    if (myTab == "enlared" || myTab == "noticiasenlared"){
+    if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada"){
         res = "modified+desc";
     }
     if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
@@ -84,6 +93,15 @@ function getSolrZones(myZone)
 
 }
 
+function getSolrKeyword(keyword) {
+    if(typeof(keyword) == 'undefined' || !keyword || keyword == '' || keyword == null)
+        return "";
+
+    var res  = '+AND+' + keyword;
+
+    return res.replace(' ', '+');
+}
+
 function getSolrRange(myTab, more){
 
     var res = "";
@@ -108,23 +126,24 @@ function getSolrRange(myTab, more){
     return res;
 }
 
-function getSolrUrl(tab, zone, more) {
+function getSolrUrl(tab, zone, more, keyword) {
     var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
     getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
     getSolrSources(tab)+
     getSolrZones(zone)+
+    getSolrKeyword(keyword)+
     getSolrRange(tab,more);
 
     return urlSolr;
 }
 
-function loadSolrPost(tab, more, callback){
+function loadSolrPost(tab, zone, more, callback){
     if(searching) {
         callback();
         return(this);
     }
 
-    var urlSolr = getSolrUrl(tab, zcGetEfectiveZoneName(), more);
+    var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
     var urlProxy = '/curl_proxy.php?host='+getSolrHost()+'&port='+getSolrPort()+'&ws_path=' + encodeURIComponent(urlSolr);
 
     var req = new Request.JSON({

@@ -27,9 +27,9 @@ class ZonalesViewPortada extends JView {
 
         $app = & JFactory::getApplication();
         $helper = new comZonalesHelper();
+	$session = JFactory::getSession();
         $zCtx = unserialize($session->get('zCtx'));
-        $helper = new comZonalesHelper();
-
+       
         $this->assignref('zCtx', $zCtx);
         $this->assignRef('template', $app->getTemplate());
         $this->assignRef('zonal_id', ucwords(str_replace("_", "+", $helper->getZonalActual())));
