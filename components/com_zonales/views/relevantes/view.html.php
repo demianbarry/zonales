@@ -3,8 +3,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.user.helper');
-
-jimport('joomla.user.helper');
 jimport('joomla.application.component.view');
 JHTML::_("behavior.mootools");
 
@@ -18,7 +16,7 @@ JHTML::_("behavior.mootools");
 class ZonalesViewRelevantes extends JView {
 
     function display($tpl = null) {
-       $option = JRequest::getCMD('option');
+       $option = JRequest::getCMD('option'); 
         $mainframe=JFactory::getApplication();
         $document = &JFactory::getDocument();
         //$document->addScript( '/media/system/js/viewutils.js');

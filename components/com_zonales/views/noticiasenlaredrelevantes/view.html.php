@@ -16,7 +16,7 @@ JHTML::_("behavior.mootools");
 class ZonalesViewNoticiasenlaredrelevantes extends JView {
 
     function display($tpl = null) {
-        $option = JRequest::getCMD('option');
+        $option = JRequest::getCMD('option'); 
 
         $mainframe=JFactory::getApplication();
         $document = &JFactory::getDocument();

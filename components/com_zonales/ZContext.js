@@ -73,6 +73,7 @@ function setSelectedZone(zone, zoneName, parent, parentName, callback) {
     //Persisto el contexto en el servidor
     //alert("ZONE: " + zone + " ZONE NAME: " + zoneName);
     socket.emit('setSelectedZoneToCtx', {sessionId: sessionId, zone: zone}, function(response) {
+        //alert(JSON.stringify(response));
        if (typeof(response) != 'undefined' && response != null) {
            zCtx.efZone = response.id;
            efZoneName = response.name.replace(/_/g, ' ').capitalize();

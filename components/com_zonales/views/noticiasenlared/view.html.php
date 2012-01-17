@@ -27,9 +27,10 @@ class ZonalesViewNoticiasenlared extends JView {
         $document->addStyleSheet('/media/system/css/ZoneStyle.css');
 
         $app = & JFactory::getApplication();
+        $session = JFactory::getSession();
         $helper = new comZonalesHelper();
         $zCtx = unserialize($session->get('zCtx'));
-        $helper = new comZonalesHelper();
+       // $helper = new comZonalesHelper();
 
         $this->assignref('zCtx', $zCtx);
         $this->assignRef('template', $app->getTemplate());
