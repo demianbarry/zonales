@@ -11,7 +11,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             var host = 'localhost';
             var port = '38080';
         </script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
+        <!--<script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>-->
         <script language="javascript" type="text/javascript" src="components/com_zonales/ckeditor.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>
