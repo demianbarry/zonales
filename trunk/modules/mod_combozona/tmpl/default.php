@@ -28,12 +28,12 @@ span#municipio_container{
 <form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form" style="margin: 0; padding: 0;">
 
     <span id="z_provincias_container" style="width:219px;">
-        <select class="provincias_select required" size="1" name="provincias" id="provincias"><option value="0">Seleccione una provincia...</option>
+        <select class="provincias_select required" size="1" name="provincias" id="provincias"><option value="" onclick="setZone(this.value, '', '', '');loadMunicipios('',null);zcSetProvinceName('');">Seleccione una provincia...</option>
         </select>
     </span>
     <span id="municipio_container" style="width:219px;">
         <span id="z_localidad_container" ></span>
-        <select class="item_ajax_select required" size="1" name="zonalid" id="zonalid" style="width: 219px;"><option value="0">Seleccione un municipio...</option>
+        <select class="item_ajax_select required" size="1" name="zonalid" id="zonalid" style="width: 219px;"><option value="" onclick="setZone(this.value, '', $('provincias').value, zcGetProvinceName())">Seleccione un municipio...</option>
         </select>
     </span>
 
