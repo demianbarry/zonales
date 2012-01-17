@@ -1,4 +1,4 @@
-var nodeURL = 'http://192.168.1.2:4000';
+var nodeURL = 'http://sursoftware.dyndns.org:4000';
 var sources = new Array();
 //var tags = new Array();
 var zones = new Array();
@@ -23,13 +23,13 @@ function initAll() {
 }
 
 function initPost() {
-   if (tab != 'geoActivos') {
+    if (tab != 'geoActivos') {
         setInterval(function () {
             loadPost(false);
         }, 60000);
-   }
-   //loadPost(true);
-   getAllTags();
+    }
+    //loadPost(true);
+    getAllTags();
 }
 
 function initFilters(zCtx) {
@@ -45,10 +45,15 @@ function initZonas(selZone) {
         getProvincias(function(provincias) {
             provincias.each(function(provincia) {
                 new Element('option', {
-                       'value': provincia.id,
-                       'html': provincia.name.replace(/_/g, ' ').capitalize(),
-                       'onclick': 'loadMunicipios(this.value, null);zcSetProvinceName(this.innerHTML);'
-                   }).inject($('provincias'));
+                    'value': provincia.id,
+                    'html': provincia.name.replace(/_/g, ' ').capitalize()
+                }).inject($('provincias'));
+            });
+            $('provincias').addEvent('change', function(){
+                if($('provincias').selectedIndex == 0)
+                    setZone(this.value, '', '', '');
+                loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
+                zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
             });
             if (selZone != "" && typeof(selZone) != 'undefined') {
                 getZoneById(selZone, function(zone) {
@@ -65,56 +70,60 @@ function initZonas(selZone) {
             }
         });
 
-        getAllZones(function(zones) {
+    /*getAllZones(function(zones) {
            zones.each(function(zone) {
                allZones.push(zone.name.replace(/_/g, ' ').capitalize());
             });
-        });
+        });*/
     }
 }
 
 function initSourceFilters(zCtx) {
     //Actualizo filtros de fuente desde contexto
     zCtx.filters.sources.each(function(source) {
-       var sourceChk = $('chk'+source.name);
-       if (!sourceChk) {
-           var sourcesTr = new Element('tr');
-           var sourceChkBoxTd = new Element('td').inject(sourcesTr);
-           new Element('input', {
-               'id': 'chk' + source.name,
-               'type': 'checkbox',
-               'checked': (source.checked ? 'checked' : ''),
-               'name': source.name,
-               'value': source.name,
-               'onclick': 'setSourceVisible(this.value,this.checked);'
-           }).inject(sourceChkBoxTd);
-           new Element('td', {'html': source.name}).inject(sourcesTr);
-           if (source.name == 'Facebook' || source.name == 'Twitter')
+        var sourceChk = $('chk'+source.name);
+        if (!sourceChk) {
+            var sourcesTr = new Element('tr');
+            var sourceChkBoxTd = new Element('td').inject(sourcesTr);
+            new Element('input', {
+                'id': 'chk' + source.name,
+                'type': 'checkbox',
+                'checked': (source.checked ? 'checked' : ''),
+                'name': source.name,
+                'value': source.name,
+                'onclick': 'setSourceVisible(this.value,this.checked);'
+            }).inject(sourceChkBoxTd);
+            new Element('td', {
+                'html': source.name
+                }).inject(sourcesTr);
+            if (source.name == 'Facebook' || source.name == 'Twitter')
                 sourcesTr.inject($('enLaRed'));
             else
                 sourcesTr.inject($('noticiasEnLaRed'));
-       }
+        }
     });
 }
 
 function initTagFilters(zCtx) {
     //Actualizo filtros de tags desde contexto
     zCtx.filters.tags.each(function(tag) {
-       var tagChk = $('chkt'+tag.name);
-       if (!tagChk) {
-           var tagTr = new Element('tr');
-           var tagChkBoxTd = new Element('td').inject(tagTr);
-           new Element('input', {
-               'id': 'chkt' + tag.name,
-               'type': 'checkbox',
-               'checked': (tag.checked ? 'checked' : ''),
-               'name': tag.name,
-               'value': tag.name,
-               'onclick': 'setTagVisible(this.value,this.checked);'
-           }).inject(tagChkBoxTd);
-           new Element('td', {'html': tag.name}).inject(tagTr);
-           tagTr.inject($('tagsFilterTable'));
-       }
+        var tagChk = $('chkt'+tag.name);
+        if (!tagChk) {
+            var tagTr = new Element('tr');
+            var tagChkBoxTd = new Element('td').inject(tagTr);
+            new Element('input', {
+                'id': 'chkt' + tag.name,
+                'type': 'checkbox',
+                'checked': (tag.checked ? 'checked' : ''),
+                'name': tag.name,
+                'value': tag.name,
+                'onclick': 'setTagVisible(this.value,this.checked);'
+            }).inject(tagChkBoxTd);
+            new Element('td', {
+                'html': tag.name
+                }).inject(tagTr);
+            tagTr.inject($('tagsFilterTable'));
+        }
     });
 }
 
@@ -135,10 +144,12 @@ function loadMunicipios(id_provincia, selZone) {
         getZonesByProvincia(id_provincia, function(zones) {
             zones.each(function(zone) {
                 new Element('option', {
-                       'value': zone.id,
-                       'html': zone.name.replace(/_/g, ' ').capitalize(),
-                       'onclick': "setZone(this.value, this.innerHTML, $('provincias').value, zcGetProvinceName())"
-                   }).inject($('zonalid'));
+                    'value': zone.id,
+                    'html': zone.name.replace(/_/g, ' ').capitalize()
+                }).inject($('zonalid'));
+            });
+            $('zonalid').addEvent('change', function(){
+                setZone($('zonalid').value, $('zonalid').selectedIndex == 0 ? '' : $('zonalid').options[$('zonalid').selectedIndex].innerHTML, $('provincias').value, zcGetProvinceName())
             });
             if (selZone != null) {
                 $('zonalid').value = selZone;
@@ -152,6 +163,8 @@ function setZone(zoneId, zoneName, parentId, parentName) {
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
+    setSearchKeyword("");
+    $('zonalesSearchword').value = "buscar...";
     if (tab != 'geoActivos') {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
@@ -183,7 +196,7 @@ function complete(number){
 
 function loadPost(first){
     //alert("LoadPost: " + JSON.stringify(zcGetContext()));
-    loadSolrPost(tab, false, function(jsonObj) {
+    loadSolrPost(tab, zcGetEfectiveZoneName(), false, function(jsonObj) {
         if(typeof jsonObj != 'undefined'){
             if(first){
                 updatePosts(jsonObj,$('postsContainer'));
@@ -203,11 +216,45 @@ function loadPost(first){
 }
 
 function loadMorePost(){
-    loadSolrPost(tab, true, function(jsonObj) {
+    loadSolrPost(tab, zcGetEfectiveZoneName(), true, function(jsonObj) {
         if(typeof jsonObj != 'undefined')
             updatePosts(jsonObj, $('postsContainer'),true);
         armarTitulo(tab);
     });
+}
+
+function searchPost(keyword, zone) {
+    if (keyword != 'buscar...' && keyword != '') {
+        setFirstIndexTime(null);
+        setLastIndexTime(null);
+        setMinRelevance(null);
+        setSearchKeyword(keyword);
+        if (tab != 'geoActivos') {
+            $('postsContainer').empty();
+            $('newPostsContainer').empty();
+        }
+        loadSolrPost(tab, zone, false, function(jsonObj) {
+            if(jsonObj.response.docs.length > 0) {
+                updatePosts(jsonObj, $('postsContainer'),true);
+            } else {
+                if (zcGetContext().efZone != '') {
+                    new Element('label', {
+                        'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
+                    }).inject($('postsContainer'));
+                    new Element('input', {
+                        'type': 'button',
+                        'onclick': 'searchPost("' + keyword + '","")',
+                        'value': 'Buscar en todas las zonas'
+                    }).inject($('postsContainer'));
+                } else {
+                    new Element('label', {
+                        'html': 'No se encontraron resultados para su búsqueda'
+                    }).inject($('postsContainer'));
+                }
+            }
+            armarTitulo(tab);
+        });
+    }
 }
 
 function getTarget(post) {
@@ -474,7 +521,7 @@ function updatePosts(json, component, more) {
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
 
-        if(zUserGroups.indexOf("4") != -1){
+        /*if(zUserGroups.indexOf("4") != -1){
             new Element('a',{
                 'onclick':'if ( $("'+idInputZone+'").style.display == "none"){ $("'+idInputZone+'").setStyle("display","inline"); $("'+idButtonSetZone+'").setStyle("display","inline");}else{ $("'+idInputZone+'").setStyle("display","none"); $("'+idButtonSetZone+'").setStyle("display","none");}'
             }).set('html','Set Zone').inject(span_addZone);
@@ -490,7 +537,7 @@ function updatePosts(json, component, more) {
                 'src': '/CMUtils/addIcon.gif',
                 'onclick':'show_confirm("' + idInputZone + '",$(\'' + idInputZone + '\').value,"'+zone+'")'
             }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
-        }
+        }*/
 
         if(!$('chk'+post.source)) {
             var tr = new Element('tr');
@@ -501,7 +548,9 @@ function updatePosts(json, component, more) {
                 'value': post.source,
                 'onclick':'setSourceVisible(this.value, this.checked);'
             }).inject(new Element('td').inject(tr));
-            new Element('td', {'html': post.source}).inject(tr);
+            new Element('td', {
+                'html': post.source
+                }).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
                 tr.inject($('enLaRed'));
             else
@@ -511,22 +560,24 @@ function updatePosts(json, component, more) {
         }
 
         if (typeof (post.tags) != 'undefined') {
-          post.tags.each(function(tag) {
-            if(!$('chkt'+tag)) {
-                var tr = new Element('tr');
-                new Element('input', {
-                    'id': 'chkt'+tag,
-                    'type': 'checkbox',
-                    'checked': 'checked',
-                    'value': tag,
-                    'onclick':'setTagVisible(this.value, this.checked);'
-                }).inject(new Element('td').inject(tr));
-                new Element('td', {'html': tag}).inject(tr);
-                tr.inject($('tagsFilterTable'));
+            post.tags.each(function(tag) {
+                if(!$('chkt'+tag)) {
+                    var tr = new Element('tr');
+                    new Element('input', {
+                        'id': 'chkt'+tag,
+                        'type': 'checkbox',
+                        'checked': 'checked',
+                        'value': tag,
+                        'onclick':'setTagVisible(this.value, this.checked);'
+                    }).inject(new Element('td').inject(tr));
+                    new Element('td', {
+                        'html': tag
+                    }).inject(tr);
+                    tr.inject($('tagsFilterTable'));
 
-                zcAddTag(tag);
-            }
-          });
+                    zcAddTag(tag);
+                }
+            });
         }
 
         if (getMinRelevance() != null) {
@@ -620,9 +671,9 @@ function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
 
     zCtxChkTags.each(function (chkTag) {
-       if (chkTag != tag) {
-           zcUncheckTag(chkTag);
-       }
+        if (chkTag != tag) {
+            zcUncheckTag(chkTag);
+        }
     });
 
     var tagFilters = $$('table#tagsFilterTable input');
@@ -701,9 +752,9 @@ function prettyDate(time){
     var token = ' hace', list_choice = 1;
     if (seconds < 0) {
         seconds += 10800;
-        //seconds = Math.abs(seconds);
-        //token = 'desde ahora';
-        //list_choice = 2;
+    //seconds = Math.abs(seconds);
+    //token = 'desde ahora';
+    //list_choice = 2;
     }
     var i = 0, format;
     while (format = time_formats[i++])
@@ -742,10 +793,10 @@ function armarTitulo(tabTemp){
 
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-           temp++;
-           if(temp < 5 && element.checked ) {
+            temp++;
+            if(temp < 5 && element.checked ) {
 
-              //  alert (temp);
+                //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
@@ -792,16 +843,19 @@ function armarTitulo(tabTemp){
 
 
     }
+   // alert(zoneSeltemp);
     if (zoneEfectemp == zoneSeltemp){
-            document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
-        }
-        if (zoneEfectemp != zoneSeltemp){
-            document.getElementById('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
-            if(zoneEfectemp == "")
-                document.getElementById('tituloZone').innerHTML += "todas las noticias";
-            else document.getElementById('tituloZone').innerHTML += "noticias de "+zoneEfectemp;
-        }
-
+        document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
+    }
+    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != ""){
+        document.getElementById('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
+        if(zoneEfectemp == "")
+            document.getElementById('tituloZone').innerHTML += "todas las noticias";
+        else document.getElementById('tituloZone').innerHTML += "noticias de "+zoneEfectemp;
+    }
+    if (zoneSeltemp == ""){
+        document.getElementById('tituloZone').innerHTML += "Mostrando todas las noticias";
+    }
 
 }
 
