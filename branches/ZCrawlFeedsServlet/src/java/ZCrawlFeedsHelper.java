@@ -51,6 +51,11 @@ public class ZCrawlFeedsHelper {
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
 
+    public ZCrawlFeedsHelper(String host, Integer port, String name) {
+        dao = new FeedSelectorDao(host, port, name);
+
+    }
+
     /**
      * Parses the given feed and extracts out and parsers all linked items within
      * the feed, using the underlying ROME feed parsing library.
