@@ -20,11 +20,11 @@ JHTML::_('behavior.formvalidation');
 ?>
 <!-- form -->
 <div class="moduletable_formEq" style="width:250px;height:200px;overflow:scroll;" >    <!--//en este div.-->
-    <h1 id="title_eq"><?php echo "Filtro de Fuentes"; ?></h1>
+    <h1 id="title_eq"><?php echo "Filtros "; ?></h1>
     <div id="mod_eq_main_div" class="moduletable_formEq_bodyDiv">
         <p><?php echo "Filtro usado para filtar
 las fuentes de informacion mostradas"; ?></p>
-        <p><?php echo "pestana: " . $pestana; ?></p>
+        
         <div class="splitter"></div>
 
         <?php
@@ -54,6 +54,7 @@ las fuentes de informacion mostradas"; ?></p>
             }
         ?>
             <div id="filtersDiv">
+                <p>FUENTES</p>
                 <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
 
             </table>
@@ -72,7 +73,9 @@ las fuentes de informacion mostradas"; ?></p>
                     </td>
                 </tr>
             </table>
-
+            </div>
+        <div id="filterTags">
+            <p>TAGS</p>
             <table id="tagsFilterTable">
 
             </table>
