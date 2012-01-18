@@ -5,6 +5,7 @@ var searchKeyword = "";
 var firstIndexTime = null;
 var lastIndexTime = null;
 var minRelevance = null;
+var firstModifiedTime = null;
 var timeInterval = 10800001;
 var rows = 20;
 
@@ -14,6 +15,14 @@ function setFirstIndexTime(time) {
 
 function getFirstIndexTime() {
     return firstIndexTime;
+}
+
+function setFirstModifiedTime(time) {
+    firstModifiedTime = time;
+}
+
+function getFirstModifiedTime() {
+    return firstModifiedTime;
 }
 
 function setLastIndexTime(time) {
@@ -97,9 +106,9 @@ function getSolrKeyword(keyword) {
     if(typeof(keyword) == 'undefined' || !keyword || keyword == '' || keyword == null)
         return "";
 
-    var res  = '+AND+' + keyword;
+    var res  = '+AND+' + keyword.replace(/ /g, '+');
 
-    return res.replace(' ', '+');
+    return res;
 }
 
 function getSolrRange(myTab, more){
@@ -110,7 +119,11 @@ function getSolrRange(myTab, more){
         if (!more) {
             res = (lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + timeInterval)+'+TO+*]' : '');
         } else {
-            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']';
+            if (myTab == "portada") {
+                res = '&fq=modified:[*+TO+'+ reduceMilli(firstModifiedTime.replace('Z', '.000Z')) + ']';
+            } else {
+                res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']';
+            }
         }
     }
 

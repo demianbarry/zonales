@@ -51,7 +51,7 @@ function initZonas(selZone) {
             });
             $('provincias').addEvent('change', function(){
                 if($('provincias').selectedIndex == 0)
-                    setZone(this.value, '', '', '');                
+                    setZone(this.value, '', '', '');
                 loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
                 zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
             });
@@ -148,7 +148,7 @@ function loadMunicipios(id_provincia, selZone) {
                     'html': zone.name.replace(/_/g, ' ').capitalize()
                 }).inject($('zonalid'));
             });
-            $('zonalid').addEvent('change', function(){                
+            $('zonalid').addEvent('change', function(){
                 setZone($('zonalid').value, $('zonalid').selectedIndex == 0 ? '' : $('zonalid').options[$('zonalid').selectedIndex].innerHTML, $('provincias').value, zcGetProvinceName())
             });
             if (selZone != null) {
@@ -168,7 +168,7 @@ function setZone(zoneId, zoneName, parentId, parentName) {
         parentId = '';
     if (parentName == null || typeof(parentName) == 'undefined')
         parentName = '';
-    
+
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
@@ -251,8 +251,8 @@ function searchPost(keyword, zone) {
                         'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
                     }).inject($('postsContainer'));
                     new Element('input', {
-                        'type': 'button', 
-                        'onclick': 'searchPost("' + keyword + '","")', 
+                        'type': 'button',
+                        'onclick': 'searchPost("' + keyword + '","")',
                         'value': 'Buscar en todas las zonas'
                     }).inject($('postsContainer'));
                 } else {
@@ -346,6 +346,7 @@ function updatePosts(json, component, more) {
         var time = new Date(doc.indexTime).getTime();
         setLastIndexTime((time > getLastIndexTime()) ||  getLastIndexTime() == null ? time : getLastIndexTime());
         var modified = doc.modified;
+        setFirstModifiedTime((modified < getFirstModifiedTime()) ||  getFirstModifiedTime() == null ? modified : getFirstModifiedTime());
         var post = eval('('+doc.verbatim+')');
         var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
         div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
@@ -605,7 +606,7 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-        
+
 
     });
 }
@@ -678,7 +679,7 @@ function setSourceVisible(source, visible) {
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-    
+
     zCtxChkTags.each(function (chkTag) {
         if (chkTag != tag) {
             zcUncheckTag(chkTag);
@@ -704,7 +705,7 @@ function setTagVisible(tag, checked) {
     } else {
         zcUncheckTag(tag);
     }
-    
+
     //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var posts = $$('div#postsContainer div.story-item');
@@ -718,7 +719,7 @@ function setTagVisible(tag, checked) {
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-   
+
 }
 
 function addMilli(date) {
@@ -782,7 +783,7 @@ function armarTitulo(tabTemp){
     tabTemp = tab;
     var zoneSeltemp = zcGetSelectedZoneName();
     var zoneEfectemp = zcGetEfectiveZoneName();
-    
+
     document.getElementById('tituloSup').innerHTML = "";
 
     if (tabTemp == 'relevantes'){
@@ -795,22 +796,22 @@ function armarTitulo(tabTemp){
 
             }
         });
-        
+
     }
 
     if (tabTemp == 'noticiasenlared'){
-        
+
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             temp++;
             if(temp < 5 && element.checked ) {
-                
+
                 //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
 
             else if (temp > 5 && element.checked ){
@@ -829,7 +830,7 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
             else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
@@ -846,13 +847,13 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value+" ";
-                
+
             }
         });
 
 
     }
-    
+
     if (zoneEfectemp == zoneSeltemp){
         document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
     }
@@ -865,7 +866,7 @@ function armarTitulo(tabTemp){
     if (zoneSeltemp == ""){
         document.getElementById('tituloZone').innerHTML = "Mostrando todas las noticias";
     }
-    
+
 }
 
 //zcSetTemp($('tempoSelect').value);
