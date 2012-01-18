@@ -134,7 +134,7 @@ public class ZCrawlFeedsHelper {
 
                     newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
                     newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
-                    newEntry.setRelevance(0);
+                    newEntry.setRelevance(entry.getTitle().length() * 3);
                     if (!json) {
                         newEntry.setVerbatim(gson.toJson(newEntry));
                     }
@@ -194,7 +194,7 @@ public class ZCrawlFeedsHelper {
 
                     newEntrySolr.setCreated((entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
                     newEntrySolr.setModified((entry.getModDate() != null ? entry.getModDate().getTime() : newEntrySolr.getCreated()));
-                    newEntrySolr.setRelevance(0);
+                    newEntrySolr.setRelevance(entry.getTitle().length() * 3);
                     if (!json) {
                         newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
                     }
