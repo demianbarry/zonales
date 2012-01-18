@@ -31,22 +31,30 @@ $mainframe = JFactory::getApplication();
 <!-- 26042011 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
-    <head>	
+    <head>
         <jdoc:include type="modules" name="head" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />
         <!--[if lt IE 8]>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/ie.css" />
-        <![endif]-->	
+        <![endif]-->
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />	
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />	
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/zonales.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
+        <script language="javascript" type="text/javascript" src="http://sursoftware.dyndns.org:4000/socket.io/socket.io.js"></script>
+        <script language="javascript" type="text/javascript">
+            var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
+        </script>
     </head>
 
     <body>
@@ -87,13 +95,13 @@ $mainframe = JFactory::getApplication();
                                 <?php echo utf8_encode(ucfirst(strftime("%A %d.%m.%Y"))); ?><br /><span id="hora"></span></p>
                             <!--
                                                   <p style="text-transform:uppercase;">
-                                                          <strong>Compartinos:</strong> 
+                                                          <strong>Compartinos:</strong>
                                                           <a href="http://www.facebook.com/pages/Zonales/139612986080624">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/facebook_16x16.png" alt="Zonales en Facebook" />
-                                                          </a> 
+                                                          </a>
                                                           <a href="http://twitter.com/zonalizate">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/twitter_16x16.png" alt="Zonales en Twitter" />
-                                                          </a> 
+                                                          </a>
                                                           <a href="mailto:contacto@zonales.com">
                                                                   <img src="<?php echo $this->baseurl ?>/images/social/email_16x16.png" alt="Contactanos por Email" />
                                                           </a>
@@ -144,7 +152,7 @@ $mainframe = JFactory::getApplication();
                         <script type="text/javascript">
                             var equalizer_fx=new Fx.Morph($('equalizer-bt'), {duration: 1000});
                             var module_fx=new Fx.Morph($('equalizer'), {duration: 1000});
-				
+
                             window.addEvent('domready', function(){
                                 $('ver_portada').addEvent('click', function(){
                                     document.forms['ver_portada'].submit();
@@ -189,10 +197,10 @@ if (isset($eq_actual) && $eq_actual != null):
 
 endif;
 ?>
-						
-        }else{	
+
+        }else{
             equalizer_fx.start({width:'350px'});
-						
+
             module_fx.start({opacity:'0'}).chain(function(){
                 $('equalizer').setStyles({
                     display:'none',
@@ -200,17 +208,17 @@ endif;
                 });
             });
         }
-					
+
     });
 
 
                         </script>
 
-                    </div>		
+                    </div>
 
                     <div id="mainContent" style="width: 100%">
                         <jdoc:include type="component" />
-                    </div>	  
+                    </div>
 
                     <div class="clear"></div>
 
@@ -247,10 +255,10 @@ endif;
             </div><!-- end #footer -->
             <script type="text/javascript">
                 window.addEvent('domready', function() {
-                    updateClock(); 
+                    updateClock();
                     setInterval('updateClock()', 1000 );
                 });
-            </script>	
+            </script>
         </div><!-- end #wrapper-web -->
     </body>
 </html>
