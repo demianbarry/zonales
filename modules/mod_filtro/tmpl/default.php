@@ -62,8 +62,8 @@ las fuentes de informacion mostradas"; ?></p>
 
             </table>
             </div>
-
-
+        
+            
             <div id="tempoDiv" style="display: <?php echo $tempoDiv ?>">
             <div class="splitter"></div>
                 <p class="titulos">TEMPORALIDAD</p>

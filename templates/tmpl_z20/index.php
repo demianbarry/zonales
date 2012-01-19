@@ -2,7 +2,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-
+jimport('joomla.user.helper');
 require_once (JPATH_BASE . DS . 'components' . DS . 'com_zonales' . DS . 'helper.php');
 require_once (JPATH_BASE . DS . 'components' . DS . 'com_zonales' . DS . 'ZContext.php');
 require (JPATH_BASE . DS . 'components' . DS . 'com_eqzonales' . DS . 'helper.php');
@@ -59,7 +59,7 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
-        <script language="javascript" type="text/javascript" src="http://192.168.1.2:4000/socket.io/socket.io.js"></script>
+        <script language="javascript" type="text/javascript" src="http://sursoftware.dyndns.org:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
         </script>
@@ -101,7 +101,7 @@ if (!isset($zCtx)) {
     $codificacion = $arr_codificacion['internal_encoding'];
 ?>
                             <p>
-<?php echo ucfirst(strftime("%A %d.%m.%Y")); ?><br /><span id="hora"></span></p>
+<?php echo (ucfirst(strftime("%A %d.%m.%Y"))); ?><br /><span id="hora"></span></p>
                             <!--
                                                   <p style="text-transform:uppercase;">
                                                           <strong>Compartinos:</strong>
@@ -120,8 +120,8 @@ if (!isset($zCtx)) {
                         </div>
                         <div id="module-searchTop">
                             <div class="searchbox">
-                                <button class="button" value="Search" type="submit">BUSCAR</button>
-                                <input class="text" type="text" name="searchword" maxlength="125" alt="buscar..." size="20" value="buscar..." onblur="if(this.value=='') this.value='buscar...';" onfocus="if(this.value=='buscar...') this.value='';">
+                                <button class="button" value="Search" type="submit" onclick="searchPost($('zonalesSearchword').value, zcGetEfectiveZoneName())">BUSCAR</button>
+                                <input class="text" id="zonalesSearchword" type="text" name="searchword" maxlength="125" alt="buscar..." size="20" value="buscar..." onblur="if(this.value=='') this.value='buscar...';" onfocus="if(this.value=='buscar...') this.value='';"></input>
                             </div>
                             <!--
                             <jdoc:include type="modules" name="topSearch" /><br/>
@@ -282,7 +282,7 @@ if (!isset($zCtx)) {
                     <div id="module-loginRight">
 
                         <!-- acá va el módulo de login... tal vez los div "module-loginRight" se pueden eliminar -->
-                        <jdoc:include type="modules" name="right" />
+                        <jdoc:include type="modules" name="right"/>
 
                     </div><!-- end #module-loginRight -->
 
