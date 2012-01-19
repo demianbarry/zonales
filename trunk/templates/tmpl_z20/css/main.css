@@ -257,6 +257,10 @@ h3{ /* t�tulos de m�dulos */
     /* background:#000 !important;
     margin-bottom:15px !important;
     border:1px solid #ff0000 !important; */
+    border-width: 4px;
+    float: left;
+    margin-right: 10px;
+    width: 130px;
 }
 
 /* La voz del vecino */
@@ -278,12 +282,19 @@ h3{ /* t�tulos de m�dulos */
     margin-bottom:10px;
 }
 
-.img1 p img, .img1 img{
-    display:block;
+.img1 p img {
+    display: block;
+    width: 130px;
+    /*display:block;
     padding:9px;
     background:#f1f2f3;
     margin:15px 0 15px 0;
-    max-width:448px;
+    max-width:448px;*/
+}
+
+.img1 img {
+    display: block;
+    width: 130px;
 }
 
 html body div#wrapper-web div#wrapper-body div#wrapper-content div#otherContent div.moduletable_lavozdelvecino div.moduletable_lavozdelvecino_bodyDiv div table.contentpaneopen tbody tr td div.img1 img {
@@ -394,17 +405,34 @@ html body div#wrapper-web div#wrapper-body div#wrapper-content div#otherContent 
 .cp_tags span , .cp_tags span a{
     font-family: tahoma,Georgia, "Times New Roman", Times, serif;
     font-size:11px;
+    line-height:15px; 	    
     color:#999999;
     text-align:center;
     margin-bottom:20px;
-    line-height:15px;
+    padding: 0 0.25em;	
 }
+/*color: #999999;
+    font-family: tahoma,Georgia,"Times New Roman",Times,serif;
+    font-size: 11px;
+    line-height: 15px;
+    margin-bottom: 20px;
+    text-align: center;*/
 
 .cp_tags .cp_tag_label{
     font-weight:bold;
 }
+/*.cp_tags {
+    clear: both;
+    font-size: 94%;
+    margin-top: 25px;
+}*/
 
-
+.cp_tags span a {
+    border-right: 1px solid silver;
+}
+.cp_tags span a:last-child {
+	border-right:none;
+}
 .mymenu li {
     display: inline;
     list-style-type: none;

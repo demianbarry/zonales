@@ -13,6 +13,7 @@
 <?php JHtml::_('behavior.framework', true); ?> 
 <?php JHTML::stylesheet('general.css',"administrator/templates/khepri/css/");?>
 <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/js/swfobject.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseurl ?>/components/com_zonales/ZContext.js"></script>
 
 </head>
 
