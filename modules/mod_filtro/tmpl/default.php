@@ -24,7 +24,7 @@ JHTML::_('behavior.formvalidation');
     <div id="mod_eq_main_div" class="moduletable_formEq_bodyDiv">
         <p><?php echo "Filtro usado para filtar
 las fuentes de informacion mostradas"; ?></p>
-        
+
         <div class="splitter"></div>
 
         <?php
@@ -32,9 +32,9 @@ las fuentes de informacion mostradas"; ?></p>
                 $enLaRed = "inline";
                 $noticiasEnLaRed = "none";
                 if ($pestana == 'enlared') {
-                    $temporalidad = "none";
+                    $tempoDiv = "none";
                 } else {
-                    $temporalidad = "inline";
+                    $tempoDiv = "inline";
                 }
             }
 
@@ -42,26 +42,32 @@ las fuentes de informacion mostradas"; ?></p>
                 $enLaRed = "none";
                 $noticiasEnLaRed = "inline";
                 if ($pestana == 'noticiasenlared') {
-                    $temporalidad = "none";
+                    $tempoDiv = "none";
                 } else {
-                    $temporalidad = "inline";
+                    $tempoDiv = "inline";
                 }
             }
             if ($pestana == 'zonales') {
                 $enLaRed = "none";
                 $noticiasEnLaRed = "none";
-                $temporalidad = "none";
+                $tempoDiv = "none";
             }
         ?>
             <div id="filtersDiv">
-                <p>FUENTES</p>
+                <p class="titulos">FUENTES</p>
                 <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
 
             </table>
             <table id="noticiasEnLaRed" style="display: <?php echo $noticiasEnLaRed ?>">
 
             </table>
-            <table id="temporalidad" style="display: <?php echo $temporalidad ?>">
+            </div>
+
+
+            <div id="tempoDiv" style="display: <?php echo $tempoDiv ?>">
+            <div class="splitter"></div>
+                <p class="titulos">TEMPORALIDAD</p>
+                <table id="temporalidad" style="display: <?php echo $temporalidad ?>">
                 <tr>
                     <td>
                         <select id="tempoSelect" class="tempoclass">
@@ -74,8 +80,10 @@ las fuentes de informacion mostradas"; ?></p>
                 </tr>
             </table>
             </div>
+
+            <div class="splitter"></div>
         <div id="filterTags">
-            <p>TAGS</p>
+            <p class="titulos">TAGS</p>
             <table id="tagsFilterTable">
 
             </table>
