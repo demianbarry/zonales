@@ -155,7 +155,6 @@ function loadSolrPost(tab, zone, more, callback){
         callback();
         return(this);
     }
-
     var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
     var urlProxy = '/curl_proxy.php?host='+getSolrHost()+'&port='+getSolrPort()+'&ws_path=' + encodeURIComponent(urlSolr);
 
@@ -175,7 +174,6 @@ function loadSolrPost(tab, zone, more, callback){
             return(this);
         }
     }).send();
-
 }
 
 function getSolrHost() {

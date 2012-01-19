@@ -20,7 +20,7 @@
  *
  **/
 
-var zContent, searching = false ;
+var zContent = new Content(), searching = false ;
 
 function User(){
     this.name = '';
@@ -31,11 +31,11 @@ function User(){
 
 function Content(id){
     this.source = 'Zonales';
-    this.id = id;
+    this.id = id ? id : null;
     this.fromUser = new User();    
     this.title = '';
     this.text = '';
-    this.created = getSolrDate(new Date());
+    this.created = (new Date()).getTime();
     this.modified = '';    
     this.relevance = 0;
     this.tags = new Array();
@@ -97,22 +97,23 @@ function refreshContent(){
 }
 
 function refreshForm(){
+    //alert(JSON.encode(zContent));
     $('fromUserName').value = zContent.fromUser ? zContent.fromUser.name : '';
     $('fromUserId').value = zContent.fromUser ? zContent.fromUser.id : '';
     $('id').value = zContent.id;
     $('title').value = zContent.title ? zContent.title : '';    
     $('text').value = zContent.text ? zContent.text : '';
-    $('created').value = getReadableDate(zContent.created ? new Date(zContent.created) : new Date());
-    $('modified').value = getReadableDate(zContent.modified ? new Date(zContent.modified) : new Date());
+    $('created').value = getReadableDate(zContent.created ? new Date(parseInt(zContent.created)) : new Date());
+    $('modified').value = getReadableDate(zContent.modified ? new Date(parseInt(zContent.modified)) : new Date());
     $('tags').value = zContent.tags ? zContent.tags.join(',') : '';
     $('zone').value = zContent.zone ? zContent.zone : '';
 }
 
 function getContent(id){
-    var url = '/solr/select?qt=zonalesContent&wt=json&q=id:'+id;
-    var urlProxy = 'curl_proxy.php';
+    var url = '/solr/select?qt=zonalesContent&wt=json&q=id:'+encodeURIComponent(id);
+    var urlProxy = '/curl_proxy.php';
     new Request.JSON({
-        url: encodeURIComponent(urlProxy),
+        url: urlProxy,
         method: 'get',
         data: {
             'host': host,
@@ -127,6 +128,7 @@ function getContent(id){
             if(!zContent.id)
                 zContent.id = doc.id;
             refreshForm();
+            workflow();
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -155,11 +157,12 @@ function saveContent(){
                 if(response.id){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guardÃ³ correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);
                 } else {
-                    alert("OcurriÃ³ un error al intentar guardar el documento: "+response);
+                    alert("Ocurrió un error al intentar guardar el documento: "+response);
                 }
             }
+            workflow();
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -191,7 +194,7 @@ function commit(){
 }
 
 function publishContent(publish){
-    zContent.state = publish ? true : false;
+    zContent.state = publish ? 'published' : 'saved';
     saveContent();
 }
 
@@ -212,7 +215,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'TÃ­tulo'
+        'html' : 'Título'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
@@ -260,10 +263,10 @@ function makeContentTable(jsonObj, container){
             'html' : post.tags.join(',')
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : getReadableDate(post.created)
+            'html' : getReadableDate(new Date(parseInt(post.created)))
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : getReadableDate(post.modified)
+            'html' : getReadableDate(new Date(parseInt(post.modified)))
         }).inject(config_title_tr);        
         var checktd = new Element('td').inject(config_title_tr);
         new Element ('input',{
@@ -311,4 +314,26 @@ function loadPost(container){
         //status.set('innerHTML', 'Twitter: The request failed.');
         }
     }).send();
+}
+
+function workflow(buttons){
+    $$('#buttons input[type=button]').each(function(submit){
+        submit.setStyle('display','none');
+    });
+    if(buttons)
+        buttons.each(function(button){
+            if($(button))
+                $(button).setStyle('display','inline');
+        });
+    if(zContent.state == 'created'){
+        $('guardarButton').setStyle('display','inline');   
+    } else if(zContent.state == 'saved'){
+        $('publicarButton').setStyle('display','inline');   
+        $('anularButton').setStyle('display','inline');   
+    } else if(zContent.state == 'published'){
+        $('despublicarButton').setStyle('display','inline');   
+        $('anularButton').setStyle('display','inline');   
+    }
+    
+    $('volverButton').setStyle('display','inline');
 }

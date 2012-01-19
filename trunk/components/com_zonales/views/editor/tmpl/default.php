@@ -7,23 +7,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     <head>
         <title>Carga de noticias Zonales</title>
         <meta content="text/html; charset=utf-8" http-equiv="content-type" />
-        <script type="text/javascript">
-            var host = 'localhost';
-            var port = '38080';
-        </script>
-        <!--<script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>-->
+        <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ckeditor.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>
-        <link rel="stylesheet" href="components/com_zonales/content.css" type="text/css" />	
-        <script type="text/javascript">            
+        <script type="text/javascript">
+            var host = 'localhost';
+            var port = '38080';
             window.addEvent('domready', function(){
-                $('editorForm').getElements('input').each(function(el){
+                $('table_content').getElements('input').each(function(el){
                     el.addEvent('change', function(){
-                        switchButtons(['guardarButton']);
+                        workflow();
                     });
                 });
-                switchButtons(['guardarButton']);
+                workflow();
 <?php if (array_key_exists('id', $_GET)): ?>
             getContent('<?php echo $_GET['id'] ?>');
 <?php endif; ?>
@@ -60,7 +57,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 </p>
             </noscript>
         </div>
-        <form id="editorForm" action="" method="post">
+        <form action="" method="post">
             <input type="hidden" id="id" value=""></input>
             <input type="hidden" id="fromUserName" value="<?php echo $this->user->get('username') ?>"></input>
             <input type="hidden" id="fromUserId" value="<?php echo $this->user->get('id') ?>"></input>
@@ -68,7 +65,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 <table class="advanced_search">
                     <tbody>
                         <tr>
-                            <td class="label"><label>Título</label></td>
+                            <td class="label"><label>TÃ­tulo</label></td>
                             <td class="input"><input type="text" id="title" value=""></input></td>
                         </tr>
                         <tr>
@@ -109,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, allZones);" autocomplete="off">
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
@@ -117,19 +114,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             <td class="label"><label>Contenido</label></td>
                             <td><textarea class="ckeditor" cols="80" id="text" name="editor1" rows="10"></textarea></td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div>
-                                    <input id="guardarButton" value="Guardar" type="button" onclick="saveContent();"></input>
-                                    <input id="anularButton" value="Anular" type="button" onclick="voidContent();"></input>
-                                    <input id="publicarButton" value="Publicar" type="button" onclick="publishContent(true);"></input>
-                                    <input id="despublicarButton" value="Despublicar" type="button" onclick="publishContent(false);"></input>
-                                    <input id="volverButton" value="Volver" type="button" onclick="history.back();"></input>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
+            </div>
+            <div id="buttons">
+                <input id="guardarButton" value="Guardar" type="button" onclick="saveContent();"></input>
+                <input id="anularButton" value="Anular" type="button" onclick="voidContent();"></input>
+                <input id="publicarButton" value="Publicar" type="button" onclick="publishContent(true);"></input>
+                <input id="despublicarButton" value="Despublicar" type="button" onclick="publishContent(false);"></input>
+                <input id="volverButton" value="Volver" type="button" onclick="history.back();"></input>
             </div>
         </form>
     </body>
