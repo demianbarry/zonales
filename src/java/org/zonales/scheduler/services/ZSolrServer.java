@@ -118,8 +118,8 @@ public final class ZSolrServer extends BaseService {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrP));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
-                        if (!post.getTags().contains(tag)) {
-                            post.getTags().add(tag);
+                        if (!post.getTags().contains(tag.trim())) {
+                            post.getTags().add(tag.trim());
                         }
                     }
                 }
@@ -177,8 +177,8 @@ public final class ZSolrServer extends BaseService {
                     if (post.getTags() == null) {
                         post.setTags(new ArrayList<String>());
                     }
-                    if (!post.getTags().contains(tag)) {
-                        post.getTags().add(tag);
+                    if (!post.getTags().contains(tag.trim())) {
+                        post.getTags().add(tag.trim());
                     }
                 }
                 postToSolr(solrPost, post);
