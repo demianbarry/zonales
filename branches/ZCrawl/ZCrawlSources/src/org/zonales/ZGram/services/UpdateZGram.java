@@ -55,6 +55,10 @@ public class UpdateZGram extends BaseService {
             zgram = metadataGson.fromJson(metadataJson.replace("\\\"", "\""), ZGram.class);
         } else {
             zgram = new ZGram();
+            zgram.setIncluyeComentarios(null);
+            zgram.setTagsFuente(null);
+            zgram.setSiosi(null);
+            zgram.setNocriterio(null);
         }
 
         if (codStr != null) {
@@ -85,6 +89,7 @@ public class UpdateZGram extends BaseService {
         if (modificadoPor != null) {
             zgram.setModificadoPor(modificadoPor);
         }
+
 
         zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto, siempre que actualizo la seteo en 20
 
