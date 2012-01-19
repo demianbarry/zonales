@@ -118,7 +118,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 </table>
             </div>
             <div id="buttons">
-                <input id="guardarButton" value="Guardar" type="button" onclick="saveContent();"></input>
+                <input id="guardarButton" value="Guardar" type="button" onclick="zContent.state = 'saved';saveContent();"></input>
                 <input id="anularButton" value="Anular" type="button" onclick="voidContent();"></input>
                 <input id="publicarButton" value="Publicar" type="button" onclick="publishContent(true);"></input>
                 <input id="despublicarButton" value="Despublicar" type="button" onclick="publishContent(false);"></input>
