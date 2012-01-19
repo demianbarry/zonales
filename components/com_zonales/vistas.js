@@ -51,7 +51,7 @@ function initZonas(selZone) {
             });
             $('provincias').addEvent('change', function(){
                 if($('provincias').selectedIndex == 0)
-                    setZone(this.value, '', '', '');                
+                    setZone(this.value, '', '', '');
                 loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
                 zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
             });
@@ -148,7 +148,7 @@ function loadMunicipios(id_provincia, selZone) {
                     'html': zone.name.replace(/_/g, ' ').capitalize()
                 }).inject($('zonalid'));
             });
-            $('zonalid').addEvent('change', function(){                
+            $('zonalid').addEvent('change', function(){
                 setZone($('zonalid').value, $('zonalid').selectedIndex == 0 ? '' : $('zonalid').options[$('zonalid').selectedIndex].innerHTML, $('provincias').value, zcGetProvinceName())
             });
             if (selZone != null) {
@@ -168,7 +168,7 @@ function setZone(zoneId, zoneName, parentId, parentName) {
         parentId = '';
     if (parentName == null || typeof(parentName) == 'undefined')
         parentName = '';
-    
+
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
@@ -248,16 +248,16 @@ function searchPost(keyword, zone) {
             } else {
                 if (zcGetContext().efZone != '') {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su bÃºsqueda en la zona seleccionada'
+                        'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
                     }).inject($('postsContainer'));
                     new Element('input', {
-                        'type': 'button', 
-                        'onclick': 'searchPost("' + keyword + '","")', 
+                        'type': 'button',
+                        'onclick': 'searchPost("' + keyword + '","")',
                         'value': 'Buscar en todas las zonas'
                     }).inject($('postsContainer'));
                 } else {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su bÃºsqueda'
+                        'html': 'No se encontraron resultados para su búsqueda'
                     }).inject($('postsContainer'));
                 }
             }
@@ -326,6 +326,7 @@ function verNuevos(){
     //$('postsContainer').set({ style: 'background:#FFFFFF'});
     $('verNuevos').setStyle('display','none');
     $('newPostsContainer').empty();
+    refreshFiltro();
 // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
 }
 
@@ -469,7 +470,7 @@ function updatePosts(json, component, more) {
                         a_story_item_link = new Element('a', {
                             'href': link.url,
                             'target': '_blank'
-                        }).set('html','MÃ¡s info...').addClass('story-item-link').inject(li_story_item_link);
+                        }).set('html','Más info...').addClass('story-item-link').inject(li_story_item_link);
                         break;
                 }
             });
@@ -606,7 +607,7 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-        
+
 
     });
 }
@@ -661,25 +662,18 @@ function fixTime(i) {
 }
 
 function setSourceVisible(source, visible) {
-    var posts = $$('div#postsContainer div.story-item');
-    if(typeOf(posts) == 'elements') {
-        posts.each(function(post){
-            if(post.hasClass(source))
-                post.setStyle('display', visible ? 'block' : 'none');
-        });
-    }
-    //    sendFilter(source,visible);
-    armarTitulo(tab);
+
     if (visible) {
         zcAddSource(source);
     } else {
         zcUncheckSource(source);
     }
+    refreshFiltro();
 }
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-    
+
     zCtxChkTags.each(function (chkTag) {
         if (chkTag != tag) {
             zcUncheckTag(chkTag);
@@ -705,21 +699,35 @@ function setTagVisible(tag, checked) {
     } else {
         zcUncheckTag(tag);
     }
-    
-    //Refresco visibilidad de Posts
+    refreshFiltro();
+
+
+}
+
+function refreshFiltro(){
+    //var zCtxTemp = zcGetContext();
+//Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
+    var zCtxChkSource = zcGetCheckedSources();
+
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
             var visible = false;
-            zCtxChkTags.each(function (tag) {
-                if(post.hasClass(tag))
-                    visible = true;
+            zCtxChkSource.each(function (source){
+                if(post.hasClass(source)) {
+                    zCtxChkTags.each(function (tag) {
+                        if(post.hasClass(tag))
+                            visible = true;
+                    });
+                }
             });
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-   
+
+    //    sendFilter(source,visible);
+    armarTitulo(tab);
 }
 
 function addMilli(date) {
@@ -745,14 +753,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, 'ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+    [4838400, 'ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -783,7 +791,7 @@ function armarTitulo(tabTemp){
     tabTemp = tab;
     var zoneSeltemp = zcGetSelectedZoneName();
     var zoneEfectemp = zcGetEfectiveZoneName();
-    
+
     document.getElementById('tituloSup').innerHTML = "";
 
     if (tabTemp == 'relevantes'){
@@ -796,22 +804,22 @@ function armarTitulo(tabTemp){
 
             }
         });
-        
+
     }
 
     if (tabTemp == 'noticiasenlared'){
-        
+
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             temp++;
             if(temp < 5 && element.checked ) {
-                
+
                 //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
 
             else if (temp > 5 && element.checked ){
@@ -830,7 +838,7 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-                
+
             }
             else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
@@ -847,13 +855,13 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value+" ";
-                
+
             }
         });
 
 
     }
-    
+
     if (zoneEfectemp == zoneSeltemp){
         document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
     }
@@ -866,7 +874,7 @@ function armarTitulo(tabTemp){
     if (zoneSeltemp == ""){
         document.getElementById('tituloZone').innerHTML = "Mostrando todas las noticias";
     }
-    
+
 }
 
 //zcSetTemp($('tempoSelect').value);
