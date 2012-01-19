@@ -10,6 +10,13 @@ String.prototype.capitalize = function(){
     } );
 };
 
+String.prototype.trim = function(){
+    var i=0, j=this.length-1;
+    while(this.charAt(i) == ' ')i++;
+    while(this.charAt(j) == ' ')j--;
+    return this.substring(i,j+1);
+};
+
 function gup( name ) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
     var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -38,6 +45,7 @@ function getSolrDate(d){
 }
 
 function getReadableDate(d){
+    //alert(d);
     return  fixTime(d.getDate()) +  "/" +fixTime(d.getMonth()) +  "/" + d.getFullYear() +" "+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds());
 }
 
@@ -158,7 +166,7 @@ function populateOptions(event, field, add, elmts){
             if(!add) {
                 field.set('value', container.getElement('.selected').get('html'));
             } else {
-                var value = container.getElement('.selected').get('html');
+                var value = container.getElement('.selected').get('html').trim();
                 var fieldValue = field.get('value');
                 if(fieldValue.indexOf(',') != -1)
                     field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
@@ -185,9 +193,8 @@ function populateOptions(event, field, add, elmts){
             }
             break;
         default:
-            
             container.empty();
-            var query = field.get('value').toLowerCase();
+            var query = field.get('value').toLowerCase().trim();
             if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
                 return;
             elmts = eval(JSON.stringify(Array.from(elmts)));
