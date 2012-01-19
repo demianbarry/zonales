@@ -106,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
@@ -118,7 +118,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 </table>
             </div>
             <div id="buttons">
-                <input id="guardarButton" value="Guardar" type="button" onclick="zContent.state = 'saved';saveContent();"></input>
+                <input id="guardarButton" value="Guardar" type="button" onclick="if(zContent.state == 'created')zContent.state = 'saved';saveContent();"></input>
                 <input id="anularButton" value="Anular" type="button" onclick="voidContent();"></input>
                 <input id="publicarButton" value="Publicar" type="button" onclick="publishContent(true);"></input>
                 <input id="despublicarButton" value="Despublicar" type="button" onclick="publishContent(false);"></input>

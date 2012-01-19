@@ -92,7 +92,7 @@ function refreshContent(){
     zContent.text = CKEDITOR.instances.text.getData();
     zContent.created = (new Date($('created').value ? $('created').value.substr(3,2) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6) : new Date())).getTime();
     zContent.modified = (new Date()).getTime();
-    zContent.tags = $('tags').value.split(',');
+    zContent.tags = $('tags').value.split(',');    
     zContent.zone = $('zone').value;
 }
 
@@ -138,7 +138,7 @@ function getContent(id){
 }
 
 function saveContent(){
-    refreshContent();
+    refreshContent();    
     var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+encodeURIComponent(JSON.encode(zContent));
     var urlProxy = '/curl_proxy.php';
     new Request.JSON({
@@ -149,17 +149,18 @@ function saveContent(){
             'port': port,
             'ws_path':url
         },        
-        onRequest: function(){            
+        onRequest: function(){
         },
         onSuccess: function(response) {			
             //        commit();
             if(response && response.length != 0){
-                if(response.id){
+                if(response.id && response.id.length > 0){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guardó correctamente el documento con el ID "+zContent.id);
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
                 } else {
                     alert("Ocurrió un error al intentar guardar el documento: "+response);
+                    zContent.state = 'created';
                 }
             }
             workflow();
@@ -325,12 +326,14 @@ function workflow(buttons){
             if($(button))
                 $(button).setStyle('display','inline');
         });
-    if(zContent.state == 'created'){
+    if(zContent.state == 'created' || zContent.state == 'saved'){
         $('guardarButton').setStyle('display','inline');   
-    } else if(zContent.state == 'saved'){
+    } 
+    if(zContent.state == 'saved'){
         $('publicarButton').setStyle('display','inline');   
         $('anularButton').setStyle('display','inline');   
-    } else if(zContent.state == 'published'){
+    }
+    if(zContent.state == 'published'){
         $('despublicarButton').setStyle('display','inline');   
         $('anularButton').setStyle('display','inline');   
     }
