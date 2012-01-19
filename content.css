@@ -298,5 +298,10 @@ div#wrapper p.selected {
 
 div.suggestions {
 	position: absolute; 
-	background: none repeat scroll 0% 0% grey;
+	background: none repeat scroll 0% 0% #D3FFF3;
+        z-index: 999;
+}
+
+div.suggestions .selected{	
+	background: none repeat scroll 0% 0% #AEFFE9;
 }

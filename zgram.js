@@ -1,66 +1,42 @@
-document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
+document.write('<script type="text/javascript" src="utils.js"></script>');
 	
 var firstIndexTime = null;
 var lastIndexTime = null;
 var zgram = null;
 var metadata = null;
-var host = 'localhost';
-var port = '8080';
 var cantExtract = 0;
 var cantUsers = 0;
 var users = new Array();
 
 
-function switchButtons(buttons){
-    $$('input[type=submit]').each(function(submit){
-        submit.setStyle('display','none');
-    });
-    buttons.each(function(button){
-        $(button).setStyle('display','inline');
-    });
-
-    $('generateQuery').setStyle('display','inline');
-	$('volverButton').setStyle('display','inline');
-}
-
 function switchByWorkflow(state){
-	var estado;
-	if(typeof state == 'undefined' ||	state == null)
-		estado = zgram.estado;
-	else
-		estado = state;
-	if(zgram == null) {
-		switchButtons(['compilarButton']);
-		return;
-	}
-	switch(estado){
-		case 'compiled':
-			switchButtons(['publicarButton','extraerButton']);
-			break;
-		case 'no-compiled':		
-			switchButtons(['compilarButton']);
-			break;
-		case 'published':		
-			switchButtons(['despublicarButton','extraerButton']);
-			break;
-		case 'unpublished':
-			switchButtons(['compilarButton','anularButton']);
-			break;
-		case 'void':
-			break;		
-	}
+    var estado;
+    if(typeof state == 'undefined' ||	state == null)
+        estado = zgram.estado;
+    else
+        estado = state;
+    if(zgram == null) {
+        switchButtons(['compilarButton']);
+        return;
+    }
+    switch(estado){
+        case 'compiled':
+            switchButtons(['publicarButton','extraerButton']);
+            break;
+        case 'no-compiled':		
+            switchButtons(['compilarButton']);
+            break;
+        case 'published':		
+            switchButtons(['despublicarButton','extraerButton']);
+            break;
+        case 'unpublished':
+            switchButtons(['compilarButton','anularButton']);
+            break;
+        case 'void':
+            break;		
+    }
 }
 
-function gup( name ) {
-    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-    var regexS = "[\\?&]"+name+"=([^&#]*)";
-    var regex = new RegExp( regexS );
-    var results = regex.exec( window.location.href );
-    if( results == null )
-        return "";
-    else
-        return results[1];
-}
 
 /*
 window.addEvent('domready', function(){
@@ -81,21 +57,40 @@ function refreshZGram(){
             element.set('value','');
         }
     });
-	if(zgram == null) {
-		$('table_content').setStyle('display','none');
-		return;
-	} else {
-		$('table_content').setStyle('display','block');
-	}
+    if(zgram == null) {
+        $('table_content').setStyle('display','none');
+        return;
+    } else {
+        $('table_content').setStyle('display','block');
+    }		
 		
     $('descripcion').set('value',zgram.descripcion);
     $('localidad').set('value',zgram.localidad);
     $('fuente').set('value',zgram.fuente);
     if (zgram.fuente =='facebook') 
-					$('fbUtilsIcon').setStyle('display','block'); 
-				else 
-					$('fbUtilsIcon').setStyle('display','none');
+        $('fbUtilsIcon').setStyle('display','block'); 
+    else 
+        $('fbUtilsIcon').setStyle('display','none');
+			
+    if(zgram.fuente == 'feed') {
+        $('uriFuente').setStyle('display','');
+        $('geoFuente').setStyle('display','');
+    }
+    else {
+        $('uriFuente').setStyle('display','none');
+        $('geoFuente').setStyle('display','none');
+    }
+		
     $('uri').set('value',zgram.uriFuente);
+    if($('uri').value.trim() != '') {
+        $('geoFuente').setStyle('display','');
+    } else {
+        $('geoFuente').setStyle('display','none');
+    }
+	
+    $('latfeed').set('value', zgram.sourceLatitude);
+    $('lonfeed').set('value', zgram.sourceLongitude);
+	
     $('estado').set('value',zgram.estado);
     $('tags').set('value',zgram.tags.join(','));
     if (users.length > 0) {
@@ -157,17 +152,17 @@ function refreshZGram(){
 
     $('commenters').set('value', typeOf(zgram.comentarios) == 'array' ? zgram.comentarios.join(',') : '');
 	
-	$('allCommenters').set('checked',zgram.incluyeComentarios);
+    $('allCommenters').set('checked',zgram.incluyeComentarios);
 
     if(typeOf(zgram.filtros) == 'array') {
         zgram.filtros.each(function(filtro){
             if(filtro.minActions != null) {
                 $('minActions').set('value', filtro.minActions);
             }
-			if(filtro.listaNegraDeUsuarios != null) {
+            if(filtro.listaNegraDeUsuarios != null) {
                 $('lnegraus').set('checked', filtro.listaNegraDeUsuarios);
             }			
-			if(filtro.listaNegraDePalabras != null) {
+            if(filtro.listaNegraDePalabras != null) {
                 $('lnegrapa').set('checked',filtro.listaNegraDePalabras);
             }
 			
@@ -180,72 +175,56 @@ function refreshZGram(){
     $('sourceTags').set('checked',zgram.tagsFuente);
 }
 
-function GetPortNumber(url) {
-    var url_parts = url.split('/');
-
-    var domain_name_parts = url_parts[2].split(':');
-
-    var port_number = domain_name_parts[1];
-
-    return port_number;
-}
-
-function GetLocalPath(url) {
-    var url_parts = url.split('/');
-
-    var local_path_name = url_parts.slice(3).join('/');
-
-    return local_path_name;
-}
-
 function testExtraction(metadatas){
-	if(typeOf(metadatas) == 'array') {
-		metadatas.each(function(meta){
-			getExtractURL(JSON.encode(meta));
-		});
-	} else 
+    if(typeOf(metadatas) == 'array') {
+        metadatas.each(function(meta){
+            getExtractURL(JSON.encode(meta));
+        });
+    } else 
     if(metadata != null){
         getExtractURL(metadata);
     } 
 }
 
 function publishZgram(publish){
-    var url = '/ZCrawlSources/'+(publish ? 'publishService' : 'unpublishService')+'?id='+zgram._id.$oid;
-    var urlProxy = 'curl_proxy.php';
-    new Request({
-        url: encodeURIComponent(urlProxy),
-        method: 'post',
-        data: {
-            'host': host,
-            'port': port,
-            'ws_path':url
-        },
-        onRequest: function(){
-            $('postsContainer').empty();
-            $('resultado').empty();
-            $('resultado').addClass('loading');
-        },
-        onSuccess: function(response) {			
-            // actualizar pagina
-            $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
-			response = JSON.decode(response);
-			
-			if(typeof response.cod != 'undefined') {                
-                response.cod = parseInt(response.cod);
-				if(response.cod != 100)
-					alert(response.msg);
-			}                         
-            getZGram(zgram._id.$oid);
-        },
+    if (zgram != null) {
+        var url = '/ZCrawlSources/'+(publish ? 'publishService' : 'unpublishService')+'?id='+zgram._id.$oid;
+        var urlProxy = 'curl_proxy.php';
+        new Request({
+            url: encodeURIComponent(urlProxy),
+            method: 'post',
+            data: {
+                'host': host,
+                'port': port,
+                'ws_path':url
+            },
+            onRequest: function(){
+                $('postsContainer').empty();
+                $('resultado').empty();
+                $('resultado').addClass('loading');
+            },
+            onSuccess: function(response) {
+                // actualizar pagina
+                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+                response = JSON.decode(response);
 
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-            $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
-            $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
-        }
+                if(typeof response.cod != 'undefined') {
+                    response.cod = parseInt(response.cod);
+                    if(response.cod != 100)
+                        alert(response.msg);
+                }
+                getZGram(zgram._id.$oid);
+            },
 
-    }).send();
+            // Our request will most likely succeed, but just in case, we'll add an
+            // onFailure method which will let the user know what happened.
+            onFailure: function(){
+                $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
+                $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+            }
+
+        }).send();
+    }
 }
 
 function getExtractURL(metadata){
@@ -263,27 +242,27 @@ function getExtractURL(metadata){
             $('postsContainer').empty();
             $('resultado').empty();
             $('resultado').addClass('loading');
-	    cantExtract++;
+            cantExtract++;
         },
-	 onComplete: function(){
+        onComplete: function(){
             cantExtract--;
         },
         onSuccess: function(jsonObj) {
             // actualizar pagina
 	
-	    if (cantExtract == 0)	
-           	 $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');            
-			jsonObj = eval('('+jsonObj+')');
-			jsonObj.cod = parseInt(jsonObj.cod);
-                switch(jsonObj.cod) {
-                    case 100:                        
-						extract(jsonObj.url);
-                        break;                 
-                    default:                        
-						$('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
-                        $('resultado').innerHTML = jsonObj.msg;
-                        break;
-                }
+            if (cantExtract == 0)	
+                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');            
+            jsonObj = eval('('+jsonObj+')');
+            jsonObj.cod = parseInt(jsonObj.cod);
+            switch(jsonObj.cod) {
+                case 100:
+                    extract(jsonObj.url);
+                    break;                 
+                default:
+                    $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
+                    $('resultado').innerHTML = jsonObj.msg;
+                    break;
+            }
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
@@ -305,20 +284,20 @@ function extract(url){
             'host': host,
             'port': GetPortNumber(url),
             'ws_path':GetLocalPath(url)
-            },
+        },
         onRequest: function(){
             $('postsContainer').empty();
             $('resultado').empty();
             $('resultado').addClass('loading');
-	    cantExtract++;	
+            cantExtract++;	
         },
-		 onComplete: function(){
+        onComplete: function(){
             cantExtract--;
         },
         onSuccess: function(jsonObj) {
             // actualizar pagina
-	    if (cantExtract == 0)	
-            	$('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+            if (cantExtract == 0)	
+                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
             jsonObj = eval('('+jsonObj+')');
             if(typeof jsonObj.post != 'undefined' && typeOf(jsonObj.post) == 'array') {
                 jsonObj.post.each(function(post){
@@ -413,19 +392,19 @@ function saveZGram(cod, msg, meta, verbatim, state){
         onSuccess: function(jsonObj) {
             // actualizar pagina
             $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
-			if(typeof jsonObj.cod != 'undefined') {
-				jsonObj.cod = parseInt(jsonObj.cod);
-				switch(jsonObj.cod) {
-					case 100:
-						getZGram(jsonObj.id);                    
-						break;
-					default:
-						switchByWorkflow();
-						$('resultado').innerHTML = jsonObj.msg;
-						break;
-				}
-			}
-		},
+            if(typeof jsonObj.cod != 'undefined') {
+                jsonObj.cod = parseInt(jsonObj.cod);
+                switch(jsonObj.cod) {
+                    case 100:
+                        getZGram(jsonObj.id);                    
+                        break;
+                    default:
+                        switchByWorkflow();
+                        $('resultado').innerHTML = jsonObj.msg;
+                        break;
+                }
+            }
+        },
 
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -456,18 +435,18 @@ function updateZGram(id, cod, msg, meta, verbatim, state){
         onSuccess: function(jsonObj) {
             // actualizar pagina
             $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
-			if(typeof jsonObj.cod != 'undefined') {
-				jsonObj.cod = parseInt(jsonObj.cod);
-				switch(jsonObj.cod) {
-					case 100:
-						getZGram(jsonObj.id);                    
-						break;
-					default:
-						switchByWorkflow();
-						$('resultado').innerHTML = jsonObj.msg;
-						break;
-				}
-			}
+            if(typeof jsonObj.cod != 'undefined') {
+                jsonObj.cod = parseInt(jsonObj.cod);
+                switch(jsonObj.cod) {
+                    case 100:
+                        getZGram(jsonObj.id);                    
+                        break;
+                    default:
+                        switchByWorkflow();
+                        $('resultado').innerHTML = jsonObj.msg;
+                        break;
+                }
+            }
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
@@ -499,31 +478,31 @@ function getZGram(id){
         onSuccess: function(jsonObj) {
             // actualizar pagina
             $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
-			jsonObj = eval('('+jsonObj+')');
-			if(typeof jsonObj.cod != 'undefined') {
-				jsonObj.cod = parseInt(jsonObj.cod);
-				switch(jsonObj.cod) {
-					case 100:
-					case 220:
-						$('resultado').innerHTML = jsonObj.msg;
-						zgram = jsonObj;
-						if(metadata == null) {
-							metadata = Object.clone(zgram);
-							delete metadata._id;
-							delete metadata.cod;
-							delete metadata.msg;
-							delete metadata.verbatim;
-							delete metadata.estado;
-							metadata = JSON.encode(metadata);
-						}
-						refreshZGram();                    
-						break;
-					default:                    
-						$('resultado').innerHTML = jsonObj.msg;
-						break;
-				}
+            jsonObj = eval('('+jsonObj+')');
+            if(typeof jsonObj.cod != 'undefined') {
+                jsonObj.cod = parseInt(jsonObj.cod);
+                switch(jsonObj.cod) {
+                    case 100:
+                    case 220:
+                        $('resultado').innerHTML = jsonObj.msg;
+                        zgram = jsonObj;
+                        if(metadata == null) {
+                            metadata = Object.clone(zgram);
+                            delete metadata._id;
+                            delete metadata.cod;
+                            delete metadata.msg;
+                            delete metadata.verbatim;
+                            delete metadata.estado;
+                            metadata = JSON.encode(metadata);
+                        }
+                        refreshZGram();                    
+                        break;
+                    default:
+                        $('resultado').innerHTML = jsonObj.msg;
+                        break;
+                }
             }
-			switchByWorkflow();
+            switchByWorkflow();
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
@@ -536,46 +515,6 @@ function getZGram(id){
     }).send();
 }
 
-// formatJson() :: formats and indents JSON string
-function formatJson(val) {
-    var retval = '';
-    var str = val;
-    var pos = 0;
-    var strLen = str.length;
-    var indentStr = '&nbsp;&nbsp;&nbsp;&nbsp;';
-    var newLine = '<br />';
-    var character = '';
-
-    for (var i=0; i<strLen; i++) {
-        character = str.substring(i,i+1);
-
-        if (character == '}' || character == ']') {
-            retval = retval + newLine;
-            pos = pos - 1;
-
-            for (var j=0; j<pos; j++) {
-                retval = retval + indentStr;
-            }
-        }
-
-        retval = retval + character;
-
-        if (character == '{' || character == '[' || character == ',') {
-            retval = retval + newLine;
-
-            if (character == '{' || character == '[') {
-                pos = pos + 1;
-            }
-
-            for (var k=0; k<pos; k++) {
-                retval = retval + indentStr;
-            }
-        }
-    }
-
-    return retval;
-}
-
 function getTarget(post) {
     ret = '';
     if ((post.source).toLowerCase() == 'twitter') {
@@ -585,12 +524,12 @@ function getTarget(post) {
     } else {
         if(typeOf(post.links) == 'array') {
             post.links.each(function(link) {
-               if (link.type == 'source') {
-                   ret = link.url;
-               }
+                if (link.type == 'source') {
+                    ret = link.url;
+                }
             });
-         }
-     }
+        }
+    }
     return ret;
 }
 
@@ -604,7 +543,7 @@ function updatePost(post) {
     span_relevance = new Element('span.zonales-count').inject(div_zonales_count_wrapper),
     span_relevance_int = new Element('span', {
         'html': post.relevance
-        }).inject(span_relevance),
+    }).inject(span_relevance),
     div_story_item_content = new Element('div.story-item-content group').inject(div_story_item_zonalesbtn, 'after'),
     div_story_item_details = new Element('div.story-item-details').inject(div_story_item_content),
     h3_story_item_title = new Element('h3.story-item-title').inject(div_story_item_details),
@@ -622,7 +561,7 @@ function updatePost(post) {
     a_story_item_icon = new Element('a.story-item-icon').inject(a_story_item_source, 'before'),
     a_story_item_icon_image = new Element('img',{
         'src': 'logo_'+post.source.replace('/','').toLowerCase()+'.png'
-        }).inject(a_story_item_icon).addClass('source_logo'),
+    }).inject(a_story_item_icon).addClass('source_logo'),
     a_story_item_teaser = new Element('span.story-item-teaser', {
         'html': post.text ? ' - ' + post.text.trim() : ''
     }).inject(a_story_item_source, 'after'),
@@ -634,7 +573,7 @@ function updatePost(post) {
         'html': post.fromUser.name,
         'target': '_blank',
         'href': post.fromUser.url
-        }).inject(li_story_submitter),
+    }).inject(li_story_submitter),
     div_inline_comment_container = new Element('div.inline-comment-container').inject(div_story_item_content),
     div_story_item_activity = new Element('div.story-item-activity group hidden').inject(div_story_item_content),
     div_story_item_media   = new Element('div.story-item-media').inject(div_story_item_content, 'after');
@@ -645,66 +584,66 @@ function updatePost(post) {
                 case 'comment':
                     var li_story_item_comments = new Element('li.story-item-comments', {
                         'html': action.cant + ' comments'
-                        }).inject(ul_story_item_meta);
+                    }).inject(ul_story_item_meta);
                     break;
                 case 'like':
                     var li_story_item_likes = new Element('li.story-item-likes', {
                         'html': action.cant + ' likes'
-                        }).inject(ul_story_item_meta);
+                    }).inject(ul_story_item_meta);
                     break;
                 case 'retweets':
                     var li_story_item_retweets = new Element('li.story-item-retweets', {
                         'html': action.cant + ' retweets'
-                        }).inject(ul_story_item_meta);
+                    }).inject(ul_story_item_meta);
                     break;
                 case 'replies':
                     var li_story_item_replies = new Element('li.story-item-replies', {
                         'html': action.cant + ' replies'
-                        }).inject(ul_story_item_meta);
+                    }).inject(ul_story_item_meta);
                     break;
             }
         });
     }
 
-	var postLinks;
+    var postLinks;
 	
-	switch(post.source.toLowerCase()) {
-		case 'facebook':
-			postLinks =	post.links;			
-			break;
-		default:
-			postLinks =	post.links.link;
-	}
+    switch(post.source.toLowerCase()) {
+        case 'facebook':
+            postLinks =	post.links;			
+            break;
+        default:
+            postLinks =	post.links.link;
+    }
 	
     if(typeOf(postLinks) == 'array') {		
         postLinks.each(function(link){
             switch (link.type) {
                 case 'picture':
-					if(div_story_item_media.childNodes.length == 0) {
-						var a_thumb = new Element('a.thumb', {
-							'href': getTarget(post),
-							'target': '_blank'
+                    if(div_story_item_media.childNodes.length == 0) {
+                        var a_thumb = new Element('a.thumb', {
+                            'href': getTarget(post),
+                            'target': '_blank'
                         }).inject(div_story_item_media).addClass('thumb-s'),
                         img = new Element('img', {
-							'src': link.url
+                            'src': link.url
                         }).inject(a_thumb);
-					}
+                    }
                     break;
                 case 'video':
                     var li_story_item_video = new Element('li.story-item-video').inject(ul_story_item_meta),
                     a_story_item_video = new Element('a.story-item-video', {
                         'html': 'Video',
                         'href': link.url,
-						'target': '_blank'
-                        }).inject(li_story_item_video)
+                        'target': '_blank'
+                    }).inject(li_story_item_video)
                     break;
                 case 'link':
                     var li_story_item_link = new Element('li.story-item-link').inject(ul_story_item_meta),
                     a_story_item_link = new Element('a.story-item-link', {
                         'html': 'Máinfo...',
                         'href': link.url,
-						'target': '_blank'						
-                        }).inject(li_story_item_link);
+                        'target': '_blank'						
+                    }).inject(li_story_item_link);
                     break;
             }
         });
@@ -713,12 +652,12 @@ function updatePost(post) {
     var date = new Date(parseInt(post.created));    
     li_story_item_created_date = new Element('li.story-item-created-date', {
         'html': 'Creado: ' + spanishDate(date)
-        }).inject(ul_story_item_meta);
+    }).inject(ul_story_item_meta);
 
     date = new Date(parseInt(post.modified));    
     li_story_item_modified_date = new Element('li.story-item-modified-date', {
         'html': 'Modificado: ' + spanishDate(date)
-        }).inject(ul_story_item_meta);
+    }).inject(ul_story_item_meta);
 
     /*
                                         if(!$('chk'+post.source)) {
@@ -731,44 +670,41 @@ function updatePost(post) {
     //div_story_item.setStyle('display',$('chk'+post.source).checked ? 'block' : 'none');
     if(typeof more == 'undefined' || !more) {
         if($('postsContainer').hasChildNodes()){
-			var element = $('postsContainer').firstChild;
-			while(element != null && parseInt(element.get('id')) > parseInt(post.created)){
-				element = element.getNext();
-			}			
-            div_story_item.inject(new Element('div', {'id': post.created}).inject(element != null ? element : $('postsContainer').lastChild, element != null && parseInt(element.get('id')) > parseInt(post.created) ? 'after' : 'before'));
-		}
+            var element = $('postsContainer').firstChild;
+            while(element != null && parseInt(element.get('id')) > parseInt(post.created)){
+                element = element.getNext();
+            }			
+            div_story_item.inject(new Element('div', {
+                'id': post.created
+            }).inject(element != null ? element : $('postsContainer').lastChild, element != null && parseInt(element.get('id')) > parseInt(post.created) ? 'before' : 'after'));
+        }
         else
-            div_story_item.inject(new Element('div', {'id': post.created}).inject($('postsContainer')));
+            div_story_item.inject(new Element('div', {
+                'id': post.created
+            }).inject($('postsContainer')));
     }
     else {
         if($('postsContainer').hasChildNodes()) {
-			var element = $('postsContainer').lastChild;
-			while(element != null && parseInt(element.get('id')) > parseInt(post.created)){
-				element = element.getNext();
-			}
-            div_story_item.inject(new Element('div', {'id': post.created}).inject(element != null ? element : $('postsContainer').firstChild, 'after'));
-		}
+            var element = $('postsContainer').lastChild;
+            while(element != null && parseInt(element.get('id')) > parseInt(post.created)){
+                element = element.getNext();
+            }
+            div_story_item.inject(new Element('div', {
+                'id': post.created
+            }).inject(element != null ? element : $('postsContainer').firstChild, 'after'));
+        }
         else
-            div_story_item.inject(new Element('div', {'id': post.created}).inject($('postsContainer')));
+            div_story_item.inject(new Element('div', {
+                'id': post.created
+            }).inject($('postsContainer')));
     }
 //solrIds.include(doc.id);
 //}
 }
 
-function spanishDate(d){
-	var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
-
-	var monthname=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-
-	return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear(); 
-} 
-
-function fixTime(i) {
-	return (i<10 ? "0" + i : i);
-}
-
 function generateQuery() {
-
+    var oldValue = $('textExtraction').value;
+	
     $('textExtraction').empty();
 
     if ($('localidad').get('value').trim() == "") {
@@ -804,6 +740,14 @@ function generateQuery() {
     if ($('uri').get('value').trim() != "") {
         query += ' ubicado en "' + $('uri').get('value').trim() + '"';
     }
+	
+    if($('fuente').get('value').trim() == "feed" && ($('latfeed').get('value').trim() != "" || $('lonfeed').get('value').trim() != "")){
+        if ($('latfeed').get('value').trim() != "" ^ $('lonfeed').get('value').trim() != "") {
+            alert('Ingrese ambas coordenadas para la geolocalización del feed.');
+        } else {
+            query += ' ['+$('latfeed').get('value').trim()+','+$('lonfeed').get('value').trim()+']';
+        }
+    }
 
     if ($('tags').get('value').trim() != "") {
         query += ' asignando los tags ';
@@ -822,18 +766,18 @@ function generateQuery() {
         var first = true;
         query += ' de los usuarios';
         for (i = 0; i < users.length; i++) {
-                if (users[i] != null) {
-                    if (first) {
-                        first = false;
-                    } else {
-                        query += ",";
-                    }
-                    query += ' "' + users[i][0] + '"';
-                    if (typeof users[i][1] != 'undefined' && users[i][1] && users[i][1] != "") {
-                        query += ' [' + users[i][1] + ',' + users[i][2] + ']';
-                    }
+            if (users[i] != null) {
+                if (first) {
+                    first = false;
+                } else {
+                    query += ",";
+                }
+                query += ' "' + users[i][0] + '"';
+                if (typeof users[i][1] != 'undefined' && users[i][1] && users[i][1] != "") {
+                    query += ' [' + users[i][1] + ',' + users[i][2] + ']';
                 }
             }
+        }
     }
 
     if ($('ipalabras').get('value').trim() != "") {
@@ -895,7 +839,7 @@ function generateQuery() {
         }
     }
 	
-	var filtros = '';
+    var filtros = '';
 	
     if ($('lnegraus').checked == true || $('lnegrapa').checked == true || $('minActions').get('value').trim() != "") {
         query += ' y filtrando por';
@@ -910,7 +854,7 @@ function generateQuery() {
         filtros += (filtros.length > 0 ? ' y' : '') + ' con al menos ' + $('minActions').get('value').trim() + ' actions';
     }
 
-	query += filtros;
+    query += filtros;
 	
     if ($('sourceTags').checked == true) {
         query += (filtros.length > 0 ? ' y' : '') + ' incluye los tags de la fuente';
@@ -919,35 +863,9 @@ function generateQuery() {
     query += '.';
 
     $('textExtraction').set('value', query);
-}
-
-function lookupGeoData(latitude,longitude,localidad,user) {            
-	var geoObj = new Object();
-	var returnFieldMap = new Object();
-	geoObj['startAddress'] = localidad;
-	returnFieldMap[latitude] = '<LAT>';
-	returnFieldMap[longitude] = '<LNG>';
-	window.geoPickerCallback= function(data){
-		$(latitude).value = data.lat;
-		$(longitude).value = data.lng;
-		if(typeof user != 'undefined'){
-			users[user][1] = data.lat;
-			users[user][2] = data.lng;
-		}
-		switchButtons(['compilarButton']);
-	};
-	geoObj['returnCallback'] = 'geoPickerCallback';
-	myGeoPositionGeoPicker(geoObj);
-	/*{
-		startAddress     : localidad,//($('localidad') ? $('localidad').value +', ' : '') + 'Argentina',
-		returnFieldMap   : {
-			latitude : '<LAT>',
-            longitude : '<LNG>',
-            'geoposition1c' : '<CITY>',   ...or <COUNTRY>, <STATE>, <DISTRICT>,
-            <CITY>, <SUBURB>, <ZIP>, <STREET>, <STREETNUMBER> 
-			'geoposition1d' : '<ADDRESS>'
-		}
-	});*/
+    if(oldValue != query){
+        switchButtons(['compilarButton']);
+    }
 }
 
 function addUser(name, lat, lon){
@@ -955,29 +873,61 @@ function addUser(name, lat, lon){
         alert("Debe ingresar ambas coordenadas o ninguna");
     } else {
         if (cantUsers == 0) {
-            var users_table = new Element('table', {'id' : 'users_table'}).addClass('configTable').inject($('userstd'));
-                    var users_title_tr = new Element('tr', {
-                        'style': 'background-color: lightGreen'
-                    }).inject(users_table);
-                    new Element('td', {
-                        'html' : 'Name'
-                    }).inject(users_title_tr);
-                    new Element('td', {
-                        'html' : 'Latitud'
-                    }).inject(users_title_tr);
-                    new Element('td', {
-                        'html' : 'Longitud'
-                    }).inject(users_title_tr);
-                    new Element('td', {						
-                    }).setStyle('min-width','40px').inject(users_title_tr);
+            var users_table = new Element('table', {
+                'id' : 'users_table'
+            }).addClass('configTable').inject($('userstd'));
+            var users_title_tr = new Element('tr', {
+                'style': 'background-color: lightGreen'
+            }).inject(users_table);
+            new Element('td', {
+                'html' : 'Name'
+            }).inject(users_title_tr);
+            new Element('td', {
+                'html' : 'Latitud'
+            }).inject(users_title_tr);
+            new Element('td', {
+                'html' : 'Longitud'
+            }).inject(users_title_tr);
+            new Element('td', {						
+                }).setStyle('min-width','40px').inject(users_title_tr);
         }
-        var user_line = new Element('tr', {'id' : 'ul' + cantUsers}).inject($('users_table'));
-        new Element('td', {'html': name}).inject(user_line);
-        new Element('input', {'id': 'lat'+cantUsers,'type':'input','disabled':true,'value': lat}).inject(new Element('td').inject(user_line));
-        new Element('input', {'id': 'lon'+cantUsers,'type':'input','disabled':true,'value': lon,'onchange':'alert("cambio!" + this.value)'}).inject(new Element('td').inject(user_line));
+        var user_line = new Element('tr', {
+            'id' : 'ul' + cantUsers
+        }).inject($('users_table'));
+        new Element('td', {
+            'html': name
+        }).inject(user_line);
+        new Element('input', {
+            'id': 'lat'+cantUsers,
+            'type':'input',
+            'disabled':true,
+            'value': lat
+        }).inject(new Element('td').inject(user_line));
+        new Element('input', {
+            'id': 'lon'+cantUsers,
+            'type':'input',
+            'disabled':true,
+            'value': lon
+        }).inject(new Element('td').inject(user_line));
         var removeUser_td = new Element('td').inject(user_line);
-        new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': cantUsers, 'title' : 'Eliminar usuario', 'src': 'publish_x.png', 'onclick' : 'removeUser('+ cantUsers + ')'}).setStyle('padding-right','5px').inject(removeUser_td);
-		new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': cantUsers, 'title' : 'Geolocalizar usuario', 'src': 'geolocation.png', 'onclick' : 'lookupGeoData("lat'+ cantUsers + '","lon'+ cantUsers + '","'+($('localidad') ? $('localidad').value +', ' : '') + 'Argentina",'+cantUsers+')'}).inject(removeUser_td);
+        new Element('img', {
+            'width' : '16', 
+            'height' : '16', 
+            'border': '0', 
+            'alt': cantUsers, 
+            'title' : 'Eliminar usuario', 
+            'src': 'publish_x.png', 
+            'onclick' : 'removeUser('+ cantUsers + ')'
+        }).setStyle('padding-right','5px').inject(removeUser_td);
+        new Element('img', {
+            'width' : '16', 
+            'height' : '16', 
+            'border': '0', 
+            'alt': cantUsers, 
+            'title' : 'Geolocalizar usuario', 
+            'src': 'geolocation.png', 
+            'onclick' : 'lookupGeoData("lat'+ cantUsers + '","lon'+ cantUsers + '","'+($('localidad') ? $('localidad').value +', ' : '') + 'Argentina",'+cantUsers+')'
+        }).inject(removeUser_td);
         var user = new Array();
         user[0] = name;
         user[1] = lat;

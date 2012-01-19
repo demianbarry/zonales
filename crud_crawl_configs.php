@@ -1,3 +1,4 @@
+<?php require_once("config.php")?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -5,8 +6,16 @@
         <link href="ZoneStyle.css" rel="stylesheet" type="text/css" />
         <link type="text/css" rel="stylesheet" href="content.css">
         <link type="text/css" rel="stylesheet" href="global.css">
-        <script src="mootools.js" type="text/javascript"></script>
-        <script src="cmutils.js" type="text/javascript"></script>
+		<script src="mootools.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var host = '<?php echo $tomcat_host;?>';
+			var port = '<?php echo $tomcat_port;?>';
+                        window.addEvent('domready', function() {
+                            getPluginTypes();
+                            getAllConfig();
+                        });
+		</script>        
+        <script src="cmutils.js" type="text/javascript"></script>		
     </head>
     <body>
         <div id="container">
@@ -14,13 +23,13 @@
                 <div id="logo">
                     <a href="/CMUtils"><img src="logo.gif" alt="Zonales"></a>
                 </div>
-                <a style="float:right" href="index.html">Gestión de Extracciones</a>
+                <a style="float:right" href="index.php">Gestión de Extracciones</a>
                 <br>
-                <a style="float:right" href="http://200.69.225.53:38081/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
+                <a style="float:right" href="http://<?php echo $host; ?>:<?php echo $tomcat_port; ?>/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
                 <br>
-                <a style="float:right" href="fbutils.html">Facebook Utilities</a>
+                <a style="float:right" href="fbutils.php">Facebook Utilities</a>
                 <br>
-                <a style="float:right" href="twutils.html">Twitter Utilities</a>
+                <a style="float:right" href="twutils.php">Twitter Utilities</a>
             </div>
             <div id="wrapper" class="clearfix">
                 

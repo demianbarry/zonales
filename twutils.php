@@ -1,11 +1,16 @@
+<?php require_once("config.php")?>
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <title>Content Manager Utilities - Zonales</title>
     <link href="ZoneStyle.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="content.css">
     <link type="text/css" rel="stylesheet" href="global.css">
+	<script type="text/javascript">
+			var host = '<?php echo $tomcat_host;?>';
+			var port = '<?php echo $tomcat_port;?>';
+	</script>
     <script type="text/javascript" src="mootools.js"></script>
-    <script type="text/javascript" src="cmutils.js"></script>
+    <script type="text/javascript" src="cmutils.js"></script>	
     </head>
 
     <body>
@@ -14,11 +19,13 @@
             <div id="logo">
                 <a href="/CMUtils"><img alt="Zonales" src="logo.gif"></a>
             </div>
-            <a style="float:right" href="index.html">Gestión de Extracciones</a>
+            <a style="float:right" href="index.php">Gestión de Extracciones</a>
             <br>
-            <a style="float:right" href="crud_crawl_configs.html">Gestión de Fuentes de Extracción</a>
+            <a style="float:right" href="crud_crawl_configs.php">Gestión de Fuentes de Extracción</a>
             <br>
-            <a style="float:right" href="fbutils.html">Facebook Utilities</a>
+            <a style="float:right" href="http://<?php echo $host; ?>:<?php echo $tomcat_port; ?>/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
+            <br>
+            <a style="float:right" href="fbutils.php">Facebook Utilities</a>
         </div>
         <div class="clearfix" id="wrapper">
             <div id="container_content">
@@ -33,7 +40,7 @@
                             <td colspan="2"><input style="width: 100%" type="button" value="Show Commenters" onclick="showTwitterCommentersByKeywords()"></td>
                         </tr>
                         <tr><td colspan="2"><h2 style="margin-top: 0.7em;">Otras utilidades</h2></td></tr>
-                        <tr><td colspan="2"><a href="qbuilder.html">Query builder</a></td></tr>
+                        <tr><td colspan="2"><a href="qbuilder.php">Query builder</a></td></tr>
                     </tbody>
                 </table>
             </div>

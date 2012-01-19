@@ -1,0 +1,275 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Content Manager Utilities - Zonales</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta content="index,follow" name="robots">
+        <meta content="Social Mention is a social media search engine that searches user-generated content such as blogs, comments, bookmarks, events, news, videos, and microblogging services." name="description">
+        <meta content="social mention, socialmention, search, track, tracker, microblogging, social media tracker, conversations, social search, social media search, social media, web, technology, web 2.0, tech, information, blog, twitter, youtube, google" name="keywords"><link type="text/css" rel="stylesheet" href="http://www.socialmention.com/assets/css/global.css">
+        <link type="text/css" rel="stylesheet" href="http://www.socialmention.com/assets/css/content.css">
+        <script type="text/javascript" src="/assets/js/global.js"></script>
+        <script language="javascript" src="http://www.google.com/jsapi"></script>
+        <script language="javascript">
+            google.load("jquery", "1");
+        </script><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type="text/javascript" src="/assets/js/jquery.qtip-1.0.0-rc2.min.js"></script>
+
+        <style type="text/css">
+            #fdbk_overlay {
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1000000;
+                position: absolute; }
+
+            #fdbk_screen {
+                top: 0;
+                left: 0;
+                z-index: 1;
+                width: 100%;
+                position: absolute;
+                background-color: black;
+                opacity: 0.45;
+                -moz-opacity: 0.45;
+                filter: alpha(opacity=45); }
+
+            #fdbk_container {
+                width: 680px;
+                height: 640px;
+                margin: 0 auto;
+                z-index: 2;
+                position: relative; }
+            #fdbk_container iframe {
+                width: 658px;
+                height: 100%;
+                margin: 20px;
+                background: transparent; }
+            #fdbk_container iframe.loading {
+                background: transparent url(http://s3.amazonaws.com/getsatisfaction.com/images/fb_loading.png) no-repeat; }
+
+            a#fdbk_tab {
+                top: 25%;
+                left: 0;
+                width: 42px;
+                height: 102px;
+                color: white;
+                cursor: pointer;
+                text-indent: -100000px;
+                overflow: hidden;
+                position: fixed;
+                z-index: 100000;
+                margin-left: -7px;
+                background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_trans_tab.png);
+                _position: absolute;
+                _background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback_tab_ie6.png); }
+            a#fdbk_tab:hover {
+                margin-left: -4px; }
+
+            a.fdbk_tab_right {
+                right: 0 !important;
+                left: auto !important;
+                margin-right: 0 !important;
+                margin-left: auto !important;
+                width: 35px !important; }
+            a.fdbk_tab_right:hover {
+                width: 38px !important;
+                margin-right: 0 !important;
+                margin-left: auto !important; }
+
+            a.fdbk_tab_bottom {
+                top: auto !important;
+                bottom: 0 !important;
+                left: 20% !important;
+                height: 38px !important;
+                width: 102px !important;
+                background-position: 0 -102px !important;
+                margin-bottom: -7px !important;
+                margin-left: auto !important; }
+            a.fdbk_tab_bottom:hover {
+                margin-bottom: -4px !important;
+                margin-left: auto !important; }
+
+            a.fdbk_tab_hidden {
+                display: none !important; }
+
+            a#fdbk_close {
+                position: absolute;
+                cursor: pointer;
+                outline: none;
+                top: 0;
+                left: 0;
+                z-index: 4;
+                width: 42px;
+                height: 42px;
+                overflow: hidden;
+                background-image: url(http://s3.amazonaws.com/getsatisfaction.com/images/feedback-close.png);
+                _background: none;
+                _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://s3.amazonaws.com/getsatisfaction.com/images/feedback-close.png', sizingMethod='crop'); }
+            a#fdbk_close:hover {
+                background-position: -42px 0; }
+
+            .feedback_tab_on embed, .feedback_tab_on select, .feedback_tab_on object {
+                visibility: hidden; }
+            </style></head>
+
+        <body>
+            <div id="container">
+            <div id="header">
+                <div id="logo">
+                    <a href="/"><img alt="Zonales" src="logo.gif"></a>
+                </div>
+            </div>
+            <div class="clearfix" id="wrapper">
+                <div id="container_content">
+                    <form action="/search" method="get">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0" class="advanced_search">
+                            <tbody>
+                                <tr><td colspan="2"><h2>Obtener ID del usuario:</h2></td></tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Username:</label></td>
+                                    <td class="input"><input type="text" style="width: 100%;" name="username" value=""></td>
+                                </tr>
+                                <tr>
+                                    <input type="button" value="Buscar Id" onclick="">
+                                    <td class="input"><input type="text" style="width: 100%;" name="userId" value=""></td>
+                                </tr>
+                                <tr><td colspan="2"><h2 style="margin-top: 0.7em;">But don't show items that have...</h2></td></tr>
+                                <tr><td width="35%" class="label"><label>any of these unwanted words:</label></td><td class="input"><input type="text" style="width: 100%;" name="as_eq" value=""></td></tr>
+                                <tr><td colspan="2"><h2 style="margin-top: 0.7em;">More Options...</h2></td></tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Results from source:</label></td>
+                                    <td>
+                                        <select name="t">
+                                            <option selected="selected" value="blogs">Blogs</option>
+                                            <option value="microblogs">Microblogs</option>
+                                            <option value="bookmarks">Bookmarks</option>
+                                            <option value="comments">Comments</option>
+                                            <option value="events">Events</option>
+                                            <option value="images">Images</option>
+                                            <option value="news">News</option>
+                                            <option value="video">Video</option>
+                                            <option value="audio">Audio</option>
+                                            <option value="questions">Q&amp;A</option>
+                                            <option value="all">All</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Results from location:</label></td>
+                                    <td class="input"><input type="text" style="width: 100%;" name="l" value=""></td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Results from:</label></td>
+                                    <td><select name="tspan">
+                                            <option selected="selected" value="">Anytime</option>
+                                            <option value="h">Last hour</option>
+                                            <option value="12h">Last 12 Hours</option>
+                                            <option value="24h">Last Day</option>
+                                            <option value="w">Last Week</option>
+                                            <option value="m">Last Month</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Results per page:</label></td>
+                                    <td><select name="num">
+                                            <option selected="selected" value="10">10 results</option>
+                                            <option value="20">20 results</option>
+                                            <option value="30">30 results</option>
+                                            <option value="50">50 results</option>
+                                            <option value="100">100 results</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Language:</label></td>
+                                    <td><select name="lang">
+                                            <option selected="selected" value="">any language</option>
+                                            <option value="ar">Arabic</option>
+                                            <option value="hy">Armenian</option>
+                                            <option value="be">Belarusian</option>
+                                            <option value="bg">Bulgarian</option>
+                                            <option value="ca">Catalan</option>
+                                            <option value="zh-CN">Chinese&nbsp;(Simplified)</option>
+                                            <option value="zh-TW">Chinese&nbsp;(Traditional)</option>
+                                            <option value="hr">Croatian</option>
+                                            <option value="cs">Czech</option>
+                                            <option value="da">Danish</option>
+                                            <option value="nl">Dutch</option>
+                                            <option value="en">English</option>
+                                            <option value="eo">Esperanto</option>
+                                            <option value="et">Estonian</option>
+                                            <option value="tl">Filipino</option>
+                                            <option value="fi">Finnish</option>
+                                            <option value="fr">French</option>
+                                            <option value="de">German</option>
+                                            <option value="el">Greek</option>
+                                            <option value="iw">Hebrew</option>
+                                            <option value="hu">Hungarian</option>
+                                            <option value="is">Icelandic</option>
+                                            <option value="id">Indonesian</option>
+                                            <option value="it">Italian</option>
+                                            <option value="ja">Japanese</option>
+                                            <option value="ko">Korean</option>
+                                            <option value="lv">Latvian</option>
+                                            <option value="lt">Lithuanian</option>
+                                            <option value="no">Norwegian</option>
+                                            <option value="fa">Persian</option>
+                                            <option value="pl">Polish</option>
+                                            <option value="pt">Portuguese</option>
+                                            <option value="ro">Romanian</option>
+                                            <option value="ru">Russian</option>
+                                            <option value="sr">Serbian</option>
+                                            <option value="sk">Slovak</option>
+                                            <option value="sl">Slovenian</option>
+                                            <option value="es">Spanish</option>
+                                            <option value="sv">Swedish</option>
+                                            <option value="th">Thai</option>
+                                            <option value="tr">Turkish</option>
+                                            <option value="uk">Ukrainian</option>
+                                            <option value="vi">Vietnamese</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Sort results by:</label></td>
+                                    <td><select name="sort_by">
+                                            <option selected="selected" value="date">Date</option>
+                                            <option value="source">Source</option>
+                                        </select></td>
+                                </tr>
+                                <tr>
+                                    <td width="35%" class="label"><label>Don't show results from these users (comma separated):</label></td>
+                                    <td><input type="text" style="width: 100%;" name="as_fu" value=""></td>
+                                </tr>
+                                <tr><td style="text-align: right;" colspan="2"><input type="submit" value="Advanced Search"></td></tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>        <div class="clearfix" id="footer">
+                    <a href="/about/">About</a> - <a href="http://www.socialmention.com/alerts/">Alerts</a> - <a href="/api/">API</a> - <a href="/trends/">Trends</a> - <a href="/tools/">Tools</a> - <a href="#" onclick="pageTracker._trackPageview('/exit/install-open-search'); installOpenSearch(); return false;">Install Search Plugin</a> - <a target="_blank" href="http://twitter.com/socialmention">Follow us</a> - <a href="http://socialmention.com/faq">FAQ</a><!-- - <a href="http://getsatisfaction.com/socialmention" target="_blank">Support</a> --> - <a href="http://socialmention.com/advertise">Advertise</a>
+                    <div style="margin-top:5px;" class="small">social mention is a real time search platform</div>
+                </div>    </div>
+        </div>
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script><script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
+        <script type="text/javascript">
+            var pageTracker = _gat._getTracker("UA-655659-11");
+            pageTracker._trackPageview();
+        </script>
+
+        <script charset="utf-8" type="text/javascript">
+            var is_ssl = ("https:" == document.location.protocol);
+            var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+            document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+        </script><script type="text/javascript" src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js"></script>
+        <script charset="utf-8" type="text/javascript">
+            var feedback_widget_options = {};
+            feedback_widget_options.display = "overlay";
+            feedback_widget_options.company = "socialmention";
+            feedback_widget_options.placement = "right";
+            feedback_widget_options.color = "#FF8C00";
+            feedback_widget_options.style = "idea";
+            var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+        </script><a style="background-color:#FF8C00" class="fdbk_tab_right" id="fdbk_tab" href="#">FEEDBACK</a><div style="display:none" id="fdbk_overlay"><div id="fdbk_container"><a id="fdbk_close" href="#"></a><iframe width="658px" scrolling="no" height="100%" frameborder="0" style="width: 658px; height: 100%;" class="loading" allowtransparency="true" id="fdbk_iframe"></iframe></div><div id="fdbk_screen"></div></div>
+    </body></html>
