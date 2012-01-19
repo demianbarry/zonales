@@ -7,6 +7,11 @@ $url = $host .":". $port . "/".$path;
 //$url = "http://".$_POST["host"].":".$_POST["port"]."/".$_POST['ws_path'];
 //echo $url;
 $session = curl_init();
+
+if(strrpos($url, "/solr/update/json?{")){
+    curl_setopt($session, CURLOPT_HTTPHEADER, array("Content-Type: application/json")); 
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	//extract data from the post
 	$params = substr($url, strpos($url, "?") + 1);//'port='.$port.'&host='.$host.'&ws_path='.$path;

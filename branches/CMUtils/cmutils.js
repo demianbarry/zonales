@@ -1,23 +1,21 @@
-window.addEvent('domready', function() {
-    getPluginTypes();
-    getAllConfig();
-    getFuenteTypes();
-    getResultTimes();
-});
+document.write('<script type="text/javascript" src="utils.js"></script>');
 
 var cantParams = 0;
 var cantPlugins = 0;
 var params = new Array();
 var plugins = new Array();
 var configEdited;
-var proxy = 'curl_proxy.php?host=localhost&port=8080&ws_path=';
+var proxy = 'curl_proxy.php?host='+host+'&port='+port+'&ws_path=';
+var proxyfb = '../curl_proxy.php?host=localhost&port=30083&ws_path=';
 var servletUri = '/ZCrawlSources';
-var fbServletURL = '/fb/index.php';
+var fbServletURL = '/index.php';
 
 function getFacebookUserId() {
     if ($('getIdUsername').get('value') != "") {
+        var url = fbServletURL + "?getId=" + $('getIdUsername').get('value');
+        var urlProxy = proxyfb + encodeURIComponent(url);
         var reqId = new Request({
-            url: fbServletURL + "?getId=" + $('getIdUsername').get('value'),
+            url: urlProxy,
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();
@@ -55,7 +53,7 @@ function getAllConfig(){
         onRequest: function(){
             var config_title_tr = new Element('tr', {'style': 'background-color: lightGreen'}).inject(configs_table);
             new Element('td', {'html' : 'Crawl Config Name'}).inject(config_title_tr);
-            new Element('td', {'html' : 'Crawl Config URI'}).inject(config_title_tr);
+            //new Element('td', {'html' : 'Crawl Config URI'}).inject(config_title_tr);
             new Element('td', {'html' : 'Publish'}).inject(config_title_tr);
             new Element('td', {'html' : 'State'}).inject(config_title_tr);
             new Element('td', {'html' : 'Edit / remove'}).inject(config_title_tr);
@@ -64,7 +62,7 @@ function getAllConfig(){
             jsonObj.each(function(config) {
                 var config_tr = new Element('tr', {'id' : 'cl_' + config.name}).inject(configs_table);
                 new Element('td', {'html' : config.name, 'id' : 'cl_' + config.name + '_name'}).inject(config_tr);
-                new Element('td', {'html' : config.uri, 'id' : 'cl_' + config.name + '_uri'}).inject(config_tr);
+                //new Element('td', {'html' : config.uri, 'id' : 'cl_' + config.name + '_uri'}).inject(config_tr);
                 var config_publish_td = new Element('td').inject(config_tr);
                 var publish = false;
                 if (config.state == "Published") {  //Ver como arreglar esta parte para que no sea duro

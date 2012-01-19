@@ -5336,7 +5336,8 @@ var Request = this.Request = new Class({
 
 		if (this.options.urlEncoded && ['post', 'put'].contains(method)){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
+			if(!this.headers['Content-type'])
+                            this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if (!url) url = document.location.pathname;
