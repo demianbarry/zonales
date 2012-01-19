@@ -36,7 +36,7 @@ public class ZCrawling {
         this.periodicidad = periodicidad;
     }
 
-    protected boolean siosi = false;
+    protected Boolean siosi = false;
 
     /**
      * Get the value of siosi
@@ -56,7 +56,7 @@ public class ZCrawling {
         this.siosi = siosi;
     }
 
-    protected boolean nocriterio = false;
+    protected Boolean nocriterio = false;
 
     /**
      * Get the value of nocriterio
@@ -238,7 +238,7 @@ public class ZCrawling {
         this.filtros = filtros;
     }
 
-    protected boolean tagsFuente = false;
+    protected Boolean tagsFuente = false;
 
     /**
      * Get the value of tagsFuente
@@ -278,7 +278,7 @@ public class ZCrawling {
         this.comentarios = comentarios;
     }
 
-    protected boolean incluyeComentarios = false;
+    protected Boolean incluyeComentarios = false;
 
     /**
      * Get the value of incluyeComenterios
