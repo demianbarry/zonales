@@ -51,7 +51,7 @@ function initZonas(selZone) {
             });
             $('provincias').addEvent('change', function(){
                 if($('provincias').selectedIndex == 0)
-                    setZone(this.value, '', '', '');
+                    setZone(this.value, '', '', '');                
                 loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
                 zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
             });
@@ -95,7 +95,7 @@ function initSourceFilters(zCtx) {
             }).inject(sourceChkBoxTd);
             new Element('td', {
                 'html': source.name
-                }).inject(sourcesTr);
+            }).inject(sourcesTr);
             if (source.name == 'Facebook' || source.name == 'Twitter')
                 sourcesTr.inject($('enLaRed'));
             else
@@ -121,7 +121,7 @@ function initTagFilters(zCtx) {
             }).inject(tagChkBoxTd);
             new Element('td', {
                 'html': tag.name
-                }).inject(tagTr);
+            }).inject(tagTr);
             tagTr.inject($('tagsFilterTable'));
         }
     });
@@ -148,7 +148,7 @@ function loadMunicipios(id_provincia, selZone) {
                     'html': zone.name.replace(/_/g, ' ').capitalize()
                 }).inject($('zonalid'));
             });
-            $('zonalid').addEvent('change', function(){
+            $('zonalid').addEvent('change', function(){                
                 setZone($('zonalid').value, $('zonalid').selectedIndex == 0 ? '' : $('zonalid').options[$('zonalid').selectedIndex].innerHTML, $('provincias').value, zcGetProvinceName())
             });
             if (selZone != null) {
@@ -168,7 +168,7 @@ function setZone(zoneId, zoneName, parentId, parentName) {
         parentId = '';
     if (parentName == null || typeof(parentName) == 'undefined')
         parentName = '';
-
+    
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
@@ -251,8 +251,8 @@ function searchPost(keyword, zone) {
                         'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
                     }).inject($('postsContainer'));
                     new Element('input', {
-                        'type': 'button',
-                        'onclick': 'searchPost("' + keyword + '","")',
+                        'type': 'button', 
+                        'onclick': 'searchPost("' + keyword + '","")', 
                         'value': 'Buscar en todas las zonas'
                     }).inject($('postsContainer'));
                 } else {
@@ -290,7 +290,7 @@ function getVerMas(text){
         for( ;text.charAt(i) != ' ';i--);
         var shortText = text.substring(0,i);
         var otherText = text.substring(i);
-        return shortText + "<span id=\"verMas\" onclick=\"if (this.getNext())  this.getNext().setStyle('display','inline'); this.style.display = 'none';\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+otherText+"</span>";
+        return shortText + "<span id=\"verMas\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
     }
     return text;
 }
@@ -364,13 +364,6 @@ function updatePosts(json, component, more) {
             'id':'idPostDiv'
         }).addClass('group').inject(div_story_item).setStyle('display','none'),
         div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
-        a_edit = new Element('a', {
-            'target': '_blank',
-            'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
-        }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
-        a_edit_image = new Element('img',{
-            'src': '/media/system/images/edit.png'
-        }).inject(a_edit).addClass('edit_img'),
         table_story_item = new Element('table').inject(div_story_item_header),
         tr_story_title = new Element('tr').inject(table_story_item),
         td_story_title = new Element('td').inject(tr_story_title),
@@ -500,6 +493,13 @@ function updatePosts(json, component, more) {
         var idInputTag = doc.id;
         var idButtonAddTags = 'buttonTags_'+doc.id;
         if(zUserGroups.indexOf("4") != -1){
+            var a_edit = new Element('a', {
+                'target': '_blank',
+                'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
+            }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
+            a_edit_image = new Element('img',{
+                'src': '/media/system/images/edit.png'
+            }).inject(a_edit).addClass('edit_img');
             var span_addTags = new Element('span',{
                 'id':'addTags_'+doc.id
             }).inject(div_story_tags);
@@ -561,7 +561,7 @@ function updatePosts(json, component, more) {
             }).inject(new Element('td').inject(tr));
             new Element('td', {
                 'html': post.source
-                }).inject(tr);
+            }).inject(tr);
             if (tab == "enlared" || tab == "relevantes" )
                 tr.inject($('enLaRed'));
             else
@@ -607,7 +607,7 @@ function updatePosts(json, component, more) {
             div_story_item.injectInside(component);
         }
 
-
+        
 
     });
 }
@@ -673,7 +673,7 @@ function setSourceVisible(source, visible) {
 
 function ckeckOnlyTag(tag) {
     var zCtxChkTags = zcGetCheckedTags();
-
+    
     zCtxChkTags.each(function (chkTag) {
         if (chkTag != tag) {
             zcUncheckTag(chkTag);
@@ -706,7 +706,7 @@ function setTagVisible(tag, checked) {
 
 function refreshFiltro(){
     //var zCtxTemp = zcGetContext();
-//Refresco visibilidad de Posts
+    //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var zCtxChkSource = zcGetCheckedSources();
 
@@ -725,7 +725,7 @@ function refreshFiltro(){
             post.setStyle('display', visible ? 'block' : 'none');
         });
     }
-
+    
     //    sendFilter(source,visible);
     armarTitulo(tab);
 }
@@ -791,7 +791,7 @@ function armarTitulo(tabTemp){
     tabTemp = tab;
     var zoneSeltemp = zcGetSelectedZoneName();
     var zoneEfectemp = zcGetEfectiveZoneName();
-
+    
     document.getElementById('tituloSup').innerHTML = "";
 
     if (tabTemp == 'relevantes'){
@@ -804,22 +804,22 @@ function armarTitulo(tabTemp){
 
             }
         });
-
+        
     }
 
     if (tabTemp == 'noticiasenlared'){
-
+        
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
             temp++;
             if(temp < 5 && element.checked ) {
-
+                
                 //  alert (temp);
                 document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-
+                
             }
 
             else if (temp > 5 && element.checked ){
@@ -838,7 +838,7 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value;
-
+                
             }
             else if (temp > 5 && element.checked ){
                 document.getElementById('tituloSup').innerHTML = "";
@@ -855,13 +855,13 @@ function armarTitulo(tabTemp){
                 if(index != 0)
                     document.getElementById('tituloSup').innerHTML += ", ";
                 document.getElementById('tituloSup').innerHTML += element.value+" ";
-
+                
             }
         });
 
 
     }
-
+    
     if (zoneEfectemp == zoneSeltemp){
         document.getElementById('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
     }
@@ -874,7 +874,7 @@ function armarTitulo(tabTemp){
     if (zoneSeltemp == ""){
         document.getElementById('tituloZone').innerHTML = "Mostrando todas las noticias";
     }
-
+    
 }
 
 //zcSetTemp($('tempoSelect').value);

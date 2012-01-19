@@ -15,6 +15,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         <script language="javascript" type="text/javascript" src="components/com_zonales/content.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/sample.js"></script>        
         <script type="text/javascript">
+            tab = "list";
             var host = 'localhost';
             var port = '38080';
             window.addEvent('domready', function() {

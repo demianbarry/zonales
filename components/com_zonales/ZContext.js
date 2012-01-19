@@ -183,6 +183,15 @@ function zcGetCheckedTags() {
     return tags;
 }
 
+function zcGetCheckedSources() {
+    var sources = new Array();
+    zCtx.filters.sources.each(function (source) {
+       if (source.checked)
+           sources.push(source.name);
+    });
+    return sources;
+}
+
 //Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
 	if (zCtx.filters.sources.length > 0) {

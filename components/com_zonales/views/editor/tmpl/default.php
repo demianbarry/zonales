@@ -65,7 +65,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 <table class="advanced_search">
                     <tbody>
                         <tr>
-                            <td class="label"><label>TÃ­tulo</label></td>
+                            <td class="label"><label>Título</label></td>
                             <td class="input"><input type="text" id="title" value=""></input></td>
                         </tr>
                         <tr>
@@ -97,7 +97,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Tags</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zTags);" autocomplete="off">
+                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zTags);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
@@ -106,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);" autocomplete="off">
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>

@@ -157,9 +157,9 @@ function saveContent(){
                 if(response.id && response.id.length > 0){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guardÃ³ correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
                 } else {
-                    alert("OcurriÃ³ un error al intentar guardar el documento: "+response);
+                    alert("Ocurrió un error al intentar guardar el documento: "+response);
                     zContent.state = 'created';
                 }
             }
@@ -216,7 +216,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'TÃ­tulo'
+        'html' : 'Título'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
