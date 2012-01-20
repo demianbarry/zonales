@@ -136,7 +136,7 @@ public final class ZSolrServer extends BaseService {
             modified = new Date(post.getModified());
         }
 
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREATED: " + modified + " MODIFIED: " + modified);
+        //Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREATED: " + modified + " MODIFIED: " + modified);
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando objeto SolrPost");
 
@@ -216,6 +216,26 @@ public final class ZSolrServer extends BaseService {
         }
     }
 
+    public void updateRelevance(String id, Integer relevance) throws IOException {
+        try {
+            SolrQuery query = new SolrQuery();
+            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Id: {0}", id);
+            QueryResponse rsp = server.query(query);
+            if (rsp.getResults().getNumFound() == 1) {
+                SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
+                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
+                post.setRelevance(post.getRelevance() + relevance);
+                postToSolr(solrPost, post);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(solrPost));
+                indexSolrPost(solrPost);
+            }
+        } catch (SolrServerException ex) {
+            Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setZone(post.getZone());
         solrPost.setState(post.getState());
@@ -247,27 +267,33 @@ public final class ZSolrServer extends BaseService {
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String json = req.getParameter("doc");
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}", json);
             JsonReader jr = new JsonReader(new StringReader(json));
             jr.setLenient(true);
             Post post = gson.fromJson(jr, Post.class);
 
-            String aTags = req.getParameter("aTags");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}\n-----------> Post: {1}", new Object[]{json, post});
 
+            String aTags = req.getParameter("aTags");
             if (aTags
                     != null) {
                 addTags(post.getId(), Arrays.asList(aTags.split(",")));
             }
-            String rTag = req.getParameter("rTag");
 
+            String rTag = req.getParameter("rTag");
             if (rTag
                     != null) {
                 removeTag(post.getId(), rTag);
             }
 
+            String relevance = req.getParameter("rel");
+            if (relevance
+                    != null) {
+                updateRelevance(post.getId(), Integer.valueOf(relevance));
+            }
+
             if (aTags
                     == null && rTag
-                    == null) {
+                    == null && relevance == null) {
                 indexPost(post);
             }
 
