@@ -126,12 +126,17 @@ public final class ZSolrServer extends BaseService {
             }
         }
 
-        Date created = null;
+        Date created = new Date();
         if (post.getCreated() != null) {
             created = new Date(post.getCreated());
         }
 
         Date modified = new Date();
+        if (post.getModified() != null) {
+            modified = new Date(post.getModified());
+        }
+
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREATED: " + modified + " MODIFIED: " + modified);
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando objeto SolrPost");
 
