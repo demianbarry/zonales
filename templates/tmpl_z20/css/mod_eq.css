@@ -116,3 +116,11 @@
 	padding:2px !important;
 	font-weight:bold;
 }
+
+html body div#wrapper-web div#wrapper-body div#wrapper-content div#equalizer-bt div#equalizer div.moduletable_formEq {
+    width:250px;
+    height:500px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background-color: transparent;
+}
