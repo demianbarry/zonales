@@ -248,7 +248,7 @@ function searchPost(keyword, zone) {
             } else {
                 if (zcGetContext().efZone != '') {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
+                        'html': 'No se encontraron resultados para su bÃºsqueda en la zona seleccionada'
                     }).inject($('postsContainer'));
                     new Element('input', {
                         'type': 'button', 
@@ -257,7 +257,7 @@ function searchPost(keyword, zone) {
                     }).inject($('postsContainer'));
                 } else {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su búsqueda'
+                        'html': 'No se encontraron resultados para su bÃºsqueda'
                     }).inject($('postsContainer'));
                 }
             }
@@ -302,6 +302,13 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
+
+        $('postsContainer').getElements('div[id^=si]').each(function(element) {
+            if (element.id == post.id) {
+                $('postsContainer').removeChild(element);
+            }
+        });
+
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var post = post.clone(true, true);
             post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
@@ -330,6 +337,41 @@ function verNuevos(){
 // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
 }
 
+function incRelevance(id,relevance){
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+id+'"}&rel='+relevance;
+    var urlProxy = '/curl_proxy.php';    
+
+    new Request({
+        url: urlProxy,
+        method: 'post',
+        data: {
+            'host': host ? host : "localhost",
+            'port': port ? port : "38080",
+            'ws_path':url
+        },
+        onRequest: function(){
+        },
+        onSuccess: function(response) {
+            response = JSON.decode(response);
+            if(response && response.length != 0){
+                if(response.id && response.id.length > 0 && $('relevance_'+response.id)){                    
+                    $('relevance_'+response.id).innerHTML = parseInt($('relevance_'+response.id).innerHTML)+parseInt(relevance);
+                    if(zUserGroups.indexOf("4") == -1){
+                        $('relevance_'+response.id).getPrevious().removeEvents('click');
+                        $('relevance_'+response.id).getNext().removeEvents('click');
+                    }
+                }
+            }            
+        },
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+        }
+    }).send();
+    
+}
+
+
 function updatePosts(json, component, more) {
     if(json.response.docs.length == 0)
         return;
@@ -349,13 +391,17 @@ function updatePosts(json, component, more) {
         var modified = doc.modified;
         setFirstModifiedTime((modified < getFirstModifiedTime()) ||  getFirstModifiedTime() == null ? modified : getFirstModifiedTime());
         var post = eval('('+doc.verbatim+')');
-        var div_story_item = new Element('div').addClass('story-item').addClass('group').addClass(post.source),
+        var div_story_item = new Element('div', {
+            'id': 'si_' + doc.id
+        }).addClass('story-item').addClass('group').addClass(post.source),
         div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
         div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
         div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
         div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
         div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
-        span_relevance = new Element('span').addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
+        span_relevance = new Element('span',{
+            "id":"relevance_"+doc.id
+        }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
         div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
         div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
         div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
@@ -419,6 +465,22 @@ function updatePosts(json, component, more) {
                 }
             });
         }
+        
+        div_zonales_count_wrapper_up.addEvent('click',function(){
+            var inc = 1;
+            if(zUserGroups.indexOf("4") != -1){
+                inc = prompt('Indique en cuanto desea incrementar la relevancia','1');
+            }
+            incRelevance(doc.id,inc);
+        });
+        
+        div_zonales_count_wrapper_down.addEvent('click',function(){
+            var inc = 1;
+            if(zUserGroups.indexOf("4") != -1){
+                inc = prompt('Indique en cuanto desea decrementar la relevancia','1');
+            }
+            incRelevance(doc.id,inc*(parseInt(inc) > 0 ? (-1): 1));
+        });
 
         var postLinks;
 
@@ -601,6 +663,7 @@ function updatePosts(json, component, more) {
 
         div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
 
+
         if(typeof more == 'undefined' || !more) {
             div_story_item.injectTop(component);
         } else {
@@ -610,6 +673,7 @@ function updatePosts(json, component, more) {
         
 
     });
+    refreshFiltro();
 }
 
 function show_confirm(idInputTag,selectedTag,tags)
@@ -753,14 +817,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'mañana'], // 60*60*24*2
-    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
+    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, 'ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
+    [4838400, 'ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
+    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
