@@ -398,7 +398,7 @@ h1, h2, h4, h5, .error-title {
 }
 h1, h4, .error-title {
     font-size: 2em;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
 }
 h2, h3 {
     font-weight: bold;

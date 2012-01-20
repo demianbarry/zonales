@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted Access');
 JHTML::_('behavior.formvalidation');
 ?>
 <!-- form -->
-<div class="moduletable_formEq" style="width:250px;height:200px;overflow:scroll;" >    <!--//en este div.-->
+<div class="moduletable_formEq">    <!--//en este div.-->
     <h1 id="title_eq"><?php echo "Filtros "; ?></h1>
     <div id="mod_eq_main_div" class="moduletable_formEq_bodyDiv">
         <p><?php echo "Filtro usado para filtar
