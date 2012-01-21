@@ -1889,7 +1889,7 @@ label {
 }
 .zonales-btn {
     background: url("http://cdn3.zonalesstatic.com/img/sprites/story_items.64878d4e.png") no-repeat scroll -51px -26px transparent;
-    cursor: pointer;
+    /*cursor: pointer;*/
     height: 68px;
     position: relative;
     text-align: center;    
@@ -2251,7 +2251,7 @@ label {
     font-size: 1.08333em;
     line-height: 1.23077em;
     padding-right: 10px;
-    text-align: left;
+    text-align: justify;
     cursor: default;
 }
 
@@ -4365,12 +4365,14 @@ html body.hide-uprrail1 .uprrail1 * {
   width: 20px;
 }
 
-div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-up  {
+div.zonales-count-wrapper-up  {
+        cursor: pointer;
 	margin-bottom: 10px;
 	background-image: url("/images/arrow_up.png");
 }
 
-div.zonales-btn div.zonales-count-wrapper div.zonales-count-wrapper-down {
+div.zonales-count-wrapper-down {
+        cursor: pointer;
 	margin-top: 10px;
 	background-image: url("/images/arrow_down.png");
 }
