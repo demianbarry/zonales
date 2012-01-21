@@ -114,7 +114,7 @@ public final class ZSolrServer extends BaseService {
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrP = rsp.getBeans(SolrPost.class).get(0);
-                Post postIn = gson.fromJson(solrP.getVerbatim(), Post.class);
+                Post postIn = gson.fromJson(solrP.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrP));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
@@ -176,7 +176,7 @@ public final class ZSolrServer extends BaseService {
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
                 for (String tag : tags) {
                     if (post.getTags() == null) {
@@ -204,7 +204,7 @@ public final class ZSolrServer extends BaseService {
 
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
                 post.getTags().remove(tag);
                 postToSolr(solrPost, post);
                 indexSolrPost(solrPost);
@@ -224,7 +224,7 @@ public final class ZSolrServer extends BaseService {
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
                 post.setRelevance(post.getRelevance() + relevance);
                 postToSolr(solrPost, post);
@@ -266,7 +266,7 @@ public final class ZSolrServer extends BaseService {
             resp.setCharacterEncoding("UTF-8");
             String solrURL = req.getParameter("url");
             setServer(solrURL);
-            String json = req.getParameter("doc");
+            String json = req.getParameter("doc").replace("\\\"", "\"").replace("\\'", "\"");
             JsonReader jr = new JsonReader(new StringReader(json));
             jr.setLenient(true);
             Post post = gson.fromJson(jr, Post.class);
