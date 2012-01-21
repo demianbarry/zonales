@@ -31,7 +31,7 @@ public class GetZGram extends BaseService {
         response.setContentType("text/javascript");
         PrintWriter out = response.getWriter();
         String id = request.getParameter("id");
-        String filtrosJson = request.getParameter("filtros");
+        String filtrosJson = request.getParameter("filtros").replace("\\\"", "\"").replace("\\'", "\"");
         ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         String retrieve = null;
         ZGramFilter filtros = null;
