@@ -35,7 +35,7 @@ public class SetZGram extends BaseService {
         PrintWriter out = response.getWriter();
         int cod = Integer.valueOf(request.getParameter("cod"));
         String msg = request.getParameter("msg");
-        String metadataJson = request.getParameter("metadata");
+        String metadataJson = request.getParameter("metadata").replace("\\\"", "\"").replace("\\'", "\"");
         String verbatim = request.getParameter("verbatim");
         String state = request.getParameter("state");
         String creadoPor = request.getParameter("creadoPor");
