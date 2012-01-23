@@ -62,6 +62,7 @@ public class TwitterRetrieval extends HttpServlet {
     }
     String[] latitud, longitud, usuarios;
     String temp;
+    int d = 30;
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -178,8 +179,8 @@ public class TwitterRetrieval extends HttpServlet {
                             tweet.getSource()));
                     solrPost.setToUsers(toUsers);
                 }
-
-                solrPost.setTitle(tweet.getText().substring(0, tweet.getText().length() > 30 ? 30 : tweet.getText().length() - 1));
+                while (tweet.getText().charAt(d) != ' '){ d++;}
+                solrPost.setTitle(tweet.getText().substring(0, d));
                 solrPost.setText(tweet.getText());
                 //post.setLinks(new LinksType(links));
                 solrPost.setActions((ArrayList<ActionType>) actions);
@@ -218,10 +219,10 @@ public class TwitterRetrieval extends HttpServlet {
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
-                        if (tweet.getFromUser().equals(usuarios[i])) {
-                            user.setLatitude(Double.parseDouble(latitud[i]));
-                            user.setLongitude(Double.parseDouble(longitud[i]));
-                        }
+                    if (tweet.getFromUser().equals(usuarios[i])) {
+                    user.setLatitude(Double.parseDouble(latitud[i]));
+                    user.setLongitude(Double.parseDouble(longitud[i]));
+                    }
                     }*/
                     user.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
                     user.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
@@ -238,7 +239,7 @@ public class TwitterRetrieval extends HttpServlet {
                     post.setToUsers(new ToUsersType(toUsers));
                 }
 
-                post.setTitle(tweet.getText().substring(0, tweet.getText().length() > 30 ? 30 : tweet.getText().length() - 1));
+                post.setTitle(tweet.getText().substring(0, d));
                 post.setText(tweet.getText());
                 //post.setLinks(new LinksType(links));
                 post.setActions(new ActionsType(actions));
