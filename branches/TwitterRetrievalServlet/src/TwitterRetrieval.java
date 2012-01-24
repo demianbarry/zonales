@@ -179,7 +179,13 @@ public class TwitterRetrieval extends HttpServlet {
                             tweet.getSource()));
                     solrPost.setToUsers(toUsers);
                 }
-                while (tweet.getText().charAt(d) != ' '){ d++;}
+                if (tweet.getText() != null && tweet.getText().length() > d) {
+                    while (tweet.getText().charAt(d-1) != ' ') {
+                        d--;
+                    }
+                } else {
+                    d = tweet.getText().length() - 1;
+                }
                 solrPost.setTitle(tweet.getText().substring(0, d));
                 solrPost.setText(tweet.getText());
                 //post.setLinks(new LinksType(links));
