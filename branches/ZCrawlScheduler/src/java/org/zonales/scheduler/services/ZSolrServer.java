@@ -267,9 +267,7 @@ public final class ZSolrServer extends BaseService {
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String json = req.getParameter("doc").replace("\\\"", "\"").replace("\\'", "\"");
-            JsonReader jr = new JsonReader(new StringReader(json));
-            jr.setLenient(true);
-            Post post = gson.fromJson(jr, Post.class);
+            Post post = gson.fromJson(json, Post.class);
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}\n-----------> Post: {1}", new Object[]{json, post});
 
