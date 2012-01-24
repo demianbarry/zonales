@@ -62,7 +62,7 @@ public class TwitterRetrieval extends HttpServlet {
     }
     String[] latitud, longitud, usuarios;
     String temp;
-    int d = 30;
+    public static final int MAX_TITLE_LENGTH = 30;
 
     @Override
     public void doGet(HttpServletRequest request,
@@ -139,8 +139,10 @@ public class TwitterRetrieval extends HttpServlet {
             ArrayList<User> toUsers = new ArrayList();
 
             ArrayList<LinkType> links;
+            int d;
 
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
+                d = MAX_TITLE_LENGTH;
                 actions = new ArrayList();
                 try {
                     actions.add(new ActionType("retweets", twitter.getRetweets(tweet.getId()).size()));
@@ -179,14 +181,14 @@ public class TwitterRetrieval extends HttpServlet {
                             tweet.getSource()));
                     solrPost.setToUsers(toUsers);
                 }
-                if (tweet.getText() != null && tweet.getText().length() > d) {
-                    while (tweet.getText().charAt(d-1) != ' ') {
+                if (tweet.getText().length() > d) {
+                    while (d > 0 && tweet.getText().charAt(d - 1) != ' ') {
                         d--;
                     }
                 } else {
                     d = tweet.getText().length() - 1;
                 }
-                solrPost.setTitle(tweet.getText().substring(0, d));
+                solrPost.setTitle(tweet.getText().substring(0, d) + (tweet.getText().length() > MAX_TITLE_LENGTH ? "..." : ""));
                 solrPost.setText(tweet.getText());
                 //post.setLinks(new LinksType(links));
                 solrPost.setActions((ArrayList<ActionType>) actions);
@@ -245,7 +247,7 @@ public class TwitterRetrieval extends HttpServlet {
                     post.setToUsers(new ToUsersType(toUsers));
                 }
 
-                post.setTitle(tweet.getText().substring(0, d));
+                post.setTitle(tweet.getText().substring(0, d) + (tweet.getText().length() > MAX_TITLE_LENGTH ? "..." : ""));
                 post.setText(tweet.getText());
                 //post.setLinks(new LinksType(links));
                 post.setActions(new ActionsType(actions));
