@@ -338,7 +338,7 @@ function verNuevos(){
 }
 
 function incRelevance(id,relevance){
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+id+'"}&rel='+relevance;
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
     var urlProxy = '/curl_proxy.php';
 
     new Request({
@@ -873,10 +873,10 @@ function armarTitulo(tabTemp){
     if (tabTemp == 'relevantes'){
         $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
             if(element.checked) {
-                document.getElementById('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de la Red Social: "
+                $('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de la Red Social: "
                 if(index != 0)
-                    document.getElementById('tituloSup').innerHTML += ", ";
-                document.getElementById('tituloSup').innerHTML += element.value+" ";
+                    $('tituloSup').innerHTML += ", ";
+                $('tituloSup').innerHTML += element.value+" ";
 
             }
         });
@@ -893,7 +893,7 @@ function armarTitulo(tabTemp){
                 temp++;
                 if(temp < 5  ) {
 
-                //alert (index);
+                    //alert (index);
                     $('titulo1').innerHTML = "Ud. esta viendo Noticias de los diarios OnLine: "
                     if(index != 0)
                         $('tituloSup').innerHTML += ", ";
@@ -907,12 +907,12 @@ function armarTitulo(tabTemp){
 
                 }
             }
-    });
+        });
     }
     if (tabTemp == 'noticiasenlaredrelevantes'){
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-           if(element.checked){
+            if(element.checked){
                 temp++;
                 if(temp < 5 ) {
                     $('titulo1').innerHTML = "Ud. esta viendo Noticias mas Relevantes de los diarios OnLine: "
@@ -926,8 +926,8 @@ function armarTitulo(tabTemp){
                     $('titulo1').innerHTML = "Ud. esta viendo noticias OnLine de Mayor Relevancia de mas de 5 diarios";
 
                 }
-           }
-    });
+            }
+        });
     }
     if (tabTemp == 'enlared'){
 
