@@ -358,5 +358,5 @@
 <div id="postsContainer">
 </div>
 <div>
-    <input value="Ver Mas" onclick="loadMorePost();" type="button">
+    <input id="verMas" value="Ver Mas" onclick="loadMorePost();" type="button">
 </div>
