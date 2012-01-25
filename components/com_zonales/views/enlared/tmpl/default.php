@@ -2,7 +2,7 @@
 <!--
 //sources.push("Facebook", "Twitter");
 //tags = new Array();
-tab ="enlared";
+//tab ="enlared";
 
 -->
 
@@ -17,6 +17,6 @@ tab ="enlared";
 <div id="postsContainer">
 </div>
 <div>
-    <input value="Ver Mas" onclick="loadMorePost();" type="button">
+    <input id="verMas" value="Ver más" onclick="loadMorePost();" type="button">
 </div>
 
