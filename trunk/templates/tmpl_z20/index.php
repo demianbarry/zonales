@@ -59,6 +59,9 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/map.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
         <script language="javascript" type="text/javascript" src="http://sursoftware.dyndns.org:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
@@ -237,7 +240,7 @@ if (!isset($zCtx)) {
 
                     <div id="otherContent">
 
-                        <!-- 
+                        <!--
 
 
                         <div id="fl_grindetti" style="margin-bottom:10px;">zonales.com</div>

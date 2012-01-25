@@ -9,7 +9,8 @@ var zUserGroups = new Array();
 var postInterval = null;
 
 window.addEvent('domready', function() {
-    initAll();
+    if($('postsContainer'))
+        initAll();
 });
 
 function initVista(zCtx){
@@ -21,26 +22,43 @@ function initVista(zCtx){
     setLastIndexTime(null);
     setMinRelevance(null);
     setSearchKeyword("");
- 
+    initFilters(zCtx);
+
     if(postInterval)
         clearInterval(postInterval);
-    loadPost(true);
+    if (zCtx.zTab != 'geoActivos') {
+        $('postsDiv').set({
+            style: 'display:block'
+        });
+        $('mapDiv').set({
+            style: 'display:none'
+        });
+        loadPost(true);
+    } else {
+        $('postsDiv').set({
+            style: 'display:none'
+        });
+        $('mapDiv').set({
+            style: 'display:block'
+        });
+        initMapTab();
+    }
     //zcSetTab(tab);
     //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
 }
 
-function initAll() {        
+function initAll() {
     initZCtx(function(zCtx) {
         tab = zcGetTab();
         setZone(zCtx.selZone, zcGetSelectedZoneName());
         initZonas(zCtx.selZone);
-        initVista(zCtx);        
+        initVista(zCtx);
     });
     zUserGroups = loguedUser;
 }
 
-function initPost() {    
-    if (tab != 'geoActivos' && $('postsContainer')) {        
+function initPost() {
+    if (tab != 'geoActivos' && $('postsContainer')) {
         postInterval = setInterval(function () {
             loadPost(false);
         }, 60000);
@@ -191,7 +209,7 @@ function setZone(zoneId, zoneName, parentId, parentName) {
     setMinRelevance(null);
     setSearchKeyword("");
     $('zonalesSearchword').value = "buscar...";
-    if (tab != 'geoActivos' && tab != 'editor' && tab != 'list') {
+    if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
     }
@@ -469,7 +487,7 @@ function updatePosts(json, component, more) {
             'href': post.fromUser.url
         }).set('html',post.source).inject(li_story_submitter),
         span_storyitem_modified_real = new Element('span', {
-            'html': modified, 
+            'html': modified,
             'style': 'display:none'
         }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
         span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
@@ -738,14 +756,14 @@ function show_confirm(idInputTag,selectedTag,tags)
     var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
     if (r==true)
     {
-        saveContent(idInputTag,tags,selectedTag);
+        savePost(idInputTag,tags,selectedTag);
     }
     else
     {
         alert("Cancelado");
     }
 }
-function saveContent(idPost,tags,selectedTag){
+function savePost(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
     var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+','+selectedTag;
@@ -932,7 +950,7 @@ function armarTitulo(tabTemp){
 
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            
+
             //alert (element.checked);
             if(element.checked){
                 temp++;
