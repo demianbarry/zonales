@@ -6,13 +6,17 @@ defined('_JEXEC') or die('Restricted Access');
 <script type="text/javascript" defer="defer">
     // <![CDATA[
     function setTab(newTab){
-        tab = newTab;        
+        tab = newTab;
         zcSetTab(newTab);
-        initVista(zcGetContext());
+        if(!$('postsContainer'))
+            window.location.href='#';
+        else{
+            initVista(zcGetContext());
+        }
     }
-    
+
     window.addEvent('domready', function(){
-            
+
         // show by default the first submenu
         $('s0_m').setStyle('display', 'block');
 
@@ -30,9 +34,9 @@ defined('_JEXEC') or die('Restricted Access');
                 }
             }.pass(el.id));
         });
-        
+
         $('menuPortada').addEvent('click', function(){
-            setTab('portada');            
+            setTab('portada');
         });
         $('menuEnLaRed').addEvent('click', function(){
             setTab('enlared');
@@ -52,6 +56,9 @@ defined('_JEXEC') or die('Restricted Access');
         $('submenuNoticiasRelevantes').addEvent('click', function(){
             setTab('noticiasenlaredrelevantes');
         });
+        $('menuMapa').addEvent('click', function(){
+            setTab('geoActivos');
+        });
     });
     // ]]>
 </script>
@@ -62,7 +69,7 @@ defined('_JEXEC') or die('Restricted Access');
         <li id="s0"><a id="menuPortada" href="#"><?php echo JText::_('Portada'); ?></a></li>
         <li id="s30"><a id="menuEnLaRed" href="#"><?php echo JText::_('En la Red'); ?></a></li>
         <li id="s45"><a id="menuNoticias" href="#"><?php echo JText::_('Noticias'); ?></a></li>
-        <li id="s50"><a id="menuMapa" href="/index.php?option=com_zonales&task=zonal&view=geoActivos"><?php echo JText::_('Mapa'); ?></a></li>
+        <li id="s50"><a id="menuMapa" href="#"><?php echo JText::_('Mapa'); ?></a></li>
     </ul>
 </div>
 <div id="sublinks">
