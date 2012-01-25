@@ -4406,3 +4406,8 @@ iframe {
 .story-item-teaser p {
     text-align: justify;
 }
+
+.story-item-teaser img {
+    max-width: 403px;
+    max-height: 300px;
+}
