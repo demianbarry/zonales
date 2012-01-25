@@ -6,25 +6,42 @@ var allZones = new Array();
 var tab = "";
 var zoneInitiated = false;
 var zUserGroups = new Array();
+var postInterval = null;
 
 window.addEvent('domready', function() {
     initAll();
 });
 
-function initAll() {
+function initVista(zCtx){
+    if($('postsContainer'))
+        $('postsContainer').empty();
+    if($('newPostsContainer'))
+        $('newPostsContainer').empty();
+    setFirstIndexTime(null);
+    setLastIndexTime(null);
+    setMinRelevance(null);
+    setSearchKeyword("");
+ 
+    if(postInterval)
+        clearInterval(postInterval);
+    loadPost(true);
+    //zcSetTab(tab);
+    //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+}
+
+function initAll() {        
     initZCtx(function(zCtx) {
-        initFilters(zCtx);
-        initZonas(zCtx.selZone);
-        zcSetTab(tab);
-        //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+        tab = zcGetTab();
         setZone(zCtx.selZone, zcGetSelectedZoneName());
+        initZonas(zCtx.selZone);
+        initVista(zCtx);        
     });
     zUserGroups = loguedUser;
 }
 
-function initPost() {
-    if (tab != 'geoActivos' && $('postsContainer')) {
-        setInterval(function () {
+function initPost() {    
+    if (tab != 'geoActivos' && $('postsContainer')) {        
+        postInterval = setInterval(function () {
             loadPost(false);
         }, 60000);
     }
@@ -313,6 +330,20 @@ function verNuevos(){
             var post = post.clone(true, true);
             post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
             post.injectTop($('postsContainer'));
+        /*$('newPostsContainer').getElements('span.story-item-real-modified-date').each(function(newCount){
+                var insertado = false;
+                newCountModifiedDate = new Date(newCount.innerHTML).getMilliseconds();
+                $('postsContainer').getElements('span.story-item-real-modified-date').each(function(count){
+                    countModifiedDate = new Date(count.innerHTML).getMilliseconds();
+                    if (newCountModifiedDate > countModifiedDate && !insertado) {
+                        insertado = true;
+                        newCount.getParent().getParent().getParent().getParent().getParent().injectBefore(count.getParent().getParent().getParent().getParent().getParent());
+                    }
+                });
+                if(!insertado){
+                    newCount.getParent().getParent().getParent().getParent().getParent().injectInside($('postsContainer'));
+                }
+            });*/
         }
 
         if (tab == "relevantes" || tab == "noticiasenlaredrelevantes"){
@@ -428,7 +459,7 @@ function updatePosts(json, component, more) {
         }).set('html','').addClass('story-item-source').inject(p_story_item_description),
         a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
         a_story_item_icon_image = new Element('img',{
-            'src': 'logo_'+post.source.replace('/','').toLowerCase()+'.png'
+            'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
         }).inject(a_story_item_icon).addClass('source_logo'),
         a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + getVerMas(post.text.trim()) : '').addClass('story-item-teaser').inject(a_story_item_source, 'after'),
         ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
@@ -437,8 +468,12 @@ function updatePosts(json, component, more) {
             'target': '_blank',
             'href': post.fromUser.url
         }).set('html',post.source).inject(li_story_submitter),
+        span_storyitem_modified_real = new Element('span', {
+            'html': modified, 
+            'style': 'display:none'
+        }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
         span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
-        span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+        span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
         div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
         div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
         div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
@@ -673,16 +708,26 @@ function updatePosts(json, component, more) {
             setMinRelevance(parseInt(post.relevance));
         }
 
-        div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
+        //div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
 
+        /*var insertado = false;
+        var modifiedDate = new Date(modified).getMilliseconds();
+        component.getElements('span.story-item-real-modified-date').each(function(count){
+            postModifiedDate = new Date(count.innerHTML).getMilliseconds();
+            if (modifiedDate > postModifiedDate && !insertado) {
+                insertado = true;
+                div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
+            }
+        });
+        if(!insertado){
+            div_story_item.injectInside($('postsContainer'));
+        }*/
 
         if(typeof more == 'undefined' || !more) {
             div_story_item.injectTop(component);
         } else {
             div_story_item.injectInside(component);
         }
-
-
 
     });
     refreshFiltro();
@@ -887,7 +932,7 @@ function armarTitulo(tabTemp){
 
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-
+            
             //alert (element.checked);
             if(element.checked){
                 temp++;

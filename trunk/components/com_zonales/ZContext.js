@@ -269,3 +269,7 @@ function zcSetTab(tab) {
        var resp = eval('(' + response + ')');
     });
 }
+
+function zcGetTab() {
+    return zCtx.zTab;
+}
