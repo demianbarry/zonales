@@ -31,7 +31,7 @@ public class GetZGram extends BaseService {
         response.setContentType("text/javascript");
         PrintWriter out = response.getWriter();
         String id = request.getParameter("id");
-        String filtrosJson = request.getParameter("filtros").replace("\\\"", "\"").replace("\\'", "\"");
+        String filtrosJson = request.getParameter("filtros");
         ZGramDao zGramDao = new ZGramDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         String retrieve = null;
         ZGramFilter filtros = null;
@@ -39,7 +39,7 @@ public class GetZGram extends BaseService {
         if (filtrosJson != null) {
             Gson filtrosGson = new Gson();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo extracción segun filtros JSON {0}", new Object[]{filtrosJson});
-            filtros = filtrosGson.fromJson(filtrosJson, ZGramFilter.class);
+            filtros = filtrosGson.fromJson(filtrosJson.replace("\\\"", "\"").replace("\\'", "\""), ZGramFilter.class);
         }
 
         if (id != null) {

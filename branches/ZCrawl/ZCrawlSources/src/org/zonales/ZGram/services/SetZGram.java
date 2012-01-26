@@ -35,7 +35,7 @@ public class SetZGram extends BaseService {
         PrintWriter out = response.getWriter();
         int cod = Integer.valueOf(request.getParameter("cod"));
         String msg = request.getParameter("msg");
-        String metadataJson = request.getParameter("metadata").replace("\\\"", "\"").replace("\\'", "\"");
+        String metadataJson = request.getParameter("metadata");
         String verbatim = request.getParameter("verbatim");
         String state = request.getParameter("state");
         String creadoPor = request.getParameter("creadoPor");
@@ -44,7 +44,7 @@ public class SetZGram extends BaseService {
         ZMessage zMessage = new ZMessage(cod, msg);
 
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
-        zgram = metadataGson.fromJson(metadataJson, ZGram.class);
+        zgram = metadataGson.fromJson(metadataJson.replace("\\\"", "\"").replace("\\'", "\""), ZGram.class);
         zgram.setVerbatim(verbatim);
         zgram.setEstado(state != null && state.length() > 0 ? state : State.GENERATED);
         zgram.setCreado((new Date()).getTime());

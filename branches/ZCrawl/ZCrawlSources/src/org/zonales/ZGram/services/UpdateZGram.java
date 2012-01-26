@@ -91,7 +91,7 @@ public class UpdateZGram extends BaseService {
         }
 
 
-        zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto, siempre que actualizo la seteo en 20
+        //zgram.setPeriodicidad(20);  //TODO: correfir, por ahora está duro por defecto, siempre que actualizo la seteo en 20
 
         try {
             zGramDao.update(id, zgram);
