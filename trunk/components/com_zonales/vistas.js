@@ -41,17 +41,61 @@ function initVista(zCtx){
             style: 'display:block'
         });
         initMapTab();
+        $('enLaRed').set({
+            style: 'display:inline'
+        });
+        $('noticiasEnLaRed').set({
+            style: 'display:inline'
+        });
+        $('tempoDiv').set({
+            style: 'display:inline'
+        });
     }
+    if (zCtx.zTab == 'relevantes'  || zCtx.zTab == 'enlared'){
+        $('enLaRed').set({
+            style: 'display:inline'
+        });
+        $('noticiasEnLaRed').set({
+            style: 'display:none'
+        });
+        if(zCtx.zTab == 'enlared'){
+            $('tempoDiv').set({
+                style: 'display:none'
+            });
+        } else {
+            $('tempoDiv').set({
+                style: 'display:inline'
+            });
+        }
+    }
+    if (zCtx.zTab == 'noticiasenlared'  || zCtx.zTab == 'noticiasenlaredrelevantes'){
+        $('enLaRed').set({
+            style: 'display:none'
+        });
+        $('noticiasEnLaRed').set({
+            style: 'display:inline'
+        });
+        if(zCtx.zTab == 'noticiasenlared'){
+            $('tempoDiv').set({
+                style: 'display:none'
+            });
+        } else {
+            $('tempoDiv').set({
+                style: 'display:inline'
+            });
+        }
+    }
+  
 //zcSetTab(tab);
 //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
 }
 
-function initAll() {
+function initAll() {        
     initZCtx(function(zCtx) {
         tab = zcGetTab();
         setZone(zCtx.selZone, zcGetSelectedZoneName());
         initZonas(zCtx.selZone);
-        initVista(zCtx);
+        initVista(zCtx);        
     });
     zUserGroups = loguedUser;
 }
@@ -490,7 +534,7 @@ function updatePosts(json, component, more) {
             'href': post.fromUser.url
         }).set('html',post.source).inject(li_story_submitter),
         span_storyitem_modified_real = new Element('span', {
-            'html': modified,
+            'html': modified, 
             'style': 'display:none'
         }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
         span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
@@ -781,8 +825,18 @@ function savePost(idPost,tags,selectedTag){
         },
         onRequest: function(){
         },
-        onSuccess: function() {
-        //commit();
+        onSuccess: function(response) {
+            if(response.length > 0) {
+                response = JSON.decode(response);
+                if(response.id){
+                    var span_tags = new Element('span').addClass('cp_tags').inject($('tagsDiv_'+response.id).getLast().getPrevious(),'before');
+                    new Element('a', {
+                        'html': selectedTag,
+                        'onclick': 'ckeckOnlyTag("' + selectedTag + '");'
+                    }).inject(span_tags);
+                    $('tagsDiv_'+response.id).addClass(selectedTag);
+                }
+            }   
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
@@ -953,7 +1007,7 @@ function armarTitulo(tabTemp){
 
         temp = 0;
         $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-
+            
             //alert (element.checked);
             if(element.checked){
                 temp++;
