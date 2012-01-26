@@ -39,11 +39,68 @@
 
 #module-loginRight input,
 #module-loginRight select{
-    border:1px solid #CCCCCC;
-    font-family:Tahoma, Arial, Helvetica, sans-serif;
-    color:#666666;
-    font-size:12px;
+    background: none repeat scroll 0 0 #97C200;
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: bold;
+    /*margin-bottom: 10px;*/
+    margin-top: 10px;
+    padding: 2px;
     width: 100%;
+}
+
+form#login-form p#form-login-username input#modlgn-username.inputbox, 
+form#login-form p#form-login-password input#modlgn-passwd {
+    border: 1px solid #CCCCCC;
+    color: #666666;
+    font-family: Tahoma,Arial,Helvetica,sans-serif !important;
+    font-size: 12px !important;
+    width: 100%;
+    -moz-appearance: textfield;
+    -moz-binding: url("chrome://global/content/platformHTMLBindings.xml#inputFields");
+    -moz-user-select: text;
+    background-color: -moz-field;
+    cursor: text;
+    font: -moz-field;
+    letter-spacing: normal;
+    line-height: normal !important;
+    padding: 1px 0;
+    text-align: start;
+    text-indent: 0;
+    text-rendering: optimizelegibility;
+    text-shadow: none;
+    text-transform: none;
+    word-spacing: normal;
+    margin-top: 0px;
+    margin-right: 0px;
+}
+
+input#verNuevos, 
+input#verMas {
+    background: none repeat scroll 0 0 #97C200;
+    border-color: #799B00;
+    border-radius: 15px 15px 15px 15px;
+    border-right: 1px solid #799B00;
+    border-style: solid;
+    border-width: 1px 1px 3px 3px;
+    color: #FFFFFF !important;
+    font-size: 11px !important;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 2px;
+    width: 100%;
+}
+
+input#verNuevos:hover  {
+    cursor: pointer;
+    text-decoration: blink;
+}
+
+input#verMas:hover {
+    cursor: pointer;
+    text-decoration: blink;
 }
 
 #lavoz {
@@ -297,7 +354,5 @@ form#login-form input#formlogin_submit.button {
 }
 
 div#zlogin.moduletable_zlogin form#login-form {
-    padding-right: 10px; 
-    padding-left: 10px; 
-    padding-bottom: 5px;
+    padding: 5px 10px;
 }
