@@ -157,9 +157,9 @@ function saveContent(){
                 if(response.id && response.id.length > 0){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guardó correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guardï¿½ correctamente el documento con el ID "+zContent.id);                    
                 } else {
-                    alert("Ocurrió un error al intentar guardar el documento: "+response);
+                    alert("Ocurriï¿½ un error al intentar guardar el documento: "+response);
                     zContent.state = 'created';
                 }
             }
@@ -216,7 +216,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'Título'
+        'html' : 'TÃ­tulo'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
@@ -287,7 +287,7 @@ function makeContentTable(jsonObj, container){
     });
 }
 
-function loadPost(container){
+function loadPosts(container){
     if(searching)
         return;
     urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Zonales)";
