@@ -104,27 +104,31 @@ public final class ZSolrServer extends BaseService {
     }
 
     public void indexPost(Post post) throws SolrServerException, IOException {
-        String verbatim = gson.toJson(post, Post.class);
-
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando post: {0}", verbatim);
-
+        
         if (post.getId() != null && !"".equals(post.getId())) {
             SolrQuery query = new SolrQuery();
             query.setQuery("id:\"" + post.getId().replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrP = rsp.getBeans(SolrPost.class).get(0);
-                Post postIn = gson.fromJson(solrP.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrP));
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(solrP));
+                Post postIn = gson.fromJson(solrP.getVerbatim(), Post.class);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "POST FROM VERBATIM: {0}", gson.toJson(postIn));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TAG POSTIN: {0}", tag.trim());
                         if (!post.getTags().contains(tag.trim())) {
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "EL TAG POSTIN NO ESTA:");
                             post.getTags().add(tag.trim());
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TAG AGREGADO AL POST: {0}", tag.trim());
                         }
                     }
                 }
             }
         }
+
+        String verbatim = gson.toJson(post, Post.class);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando post: {0}", verbatim);
 
         Date created = new Date();
         if (post.getCreated() != null) {
@@ -176,7 +180,7 @@ public final class ZSolrServer extends BaseService {
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
                 for (String tag : tags) {
                     if (post.getTags() == null) {
@@ -204,7 +208,7 @@ public final class ZSolrServer extends BaseService {
 
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
                 post.getTags().remove(tag);
                 postToSolr(solrPost, post);
                 indexSolrPost(solrPost);
@@ -224,7 +228,7 @@ public final class ZSolrServer extends BaseService {
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim().replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
                 post.setRelevance(post.getRelevance() + relevance);
                 postToSolr(solrPost, post);
