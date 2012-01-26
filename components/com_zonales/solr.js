@@ -8,6 +8,23 @@ var minRelevance = null;
 var firstModifiedTime = null;
 var timeInterval = 10800001;
 var rows = 20;
+var ids = new Array();
+
+function setSolrRows(cant) {
+    rows = cant;
+}
+
+function getSeolrRows() {
+    return rows;
+}
+
+function addIdToSolrSearch(id) {
+    ids.push(id);
+}
+
+function clearSolrIds() {
+    ids.empty();
+}
 
 function setFirstIndexTime(time) {
     firstIndexTime = time;
@@ -83,6 +100,9 @@ function getSolrSources(myTab){
     if (myTab == "portada"){
         res = "q=tags:(Portada)";
     }
+    if (myTab == "geoActivos"){
+        res = "q=";
+    }
 
     return res;
 
@@ -108,6 +128,16 @@ function getSolrKeyword(keyword) {
 
     var res  = '+AND+' + keyword.replace(/ /g, '+');
 
+    return res;
+}
+
+function getSolrIds() {
+    var res = "";
+    if (zcGetTab() == 'geoActivos') {
+        ids.each(function(id,index) {
+           res += (index != 0 ? "+OR+" : "")+'id:"' + encodeURIComponent(id) + '"';
+        });
+    }
     return res;
 }
 
@@ -145,6 +175,7 @@ function getSolrUrl(tab, zone, more, keyword) {
     getSolrSources(tab)+
     getSolrZones(zone)+
     getSolrKeyword(keyword)+
+    getSolrIds()+
     getSolrRange(tab,more);
 
     return urlSolr;
@@ -161,7 +192,7 @@ function loadSolrPost(tab, zone, more, callback){
 
     var req = new Request.JSON({
         url: urlProxy,
-        method: 'get',
+        method: 'post',
         onRequest: function(){
             searching = true;
         },
