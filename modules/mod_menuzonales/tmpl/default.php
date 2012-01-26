@@ -6,17 +6,17 @@ defined('_JEXEC') or die('Restricted Access');
 <script type="text/javascript" defer="defer">
     // <![CDATA[
     function setTab(newTab){
-        tab = newTab;
+        tab = newTab;        
         zcSetTab(newTab);
         if(!$('postsContainer'))
-            window.location.href='#';
+            window.location.href='/#';
         else{
             initVista(zcGetContext());
         }
     }
-
+    
     window.addEvent('domready', function(){
-
+            
         // show by default the first submenu
         $('s0_m').setStyle('display', 'block');
 
@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted Access');
                 }
             }.pass(el.id));
         });
-
+        
         $('menuPortada').addEvent('click', function(){
-            setTab('portada');
+            setTab('portada');            
         });
         $('menuEnLaRed').addEvent('click', function(){
             setTab('enlared');
