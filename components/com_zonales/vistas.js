@@ -18,14 +18,13 @@ function initVista(zCtx){
         $('postsContainer').empty();
     if($('newPostsContainer'))
         $('newPostsContainer').empty();
+    $('verNuevos').setStyle('display','none');
     setFirstIndexTime(null);
     setLastIndexTime(null);
     setMinRelevance(null);
     setSearchKeyword("");
-    initFilters(zCtx);
-
-    if(postInterval)
-        clearInterval(postInterval);
+    initFilters(zCtx); 
+    
     if (zCtx.zTab != 'geoActivos') {
         $('postsDiv').set({
             style: 'display:block'
@@ -43,8 +42,8 @@ function initVista(zCtx){
         });
         initMapTab();
     }
-    //zcSetTab(tab);
-    //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+//zcSetTab(tab);
+//alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
 }
 
 function initAll() {
@@ -57,8 +56,12 @@ function initAll() {
     zUserGroups = loguedUser;
 }
 
-function initPost() {
+function initPost() {    
     if (tab != 'geoActivos' && $('postsContainer')) {
+        if(postInterval) {
+            clearInterval(postInterval);
+            postInterval = null;
+        }
         postInterval = setInterval(function () {
             loadPost(false);
         }, 60000);
@@ -283,7 +286,7 @@ function searchPost(keyword, zone) {
             } else {
                 if (zcGetContext().efZone != '') {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su búsqueda en la zona seleccionada'
+                        'html': 'No se encontraron resultados para su bÃºsqueda en la zona seleccionada'
                     }).inject($('postsContainer'));
                     new Element('input', {
                         'type': 'button',
@@ -292,7 +295,7 @@ function searchPost(keyword, zone) {
                     }).inject($('postsContainer'));
                 } else {
                     new Element('label', {
-                        'html': 'No se encontraron resultados para su búsqueda'
+                        'html': 'No se encontraron resultados para su bÃºsqueda'
                     }).inject($('postsContainer'));
                 }
             }
@@ -345,9 +348,9 @@ function verNuevos(){
         });
 
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
-            var post = post.clone(true, true);
-            post.setStyle('display',$('chk'+(post.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
-            post.injectTop($('postsContainer'));
+            var newPost = post.clone(true, true);
+            newPost.setStyle('display',$('chk'+(newPost.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
+            newPost.injectTop($('postsContainer'));
         /*$('newPostsContainer').getElements('span.story-item-real-modified-date').each(function(newCount){
                 var insertado = false;
                 newCountModifiedDate = new Date(newCount.innerHTML).getMilliseconds();
@@ -892,14 +895,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'mañana'], // 60*60*24*2
-    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
+    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
+    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];

@@ -19,7 +19,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             var host = 'localhost';
             var port = '38080';
             window.addEvent('domready', function() {
-                loadPost($('resultado'));
+                loadPosts($('resultado'));
             });
         </script>        
     </head>
