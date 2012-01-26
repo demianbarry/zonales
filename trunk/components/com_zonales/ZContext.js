@@ -6,13 +6,13 @@ var efZoneName = "";
 var provinceName = "";
 
 function Source() {
-	this.name = "";
-	this.checked = false;
+    this.name = "";
+    this.checked = false;
 }
 
 function Tag() {
-	this.name = "";
-	this.checked = false;
+    this.name = "";
+    this.checked = false;
 }
 
 function Filters(){
@@ -33,21 +33,21 @@ function initZCtx(callback) {
     sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
     socket = io.connect(nodeURL);
     socket.on('connect', function () {
-       socket.emit('getCtx', sessionId, function(zCtxFromServer) {
-          zCtx = zCtxFromServer;
-          getZoneById(zCtx.selZone, function(selZone) {
-              if (typeof(selZone) != 'undefined' && selZone != null) {
-                  selZoneName = selZone.name.replace(/_/g, ' ').capitalize();;
-              }
-              getZoneById(zCtx.efZone, function(efZone) {
-                  if (typeof(efZone) != 'undefined' && efZone != null) {
-                      efZoneName = efZone.name.replace(/_/g, ' ').capitalize();;
-                  }
-                  callback(zCtx);
-                  return(this);
-              });
-          });
-       });
+        socket.emit('getCtx', sessionId, function(zCtxFromServer) {
+            zCtx = zCtxFromServer;
+            getZoneById(zCtx.selZone, function(selZone) {
+                if (typeof(selZone) != 'undefined' && selZone != null) {
+                    selZoneName = selZone.name.replace(/_/g, ' ').capitalize();;
+                }
+                getZoneById(zCtx.efZone, function(efZone) {
+                    if (typeof(efZone) != 'undefined' && efZone != null) {
+                        efZoneName = efZone.name.replace(/_/g, ' ').capitalize();;
+                    }
+                    callback(zCtx);
+                    return(this);
+                });
+            });
+        });
     });
 }
 
@@ -56,8 +56,8 @@ function initZCtx(callback) {
 }*/
 
 function setSelectedZone(zone, zoneName, parent, parentName, callback) {
-   //alert("EN CONTEXT: SetZone. zoneId: " + zone + " zoneName: " + zoneName + " parendId: " + parent + " parentName: " + parentName);
-   //Actualizo en contexto en el cliente
+    //alert("EN CONTEXT: SetZone. zoneId: " + zone + " zoneName: " + zoneName + " parendId: " + parent + " parentName: " + parentName);
+    //Actualizo en contexto en el cliente
     if (zone == '' && parent == '') {
         zCtx.selZone = '';
         selZoneName = '';
@@ -72,17 +72,20 @@ function setSelectedZone(zone, zoneName, parent, parentName, callback) {
 
     //Persisto el contexto en el servidor
     //alert("ZONE: " + zone + " ZONE NAME: " + zoneName);
-    socket.emit('setSelectedZoneToCtx', {sessionId: sessionId, zone: zone}, function(response) {
+    socket.emit('setSelectedZoneToCtx', {
+        sessionId: sessionId, 
+        zone: zone
+    }, function(response) {
         //alert(JSON.stringify(response));
-       if (typeof(response) != 'undefined' && response != null) {
-           zCtx.efZone = response.id;
-           efZoneName = response.name.replace(/_/g, ' ').capitalize();
-       } else {
-           zCtx.efZone = "";
-           efZoneName = "";
-       }
-       callback();
-       return(this);
+        if (typeof(response) != 'undefined' && response != null) {
+            zCtx.efZone = response.id;
+            efZoneName = response.name.replace(/_/g, ' ').capitalize();
+        } else {
+            zCtx.efZone = "";
+            efZoneName = "";
+        }
+        callback();
+        return(this);
     });
 }
 
@@ -111,8 +114,11 @@ function zcAddSource(source){
     }
 
     //Persisto el contexto en el servidor
-    socket.emit('addSourceToZCtx', {sessionId: sessionId, source: source}, function(response) {
-       var resp = eval('(' + response + ')');
+    socket.emit('addSourceToZCtx', {
+        sessionId: sessionId, 
+        source: source
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 
@@ -129,8 +135,11 @@ function zcUncheckSource(source){
     }
 
     //Persisto el contexto en el servidor
-    socket.emit('uncheckSourceFromZCtx', {sessionId: sessionId, source: source}, function(response) {
-       var resp = eval('(' + response + ')');
+    socket.emit('uncheckSourceFromZCtx', {
+        sessionId: sessionId, 
+        source: source
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 
@@ -147,8 +156,11 @@ function zcAddTag(tag){
     }
 
     //Persisto el contexto en el servidor
-    socket.emit('addTagToZCtx', {sessionId: sessionId, tag: tag}, function(response) {
-       var resp = eval('(' + response + ')');
+    socket.emit('addTagToZCtx', {
+        sessionId: sessionId, 
+        tag: tag
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 
@@ -165,8 +177,11 @@ function zcUncheckTag(tag){
     }
 
     //Persisto el contexto en el servidor
-    socket.emit('uncheckTagFromZCtx', {sessionId: sessionId, tag: tag}, function(response) {
-       var resp = eval('(' + response + ')');
+    socket.emit('uncheckTagFromZCtx', {
+        sessionId: sessionId, 
+        tag: tag
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 
@@ -177,8 +192,8 @@ function zcGetTags() {
 function zcGetCheckedTags() {
     var tags = new Array();
     zCtx.filters.tags.each(function (tag) {
-       if (tag.checked)
-           tags.push(tag.name);
+        if (tag.checked)
+            tags.push(tag.name);
     });
     return tags;
 }
@@ -186,59 +201,65 @@ function zcGetCheckedTags() {
 function zcGetCheckedSources() {
     var sources = new Array();
     zCtx.filters.sources.each(function (source) {
-       if (source.checked)
-           sources.push(source.name);
+        if (source.checked)
+            sources.push(source.name);
     });
     return sources;
 }
 
 //Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
-	if (zCtx.filters.sources.length > 0) {
-		for (var i = 0; i < zCtx.filters.sources.length; i++){
-			if (zCtx.filters.sources[i].name == sourceStr)
-				return i;
-		}
-	}
-	return -1;
+    if (zCtx.filters.sources.length > 0) {
+        for (var i = 0; i < zCtx.filters.sources.length; i++){
+            if (zCtx.filters.sources[i].name == sourceStr)
+                return i;
+        }
+    }
+    return -1;
 }
 
 //Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
-	if (zCtx.filters.tags.length > 0) {
-		for (var i = 0; i < zCtx.filters.tags.length; i++){
-			if (zCtx.filters.tags[i].name == tagStr)
-				return i;
-		}
-	}
-	return -1;
+    if (zCtx.filters.tags.length > 0) {
+        for (var i = 0; i < zCtx.filters.tags.length; i++){
+            if (zCtx.filters.tags[i].name == tagStr)
+                return i;
+        }
+    }
+    return -1;
 }
 
 function getAllZones(callback) {
     socket.emit('getZones', true, function(response) {
-       callback(response);
-       return(this);
+        callback(response);
+        return(this);
     });
 }
 
 function getProvincias(callback) {
-    socket.emit('getZoneByFilters', {"type":"provincia"}, function(response) {
-       callback(response);
-       return(this);
+    socket.emit('getZoneByFilters', {
+        "type":"provincia"
+    }, function(response) {
+        callback(response);
+        return(this);
     });
 }
 
 function getZonesByProvincia(id_provincia, callback) {
-    socket.emit('getZoneByFilters', {"parent":id_provincia}, function(response) {
-       callback(response);
-       return(this);
+    socket.emit('getZoneByFilters', {
+        "parent":id_provincia
+    }, function(response) {
+        callback(response);
+        return(this);
     });
 }
 
 function getZoneById(id, callback) {
-    socket.emit('getZoneByFilters', {"id":id}, function(response) {
-       callback(response[0]);
-       return(this);
+    socket.emit('getZoneByFilters', {
+        "id":id
+    }, function(response) {
+        callback(response[0]);
+        return(this);
     });
 }
 
@@ -255,18 +276,27 @@ function zcSetTemp(temp) {
     zCtx.filters.temp = temp;
 
     //Persisto el contexto en el servidor
-    socket.emit('setTempToCtx', {sessionId: sessionId, temp: temp}, function(response) {
-       var resp = eval('(' + response + ')');
+    socket.emit('setTempToCtx', {
+        sessionId: sessionId, 
+        temp: temp
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 
 function zcSetTab(tab) {
     //Actualizo el contexto en el cliente
+    if(!zCtx)
+        zCtx = new ZContext();
     zCtx.zTab = tab;
 
     //Persisto el contexto en el servidor
-    socket.emit('setTabToCtx', {sessionId: sessionId, tab: tab}, function(response) {
-       var resp = eval('(' + response + ')');
+    if(socket)
+    socket.emit('setTabToCtx', {
+        sessionId: sessionId, 
+        tab: tab
+    }, function(response) {
+        var resp = eval('(' + response + ')');
     });
 }
 

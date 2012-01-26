@@ -27,7 +27,6 @@ var vector_layer;
 var popup;
 var mapsources = new Array();
 var maptags = new Array();
-var ids = new Array();
 var cant = 0;
 var ignoredSources = new Array();
 
@@ -47,6 +46,16 @@ function ampliar(lon, lat) {
     }
     var zoomLevel = map.getZoom() + 3;
     setMapZone(lon, lat, zoomLevel);
+}
+
+function mapToPost() {
+    $('postsDiv').set({
+        style: 'display:block'
+    });
+    $('mapDiv').set({
+        style: 'display:none'
+    });
+    loadPost(true);
 }
 
 function update_vector_layer(){
@@ -109,7 +118,7 @@ function initMap() {
                 'cant':cantMax,
                 'sortField':defaultSortField,
                 'sortOrder':'desc',
-                'since':'NOW-24HOURS'
+                'since':'NOW-' + zcGetContext().filters.temp
             },  //, 'minLon':'-78.969515', 'minLat':'-59.155008', 'maxLon':'-48.295686','maxLat':'-17.017761'
             format: new OpenLayers.Format.KML({
                 extractAttributes: true,
@@ -179,7 +188,8 @@ function initMap() {
         //Vacio las listas de contadores
         mapsources = new Array();
         maptags = new Array();
-        ids = new Array();
+        clearSolrIds();
+        setSolrRows(20);
         cant = 0;
 
         //Store the clusters
@@ -192,13 +202,13 @@ function initMap() {
             postDetail.tags.each(function(tag){
                 addTag(tag); //Tags
             });
-            ids[i] = postDetail.id;
+            addIdToSolrSearch(postDetail.id);
             cant++;
         }
 
         var popupContentHTML = "";
 
-        popupContentHTML += "<h3 id='popupTitle' style='height:28px'></h3>";
+        popupContentHTML += "<h3 id='popupTitle'></h3>";
 
         popupContentHTML += "<br>";
 
@@ -225,7 +235,8 @@ function initMap() {
         popupContentHTML += "<br><div style='verticalAlign: center'><img src='/images/ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
 
         if (cant < 200) {
-            popupContentHTML += "<br><img src='/images/ver_post.gif' alt='Ver posts' onClick=''>";
+            setSolrRows(event.feature.attributes.count);
+            popupContentHTML += "<br><img src='/images/ver_post.gif' alt='Ver posts' onClick='mapToPost();'>";
         }
 
         popupContentHTML += "</div>";
