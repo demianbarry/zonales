@@ -813,7 +813,7 @@ function show_confirm(idInputTag,selectedTag,tags)
 function savePost(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+idPost+'"}&aTags='+tags+','+selectedTag;
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
     var urlProxy = '/curl_proxy.php';
     new Request({
         url: urlProxy,
