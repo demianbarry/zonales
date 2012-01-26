@@ -680,6 +680,10 @@ function updatePosts(json, component, more) {
                     'onclick': 'ckeckOnlyTag("' + tag + '");'
                 }).inject(span_tags);
                 div_story_item.addClass(tag);
+                if(zUserGroups.indexOf("4") != -1){
+
+                    
+            }
             });
         }
         var idInputTag = doc.id;
@@ -695,22 +699,35 @@ function updatePosts(json, component, more) {
             var span_addTags = new Element('span',{
                 'id':'addTags_'+doc.id
             }).inject(div_story_tags);
-            new Element('a',{
-                'onclick':'if ( $("'+idInputTag+'").style.display == "none"){ $("'+idInputTag+'").setStyle("display","inline"); $("'+idButtonAddTags+'").setStyle("display","inline"); }else {$("'+idInputTag+'").setStyle("display","none"); $("'+idButtonAddTags+'").setStyle("display","none");}'
-            }).set('html','Add Tags').inject(span_addTags);
+            var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
+            addTagsButton.addEvent('click',function(){
+                if ( $(idInputTag).style.display == "none"){
+                    $(idInputTag).setStyle("display","inline");
+                    $(idButtonAddTags).setStyle("display","inline");
+                    $(idInputTag).focus();
+                }else {
+                    $(idInputTag).setStyle("display","none");
+                    $(idButtonAddTags).setStyle("display","none");
+                }                
+            });
+            
             var selectedTag = new Element('input',{
                 'id':idInputTag,
                 'style':'display:none',
                 'onkeyup':'populateOptions(event,this,true,zTags)',
                 'value':''
-            }).inject(span_addTags);
+            }).inject(span_addTags);            
 
-            new Element('img', {
+            var confimAddTagButton = new Element('img', {
                 'id':idButtonAddTags,
                 'style':'display:none',
-                'src': '/CMUtils/addIcon.gif',
-                'onclick':'show_confirm("' + idInputTag + '",$(\'' + idInputTag + '\').value,"'+tags+'");' + "$('" + idInputTag + "').value = ''"
+                'src': '/CMUtils/addIcon.gif'                
             }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
+            confimAddTagButton.addEvent('click',function(){
+                show_confirm(idInputTag,$(idInputTag).value,tags);
+                $(idInputTag).value = '';
+            });
+            
         }
         var zone = post.zone;
         var idButtonSetZone = 'buttonZone'+doc.id;

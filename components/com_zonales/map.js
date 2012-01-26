@@ -27,6 +27,7 @@ var vector_layer;
 var popup;
 var mapsources = new Array();
 var maptags = new Array();
+var mapzones = new Array();
 var cant = 0;
 var ignoredSources = new Array();
 
@@ -188,6 +189,7 @@ function initMap() {
         //Vacio las listas de contadores
         mapsources = new Array();
         maptags = new Array();
+        mapzones = new Array();
         clearSolrIds();
         setSolrRows(20);
         cant = 0;
@@ -203,35 +205,13 @@ function initMap() {
                 addTag(tag); //Tags
             });
             addIdToSolrSearch(postDetail.id);
+            mapzones.include(postDetail.zone);
             cant++;
         }
 
         var popupContentHTML = "";
 
-        popupContentHTML += "<h3 id='popupTitle'></h3>";
-
-        popupContentHTML += "<br>";
-
-        //Muestro los contadores de fuentes
-        for(var i = 0; i < mapsources.length; i++) {
-            popupContentHTML += "<strong>"
-            + mapsources[i][0]
-            + ": </strong>"
-            + mapsources[i][1]
-            + "<br>";
-        }
-
-        popupContentHTML += "<br>";
-
-        //Muestro los contadores de tags
-        for(var i = 0; i < maptags.length; i++) {
-            popupContentHTML += "<strong>"
-            + maptags[i][0]
-            + ": </strong>"
-            + maptags[i][1]
-            + "<br>";
-        }
-
+        popupContentHTML += '<h3 id="popupTitle">Información</h3>';
         popupContentHTML += "<br><div style='verticalAlign: center'><img src='/images/ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
 
         if (cant < 200) {
@@ -241,6 +221,39 @@ function initMap() {
 
         popupContentHTML += "</div>";
 
+        popupContentHTML += "<br>";
+
+        popupContentHTML += "<p>Usted está viendo información de las zonas:<p><ul>";
+
+        //Muestro las zonas
+        for(var i = 0; i < mapzones.length; i++) {
+            popupContentHTML += "<li><strong>"
+            + mapzones[i]
+            + "</strong></li>";
+        }
+
+        popupContentHTML += "</ul><br><p>obtenida de las fuentes:<p><ul>";
+
+        //Muestro los contadores de fuentes
+        for(var i = 0; i < mapsources.length; i++) {
+            popupContentHTML += "<li><strong>"
+            + mapsources[i][0]
+            + ": </strong>"
+            + mapsources[i][1]
+            + "</li>";
+        }
+
+        popupContentHTML += "</ul><br><p>con los tags:</p>";
+
+        //Muestro los contadores de tags
+        for(var i = 0; i < maptags.length; i++) {
+            popupContentHTML += "<li><strong>"
+            + maptags[i][0]
+            + ": </strong>"
+            + maptags[i][1]
+            + "</li>";
+        }
+
         //Armo el popup
         var lonlat = new OpenLayers.LonLat(event.feature.geometry.x,event.feature.geometry.y);
         var size = new OpenLayers.Size(150, 300);
@@ -249,7 +262,7 @@ function initMap() {
         map.addPopup(popup);
         var point = new OpenLayers.Geometry.Point(event.feature.geometry.x, event.feature.geometry.y);
         point.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
-        alfaFromGeo(point.y, point.x);
+        //alfaFromGeo(point.y, point.x);
 
     //"<img src='" + cluster[i].style.externalGraphic + "' />"
 
@@ -341,17 +354,18 @@ function initMap() {
             onComplete: function(jsonObj) {
                 //var jsonObj = JSON.parse(response);
                 var mostrar = "Zona indefinida";
-                if (typeof jsonObj.address.city != 'undefined') {
+                if (typeof(jsonObj.address.city) != 'undefined') {
                     mostrar = jsonObj.address.city;
-                } else {
-                    if (typeof jsonObj.address.state != 'undefined') {
-                        mostrar = "Provincia de " + jsonObj.address.state;
-                    } else {
-                        if (typeof jsonObj.address.country != 'undefined') {
-                            mostrar = jsonObj.address.country;
-                        }
-                    }
+                } else if(typeof(jsonObj.address.town) != 'undefined') {
+                    mostrar = jsonObj.address.town;
+                } else if (typeof(jsonObj.address.village) != 'undefined') {
+                    mostrar = jsonObj.address.village;
+                } else if (typeof(jsonObj.address.state) != 'undefined') {
+                    mostrar = "Provincia de " + jsonObj.address.state;
+                } else if (typeof(jsonObj.address.country) != 'undefined') {
+                    mostrar = jsonObj.address.country;
                 }
+
                 document.getElementById('cercaDe').innerHTML = mostrar;
                 if (document.getElementById('popupTitle') != null) {
                     document.getElementById('popupTitle').innerHTML = mostrar;
