@@ -42,12 +42,12 @@ module.exports.get = function get(model, filters, callback) {
 	callback = (callback || noop);
 	
 	try {
-		var filtros = JSON.parse(filters);
-		model.find(filtros, function(err, docs) {
+		//var filtros = JSON.parse(filters);
+		model.find(filters, function(err, docs) {
 		  if (err) {
-		  	  console.log('Error obteniendo datos --> ' + err);
 			  throw errors.apiError;
 		  }
+		  console.log(JSON.stringify(docs));
 		  callback(docs);
 		  return(this);
 	   });

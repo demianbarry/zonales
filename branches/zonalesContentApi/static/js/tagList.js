@@ -31,7 +31,7 @@ window.addEvent('domready', function() {
 	  if(gup('state') != null && gup('state') != '') {
 	        $('tagStateFilter').value = gup('state');
 	     }
-	   if ($('tagNameFilter').value != '' && $('tagStateFilter').value != 'all') {
+	   if ($('tagNameFilter').value != '' || $('tagStateFilter').value != 'all') {
 	   	searchTags();
 	   }	  	  
 });

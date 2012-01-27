@@ -18,7 +18,7 @@ window.addEvent('domready', function() {
 	  if(gup('state') != null && gup('state') != '') {
 	        $('zoneTypeStateFilter').value = gup('state');
 	     }
-	   if ($('zoneTypeNameFilter').value != '' && $('zoneTypeStateFilter').value != 'all') {
+	   if ($('zoneTypeNameFilter').value != '' || $('zoneTypeStateFilter').value != 'all') {
 	   	searchZoneTypes();
 	   }	  	  
 });
