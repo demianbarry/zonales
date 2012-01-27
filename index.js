@@ -10,6 +10,7 @@ var placeTypeService = require('./services/placeTypes');
 var geoDataService = require('./services/geoData');
 var tagService = require('./services/tags');
 var tagTypeService = require('./services/tagTypes');
+var zContextService = require('./services/ZContext');
 
 //----------------------- ERRORS -----------------------
 var errors = require('./errors/errors');
@@ -339,10 +340,65 @@ io.sockets.on('connection', function(client) {
 		    fn(data);
 		  }
 	   });
+	});	
+		
+	client.on('getCtx', function(sessionId, fn) {
+		console.log('Recibí evento getCtx - SessionId: ' + sessionId);
+		zContextService.getZCtx(sessionId, function(zCtx) {
+			fn(zCtx);
+		});	 
+	});
+	
+	client.on('addSourceToZCtx', function(data, fn) {
+		console.log('Recibí evento addSourceToZCtx, fuente = ' + data.source);
+		zContextService.addSource(data.sessionId, data.source, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('uncheckSourceFromZCtx', function(data, fn) {
+		console.log('Recibí evento uncheckSourceFromZCtx, fuente = ' + data.source);
+		zContextService.unckeckSource(data.sessionId, data.source, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('addTagToZCtx', function(data, fn) {
+		console.log('Recibí evento addTagToZCtx, tag = ' + data.tag);
+		zContextService.addTag(data.sessionId, data.tag, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('uncheckTagFromZCtx', function(data, fn) {
+		console.log('Recibí evento uncheckTagFromZCtx, tag = ' + data.tag);
+		zContextService.unckeckTag(data.sessionId, data.tag, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('setSelectedZoneToCtx', function(data, fn) {
+		console.log('Recibí evento setSelectedZoneToCtx, zone = ' + data.zone);
+		zContextService.setSelectedZone(data.sessionId, data.zone, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('setTempToCtx', function(data, fn) {
+		console.log('Recibí evento setTempToCtx, temp = ' + data.temp);
+		zContextService.setTemp(data.sessionId, data.temp, function (response) {
+			fn(response);
+		});
+	});
+	
+	client.on('setTabToCtx', function(data, fn) {
+		console.log('Recibí evento setTabToCtx, tab = ' + data.tab);
+		zContextService.setTab(data.sessionId, data.tab, function (response) {
+			fn(response);
+		});
 	});
 	
 });
-
 
 
 app.get('/', function(req,res) {
@@ -434,7 +490,7 @@ app.get('/zone/getAll', function(req,res) {
 app.get('/zone/get', function(req, res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		zoneService.get(req.query.filters, function(data){
+		zoneService.get(eval('(' + req.query.filters + ')'), function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});
@@ -544,7 +600,7 @@ app.get('/zoneType/getAll', function(req,res) {
 app.get('/zoneType/get', function(req, res) {
 	res.writeHead(200, {"Content-Type": "text/javascript"});
 	try {
-		zoneTypeService.get(req.query.filters, function(data){
+		zoneTypeService.get(eval('(' + req.query.filters + ')'), function(data){
 			res.write(JSON.stringify(data));
 			res.end();
 		});

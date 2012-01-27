@@ -18,7 +18,7 @@ window.addEvent('domready', function() {
 	  if(gup('state') != null && gup('state') != '') {
 	        $('tagTypeStateFilter').value = gup('state');
 	     }
-	   if ($('tagTypeNameFilter').value != '' && $('tagTypeStateFilter').value != 'all') {
+	   if ($('tagTypeNameFilter').value != '' || $('tagTypeStateFilter').value != 'all') {
 	   	searchTagTypes();
 	   }	  	  	  	  
 });
