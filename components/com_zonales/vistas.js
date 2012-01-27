@@ -24,7 +24,10 @@ function initVista(zCtx){
     setMinRelevance(null);
     setSearchKeyword("");
     initFilters(zCtx);
-
+    if(zCtx.zTab == ''){
+        tab = 'portada';
+        zcSetTab('portada');
+    }
     if (zCtx.zTab != 'geoActivos') {
         $('postsDiv').set({
             style: 'display:block'
@@ -33,7 +36,8 @@ function initVista(zCtx){
             style: 'display:none'
         });
         $('verMas').setStyle('display','block');
-        loadPost(true);
+        //loadPost(true);
+        setZone(zCtx.selZone, zcGetSelectedZoneName());
     } else {
         $('postsDiv').set({
             style: 'display:none'
@@ -680,10 +684,16 @@ function updatePosts(json, component, more) {
                     'onclick': 'ckeckOnlyTag("' + tag + '");'
                 }).inject(span_tags);
                 div_story_item.addClass(tag);
-                if(zUserGroups.indexOf("4") != -1){
-
-                    
-            }
+                if(zUserGroups.indexOf("4") != -1) {
+                    var del_tag_img = new Element('img',{
+                        'src': '/images/eliminar.png'
+                    }).inject(span_tags).addClass('delete_tag');
+                    del_tag_img.addEvent('click', function(){
+                        if(confirm('Realmente desea eliminar el tag '+tag)){
+                            delTagFromPost(doc.id, tag);
+                        }
+                    });
+                }
             });
         }
         var idInputTag = doc.id;
@@ -708,26 +718,26 @@ function updatePosts(json, component, more) {
                 }else {
                     $(idInputTag).setStyle("display","none");
                     $(idButtonAddTags).setStyle("display","none");
-                }                
+                }
             });
-            
+
             var selectedTag = new Element('input',{
                 'id':idInputTag,
                 'style':'display:none',
                 'onkeyup':'populateOptions(event,this,true,zTags)',
                 'value':''
-            }).inject(span_addTags);            
+            }).inject(span_addTags);
 
             var confimAddTagButton = new Element('img', {
                 'id':idButtonAddTags,
                 'style':'display:none',
-                'src': '/CMUtils/addIcon.gif'                
+                'src': '/CMUtils/addIcon.gif'
             }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
             confimAddTagButton.addEvent('click',function(){
                 show_confirm(idInputTag,$(idInputTag).value,tags);
                 $(idInputTag).value = '';
             });
-            
+
         }
         var zone = post.zone;
         var idButtonSetZone = 'buttonZone'+doc.id;
@@ -838,14 +848,14 @@ function show_confirm(idInputTag,selectedTag,tags)
     var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
     if (r==true)
     {
-        savePost(idInputTag,tags,selectedTag);
+        addTagToPost(idInputTag,tags,selectedTag);
     }
     else
     {
         alert("Cancelado");
     }
 }
-function savePost(idPost,tags,selectedTag){
+function addTagToPost(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
     var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
@@ -870,6 +880,40 @@ function savePost(idPost,tags,selectedTag){
                         'onclick': 'ckeckOnlyTag("' + selectedTag + '");'
                     }).inject(span_tags);
                     $('tagsDiv_'+response.id).addClass(selectedTag);
+                }
+            }
+        },
+        // Our request will most likely succeed, but just in case, we'll add an
+        // onFailure method which will let the user know what happened.
+        onFailure: function(){
+        }
+    }).send();
+}
+
+function delTagFromPost(idPost,selectedTag){
+    //\"tags\":[\"Espectaculos\"]
+
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&rTag='+selectedTag;
+    var urlProxy = '/curl_proxy.php';
+    new Request({
+        url: urlProxy,
+        method: 'post',
+        data: {
+            'host': host ? host : "localhost",
+            'port': port ? port : "38080",
+            'ws_path':url
+        },
+        onRequest: function(){
+        },
+        onSuccess: function(response) {
+            if(response.length > 0) {
+                response = JSON.decode(response);
+                if(response.id){
+                    $('tagsDiv_'+response.id).getElements('span.cp_tags a').each(function(tagA){
+                        if(tagA.innerHTML == selectedTag)
+                            tagA.getParent().dispose();
+                    });
+                    $('tagsDiv_'+response.id).removeClass(selectedTag);
                 }
             }
         },
