@@ -276,6 +276,7 @@ function initMap() {
         {
             if (typeof mapsources[ind] != 'undefined' && mapsources[ind][0] == valor) {
                 mapsources[ind][1] = mapsources[ind][1] + 1;
+                zcAddSource(valor);
                 find = true;
                 break;
             }
@@ -292,6 +293,7 @@ function initMap() {
         {
             if (typeof maptags[ind] != 'undefined' && maptags[ind][0] == valor) {
                 maptags[ind][1] = maptags[ind][1] + 1;
+                zcAddTag(valor);
                 find = true;
                 break;
             }
@@ -310,7 +312,7 @@ function initMap() {
 
     function on_features_added(event){
         document.getElementById('ajaxLoader').style.display = "none";
-        vector_layer.features.each(function(feature){
+        /*vector_layer.features.each(function(feature){
             feature.cluster.each(function(cluster){
                 if(!$('chk'+cluster.attributes.name)) {
                     var tr = new Element('tr');
@@ -331,7 +333,7 @@ function initMap() {
                     }
                 }
             });
-        });
+        });*/
     }
 
     //on unselect function
@@ -367,9 +369,9 @@ function initMap() {
                 }
 
                 document.getElementById('cercaDe').innerHTML = mostrar;
-                if (document.getElementById('popupTitle') != null) {
+                /*if (document.getElementById('popupTitle') != null) {
                     document.getElementById('popupTitle').innerHTML = mostrar;
-                }
+                }*/
             },
             onFailure: function(){
             }
