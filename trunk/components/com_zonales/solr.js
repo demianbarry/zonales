@@ -111,12 +111,15 @@ function getSolrSources(myTab){
 
 function getSolrZones(myZone)
 {
-    if(typeof(myZone) == 'undefined' || !myZone || myZone == '')
-        return "";
+    var res = "";
+    if (zcGetTab() != 'geoActivos') {
+        if(typeof(myZone) == 'undefined' || !myZone || myZone == '')
+            return "";
 
-    var res  = '+AND+zone:"';
-    res += myZone.replace(/_/g, ' ').capitalize();
-    res += '"';
+        res  = '+AND+zone:"';
+        res += myZone.replace(/_/g, ' ').capitalize();
+        res += '"';
+    }
 
     return res.replace(' ', '+');
 
