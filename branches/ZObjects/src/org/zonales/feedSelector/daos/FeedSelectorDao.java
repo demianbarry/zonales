@@ -94,7 +94,8 @@ public class FeedSelectorDao extends BaseDao {
 
     public FeedSelectors retrieve(String url) {
         BasicDBObject query = new BasicDBObject("url", url);
-        DBObject resp = this.feedSelectors.findOne(query);;
+        DBObject resp = this.feedSelectors.findOne(query);
+        
         FeedSelectors myFeedSelectors = new FeedSelectors();
         ArrayList<BasicDBObject> selectors;
 
