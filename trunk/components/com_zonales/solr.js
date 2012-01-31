@@ -1,5 +1,5 @@
 var host = "localhost";
-var port = "38080";
+var port = 38080;
 var searching = false;
 var searchKeyword = "";
 var firstIndexTime = null;
@@ -191,24 +191,11 @@ function loadSolrPost(tab, zone, more, callback){
     }
 
     var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
-    var urlProxy = '/curl_proxy.php?host='+getSolrHost()+'&port='+getSolrPort()+'&ws_path=' + encodeURIComponent(urlSolr);
 
-    var req = new Request.JSON({
-        url: urlProxy,
-        method: 'post',
-        onRequest: function(){
-            searching = true;
-        },
-        onComplete: function(jsonObj) {
-            searching = false;
-            callback(jsonObj);
-            return(this);
-        },
-        onFailure: function(){
-            callback();
-            return(this);
-        }
-    }).send();
+    socket.emit('proxyExecute', {host: host, port: port, path: urlSolr, method: 'GET'}, function(jsonObj) {
+        callback(jsonObj);
+        return(this);
+    });
 
 }
 
