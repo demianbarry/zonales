@@ -14,58 +14,40 @@ public class SolrPost {
 
     @Field
     protected String source;
-    
     @Field
     protected Double sourceLatitude;
-    
     @Field
     protected Double sourceLongitude;
-    
     @Field
     protected String id;
-
     @Field
     protected String fromUserName;
-
     @Field
     protected String fromUserCategory;
-
     @Field
     protected String fromUserId;
-
     @Field
     protected String fromUserUrl;
-    
     @Field
     protected Double fromUserLatitude;
-    
     @Field
     protected Double fromUserLongitude;
-
     @Field
     protected String title;
-
     @Field
     protected String text;
-
     @Field
     protected String zone;
-
     @Field
     protected List<String> tags;
-
     @Field
     protected Date created;
-
     @Field
     protected Date modified;
-    
     @Field
     protected int relevance;
-    
     @Field
     protected String state;
-
     @Field
     protected String verbatim;
 
@@ -188,7 +170,7 @@ public class SolrPost {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public String getState() {
         return state;
     }
@@ -250,4 +232,22 @@ public class SolrPost {
         return "SolrPost{" + "source=" + source + "id=" + id + "fromUserName=" + fromUserName + "fromUserCategory=" + fromUserCategory + "fromUserId=" + fromUserId + "fromUserUrl=" + fromUserUrl + "title=" + title + "text=" + text + "zone=" + zone + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof SolrPost) {
+            SolrPost solrPost = (SolrPost) obj;
+            return solrPost.getCreated().equals(this.getCreated()) && solrPost.getModified().equals(this.getModified()) && solrPost.getId().equals(this.getId());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 37 * hash + (this.created != null ? this.created.hashCode() : 0);
+        hash = 37 * hash + (this.modified != null ? this.modified.hashCode() : 0);
+        return hash;
+    }
 }
