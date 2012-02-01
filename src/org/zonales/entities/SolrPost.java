@@ -13,6 +13,8 @@ import org.apache.solr.client.solrj.beans.Field;
 public class SolrPost {
 
     @Field
+    protected String docType;
+    @Field
     protected String source;
     @Field
     protected Double sourceLatitude;
@@ -39,6 +41,8 @@ public class SolrPost {
     @Field
     protected String zone;
     @Field
+    protected List<String> zonesIds;
+    @Field
     protected List<String> tags;
     @Field
     protected Date created;
@@ -47,6 +51,8 @@ public class SolrPost {
     @Field
     protected int relevance;
     @Field
+    protected int relevanceDelta;
+    @Field
     protected String state;
     @Field
     protected String verbatim;
@@ -54,7 +60,8 @@ public class SolrPost {
     public SolrPost() {
     }
 
-    public SolrPost(String source, Double latitude, Double longitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, Double fromUserLatitude, Double fromUserLongitude, String title, String text, String zone, List<String> tags, Date created, Date modified, int relevance, String verbatim) {
+    public SolrPost(String docType, String source, Double latitude, Double longitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, Double fromUserLatitude, Double fromUserLongitude, String title, String text, String zone, List<String> zonesIds, List<String> tags, Date created, Date modified, int relevance, int relevanceDelta, String verbatim) {
+        this.docType = docType;
         this.source = source;
         this.sourceLatitude = latitude;
         this.sourceLongitude = longitude;
@@ -68,10 +75,12 @@ public class SolrPost {
         this.title = title;
         this.text = text;
         this.zone = zone;
+        this.zonesIds = zonesIds;
         this.tags = tags;
         this.created = created;
         this.modified = modified;
         this.relevance = relevance;
+        this.relevanceDelta = relevanceDelta;
         this.verbatim = verbatim;
     }
 
@@ -225,6 +234,30 @@ public class SolrPost {
 
     public void setSourceLongitude(Double sourceLongitude) {
         this.sourceLongitude = sourceLongitude;
+    }
+
+    public String getDocType() {
+        return docType;
+    }
+
+    public void setDocType(String docType) {
+        this.docType = docType;
+    }
+
+    public int getRelevanceDelta() {
+        return relevanceDelta;
+    }
+
+    public void setRelevanceDelta(int relevanceDelta) {
+        this.relevanceDelta = relevanceDelta;
+    }
+
+    public List<String> getZonesIds() {
+        return zonesIds;
+    }
+
+    public void setZonesIds(List<String> zonesIds) {
+        this.zonesIds = zonesIds;
     }
 
     @Override

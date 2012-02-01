@@ -8,10 +8,10 @@ package org.zonales.entities;
 
 import java.util.ArrayList;
 
-
 public class Post {
-    
+
     protected String id;
+    protected String docType;
     protected String source;
     protected Double sourceLatitude;
     protected Double sourceLongitude;
@@ -22,18 +22,21 @@ public class Post {
     protected ArrayList<LinkType> links;
     protected ArrayList<ActionType> actions;
     protected String zone;
+    protected ArrayList<String> zonesIds;
     protected ArrayList<String> tags;
     protected Long created;
     protected Long modified;
     protected int relevance;
+    protected int relevanceDelta;
     protected String state;
     protected String verbatim;
-    
+
     public Post() {
     }
 
-    public Post(String id, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> tags, Long created, Long modified, int relevance, String verbatim) {
+    public Post(String id, String docType, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> zonesIds, ArrayList<String> tags, Long created, Long modified, int relevance, int relevanceDelta, String verbatim) {
         this.id = id;
+        this.docType = docType;
         this.source = source;
         this.sourceLatitude = sourceLatitude;
         this.sourceLongitude = sourceLongitude;
@@ -44,10 +47,12 @@ public class Post {
         this.links = links;
         this.actions = actions;
         this.zone = zone;
+        this.zonesIds = zonesIds;
         this.tags = tags;
         this.created = created;
         this.modified = modified;
         this.relevance = relevance;
+        this.relevanceDelta = relevanceDelta;
         this.verbatim = verbatim;
     }
 
@@ -200,5 +205,29 @@ public class Post {
      */
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getDocType() {
+        return docType;
+    }
+
+    public void setDocType(String docType) {
+        this.docType = docType;
+    }
+
+    public int getRelevanceDelta() {
+        return relevanceDelta;
+    }
+
+    public void setRelevanceDelta(int relevanceDelta) {
+        this.relevanceDelta = relevanceDelta;
+    }
+
+    public ArrayList<String> getZonesIds() {
+        return zonesIds;
+    }
+
+    public void setZonesIds(ArrayList<String> zonesIds) {
+        this.zonesIds = zonesIds;
     }
 }
