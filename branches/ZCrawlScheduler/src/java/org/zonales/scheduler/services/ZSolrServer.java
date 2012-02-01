@@ -5,9 +5,7 @@
 package org.zonales.scheduler.services;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,26 +68,28 @@ public final class ZSolrServer extends BaseService {
         }
     }
 
-    public void indexSolrPost(SolrPost solrPost) {
-        try {
-            SolrPingResponse spr = server.ping();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta ping: {0}", spr.getStatus());
+    public void indexSolrPost(SolrPost oldSolrPost, SolrPost newSolrPost) {
+        if (newSolrPost != null && !newSolrPost.equals(oldSolrPost)) {
+            try {
+                SolrPingResponse spr = server.ping();
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta ping: {0}", spr.getStatus());
 
-            if (solrPost.getId() == null || solrPost.getId().trim().equals("")) {
-                solrPost.setId(UUID.randomUUID().toString().toLowerCase(Locale.ENGLISH));
+                if (newSolrPost.getId() == null || newSolrPost.getId().trim().equals("")) {
+                    newSolrPost.setId(UUID.randomUUID().toString().toLowerCase(Locale.ENGLISH));
+                }
+
+                UpdateResponse ur = server.addBean(newSolrPost);
+
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta addBean: {0}", ur.toString());
+
+                ur = server.commit();
+
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta commit: {0}", ur.toString());
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Objeto SolrPost indexado");
+
+            } catch (Exception ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Exepcion indexando: {0}", ex);
             }
-
-            UpdateResponse ur = server.addBean(solrPost);
-
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta addBean: {0}", ur.toString());
-
-            ur = server.commit();
-
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta commit: {0}", ur.toString());
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Objeto SolrPost indexado");
-
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Exepcion indexando: {0}", ex);
         }
     }
 
@@ -104,15 +104,15 @@ public final class ZSolrServer extends BaseService {
     }
 
     public void indexPost(Post post) throws SolrServerException, IOException {
-        
+        SolrPost oldSolrPost = null;
         if (post.getId() != null && !"".equals(post.getId())) {
             SolrQuery query = new SolrQuery();
             query.setQuery("id:\"" + post.getId().replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
-                SolrPost solrP = rsp.getBeans(SolrPost.class).get(0);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(solrP));
-                Post postIn = gson.fromJson(solrP.getVerbatim(), Post.class);
+                oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(oldSolrPost));
+                Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "POST FROM VERBATIM: {0}", gson.toJson(postIn));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
@@ -144,12 +144,13 @@ public final class ZSolrServer extends BaseService {
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Creando objeto SolrPost");
 
-        SolrPost solrPost = new SolrPost(post.getSource(), post.getSourceLatitude(), post.getSourceLongitude(), post.getId(), post.getFromUser() != null ? post.getFromUser().getName() : null, post.getFromUser() != null ? post.getFromUser().getCategory() : null, post.getFromUser() != null ? post.getFromUser().getId() : null, post.getFromUser() != null ? post.getFromUser().getUrl() : null, post.getFromUser() != null ? post.getFromUser().getLatitude() : null, post.getFromUser() != null ? post.getFromUser().getLongitude() : null, post.getTitle(), post.getText(), post.getZone(), post.getTags(), created, modified, post.getRelevance(), verbatim);
+        SolrPost newSolrPost = new SolrPost();
+        postToSolr(newSolrPost, post);
 
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Objeto SolrPost creado: {0}", solrPost);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Objeto SolrPost creado: {0}", newSolrPost);
 
-        indexSolrPost(solrPost);
-        post.setId(solrPost.getId());
+        indexSolrPost(oldSolrPost, newSolrPost);
+        post.setId(newSolrPost.getId());
     }
 
     public Posts retrievePosts(String query) {
@@ -179,20 +180,22 @@ public final class ZSolrServer extends BaseService {
             query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
-                SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
+                SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
+                Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
                 for (String tag : tags) {
                     if (post.getTags() == null) {
                         post.setTags(new ArrayList<String>());
                     }
                     if (!post.getTags().contains(tag.trim())) {
                         post.getTags().add(tag.trim());
+                        post.setModified((new Date()).getTime());
                     }
                 }
-                postToSolr(solrPost, post);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(solrPost));
-                indexSolrPost(solrPost);
+                SolrPost newSolrPost = new SolrPost();
+                postToSolr(newSolrPost, post);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                indexSolrPost(oldSolrPost, newSolrPost);
             }
         } catch (SolrServerException ex) {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,17 +207,22 @@ public final class ZSolrServer extends BaseService {
             SolrQuery query = new SolrQuery();
             query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
             QueryResponse rsp = server.query(query);
-
-
             if (rsp.getResults().getNumFound() == 1) {
-                SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
-                post.getTags().remove(tag);
-                postToSolr(solrPost, post);
-                indexSolrPost(solrPost);
+                SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
+                Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
+                if (post.getTags() == null) {
+                    post.setTags(new ArrayList<String>());
+                }
+                if (post.getTags().contains(tag)) {
+                    post.getTags().remove(tag);
+                    post.setModified((new Date()).getTime());
+                }
+                SolrPost newSolrPost = new SolrPost();
+                postToSolr(newSolrPost, post);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                indexSolrPost(oldSolrPost, newSolrPost);
             }
-
-
         } catch (SolrServerException ex) {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -227,13 +235,18 @@ public final class ZSolrServer extends BaseService {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Id: {0}", id);
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
-                SolrPost solrPost = rsp.getBeans(SolrPost.class).get(0);
-                Post post = gson.fromJson(solrPost.getVerbatim(), Post.class);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(solrPost));
+                SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
+                Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
+                // Si cambia la relevancia, modifico la fecha de modiicado.
+                if (relevance != 0) {
+                    post.setModified((new Date()).getTime());
+                }
                 post.setRelevance(post.getRelevance() + relevance);
-                postToSolr(solrPost, post);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(solrPost));
-                indexSolrPost(solrPost);
+                SolrPost newSolrPost = new SolrPost();
+                postToSolr(newSolrPost, post);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                indexSolrPost(oldSolrPost, newSolrPost);
             }
         } catch (SolrServerException ex) {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
