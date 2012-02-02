@@ -443,7 +443,7 @@ public class ZGramDao extends BaseDao {
                 if (newZgram.getPeriodicidad() != null) {
                     zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
                 } else {
-                    zgramDoc.put("periodicidad", (String) resp.get("periodicidad"));
+                    zgramDoc.put("periodicidad", resp.get("periodicidad"));
                 }
 
                 if (newZgram.getSiosi() != null) {
