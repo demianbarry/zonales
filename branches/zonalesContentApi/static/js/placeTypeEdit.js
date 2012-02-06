@@ -3,29 +3,29 @@ var socket;
 var edit = false;
 var parents = new Array();
 var cantParents = 0;
-var zoneTypeFilter = "";
+var placeTypeFilter = "";
 var stateFilter = "";
 
 window.addEvent('domready', function() {
 	  socket = io.connect();
   	  socket.on('connect', function () { 
-	    socket.emit('getZonesTypes', true, function (data) {			  		
+	    socket.emit('getPlaceTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
 	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('parent'));
 	  			}
 	  		});
 	  		if(gup('name') != null && gup('name') != '') {
-		        getZoneType(gup('name'));
+		        getPlaceType(gup('name'));
 		        edit = true;
 		     }
-		   if(gup('zoneType') != null && gup('zoneType') != '') {
-		        zoneTypeFilter = gup('zoneType');
+		   if(gup('placeType') != null && gup('placeType') != '') {
+		        placeTypeFilter = gup('placeType');
 		     }
 		   if(gup('state') != null && gup('state') != '') {
 		        stateFilter = gup('state');
 		     }
-		   $('backAnchor').href = '/CMUtils/zoneTypeList?zoneType=' + zoneTypeFilter + '&state=' + stateFilter;
+		   $('backAnchor').href = '/CMUtils/placeTypeList?placeType=' + placeTypeFilter + '&state=' + stateFilter;
 	    });
 	  });
 });
@@ -51,9 +51,9 @@ function removeParent(parentLine){
 }
 
 
-function getZoneType(name){
+function getPlaceType(name){
 	  //var jname = '{"name":"' + name + '"}';
-	  socket.emit('getZoneTypeByFilters', {name: name}, function (data) {
+	  socket.emit('getPlaceTypeByFilters', {name: name}, function (data) {
        	var jsonObj = data[0];			  		
           typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('nombre').value = "";
           if (typeof(jsonObj.parents) != 'undefined') {
@@ -65,40 +65,42 @@ function getZoneType(name){
 	  });
 }
 
-function saveZoneType() {
+function savePlaceType() {
 
-    var jsonZoneType = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '"';
+    var jsonPlaceType = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '"';
+
+    jsonPlaceType += ',"description":"' + $('description').value + '"';
     
     if (parents.length > 0) {
-         jsonZoneType += ',"parents":[';
+         jsonPlaceType += ',"parents":[';
          for (i = 0; i < parents.length; i++) {
              if (parents[i] != null) {
-                 jsonZoneType += '"' + parents[i] + '",';
+                 jsonPlaceType += '"' + parents[i] + '",';
              }
          }
-         jsonZoneType = jsonZoneType.substring(0, jsonZoneType.length - 1);
-         jsonZoneType += ']';
+         jsonPlaceType = jsonPlaceType.substring(0, jsonPlaceType.length - 1);
+         jsonPlaceType += ']';
      }
-    jsonZoneType += '}';
+    jsonPlaceType += '}';
     
-	 var objZoneType = eval('(' + jsonZoneType + ')');
+	 var objPlaceType = eval('(' + jsonPlaceType + ')');
     
 	 if (edit) {
-    	socket.emit('updateZoneType', objZoneType, function (resp) {
+    	socket.emit('updatePlaceType', objPlaceType, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
-    			alert("Se ha actualizado el tipo de zona"); 
+    			alert("Se ha actualizado el tipo de place"); 
     		} else {
-    			alert("Error al actualizar el tipo de zona");
+    			alert("Error al actualizar el tipo de place");
     		}
     	});	
     } else {
-    	socket.emit('saveZoneType', objZoneType, function (resp) {
+    	socket.emit('savePlaceType', objPlaceType, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
-    			alert("Se ha guardado el tipo de zona"); 
+    			alert("Se ha guardado el tipo de place"); 
     		} else {
-    			alert("Error al guardar el tipo de zona");
+    			alert("Error al guardar el tipo de place");
     		}
     	});
     }    

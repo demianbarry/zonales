@@ -1,7 +1,7 @@
-var http = require('http');
+var zProxy = require('./zProxy');
 
 var host = "localhost";
-var port = "38080";
+var port = 38080;
 var rows = 0;
 
 function setFirstIndexTime(time) {
@@ -97,28 +97,11 @@ module.exports.countSolrPost = function countSolrPost(tab, zone, callback){
 	 console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
 
     urlSolr = getSolrUrl(tab, zone);
-    var urlProxy = '/curl_proxy.php?host='+getSolrHost()+'&port='+getSolrPort()+'&ws_path=' + encodeURIComponent(urlSolr);
-
-	console.log("SOLR PROXY URL: " + urlProxy);
     
-    var options = {
-		  host: 'localhost',
-		  port: 82,
-		  path: urlProxy,
-		  method: 'GET'
-	 };
-		
-	 http.request(options, function(res) {
-		  console.log('STATUS: ' + res.statusCode);
-		  console.log('HEADERS: ' + JSON.stringify(res.headers));
-		  res.setEncoding('utf8');
-		  res.on('data', function (json) {
-	   	    console.log('BODY: ' + json);
-	   	    var jsonObj = eval('(' + json + ')');
-				 callback(jsonObj.response.numFound);
-             return(this);
-		  });
-	 }).end();
+	proxy.excecute(host, port, urlSolr, 'GET', function(response) {
+		//var jsonObj = eval('(' + response + ')');
+		callback(jsonObj.response.numFound);
+	});    
 }
 
 function getSolrHost() {

@@ -52,8 +52,8 @@ function removeParent(parentLine){
 
 
 function getTagType(name){
-	  var jname = '{"name":"' + name + '"}';
-	  socket.emit('getTagTypeByFilters', jname, function (data) {
+	  //var jname = '{"name":"' + name + '"}';
+	  socket.emit('getTagTypeByFilters', {name: name}, function (data) {
        	var jsonObj = data[0];			  		
           typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('nombre').value = "";
           if (typeof(jsonObj.parents) != 'undefined') {
@@ -80,9 +80,11 @@ function saveTagType() {
      }
     jsonTagType += '}';
     
+	 var objTagType = eval('(' + jsonTagType + ')');
+    
 	 if (edit) {
-    	socket.emit('updateTagType', jsonTagType, function (data) {
-    		var resp = eval('(' + data + ')'); 
+    	socket.emit('updateTagType', objTagType, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha actualizado el tipo de tag"); 
     		} else {
@@ -90,8 +92,8 @@ function saveTagType() {
     		}
     	});	
     } else {
-    	socket.emit('saveTagType', jsonTagType, function (data) {
-    		var resp = eval('(' + data + ')'); 
+    	socket.emit('saveTagType', objTagType, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha guardado el tipo de tag"); 
     		} else {

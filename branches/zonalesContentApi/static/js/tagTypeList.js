@@ -2,6 +2,14 @@ var socket;
 var tagTypes = Array();
 
 window.addEvent('domready', function() {
+	  $('newButton').addEvent('click', function() {
+	  		var urlTagTypeEdit = "tagTypeEdit";
+  			if ($('resultslist_content').getChildren().length > 0) {
+  				urlTagTypeEdit += "?tagType=" + $('tagTypeNameFilter').value 
+										+ "&state=" + $('tagTypeStateFilter').value 
+  			}
+  			document.location.href=urlTagTypeEdit;
+	  });
  	  socket = io.connect();
   	  socket.on('connect', function () { 
 	    socket.emit('getTagsTypes', true, function (data) {			  		
@@ -18,7 +26,7 @@ window.addEvent('domready', function() {
 	  if(gup('state') != null && gup('state') != '') {
 	        $('tagTypeStateFilter').value = gup('state');
 	     }
-	   if ($('tagTypeNameFilter').value != '' || $('tagTypeStateFilter').value != 'all') {
+	  if ($('tagTypeNameFilter').value != '' || $('tagTypeStateFilter').value != 'all') {
 	   	searchTagTypes();
 	   }	  	  	  	  
 });
@@ -38,14 +46,15 @@ function searchTagTypes(){
 }
 
 function removeTagType(name) {
-	 socket.emit('removeTagType', name, function (data) {
-    		var resp = eval('(' + data + ')'); 
+	if (confirm("¿Seguro que deseas eliminar el tipo de tag?")) {
+	    socket.emit('removeTagType', name, function (resp) {
     		if (resp.cod == 100) {
     			$('resultTable').removeChild($('tr_'+ name)); 
     		} else {
     			alert("Error al eliminar el tipo de tag");
     		}
-    	});	
+    	});
+    }	
 }
 
 function makeTagTypesTable(jsonObj){
@@ -93,7 +102,7 @@ function makeTagTypesTable(jsonObj){
         		'alt': tagType.name, 
         		'title': 'Editar', 
         		'src': '/images/addedit.png', 
-        		'onclick' : "window.location.href = 'zoneTypeEdit?name="+tagType.name
+        		'onclick' : "window.location.href = 'tagTypeEdit?name="+tagType.name
         						+ "&tagType=" + $('tagTypeNameFilter').value 
         						+ "&state=" + $('tagTypeStateFilter').value  + "';"
         		}).inject(editRemoveTd);

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
+var baseService = require('./baseService');
 
 //Esquema JSON para las zonas
 var placeSchema = new Schema(
@@ -19,7 +20,8 @@ var placeSchema = new Schema(
 	    	enum:['generated', 'published', 'unpublished', 'void'], 
 	    	default: 'generated'
 	    },
-	    geoData: String //Debe ser un id de un dato geográfico existente
+	    geoData: String, //Debe ser un id de un dato geográfico existente
+	    parent : String
 	}
 );
 
@@ -27,142 +29,37 @@ var placeSchema = new Schema(
 mongoose.connect('mongodb://localhost/crawl');
 var places = mongoose.model('places', placeSchema);
 
-//Retorna id y nombre de todos los lugares
-module.exports.getAll = function getAll(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		places.find({}, ['id', 'name'], function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna id y nombre de todas los places
+module.exports.getAll = function getAll(short, callback) {
+	return baseService.getAll(places, short, '["id", "name"]', callback);
 }
 
-//Retorna un conjunto de lugares de acuerdo a los filtros utilizados 
-module.exports.get = function get(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var filtros = JSON.parse(req.query.filters);
-		places.find(filtros, function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de places de acuerdo a los filtros utilizados 
+module.exports.get = function get(filters, callback) {
+	return baseService.get(places, filters, callback);
 }
 
-//Retorna un conjunto de lugares con nombre similar al parámetro
-module.exports.getLikeName = function getLikeName(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var myregex = RegExp(req.query.name);
-		places.find({"name": myregex}, function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de places con nombre similar al parámetro
+module.exports.getLikeName = function getLikeName(name, callback) {
+	return baseService.getLikeName(places, name, callback);
 }
 
-//Crea una nuevo lugar
-module.exports.set = function set(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var place = new places(JSON.parse(req.query.place));
-		place.save(function(err) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error guardando el lugar --> ' + err);
-			  return;
-		  }
-		  res.write(errors.success);
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de places con nombre similar al parámetro
+module.exports.searchZones = function searchZones(filters, callback) {
+	return baseService.searchData(places, filters, callback);
 }
 
-//Actualiza un lugar existente (búsqueda por ID)
-module.exports.update = function update(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var id = JSON.parse('{"id":"' + req.query.id + '"}');
-		var data = JSON.parse(req.query.data);
-		places.update(id, data, function(err) {
-			if (err) {
-				  res.write(errors.apiError);
-				  res.end();
-				  console.log('Error actualizando el lugar --> ' + err);
-				  return;
-			  }
-			  res.write(errors.success);
-			  res.end();
-		});
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Crea un nuevo place
+module.exports.set = function set(place, callback) {
+	return baseService.set(places, place, callback);
 }
 
-//Elimina un lugar existente (búsqueda por ID) 
-module.exports.remove = function remove(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var id = JSON.parse('{"id":"' + req.query.id + '"}');
-		places.findOne(id, function(err, place) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error eliminando el lugar --> ' + err);
-			  return;
-		  }
-		  place.remove(function(err) {
-			  if (err) {
-				  res.write(errors.apiError);
-				  res.end();
-				  console.log('Error eliminando el lugar --> ' + err);
-				  return;
-			  }
-			  res.write(errors.success);
-			  res.end();
-		  });
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Actualiza un place existente (búsqueda por ID)
+module.exports.update = function update(id, data, callback) {
+	return baseService.update(places, 'id', id, data, callback);
+}
+
+//Elimina un place existente (búsqueda por ID) 
+module.exports.remove = function remove(id, callback) {
+	return baseService.remove(places, 'id', id, callback);
 }

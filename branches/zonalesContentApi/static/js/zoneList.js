@@ -2,6 +2,15 @@ var socket;
 var zones = Array();
 
 window.addEvent('domready', function() {
+	  $('newButton').addEvent('click', function() {
+	  		var urlZoneEdit = "zoneEdit";
+  			if ($('resultslist_content').getChildren().length > 0) {
+  				urlZoneEdit += "?zone=" + $('zoneNameFilter').value 
+								 + "&state=" + $('zoneStateFilter').value
+								 + "&zoneType=" + $('tipo').value 
+  			}
+  			document.location.href=urlZoneEdit;
+	  });
  	  socket = io.connect();
   	  socket.on('connect', function () { 
 	    socket.emit('getZones', true, function (data) {			  		
@@ -54,14 +63,16 @@ function searchZones(){
 }
 
 function removeZone(id) {
-	 socket.emit('removeZone', id, function (data) {
-    		var resp = eval('(' + data + ')'); 
+	if (confirm("¿Seguro que deseas eliminar la zona?")) {
+	 	socket.emit('removeZone', id, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			$('resultTable').removeChild($('tr_'+ id)); 
     		} else {
     			alert("Error al eliminar la zona");
     		}
-    	});	
+    	});
+   }	
 }
 
 function makeZonesTable(jsonObj){

@@ -1,11 +1,13 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
+var baseService = require('./baseService');
 
 //Esquema JSON para los tipos de zonas
 var placeTypeSchema = new Schema(
 	{
 	    name : { type: String, unique: true },  //Este campo debe ser único
+	    parents : [String],
 	    description : [String], //Descripción del tipo de lugar
 	    state : {
 	    	type:String, 
@@ -19,142 +21,39 @@ var placeTypeSchema = new Schema(
 mongoose.connect('mongodb://localhost/crawl');
 var placeTypes = mongoose.model('placeTypes', placeTypeSchema);
 
-//Retorna nombre de todos los tipos de lugares
-module.exports.getAll = function getAll(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		placeTypes.find({}, ['name'], function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo tipos de lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna id y nombre de todas los tipos de places
+module.exports.getAll = function getAll(short, callback) {
+	return baseService.getAll(placeTypes, short, '["name"]', callback);
 }
 
-//Retorna un conjunto de tipos de lugares de acuerdo a los filtros utilizados 
-module.exports.get = function get(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var filtros = JSON.parse(req.query.filters);
-		placeTypes.find(filtros, function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo tipos de lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de tipos de places de acuerdo a los filtros utilizados 
+module.exports.get = function get(filters, callback) {
+	return baseService.get(placeTypes, filters, callback);
 }
 
-//Retorna un conjunto de tipos de lugares con nombre similar al parámetro
-module.exports.getLikeName = function getLikeName(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var myregex = RegExp(req.query.name);
-		placeTypes.find({"name": myregex}, function(err, docs) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error obteniendo tipos de lugares --> ' + err);
-			  return;
-		  }
-		  res.write(JSON.stringify(docs));
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de tipos de places con nombre similar al parámetro
+module.exports.getLikeName = function getLikeName(name, callback) {
+	return baseService.getLikeName(placeTypes, name, callback);
 }
 
-//Crea un nuevo tipo de lugar
-module.exports.set = function set(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var placeType = new placeTypes(JSON.parse(req.query.placeType));
-		placeType.save(function(err) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error guardando el tipo de lugar --> ' + err);
-			  return;
-		  }
-		  res.write(errors.success);
-		  res.end();
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Retorna un conjunto de tipos de places con nombre similar al parámetro
+module.exports.searchPlaceTypes = function searchPlaceTypes(filters, callback) {
+	return baseService.searchData(placeTypes, filters, callback);
 }
 
-//Actualiza un tipo de lugar existente (búsqueda por nombre)
-module.exports.update = function update(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var name = JSON.parse('{"name":"' + req.query.name + '"}');
-		var data = JSON.parse(req.query.data);
-		placeTypes.update(name, data, function(err) {
-			if (err) {
-				  res.write(errors.apiError);
-				  res.end();
-				  console.log('Error actualizando el tipo de lugar --> ' + err);
-				  return;
-			  }
-			  res.write(errors.success);
-			  res.end();
-		});
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Crea un nuevo tipo de place
+module.exports.set = function set(placeType, callback) {
+	return baseService.set(placeTypes, placeType, callback);
 }
 
-//Elimina un tipo de lugar existente (búsqueda por Nombre) 
-module.exports.remove = function remove(req,res) {
-	res.writeHead(200, {"Content-Type": "text/javascript"});
-	try {
-		var name = JSON.parse('{"name":"' + req.query.name + '"}');
-		placeTypes.findOne(name, function(err, placeType) {
-		  if (err) {
-			  res.write(errors.apiError);
-			  res.end();
-			  console.log('Error eliminando el tipo de lugar --> ' + err);
-			  return;
-		  }
-		  placeType.remove(function(err) {
-			  if (err) {
-				  res.write(errors.apiError);
-				  res.end();
-				  console.log('Error eliminando el tipo de lugar --> ' + err);
-				  return;
-			  }
-			  res.write(errors.success);
-			  res.end();
-		  });
-	   });
-	} catch (err) {
-		res.write(errors.apiError);
-		res.end();
-		console.log('Error --> ' + err);
-	}
+//Actualiza un tipo de place existente (búsqueda por ID)
+module.exports.update = function update(name, data, callback) {
+	return baseService.update(placeTypes, 'name', name, data, callback);
 }
+
+//Elimina un tipo de place existente (búsqueda por ID) 
+module.exports.remove = function remove(name, callback) {
+	return baseService.remove(placeTypes, 'name', name, callback);
+}
+
+
