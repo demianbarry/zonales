@@ -2,6 +2,13 @@ var socket;
 var zoneTypes = Array();
 
 window.addEvent('domready', function() {
+	  $('newButton').addEvent('click', function() {
+	  		var urlZoneTypeEdit = "zoneTypeEdit";
+  			if ($('resultslist_content').getChildren().length > 0) {
+  				urlZoneTypeEdit += "?zoneType=" + $('zoneTypeNameFilter').value + "&state=" + $('zoneTypeStateFilter').value;
+  			}
+  			document.location.href=urlZoneTypeEdit;
+	  });
  	  socket = io.connect();
   	  socket.on('connect', function () { 
 	    socket.emit('getZonesTypes', true, function (data) {			  		
@@ -38,14 +45,16 @@ function searchZoneTypes(){
 }
 
 function removeZoneType(name) {
-	 socket.emit('removeZoneType', name, function (data) {
-    		var resp = eval('(' + data + ')'); 
+	if (confirm("¿Seguro que deseas eliminar el tipo de zone?")) {
+	 	socket.emit('removeZoneType', name, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			$('resultTable').removeChild($('tr_'+ name)); 
     		} else {
     			alert("Error al eliminar el tipo de zona");
     		}
     	});	
+    }
 }
 
 function makeZoneTypesTable(jsonObj){
@@ -108,3 +117,4 @@ function makeZoneTypesTable(jsonObj){
         		}).inject(editRemoveTd);
     });
 }
+

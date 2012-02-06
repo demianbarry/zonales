@@ -16,8 +16,8 @@ var maxLat = -2019394.325498;
 var centerLon = -64.423444488507;
 var centerLat = -41.105773412891;
 
-var zone = null;
-var geoZoneId = null;
+var place = null;
+var geoPlaceId = null;
 var parent_id;
 
 var map;
@@ -26,40 +26,43 @@ var formats;
 var popup;
 var ids = new Array();
 var cant = 0;
-var zoneFilter = "";
+var placeFilter = "";
 var stateFilter = "";
-var zoneTypeFilter = "";
+var placeTypeFilter = "";
 
 window.addEvent('domready', function() {
 	  init();
 	  socket = io.connect();
   	  socket.on('connect', function () { 
-	    socket.emit('getZonesTypes', true, function (data) {			  		
+	    socket.emit('getPlacesTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
 	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('tipo'));
 	  			}
 	  		});
 	  		if(gup('id') != null && gup('id') != '') {
-		        getZone(gup('id'), false);
+		        getPlace(gup('id'), false);
 		     }
-			if(gup('zone') != null && gup('zone') != '') {
-		        zoneFilter = gup('zone');
+			if(gup('place') != null && gup('place') != '') {
+		        placeFilter = gup('place');
 		     }
 		   if(gup('state') != null && gup('state') != '') {
 		        stateFilter = gup('state');
 		     }
-		   if(gup('zoneType') != null && gup('zoneType') != '') {
-		        zoneTypeFilter = gup('zoneType');
+		   if(gup('placeType') != null && gup('placeType') != '') {
+		        placeTypeFilter = gup('placeType');
 		     }  
-		   $('backAnchor').href = '/CMUtils/zoneList?zone=' + zoneFilter + '&state=' + stateFilter + '&zoneType=' + zoneTypeFilter;
+           if(gup('placeZone') != null && gup('placeZone') != '') {
+                placeZoneFilter = gup('placeZone');
+             }  
+		   $('backAnchor').href = '/CMUtils/placeList?place=' + placeFilter + '&state=' + stateFilter + '&placeType=' + placeTypeFilter + '&placeZone=' + placeZoneFilter;
 	    });
 	  });
 });
 
-function getZone(id, parent){
+function getPlace(id, parent){
 	  //var jid = '{"id":"' + id + '"}';
-	  socket.emit('getZoneByFilters', {id: id}, function (data) {
+	  socket.emit('getPlaceByFilters', {id: id}, function (data) {
        	var jsonObj = data[0];			  		
 	  		if (parent) {
              $('padre').value = jsonObj.name;
@@ -84,9 +87,9 @@ function getZone(id, parent){
              }
              if (typeof(jsonObj.geoData) != 'undefined') {
              	geoedit = true;
-              	geoZoneId = jsonObj.geoData;
-              	//var gzid = '{"id":"' + geoZoneId + '"}';
-              	socket.emit('getGeoData', {id: geoZoneId}, function(data) {
+              	geoPlaceId = jsonObj.geoData;
+              	//var gzid = '{"id":"' + geoPlaceId + '"}';
+              	socket.emit('getGeoData', {id: geoPlaceId}, function(data) {
 						$('geoJson').value = JSON.stringify(data[0]);
             		deserialize();              		
               	});
@@ -98,7 +101,7 @@ function getZone(id, parent){
 function getParents(type) {
 	 console.log(type);
 	 //var jtype = '{"type":"' + type + '"}';
-	 socket.emit('getZoneByFilters', {type: type}, function (jsonObj) {
+	 socket.emit('getPlaceByFilters', {type: type}, function (jsonObj) {
     		jsonObj.each(function(parent) {
               var el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
               if (parent.id == parent_id) {
@@ -119,14 +122,14 @@ function getParentTypes(type) {
     });	  		        
 }
 
-function saveZone() {
+function savePlace() {
 
-    var jsonZone = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
+    var jsonPlace = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
 
 	 var objGeo = eval('(' + $('geoJson').value + ')');    
     
     if(geoedit) {
-    	jsonZone += ',"geoData":"' + geoZoneId + '"';
+    	jsonPlace += ',"geoData":"' + geoPlaceId + '"';
     	socket.emit('updateGeoData', objGeo, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
@@ -136,8 +139,8 @@ function saveZone() {
     		}
     	});	
     } else {
-    	  if (typeof(geoZoneId) != 'undefined') {
-    	  		jsonZone += ',"geoData":"' + geoZoneId + '"';
+    	  if (typeof(geoPlaceId) != 'undefined') {
+    	  		jsonPlace += ',"geoData":"' + geoPlaceId + '"';
 		    	socket.emit('saveGeoData', objGeo, function (resp) {
 		    		//var resp = eval('(' + data + ')'); 
     				if (resp.cod == 100) {
@@ -148,12 +151,12 @@ function saveZone() {
 		    	});	
     	  }
     }
-    jsonZone += '}';
+    jsonPlace += '}';
     
-	 var objZone = eval('(' + jsonZone + ')');
+	 var objPlace = eval('(' + jsonPlace + ')');
     
 	 if (edit) {
-    	socket.emit('updateZone', objZone, function (resp) {
+    	socket.emit('updatePlace', objPlace, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha actualizado la zona"); 
@@ -162,7 +165,7 @@ function saveZone() {
     		}
     	});	
     } else {
-    	socket.emit('saveZone', objZone, function (resp) {
+    	socket.emit('savePlace', objPlace, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha guardado la zona"); 
@@ -203,10 +206,10 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    if (typeof(geoZoneId) == 'undefined' || geoZoneId == null) {
-    	geoZoneId = '40000' + $('id').value;
+    if (typeof(geoPlaceId) == 'undefined' || geoPlaceId == null) {
+    	geoPlaceId = '40000' + $('id').value;
     }
-    str = str.substring(0, str.length-2) + ',\n    "id": "' + geoZoneId + '"\n}';
+    str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
     document.getElementById('geoJson').value = str;
 }
 

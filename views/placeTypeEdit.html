@@ -8,7 +8,7 @@
  		  <script type="text/javascript" src="/js/mootools.js"></script>
 		  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="/js/viewutils.js"></script>
-		  <script type="text/javascript" src="/js/tagTypeEdit.js"></script>
+		  <script type="text/javascript" src="/js/placeTypeEdit.js"></script>
        
     </head>
     <body>
@@ -18,7 +18,7 @@
                      <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
                  </div>
                 <div style="float:right;margin-top:18px">
-				     		<h1 style="margin-top: 0.7em; text-align: center">Edición de Tipos de Tags</h1>
+				     		<h1 style="margin-top: 0.7em; text-align: center">Edición de Tipos de Places</h1>
 			        		<a id="backAnchor" style="float:right">Volver</a>
 			        </div>
             </div>
@@ -31,6 +31,10 @@
                             <tr>
                                 <td class="label"><label>Nombre</label></td>
                                 <td class="input"><input type="text" id="nombre" value=""></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Descripción</label></td>
+                                <td class="input"><input type="text" id="description" value=""></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Padres</label></td>
@@ -47,10 +51,10 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <input id="guardarButton" value="Guardar" type="button" onclick="saveTagType();">
+                                    <input id="guardarButton" value="Guardar" type="button" onclick="savePlaceType();">
                                     <input id="publicarButton" value="Publicar" type="button" onclick="">
 				    							<input id="despublicarButton" value="Despublicar" type="button" onclick="">
-				    							<input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'TagTypeEdit'">
+				    							<input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'placeTypeEdit'">
                                 </td>
                             </tr>
                         </tbody>

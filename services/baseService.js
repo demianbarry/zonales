@@ -108,7 +108,7 @@ module.exports.set = function set(model, data, callback) {
 	callback = (callback || noop);
 
 	try {
-		var odata = new model(JSON.parse(data));
+		var odata = new model(data);
 		odata.save(function(err) {
 		  if (err) {
 			  console.log('Error guardando el dato --> ' + err);
@@ -130,8 +130,8 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
 	
 	try {
 		var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');
-		var odata = JSON.parse(data);
-		model.update(oid, odata, function(err) {
+		//var odata = JSON.parse(data);
+		model.update(oid, data, function(err) {
 			if (err) {
 				  console.log('Error actualizando el dato --> ' + err);
 				  throw errors.apiError;
@@ -152,12 +152,12 @@ module.exports.remove = function remove(model, searchFieldName, searchFieldData,
 	
 	try {
 		var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');
-		model.findOne(oid, function(err, zone) {
+		model.findOne(oid, function(err, data) {
 		  if (err) {
 			  console.log('Error eliminando el dato --> ' + err);
 			  throw errors.apiError;
 		  }
-		  model.remove(function(err) {
+		  data.remove(function(err) {
 			  if (err) {
 				  console.log('Error eliminando el dato --> ' + err);
 				  throw errors.apiError;

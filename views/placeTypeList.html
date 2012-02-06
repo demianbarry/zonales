@@ -7,7 +7,7 @@
     <script type="text/javascript" src="/js/mootools.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	 <script type="text/javascript" src="/js/viewutils.js"></script>     
-	 <script type="text/javascript" src="/js/tagList.js"></script> 
+	 <script type="text/javascript" src="/js/placeTypeList.js"></script> 
 </head>
 
 <body>
@@ -17,7 +17,7 @@
             <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
         </div>
         <div style="float:right;margin-top:18px">
-	     		<h1 style="margin-top: 0.7em; text-align: center">Búsqueda de Tags</h1>
+	     		<h1 style="margin-top: 0.7em; text-align: center">Búsqueda de Tipos de PLaces</h1>
         		<a style="float:right" href="/CMUtils">Volver</a>
         </div>
     </div>
@@ -26,28 +26,19 @@
             <div id="search_div">
                 <table class="advanced_search">
                     <tbody>
-                        <tr><td colspan="2"><h1 style="margin-top: 0.7em;">Gestión de Tags</h1></td></tr>
                         <tr><td colspan="2"><h2 style="margin-top: 0.7em;">Criterios</h2></td></tr>
                         <tr>
-                            <td width="35%" class="label"><label>Tag</label></td>
+                            <td width="35%" class="label"><label>Tipo de Place</label></td>
                             <td>
                                 <div>
-                                    <input id="tagNameFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, tags);">
+                                    <input id="placeTypeNameFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, placeTypes);">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                             <td class="label"><label>Tipo</label></td>
-                             <td class="input">
-                                 <select id="tipo">
-                                 	<option value="all">Todos</option>
-                                 </select>
-                             </td>
-                         </tr>
-                        <tr>
                             <td width="35%" class="label"><label>Estado</label></td>
                             <td>
-                                <select id="tagStateFilter">
+                                <select id="placeTypeStateFilter">
                                     <option value="all">Todos</option>
                                     <option value="generated">Generado</option>
                                     <option value="published">Publicado</option>
@@ -58,8 +49,8 @@
                         </tr>
                         <tr>
                             <td class="input">
-                                <input type="button" style="width: 33%; float: left;" value="Buscar" onclick="searchTags();">
-                                <input id="newButton" type="button" style="width: 33%;  float: left;" value="Nuevo">                                
+                                <input type="button" style="width: 33%; float: left;" value="Buscar" onclick="searchPlaceTypes();">
+                                <input id="newButton" type="button" style="width: 33%;  float: left;" value="Nuevo">
                             </td>
                         </tr>
                     </tbody>

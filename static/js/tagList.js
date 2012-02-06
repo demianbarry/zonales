@@ -2,6 +2,15 @@ var socket;
 var tags = Array();
 
 window.addEvent('domready', function() {
+	  $('newButton').addEvent('click', function() {
+	  		var urlTagEdit = "tagEdit";
+  			if ($('resultslist_content').getChildren().length > 0) {
+  				urlTagEdit += "?tag=" + $('tagNameFilter').value 
+										+ "&state=" + $('tagStateFilter').value 
+  										+ "&tagType=" + $('tipo').value
+  			}
+  			document.location.href=urlTagEdit;
+	  });
  	  socket = io.connect();
   	  socket.on('connect', function () { 
 	    socket.emit('getTags', true, function (data) {			  		
@@ -53,14 +62,16 @@ function searchTags(){
 }
 
 function removeTag(id) {
-	 socket.emit('removeTag', id, function (data) {
-    		var resp = eval('(' + data + ')'); 
+	if (confirm("¿Seguro que deseas eliminar el tag?")) {
+	  socket.emit('removeTag', id, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			$('resultTable').removeChild($('tr_'+ id)); 
     		} else {
     			alert("Error al eliminar el tag");
     		}
     	});	
+    }
 }
 
 function makeTagsTable(jsonObj){
@@ -126,7 +137,7 @@ function makeTagsTable(jsonObj){
         		'alt': tag.name, 
         		'title': 'Eliminar', 
         		'src': '/images/publish_x.png', 
-        		'onclick' : 'removeTag(' + tag.id + ')'
+        		'onclick' : 'removeTag(' + tag.id + ');'
         		}).inject(editRemoveTd);
     });
 }

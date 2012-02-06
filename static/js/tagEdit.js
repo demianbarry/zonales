@@ -33,8 +33,7 @@ window.addEvent('domready', function() {
 });
 
 function getTag(id, parent){
-	  var jid = '{"id":"' + id + '"}';
-	  socket.emit('getTagByFilters', jid, function (data) {
+	  socket.emit('getTagByFilters', {id: id}, function (data) {
        	var jsonObj = data[0];			  		
 	  		if (parent) {
              $('padre').value = jsonObj.name;
@@ -62,9 +61,7 @@ function getTag(id, parent){
 }
 
 function getParents(type) {
-	 console.log(type);
-	 var jtype = '{"type":"' + type + '"}';
-	 socket.emit('getTagByFilters', jtype, function (jsonObj) {
+	 socket.emit('getTagByFilters', {type: type}, function (jsonObj) {
     		jsonObj.each(function(parent) {
               var el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
               if (parent.id == parent_id) {
@@ -75,9 +72,8 @@ function getParents(type) {
 }
 
 function getParentTypes(type) {
- 	 var jtype = '{"name":"' + type + '"}';
  	 $('padre').empty();
-	 socket.emit('getTagParentTypes', jtype, function (jsonObj) {
+	 socket.emit('getTagParentTypes', {name: type}, function (jsonObj) {
     		jsonObj.each(function(parentType) {
               getParents(parentType);
          });
@@ -89,9 +85,11 @@ function saveTag() {
     var jsonTag = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
     jsonTag += '}';
     
+    var objTag = eval('(' + jsonTag + ')');
+    
 	 if (edit) {
-    	socket.emit('updateTag', jsonTag, function (data) {
-    		var resp = eval('(' + data + ')'); 
+    	socket.emit('updateTag', objTag, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha actualizado el tag"); 
     		} else {
@@ -99,8 +97,8 @@ function saveTag() {
     		}
     	});	
     } else {
-    	socket.emit('saveTag', jsonTag, function (data) {
-    		var resp = eval('(' + data + ')'); 
+    	socket.emit('saveTag', objTag, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
     			alert("Se ha guardado el tag"); 
     		} else {
