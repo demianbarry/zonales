@@ -1,0 +1,30 @@
+#summary Resumen de posibilidades de recuperación de información de Solr
+
+===Funciones de ordenamiento y relevancia en Solr===
+La mayor parte de las funciones de relevancia se detallan en http://wiki.apache.org/solr/SolrRelevancyCookbook.
+Algunos de los temas tratados son:
+  * Relevancia y Case Matching
+  * Boosting de términos
+  * Ordenamiento
+  * Proximidad de términos
+  * Delimitadores intra-palabras
+  * Expansión de términos
+  * Etc.
+
+===Funciones extra para consulta===
+  * *docfreq(field, term)*: devuelve el número de documentos que contienen el término en el campo.
+  * *termfreq (field, term)*: devuelve el número de veces que el término aparece en el campo para ese documento.
+  * *idf(field, term)*: devuelve la frecuencia inversa de documentos por el plazo determinado, utilizando la Similarity para el campo.
+  * *tf(field, term)*: devuelve el factor de frecuencia para el término dado, utilizando la Similarity para el campo.
+  * *norm(field)*: devuelve la "norma" almacenada en el índice, que es el producto del index time boost y factor de longitud de la normalización.
+  * *maxdoc()*: devuelve el número de documentos en el índice, incluyendo los que están marcados como eliminados, pero aún no han sido purgados.
+  * *numdocs()*: devuelve el número de documentos en el índice, sin incluir aquellos que están marcados como eliminado, pero aún no han sido purgados.
+
+====Ejemplos====
+http://localhost:8983/solr/select/?fl=score,id&defType=func&q=mul(tf(text,memory),idf(text,memory))
+
+http://localhost:8983/solr/select/?fl=score,id&defType=func&q=mul(tf($f,$t),idf($f,$t))&f=text&t=memory
+
+http://localhost:8983/solr/select/?fl=score,id&q=DDR&sort=termfreq(text,memory) desc
+
+http://localhost:8983/solr/select/?fl=score,id&q=DDR&sort=norm(text) asc
