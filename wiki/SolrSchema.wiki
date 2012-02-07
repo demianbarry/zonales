@@ -1,4 +1,4 @@
-#Sección de _fields_ del esquema de Solr
+Sección de _fields_ del esquema de Solr
 
 = Esquema Solr =
 
