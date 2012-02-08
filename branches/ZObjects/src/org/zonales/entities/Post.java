@@ -13,16 +13,16 @@ public class Post {
     protected String id;
     protected String docType;
     protected String source;
-    protected Double sourceLatitude;
-    protected Double sourceLongitude;
+    protected Double postLatitude;
+    protected Double postLongitude;
     protected User fromUser;
     protected ArrayList<User> toUsers;
     protected String title;
     protected String text;
     protected ArrayList<LinkType> links;
     protected ArrayList<ActionType> actions;
-    protected String zone;
-    protected ArrayList<String> zonesIds;
+    protected Zone zone;
+    protected String extendedString;
     protected ArrayList<String> tags;
     protected Long created;
     protected Long modified;
@@ -34,12 +34,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(String id, String docType, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, String zone, ArrayList<String> zonesIds, ArrayList<String> tags, Long created, Long modified, int relevance, int relevanceDelta, String verbatim) {
+    public Post(String id, String docType, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, Zone zone, String extendedString, ArrayList<String> tags, Long created, Long modified, int relevance, int relevanceDelta, String verbatim) {
         this.id = id;
         this.docType = docType;
         this.source = source;
-        this.sourceLatitude = sourceLatitude;
-        this.sourceLongitude = sourceLongitude;
+        this.postLatitude = sourceLatitude;
+        this.postLongitude = sourceLongitude;
         this.fromUser = fromUser;
         this.toUsers = toUsers;
         this.title = title;
@@ -47,29 +47,13 @@ public class Post {
         this.links = links;
         this.actions = actions;
         this.zone = zone;
-        this.zonesIds = zonesIds;
+        this.extendedString = extendedString;
         this.tags = tags;
         this.created = created;
         this.modified = modified;
         this.relevance = relevance;
         this.relevanceDelta = relevanceDelta;
         this.verbatim = verbatim;
-    }
-
-    public Double getSourceLatitude() {
-        return sourceLatitude;
-    }
-
-    public void setSourceLatitude(Double sourceLatitude) {
-        this.sourceLatitude = sourceLatitude;
-    }
-
-    public Double getSourceLongitude() {
-        return sourceLongitude;
-    }
-
-    public void setSourceLongitude(Double sourceLongitude) {
-        this.sourceLongitude = sourceLongitude;
     }
 
     public ArrayList<ActionType> getActions() {
@@ -176,11 +160,11 @@ public class Post {
         this.verbatim = verbatim;
     }
 
-    public String getZone() {
+    public Zone getZone() {
         return zone;
     }
 
-    public void setZone(String zone) {
+    public void setZone(Zone zone) {
         this.zone = zone;
     }
 
@@ -223,11 +207,27 @@ public class Post {
         this.relevanceDelta = relevanceDelta;
     }
 
-    public ArrayList<String> getZonesIds() {
-        return zonesIds;
+    public String getExtendedString() {
+        return extendedString;
     }
 
-    public void setZonesIds(ArrayList<String> zonesIds) {
-        this.zonesIds = zonesIds;
+    public void setExtendedString(String extendedString) {
+        this.extendedString = extendedString;
+    }
+
+    public Double getPostLatitude() {
+        return postLatitude;
+    }
+
+    public void setPostLatitude(Double postLatitude) {
+        this.postLatitude = postLatitude;
+    }
+
+    public Double getPostLongitude() {
+        return postLongitude;
+    }
+
+    public void setPostLongitude(Double postLongitude) {
+        this.postLongitude = postLongitude;
     }
 }
