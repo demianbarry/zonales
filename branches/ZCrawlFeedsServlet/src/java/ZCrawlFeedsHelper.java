@@ -106,14 +106,14 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntry.setSource(source);
-                    newEntry.setZone((String) params.get("zone"));
+                    //newEntry.setZone((String) params.get("zone"));
 
-                    newEntry.setSourceLatitude(Double.parseDouble((String) params.get("latitud")));
-                    newEntry.setSourceLongitude(Double.parseDouble((String) params.get("longitud")));
+                    newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
+                    newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntry.setId(entry.getGUID());
-                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
+                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, null));
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescriptionAsText());
                     newEntry.setTags(new TagsType((ArrayList) params.get("tagslist")));
@@ -166,14 +166,14 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone((String) params.get("zone"));
+                    //newEntrySolr.setZone((String) params.get("zone"));
 
-                    newEntrySolr.setSourceLatitude(Double.parseDouble((String) params.get("latitud")));
-                    newEntrySolr.setSourceLongitude(Double.parseDouble((String) params.get("longitud")));
+                    newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
+                    newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntrySolr.setId(entry.getGUID());
-                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null));
+                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, null));
                     newEntrySolr.setTitle(entry.getTitle());
                     newEntrySolr.setText(entry.getDescriptionAsText());
                     newEntrySolr.setTags(new ArrayList<String>((ArrayList) params.get("tagslist")));
