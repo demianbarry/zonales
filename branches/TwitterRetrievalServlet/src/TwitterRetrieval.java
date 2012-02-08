@@ -152,14 +152,14 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(zone);
+                solrPost.setZone(null);
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
                 User usersolr = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource());
+                        tweet.getSource(),null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -168,9 +168,8 @@ public class TwitterRetrieval extends HttpServlet {
                     usersolr.setLongitude(Double.parseDouble(longitud[i]));
                     }
                     }*/
-                    usersolr.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
-                    usersolr.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
-
+                    //usersolr.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
+                    //usersolr.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
                 }
 
                 solrPost.setFromUser(usersolr);
@@ -178,7 +177,7 @@ public class TwitterRetrieval extends HttpServlet {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
                             tweet.getToUser(),
                             null,
-                            tweet.getSource()));
+                            tweet.getSource(),null));
                     solrPost.setToUsers(toUsers);
                 }
                 if (tweet.getText().length() > d) {
@@ -195,8 +194,8 @@ public class TwitterRetrieval extends HttpServlet {
                 solrPost.setCreated(tweet.getCreatedAt().getTime());
                 solrPost.setModified(tweet.getCreatedAt().getTime());
                 solrPost.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
-                solrPost.setSourceLatitude(null);
-                solrPost.setSourceLongitude(null);
+                solrPost.setPostLatitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLatitude() : null);
+                solrPost.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
@@ -216,14 +215,14 @@ public class TwitterRetrieval extends HttpServlet {
                 postList.add(solrPost);
 
                 post = new PostType();
-                post.setZone(zone);
+                //post.setZone(zone);
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
                 User user = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource());
+                        tweet.getSource(),null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -232,8 +231,8 @@ public class TwitterRetrieval extends HttpServlet {
                     user.setLongitude(Double.parseDouble(longitud[i]));
                     }
                     }*/
-                    user.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
-                    user.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
+                    //user.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
+                    //user.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
 
                 }
 
@@ -243,7 +242,7 @@ public class TwitterRetrieval extends HttpServlet {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
                             tweet.getToUser(),
                             null,
-                            tweet.getSource()));
+                            tweet.getSource(),null));
                     post.setToUsers(new ToUsersType(toUsers));
                 }
 
@@ -254,8 +253,8 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setCreated(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
-                post.setSourceLatitude(null);
-                post.setSourceLongitude(null);
+                post.setPostLatitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLatitude() : null);
+                post.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
