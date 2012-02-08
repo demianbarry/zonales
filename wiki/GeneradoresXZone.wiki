@@ -87,11 +87,19 @@ Contenidos en formato JSON
     "post": {
         "source": Fuente,
         "id": Post Id,
+        "docType": Tipo de documento (post, clasificado, etc.),
+        "postLatitude": Latitud del post,
+        "postLongitude": Longitud del post,
         "from": {
             "name": Nombre autor,
             "category": Categoría autor,
             "id": Id Autor,
-            "url": Link al perfil del autor
+            "url": Link al perfil del autor,
+            "place": {
+                         "id": Id,
+                         "name": Nombre del place,
+                         "type": Tipo de place
+                     }
         },
         "to": [
             {
@@ -118,7 +126,12 @@ Contenidos en formato JSON
         "created": Fecha creación,
         "modified": Fecha última modificación,
         "relevance": Relevancia,
-        "zone" : Localidad,
+        "relevanceDelta": Delta de relevancia definido por usuarios,
+        "zone" : {
+                    "id": Id de la zona,
+                    "name": Nombre de la zona,
+                    "type": Tipo de la zona
+                 },
         "tags" : [
             "tag" : Tag
         ]
