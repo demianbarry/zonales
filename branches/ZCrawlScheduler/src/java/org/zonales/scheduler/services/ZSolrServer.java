@@ -238,11 +238,12 @@ public final class ZSolrServer extends BaseService {
                 SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
                 Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
-                // Si cambia la relevancia, modifico la fecha de modiicado.
+                // Si cambia la relevancia, modifico la fecha de modificado.
                 if (relevance != 0) {
                     post.setModified((new Date()).getTime());
                 }
                 post.setRelevance(post.getRelevance() + relevance);
+                post.setRelevance(post.getRelevanceDelta() + relevance);
                 SolrPost newSolrPost = new SolrPost();
                 postToSolr(newSolrPost, post);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
@@ -254,22 +255,28 @@ public final class ZSolrServer extends BaseService {
     }
 
     public void postToSolr(SolrPost solrPost, Post post) {
-        solrPost.setZone(post.getZone());
+        solrPost.setDocType(post.getDocType());
+        solrPost.setZoneId(post.getZone().getId());
+        solrPost.setZoneName(post.getZone().getName());
+        solrPost.setZoneType(post.getZone().getType());
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
-        solrPost.setFromUserCategory(post.getFromUser().getCategory());
         solrPost.setFromUserId(post.getFromUser().getId());
-        solrPost.setFromUserLatitude(post.getFromUser().getLatitude());
-        solrPost.setFromUserLongitude(post.getFromUser().getLongitude());
         solrPost.setFromUserName(post.getFromUser().getName());
-        solrPost.setFromUserUrl(post.getFromUser().getUrl());
+        solrPost.setFromUserCategory(post.getFromUser().getCategory());
+        solrPost.setFromUserUrl(post.getFromUser().getUrl());        
+        solrPost.setFromUserPlaceId(post.getFromUser().getPlace().getId());
+        solrPost.setFromUserPlaceName(post.getFromUser().getPlace().getName());
+        solrPost.setFromUserPlaceType(post.getFromUser().getPlace().getType());        
         solrPost.setModified(new Date(post.getModified()));
         solrPost.setRelevance(post.getRelevance());
+        solrPost.setRelevanceDelta(post.getRelevanceDelta());
         solrPost.setSource(post.getSource());
-        solrPost.setSourceLatitude(post.getSourceLatitude());
-        solrPost.setSourceLongitude(post.getSourceLongitude());
+        solrPost.setPostLatitude(post.getPostLatitude());
+        solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
+        solrPost.setExtendedString(post.getExtendedString());
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
