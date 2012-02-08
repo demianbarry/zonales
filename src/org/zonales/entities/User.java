@@ -4,15 +4,12 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2011.06.01 at 03:15:40 PM ART 
 //
-
-
 package org.zonales.entities;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 /**
  * <p>Java class for user complex type.
@@ -41,7 +38,10 @@ import javax.xml.bind.annotation.XmlType;
     "id",
     "name",
     "url",
-    "category"
+    "category",
+    "placeId",
+    "placeName",
+    "placeType"
 })
 public class User {
 
@@ -51,17 +51,18 @@ public class User {
     protected String name;
     @XmlElement(required = true)
     protected String url;
-    protected String category;    
+    protected String category;
+    protected Place place;    
 
-    
     public User() {
     }
- 
-    public User(String id, String name, String url, String category) {
+
+    public User(String id, String name, String url, String category, Place place) {
         this.id = id;
         this.name = name;
         this.url = url;
         this.category = category;
+        this.place = place;
     }
 
     /**
@@ -162,47 +163,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + " - name=" + name + " - url=" + url + " - category=" + category + " - latitude=" + latitude + " - longitude=" + longitude + '}';
+        return "User{" + "id=" + id + " - name=" + name + " - url=" + url + " - category=" + category + '}';
     }
 
-
-    protected Double latitude;
-
-    /**
-     * Get the value of latitude
-     *
-     * @return the value of latitude
-     */
-    public Double getLatitude() {
-        return latitude;
+    public Place getPlace() {
+        return place;
     }
 
-    /**
-     * Set the value of latitude
-     *
-     * @param latitude new value of latitude
-     */
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    protected Double longitude;
-
-    /**
-     * Get the value of longitude
-     *
-     * @return the value of longitude
-     */
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    /**
-     * Set the value of longitude
-     *
-     * @param longitude new value of longitude
-     */
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

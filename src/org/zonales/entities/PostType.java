@@ -45,90 +45,109 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "post", propOrder = {
-    "zone",
-    "source",
-    "geoSource",
     "id",
+    "docType",
+    "source",
+    "postLatitude",
+    "postLongitude",
     "fromUser",
     "toUsers",
     "title",
     "text",
     "links",
     "actions",
+    "zone",
+    "extendedString",
     "tags",
     "created",
     "modified",
     "relevance",
+    "relevanceDelta",
+    "state",
     "verbatim"
 })
 public class PostType {
-    
-    @XmlElement(required = true)
-    protected String zone;
 
-    @XmlElement(required = true)
-    protected String source;
-    
-    @XmlElement(required = true)
-    protected Double sourceLatitude;
-    
-    @XmlElement(required = true)
-    protected Double sourceLongitude;
-    
     @XmlElement(required = true)
     protected String id;
-
+    @XmlElement(required = true)
+    protected String docType;
+    @XmlElement(required = true)
+    protected String source;
+    @XmlElement(required = true)
+    protected Double postLatitude;
+    @XmlElement(required = true)
+    protected Double postLongitude;
     @XmlElement(required = true)
     protected User fromUser;
-
     @XmlElement(required = false)
     protected ToUsersType toUsers;
-
     @XmlElement(required = true)
     protected String title;
-
     @XmlElement(required = true)
     protected String text;
-
     @XmlElement(required = false)
     protected LinksType links;
-
     @XmlElement(required = false)
     protected ActionsType actions;
-
+    @XmlElement(required = true)
+    protected Zone zone;
     @XmlElement(required = true)
     protected TagsType tags;
-
     @XmlElement(required = true)
     protected String created;
-
     @XmlElement(required = false)
     protected String modified;
-    
+    @XmlElement(required = false)
     protected int relevance;
-
+    @XmlElement(required = false)
+    protected int relevanceDelta;
+    @XmlElement(required = true)
+    protected String state;
     @XmlElement(required = true)
     protected String verbatim;
 
     public PostType() {
     }
 
-    public PostType(String zone, String source, Double latitude, Double longitude, String id, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, TagsType tags, String created, String modified, int relevance, String verbatim) {
-        this.zone = zone;
-        this.source = source;
-        this.sourceLatitude = latitude;
-        this.sourceLongitude = longitude;
+    public PostType(String id, String docType, String source, Double postLatitude, Double postLongitude, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, Zone zone, TagsType tags, String created, String modified, int relevance, int relevanceDelta, String state, String verbatim) {
+
         this.id = id;
+
+        this.docType = docType;
+
+        this.source = source;
+
+        this.postLatitude = postLatitude;
+
+        this.postLongitude = postLongitude;
+
         this.fromUser = fromUser;
+
         this.toUsers = toUsers;
+
         this.title = title;
+
         this.text = text;
+
         this.links = links;
+
         this.actions = actions;
+
+        this.zone = zone;
+
         this.tags = tags;
+
         this.created = created;
+
         this.modified = modified;
+
         this.relevance = relevance;
+
+        this.relevanceDelta = relevanceDelta;
+
+        this.state = state;
+
         this.verbatim = verbatim;
     }
 
@@ -140,7 +159,7 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public String getZone() {
+    public Zone getZone() {
         return zone;
     }
 
@@ -152,10 +171,10 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public void setZone(String value) {
+    public void setZone(Zone value) {
         this.zone = value;
     }
-    
+
     /**
      * Gets the value of the source property.
      * 
@@ -179,7 +198,7 @@ public class PostType {
     public void setSource(String value) {
         this.source = value;
     }
-    
+
     /**
      * Gets the value of the source property.
      * 
@@ -188,8 +207,8 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public Double getSourceLatitude() {
-        return sourceLatitude;
+    public Double getPostLatitude() {
+        return postLatitude;
     }
 
     /**
@@ -200,10 +219,10 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public void setSourceLatitude(Double value) {
-        this.sourceLatitude = value;
+    public void setPostLatitude(Double value) {
+        this.postLatitude = value;
     }
-    
+
     /**
      * Gets the value of the source property.
      * 
@@ -212,8 +231,8 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public Double getSourceLongitude() {
-        return sourceLongitude;
+    public Double getPostLongitude() {
+        return postLongitude;
     }
 
     /**
@@ -224,8 +243,8 @@ public class PostType {
      *     {@link String }
      *     
      */
-    public void setSourceLongitude(Double value) {
-        this.sourceLongitude = value;
+    public void setPostLongitude(Double value) {
+        this.postLongitude = value;
     }
 
     /**
@@ -500,10 +519,32 @@ public class PostType {
         this.verbatim = value;
     }
 
+    public String getDocType() {
+        return docType;
+    }
+
+    public void setDocType(String docType) {
+        this.docType = docType;
+    }
+
+    public int getRelevanceDelta() {
+        return relevanceDelta;
+    }
+
+    public void setRelevanceDelta(int relevanceDelta) {
+        this.relevanceDelta = relevanceDelta;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
     @Override
     public String toString() {
         return "PostType{" + "source=" + source + "id=" + id + "fromUser=" + fromUser + "toUsers=" + toUsers + "title=" + title + "text=" + text + "links=" + links + "actions=" + actions + "tags=" + tags + "created=" + created + "modified=" + modified + "relevance=" + relevance + "verbatim=" + verbatim + '}';
     }
-
-
 }

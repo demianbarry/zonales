@@ -215,12 +215,12 @@ public class ZGramDao extends BaseDao {
             zgramDoc.put("modificadoPor", "Anonimo");
         }
         zgramDoc.put("modificado", (new Date()).getTime());
-        
+
         zgramDoc.put("periodicidad", zgram.getPeriodicidad());
-        if ((Double)zgram.getSourceLatitude() != null) {
+        if ((Double) zgram.getSourceLatitude() != null) {
             zgramDoc.put("sourceLatitude", zgram.getSourceLatitude());
         }
-        if ((Double)zgram.getSourceLongitude() != null) {
+        if ((Double) zgram.getSourceLongitude() != null) {
             zgramDoc.put("sourceLongitude", zgram.getSourceLongitude());
         }
 
@@ -390,23 +390,23 @@ public class ZGramDao extends BaseDao {
                     ArrayList filtrosToDoc = new ArrayList();
                     BasicDBObject filtroDoc = new BasicDBObject();
                     for (Filtro filtro : newZgram.getFiltros()) {
-                        if (filtro.getMinShuldMatch() != null) {                            
+                        if (filtro.getMinShuldMatch() != null) {
                             filtroDoc.put("minShuldMatch", filtro.getMinShuldMatch());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getDispersion() != null) {                            
+                        if (filtro.getDispersion() != null) {
                             filtroDoc.put("dispersion", filtro.getDispersion());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDeUsuarios() != null) {                            
+                        if (filtro.getListaNegraDeUsuarios() != null) {
                             filtroDoc.put("listaNegraDeUsuarios", filtro.getListaNegraDeUsuarios());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getListaNegraDePalabras() != null) {                            
+                        if (filtro.getListaNegraDePalabras() != null) {
                             filtroDoc.put("listaNegraDePalabras", filtro.getListaNegraDePalabras());
                             filtrosToDoc.add(filtroDoc);
                         }
-                        if (filtro.getMinActions() != null) {                            
+                        if (filtro.getMinActions() != null) {
                             filtroDoc.put("minActions", filtro.getMinActions());
                             filtrosToDoc.add(filtroDoc);
                         }
@@ -437,13 +437,13 @@ public class ZGramDao extends BaseDao {
                 if (newZgram.getVerbatim() != null) {
                     zgramDoc.put("verbatim", newZgram.getVerbatim());
                 } else {
-                    zgramDoc.put("verbatim", (String ) resp.get("verbatim"));
+                    zgramDoc.put("verbatim", (String) resp.get("verbatim"));
                 }
 
                 if (newZgram.getPeriodicidad() != null) {
                     zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
                 } else {
-                    zgramDoc.put("periodicidad", resp.get("periodicidad"));
+                    zgramDoc.put("periodicidad", (Integer)(resp.get("periodicidad")));
                 }
 
                 if (newZgram.getSiosi() != null) {
@@ -464,13 +464,13 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("ultimoHitDeExtraccion", (Long) resp.get("ultimoHitDeExtraccion"));
                 }
 
-                if ((Double)newZgram.getSourceLatitude() != null) {
+                if ((Double) newZgram.getSourceLatitude() != null) {
                     zgramDoc.put("sourceLatitude", newZgram.getSourceLatitude());
                 } else {
                     zgramDoc.put("sourceLatitude", (Double) resp.get("sourceLatitude"));
                 }
 
-                if ((Double)newZgram.getSourceLongitude() != null) {
+                if ((Double) newZgram.getSourceLongitude() != null) {
                     zgramDoc.put("sourceLongitude", newZgram.getSourceLongitude());
                 } else {
                     zgramDoc.put("sourceLongitude", (Double) resp.get("sourceLongitude"));
@@ -493,7 +493,7 @@ public class ZGramDao extends BaseDao {
     public String retrieveJson(String id) {
         BasicDBObject query = new BasicDBObject("_id", new ObjectId(id));
         DBObject resp;
-        
+
         resp = this.extractions.findOne(query);
 
         System.out.println(resp);
@@ -551,11 +551,11 @@ public class ZGramDao extends BaseDao {
             query.put("$or", or);
         }
 
-        if (filtros.getTags() != null) {            
+        if (filtros.getTags() != null) {
             all.put("$all", filtros.getTags());
             query.put("tags", all);
         }
-        
+
         Calendar now = Calendar.getInstance();
         if (filtros.getPeriodo() != null && !filtros.getPeriodo().equals(Periodo.ALL)) {
             System.out.println(now.getTime().getTime());

@@ -342,4 +342,24 @@ public class ZCrawling {
     public void setSourceLongitude(Double sourceLongitude) {
         this.sourceLongitude = sourceLongitude;
     }
+    
+    protected String temporalidad;
+
+    /**
+     * Get the value of temporalidad
+     *
+     * @return the value of temporalidad
+     */
+    public String getTemporalidad() {
+        return temporalidad;
+    }
+
+    /**
+     * Set the value of temporalidad
+     *
+     * @param temporalidad new value of temporalidad
+     */
+    public void setTemporalidad(String temporalidad) {
+        this.temporalidad = temporalidad;
+    }
 }
