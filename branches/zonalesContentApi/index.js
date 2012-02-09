@@ -134,6 +134,23 @@ app.get('/CMUtils/placeTypeEdit', function(req,res) {
 
 //----------------------- SERVICES SWITCH -----------------------
 
+//----------------------- PLACES -----------------------
+
+//Servicio que obtiene el id y el nombre de todas las zonas.
+app.get('/place/getAll', function(req,res) {
+	res.writeHead(200, {"Content-Type": "text/javascript"});
+	try {
+		placeService.getAll(req.query.short, function(data){
+			res.write(JSON.stringify(data));
+			res.end();
+		});
+	} catch (err) {
+		res.write(JSON.stringify(err));
+		res.end();
+	}
+});
+
+
 //----------------------- ZONES -----------------------
 
 //Servicio que obtiene el id y el nombre de todas las zonas.

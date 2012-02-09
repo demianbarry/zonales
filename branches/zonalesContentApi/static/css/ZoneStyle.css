@@ -4136,6 +4136,7 @@ html body.hide-uprrail1 .uprrail1 * {
 }
 .submission-header p, .comment-posted {
     color: #666666;
+
     line-height: 1.33333em;
 }
 .submission-sharing {
@@ -4319,3 +4320,8 @@ html body.hide-uprrail1 .uprrail1 * {
 .oculto {
 	display: none;
 }
+
+.olLayerGooglePoweredBy {
+    display: none;
+}
+

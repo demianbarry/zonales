@@ -36,52 +36,57 @@
                             </tr>
                             <tr>
                                 <td class="label"><label>Nombre</label></td>
-                                <td class="input"><input type="text" id="nombre" value=""></td>
+                                <td class="input"><input type="text" id="name" value=""></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Descripción</label></td>
                                 <td class="input"><input type="text" id="description" value=""></td>
                             </tr>
                             <tr>
-                                <td class="label"><label>Zone</label></td>
-                                <td>
-                                    <div>
-                                        <input id="placeZone" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);">
-                                    </div>
-                                </td>
+                                <td class="label"><label>Domicilio</label></td>
+                                <td class="input"><input type="text" id="address" value=""></td>
                             </tr>
                             <tr>
-                                <td class="label"><label>Padre</label></td>
-                                <td>
-                                    <div>
-                                        <input id="parent" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, places);">
-                                    </div>
+                                <td class="label"><label>Zone</label></td>
+                                <td class="input">
+                                    <input id="placeZone" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Tipo</label></td>
                                 <td class="input">
-                                    <select id="tipo" onchange="getParentTypes(this.value);">
+                                    <select id="type" onchange="getParentTypes(this.value);">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label"><label>Dirección</label></td>
-                                <td class="input"><input type="text" id="address" value=""></td>
-                            </tr>
-                            <tr>
                                 <td class="label"><label>Padre</label></td>
                                 <td class="input">
-                                    <select id="padre" onchange="">
-                                    </select>
-										  </td>
+                                    <input id="parent" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, parents);">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Imagen</label></td>
+                                <td class="input"><input type="text" id="image" value=""></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Links</label></td>
+                                <td class="input">
+                                    <input type="text" id="link" value="" style="width:93%">
+                                    <img alt="Agregar Link" style="float: right" src="/images/addIcon.gif" title="Agregar Link" onclick="addLink($('link').value)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="linksDiv"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     <input id="guardarButton" value="Guardar" type="button" onclick="savePlace();">
                                     <input id="publicarButton" value="Publicar" type="button" onclick="">
-				    							<input id="despublicarButton" value="Despublicar" type="button" onclick="">
-				    							<input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'placeEdit'">
+	    							<input id="despublicarButton" value="Despublicar" type="button" onclick="">
+	    							<input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'placeEdit'">
                                 </td>
                             </tr>
                         </tbody>

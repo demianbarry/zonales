@@ -123,7 +123,10 @@ function saveZone() {
 
     var jsonZone = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
 
-	 var objGeo = eval('(' + $('geoJson').value + ')');    
+	var objGeo;
+    if ($('geoJson').value != '') {
+        objGeo = eval('(' + $('geoJson').value + ')');    
+    }
     
     if(geoedit) {
     	jsonZone += ',"geoData":"' + geoZoneId + '"';
@@ -136,7 +139,7 @@ function saveZone() {
     		}
     	});	
     } else {
-    	  if (typeof(geoZoneId) != 'undefined') {
+    	  if (geoZoneId != null) {
     	  		jsonZone += ',"geoData":"' + geoZoneId + '"';
 		    	socket.emit('saveGeoData', objGeo, function (resp) {
 		    		//var resp = eval('(' + data + ')'); 

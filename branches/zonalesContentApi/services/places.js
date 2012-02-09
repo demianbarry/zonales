@@ -45,7 +45,7 @@ module.exports.getLikeName = function getLikeName(name, callback) {
 }
 
 //Retorna un conjunto de places con nombre similar al parámetro
-module.exports.searchZones = function searchZones(filters, callback) {
+module.exports.searchPlaces = function searchPlaces(filters, callback) {
 	return baseService.searchData(places, filters, callback);
 }
 
