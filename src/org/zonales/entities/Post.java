@@ -15,6 +15,8 @@ public class Post {
     protected String source;
     protected Double postLatitude;
     protected Double postLongitude;
+    protected Double sourceLatitude;
+    protected Double sourceLongitude;
     protected User fromUser;
     protected ArrayList<User> toUsers;
     protected String title;
@@ -54,6 +56,22 @@ public class Post {
         this.relevance = relevance;
         this.relevanceDelta = relevanceDelta;
         this.verbatim = verbatim;
+    }
+
+    public Double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    public void setSourceLatitude(Double sourceLatitude) {
+        this.sourceLatitude = sourceLatitude;
+    }
+
+    public Double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    public void setSourceLongitude(Double sourceLongitude) {
+        this.sourceLongitude = sourceLongitude;
     }
 
     public ArrayList<ActionType> getActions() {
