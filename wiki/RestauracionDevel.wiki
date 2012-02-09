@@ -97,25 +97,28 @@ Restauracion de instancia de desarrollo de zonales.Se contemplan todos los pasos
              exit 0
 
 
+
     Cambiar los permisos, para que se pueda ejecutar
 
-        chmod a+x /etc/init.d/tomcat
+          chmod a+x /etc/init.d/tomcat
 
     Agregar este script to servicios de sistema
     
-        chkconfig --add tomcat
+          chkconfig --add tomcat
     
     Verificar modficaciones (este script utiliza Niveles 2,3 y 4)
     
-        chkconfig --level 234 tomcat on
-        chkconfig --list tomcat
+          chkconfig --level 234 tomcat on
+          chkconfig --list tomcat
 
     Agregamos este scrip como un link simbolico para que se inicie automaticamente.
-         ln -s /etc/init.d/tomcat /etc/rc5.d/S71tomcat
+           
+           ln -s /etc/init.d/tomcat /etc/rc5.d/S71tomcat
 
     Probamos el script con start/stop
-         service tomcat start
-         service tomcat stop
+           service tomcat start
+           
+           service tomcat stop
 
 
 *Instalacion JDK:*
