@@ -51,7 +51,7 @@ $mainframe = JFactory::getApplication();
         <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
-        <script language="javascript" type="text/javascript" src="http://sursoftware.dyndns.org:4000/socket.io/socket.io.js"></script>
+        <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node')?>:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
         </script>
@@ -234,12 +234,12 @@ endif;
 
                     <div id="module-loginRight">
 
-                        <!-- acá va el módulo de login... tal vez los div "module-loginRight" se pueden eliminar -->
+                        <!-- acÃ¡ va el mÃ³dulo de login... tal vez los div "module-loginRight" se pueden eliminar -->
                         <jdoc:include type="modules" name="right" />
 
                     </div><!-- end #module-loginRight -->
 
-                    <!-- acá van los módulos de banners... que también podrían ir todos en la posición "right" -->
+                    <!-- acÃ¡ van los mÃ³dulos de banners... que tambiÃ©n podrÃ­an ir todos en la posiciÃ³n "right" -->
                     <jdoc:include type="modules" name="bannerRight" />
                     <div>
                         <a href="http://www.facebook.com/zonales"><img src="images/bot_facebook.jpg" alt="Facebook" /></a>
