@@ -4422,3 +4422,11 @@ iframe {
     font-size: 10px;
     text-align: center;
 }
+
+div.story-item-content div.cp_tags img.story-item-button {
+    vertical-align: middle;
+}
+
+div.story-item-content div.cp_tags span input {
+    margin-left: 3px;
+}
