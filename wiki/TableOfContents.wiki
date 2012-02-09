@@ -34,7 +34,7 @@
       * [CrearNuevaInstanciaMongo Crear una nueva instancia de Mongo]
       * [ReplicacionTomcat Replicar una instalación de Tomcat como un servidor independiente]
       * [develMap Mapa de tecnologías de ambiente de Desarrollo]
-      * [RestauracionDevel]Restauracion de Devel
+      * [RestauracionDevel Restauracion de Instancia Devel]
     * [Geolocalizacion]
       * [GeoStructures Estructuras de datos]
       * [ZoneServices Servicios para la gestión de Zonas]
