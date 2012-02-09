@@ -85,8 +85,12 @@ module.exports.searchData = function searchData(model, filters, callback) {
 
 	try {
 		//var myregex = RegExp(name);
+		//TODO: Chanchada, arreglar esto con parámetros
 		if (typeof(filters.name) != 'undefined') {
 			filters.name = RegExp(filters.name);
+		}
+		if (typeof(filters.zone) != 'undefined') {
+			filters.zone = RegExp(filters.zone);
 		}
 		model.find(filters, function(err, docs) { 
 		  if (err) {

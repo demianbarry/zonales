@@ -29,43 +29,78 @@ var cant = 0;
 var placeFilter = "";
 var stateFilter = "";
 var placeTypeFilter = "";
+var placeZoneFilter = "";
+var zones = Array();
+var zonesIds = Array();
+var parents = Array();
+var parentsIds = Array();
+var links = new Array();
+var cantLinks = 0;
 
 window.addEvent('domready', function() {
 	  init();
 	  socket = io.connect();
   	  socket.on('connect', function () { 
-	    socket.emit('getPlacesTypes', true, function (data) {			  		
+        socket.emit('getZones', true, function (data) {                    
+            data.each(function(zone) {
+                if (typeof(zone.name) != 'undefined') { 
+                    zones.include(zone.name.replace(/_/g, ' ').capitalize());
+                    zonesIds[zone.name.replace(/_/g, ' ').capitalize()] = zone.id;
+                }
+            });
+        });
+	    socket.emit('getPlaceTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
-	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('tipo'));
+	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('type'));
 	  			}
 	  		});
-	  		if(gup('id') != null && gup('id') != '') {
-		        getPlace(gup('id'), false);
-		     }
-			if(gup('place') != null && gup('place') != '') {
-		        placeFilter = gup('place');
-		     }
-		   if(gup('state') != null && gup('state') != '') {
-		        stateFilter = gup('state');
-		     }
-		   if(gup('placeType') != null && gup('placeType') != '') {
-		        placeTypeFilter = gup('placeType');
-		     }  
-           if(gup('placeZone') != null && gup('placeZone') != '') {
-                placeZoneFilter = gup('placeZone');
-             }  
-		   $('backAnchor').href = '/CMUtils/placeList?place=' + placeFilter + '&state=' + stateFilter + '&placeType=' + placeTypeFilter + '&placeZone=' + placeZoneFilter;
 	    });
+        if(gup('id') != null && gup('id') != '') {
+            getPlace(gup('id'), false);
+         }
+        if(gup('place') != null && gup('place') != '') {
+            placeFilter = gup('place');
+         }
+       if(gup('state') != null && gup('state') != '') {
+            stateFilter = gup('state');
+         }
+       if(gup('placeType') != null && gup('placeType') != '') {
+            placeTypeFilter = gup('placeType');
+         }  
+       if(gup('placeZone') != null && gup('placeZone') != '') {
+            placeZoneFilter = gup('placeZone');
+         }  
+       $('backAnchor').href = '/CMUtils/placeList?place=' + placeFilter + '&state=' + stateFilter + '&placeType=' + placeTypeFilter + '&placeZone=' + placeZoneFilter;
 	  });
 });
+
+function addLink(link) {
+    if (cantLinks == 0) {
+        var links_table = new Element('table', {'id' : 'links_table'}).addClass('configTable').inject($('linksDiv'));
+        var links_title_tr = new Element('tr', {'style': 'background-color: lightGreen'}).inject(links_table);
+        new Element('td', {'html' : 'Links'}).inject(links_title_tr);
+        new Element('td', {'html' : 'Eliminar'}).inject(links_title_tr);
+    }
+    var link_line = new Element('tr', {'id' : 'pl' + cantLinks}).inject(links_table);
+    new Element('td', {'html': link}).inject(link_line);
+    var removeLink_td = new Element('td').inject(link_line);
+    new Element('img', {'width' : '16', 'height' : '16', 'border': '0', 'alt': cantLinks, 'title' : 'Eliminar Link', 'src': '/images/publish_x.png', 'onclick' : 'removeLink('+ cantLinks + ')'}).inject(removeLink_td);
+    links[cantLinks] = link;
+    cantLinks++;
+}
+
+function removeLink(linkLine){
+    $('links_table').removeChild($('pl'+linkLine));
+    delete links[linkLine];
+}
 
 function getPlace(id, parent){
 	  //var jid = '{"id":"' + id + '"}';
 	  socket.emit('getPlaceByFilters', {id: id}, function (data) {
        	var jsonObj = data[0];			  		
 	  		if (parent) {
-             $('padre').value = jsonObj.name;
+             $('parent').value = jsonObj.name;
          } else {
              if (typeof($('id').value) != 'undefined') {
              	$('id').value = jsonObj.id;
@@ -73,17 +108,31 @@ function getPlace(id, parent){
              } else {
              	$('id').value = "";
              }
-             typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('nombre').value = "";
+             typeof(jsonObj.name) != 'undefined' ? $('name').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('name').value = "";
+             typeof(jsonObj.description) != 'undefined' ? $('description').value = jsonObj.description : $('description').value = "";
+             typeof(jsonObj.address) != 'undefined' ? $('address').value = jsonObj.address : $('address').value = "";
+             if (typeof(jsonObj.zone) != 'undefined') {
+                socket.emit('getZoneByFilters', {id: jsonObj.zone}, function(data) {
+                    $('placeZone').value = data[0].name.replace(/_/g, ' ').capitalize();
+                    zonesIds[data[0].name.replace(/_/g, ' ').capitalize()] = data[0].id;
+                });
+             } else {
+                $('placeZone').value = "";  
+             } 
              if (typeof(jsonObj.type) != 'undefined') {
-             	  //alert(typeOf($('tipo').getElement('option[value=' + jsonObj.type + ']'))); //.set('selected');
-                 $('tipo').value = jsonObj.type;
-                 //alert($('tipo').value);
+                 $('type').value = jsonObj.type;
                  getParentTypes(jsonObj.type);
              } else {
-                 $('tipo').value = "";
+                 $('type').value = "";
              }
-             if (typeof(jsonObj.parent) != 'undefined') {
-                 parent_id = jsonObj.parent;
+             if (typeof(jsonObj.parent) != 'undefined' && jsonObj.parent != "") {
+                 getPlace(jsonObj.parent, true);
+             }
+             typeof(jsonObj.image) != 'undefined' ? $('image').value = jsonObj.image : $('image').value = "";
+             if (typeof(jsonObj.links) != 'undefined') {
+                  jsonObj.links.each(function(link){
+                        addLink(link);
+                  });
              }
              if (typeof(jsonObj.geoData) != 'undefined') {
              	geoedit = true;
@@ -103,30 +152,49 @@ function getParents(type) {
 	 //var jtype = '{"type":"' + type + '"}';
 	 socket.emit('getPlaceByFilters', {type: type}, function (jsonObj) {
     		jsonObj.each(function(parent) {
-              var el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
-              if (parent.id == parent_id) {
-                  el.selected = true;
-              }
+                parents.include(parent.name.replace(/_/g, ' ').capitalize());
+                parentsIds[parent.name.replace(/_/g, ' ').capitalize()] = parent.id;
          });
     });
 }
 
 function getParentTypes(type) {
  	 //var jtype = '{"name":"' + type + '"}';
- 	 $('padre').empty();
-	 socket.emit('getParentTypes', {name: type}, function (jsonObj) {
+ 	 //$('padre').empty();
+	 socket.emit('getPlaceParentTypes', {name: type}, function (jsonObj) {
 	 		console.log("PARENT TYPESSSS: " + JSON.stringify(jsonObj));
     		jsonObj.each(function(parentType) {
-              getParents(parentType);
+                getParents(parentType.name);
          });
     });	  		        
 }
 
 function savePlace() {
 
-    var jsonPlace = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
+    var jsonPlace = '{"name":"' + $('name').value.replace(/ /g, '_').toLowerCase() + '"';
+    jsonPlace += ',"id":"' + $('id').value + '"';
+    jsonPlace += ',"parent":"' + (typeof(parentsIds[$('parent').value]) != 'undefined' ? parentsIds[$('parent').value] : "") + '"';
+    jsonPlace += ',"type":"' + $('type').value + '"';
+    jsonPlace += ',"description":"' + $('description').value + '"';
+    jsonPlace += ',"address":"' + $('address').value + '"';
+    jsonPlace += ',"image":"' + $('image').value + '"';
+    jsonPlace += ',"zone":"' + zonesIds[$('placeZone').value] + '"';
 
-	 var objGeo = eval('(' + $('geoJson').value + ')');    
+    if (links.length > 0) {
+         jsonPlace += ',"links":[';
+         for (i = 0; i < links.length; i++) {
+             if (links[i] != null) {
+                 jsonPlace += '"' + links[i] + '",';
+             }
+         }
+         jsonPlace = jsonPlace.substring(0, jsonPlace.length - 1);
+         jsonPlace += ']';
+     }
+
+    var objGeo;
+    if ($('geoJson').value != '') {
+        objGeo = eval('(' + $('geoJson').value + ')');    
+    }
     
     if(geoedit) {
     	jsonPlace += ',"geoData":"' + geoPlaceId + '"';
@@ -139,7 +207,7 @@ function savePlace() {
     		}
     	});	
     } else {
-    	  if (typeof(geoPlaceId) != 'undefined') {
+    	  if (geoPlaceId != null) {
     	  		jsonPlace += ',"geoData":"' + geoPlaceId + '"';
 		    	socket.emit('saveGeoData', objGeo, function (resp) {
 		    		//var resp = eval('(' + data + ')'); 
@@ -159,18 +227,18 @@ function savePlace() {
     	socket.emit('updatePlace', objPlace, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
-    			alert("Se ha actualizado la zona"); 
+    			alert("Se ha actualizado el place"); 
     		} else {
-    			alert("Error al actualizar la zona");
+    			alert("Error al actualizar el place");
     		}
     	});	
     } else {
     	socket.emit('savePlace', objPlace, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
-    			alert("Se ha guardado la zona"); 
+    			alert("Se ha guardado el place"); 
     		} else {
-    			alert("Error al guardar la zona");
+    			alert("Error al guardar el place");
     		}
     	});
     }    
@@ -207,7 +275,7 @@ function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
     if (typeof(geoPlaceId) == 'undefined' || geoPlaceId == null) {
-    	geoPlaceId = '40000' + $('id').value;
+    	geoPlaceId = '50000' + $('id').value;
     }
     str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
     document.getElementById('geoJson').value = str;
@@ -231,8 +299,6 @@ function deserialize() {
         }
         vectors.addFeatures(features);
         map.zoomToExtent(bounds);
-        /*var plural = (features.length > 1) ? 's' : '';
-        element.value = features.length + ' feature' + plural + ' added';*/
     } else {
         element.value = 'Bad input ' + type;
     }
