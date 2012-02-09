@@ -36,6 +36,7 @@ import org.zonales.entities.PostType;
 import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
+import org.zonales.entities.Zone;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
 
 /*
@@ -106,7 +107,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntry.setSource(source);
-                    //newEntry.setZone((String) params.get("zone"));
+                    newEntry.setZone(new Zone(null, (String) params.get("zone"), null));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -166,7 +167,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntrySolr.setSource(source);
-                    //newEntrySolr.setZone((String) params.get("zone"));
+                    newEntrySolr.setZone(new Zone(null, (String) params.get("zone"), null));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
