@@ -74,9 +74,10 @@ public class ZExtractor {
                         code = connection.getResponseCode();
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Código de respuesta: {0}", code);
                         if (code == 200) {
-                            InputStream in = connection.getInputStream();
+                            /*InputStream in = connection.getInputStream();
                             Reader reader = new InputStreamReader(in, connection.getContentEncoding() != null ? connection.getContentEncoding() : "UTF-8");
-                            String postsJson = ConnHelper.getStringFromReader(reader);
+                            String postsJson = ConnHelper.getStringFromReader(reader);*/
+                            String postsJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
                             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Respuesta {0}s", postsJson);
                             connection.disconnect();
                             try {
@@ -87,7 +88,15 @@ public class ZExtractor {
                                 } else {
                                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Se obtuvieron {0} posts", posts.getPost().size());
                                 }
-                            } catch (Exception e) {
+                            } catch (Exception ex) {
+                                StringBuilder stacktrace = new StringBuilder();
+                                for (StackTraceElement line : ex.getStackTrace()) {
+                                    stacktrace.append(line.toString());
+                                    stacktrace.append("\n");
+                                }
+                                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                                                "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+                                //Logger.getLogger(this.getClass().getName()).log(Level.INFO, "", posts.getPost().size());
                                 throw new ExtractException(ZMessages.GSON_CONVERTION_ERROR);
                             }
                         } else {

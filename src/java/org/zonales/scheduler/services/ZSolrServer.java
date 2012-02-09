@@ -256,18 +256,22 @@ public final class ZSolrServer extends BaseService {
 
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setDocType(post.getDocType());
-        solrPost.setZoneId(post.getZone().getId());
-        solrPost.setZoneName(post.getZone().getName());
-        solrPost.setZoneType(post.getZone().getType());
+        if (post.getZone() != null) {
+            solrPost.setZoneId(post.getZone().getId());
+            solrPost.setZoneName(post.getZone().getName());
+            solrPost.setZoneType(post.getZone().getType());
+        }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
         solrPost.setFromUserId(post.getFromUser().getId());
         solrPost.setFromUserName(post.getFromUser().getName());
         solrPost.setFromUserCategory(post.getFromUser().getCategory());
-        solrPost.setFromUserUrl(post.getFromUser().getUrl());        
-        solrPost.setFromUserPlaceId(post.getFromUser().getPlace().getId());
-        solrPost.setFromUserPlaceName(post.getFromUser().getPlace().getName());
-        solrPost.setFromUserPlaceType(post.getFromUser().getPlace().getType());        
+        solrPost.setFromUserUrl(post.getFromUser().getUrl());
+        if (post.getFromUser().getPlace() != null) {
+            solrPost.setFromUserPlaceId(post.getFromUser().getPlace().getId());
+            solrPost.setFromUserPlaceName(post.getFromUser().getPlace().getName());
+            solrPost.setFromUserPlaceType(post.getFromUser().getPlace().getType());
+        }
         solrPost.setModified(new Date(post.getModified()));
         solrPost.setRelevance(post.getRelevance());
         solrPost.setRelevanceDelta(post.getRelevanceDelta());
