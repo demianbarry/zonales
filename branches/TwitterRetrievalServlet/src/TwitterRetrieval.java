@@ -43,6 +43,7 @@ import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
 import org.zonales.entities.ToUsersType;
 import org.zonales.entities.User;
+import org.zonales.entities.Zone;
 
 /**
  * Example servlet showing request headers
@@ -152,14 +153,14 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(null);
+                solrPost.setZone(new Zone(null, zone, null));
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
                 User usersolr = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource(),null);
+                        tweet.getSource(), null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -177,7 +178,7 @@ public class TwitterRetrieval extends HttpServlet {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
                             tweet.getToUser(),
                             null,
-                            tweet.getSource(),null));
+                            tweet.getSource(), null));
                     solrPost.setToUsers(toUsers);
                 }
                 if (tweet.getText().length() > d) {
@@ -215,14 +216,14 @@ public class TwitterRetrieval extends HttpServlet {
                 postList.add(solrPost);
 
                 post = new PostType();
-                //post.setZone(zone);
+                post.setZone(new Zone(null, zone, null));
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
                 User user = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource(),null);
+                        tweet.getSource(), null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -233,7 +234,6 @@ public class TwitterRetrieval extends HttpServlet {
                     }*/
                     //user.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
                     //user.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
-
                 }
 
                 post.setFromUser(user);
@@ -242,7 +242,7 @@ public class TwitterRetrieval extends HttpServlet {
                     toUsers.add(new User(String.valueOf(tweet.getToUserId()),
                             tweet.getToUser(),
                             null,
-                            tweet.getSource(),null));
+                            tweet.getSource(), null));
                     post.setToUsers(new ToUsersType(toUsers));
                 }
 
