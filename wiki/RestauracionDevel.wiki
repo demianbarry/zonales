@@ -52,13 +52,15 @@ Restauracion de instancia de desarrollo de zonales.Se contemplan todos los pasos
 
     Copiamos lo siguiente:
   '*'#'*'!/bin/bash
-  '*'#'*'
+
   '*'#'*' Iniciación automatica de TOMCAT6D
-  '*'#'*'
+
   '*'#'*' chkconfig: 2345 55 25
+
   '*'#'*' description: Demonio de iniciación TOMCAT6D 6.0.29
-  '*'#'*'
+
   '*'#'*' processname: tomcat6d
+
   '*'#'*' pidfile: /var/run/tomcat6d.pid
 
         export JAVA_HOME=/usr/java/jdk1.7.0_02
