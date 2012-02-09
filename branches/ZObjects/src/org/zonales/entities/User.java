@@ -52,7 +52,9 @@ public class User {
     @XmlElement(required = true)
     protected String url;
     protected String category;
-    protected Place place;    
+    protected Place place;
+    protected Double latitude;
+    protected Double longitude;
 
     public User() {
     }
@@ -75,6 +77,22 @@ public class User {
      */
     public String getId() {
         return id;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     /**
