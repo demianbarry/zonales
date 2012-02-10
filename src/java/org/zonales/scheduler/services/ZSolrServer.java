@@ -107,7 +107,7 @@ public final class ZSolrServer extends BaseService {
         SolrPost oldSolrPost = null;
         if (post.getId() != null && !"".equals(post.getId())) {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:\"" + post.getId().replace(' ', '+') + "\"");
+            query.setQuery("id:\"" + post.getId()+ "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
@@ -177,7 +177,7 @@ public final class ZSolrServer extends BaseService {
     public void addTags(String id, List<String> tags) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
+            query.setQuery("id:\"" + id + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
@@ -205,7 +205,7 @@ public final class ZSolrServer extends BaseService {
     public void removeTag(String id, String tag) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
+            query.setQuery("id:\"" + id + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
                 SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
@@ -231,7 +231,7 @@ public final class ZSolrServer extends BaseService {
     public void updateRelevance(String id, Integer relevance) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:\"" + id.replace(' ', '+') + "\"");
+            query.setQuery("id:\"" + id + "\"");
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Id: {0}", id);
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
