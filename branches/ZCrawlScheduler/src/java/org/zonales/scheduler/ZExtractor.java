@@ -74,10 +74,10 @@ public class ZExtractor {
                         code = connection.getResponseCode();
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Código de respuesta: {0}", code);
                         if (code == 200) {
-                            /*InputStream in = connection.getInputStream();
+                            InputStream in = connection.getInputStream();
                             Reader reader = new InputStreamReader(in, connection.getContentEncoding() != null ? connection.getContentEncoding() : "UTF-8");
-                            String postsJson = ConnHelper.getStringFromReader(reader);*/
-                            String postsJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
+                            String postsJson = ConnHelper.getStringFromReader(reader);
+                            //String postsJson = ConnHelper.getStringFromInpurStream(connection.getInputStream());
                             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Extracción - Respuesta {0}s", postsJson);
                             connection.disconnect();
                             try {
