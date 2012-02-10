@@ -57,6 +57,8 @@ public class SolrPost {
     @Field
     protected String zoneType;
     @Field
+    protected String zone;
+    @Field
     protected String extendedString;
     @Field
     protected String state;
@@ -89,6 +91,7 @@ public class SolrPost {
         this.zoneId = zoneId;
         this.zoneName = zoneName;
         this.zoneType = zoneType;
+        this.zone = zoneName;
         this.extendedString = extendedString;
         this.state = state;
         this.verbatim = verbatim;
@@ -300,6 +303,7 @@ public class SolrPost {
 
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
+        this.zone = zoneName;
     }
 
     public String getZoneType() {
