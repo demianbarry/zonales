@@ -12,12 +12,12 @@
         loadPost();
     });
 
-    function getSolrDate(millis){
+/*    function getSolrDate(millis){
         var date = new Date(millis);
         return date.getFullYear() + '-' + complete(date.getMonth() + 1) + '-' + complete(date.getDate()) + 'T' +
             complete(date.getHours()) + ':' + complete(date.getMinutes()) + ':' + complete(date.getSeconds()) + '.' + date.getMilliseconds() + 'Z';
     }
-
+*/
     function complete(number){
         return (number > 9 ? ''+number : '0'+number);
     }

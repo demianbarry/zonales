@@ -1,4 +1,4 @@
-var nodeURL = 'http://sursoftware.dyndns.org:4000';
+var nodeURL = 'http://192.168.0.2:4000';
 var sources = new Array();
 //var tags = new Array();
 var zones = new Array();
@@ -19,10 +19,10 @@ function initVista(zCtx){
     if($('newPostsContainer'))
         $('newPostsContainer').empty();
     $('verNuevos').setStyle('display','none');
-    setFirstIndexTime(null);
-    setLastIndexTime(null);
-    setMinRelevance(null);
-    setSearchKeyword("");
+    zirClient.setFirstIndexTime(null);
+    zirClient.setLastIndexTime(null);
+    zirClient.setMinRelevance(null);
+    zirClient.setSearchKeyword("");
     initFilters(zCtx);
     if(zCtx.zTab == ''){
         tab = 'portada';
@@ -273,10 +273,10 @@ function setZone(zoneId, zoneName, parentId, parentName) {
     if (parentName == null || typeof(parentName) == 'undefined')
         parentName = '';
 
-    setFirstIndexTime(null);
-    setLastIndexTime(null);
-    setMinRelevance(null);
-    setSearchKeyword("");
+    zirClient.setFirstIndexTime(null);
+    zirClient.setLastIndexTime(null);
+    zirClient.setMinRelevance(null);
+    zirClient.setSearchKeyword("");
     $('zonalesSearchword').value = "buscar...";
     if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
         $('postsContainer').empty();
@@ -309,7 +309,7 @@ function complete(number){
 
 function loadPost(first){
     //alert("LoadPost: " + JSON.stringify(zcGetContext()));
-    loadSolrPost(tab, zcGetEfectiveZoneName(), false, function(jsonObj) {
+    zirClient.loadSolrPost(tab, zcGetEfectiveZoneName(), false, function(jsonObj) {
         if(typeof jsonObj != 'undefined'){
             if(first){
                 updatePosts(jsonObj,$('postsContainer'));
@@ -324,29 +324,38 @@ function loadPost(first){
                     $('verNuevos').setStyle('display','none');
                 }
             }
+            zirClient.searching = false;
         }
+        //console.log('loadPost callback ' + zirClient.searching);
     });
 }
 
 function loadMorePost(){
-    loadSolrPost(tab, zcGetEfectiveZoneName(), true, function(jsonObj) {
-        if(typeof jsonObj != 'undefined')
+    console.log('loadMorePost');
+    zirClient.loadSolrPost(tab, zcGetEfectiveZoneName(), true, function(jsonObj) {
+        if(typeof jsonObj != 'undefined') {
+            //console.log('not undefined');
             updatePosts(jsonObj, $('postsContainer'),true);
+            zirClient.searching = false;            
+        } else {
+            //console.log('undefined!');
+        }
         armarTitulo(tab);
+        //console.log('loadMorePost callback ' + zirClient.searching);
     });
 }
 
 function searchPost(keyword, zone) {
     if (keyword != 'buscar...' && keyword != '') {
-        setFirstIndexTime(null);
-        setLastIndexTime(null);
-        setMinRelevance(null);
-        setSearchKeyword(keyword);
+        zirClient.setFirstIndexTime(null);
+        zirClient.setLastIndexTime(null);
+        zirClient.setMinRelevance(null);
+        zirClient.setSearchKeyword(keyword);
         if (tab != 'geoActivos' && $('postsContainer')) {
             $('postsContainer').empty();
             $('newPostsContainer').empty();
         }
-        loadSolrPost(tab, zone, false, function(jsonObj) {
+        zirClient.loadSolrPost(tab, zone, false, function(jsonObj) {
             if(jsonObj.response.docs.length > 0) {
                 updatePosts(jsonObj, $('postsContainer'),true);
             } else {
@@ -497,17 +506,17 @@ function updatePosts(json, component, more) {
         return;
     if(typeof more == 'undefined' || !more) {
         json.response.docs.reverse();
-        if(!getFirstIndexTime()) {
-            setFirstIndexTime(json.response.docs.pick().indexTime);
+        if(!zirClient.getFirstIndexTime()) {
+            zirClient.setFirstIndexTime(json.response.docs.pick().indexTime);
         }
     } else {
-        setFirstIndexTime(json.response.docs.getLast().indexTime);
+        zirClient.setFirstIndexTime(json.response.docs.getLast().indexTime);
     }
     json.response.docs.each(function(doc){
         var time = new Date(doc.indexTime).getTime();
-        setLastIndexTime((time > getLastIndexTime()) ||  getLastIndexTime() == null ? time : getLastIndexTime());
+        zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
         var modified = doc.modified;
-        setFirstModifiedTime((modified < getFirstModifiedTime()) ||  getFirstModifiedTime() == null ? modified : getFirstModifiedTime());
+        zirClient.setFirstModifiedTime((modified < zirClient.getFirstModifiedTime()) ||  zirClient.getFirstModifiedTime() == null ? modified : zirClient.getFirstModifiedTime());
         var post = eval('('+doc.verbatim+')');
         var div_story_item = new Element('div', {
             'id': 'si_' + doc.id
@@ -810,12 +819,12 @@ function updatePosts(json, component, more) {
             });
         }
 
-        if (getMinRelevance() != null) {
-            if (parseInt(post.relevance) < getMinRelevance()) {
-                setMinRelevance(parseInt(post.relevance));
+        if (zirClient.getMinRelevance() != null) {
+            if (parseInt(post.relevance) < zirClient.getMinRelevance()) {
+                zirClient.setMinRelevance(parseInt(post.relevance));
             }
         } else {
-            setMinRelevance(parseInt(post.relevance));
+            zirClient.setMinRelevance(parseInt(post.relevance));
         }
 
         //div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');

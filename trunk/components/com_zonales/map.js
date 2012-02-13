@@ -190,7 +190,7 @@ function initMap() {
         mapsources = new Array();
         maptags = new Array();
         mapzones = new Array();
-        clearSolrIds();
+        zirClient.clearSolrIds();
         setSolrRows(20);
         cant = 0;
 
@@ -204,7 +204,7 @@ function initMap() {
             postDetail.tags.each(function(tag){
                 addTag(tag); //Tags
             });
-            addIdToSolrSearch(postDetail.id);
+            zirClient.addIdToSolrSearch(postDetail.id);
             mapzones.include(postDetail.zone);
             cant++;
         }

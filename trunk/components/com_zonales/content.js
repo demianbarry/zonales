@@ -52,7 +52,7 @@ function SolrContent(id){
     this.fromUserUrl = '';
     this.title = '';
     this.text = '';
-    this.created = getSolrDate(new Date());
+    this.created = zirClient.getSolrDate(new Date());
     this.modified = '';    
     this.relevance = 0;
     this.tags = '';

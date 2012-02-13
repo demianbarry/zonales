@@ -144,7 +144,7 @@ function ZIRClient(){
 
         if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada" ){
             if (!more) {
-                res = (this.lastIndexTime ? '&fq=indexTime:['+getSolrDate(this.lastIndexTime + this.timeInterval)+'+TO+*]' : '');
+                res = (this.lastIndexTime ? '&fq=indexTime:['+this.getSolrDate(this.lastIndexTime + this.timeInterval)+'+TO+*]' : '');
             } else {
                 if (myTab == "portada") {
                     res = '&fq=modified:[*+TO+'+ reduceMilli(this.firstModifiedTime.replace('Z', '.000Z')) + ']';
@@ -156,7 +156,7 @@ function ZIRClient(){
 
         if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" ){
             if (!more){
-                res =(this.lastIndexTime ? '&fq=indexTime:['+getSolrDate(this.lastIndexTime + timeInterval)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
+                res =(this.lastIndexTime ? '&fq=indexTime:['+this.getSolrDate(this.lastIndexTime + this.timeInterval)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
                     ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=!relevance:0+AND+relevance:[' + (this.minRelevance ? this.minRelevance : 0) + '+TO+*]' ;
 
             }
@@ -167,7 +167,7 @@ function ZIRClient(){
     }
 
     this.getSolrUrl=function(tab, zone, more, keyword) {
-        var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
+        var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + this.rows + "&qt=zonalesContent&sort="+
         this.getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
         this.getSolrSources(tab)+
         this.getSolrZones(zone)+
@@ -178,31 +178,32 @@ function ZIRClient(){
     }
 
     this.loadSolrPost=function(tab, zone, more, callback){
+        console.log(this.searching);
         if(this.searching) {
             callback();
-            return (this);
-        }
-
-        var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
-
-        socket.emit('proxyExecute', {
-            host: this.host, 
-            port: this.port, 
-            path: urlSolr, 
-            method: 'GET'
-        }, function(jsonObj) {
-            console.log(jsonObj);
-            jsonObj.response.docs.each(function(doc) {
-                var verbatim = eval('(' + doc.verbatim + ')');
-                if (typeof(verbatim.zone) == 'object') {
-                    verbatim.zone = verbatim.zone.name;
-                    doc.verbatim = JSON.stringify(verbatim);
-                }
-            });
-            callback(jsonObj);       
-            return(this);
-        });
-        return (this);
+        } else {
+            this.searching = true;
+            var urlSolr = this.getSolrUrl(tab, zone, more, this.getSearchKeyword());
+            console.log(urlSolr);        
+            socket.emit('proxyExecute', {
+                host: this.host, 
+                port: this.port, 
+                path: urlSolr, 
+                method: 'GET'
+            }, function(jsonObj) {
+                console.log(jsonObj);
+                this.searching = false;                
+                jsonObj.response.docs.each(function(doc) {
+                    var verbatim = eval('(' + doc.verbatim + ')');
+                    if (typeof(verbatim.zone) == 'object') {
+                        verbatim.zone = verbatim.zone.name;
+                        doc.verbatim = JSON.stringify(verbatim);
+                    }
+                });
+                //console.log('Callback emit '+this.searching);
+                callback(jsonObj);        
+            });     
+        }        
     }
 
     this.getSolrHost=function() {
