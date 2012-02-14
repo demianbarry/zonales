@@ -495,6 +495,7 @@
         <field name="zoneId" type="string" stored="false" indexed="true" />
         <field name="zoneName" type="string" stored="false" indexed="true" />
         <field name="zoneType" type="string" stored="false" indexed="true" />
+        <field name="zoneExtendedString" type="string" stored="false" indexed="true"/>
         <field name="extendedString" type="string" stored="false" indexed="true"/>
         <field name="state" type="string" stored="false" indexed="true" default="published"/>
         <field name="verbatim" type="string" stored="true" indexed="false"/>    
