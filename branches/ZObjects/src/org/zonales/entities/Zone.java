@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "zone", propOrder = {
     "id",
     "name",
-    "type"
+    "type",
+    "extendedString"
 })
 public class Zone {
 
@@ -47,14 +48,17 @@ public class Zone {
     protected String name;
     @XmlElement(required = true)
     protected String type;
+    @XmlElement(required = true)
+    protected String extendedString;
     
     public Zone() {
     }
 
-    public Zone(String id, String name, String type) {
+    public Zone(String id, String name, String type, String extendedString) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.extendedString = extendedString;
     }
 
     /**
@@ -127,5 +131,29 @@ public class Zone {
      */
     public void setType(String value) {
         this.type = value;
+    }
+
+    /**
+     * Gets the value of the extendedString property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getExtendedString() {
+        return extendedString;
+    }
+
+    /**
+     * Sets the value of the extendedString property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setExtendedString(String value) {
+        this.extendedString = value;
     }
 }
