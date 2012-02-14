@@ -61,6 +61,8 @@ public class SolrPost {
     @Field
     protected String extendedString;
     @Field
+    protected String zoneExtendedString;
+    @Field
     protected String state;
     @Field
     protected String verbatim;
@@ -68,7 +70,7 @@ public class SolrPost {
     public SolrPost() {
     }
 
-    public SolrPost(String docType, String source, Double postLatitude, Double postLongitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, String fromUserPlaceId, String fromUserPlaceName, String fromUserPlaceType, String title, String text, String zoneId, String zoneName, String zoneType, String extendedString, List<String> tags, Date created, Date modified, int relevance, int relevanceDelta, String state, String verbatim) {
+    public SolrPost(String docType, String source, Double postLatitude, Double postLongitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, String fromUserPlaceId, String fromUserPlaceName, String fromUserPlaceType, String title, String text, String zoneId, String zoneName, String zoneType, String extendedString, String zoneExtendedString, List<String> tags, Date created, Date modified, int relevance, int relevanceDelta, String state, String verbatim) {
         this.docType = docType;
         this.source = source;
         this.postLatitude = postLatitude;
@@ -93,6 +95,7 @@ public class SolrPost {
         this.zoneType = zoneType;
         this.zone = zoneName;
         this.extendedString = extendedString;
+        this.zoneExtendedString = zoneExtendedString;
         this.state = state;
         this.verbatim = verbatim;
     }
@@ -247,6 +250,14 @@ public class SolrPost {
 
     public void setExtendedString(String extendedString) {
         this.extendedString = extendedString;
+    }
+
+    public String getZoneExtendedString() {
+        return zoneExtendedString;
+    }
+
+    public void setZoneExtendedString(String zoneExtendedString) {
+        this.zoneExtendedString = zoneExtendedString;
     }
 
     public String getFromUserPlaceId() {
