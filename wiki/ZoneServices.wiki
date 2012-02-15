@@ -103,6 +103,10 @@ Sin parámetros
 || *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
 || filters || SI || Filtro para la busqueda de zona || Cadena JSON con pares extendedstring=value a buscar||  ||
 
+=== Ejemplo ===
+http://192.168.0.2:4000/zone/get?filters={"extendedString":"puerto_madryn, chubut, argentina"}
+*_Respuesta_*
+[{"_id":"4e42a2e17f8b9a8e5a0000b1","extendedString":"puerto_madryn, chubut, argentina","id":"416","name":"puerto_madryn","parent":"164","type":"localidad","state":"generated"}]
 <br>
 
 ----
@@ -118,9 +122,14 @@ Sin parámetros
 || *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
 || id || SI || Id de la zona a buscar || String||  ||
 
+=== Ejemplo ===
+http://192.168.0.2:4000/zone/getExtendedString?id=416
+*_Respuesta_*
+"puerto_madryn, chubut, argentina"
+
 <br>
 
-
+----
 = Tipos de zonas =
 <br>
 ----
