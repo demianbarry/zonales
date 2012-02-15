@@ -105,6 +105,22 @@ Sin parámetros
 
 <br>
 
+----
+== Obtener cadena extendida a partir de ID==
+----
+
+*_PATH_*: /zone/getExtendedString <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| id || SI || Id de la zona a buscar || String||  ||
+
+<br>
+
+
 = Tipos de zonas =
 <br>
 ----
