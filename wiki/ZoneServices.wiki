@@ -90,6 +90,21 @@ Sin parámetros
 || id || SI || Id de la zona a eliminar || String ||  ||
 
 <br>
+----
+== Obtener zona a partir de cadena extendida ==
+----
+
+*_PATH_*: /zone/get <br>
+*_Respuesta_*: Mensaje de éxito o error <br>
+*_Formato_*: JSON <br>
+
+=== Parámetros ===
+
+|| *Parámetro* || *Requerido* || *Descripción* || *Formato* || *Observaciones* ||
+|| filters || SI || Filtro para la busqueda de zona || Cadena JSON con pares extendedstring=value a buscar||  ||
+
+<br>
+
 = Tipos de zonas =
 <br>
 ----
