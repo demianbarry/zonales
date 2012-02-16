@@ -247,6 +247,28 @@ public class ZoneDao extends BaseDao {
 
         return ret;
     }
+    
+    public String retrieveAllExtendedStrings() {
+        String ret = "[";
+        DBObject resp;
+        DBCursor cur = this.zones.find();
+
+        while (cur.hasNext()) {
+            resp = cur.next();
+            resp.removeField("_id");
+            //System.out.println(resp);
+            if (resp.get("state") == null || !((String)resp.get("state")).equals(State.VOID)) {
+                ret += "'"+resp.get("extendedString") + "',";                
+            } else {
+                return null;
+            }
+        }
+
+        ret = ret.substring(0, ret.length() - 1);
+        ret += "]";
+
+        return ret;
+    }
 
     public Zone retrieve(Integer id) {
         BasicDBObject query = new BasicDBObject("id", id);
@@ -256,6 +278,12 @@ public class ZoneDao extends BaseDao {
     public Zone retrieve(String name) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Buscando zone por nombre: {0}", new Object[]{name});
         BasicDBObject query = new BasicDBObject("name", name);        
+        return getZone(query);
+    }
+    
+    public Zone retrieveByExtendedString(String extendedString) {
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Buscando zone por cadena extendida: {0}", new Object[]{extendedString});
+        BasicDBObject query = new BasicDBObject("extendedString", extendedString);        
         return getZone(query);
     }
 

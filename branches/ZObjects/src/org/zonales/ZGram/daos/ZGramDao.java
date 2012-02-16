@@ -545,9 +545,10 @@ public class ZGramDao extends BaseDao {
             query.put("fuente", filtros.getFuente());
         }
         if (filtros.getLocalidad() != null) {
-            for (String localidad : filtros.getLocalidad().split(",")) {
+            /*for (String localidad : filtros.getLocalidad().split(",")) {
                 or.add(new BasicDBObject("localidad", localidad));
-            }
+            }*/
+            or.add(new BasicDBObject("localidad", filtros.getLocalidad()));
             query.put("$or", or);
         }
 
