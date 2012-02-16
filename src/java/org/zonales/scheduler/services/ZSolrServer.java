@@ -110,9 +110,9 @@ public final class ZSolrServer extends BaseService {
             query.setQuery("id:\"" + post.getId()+ "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
-                oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
+                oldSolrPost = rsp.getBeans(SolrPost.class).get(0);                
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(oldSolrPost));
-                Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);                
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "POST FROM VERBATIM: {0}", gson.toJson(postIn));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
@@ -260,6 +260,7 @@ public final class ZSolrServer extends BaseService {
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
+            solrPost.setZoneExtendedString(post.getZone().getExtendedString());
         }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
