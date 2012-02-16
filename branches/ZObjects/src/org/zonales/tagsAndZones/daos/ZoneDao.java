@@ -311,6 +311,8 @@ public class ZoneDao extends BaseDao {
         zone.setName((String) resp.get("name"));
 
         zone.setState((String) resp.get("state"));
+        
+        zone.setExtendedString((String) resp.get("extendedString"));
 
         if (resp.get("type") != null) {
             DBObject obj = this.db.getCollection("zonetypes").findOne(new BasicDBObject("name", (String) resp.get("type")));

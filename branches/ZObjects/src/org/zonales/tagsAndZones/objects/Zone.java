@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.tagsAndZones.objects;
 
 /**
@@ -10,9 +9,11 @@ package org.zonales.tagsAndZones.objects;
  * @author nacho
  */
 public class Zone extends Tag {
+
     private Double centerLat;
     private Double centerLon;
     private int zoomLevel;
+    private String extendedString;
 
     public Zone() {
     }
@@ -20,9 +21,9 @@ public class Zone extends Tag {
     public Zone(String name) {
         super(name);
     }
-    
-    public Zone(int id,String name) {
-        super(id,name);
+
+    public Zone(int id, String name) {
+        super(id, name);
     }
 
     public Zone(Double ScenterLat, Double centerLon, int zoomLevel) {
@@ -66,6 +67,11 @@ public class Zone extends Tag {
         return "Name: " + super.getName() + " - CenterLat: " + centerLat + " - CenterLon: " + centerLon;
     }
 
-    
+    public String getExtendedString() {
+        return extendedString;
+    }
 
+    public void setExtendedString(String extendedString) {
+        this.extendedString = extendedString;
+    }
 }
