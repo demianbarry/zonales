@@ -27,10 +27,10 @@ span#municipio_container{
 </style>
 <form style="margin: 0; padding: 0;" class="combo_zonal_form" name="formComboZona" id="formComboZona" method="post" action="index.php">
 
-    <span id="z_provincias_container" style="position: absolute; left: 935px;">
+    <span id="z_provincias_container" style="position: absolute; left: 615px;">
         <input value="Seleccione una zona..." style="width: 300px;">
     </span>
-    
+
 
 
     <input type="hidden" value="setZonalById" name="task">
