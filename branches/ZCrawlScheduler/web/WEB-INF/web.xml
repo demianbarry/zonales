@@ -27,6 +27,11 @@
         <servlet-class>org.zonales.scheduler.services.ZSolrServer</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>UpdatePosts</servlet-name>
+        <servlet-class>org.zonales.scheduler.services.ZSolrUpdate</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SchedulingJob</servlet-name>
         <url-pattern>/schedulingJob</url-pattern>
@@ -50,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>IndexPosts</servlet-name>
         <url-pattern>/indexPosts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePosts</servlet-name>
+        <url-pattern>/updatePosts</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
