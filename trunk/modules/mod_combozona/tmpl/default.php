@@ -25,22 +25,15 @@ span#municipio_container{
 	float:right;
 }
 </style>
-<form action="index.php" method="post" id="formComboZona" name="formComboZona" class="combo_zonal_form" style="margin: 0; padding: 0;">
+<form style="margin: 0; padding: 0;" class="combo_zonal_form" name="formComboZona" id="formComboZona" method="post" action="index.php">
 
-    <span id="z_provincias_container" style="width:219px;">
-        <select class="provincias_select required" size="1" name="provincias" id="provincias"><option value="">Seleccione una provincia...</option>
-        </select>
+    <span id="z_provincias_container" style="position: absolute; left: 935px;">
+        <input value="Seleccione una zona..." style="width: 300px;">
     </span>
-    <span id="municipio_container" style="width:219px;">
-        <span id="z_localidad_container" ></span>
-        <select class="item_ajax_select required" size="1" name="zonalid" id="zonalid" style="width: 219px;"><option value="">Seleccione un municipio...</option>
-        </select>
-    </span>
+    
 
 
-    <input type="hidden" name="task" value="setZonalById" />
-    <input type="hidden" name="option" value="com_zonales" />
+    <input type="hidden" value="setZonalById" name="task">
+    <input type="hidden" value="com_zonales" name="option">
     <?php echo JHTML::_('form.token'); ?>
-
 </form>
-
