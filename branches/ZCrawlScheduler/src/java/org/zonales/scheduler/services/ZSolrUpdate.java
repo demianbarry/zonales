@@ -106,9 +106,9 @@ public final class ZSolrUpdate extends BaseService {
         }
     }
 
-    public void indexPost(ArrayList<Integer> ids, String db_host, Integer db_port, String db_name ) throws SolrServerException, IOException {
+    public void indexPost(List<String> ids, String db_host, Integer db_port, String db_name) throws SolrServerException, IOException {
         SolrPost oldSolrPost = null;
-       ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
+        ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
         SolrQuery query = new SolrQuery();
         if (ids != null && ids.size() > 0) {
             String queryString = "id:(";
@@ -122,11 +122,18 @@ public final class ZSolrUpdate extends BaseService {
         QueryResponse rsp = server.query(query);
         for (SolrPost solrPost : rsp.getBeans(SolrPost.class)) {
             Post postIn = gson.fromJson(solrPost.getVerbatim(), Post.class);
-            Zone zone =  zoneDao.retrieveByExtendedString(postIn.getZone().getExtendedString());
-
-            postIn.getZone().setId(String.valueOf(zone.getId()) );
-            postIn.getZone().setName(zone.getName());
-            postIn.getZone().setType(zone.getType().getName());
+            Zone zone = null;
+            if (postIn.getZone().getExtendedString() != null || postIn.getZone().getExtendedString().trim().equals("")) {
+                zone = zoneDao.retrieveByExtendedString(postIn.getZone().getExtendedString());
+                postIn.getZone().setId(String.valueOf(zone.getId()));
+                postIn.getZone().setName(zone.getName());
+                postIn.getZone().setType(zone.getType().getName());
+            } else {
+                zone = zoneDao.retrieve(postIn.getZone().getName());
+                postIn.getZone().setId(String.valueOf(zone.getId()));
+                postIn.getZone().setType(zone.getType().getName());
+                postIn.getZone().setExtendedString(zone.getExtendedString());
+            }
 
             SolrPost newSolrPost = new SolrPost();
             postToSolr(newSolrPost, postIn);
@@ -167,12 +174,13 @@ public final class ZSolrUpdate extends BaseService {
 
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setDocType(post.getDocType());
-
+        solrPost.setId(post.getId());
 
         if (post.getZone() != null) {
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
+            solrPost.setZoneExtendedString(post.getZone().getExtendedString());
 
 
         }
@@ -207,6 +215,17 @@ public final class ZSolrUpdate extends BaseService {
     @Override
     public void serve(HttpServletRequest req, HttpServletResponse resp, Properties props) throws ServletException, IOException, Exception {
         gson = new Gson();
+
+        try {
+            req.setCharacterEncoding("UTF-8");
+            resp.setCharacterEncoding("UTF-8");
+            String solrURL = req.getParameter("url");
+            setServer(solrURL);
+            String ids = req.getParameter("ids");
+            indexPost(Arrays.asList(ids.split(",")), props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+        } catch (SolrServerException ex) {
+            Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
     }
