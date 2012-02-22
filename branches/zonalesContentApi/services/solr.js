@@ -98,7 +98,7 @@ module.exports.countSolrPost = function countSolrPost(tab, zone, callback){
 
     urlSolr = getSolrUrl(tab, zone);
     
-	proxy.excecute(host, port, urlSolr, 'GET', function(response) {
+	zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
 		//var jsonObj = eval('(' + response + ')');
 		callback(jsonObj.response.numFound);
 	});    
