@@ -152,8 +152,24 @@ function getAllTags(){
         }
     }).send();
 }
-
+var extendedStrings = new Array();
+function getAllExtendedStrings(){
+    var url = servletUri + "/getZone?name=allExtendedStrings";
+    var urlProxy = proxy + encodeURIComponent(url);
+    new Request({
+        url: urlProxy,
+        method: 'get',
+        onSuccess: function(response) {
+            response.replace('[','').replace(']','').split(',').each(function(tag) {
+                extendedStrings.include(tag.replace(/_/g, ' ').capitalize());
+            });
+        },
+        onFailure: function(){
+        }
+    }).send();
+}
 getAllTags();
+getAllExtendedStrings();
 function populateOptions(event, field, add, elmts){	
     var container;
     if((container = field.getNext()) == null) {
