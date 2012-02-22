@@ -55,6 +55,10 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibi el evento saveZone desde el cliente');
 		zoneService.set(name, function(data){
 		  if (typeof(data) != 'undefined') {
+                    zoneService.get({id:name.parent}, function(parent) {
+                       if (parent)
+                          zoneService.updateExtendedString(name, parent.length > 0 ? parent[0] : null);
+                    });
 		    fn(data);
 		  }
 	   });
@@ -65,6 +69,10 @@ module.exports.tryEvent = function tryEvent(client) {
 		//var obj = eval('(' + name + ')');
 		zoneService.update(name.id, name, function(data){
 		  if (typeof(data) != 'undefined') {
+                    zoneService.get({id:name.parent}, function(parent) {
+                       if (parent)
+                          zoneService.updateExtendedString(name, parent.length > 0 ? parent[0] : null);
+                    });
 		    fn(data);
 		  }
 	   });
@@ -398,6 +406,13 @@ module.exports.tryEvent = function tryEvent(client) {
 		});
 	});
 
+	client.on('proxyExecuteSolrCommand', function(data, fn) {
+		console.log('Recibí evento proxyExecuteSolrCommand');
+		zProxyService.solrCommand(data.data, data.commit, function (response) {
+			fn(response);
+		});
+	});
+
 	//EVENTOS RELACIONADOS CON LA GESTION DE PLACES
 	//=============================================================================
 
@@ -465,7 +480,7 @@ module.exports.tryEvent = function tryEvent(client) {
 	   });
 	});
 	
-	//EVENTOS RELACIONADOS CON LA GESTION DE TIPOS DE ZONAS
+	//EVENTOS RELACIONADOS CON LA GESTION DE TIPOS DE PLACES
 	//=============================================================================
 
 	client.on('getPlaceTypes', function(name, fn) {
