@@ -44,6 +44,7 @@ import org.zonales.entities.TagsType;
 import org.zonales.entities.ToUsersType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
+import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /**
  * Example servlet showing request headers
@@ -142,6 +143,15 @@ public class TwitterRetrieval extends HttpServlet {
             ArrayList<LinkType> links;
             int d;
 
+            InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/servlet.properties");
+            Properties props = null;
+            if (props == null) {
+                props = new Properties();
+                props.load(stream);
+            }
+            ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone);
+
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 d = MAX_TITLE_LENGTH;
                 actions = new ArrayList();
@@ -153,7 +163,7 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(new Zone(null, zone, null));
+                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
@@ -216,7 +226,7 @@ public class TwitterRetrieval extends HttpServlet {
                 postList.add(solrPost);
 
                 post = new PostType();
-                post.setZone(new Zone(null, zone, null));
+                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
