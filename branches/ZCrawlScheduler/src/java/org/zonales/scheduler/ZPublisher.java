@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.scheduler;
 
 import org.zonales.scheduler.services.ZSolrServer;
@@ -18,7 +17,6 @@ import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.SchedulerException;
 import org.zonales.entities.Post;
 import org.zonales.entities.Posts;
 import org.zonales.errors.ZMessage;
@@ -26,6 +24,7 @@ import org.zonales.errors.ZMessages;
 import org.zonales.helpers.ConnHelper;
 import org.zonales.metadata.ZCrawling;
 import org.zonales.scheduler.exceptions.ExtractException;
+import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /**
  *
@@ -38,6 +37,10 @@ public class ZPublisher implements Job {
         String zGramId = "";
         String zCrawlSourcesURL = "";
         Integer timeout = 0;
+        String db_host;
+        Integer db_port;
+        String db_name;
+        org.zonales.tagsAndZones.objects.Zone zoneObj;
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SCHEDULER: Ejecutando Job: {0} - Class: {1}", new Object[]{jec.getJobDetail().getKey(), jec.getJobDetail().getJobClass()});
         try {
             JobDetail jobDetail = jec.getJobDetail();
@@ -47,22 +50,30 @@ public class ZPublisher implements Job {
             String metadata = jobDetail.getJobDataMap().getString("metadata");
             zCrawlSourcesURL = jobDetail.getJobDataMap().getString("ZCrawlSourcesURL");
             timeout = jobDetail.getJobDataMap().getInt("timeout");
+            db_host = jobDetail.getJobDataMap().getString("db_host");;
+            db_port = jobDetail.getJobDataMap().getInt("db_port");;
+            db_name = jobDetail.getJobDataMap().getString("db_name");;
             ZExtractor extractor = new ZExtractor();
             Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Sali de extractor");
 
             Long ultimoHitDeExtraccion = 0L;
             // Si la fuente es Twitter, el since_id es el mayor id de tweet recuperado
-            if("Twitter".equalsIgnoreCase(((ZCrawling)(new Gson()).fromJson(metadata, ZCrawling.class)).getFuente())) {
-                for(Post post : posts.getPost()){
+            if ("Twitter".equalsIgnoreCase(((ZCrawling) (new Gson()).fromJson(metadata, ZCrawling.class)).getFuente())) {
+                for (Post post : posts.getPost()) {
                     ultimoHitDeExtraccion = Long.valueOf(post.getId()) > ultimoHitDeExtraccion ? Long.valueOf(post.getId()) : ultimoHitDeExtraccion;
                 }
             } else {
-                ultimoHitDeExtraccion = new Date().getTime();   
+                ultimoHitDeExtraccion = new Date().getTime();
+            }
+
+            ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
+            for (Post post : posts.getPost()) {
+                zoneObj = zoneDao.retrieveByExtendedString(post.getExtendedString().replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
             }
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts size: {0}", posts.getPost().size());
-             
+
             String parameters = "id=" + zGramId + "&ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + "&newcod=" + ZMessages.SUCCESS.getCod() + "&newmsg=" + ZMessages.SUCCESS.getMsg();
 
             if (!posts.getPost().isEmpty()) {
@@ -108,15 +119,15 @@ public class ZPublisher implements Job {
         } catch (ExtractException ex) {
             //TODO: Definir criterios de pausado de extracciones antes de volver a habilitar esta sección
             /*try {
-                //Analizo los códigos de mensaje obtenidos del extractor en casos de error, trato los que generan stand-by
-                if (ex.getZmessage().getCod() == ZMessages.ZSOURCES_GETURL_ERROR.getCod() ||   //Si la URL de extracción es incorercta
-                        ex.getZmessage().getCod() == ZMessages.GSON_CONVERTION_ERROR.getCod() ||  //Si el Json de los post es incorrecto o malformado
-                        ex.getZmessage().getCod() >= 400 || ex.getZmessage().getCod() < 500  //Si el extractor dio error TODO: falta contemplar el caso de error de conexión
-                        ) {
-                    ZScheduler.pauseJob(jec.getJobDetail().getKey());
-                }
+            //Analizo los códigos de mensaje obtenidos del extractor en casos de error, trato los que generan stand-by
+            if (ex.getZmessage().getCod() == ZMessages.ZSOURCES_GETURL_ERROR.getCod() ||   //Si la URL de extracción es incorercta
+            ex.getZmessage().getCod() == ZMessages.GSON_CONVERTION_ERROR.getCod() ||  //Si el Json de los post es incorrecto o malformado
+            ex.getZmessage().getCod() >= 400 || ex.getZmessage().getCod() < 500  //Si el extractor dio error TODO: falta contemplar el caso de error de conexión
+            ) {
+            ZScheduler.pauseJob(jec.getJobDetail().getKey());
+            }
             } catch (SchedulerException ex1) {
-                Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
+            Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
             }*/
 
             //Actualizado la gramática con el intento de extracción
@@ -147,10 +158,9 @@ public class ZPublisher implements Job {
             } catch (IOException ex1) {
                 Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
             }
-            
+
         } catch (Exception ex1) {
             Logger.getLogger(ZPublisher.class.getName()).log(Level.SEVERE, null, ex1);
         }
     }
-
 }

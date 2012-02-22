@@ -255,6 +255,7 @@ public final class ZSolrServer extends BaseService {
     }
 
     public void postToSolr(SolrPost solrPost, Post post) {
+        solrPost.setId(post.getId());
         solrPost.setDocType(post.getDocType());
         if (post.getZone() != null) {
             solrPost.setZoneId(post.getZone().getId());
