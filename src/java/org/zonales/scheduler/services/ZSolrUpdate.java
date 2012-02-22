@@ -7,7 +7,6 @@ package org.zonales.scheduler.services;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.SolrPingResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.apache.solr.common.SolrDocument;
 import org.zonales.BaseService;
 import org.zonales.entities.Post;
 import org.zonales.entities.Posts;
@@ -109,27 +107,30 @@ public final class ZSolrUpdate extends BaseService {
     public void indexPost(List<String> ids, String db_host, Integer db_port, String db_name) throws SolrServerException, IOException {
         SolrPost oldSolrPost = null;
         ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
-        SolrQuery query = new SolrQuery();
+        SolrQuery query = new SolrQuery();        
+        query.setQuery("!source:xxxxxxxx");
         if (ids != null && ids.size() > 0) {
-            String queryString = "id:(";
+            String queryString = " AND id:(";
             for (int i = 0; i < ids.size(); i++) {
                 queryString += (i != 0 ? " " : "") + ids.get(i);
             }
             queryString += ")";
             query.setQuery(queryString);
         }
-        query.setRows(15000);
+        query.setRows(150000);
         QueryResponse rsp = server.query(query);
         for (SolrPost solrPost : rsp.getBeans(SolrPost.class)) {
             Post postIn = gson.fromJson(solrPost.getVerbatim(), Post.class);
+            Logger.getLogger(
+                    this.getClass().getName()).log(Level.INFO, "Objeto Post creado: {0}", gson.toJson(postIn));
             Zone zone = null;
-            if (postIn.getZone().getExtendedString() != null || postIn.getZone().getExtendedString().trim().equals("")) {
-                zone = zoneDao.retrieveByExtendedString(postIn.getZone().getExtendedString());
+            if (postIn.getZone().getExtendedString() != null && !postIn.getZone().getExtendedString().trim().equals("")) {
+                zone = zoneDao.retrieveByExtendedString(postIn.getZone().getExtendedString().replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
                 postIn.getZone().setId(String.valueOf(zone.getId()));
                 postIn.getZone().setName(zone.getName());
                 postIn.getZone().setType(zone.getType().getName());
             } else {
-                zone = zoneDao.retrieve(postIn.getZone().getName());
+                zone = zoneDao.retrieve(postIn.getZone().getName().replace(" ", "_").replace("+"," ").toLowerCase());
                 postIn.getZone().setId(String.valueOf(zone.getId()));
                 postIn.getZone().setType(zone.getType().getName());
                 postIn.getZone().setExtendedString(zone.getExtendedString());
@@ -222,7 +223,7 @@ public final class ZSolrUpdate extends BaseService {
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String ids = req.getParameter("ids");
-            indexPost(Arrays.asList(ids.split(",")), props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            indexPost(ids != null && !"".equals(ids) ? Arrays.asList(ids.split(",")) : null, props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
         } catch (SolrServerException ex) {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -141,6 +141,9 @@ public class ZScheduler {
                 .usingJobData("zGramLocalidad", zgram.getLocalidad())
                 .usingJobData("zGramFuente", zgram.getFuente())
                 .usingJobData("zGramTags", tags)
+                .usingJobData("db_host", tags)
+                .usingJobData("db_port", tags)
+                .usingJobData("db_name", tags)
                 .build();
 
 
