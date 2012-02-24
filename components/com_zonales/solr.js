@@ -73,7 +73,10 @@ function ZIRClient(){
 
         var res = "";
 
-        if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada"){
+        if (myTab == "portada"){
+            res = "score+desc";
+        }
+        if (myTab == "enlared" || myTab == "noticiasenlared"){
             res = "modified+desc";
         }
         if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
@@ -95,7 +98,7 @@ function ZIRClient(){
             res = "q=!source:(facebook+OR+twitter)";
         }
         if (myTab == "portada"){
-            res = "q=tags:(Portada)";
+            res = "bq=(tags:(Portada)+AND+modified:[NOW-48HOURS+TO+*])^999999+OR+(tags:(Portada)+AND+modified:[NOW-7DAYS TO NOW-48HOURS])^999";
         }
         if (myTab == "geoActivos"){
             res = "q=";
@@ -150,7 +153,7 @@ function ZIRClient(){
                     res = '&fq=modified:[*+TO+'+ reduceMilli(this.firstModifiedTime.replace('Z', '.000Z')) + ']';
                 } else {
                     res = '&fq=indexTime:[*+TO+'+reduceMilli(this.firstIndexTime)+']';
-                }
+               }
             }
         }
 
@@ -165,6 +168,14 @@ function ZIRClient(){
         }
         return res;
     }
+    
+    this.getSolrBoostQuery =function (myTab){
+        var res = '';
+        /*if(myTab=='portada') {
+            res += '&bq=(modified:[NOW-48HOURS+TO+*])^1000+OR+(modified:[NOW-7DAYS TO NOW-48HOURS])^100';
+        }*/
+        return res;
+    }
 
     this.getSolrUrl=function(tab, zone, more, keyword) {
         var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + this.rows + "&qt=zonalesContent&sort="+
@@ -172,8 +183,9 @@ function ZIRClient(){
         this.getSolrSources(tab)+
         this.getSolrZones(zone)+
         this.getSolrKeyword(keyword)+
-        this.getSolrIds()+
-        this.getSolrRange(tab,more);
+        this.getSolrIds() +
+        this.getSolrRange(tab,more) +
+        this.getSolrBoostQuery(tab);
         return urlSolr;
     }
 

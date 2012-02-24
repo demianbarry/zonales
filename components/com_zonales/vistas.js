@@ -146,20 +146,20 @@ function initFilters(zCtx) {
 function initZonas(selZone) {
     if (!zoneInitiated) {
         zoneInitiated = true;
-        getProvincias(function(provincias) {
+        /*getProvincias(function(provincias) {
             provincias.each(function(provincia) {
                 new Element('option', {
                     'value': provincia.id,
                     'html': provincia.name.replace(/_/g, ' ').capitalize()
                 }).inject($('provincias'));
-            });
-            $('provincias').addEvent('change', function(){
-                if($('provincias').selectedIndex == 0)
-                    setZone(this.value, '', '', '');
-                loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
-                zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
-            });
-            if (selZone != "" && typeof(selZone) != 'undefined') {
+            });*/
+        $('zoneExtended').addEvent('change', function(){
+            if($('zoneExtended').value && $('zoneExtended').value.length > 0)
+                setZone(this.value, '', '', '');
+        //loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
+        //zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
+        });
+    /*if (selZone != "" && typeof(selZone) != 'undefined') {
                 getZoneById(selZone, function(zone) {
                     if (zone.type != 'provincia') {
                         loadMunicipios(zone.parent, zone.id);
@@ -172,7 +172,7 @@ function initZonas(selZone) {
                     }
                 });
             }
-        });
+        });*/
 
     /*getAllZones(function(zones) {
            zones.each(function(zone) {
@@ -262,10 +262,10 @@ function loadMunicipios(id_provincia, selZone) {
     }
 }
 
-function setZone(zoneId, zoneName, parentId, parentName) {
+function setZone(zoneExtended, zoneName, parentId, parentName) {
     //alert("SetZone. zoneId: " + zoneId + " zoneName: " + zoneName + " parendId: " + parentId + " parentName: " + parentName);
-    if (zoneId == null || typeof(zoneId) == 'undefined')
-        zoneId = '';
+    if (zoneExtended == null || typeof(zoneId) == 'undefined')
+        zoneExtended = '';
     if (zoneName == null || typeof(zoneName) == 'undefined')
         zoneName = '';
     if (parentId == null || typeof(parentId) == 'undefined')
@@ -282,13 +282,13 @@ function setZone(zoneId, zoneName, parentId, parentName) {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
     }
-    setSelectedZone(zoneId, zoneName, parentId, parentName, function() {
+    setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
         //var zCtx = zcGetContext();
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-        if (tab != 'geoActivos' && $('postsContainer')) {
+        /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
-        }
-    });
+        }*/
+        });
 }
 
 function onTempoChange() {
@@ -298,9 +298,9 @@ function onTempoChange() {
     }
     setLastIndexTime(null);
     zcSetTemp($('tempoSelect').value);
-    if (tab != 'geoActivos' && $('postsContainer')) {
+/*if (tab != 'geoActivos' && $('postsContainer')) {
         loadPost(true);
-    }
+    }*/
 }
 
 function complete(number){
@@ -326,7 +326,7 @@ function loadPost(first){
             }
             zirClient.searching = false;
         }
-        //console.log('loadPost callback ' + zirClient.searching);
+    //console.log('loadPost callback ' + zirClient.searching);
     });
 }
 
@@ -338,10 +338,10 @@ function loadMorePost(){
             updatePosts(jsonObj, $('postsContainer'),true);
             zirClient.searching = false;            
         } else {
-            //console.log('undefined!');
+        //console.log('undefined!');
         }
         armarTitulo(tab);
-        //console.log('loadMorePost callback ' + zirClient.searching);
+    //console.log('loadMorePost callback ' + zirClient.searching);
     });
 }
 
