@@ -9,6 +9,7 @@ var tagService = require('../services/tags');
 var tagTypeService = require('../services/tagTypes');
 var zContextService = require('../services/ZContext');
 var zProxyService = require('../services/zProxy');
+var solrService = require('../services/solr');
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -351,6 +352,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento addSourceToZCtx, fuente = ' + data.source);
 		zContextService.addSource(data.sessionId, data.source, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -358,6 +360,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento uncheckSourceFromZCtx, fuente = ' + data.source);
 		zContextService.unckeckSource(data.sessionId, data.source, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -365,6 +368,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento addTagToZCtx, tag = ' + data.tag);
 		zContextService.addTag(data.sessionId, data.tag, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -372,6 +376,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento uncheckTagFromZCtx, tag = ' + data.tag);
 		zContextService.unckeckTag(data.sessionId, data.tag, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -379,6 +384,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento setSelectedZoneToCtx, zone = ' + data.zone);
 		zContextService.setSelectedZone(data.sessionId, data.zone, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -386,6 +392,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento setTempToCtx, temp = ' + data.temp);
 		zContextService.setTemp(data.sessionId, data.temp, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -393,6 +400,7 @@ module.exports.tryEvent = function tryEvent(client) {
 		console.log('Recibí evento setTabToCtx, tab = ' + data.tab);
 		zContextService.setTab(data.sessionId, data.tab, function (response) {
 			fn(response);
+			loadPostsFromSolr(client, data.sessionId);
 		});
 	});
 	
@@ -412,6 +420,8 @@ module.exports.tryEvent = function tryEvent(client) {
 			fn(response);
 		});
 	});
+
+
 
 	//EVENTOS RELACIONADOS CON LA GESTION DE PLACES
 	//=============================================================================
@@ -555,5 +565,12 @@ module.exports.tryEvent = function tryEvent(client) {
 		  }
 	   });
 	});
+}
 
+function loadPostsFromSolr(client, sessionId){
+	zContextService.getZCtx(sessionId, function(zCtx){
+		solrService.retrieveSolrPosts(zCtx.tab, zCtx.efZone, function(resp){
+			client.emit('solrPosts',{response: resp});
+		}); 
+	});
 }
