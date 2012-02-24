@@ -53,8 +53,8 @@ function initZCtx(callback) {
         if($('postsContainer')){
             $('postsContainer').empty();
             updatePosts(response, $('postsContainer'));
-        }        
-    });  
+        }
+    });
 }
 
 /*function zcSetContext(context) {
@@ -79,17 +79,10 @@ function setSelectedZone(zone, zoneName, parent, parentName, callback) {
     //Persisto el contexto en el servidor
     //alert("ZONE: " + zone + " ZONE NAME: " + zoneName);
     socket.emit('setSelectedZoneToCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         zone: zone
-    }, function(response) {
+    }, function() {
         //alert(JSON.stringify(response));
-        if (typeof(response) != 'undefined' && response != null) {
-            zCtx.efZone = response.id;
-            efZoneName = response.name.replace(/_/g, ' ').capitalize();
-        } else {
-            zCtx.efZone = "";
-            efZoneName = "";
-        }
         callback();
         return(this);
     });
@@ -107,7 +100,7 @@ function zcGetProvinceName(){
     return provinceName;
 }
 
-function zcAddSource(source){   
+function zcAddSource(source){
     //Actualizo el contexto en el mismo cliente
     var index = zcSearchSource(zCtx, source);
     if (index == -1) {
@@ -121,10 +114,10 @@ function zcAddSource(source){
 
     //Persisto el contexto en el servidor
     socket.emit('addSourceToZCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         source: source
     }, function(response) {
-        var resp = eval('(' + response + ')');
+
     });
 }
 
@@ -142,10 +135,10 @@ function zcUncheckSource(source){
 
     //Persisto el contexto en el servidor
     socket.emit('uncheckSourceFromZCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         source: source
     }, function(response) {
-        var resp = eval('(' + response + ')');
+
     });
 }
 
@@ -163,10 +156,10 @@ function zcAddTag(tag){
 
     //Persisto el contexto en el servidor
     socket.emit('addTagToZCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         tag: tag
     }, function(response) {
-        var resp = eval('(' + response + ')');
+
     });
 }
 
@@ -184,10 +177,10 @@ function zcUncheckTag(tag){
 
     //Persisto el contexto en el servidor
     socket.emit('uncheckTagFromZCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         tag: tag
     }, function(response) {
-        var resp = eval('(' + response + ')');
+
     });
 }
 
@@ -283,10 +276,10 @@ function zcSetTemp(temp) {
 
     //Persisto el contexto en el servidor
     socket.emit('setTempToCtx', {
-        sessionId: sessionId, 
+        sessionId: sessionId,
         temp: temp
     }, function(response) {
-        var resp = eval('(' + response + ')');
+
     });
 }
 
@@ -299,10 +292,10 @@ function zcSetTab(tab) {
     //Persisto el contexto en el servidor
     if(socket)
         socket.emit('setTabToCtx', {
-            sessionId: sessionId, 
+            sessionId: sessionId,
             tab: tab
         }, function(response) {
-            var resp = eval('(' + response + ')');
+
         });
 }
 
