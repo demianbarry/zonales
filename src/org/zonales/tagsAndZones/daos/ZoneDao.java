@@ -283,7 +283,7 @@ public class ZoneDao extends BaseDao {
     
     public Zone retrieveByExtendedString(String extendedString) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Buscando zone por cadena extendida: {0}", new Object[]{extendedString});
-        BasicDBObject query = new BasicDBObject("extendedString", extendedString);        
+        BasicDBObject query = new BasicDBObject("extendedString", extendedString.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase());        
         return getZone(query);
     }
 
