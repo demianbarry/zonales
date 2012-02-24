@@ -49,6 +49,11 @@ function getReadableDate(d){
     return  fixTime(d.getDate()) +  "/" +fixTime(d.getMonth()) +  "/" + d.getFullYear() +" "+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds());
 }
 
+function getReadableDateIncMonth(d){
+    //alert(d);
+    return  fixTime(d.getDate()) +  "/" +fixTime(d.getMonth() + 1) +  "/" + d.getFullYear() +" "+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds());
+}
+
 function GetPortNumber(url) {
     var url_parts = url.split('/');
 
