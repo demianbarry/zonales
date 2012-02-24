@@ -1,4 +1,3 @@
-
 import com.google.gson.Gson;
 //import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
@@ -38,6 +37,7 @@ import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
+import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /*
  * To change this template, choose Tools | Templates
@@ -51,10 +51,11 @@ public class ZCrawlFeedsHelper {
 
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
+    ZoneDao zoneDao;
 
     public ZCrawlFeedsHelper(String host, Integer port, String name) {
         dao = new FeedSelectorDao(host, port, name);
-
+        zoneDao = new ZoneDao(host, port, name);
     }
 
     /**
@@ -92,6 +93,9 @@ public class ZCrawlFeedsHelper {
 
         FeedSelectors feedSelectors;
 
+        String extendedString = (String) params.get("zone");
+        org.zonales.tagsAndZones.objects.Zone zone = zoneDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
+        
         if (!json) {
             for (int i = 0; i < feed.getItemCount(); i++) {
                 FeedItem entry = feed.getItem(i);
@@ -107,7 +111,8 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntry.setSource(source);
-                    newEntry.setZone(new Zone(null, (String) params.get("zone"), null));
+                    
+                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -167,7 +172,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone(new Zone(null, (String) params.get("zone"), null));
+                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
