@@ -150,7 +150,7 @@ public class TwitterRetrieval extends HttpServlet {
                 props.load(stream);
             }
             ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone);
+            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
 
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 d = MAX_TITLE_LENGTH;
