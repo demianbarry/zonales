@@ -154,8 +154,10 @@ function initZonas(selZone) {
                 }).inject($('provincias'));
             });*/
         $('zoneExtended').addEvent('change', function(){
+
             if($('zoneExtended').value && $('zoneExtended').value.length > 0)
-                setZone(this.value, '', '', '');
+                //alert("ZONA: "+ $('zoneExtended').value);
+                setZone($('zoneExtended').value, '', '', '');
         //loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
         //zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
         });
@@ -264,7 +266,7 @@ function loadMunicipios(id_provincia, selZone) {
 
 function setZone(zoneExtended, zoneName, parentId, parentName) {
     //alert("SetZone. zoneId: " + zoneId + " zoneName: " + zoneName + " parendId: " + parentId + " parentName: " + parentName);
-    if (zoneExtended == null || typeof(zoneId) == 'undefined')
+    if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
         zoneExtended = '';
     if (zoneName == null || typeof(zoneName) == 'undefined')
         zoneName = '';
@@ -282,8 +284,10 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
     }
+    console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        //var zCtx = zcGetContext();
+        console.log('Despu�s de setear: ' + zCtx.selZone);
+
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
         /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -336,7 +340,7 @@ function loadMorePost(){
         if(typeof jsonObj != 'undefined') {
             //console.log('not undefined');
             updatePosts(jsonObj, $('postsContainer'),true);
-            zirClient.searching = false;            
+            zirClient.searching = false;
         } else {
         //console.log('undefined!');
         }
@@ -500,6 +504,7 @@ function incRelevance(id,relevance){
 
 
 function updatePosts(json, component, more) {
+    console.log(json);
     if(json.response.docs.length == 0)
         return;
     if(typeof(json) == 'undefined')
@@ -748,7 +753,7 @@ function updatePosts(json, component, more) {
             });
 
         }
-        var zone = post.zone;
+        var zone = post.zone.extendedString;
         var idButtonSetZone = 'buttonZone'+doc.id;
         var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Zona: ').inject(div_story_zone);
