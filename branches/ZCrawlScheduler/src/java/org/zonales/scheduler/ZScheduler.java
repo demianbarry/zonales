@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.scheduler;
 
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -45,7 +44,7 @@ public class ZScheduler {
         startScheduler(context);
         return zScheduler;
     }
-    
+
     public static void createScheduler(ServletContext context) throws SchedulerException, NamingException {
         StdSchedulerFactory sf = (StdSchedulerFactory) context.getAttribute(QuartzInitializerListener.QUARTZ_FACTORY_KEY);
         zScheduler = sf.getScheduler();
@@ -55,8 +54,9 @@ public class ZScheduler {
         if (zScheduler == null) {
             createScheduler(context);
         }
-        if (!zScheduler.isStarted())
+        if (!zScheduler.isStarted()) {
             zScheduler.start();
+        }
     }
 
     public static void stopScheduler() throws SchedulerException {
@@ -86,7 +86,7 @@ public class ZScheduler {
         if (zScheduler == null) {
             createScheduler(contex);
         }
-        
+
         //Recupero la gramática a partir del id
         HttpURLConnection connection = ConnHelper.getURLConnection(props.getProperty("ZCrawlSourcesURL") + "getZGram?id=" + zGramId, Integer.valueOf(props.getProperty("timeout")));
         String zGramJson;
@@ -107,61 +107,40 @@ public class ZScheduler {
 
         //Hago un mínimo control, porque si no está compilada la gramática no puedo extraer, por ende tampo puedo crear el Job
         //if (zgram.getEstado().equals(State.COMPILED) || zgram.getEstado().equals(State.PUBLISHED)) {
-            ZCrawling zcrawling = zgram;
-            Gson metadataGson = new Gson();
-            //Obtengo la URL para realizar la extracción
-            String metadata = metadataGson.toJson(zcrawling, ZCrawling.class);
+        ZCrawling zcrawling = zgram;
+        Gson metadataGson = new Gson();
+        //Obtengo la URL para realizar la extracción
+        String metadata = metadataGson.toJson(zcrawling, ZCrawling.class);
 
-            Logger.getLogger("ZCheduler").log(Level.INFO, "Creando Job: metadata: {0}", metadata);
+        Logger.getLogger("ZCheduler").log(Level.INFO, "Creando Job: metadata: {0}", metadata);
 
-            //Scheduler sched = ZScheduler.getScheduler(this.getServletContext());
+        //Scheduler sched = ZScheduler.getScheduler(this.getServletContext());
 
-            Logger.getLogger("ZCheduler").log(Level.INFO, "Creando Job para ID: {0}", zGramId);
+        Logger.getLogger("ZCheduler").log(Level.INFO, "Creando Job para ID: {0}", zGramId);
 
-            String tags = "";
-            Boolean first = true;
-            for (String tag : zgram.getTags()) {
-                if (first) {
-                    tags += tag;
-                    first = false;
-                } else {
-                    tags += ", " + tag;
-                }
+        String tags = "";
+        Boolean first = true;
+        for (String tag : zgram.getTags()) {
+            if (first) {
+                tags += tag;
+                first = false;
+            } else {
+                tags += ", " + tag;
             }
+        }
 
-            // define the job and tie it to our ZPublisher class
-            JobDetail job = newJob(ZPublisher.class)
-                .withIdentity(zGramId, props.getProperty("schedulerJobsGroup"))
-                .usingJobData("zGramId", zGramId)
-                .usingJobData("metadata", metadata)
-                .usingJobData("ZCrawlSourcesURL", props.getProperty("ZCrawlSourcesURL"))
-                .usingJobData("timeout", Integer.valueOf(props.getProperty("timeout")))
-                .usingJobData("solrURL", props.getProperty("solr_url"))
-                .usingJobData("zGramDescription", zgram.getDescripcion())
-                .usingJobData("zGramLocalidad", zgram.getLocalidad())
-                .usingJobData("zGramFuente", zgram.getFuente())
-                .usingJobData("zGramTags", tags)
-                .usingJobData("db_host", tags)
-                .usingJobData("db_port", tags)
-                .usingJobData("db_name", tags)
-                .build();
+        // define the job and tie it to our ZPublisher class
+        JobDetail job = newJob(ZPublisher.class).withIdentity(zGramId, props.getProperty("schedulerJobsGroup")).usingJobData("zGramId", zGramId).usingJobData("metadata", metadata).usingJobData("ZCrawlSourcesURL", props.getProperty("ZCrawlSourcesURL")).usingJobData("timeout", Integer.valueOf(props.getProperty("timeout"))).usingJobData("solrURL", props.getProperty("solr_url")).usingJobData("zGramDescription", zgram.getDescripcion()).usingJobData("zGramLocalidad", zgram.getLocalidad()).usingJobData("zGramFuente", zgram.getFuente()).usingJobData("zGramTags", tags).build();
 
 
-            Logger.getLogger("ZCheduler").log(Level.INFO, "Job creado para ID: {0}", zGramId);
+        Logger.getLogger("ZCheduler").log(Level.INFO, "Job creado para ID: {0}", zGramId);
 
-            Trigger trigger = newTrigger()
-                .withIdentity(zGramId, props.getProperty("schedulerJobsGroup"))
-                .startNow()
-                .withSchedule(simpleSchedule()
-                    .withIntervalInMinutes(zgram.getPeriodicidad())
-                    .repeatForever())
-                .build();
+        Trigger trigger = newTrigger().withIdentity(zGramId, props.getProperty("schedulerJobsGroup")).startNow().withSchedule(simpleSchedule().withIntervalInMinutes(zgram.getPeriodicidad()).repeatForever()).build();
 
-            zScheduler.scheduleJob(job, trigger);
-            resp = ZMessages.SUCCESS.toString();
+        zScheduler.scheduleJob(job, trigger);
+        resp = ZMessages.SUCCESS.toString();
         //}
 
         return resp;
     }
-
 }

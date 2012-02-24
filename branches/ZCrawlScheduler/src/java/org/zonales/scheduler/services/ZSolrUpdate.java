@@ -30,7 +30,6 @@ import org.zonales.entities.Post;
 import org.zonales.entities.Posts;
 import org.zonales.entities.SolrPost;
 import org.zonales.tagsAndZones.daos.ZoneDao;
-import org.zonales.tagsAndZones.objects.Zone;
 
 /**
  *
@@ -40,6 +39,7 @@ public final class ZSolrUpdate extends BaseService {
 
     private static CommonsHttpSolrServer server;
     private Gson gson;
+    ZoneDao zoneDao;
 
     public ZSolrUpdate(String solrUrl) throws MalformedURLException {
         setServer(solrUrl);
@@ -104,10 +104,9 @@ public final class ZSolrUpdate extends BaseService {
         }
     }
 
-    public void indexPost(List<String> ids, String db_host, Integer db_port, String db_name) throws SolrServerException, IOException {
+    public void indexPost(List<String> ids) throws SolrServerException, IOException {
         SolrPost oldSolrPost = null;
-        ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
-        SolrQuery query = new SolrQuery();        
+        SolrQuery query = new SolrQuery();
         query.setQuery("!source:xxxxxxxx");
         if (ids != null && ids.size() > 0) {
             String queryString = " AND id:(";
@@ -123,19 +122,6 @@ public final class ZSolrUpdate extends BaseService {
             Post postIn = gson.fromJson(solrPost.getVerbatim(), Post.class);
             Logger.getLogger(
                     this.getClass().getName()).log(Level.INFO, "Objeto Post creado: {0}", gson.toJson(postIn));
-            Zone zone = null;
-            if (postIn.getZone().getExtendedString() != null && !postIn.getZone().getExtendedString().trim().equals("")) {
-                zone = zoneDao.retrieveByExtendedString(postIn.getZone().getExtendedString().replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
-                postIn.getZone().setId(String.valueOf(zone.getId()));
-                postIn.getZone().setName(zone.getName());
-                postIn.getZone().setType(zone.getType().getName());
-            } else {
-                zone = zoneDao.retrieve(postIn.getZone().getName().replace(" ", "_").replace("+"," ").toLowerCase());
-                postIn.getZone().setId(String.valueOf(zone.getId()));
-                postIn.getZone().setType(zone.getType().getName());
-                postIn.getZone().setExtendedString(zone.getExtendedString());
-            }
-
             SolrPost newSolrPost = new SolrPost();
             postToSolr(newSolrPost, postIn);
 
@@ -174,16 +160,21 @@ public final class ZSolrUpdate extends BaseService {
     }
 
     public void postToSolr(SolrPost solrPost, Post post) {
-        solrPost.setDocType(post.getDocType());
         solrPost.setId(post.getId());
+        solrPost.setDocType(post.getDocType());
+        org.zonales.entities.Zone zone = post.getZone();
+        if (zone != null) {
+            if (zone.getId() == null || "".equals(zone.getId()) || zone.getName() == null || "".equals(zone.getName()) || zone.getType() == null || "".equals(zone.getType())) {
+                org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.getExtendedString());
+                zone.setId(String.valueOf(zoneObj.getId()));
+                zone.setName(zoneObj.getName());
+                zone.setType(zoneObj.getType().getName());
+            }
 
-        if (post.getZone() != null) {
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
             solrPost.setZoneExtendedString(post.getZone().getExtendedString());
-
-
         }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
@@ -191,14 +182,10 @@ public final class ZSolrUpdate extends BaseService {
         solrPost.setFromUserName(post.getFromUser().getName());
         solrPost.setFromUserCategory(post.getFromUser().getCategory());
         solrPost.setFromUserUrl(post.getFromUser().getUrl());
-
-
         if (post.getFromUser().getPlace() != null) {
             solrPost.setFromUserPlaceId(post.getFromUser().getPlace().getId());
             solrPost.setFromUserPlaceName(post.getFromUser().getPlace().getName());
             solrPost.setFromUserPlaceType(post.getFromUser().getPlace().getType());
-
-
         }
         solrPost.setModified(new Date(post.getModified()));
         solrPost.setRelevance(post.getRelevance());
@@ -223,7 +210,8 @@ public final class ZSolrUpdate extends BaseService {
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String ids = req.getParameter("ids");
-            indexPost(ids != null && !"".equals(ids) ? Arrays.asList(ids.split(",")) : null, props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            indexPost(ids != null && !"".equals(ids) ? Arrays.asList(ids.split(",")) : null);
         } catch (SolrServerException ex) {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
         }
