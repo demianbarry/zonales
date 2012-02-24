@@ -162,7 +162,8 @@ module.exports.setSelectedZone = function setSelectedZone(sessionId, zone, callb
 	
 	try {
 		contexts[sessionId].selZone = zone;
-		getEfectiveZone(contexts[sessionId].zTab, zone, function(efZone) {
+		contexts[sessionId].efZone = zone;
+		/*getEfectiveZone(contexts[sessionId].zTab, zone, function(efZone) {
 		   if (efZone != null) {			
 				contexts[sessionId].efZone = efZone.id;
 			} else {
@@ -170,7 +171,8 @@ module.exports.setSelectedZone = function setSelectedZone(sessionId, zone, callb
 			}
 			callback(efZone);
 			return(this);
-		});
+		});*/
+		callback(zone);
 	} catch (err) {
 		console.log('Error al setear la zona seleccionada -> ' + err);
 		callback(errors.zctxError);

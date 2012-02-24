@@ -104,6 +104,17 @@ module.exports.countSolrPost = function countSolrPost(tab, zone, callback){
 	});    
 }
 
+module.exports.retrieveSolrPosts = function retrieveSolrPosts(tab, zone, callback){
+     console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
+
+    urlSolr = getSolrUrl(tab, zone);
+    
+    zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
+        //var jsonObj = eval('(' + response + ')');
+        callback(jsonObj);
+    });    
+}
+
 function getSolrHost() {
     return host;
 }
