@@ -59,9 +59,16 @@ public class GetZone extends BaseService {
                         if (zone == null && state == null) {
                             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de las zonas");
                             retrieve = zoneDao.retrieveAll(true);
-                         } else {
+                        } else {
                             retrieve = zoneDao.retrieveJson(zone, state, true);
-                         }
+                        }
+                    } else if ("allExtendedStrings".equals(name)) {
+                        if (zone == null && state == null) {
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de las zonas");
+                            retrieve = zoneDao.retrieveAllExtendedStrings();
+                        } else {
+                            retrieve = zoneDao.retrieveJson(zone, state, true);
+                        }
                     } else {
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la zona {0}", new Object[]{name});
                         retrieve = zoneDao.retrieveJson(name);
@@ -85,7 +92,7 @@ public class GetZone extends BaseService {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                     "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
 
-            out.print(ZMessages.MONGODB_ERROR);            
+            out.print(ZMessages.MONGODB_ERROR);
         } finally {
             if (out != null) {
                 out.close();
