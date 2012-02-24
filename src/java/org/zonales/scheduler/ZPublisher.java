@@ -24,7 +24,6 @@ import org.zonales.errors.ZMessages;
 import org.zonales.helpers.ConnHelper;
 import org.zonales.metadata.ZCrawling;
 import org.zonales.scheduler.exceptions.ExtractException;
-import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /**
  *
@@ -37,9 +36,6 @@ public class ZPublisher implements Job {
         String zGramId = "";
         String zCrawlSourcesURL = "";
         Integer timeout = 0;
-        String db_host;
-        Integer db_port;
-        String db_name;
         org.zonales.tagsAndZones.objects.Zone zoneObj;
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SCHEDULER: Ejecutando Job: {0} - Class: {1}", new Object[]{jec.getJobDetail().getKey(), jec.getJobDetail().getJobClass()});
         try {
@@ -50,9 +46,6 @@ public class ZPublisher implements Job {
             String metadata = jobDetail.getJobDataMap().getString("metadata");
             zCrawlSourcesURL = jobDetail.getJobDataMap().getString("ZCrawlSourcesURL");
             timeout = jobDetail.getJobDataMap().getInt("timeout");
-            db_host = jobDetail.getJobDataMap().getString("db_host");;
-            db_port = jobDetail.getJobDataMap().getInt("db_port");;
-            db_name = jobDetail.getJobDataMap().getString("db_name");;
             ZExtractor extractor = new ZExtractor();
             Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Sali de extractor");
@@ -65,11 +58,6 @@ public class ZPublisher implements Job {
                 }
             } else {
                 ultimoHitDeExtraccion = new Date().getTime();
-            }
-
-            ZoneDao zoneDao = new ZoneDao(db_host, db_port, db_name);
-            for (Post post : posts.getPost()) {
-                zoneObj = zoneDao.retrieveByExtendedString(post.getExtendedString().replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
             }
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts size: {0}", posts.getPost().size());

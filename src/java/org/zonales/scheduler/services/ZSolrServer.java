@@ -30,6 +30,8 @@ import org.zonales.BaseService;
 import org.zonales.entities.Post;
 import org.zonales.entities.Posts;
 import org.zonales.entities.SolrPost;
+import org.zonales.entities.Zone;
+import org.zonales.tagsAndZones.daos.ZoneDao;
 
 /**
  *
@@ -39,6 +41,7 @@ public final class ZSolrServer extends BaseService {
 
     private static CommonsHttpSolrServer server;
     private Gson gson;
+    private ZoneDao zoneDao;
 
     public ZSolrServer(String solrUrl) throws MalformedURLException {
         setServer(solrUrl);
@@ -257,7 +260,15 @@ public final class ZSolrServer extends BaseService {
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setId(post.getId());
         solrPost.setDocType(post.getDocType());
-        if (post.getZone() != null) {
+        Zone zone = post.getZone();
+        if (zone != null) {
+            if(zone.getId() == null || "".equals(zone.getId()) || zone.getName() == null || "".equals(zone.getName()) || zone.getType() == null || "".equals(zone.getType())) {
+                org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.getExtendedString());
+                zone.setId(String.valueOf(zoneObj.getId()));
+                zone.setName(zoneObj.getName());
+                zone.setType(zoneObj.getType().getName());
+            }
+                
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
@@ -298,6 +309,8 @@ public final class ZSolrServer extends BaseService {
             setServer(solrURL);
             String json = req.getParameter("doc").replace("\\\"", "\"").replace("\\'", "\"");
             Post post = gson.fromJson(json, Post.class);
+            
+            zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}\n-----------> Post: {1}", new Object[]{json, post});
 
