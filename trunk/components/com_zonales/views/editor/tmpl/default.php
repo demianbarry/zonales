@@ -70,11 +70,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         </tr>
                         <tr>
                             <td class="label"><label>Creado</label></td>
-                            <td class="input"><input type="text" id="created" value="" readonly="true"></input></td>
+                            <td class="input"><input type="text" id="created" value=""></input></td>   <!-- readonly="true" -->
                         </tr>
                         <tr>
                             <td class="label"><label>Modificado</label></td>
-                            <td class="input"><input type="text" id="modified" value="" readonly="true"></input></td>
+                            <td class="input"><input type="text" id="modified" value=""></input></td>  <!-- readonly="true" -->
                         </tr>
 
                         <tr>
@@ -106,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Zona</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off">
+                                <input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, extendedStrings);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>

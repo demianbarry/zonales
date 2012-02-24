@@ -29,6 +29,13 @@ function User(){
     this.url = '';
 }
 
+function Zone(){
+    this.id = '';
+    this.name = '';
+    this.type = '';
+    this.extendedString = '';
+}
+
 function Content(id){
     this.source = 'Zonales';
     this.id = id ? id : null;
@@ -39,7 +46,7 @@ function Content(id){
     this.modified = '';    
     this.relevance = 0;
     this.tags = new Array();
-    this.zone = '';
+    this.zone = new Zone();
     this.state = 'created';    
 }
 
@@ -90,10 +97,21 @@ function refreshContent(){
     zContent.id = $('id').value;
     zContent.title = $('title').value;    
     zContent.text = CKEDITOR.instances.text.getData();
-    zContent.created = (new Date($('created').value ? $('created').value.substr(3,2) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6) : new Date())).getTime();
-    zContent.modified = (new Date()).getTime();
-    zContent.tags = $('tags').value.split(',');    
-    zContent.zone = $('zone').value;
+    if (!$('created').value) {
+        $('created').value = getReadableDateIncMonth(new Date());
+    }
+    zContent.created = (new Date((parseInt($('created').value.substr(3,2)) + 1) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6))).getTime();
+    //zContent.modified = (new Date()).getTime();
+    if (!$('modified').value) {
+        $('modified').value = getReadableDateIncMonth(new Date());
+    }
+    zContent.modified = (new Date((parseInt($('modified').value.substr(3,2)) + 1) + "/" + $('modified').value.substr(0,2) + "/" + $('modified').value.substr(6))).getTime();
+    zContent.tags = $('tags').value.split(',');
+
+    if(zContent.zone === undefined){
+        zContent.zone = new Zone();
+    }
+    zContent.zone.extendedString = $('zone').value;
 }
 
 function refreshForm(){
@@ -106,7 +124,7 @@ function refreshForm(){
     $('created').value = getReadableDate(zContent.created ? new Date(parseInt(zContent.created)) : new Date());
     $('modified').value = getReadableDate(zContent.modified ? new Date(parseInt(zContent.modified)) : new Date());
     $('tags').value = zContent.tags ? zContent.tags.join(',') : '';
-    $('zone').value = zContent.zone ? zContent.zone : '';
+    $('zone').value = zContent.zone ? zContent.zone.extendedString : '';
 }
 
 function getContent(id){
@@ -157,9 +175,9 @@ function saveContent(){
                 if(response.id && response.id.length > 0){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guard� correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guard? correctamente el documento con el ID "+zContent.id);                    
                 } else {
-                    alert("Ocurri� un error al intentar guardar el documento: "+response);
+                    alert("Ocurri? un error al intentar guardar el documento: "+response);
                     zContent.state = 'created';
                 }
             }
@@ -216,7 +234,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'Título'
+        'html' : 'T�tulo'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'
@@ -290,7 +308,7 @@ function makeContentTable(jsonObj, container){
 function loadPosts(container){
     if(searching)
         return;
-    urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=20&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Zonales)";
+    urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=200&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Zonales)";
     var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(urlSolr);
 
     new Request.JSON({
