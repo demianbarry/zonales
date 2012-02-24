@@ -49,6 +49,12 @@ function initZCtx(callback) {
             });
         });
     });
+    socket.on('solrPosts', function (response) {
+        if($('postsContainer')){
+            $('postsContainer').empty();
+            updatePosts(response, $('postsContainer'));
+        }        
+    });  
 }
 
 /*function zcSetContext(context) {
@@ -292,12 +298,12 @@ function zcSetTab(tab) {
 
     //Persisto el contexto en el servidor
     if(socket)
-    socket.emit('setTabToCtx', {
-        sessionId: sessionId, 
-        tab: tab
-    }, function(response) {
-        var resp = eval('(' + response + ')');
-    });
+        socket.emit('setTabToCtx', {
+            sessionId: sessionId, 
+            tab: tab
+        }, function(response) {
+            var resp = eval('(' + response + ')');
+        });
 }
 
 function zcGetTab() {
