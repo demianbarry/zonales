@@ -98,14 +98,14 @@ function refreshContent(){
     zContent.title = $('title').value;    
     zContent.text = CKEDITOR.instances.text.getData();
     if (!$('created').value) {
-        $('created').value = getReadableDateIncMonth(new Date());
+        $('created').value = getReadableDate(new Date());
     }
-    zContent.created = (new Date((parseInt($('created').value.substr(3,2)) + 1) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6))).getTime();
+    zContent.created = (new Date($('created').value.substr(3,2) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6))).getTime();
     //zContent.modified = (new Date()).getTime();
     if (!$('modified').value) {
-        $('modified').value = getReadableDateIncMonth(new Date());
+        $('modified').value = getReadableDate(new Date());
     }
-    zContent.modified = (new Date((parseInt($('modified').value.substr(3,2)) + 1) + "/" + $('modified').value.substr(0,2) + "/" + $('modified').value.substr(6))).getTime();
+    zContent.modified = (new Date($('modified').value.substr(3,2) + "/" + $('modified').value.substr(0,2) + "/" + $('modified').value.substr(6))).getTime();
     zContent.tags = $('tags').value.split(',');
 
     if(zContent.zone === undefined){

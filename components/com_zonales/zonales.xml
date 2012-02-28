@@ -37,6 +37,7 @@
         <filename>ZContext.php</filename>
         <filename>ZContext.js</filename>
         <filename>solr.js</filename>
+        <filename>map.js</filename>
 
         <filename>views/index.html</filename>
         <filename>views/zonal/view.html.php</filename>
