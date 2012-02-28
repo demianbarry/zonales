@@ -104,7 +104,7 @@ function getSolrUrl(tab, zone, zCtx) {
     var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
     getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
     getSolrSources(tab)+
-    getSolrZones(zone)+
+    getSolrZones()+
     getSolrBoosting(zCtx);
 
     return urlSolr;
