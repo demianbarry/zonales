@@ -383,6 +383,7 @@ module.exports.tryEvent = function tryEvent(client) {
 	client.on('setSelectedZoneToCtx', function(data, fn) {
 		console.log('Recibí evento setSelectedZoneToCtx, zone = ' + data.zone);
 		zContextService.setSelectedZone(data.sessionId, data.zone, function (response) {
+                    console.log(response);
 			fn(response);
 			loadPostsFromSolr(client, data.sessionId);
 		});
@@ -569,8 +570,9 @@ module.exports.tryEvent = function tryEvent(client) {
 
 function loadPostsFromSolr(client, sessionId){
 	zContextService.getZCtx(sessionId, function(zCtx){
-		solrService.retrieveSolrPosts(zCtx.tab, zCtx.efZone, function(resp){
-			client.emit('solrPosts',{response: resp});
+		solrService.retrieveSolrPosts(zCtx, function(resp){
+                    if(typeof(resp) != 'undefined')
+			client.emit('solrPosts',{response: resp.response});
 		}); 
 	});
 }

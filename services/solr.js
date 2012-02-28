@@ -1,8 +1,9 @@
 var zProxy = require('./zProxy');
+var zContextService = require('./ZContext');
 
 var host = "localhost";
 var port = 38080;
-var rows = 0;
+var rows = 20;
 
 function setFirstIndexTime(time) {
     firstIndexTime = time;
@@ -67,16 +68,13 @@ function getSolrSources(myTab){
     }
 
     return res;
-
-
 }
 
-function getSolrZones(myZone)
-{
+function getSolrZones(myZone) {
     if(typeof(myZone) == 'undefined' || !myZone || myZone == '')
         return "";
 
-    var res  = '+AND+zone:"';
+    var res  = '+AND+zoneExtendedString:"';
     res += myZone.replace(/_/g, ' ').capitalize();
     res += '"';
 
@@ -84,35 +82,54 @@ function getSolrZones(myZone)
 
 }
 
-function getSolrUrl(tab, zone) {
+function getSolrBoosting(zCtx) {
+    if(!zCtx || !zCtx.selZone || zCtx.selZone == '')
+        return "";
+
+    var res  = '&bq=';
+    var extendedString = zCtx.selZone;
+    var boost = "";
+    
+    do {
+        boost += '+zoneExtendedString:"'+extendedString+'"^'+Math.pow(1000,extendedString.split(',').length);
+        boost += '+zonePartialExtendedString:'+'", '+extendedString+'"^'+Math.pow(1000,extendedString.split(',').length);
+        extendedString = extendedString.substr(extendedString.indexOf(', ')+2);
+    }while(extendedString.indexOf(',') > 0);    
+    
+
+    return res + boost;
+}
+
+function getSolrUrl(tab, zone, zCtx) {
     var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
     getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
     getSolrSources(tab)+
-    getSolrZones(zone);
+    getSolrZones(zone)+
+    getSolrBoosting(zCtx);
 
     return urlSolr;
 }
 
 module.exports.countSolrPost = function countSolrPost(tab, zone, callback){
-	 console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
-
-    urlSolr = getSolrUrl(tab, zone);
-    
-	zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
-		//var jsonObj = eval('(' + response + ')');
-		callback(jsonObj.response.numFound);
-	});    
-}
-
-module.exports.retrieveSolrPosts = function retrieveSolrPosts(tab, zone, callback){
-     console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
+    console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
 
     urlSolr = getSolrUrl(tab, zone);
     
     zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
         //var jsonObj = eval('(' + response + ')');
-        callback(jsonObj);
+        callback(jsonObj.response.numFound);
     });    
+}
+
+module.exports.retrieveSolrPosts = function retrieveSolrPosts(zCtx, callback){
+    //console.log("ESTOY EN SOLR. tab: " + tab + "zone: " + zone);
+    var urlSolr = getSolrUrl(zCtx.zTab, zCtx.selZone, zCtx);
+    console.log("=========> URL SORL"+ urlSolr);
+    
+    zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
+        //var jsonObj = eval('(' + response + ')');
+        callback(jsonObj);
+    });
 }
 
 function getSolrHost() {

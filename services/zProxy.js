@@ -26,7 +26,9 @@ module.exports.execute = function execute(host, port, path, method, callback){
             res.on('end', function() {
     		       console.log('BODY: ' + response);
                console.log("------------------------------------------------------------------------------------------");
-               var jsonObj = JSON.parse(response);
+               if (res.statusCode == 200) {
+                    var jsonObj = JSON.parse(response);
+               }
                callback(jsonObj);
                return(this);
   		      });
