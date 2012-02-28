@@ -207,8 +207,10 @@ function ZIRClient(){
                 this.searching = false;                
                 jsonObj.response.docs.each(function(doc) {
                     var verbatim = eval('(' + doc.verbatim + ')');
+                    alert("TYPE ZONE: " + typeof(verbatim.zone));
+                    alert("ZONE: " + JSON.stringify(verbatim.zone));
                     if (typeof(verbatim.zone) == 'object') {
-                        verbatim.zone = verbatim.zone.name;
+                        verbatim.zone = verbatim.zone.extendedString;
                         doc.verbatim = JSON.stringify(verbatim);
                     }
                 });

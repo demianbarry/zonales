@@ -138,7 +138,7 @@ function zcUncheckSource(source){
         sessionId: sessionId,
         source: source
     }, function(response) {
-
+        
     });
 }
 
@@ -159,7 +159,7 @@ function zcAddTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-
+       
     });
 }
 
@@ -180,7 +180,7 @@ function zcUncheckTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-
+        
     });
 }
 
@@ -279,7 +279,7 @@ function zcSetTemp(temp) {
         sessionId: sessionId,
         temp: temp
     }, function(response) {
-
+        
     });
 }
 
@@ -295,7 +295,7 @@ function zcSetTab(tab) {
             sessionId: sessionId,
             tab: tab
         }, function(response) {
-
+            
         });
 }
 

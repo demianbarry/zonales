@@ -153,8 +153,7 @@ function initZonas(selZone) {
                     'html': provincia.name.replace(/_/g, ' ').capitalize()
                 }).inject($('provincias'));
             });*/
-        $('zoneExtended').addEvent('change', function(){
-
+        $('zoneExtended').addEvent('click', function(){            
             if($('zoneExtended').value && $('zoneExtended').value.length > 0)
                 //alert("ZONA: "+ $('zoneExtended').value);
                 setZone($('zoneExtended').value, '', '', '');
@@ -287,7 +286,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
         console.log('Despu�s de setear: ' + zCtx.selZone);
-
+        
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
         /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -340,7 +339,7 @@ function loadMorePost(){
         if(typeof jsonObj != 'undefined') {
             //console.log('not undefined');
             updatePosts(jsonObj, $('postsContainer'),true);
-            zirClient.searching = false;
+            zirClient.searching = false;            
         } else {
         //console.log('undefined!');
         }
