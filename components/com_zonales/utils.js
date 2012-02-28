@@ -136,7 +136,6 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 }
 
 var zTags = new Array();
-
 function getAllTags(){
     var url = servletUri + "/getTag?name=allNames";
     var urlProxy = proxy + encodeURIComponent(url);
@@ -170,7 +169,7 @@ function getAllExtendedStrings(){
 }
 getAllTags();
 getAllExtendedStrings();
-function populateOptions(event, field, add, elmts){
+function populateOptions(event, field, add, elmts, callback){
     var container;
     if((container = field.getNext()) == null) {
         container = new Element('div', {
@@ -184,10 +183,15 @@ function populateOptions(event, field, add, elmts){
             } else {
                 var value = container.getElement('.selected').get('html').trim();
                 var fieldValue = field.get('value');
-                if(fieldValue.indexOf(',') != -1)
+                if(fieldValue.indexOf(',') != -1) {
                     field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
-                else
+                    if(callback)
+                        callback(field.get('value'));
+                } else {                    
                     field.set('value', value);
+                    if(callback)
+                        callback(field.get('value'));
+                }
             }
             container.empty();
             break;
