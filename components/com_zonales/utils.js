@@ -180,16 +180,18 @@ function populateOptions(event, field, add, elmts, callback){
         case 13:
             if(!add) {
                 field.set('value', container.getElement('.selected').get('html'));
+                if(typeof callback == 'function')
+                        callback(field.get('value'));
             } else {
                 var value = container.getElement('.selected').get('html').trim();
                 var fieldValue = field.get('value');
                 if(fieldValue.indexOf(',') != -1) {
                     field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
-                    if(callback)
+                    if(typeof callback == 'function')
                         callback(field.get('value'));
-                } else {                    
+                } else {
                     field.set('value', value);
-                    if(callback)
+                    if(typeof callback == 'function')
                         callback(field.get('value'));
                 }
             }

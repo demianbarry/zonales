@@ -25,10 +25,10 @@ span#z_provincias_container{
 
 
 </style>
-<form style="margin: 0; padding: 0;" class="combo_zonal_form" name="formComboZona" id="formComboZona" method="post" action="index.php">
+<div style="margin: 0; padding: 0;" class="combo_zonal_form" name="formComboZona" id="formComboZona" method="post" action="index.php" autocomplete="off">
 
     <span id="z_provincias_container" style="position: absolute; left: 49%;">
-        <input class="text" id="zoneExtended" type="text" value="Seleccione una zona..." style="width: 300px;" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){setZone(zone)});"
+        <input class="text" id="zoneExtended" type="text" value="Seleccione una zona..." style="width: 300px;" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){alert(zone); setZone(zone, '', '', '')});"
                onfocus="if(this.value=='Seleccione una zona...') this.value='';" >
 
     </span>
@@ -38,4 +38,4 @@ span#z_provincias_container{
     <input type="hidden" value="setZonalById" name="task">
     <input type="hidden" value="com_zonales" name="option">
     <?php echo JHTML::_('form.token'); ?>
-</form>
+</div>
