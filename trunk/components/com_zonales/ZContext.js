@@ -55,6 +55,12 @@ function initZCtx(callback) {
             updatePosts(response, $('postsContainer'));
         }
     });
+    socket.on('solrMorePosts', function (response) {
+        if($('postsContainer')){
+            zirClient.searching=false;
+            updatePosts(response, $('postsContainer'), true);
+        }
+    });
 }
 
 /*function zcSetContext(context) {
@@ -118,7 +124,7 @@ function zcAddSource(source){
         source: source
     }, function(response) {
 
-    });
+        });
 }
 
 function zcUncheckSource(source){
@@ -138,8 +144,8 @@ function zcUncheckSource(source){
         sessionId: sessionId,
         source: source
     }, function(response) {
-        
-    });
+
+        });
 }
 
 function zcAddTag(tag){
@@ -159,8 +165,8 @@ function zcAddTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-       
-    });
+
+        });
 }
 
 function zcUncheckTag(tag){
@@ -180,8 +186,8 @@ function zcUncheckTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-        
-    });
+
+        });
 }
 
 function zcGetTags() {
@@ -279,8 +285,8 @@ function zcSetTemp(temp) {
         sessionId: sessionId,
         temp: temp
     }, function(response) {
-        
-    });
+
+        });
 }
 
 function zcSetTab(tab) {
@@ -295,8 +301,8 @@ function zcSetTab(tab) {
             sessionId: sessionId,
             tab: tab
         }, function(response) {
-            
-        });
+
+            });
 }
 
 function zcGetTab() {
