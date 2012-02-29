@@ -210,6 +210,11 @@ public final class ZSolrUpdate extends BaseService {
             String solrURL = req.getParameter("url");
             setServer(solrURL);
             String ids = req.getParameter("ids");
+            
+            String query = req.getParameter("q");            
+            
+            String doc = req.getParameter("d");
+            
             zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             indexPost(ids != null && !"".equals(ids) ? Arrays.asList(ids.split(",")) : null);
         } catch (SolrServerException ex) {
