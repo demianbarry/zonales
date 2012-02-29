@@ -3,7 +3,7 @@ var zContextService = require('./ZContext');
 
 var host = "localhost";
 var port = 38080;
-var rows = 20;
+var rows = 200;
 
 function setFirstIndexTime(time) {
     firstIndexTime = time;
@@ -92,12 +92,14 @@ function getSolrBoosting(zCtx) {
     
     do {
         boost += '+zoneExtendedString:"'+extendedString+'"^'+Math.pow(1000,extendedString.split(',').length);
-        boost += '+zonePartialExtendedString:'+'", '+extendedString+'"^'+Math.pow(1000,extendedString.split(',').length);
+        boost += '+zonePartialExtendedString:'+extendedString+'"^'+Math.pow(10,extendedString.split(',').length);
         extendedString = extendedString.substr(extendedString.indexOf(', ')+2);
-    }while(extendedString.indexOf(',') > 0);    
+    }while(extendedString.indexOf(',') > 0);
+    boost += '+zoneExtendedString:"'+extendedString+'"^'+Math.pow(1000,extendedString.split(',').length);
+    boost += '+zonePartialExtendedString:'+extendedString+'"^'+Math.pow(10,extendedString.split(',').length);
     
-
-    return res + boost;
+    
+    return res + boost.replace(/\ /g,"+");
 }
 
 function getSolrUrl(tab, zone, zCtx) {
