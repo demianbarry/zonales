@@ -111,7 +111,7 @@ function initVista(zCtx){
 function initAll() {
     initZCtx(function(zCtx) {
         tab = zcGetTab();
-        setZone(zCtx.selZone, zcGetSelectedZoneName());
+        //setZone(zCtx.selZone, zcGetSelectedZoneName());
         initZonas(zCtx.selZone);
         initVista(zCtx);
     });
@@ -339,17 +339,7 @@ function loadPost(first){
 
 function loadMorePost(){
     console.log('loadMorePost');
-    zirClient.loadSolrPost(tab, zcGetEfectiveZoneName(), true, function(jsonObj) {
-        if(typeof jsonObj != 'undefined') {
-            //console.log('not undefined');
-            updatePosts(jsonObj, $('postsContainer'),true);
-            zirClient.searching = false;
-        } else {
-        //console.log('undefined!');
-        }
-        armarTitulo(tab);
-    //console.log('loadMorePost callback ' + zirClient.searching);
-    });
+    zirClient.loadMoreSolrPost();
 }
 
 function searchPost(keyword, zone) {
