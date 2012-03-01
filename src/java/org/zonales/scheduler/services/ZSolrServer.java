@@ -257,6 +257,28 @@ public final class ZSolrServer extends BaseService {
         }
     }
 
+    public void updateDate(String q, Long newDate) throws IOException {
+        try {
+            SolrQuery query = new SolrQuery();
+            query.setQuery(q);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Query: {0}", q);
+            QueryResponse rsp = server.query(query);
+            if (rsp.getResults().getNumFound() > 0) {
+                for (SolrPost oldSolrPost : rsp.getBeans(SolrPost.class)) {
+                    Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                    post.setCreated(newDate);
+                    post.setModified(newDate);
+                    SolrPost newSolrPost = new SolrPost();
+                    postToSolr(newSolrPost, post);
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                    indexSolrPost(oldSolrPost, newSolrPost);
+                }
+            }
+        } catch (SolrServerException ex) {
+            Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setId(post.getId());
         solrPost.setDocType(post.getDocType());
@@ -307,8 +329,12 @@ public final class ZSolrServer extends BaseService {
             resp.setCharacterEncoding("UTF-8");
             String solrURL = req.getParameter("url");
             setServer(solrURL);
-            String json = req.getParameter("doc").replace("\\\"", "\"").replace("\\'", "\"");
-            Post post = gson.fromJson(json, Post.class);
+            String json = req.getParameter("doc");
+            Post post = null;
+
+            if (json != null) {
+                post = gson.fromJson(json.replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+            }
             
             zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
@@ -332,9 +358,15 @@ public final class ZSolrServer extends BaseService {
                 updateRelevance(post.getId(), Integer.valueOf(relevance));
             }
 
+            String query = req.getParameter("q");
+            String newDate = req.getParameter("newDate");
+            if (query != null && newDate != null) {
+                updateDate(query, Long.parseLong(newDate));
+            }
+
             if (aTags
                     == null && rTag
-                    == null && relevance == null) {
+                    == null && relevance == null && query == null && newDate == null) {
                 indexPost(post);
             }
 
