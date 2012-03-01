@@ -1,4 +1,3 @@
-<script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js">
 <!--
 
 
