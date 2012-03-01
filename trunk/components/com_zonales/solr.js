@@ -207,8 +207,8 @@ function ZIRClient(){
                 this.searching = false;
                 jsonObj.response.docs.each(function(doc) {
                     var verbatim = eval('(' + doc.verbatim + ')');
-                    alert("TYPE ZONE: " + typeof(verbatim.zone));
-                    alert("ZONE: " + JSON.stringify(verbatim.zone));
+                    //alert("TYPE ZONE: " + typeof(verbatim.zone));
+                    //alert("ZONE: " + JSON.stringify(verbatim.zone));
                     if (typeof(verbatim.zone) == 'object') {
                         verbatim.zone = verbatim.zone.extendedString;
                         doc.verbatim = JSON.stringify(verbatim);
@@ -232,6 +232,20 @@ function ZIRClient(){
                 method: 'GET'
             });
         }
+    }
+    
+    this.loadMoreSolrPost=function(){
+        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+        console.log(this.searching);
+        if(this.searching) {
+            return;
+        } else {
+            this.searching = true;
+            socket.emit('loadMorePost', {
+                sessionId: sessionId,
+                method: 'GET'
+            });     
+        }        
     }
 
     this.getSolrHost=function() {

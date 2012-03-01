@@ -189,7 +189,7 @@ function populateOptions(event, field, add, elmts, callback){
                     field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
                     if(typeof callback == 'function')
                         callback(field.get('value'));
-                } else {
+                } else {                    
                     field.set('value', value);
                     if(typeof callback == 'function')
                         callback(field.get('value'));
