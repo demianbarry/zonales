@@ -96,8 +96,10 @@ public final class ZSolrServer extends BaseService {
         }
     }
 
-    public void indexPosts(Posts posts) throws SolrServerException, IOException {
+    public void indexPosts(Posts posts, String db_host, Integer db_port, String db_name) throws SolrServerException, IOException {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando posts en server: {0}", server.getBaseURL());
+
+        zoneDao = new ZoneDao(db_host, db_port, db_name);
 
         //String postsJson = postGson.toJson(posts);
 
@@ -283,6 +285,7 @@ public final class ZSolrServer extends BaseService {
         solrPost.setId(post.getId());
         solrPost.setDocType(post.getDocType());
         Zone zone = post.getZone();
+        Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, "------------>ZONE: {0}", zone);
         if (zone != null) {
             if(zone.getId() == null || "".equals(zone.getId()) || zone.getName() == null || "".equals(zone.getName()) || zone.getType() == null || "".equals(zone.getType())) {
                 org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.getExtendedString());
