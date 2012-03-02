@@ -156,4 +156,11 @@ public class Zone {
     public void setExtendedString(String value) {
         this.extendedString = value;
     }
+
+    @Override
+    public String toString() {
+        return "Zone{" + "id=" + id + "name=" + name + "type=" + type + "extendedString=" + extendedString + '}';
+    }
+
+    
 }
