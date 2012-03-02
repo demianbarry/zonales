@@ -1,8 +1,7 @@
 function ZIRClient(){
     this.host = "localhost";
     this.port = 38080;
-    this.searching = false;
-    this.searchKeyword = "";
+    this.searching = false;    
     this.firstIndexTime = null;
     this.lastIndexTime = null;
     this.minRelevance = null;
@@ -17,12 +16,12 @@ function ZIRClient(){
         return this.rows;
     };
     this.addIdToSolrSearch=function(id){
-        this.ids.push(id);
+        this.ids.push(id);    
     }
-    this.clearSolrIds=function(){
-        this.ids.empty();
+    this.clearSolrIds=function(){        
+        this.ids.empty();        
     }
-
+ 
     this.setFirstIndexTime=function(time) {
         this.firstIndexTime = time;
     }
@@ -53,14 +52,6 @@ function ZIRClient(){
 
     this.getMinRelevance=function() {
         return this.minRelevance;
-    }
-
-    this.setSearchKeyword=function(keyword) {
-        this.searchKeyword = keyword;
-    }
-
-    this.getSearchKeyword=function() {
-        return this.searchKeyword;
     }
 
     this.getSolrDate=function(millis){
@@ -153,7 +144,7 @@ function ZIRClient(){
                     res = '&fq=modified:[*+TO+'+ reduceMilli(this.firstModifiedTime.replace('Z', '.000Z')) + ']';
                 } else {
                     res = '&fq=indexTime:[*+TO+'+reduceMilli(this.firstIndexTime)+']';
-               }
+                }
             }
         }
 
@@ -168,7 +159,7 @@ function ZIRClient(){
         }
         return res;
     }
-
+    
     this.getSolrBoostQuery =function (myTab){
         var res = '';
         /*if(myTab=='portada') {
@@ -196,15 +187,15 @@ function ZIRClient(){
         } else {
             this.searching = true;
             var urlSolr = this.getSolrUrl(tab, zone, more, this.getSearchKeyword());
-            console.log(urlSolr);
+            console.log(urlSolr);        
             socket.emit('proxyExecute', {
-                host: this.host,
-                port: this.port,
-                path: urlSolr,
+                host: this.host, 
+                port: this.port, 
+                path: urlSolr, 
                 method: 'GET'
             }, function(jsonObj) {
                 console.log(jsonObj);
-                this.searching = false;
+                this.searching = false;                
                 jsonObj.response.docs.each(function(doc) {
                     var verbatim = eval('(' + doc.verbatim + ')');
                     //alert("TYPE ZONE: " + typeof(verbatim.zone));
@@ -215,23 +206,9 @@ function ZIRClient(){
                     }
                 });
                 //console.log('Callback emit '+this.searching);
-                callback(jsonObj);
-            });
-        }
-    }
-
-    this.loadMoreSolrPost=function(){
-        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
-        console.log(this.searching);
-        if(this.searching) {
-            return;
-        } else {
-            this.searching = true;
-            socket.emit('loadMorePost', {
-                sessionId: sessionId,
-                method: 'GET'
-            });
-        }
+                callback(jsonObj);        
+            });     
+        }        
     }
     
     this.loadMoreSolrPost=function(){
@@ -241,11 +218,33 @@ function ZIRClient(){
             return;
         } else {
             this.searching = true;
-            socket.emit('loadMorePost', {
+            socket.emit('loadMorePosts', {
                 sessionId: sessionId,
                 method: 'GET'
             });     
         }        
+    }
+    
+    this.loadNewSolrPost=function(){
+        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+        console.log(this.searching);
+        if(this.searching) {
+            return;
+        } else {
+            this.searching = true;
+            socket.emit('loadNewPosts', {
+                sessionId: sessionId,
+                method: 'GET'
+            });     
+        }        
+    }
+    
+    this.resetStart=function(){
+        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!                
+        socket.emit('resetStart', {
+            sessionId: sessionId,
+            method: 'GET'
+        });  
     }
 
     this.getSolrHost=function() {
@@ -448,9 +447,9 @@ function loadSolrPost(tab, zone, more, callback){
     var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
 
     socket.emit('proxyExecute', {
-        host: host,
-        port: port,
-        path: urlSolr,
+        host: host, 
+        port: port, 
+        path: urlSolr, 
         method: 'GET'
     }, function(jsonObj) {
         console.log(jsonObj);

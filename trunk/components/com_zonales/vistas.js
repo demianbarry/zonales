@@ -7,7 +7,6 @@ var tab = "";
 var zoneInitiated = false;
 var zUserGroups = new Array();
 var postInterval = null;
-var reverseFlag = false;
 
 window.addEvent('domready', function() {
     if($('postsContainer'))
@@ -15,16 +14,18 @@ window.addEvent('domready', function() {
 });
 
 function initVista(zCtx){
+    
     if($('postsContainer'))
         $('postsContainer').empty();
     if($('newPostsContainer'))
         $('newPostsContainer').empty();
     $('verNuevos').setStyle('display','none');
+    zirClient.resetStart();
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);
-    zirClient.setSearchKeyword("");
+    zirClient.setMinRelevance(null);    
     initFilters(zCtx);
+    //zCtx.setSearchKeyword("");
     if(zCtx.zTab == ''){
         tab = 'portada';
         zcSetTab('portada');
@@ -37,8 +38,8 @@ function initVista(zCtx){
             style: 'display:none'
         });
         $('verMas').setStyle('display','block');
-        //loadPost(true);
-        //setZone(zCtx.selZone, zcGetSelectedZoneName());
+    //loadPost(true);
+    //setZone(zCtx.selZone, zcGetSelectedZoneName());
     } else {
         $('postsDiv').set({
             style: 'display:none'
@@ -125,7 +126,7 @@ function initPost() {
             postInterval = null;
         }
         postInterval = setInterval(function () {
-            loadPost(false);
+            zirClient.loadNewSolrPost();
         }, 60000);
     } else {
         if(postInterval) {
@@ -133,8 +134,8 @@ function initPost() {
             postInterval = null;
         }
     }
-    //loadPost(true);
-    getAllTags();
+//loadPost(true);
+//getAllTags();
 }
 
 function initFilters(zCtx) {
@@ -150,14 +151,14 @@ function initZonas(selZone) {
         if (zcGetContext().selZone != '') {
             $('zoneExtended').value = zcGetContext().selZone;
         }
-        /*getProvincias(function(provincias) {
+    /*getProvincias(function(provincias) {
             provincias.each(function(provincia) {
                 new Element('option', {
                     'value': provincia.id,
                     'html': provincia.name.replace(/_/g, ' ').capitalize()
                 }).inject($('provincias'));
             });*/
-        /*$('zoneExtended').addEvent('click', function(){
+    /*$('zoneExtended').addEvent('click', function(){
             if($('zoneExtended').value && $('zoneExtended').value.length > 0)
                 //alert("ZONA: "+ $('zoneExtended').value);
                 setZone($('zoneExtended').value, '', '', '');
@@ -280,8 +281,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
 
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);
-    zirClient.setSearchKeyword("");
+    zirClient.setMinRelevance(null);    
     $('zonalesSearchword').value = "buscar...";
     if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
         $('postsContainer').empty();
@@ -291,11 +291,11 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
         console.log('Despuï¿½s de setear: ' + zCtx.selZone);
         
-        //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-        /*if (tab != 'geoActivos' && $('postsContainer')) {
+    //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+    /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
         }*/
-        });
+    });
 }
 
 function onTempoChange() {
@@ -315,26 +315,8 @@ function complete(number){
 }
 
 function loadPost(first){
-    //alert("LoadPost: " + JSON.stringify(zcGetContext()));
-    zirClient.loadSolrPost(tab, zcGetEfectiveZoneName(), false, function(jsonObj) {
-        if(typeof jsonObj != 'undefined'){
-            if(first){
-                updatePosts(jsonObj,$('postsContainer'));
-                armarTitulo(tab);
-            }
-            else {
-                updatePosts(jsonObj,$('newPostsContainer'));
-                if($('newPostsContainer').childNodes.length > 0){
-                    $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
-                    $('verNuevos').setStyle('display','block');
-                } else{
-                    $('verNuevos').setStyle('display','none');
-                }
-            }
-            zirClient.searching = false;
-        }
-    //console.log('loadPost callback ' + zirClient.searching);
-    });
+//alert("LoadPost: " + JSON.stringify(zcGetContext()));
+    
 }
 
 function loadMorePost(){
@@ -343,36 +325,12 @@ function loadMorePost(){
 }
 
 function searchPost(keyword, zone) {
-    if (keyword != 'buscar...' && keyword != '') {
+    if (keyword != 'buscar...' && keyword != '') {        
         zirClient.setFirstIndexTime(null);
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
-        zirClient.setSearchKeyword(keyword);
-        if (tab != 'geoActivos' && $('postsContainer')) {
-            $('postsContainer').empty();
-            $('newPostsContainer').empty();
-        }
-        zirClient.loadSolrPost(tab, zone, false, function(jsonObj) {
-            if(jsonObj.response.docs.length > 0) {
-                updatePosts(jsonObj, $('postsContainer'),true);
-            } else {
-                if (zcGetContext().efZone != '') {
-                    new Element('label', {
-                        'html': 'No se encontraron resultados para su bÃºsqueda en la zona seleccionada'
-                    }).inject($('postsContainer'));
-                    new Element('input', {
-                        'type': 'button',
-                        'onclick': 'searchPost("' + keyword + '","")',
-                        'value': 'Buscar en todas las zonas'
-                    }).inject($('postsContainer'));
-                } else {
-                    new Element('label', {
-                        'html': 'No se encontraron resultados para su bÃºsqueda'
-                    }).inject($('postsContainer'));
-                }
-            }
-            armarTitulo(tab);
-        });
+        zCtx.setSearchKeyword(keyword);
+        //zirClient.setSearchKeyword(keyword);            
     }
 }
 
@@ -497,273 +455,276 @@ function incRelevance(id,relevance){
 
 
 function updatePosts(json, component, more) {
-    if (reverseFlag) {
-        var docs = json.response.docs.reverse();
-        reverseFlag = false;
-        console.log(docs);
+    var docs = null;
+    if (!more)
+        docs = json.response.docs.reverse();
+    else
+        docs = json.response.docs;
+    //reverseFlag = false;
+    console.log(docs);
 
-        if(docs.length == 0)
-            return;
-        if(typeof(json) == 'undefined')
-            return;
-        if(typeof more == 'undefined' || !more) {
-            //docs = docs/.reverse();
-            if(!zirClient.getFirstIndexTime()) {
-                zirClient.setFirstIndexTime(docs.pick().indexTime);
-            }
-        } else {
-            zirClient.setFirstIndexTime(docs.getLast().indexTime);
+    if(docs.length == 0)
+        return;
+    if(typeof(json) == 'undefined')
+        return;
+    if(typeof more == 'undefined' || !more) {
+        //docs = docs/.reverse();
+        if(!zirClient.getFirstIndexTime()) {
+            zirClient.setFirstIndexTime(docs.pick().indexTime);
         }
-        //alert(JSON.stringify(docs));
-        docs.each(function(doc){
-            var time = new Date(doc.indexTime).getTime();
-            zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
-            var modified = doc.modified;
-            zirClient.setFirstModifiedTime((modified < zirClient.getFirstModifiedTime()) ||  zirClient.getFirstModifiedTime() == null ? modified : zirClient.getFirstModifiedTime());
-            var post = eval('('+doc.verbatim+')');
-            var div_story_item = new Element('div', {
-                'id': 'si_' + doc.id
-            }).addClass('story-item').addClass('group').addClass(post.source),
-            div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
-            div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
-            div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
-            div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
-            div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
-            span_relevance = new Element('span',{
-                "id":"relevance_"+doc.id
-            }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
-            div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
-            div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
-            div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
-            div_story_item_idPost = new Element('div', {
-                'html': doc.id,
-                'id':'idPostDiv'
-            }).addClass('group').inject(div_story_item).setStyle('display','none'),
-            div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
-            table_story_item = new Element('table').inject(div_story_item_header),
-            tr_story_title = new Element('tr').inject(table_story_item),
-            td_story_title = new Element('td').inject(tr_story_title),
-            h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
-            a_title = new Element('a', {
-                'target': '_blank',
-                'href' : getTarget(post)
-            }).set('html',post.title).inject(h3_story_item_title),
-            span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
-            tr_story_description = new Element('tr').inject(table_story_item),
-            //td_story_image = new Element('td').inject(tr_story_description),
-            td_story_description = new Element('td').inject(tr_story_description),
-            p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
-            a_story_item_source = new Element('a', {
-                'target': '_blank'
-            }).set('html','').addClass('story-item-source').inject(p_story_item_description),
-            a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
-            a_story_item_icon_image = new Element('img',{
-                'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
-            }).inject(a_story_item_icon).addClass('source_logo'),
-            a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + getVerMas(post.text.trim()) : '').addClass('story-item-teaser').inject(a_story_item_source, 'after'),
-            ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
-            li_story_submitter = new Element('li', {}).set('html','Publicado en  ').addClass('story-item-submitter').inject(ul_story_item_meta).setStyle('display', post.fromUser.name ? 'block' : 'none'),
-            a_story_submitter = new Element('a', {
-                'target': '_blank',
-                'href': post.fromUser.url
-            }).set('html',post.source).inject(li_story_submitter),
-            span_storyitem_modified_real = new Element('span', {
-                'html': modified,
-                'style': 'display:none'
-            }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
-            span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
-            span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
-            div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
-            div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
-            div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
+    } else {
+        zirClient.setFirstIndexTime(docs.getLast().indexTime);
+    }
+    //alert(JSON.stringify(docs));
+    docs.each(function(doc){
+        var time = new Date(doc.indexTime).getTime();
+        zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
+        var modified = doc.modified;
+        zirClient.setFirstModifiedTime((modified < zirClient.getFirstModifiedTime()) ||  zirClient.getFirstModifiedTime() == null ? modified : zirClient.getFirstModifiedTime());
+        var post = eval('('+doc.verbatim+')');
+        var div_story_item = new Element('div', {
+            'id': 'si_' + doc.id
+        }).addClass('story-item').addClass('group').addClass(post.source),
+        div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
+        div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
+        div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
+        div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
+        div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
+        span_relevance = new Element('span',{
+            "id":"relevance_"+doc.id
+        }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
+        div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
+        div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
+        div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
+        div_story_item_idPost = new Element('div', {
+            'html': doc.id,
+            'id':'idPostDiv'
+        }).addClass('group').inject(div_story_item).setStyle('display','none'),
+        div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
+        table_story_item = new Element('table').inject(div_story_item_header),
+        tr_story_title = new Element('tr').inject(table_story_item),
+        td_story_title = new Element('td').inject(tr_story_title),
+        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
+        a_title = new Element('a', {
+            'target': '_blank',
+            'href' : getTarget(post)
+        }).set('html',post.title).inject(h3_story_item_title),
+        span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
+        tr_story_description = new Element('tr').inject(table_story_item),
+        //td_story_image = new Element('td').inject(tr_story_description),
+        td_story_description = new Element('td').inject(tr_story_description),
+        p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
+        a_story_item_source = new Element('a', {
+            'target': '_blank'
+        }).set('html','').addClass('story-item-source').inject(p_story_item_description),
+        a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
+        a_story_item_icon_image = new Element('img',{
+            'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
+        }).inject(a_story_item_icon).addClass('source_logo'),
+        a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + getVerMas(post.text.trim()) : '').addClass('story-item-teaser').inject(a_story_item_source, 'after'),
+        ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
+        li_story_submitter = new Element('li', {}).set('html','Publicado en  ').addClass('story-item-submitter').inject(ul_story_item_meta).setStyle('display', post.fromUser.name ? 'block' : 'none'),
+        a_story_submitter = new Element('a', {
+            'target': '_blank',
+            'href': post.fromUser.url
+        }).set('html',post.source).inject(li_story_submitter),
+        span_storyitem_modified_real = new Element('span', {
+            'html': modified,
+            'style': 'display:none'
+        }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
+        span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+        span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
+        div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
+        div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
+        div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
 
-            if(typeOf(post.actions) == 'array') {
-                post.actions.each(function(action){
-                    switch (action.type) {
-                        case 'comment':
-                            var li_story_item_comments = new Element('li', {}).set('html',action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
-                            new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
-                            break;
-                        case 'like':
-                            var li_story_item_likes = new Element('li', {}).set('html',action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
-                            new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
-                            break;
-                        case 'retweets':
-                            var li_story_item_retweets = new Element('li', {}).set('html',action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
-                            new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
-                            break;
-                        case 'replies':
-                            var li_story_item_replies = new Element('li', {}).set('html',action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
-                            new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
-                            break;
-                    }
-                });
+        if(typeOf(post.actions) == 'array') {
+            post.actions.each(function(action){
+                switch (action.type) {
+                    case 'comment':
+                        var li_story_item_comments = new Element('li', {}).set('html',action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
+                        new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
+                        break;
+                    case 'like':
+                        var li_story_item_likes = new Element('li', {}).set('html',action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
+                        new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
+                        break;
+                    case 'retweets':
+                        var li_story_item_retweets = new Element('li', {}).set('html',action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
+                        new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
+                        break;
+                    case 'replies':
+                        var li_story_item_replies = new Element('li', {}).set('html',action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
+                        new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
+                        break;
+                }
+            });
+        }
+
+        div_zonales_count_wrapper_up.addEvent('click',function(){
+            var inc = 1;
+            if(zUserGroups.length == 0 || zUserGroups[0] == ''){
+                if(confirm('Debe registrarse para otorgar puntos!')) {
+                    window.location.href='/index.php/component/users/?view=registration';
+                }
+            }else {
+                if(zUserGroups.indexOf("4") != -1){
+                    inc = prompt('Indique en cuanto desea incrementar la relevancia','1');
+                }
+                incRelevance(doc.id,inc);
             }
+        });
 
-            div_zonales_count_wrapper_up.addEvent('click',function(){
-                var inc = 1;
-                if(zUserGroups.length == 0 || zUserGroups[0] == ''){
-                    if(confirm('Debe registrarse para otorgar puntos!')) {
-                        window.location.href='/index.php/component/users/?view=registration';
-                    }
+        div_zonales_count_wrapper_down.addEvent('click',function(){
+            var inc = 1;
+            if(zUserGroups.length == 0 || zUserGroups[0] == ''){
+                if(confirm('Debe registrarse para otorgar puntos!')) {
+                    window.location.href='/index.php/component/users/?view=registration';
+                }
+            }else{
+                if(zUserGroups.indexOf("4") != -1){
+                    inc = prompt('Indique en cuanto desea decrementar la relevancia','1');
+                }
+                incRelevance(doc.id,inc*(parseInt(inc) > 0 ? (-1): 1));
+            }
+        });
+
+        var postLinks;
+
+        switch(post.source.toLowerCase()) {
+            case 'facebook':
+                postLinks =	post.links;
+                break;
+            default:
+                postLinks =	post.links;
+        }
+
+        var a_thumb = new Element('a', {
+            'href': getTarget(post),
+            'target': '_blank'
+        });
+
+        if(typeOf(postLinks) == 'array') {
+            postLinks.each(function(link){
+                switch (link.type) {
+                    case 'picture':
+                        if(a_thumb.childNodes.length == 0 && link.url) {
+                            a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
+                            img = new Element('img', {
+                                'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
+                            }).inject(a_thumb);
+                        }
+                        break;
+                    case 'video':
+                        var li_story_item_video = new Element('li').addClass('story-item-video').inject(ul_story_item_meta),
+                        a_story_item_video = new Element('a', {
+                            'href': link.url,
+                            'target': '_blank'
+                        }).addClass('story-item-video').inject(li_story_item_video);
+                        new Element('img', {
+                            'src': 'http://www.prophecycoal.com/images/video_icon.jpg',
+                            'alt': 'Video',
+                            'title': 'Video'
+                        }).addClass('story-item-video-icon').inject(a_story_item_video);
+                        break;
+                    case 'link':
+                        var li_story_item_link = new Element('li').addClass('story-item-link').inject(ul_story_item_meta),
+                        a_story_item_link = new Element('a', {
+                            'href': link.url,
+                            'target': '_blank'
+                        }).set('html','Mas info...').addClass('story-item-link').inject(li_story_item_link);
+                        break;
+                }
+            });
+        }
+
+        //  var date = new Date(parseInt(post.created));
+        //  new Element('li', {}).set('html','Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
+
+        // date = new Date(parseInt(post.modified));
+
+
+        var tags = post.tags;
+        var div_story_tags = new Element('div',{
+            'id':'tagsDiv_'+doc.id
+        }).addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Tags: ').inject(div_story_tags);
+        if(typeOf(tags) == 'array') {
+            tags.each(function(tag){
+                var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
+                new Element('a', {
+                    'html': tag,
+                    'onclick': 'ckeckOnlyTag("' + tag + '");'
+                }).inject(span_tags);
+                div_story_item.addClass(tag);
+                if(zUserGroups.indexOf("4") != -1) {
+                    var del_tag_img = new Element('img',{
+                        'src': '/images/eliminar.png'
+                    }).inject(span_tags).addClass('delete_tag');
+                    del_tag_img.addEvent('click', function(){
+                        if(confirm('Realmente desea eliminar el tag '+tag)){
+                            delTagFromPost(doc.id, tag);
+                        }
+                    });
+                }
+            });
+        }
+        var idInputTag = doc.id;
+        var idButtonAddTags = 'buttonTags_'+doc.id;
+        if(zUserGroups.indexOf("4") != -1){
+            var a_edit = new Element('a', {
+                'target': '_blank',
+                'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
+            }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
+            a_edit_image = new Element('img',{
+                'src': '/media/system/images/edit.png'
+            }).inject(a_edit).addClass('edit_img');
+            var span_addTags = new Element('span',{
+                'id':'addTags_'+doc.id
+            }).inject(div_story_tags);
+            var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
+            addTagsButton.addEvent('click',function(){
+                if ( $(idInputTag).style.display == "none"){
+                    $(idInputTag).setStyle("display","inline");
+                    $(idButtonAddTags).setStyle("display","inline");
+                    $(idInputTag).focus();
                 }else {
-                    if(zUserGroups.indexOf("4") != -1){
-                        inc = prompt('Indique en cuanto desea incrementar la relevancia','1');
-                    }
-                    incRelevance(doc.id,inc);
+                    $(idInputTag).setStyle("display","none");
+                    $(idButtonAddTags).setStyle("display","none");
                 }
             });
 
-            div_zonales_count_wrapper_down.addEvent('click',function(){
-                var inc = 1;
-                if(zUserGroups.length == 0 || zUserGroups[0] == ''){
-                    if(confirm('Debe registrarse para otorgar puntos!')) {
-                        window.location.href='/index.php/component/users/?view=registration';
-                    }
-                }else{
-                    if(zUserGroups.indexOf("4") != -1){
-                        inc = prompt('Indique en cuanto desea decrementar la relevancia','1');
-                    }
-                    incRelevance(doc.id,inc*(parseInt(inc) > 0 ? (-1): 1));
-                }
+            var selectedTag = new Element('input',{
+                'id':idInputTag,
+                'style':'display:none',
+                'onkeyup':'populateOptions(event,this,true,zTags)',
+                'value':''
+            }).inject(span_addTags);
+
+            var confimAddTagButton = new Element('img', {
+                'id':idButtonAddTags,
+                'style':'display:none',
+                'src': '/CMUtils/addIcon.gif'
+            }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
+            confimAddTagButton.addEvent('click',function(){
+                show_confirm(idInputTag,$(idInputTag).value,tags);
+                $(idInputTag).value = '';
             });
 
-            var postLinks;
+        }
+        var zone = post.zone.extendedString;
+        var idButtonSetZone = 'buttonZone'+doc.id;
+        var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Zona: ').inject(div_story_zone);
+        var span_zone = new Element('span').inject(div_story_zone);
+        new Element('a', {
+            'id':'zonePost',
+            'href': ''
+        }).set('html',zone).inject(span_zone);
+        var idInputZone = 'zone_'+doc.id;
+        var span_addZone = new Element('span').inject(div_story_zone);
 
-            switch(post.source.toLowerCase()) {
-                case 'facebook':
-                    postLinks =	post.links;
-                    break;
-                default:
-                    postLinks =	post.links;
-            }
-
-            var a_thumb = new Element('a', {
-                'href': getTarget(post),
-                'target': '_blank'
-            });
-
-            if(typeOf(postLinks) == 'array') {
-                postLinks.each(function(link){
-                    switch (link.type) {
-                        case 'picture':
-                            if(a_thumb.childNodes.length == 0 && link.url) {
-                                a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
-                                img = new Element('img', {
-                                    'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
-                                }).inject(a_thumb);
-                            }
-                            break;
-                        case 'video':
-                            var li_story_item_video = new Element('li').addClass('story-item-video').inject(ul_story_item_meta),
-                            a_story_item_video = new Element('a', {
-                                'href': link.url,
-                                'target': '_blank'
-                            }).addClass('story-item-video').inject(li_story_item_video);
-                            new Element('img', {
-                                'src': 'http://www.prophecycoal.com/images/video_icon.jpg',
-                                'alt': 'Video',
-                                'title': 'Video'
-                            }).addClass('story-item-video-icon').inject(a_story_item_video);
-                            break;
-                        case 'link':
-                            var li_story_item_link = new Element('li').addClass('story-item-link').inject(ul_story_item_meta),
-                            a_story_item_link = new Element('a', {
-                                'href': link.url,
-                                'target': '_blank'
-                            }).set('html','Mas info...').addClass('story-item-link').inject(li_story_item_link);
-                            break;
-                    }
-                });
-            }
-
-            //  var date = new Date(parseInt(post.created));
-            //  new Element('li', {}).set('html','Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
-
-            // date = new Date(parseInt(post.modified));
-
-
-            var tags = post.tags;
-            var div_story_tags = new Element('div',{
-                'id':'tagsDiv_'+doc.id
-            }).addClass('cp_tags').inject(div_story_item_content);
-            new Element('span').set('html','Tags: ').inject(div_story_tags);
-            if(typeOf(tags) == 'array') {
-                tags.each(function(tag){
-                    var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
-                    new Element('a', {
-                        'html': tag,
-                        'onclick': 'ckeckOnlyTag("' + tag + '");'
-                    }).inject(span_tags);
-                    div_story_item.addClass(tag);
-                    if(zUserGroups.indexOf("4") != -1) {
-                        var del_tag_img = new Element('img',{
-                            'src': '/images/eliminar.png'
-                        }).inject(span_tags).addClass('delete_tag');
-                        del_tag_img.addEvent('click', function(){
-                            if(confirm('Realmente desea eliminar el tag '+tag)){
-                                delTagFromPost(doc.id, tag);
-                            }
-                        });
-                    }
-                });
-            }
-            var idInputTag = doc.id;
-            var idButtonAddTags = 'buttonTags_'+doc.id;
-            if(zUserGroups.indexOf("4") != -1){
-                var a_edit = new Element('a', {
-                    'target': '_blank',
-                    'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
-                }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
-                a_edit_image = new Element('img',{
-                    'src': '/media/system/images/edit.png'
-                }).inject(a_edit).addClass('edit_img');
-                var span_addTags = new Element('span',{
-                    'id':'addTags_'+doc.id
-                }).inject(div_story_tags);
-                var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
-                addTagsButton.addEvent('click',function(){
-                    if ( $(idInputTag).style.display == "none"){
-                        $(idInputTag).setStyle("display","inline");
-                        $(idButtonAddTags).setStyle("display","inline");
-                        $(idInputTag).focus();
-                    }else {
-                        $(idInputTag).setStyle("display","none");
-                        $(idButtonAddTags).setStyle("display","none");
-                    }
-                });
-
-                var selectedTag = new Element('input',{
-                    'id':idInputTag,
-                    'style':'display:none',
-                    'onkeyup':'populateOptions(event,this,true,zTags)',
-                    'value':''
-                }).inject(span_addTags);
-
-                var confimAddTagButton = new Element('img', {
-                    'id':idButtonAddTags,
-                    'style':'display:none',
-                    'src': '/CMUtils/addIcon.gif'
-                }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
-                confimAddTagButton.addEvent('click',function(){
-                    show_confirm(idInputTag,$(idInputTag).value,tags);
-                    $(idInputTag).value = '';
-                });
-
-            }
-            var zone = post.zone.extendedString;
-            var idButtonSetZone = 'buttonZone'+doc.id;
-            var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
-            new Element('span').set('html','Zona: ').inject(div_story_zone);
-            var span_zone = new Element('span').inject(div_story_zone);
-            new Element('a', {
-                'id':'zonePost',
-                'href': ''
-            }).set('html',zone).inject(span_zone);
-            var idInputZone = 'zone_'+doc.id;
-            var span_addZone = new Element('span').inject(div_story_zone);
-
-            /*if(zUserGroups.indexOf("4") != -1){
+        /*if(zUserGroups.indexOf("4") != -1){
                 new Element('a',{
                     'onclick':'if ( $("'+idInputZone+'").style.display == "none"){ $("'+idInputZone+'").setStyle("display","inline"); $("'+idButtonSetZone+'").setStyle("display","inline");}else{ $("'+idInputZone+'").setStyle("display","none"); $("'+idButtonSetZone+'").setStyle("display","none");}'
                 }).set('html','Set Zone').inject(span_addZone);
@@ -781,58 +742,58 @@ function updatePosts(json, component, more) {
                 }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
             }*/
 
-            if(!$('chk'+post.source)) {
-                var tr = new Element('tr');
-                new Element('input', {
-                    'id': 'chk'+post.source,
-                    'type': 'checkbox',
-                    'checked': 'checked',
-                    'value': post.source,
-                    'onclick':'setSourceVisible(this.value, this.checked);'
-                }).inject(new Element('td').inject(tr));
-                new Element('td', {
-                    'html': post.source
-                }).inject(tr);
-                if (tab == "enlared" || tab == "relevantes" )
-                    tr.inject($('enLaRed'));
-                else
-                    tr.inject($('noticiasEnLaRed'));
+        if(!$('chk'+post.source)) {
+            var tr = new Element('tr');
+            new Element('input', {
+                'id': 'chk'+post.source,
+                'type': 'checkbox',
+                'checked': 'checked',
+                'value': post.source,
+                'onclick':'setSourceVisible(this.value, this.checked);'
+            }).inject(new Element('td').inject(tr));
+            new Element('td', {
+                'html': post.source
+            }).inject(tr);
+            if (tab == "enlared" || tab == "relevantes" )
+                tr.inject($('enLaRed'));
+            else
+                tr.inject($('noticiasEnLaRed'));
 
-                zcAddSource(post.source);
-            }
+            zcAddSource(post.source);
+        }
 
-            if (typeof (post.tags) != 'undefined') {
-                post.tags.each(function(tag) {
-                    if(!$('chkt'+tag)) {
-                        var tr = new Element('tr');
-                        new Element('input', {
-                            'id': 'chkt'+tag,
-                            'type': 'checkbox',
-                            'checked': 'checked',
-                            'value': tag,
-                            'onclick':'setTagVisible(this.value, this.checked);'
-                        }).inject(new Element('td').inject(tr));
-                        new Element('td', {
-                            'html': tag
-                        }).inject(tr);
-                        tr.inject($('tagsFilterTable'));
+        if (typeof (post.tags) != 'undefined') {
+            post.tags.each(function(tag) {
+                if(!$('chkt'+tag)) {
+                    var tr = new Element('tr');
+                    new Element('input', {
+                        'id': 'chkt'+tag,
+                        'type': 'checkbox',
+                        'checked': 'checked',
+                        'value': tag,
+                        'onclick':'setTagVisible(this.value, this.checked);'
+                    }).inject(new Element('td').inject(tr));
+                    new Element('td', {
+                        'html': tag
+                    }).inject(tr);
+                    tr.inject($('tagsFilterTable'));
 
-                        zcAddTag(tag);
-                    }
-                });
-            }
-
-            if (zirClient.getMinRelevance() != null) {
-                if (parseInt(post.relevance) < zirClient.getMinRelevance()) {
-                    zirClient.setMinRelevance(parseInt(post.relevance));
+                    zcAddTag(tag);
                 }
-            } else {
+            });
+        }
+
+        if (zirClient.getMinRelevance() != null) {
+            if (parseInt(post.relevance) < zirClient.getMinRelevance()) {
                 zirClient.setMinRelevance(parseInt(post.relevance));
             }
+        } else {
+            zirClient.setMinRelevance(parseInt(post.relevance));
+        }
 
-            //div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
+        //div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
 
-            /*var insertado = false;
+        /*var insertado = false;
             var modifiedDate = new Date(modified).getMilliseconds();
             component.getElements('span.story-item-real-modified-date').each(function(count){
                 postModifiedDate = new Date(count.innerHTML).getMilliseconds();
@@ -845,17 +806,15 @@ function updatePosts(json, component, more) {
                 div_story_item.injectInside($('postsContainer'));
             }*/
 
-            if(typeof more == 'undefined' || !more) {
-                div_story_item.injectTop(component);
-            } else {
-                div_story_item.injectInside(component);
-            }
+        if(typeof more == 'undefined' || !more) {
+            div_story_item.injectTop(component);
+        } else {
+            div_story_item.injectInside(component);
+        }
 
-        });
-        refreshFiltro();
-    } else {
-        reverseFlag = true;
-    }
+    });
+    refreshFiltro();
+    
 }
 
 function show_confirm(idInputTag,selectedTag,tags)
