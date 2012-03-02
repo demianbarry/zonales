@@ -27,6 +27,22 @@ function ZContext(){
     this.zTab = "";
     this.selZone = "";
     this.efZone = "";
+    this.searchKeyword = "";
+    
+    this.setSearchKeyword=function(keyword) {
+        //Persisto el contexto en el servidor
+        socket.emit('addKeywordToZCtx', {
+            sessionId: sessionId,
+            keyword: keyword
+        },function(){
+            this.searchKeyword = keyword;
+        });
+        
+    }
+
+    this.getSearchKeyword=function() {
+        return this.searchKeyword;
+    }
 }
 
 function initZCtx(callback) {
@@ -34,7 +50,14 @@ function initZCtx(callback) {
     socket = io.connect(nodeURL);
     socket.on('connect', function () {
         socket.emit('getCtx', sessionId, function(zCtxFromServer) {
-            zCtx = zCtxFromServer;
+            if(!zCtx)
+                zCtx = new ZContext();
+            zCtx.filters = zCtxFromServer.filters;
+            zCtx.zTabs = zCtxFromServer.zTabs;
+            zCtx.zTab = zCtxFromServer.zTab;
+            zCtx.selZone = zCtxFromServer.selZone;
+            zCtx.efZone = zCtxFromServer.efZone;                
+            zCtx.searchKeyword = zCtxFromServer.searchKeyword;
             getZoneById(zCtx.selZone, function(selZone) {
                 if (typeof(selZone) != 'undefined' && selZone != null) {
                     selZoneName = selZone.name.replace(/_/g, ' ').capitalize();;
@@ -51,14 +74,28 @@ function initZCtx(callback) {
     });
     socket.on('solrPosts', function (response) {
         if($('postsContainer')){
+            zirClient.searching=false;
             $('postsContainer').empty();
             updatePosts(response, $('postsContainer'));
         }
     });
+    
     socket.on('solrMorePosts', function (response) {
-        if($('postsContainer')){
+        if($('postsContainer')){            
             zirClient.searching=false;
             updatePosts(response, $('postsContainer'), true);
+        }
+    });
+    socket.on('solrNewPosts', function (response) {
+        if($('newPostsContainer')){            
+            zirClient.searching=false;
+            updatePosts(response,$('newPostsContainer'));
+            if($('newPostsContainer').childNodes.length > 0){
+                $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
+                $('verNuevos').setStyle('display','block');
+            } else{
+                $('verNuevos').setStyle('display','none');
+            }
         }
     });
 }
@@ -144,7 +181,7 @@ function zcUncheckSource(source){
         sessionId: sessionId,
         source: source
     }, function(response) {
-
+        
         });
 }
 
@@ -164,9 +201,7 @@ function zcAddTag(tag){
     socket.emit('addTagToZCtx', {
         sessionId: sessionId,
         tag: tag
-    }, function(response) {
-
-        });
+    });
 }
 
 function zcUncheckTag(tag){
@@ -186,7 +221,7 @@ function zcUncheckTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-
+        
         });
 }
 
@@ -212,7 +247,7 @@ function zcGetCheckedSources() {
     return sources;
 }
 
-//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -223,7 +258,7 @@ function zcSearchSource(zCtx, sourceStr) {
     return -1;
 }
 
-//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){
@@ -285,7 +320,7 @@ function zcSetTemp(temp) {
         sessionId: sessionId,
         temp: temp
     }, function(response) {
-
+        
         });
 }
 
@@ -301,10 +336,14 @@ function zcSetTab(tab) {
             sessionId: sessionId,
             tab: tab
         }, function(response) {
-
+            
             });
 }
 
 function zcGetTab() {
     return zCtx.zTab;
+}
+
+function zcGetZone() {
+    return zCtx.selZone;
 }
