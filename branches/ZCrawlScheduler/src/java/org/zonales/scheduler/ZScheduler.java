@@ -130,7 +130,21 @@ public class ZScheduler {
         }
 
         // define the job and tie it to our ZPublisher class
-        JobDetail job = newJob(ZPublisher.class).withIdentity(zGramId, props.getProperty("schedulerJobsGroup")).usingJobData("zGramId", zGramId).usingJobData("metadata", metadata).usingJobData("ZCrawlSourcesURL", props.getProperty("ZCrawlSourcesURL")).usingJobData("timeout", Integer.valueOf(props.getProperty("timeout"))).usingJobData("solrURL", props.getProperty("solr_url")).usingJobData("zGramDescription", zgram.getDescripcion()).usingJobData("zGramLocalidad", zgram.getLocalidad()).usingJobData("zGramFuente", zgram.getFuente()).usingJobData("zGramTags", tags).build();
+        JobDetail job = newJob(ZPublisher.class).withIdentity(zGramId, 
+                props.getProperty("schedulerJobsGroup"))
+                .usingJobData("zGramId", zGramId)
+                .usingJobData("metadata", metadata)
+                .usingJobData("ZCrawlSourcesURL", props.getProperty("ZCrawlSourcesURL"))
+                .usingJobData("timeout", Integer.valueOf(props.getProperty("timeout")))
+                .usingJobData("solrURL", props.getProperty("solr_url"))
+                .usingJobData("zGramDescription", zgram.getDescripcion())
+                .usingJobData("zGramLocalidad", zgram.getLocalidad())
+                .usingJobData("zGramFuente", zgram.getFuente())
+                .usingJobData("zGramTags", tags)
+                .usingJobData("db_host", props.getProperty("db_host"))
+                .usingJobData("db_port", Integer.valueOf(props.getProperty("db_port")))
+                .usingJobData("db_name", props.getProperty("db_name"))
+                .build();
 
 
         Logger.getLogger("ZCheduler").log(Level.INFO, "Job creado para ID: {0}", zGramId);

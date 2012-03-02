@@ -46,6 +46,9 @@ public class ZPublisher implements Job {
             String metadata = jobDetail.getJobDataMap().getString("metadata");
             zCrawlSourcesURL = jobDetail.getJobDataMap().getString("ZCrawlSourcesURL");
             timeout = jobDetail.getJobDataMap().getInt("timeout");
+            String dbHost = jobDetail.getJobDataMap().getString("db_host");
+            Integer dbPort = jobDetail.getJobDataMap().getInt("db_port");
+            String dbName = jobDetail.getJobDataMap().getString("db_name");
             ZExtractor extractor = new ZExtractor();
             Posts posts = extractor.extract(zGramId, metadata, zCrawlSourcesURL, timeout);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Sali de extractor");
@@ -92,7 +95,7 @@ public class ZPublisher implements Job {
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts recuperados: {0}", posts.getPost().size());
 
-            server.indexPosts(posts);
+            server.indexPosts(posts, dbHost, dbPort, dbName);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Posts indexados");
 
         } catch (SolrServerException ex) {
