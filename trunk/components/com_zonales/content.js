@@ -234,7 +234,7 @@ function makeContentTable(jsonObj, container){
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'T�tulo'
+        'html' : 'T?tulo'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'

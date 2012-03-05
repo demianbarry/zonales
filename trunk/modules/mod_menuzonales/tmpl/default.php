@@ -4,15 +4,17 @@ defined('_JEXEC') or die('Restricted Access');
 ?>
 
 <script type="text/javascript" defer="defer">
+
     // <![CDATA[
-    function setTab(newTab){
-        tab = newTab;        
-        zcSetTab(newTab);
-        if(!$('postsContainer'))
-            window.location.href='/#';
-        else{
-            initVista(zcGetContext());
-        }
+    function setZTab(newTab){
+            tab = newTab;
+            zcSetTab(newTab);
+            if(!$('postsContainer'))
+                window.location.href='/#';
+            else{
+                console.log('setTab antes de initVista');
+                initVista(zcGetContext());
+            }
     }
     
     window.addEvent('domready', function(){
@@ -33,32 +35,7 @@ defined('_JEXEC') or die('Restricted Access');
                     $(layer).setStyle('display', 'block');
                 }
             }.pass(el.id));
-        });
-        
-        $('menuPortada').addEvent('click', function(){
-            setTab('portada');            
-        });
-        $('menuEnLaRed').addEvent('click', function(){
-            setTab('enlared');
-        });
-        $('menuNoticias').addEvent('click', function(){
-            setTab('noticiasenlared');
-        });
-        $('submenuEnLaRedNuevos').addEvent('click', function(){
-            setTab('enlared');
-        });
-        $('submenuEnLaRedRelevantes').addEvent('click', function(){
-            setTab('relevantes');
-        });
-        $('submenuNoticiasNuevas').addEvent('click', function(){
-            setTab('noticiasenlared');
-        });
-        $('submenuNoticiasRelevantes').addEvent('click', function(){
-            setTab('noticiasenlaredrelevantes');
-        });
-        $('menuMapa').addEvent('click', function(){
-            setTab('geoActivos');
-        });
+        });        
     });
     // ]]>
 </script>
@@ -66,22 +43,22 @@ defined('_JEXEC') or die('Restricted Access');
 <!-- glassmenu -->
 <div id="navigation">
     <ul id="mymenu">
-        <li id="s0"><a id="menuPortada" href="#"><?php echo JText::_('Portada'); ?></a></li>
-        <li id="s30"><a id="menuEnLaRed" href="#"><?php echo JText::_('En la Red'); ?></a></li>
-        <li id="s45"><a id="menuNoticias" href="#"><?php echo JText::_('Noticias'); ?></a></li>
-        <li id="s50"><a id="menuMapa" href="#"><?php echo JText::_('Mapa'); ?></a></li>
+        <li id="s0"><a id="menuPortada" onclick="setZTab('portada');" href="#"><?php echo JText::_('Portada'); ?></a></li>
+        <li id="s30"><a id="menuEnLaRed" onclick="setZTab('enlared');" href="#"><?php echo JText::_('En la Red'); ?></a></li>
+        <li id="s45"><a id="menuNoticias" onclick="setZTab('noticiasenlared');" href="#"><?php echo JText::_('Noticias'); ?></a></li>
+        <li id="s50"><a id="menuMapa" onclick="setZTab('geoActivos');" href="#"><?php echo JText::_('Mapa'); ?></a></li>
     </ul>
 </div>
 <div id="sublinks">
     <ul id="s0_m"></ul>
     <ul id="s30_m">
-        <li><a id="submenuEnLaRedNuevos" href="#">Posts nuevos</a></li>
-        <li><a id="submenuEnLaRedRelevantes" href="#">Post relevantes</a></li>
+        <li><a id="submenuEnLaRedNuevos" onclick="setZTab('enlared');" href="#">Posts nuevos</a></li>
+        <li><a id="submenuEnLaRedRelevantes" onclick="setZTab('relevantes');" href="#">Post relevantes</a></li>
     </ul>
 
     <ul id="s45_m">
-        <li><a id="submenuNoticiasNuevas" href="#">Noticias nuevas</a></li>
-        <li><a id="submenuNoticiasRelevantes" href="#">Noticias relevantes</a></li>
+        <li><a id="submenuNoticiasNuevas" onclick="setZTab('noticiasenlared');" href="#">Noticias nuevas</a></li>
+        <li><a id="submenuNoticiasRelevantes" onclick="setZTab('noticiasenlaredrelevantes');" href="#">Noticias relevantes</a></li>
     </ul>
     <!--<ul id="s50_m">
         <li><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos">Zonales Activos</a></li>

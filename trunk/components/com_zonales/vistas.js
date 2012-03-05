@@ -9,8 +9,10 @@ var zUserGroups = new Array();
 var postInterval = null;
 
 window.addEvent('domready', function() {
-    if($('postsContainer'))
+    if($('postsContainer')){
+        console.log('domready antes de initAll');
         initAll();
+    }
 });
 
 function initVista(zCtx){
@@ -20,12 +22,14 @@ function initVista(zCtx){
     if($('newPostsContainer'))
         $('newPostsContainer').empty();
     $('verNuevos').setStyle('display','none');
-    zirClient.resetStart();
+    //zirClient.resetStart();
+    console.log("======> 0");
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
     zirClient.setMinRelevance(null);    
+    console.log("======> 1");
     initFilters(zCtx);
-    //zCtx.setSearchKeyword("");
+    zCtx.setSearchKeyword("");
     if(zCtx.zTab == ''){
         tab = 'portada';
         zcSetTab('portada');
@@ -111,6 +115,11 @@ function initVista(zCtx){
 
 function initAll() {
     initZCtx(function(zCtx) {
+        console.log('Tab del ZContext: '+zCtx.zTab);        
+        if(!zCtx.zTab || zCtx.zTab == ""){
+            console.log('InitAll antes de setTab');
+            zcSetTab('portada');
+        }
         tab = zcGetTab();
         //setZone(zCtx.selZone, zcGetSelectedZoneName());
         initZonas(zCtx.selZone);
@@ -289,7 +298,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     }
     console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        console.log('Despuï¿½s de setear: ' + zCtx.selZone);
+        console.log('Despu�s de setear: ' + zCtx.selZone);
         
     //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
     /*if (tab != 'geoActivos' && $('postsContainer')) {
@@ -330,7 +339,7 @@ function searchPost(keyword, zone) {
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
         zCtx.setSearchKeyword(keyword);
-        //zirClient.setSearchKeyword(keyword);            
+    //zirClient.setSearchKeyword(keyword);            
     }
 }
 
@@ -1002,14 +1011,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
