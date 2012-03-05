@@ -58,7 +58,9 @@ function initZCtx(callback) {
             zCtx.selZone = zCtxFromServer.selZone;
             zCtx.efZone = zCtxFromServer.efZone;                
             zCtx.searchKeyword = zCtxFromServer.searchKeyword;
-            getZoneById(zCtx.selZone, function(selZone) {
+            selZoneName = efZoneName = zCtx.selZone.replace(/_/g, ' ').capitalize();
+            callback(zCtx);
+            /*getZoneById(zCtx.selZone, function(selZone) {
                 if (typeof(selZone) != 'undefined' && selZone != null) {
                     selZoneName = selZone.name.replace(/_/g, ' ').capitalize();;
                 }
@@ -69,7 +71,7 @@ function initZCtx(callback) {
                     callback(zCtx);
                     return(this);
                 });
-            });
+            });*/
         });
     });
     socket.on('solrPosts', function (response) {
@@ -247,7 +249,7 @@ function zcGetCheckedSources() {
     return sources;
 }
 
-//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -258,7 +260,7 @@ function zcSearchSource(zCtx, sourceStr) {
     return -1;
 }
 
-//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){
