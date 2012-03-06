@@ -33,7 +33,7 @@ if(!$user->guest) {
     $captchaTextHelp = $params->get('captchaTextHelp');
     $root = $params->get('root_value');
 
-    $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+    $zonalesParams = &JFactory::getApplication('site')->getParams('com_zonales');
     $captcha_publickey = $zonalesParams->get('recaptcha_publickey', null);
 
 // lista de zonales, zonal actualmente seleccionado

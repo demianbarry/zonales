@@ -20,6 +20,7 @@
                 method: 'get',
                 update: 'alias_progress',
                 onComplete: function(response) {
+                    var json = eval('('+response+')');
                     $('alias_progress').removeClass('ajax-loading');
                 }
             }).request();
