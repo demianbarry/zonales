@@ -56,7 +56,7 @@ if ($usersStr) {
     $usersLat = array();
     $usersLon = array();
     $tok = strtok($usersStr, ",");
-    
+
 
     if (strpos($tok, "[") > 0) {
         $user = substr($tok, 0, strpos($tok, "["));
@@ -67,7 +67,7 @@ if ($usersStr) {
         $lat = "";
         $lon = "";
     }
-    
+
     $users[] = $user;
     $usersLat[] = $lat != "" ? $lat : "";
     $usersLon[] = $lon != "" ? $lon : "";
@@ -188,6 +188,8 @@ try {
             //Por cada uno de los feed recuperados del muro del usuario, chequeo si son posteados por él mismo.
             //El resto de los posts, chequeo contra el valor de commenters: si se especificó "all" incluyo todos los posts, sino solo lo de los commenters especificados
             //Además chequeo los keywords en caso de que se especifiquen.
+	    //var_dump($feeds);
+	    //exit(0);
             foreach ($feeds['data'] as $feed) {
                 $validPost = false;
                 if ($getCommenters) {
@@ -420,7 +422,12 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
     $post['relevance'] = ($feed['comments']['count'] * 3) + $feed['likes']['count'];
 
     if ($zone) {
-        $post['zone'] = $zone;
+        $zoneObj = array();
+        $zoneObj['id'] = null;
+        $zoneObj['name'] = null;
+        $zoneObj['type'] = null;
+        $zoneObj['extendedString'] = $zone;
+        $post['zone'] = $zoneObj;
     }
 
     if ($tags) {
