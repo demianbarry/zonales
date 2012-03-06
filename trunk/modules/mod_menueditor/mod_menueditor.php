@@ -14,10 +14,11 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+JHtml::_('behavior.modal', 'a.modal');
 
 $user =& JFactory::getUser();
 
-$createArticleRoute = JRoute::_('index.php?view=article&task=edit&option=com_content&tmpl=component_only', false);
+$createArticleRoute = JRoute::_('index.php?option=com_content&task=article.add&tmpl=component_only', false);
 $viewPublishedArticles = JRoute::_('index.php?view=myarchive&stateFrom=1&stateTo=1&option=com_content', false);
 $viewUnpublishedArticles = JRoute::_('index.php?view=myarchive&stateFrom=0&stateTo=0&option=com_content', false);
 $viewUnpublishedArticles = JRoute::_('index.php?view=myarchive&stateFrom=0&stateTo=0&option=com_content', false);

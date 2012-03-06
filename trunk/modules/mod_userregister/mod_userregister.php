@@ -97,7 +97,7 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_user' . DS . 'helper.php
         $zActual = $helper->getZonalActual();
 //        $zName = $helper->getZonal($zActual);
 //        $zonalCurrentMessage = ($zActual == NULL) ? JText::_('SYSTEM_ZONAL_CHOOSE') : $zName->label;
-//        $zonalesParams = &JComponentHelper::getParams( 'com_zonales' );
+//        $zonalesParams = &JFactory::getApplication('site')->getParams('com_zonales');
 //        $width = $zonalesParams->get('width_mapa_flash', '');
 //        $height = $zonalesParams->get('height_mapa_flash', '');
         $zonalUserMessage = JText::_('SYSTEM_ZONAL_CURRENT_MESSAGE');
