@@ -16,7 +16,7 @@ window.addEvent('domready', function() {
 });
 
 function initVista(zCtx){
-    
+
     if($('postsContainer'))
         $('postsContainer').empty();
     if($('newPostsContainer'))
@@ -26,7 +26,7 @@ function initVista(zCtx){
     console.log("======> 0");
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);    
+    zirClient.setMinRelevance(null);
     console.log("======> 1");
     initFilters(zCtx);
     zCtx.setSearchKeyword("");
@@ -115,7 +115,7 @@ function initVista(zCtx){
 
 function initAll() {
     initZCtx(function(zCtx) {
-        console.log('Tab del ZContext: '+zCtx.zTab);        
+        console.log('Tab del ZContext: '+zCtx.zTab);
         if(!zCtx.zTab || zCtx.zTab == ""){
             console.log('InitAll antes de setTab');
             zcSetTab('portada');
@@ -290,8 +290,9 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
 
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);    
+    zirClient.setMinRelevance(null);
     $('zonalesSearchword').value = "buscar...";
+    $('zoneExtended').value = zoneExtended;
     if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
@@ -299,7 +300,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
         console.log('Despu�s de setear: ' + zCtx.selZone);
-        
+
     //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
     /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -325,7 +326,7 @@ function complete(number){
 
 function loadPost(first){
 //alert("LoadPost: " + JSON.stringify(zcGetContext()));
-    
+
 }
 
 function loadMorePost(){
@@ -334,12 +335,12 @@ function loadMorePost(){
 }
 
 function searchPost(keyword, zone) {
-    if (keyword != 'buscar...' && keyword != '') {        
+    if (keyword != 'buscar...' && keyword != '') {
         zirClient.setFirstIndexTime(null);
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
         zCtx.setSearchKeyword(keyword);
-    //zirClient.setSearchKeyword(keyword);            
+    //zirClient.setSearchKeyword(keyword);
     }
 }
 
@@ -728,8 +729,8 @@ function updatePosts(json, component, more) {
         var span_zone = new Element('span').inject(div_story_zone);
         new Element('a', {
             'id':'zonePost',
-            'href': ''
-        }).set('html',zone).inject(span_zone);
+            'onclick':'setZone("'+zone+'","","","");'
+        }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
 
@@ -823,7 +824,7 @@ function updatePosts(json, component, more) {
 
     });
     refreshFiltro();
-    
+
 }
 
 function show_confirm(idInputTag,selectedTag,tags)
@@ -1048,7 +1049,17 @@ function armarTitulo(tabTemp){
     var temp = 0 ;
     tabTemp = tab;
     var zoneSeltemp = zcGetContext().selZone;
-    var zoneEfectemp = zcGetContext().selZone;
+    var zoneEfectemp = "";
+
+    //var posts = $$('div#postsContainer div.story-item');
+    //var posts = $$('div#postsContainer:first-child');
+
+    if($('postsContainer')){
+        var firstPost = $('postsContainer').firstChild;
+        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
+
+
+    }
 
     $('tituloSup').innerHTML = "";
 
@@ -1125,15 +1136,16 @@ function armarTitulo(tabTemp){
 
 
     }
-
+    console.log('zona2 '+zoneSeltemp);
     if (zoneEfectemp == zoneSeltemp){
-        $('tituloZone').innerHTML = "Ud. esta viendo "+zoneEfectemp;
+        $('tituloZone').innerHTML = "Ud. esta viendo "+zoneSeltemp;
     }
-    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != ""){
-        $('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
-        if(zoneEfectemp == "")
+    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && zoneSeltemp != "undefined"){
+        $('tituloZone').innerHTML = "Mostrando noticias de las ultimas 48hs de "+zoneEfectemp;
+        //$('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
+        /*if(zoneEfectemp == "")
             $('tituloZone').innerHTML += "todas las noticias";
-        else $('tituloZone').innerHTML += "noticias de "+zoneEfectemp;
+        else $('tituloZone').innerHTML += "noticias de "+zoneEfectemp;*/
     }
     if (zoneSeltemp == ""){
         $('tituloZone').innerHTML = "Mostrando todas las noticias";
