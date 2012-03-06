@@ -268,11 +268,13 @@ public final class ZSolrServer extends BaseService {
             if (rsp.getResults().getNumFound() > 0) {
                 for (SolrPost oldSolrPost : rsp.getBeans(SolrPost.class)) {
                     Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
+                    post.setId(oldSolrPost.getId());
                     post.setCreated(newDate);
                     post.setModified(newDate);
                     SolrPost newSolrPost = new SolrPost();
                     postToSolr(newSolrPost, post);
-                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> OldSolrPost: {0}", gson.toJson(oldSolrPost));
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> NewSolrPost: {0}", gson.toJson(newSolrPost));
                     indexSolrPost(oldSolrPost, newSolrPost);
                 }
             }
