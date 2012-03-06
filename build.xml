@@ -1,653 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<project name="zonales" default="" basedir=".">
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="ZCrawlGeoExtractor" default="default" basedir=".">
+    <description>Builds, tests, and runs the project ZCrawlGeoExtractor.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
 
-    <!-- archivo properties -->
-    <property file="build.properties"/>
-    <!-- archivo de propiedades -->
-    <property file="sinc-test.properties" />
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
 
-    <!-- path base  -->
-    <property name="src" value="${basedir}"/>
-    <!-- path distribuibles -->
-    <property name="src_dist_dir" value="${src}/dist" />
-    <!-- path i18n -->
-    <property name="src_i18n_dir" value="${src}/language" />
-    <!-- path modulos -->
-    <property name="src_modules" value="${src}/modules"/>
-    <!-- path plugins -->
-    <property name="src_plugins" value="${src}/plugins"/>
-    <property name="src_libraries" value="${src}/libraries"/>
-    <property name="src_templates" value="${src}/templates"/>
-    <property name="src_frontend_components" value="${src}/components"/>
-    <property name="src_images" value="${src}/images"/>
+      -pre-init:                 called before initialization of project properties 
+      -post-init:                called after initialization of project properties 
+      -pre-compile:              called before javac compilation 
+      -post-compile:             called after javac compilation 
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-dist:                 called before archive building 
+      -post-dist:                called after archive building 
+      -post-clean:               called after cleaning build products 
+      -pre-run-deploy:           called before deploying
+      -post-run-deploy:          called after deploying
 
-    <!-- path devel -->
-    <property name="dst" value="${zonales.base}/${src.dir}" />
-    <property name="dst_frontend_language_dir" value="${dst}/language" />
-    <property name="dst_backend_language_dir" value="${dst}/administrator/language" />
-    <property name="dst_modules_dir" value="${dst}/modules" />
-    <property name="dst_frontend_components_dir" value="${dst}/components" />
+    Example of pluging an obfuscator after the compilation could look like 
 
-    <!-- mod_seleccionazonal -->
-    <fileset dir="${src_modules}/mod_seleccionazonal" id="mod_seleccionazonal_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_zonalactual -->
-    <fileset dir="${src_modules}/mod_zonalactual" id="mod_zonalactual_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_mapazonales -->
-    <fileset dir="${src_modules}/mod_mapazonales" id="mod_mapazonales_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_mapainicio -->
-    <fileset dir="${src_modules}/mod_mapainicio" id="mod_mapainicio_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_menuzonales -->
-    <fileset dir="${src_modules}/mod_menuzonales" id="mod_menuzonales_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_zbanners -->
-    <fileset dir="${src_modules}/mod_zbanners" id="mod_zbanners_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_soycorresponsal -->
-    <fileset dir="${src_modules}/mod_soycorresponsal" id="mod_soycorresponsal_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_lavozdelvecino -->
-    <fileset dir="${src_modules}/mod_lavozdelvecino" id="mod_lavozdelvecino_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_eq -->
-    <fileset dir="${src_modules}/mod_eq" id="mod_eq_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_alias -->
-    <fileset dir="${src_modules}/mod_alias" id="mod_alias_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_tagger -->
-    <fileset dir="${src_modules}/mod_tagger" id="mod_tagger_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_message -->
-    <fileset dir="${src_modules}/mod_message" id="mod_message_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_zlogin -->
-    <fileset dir="${src_modules}/mod_zlogin" id="mod_zlogin_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_pending -->
-    <fileset dir="${src_modules}/mod_pending" id="mod_pending_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_sessioninfo -->
-    <fileset dir="${src_modules}/mod_sessioninfo" id="mod_sessioninfo_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_zcloud -->
-    <fileset dir="${src_modules}/mod_zcloud" id="mod_zcloud_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_combozona -->
-    <fileset dir="${src_modules}/mod_combozona" id="mod_combozona_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_userregister -->
-    <fileset dir="${src_modules}/mod_userregister" id="mod_userregister_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_userregister -->
-    <fileset dir="${src_modules}/mod_menueditor" id="mod_menueditor_files">
-        <include name="**" />
-    </fileset>
-    <!-- mod_filtro -->
-    <fileset dir="${src_modules}/mod_filtro" id="mod_filtro_files">
-        <include name="**" />
-    </fileset>
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
 
-    <!-- plg_zonalescontent -->
-    <fileset dir="${src_plugins}/zonalescontent" id="plg_zonalescontent_files">
-        <include name="**" />
-    </fileset>
-    <fileset dir="${src_plugins}/authproxy" id="plg_authproxy_files">
-        <include name="**" />
-    </fileset>
-    <fileset dir="${src_plugins}/externallogin" id="plg_externallogin_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_solrsearch -->
-    <fileset dir="${src_plugins}/phpsolrsearch" id="plg_solrsearch_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_cptags -->
-    <fileset dir="${src_plugins}/plg_cptags" id="plg_cptags_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_cptags_btn -->
-    <fileset dir="${src_plugins}/plg_cptags_btn" id="plg_cptags_btn_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_eqevents -->
-    <fileset dir="${src_plugins}/eqevents" id="plg_eqevents_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_solrevents -->
-    <fileset dir="${src_plugins}/solrevents" id="plg_solrevents_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_autotagging -->
-    <fileset dir="${src_plugins}/autotagging" id="plg_autotagging_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_like -->
-    <fileset dir="${src_plugins}/plg_like" id="plg_like_files">
-        <include name="**" />
-    </fileset>
-    <!-- plg_denunciar -->
-    <fileset dir="${src_plugins}/plg_denunciar" id="plg_denunciar_files">
-        <include name="**" />
-    </fileset>
-
-    <!-- com_zonales -->
-    <fileset dir="${src_frontend_components}/com_zonales" id="com_zonales_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_reservas -->
-    <fileset dir="${src_frontend_components}/com_reservas" id="com_reservas_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_customproperties -->
-    <fileset dir="${src_frontend_components}/com_customproperties" id="com_customproperties_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_jwf -->
-    <fileset dir="${src_frontend_components}/com_jwf" id="com_jwf_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_eqzonales -->
-    <fileset dir="${src_frontend_components}/com_eqzonales" id="com_eqzonales_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_aardvertiser -->
-    <fileset dir="${src_frontend_components}/com_aardvertiser" id="com_aardvertiser_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_aapu -->
-    <fileset dir="${src_frontend_components}/com_aapu" id="com_aapu_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_alias -->
-    <fileset dir="${src_frontend_components}/com_alias" id="com_alias_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_user -->
-    <fileset dir="${src_frontend_components}/com_user" id="com_user_files">
-        <include name="**" />
-    </fileset>
-    <!-- com_menus -->
-    <fileset dir="${src_frontend_components}/com_menus" id="com_menus_files">
-        <include name="**" />
-    </fileset>
-
-    <!-- tmpl_z1 -->
-    <fileset dir="${src_templates}/tmpl_z1" id="tmpl_z1_files">
-        <include name="**" />
-    </fileset>
-
-    <!-- tmpl_z20 -->
-    <fileset dir="${src_templates}/tmpl_z20" id="tmpl_z20_files">
-        <include name="**" />
-    </fileset>
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
 
 
+    Other way how to customize the build is by overriding existing main targets.
+    The target of interest are: 
 
-    <!-- ======================================================
-    archivos distribución
-    ====================================================== -->
-    <!-- modulo seleccionazonal -->
-    <target name="dist_mod_seleccionazonal" description="Crea archivo de distribución Joomla para el modulo SeleccionaZonal">
-        <echo message="Creando archivo de distribución de modulo SeleccionaZonal"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_seleccionazonal.file}.zip" >
-            <fileset refid="mod_seleccionazonal_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_seleccionazonal.ini" prefix="language" />
-        </zip>
-    </target>
+      init-macrodef-javac:    defines macro for javac compilation
+      init-macrodef-junit:   defines macro for junit execution
+      init-macrodef-debug:    defines macro for class debugging
+      do-dist:                archive building
+      run:                    execution of project 
+      javadoc-build:          javadoc generation 
 
-    <!-- modulo user register -->
-    <target name="dist_mod_userregister" description="Crea archivo de distribución Joomla para el modulo User Register">
-        <echo message="Creando archivo de distribución de modulo UserRegister"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_userregister.file}.zip" >
-            <fileset refid="mod_userregister_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_userregister.ini" prefix="language" />
-        </zip>
-    </target>
+    Example of overriding the target for project execution could look like 
 
-    <!-- modulo mapazonales -->
-    <target name="dist_mod_mapazonales" description="Crea archivo de distribución Joomla para el modulo MapaZonales">
-        <echo message="Creando archivo de distribución de modulo MapaZonales"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_mapazonales.file}.zip" >
-            <fileset refid="mod_mapazonales_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapazonales.ini" prefix="language" />
-        </zip>
-    </target>
+        <target name="run" depends="<PROJNAME>-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
 
-    <!-- modulo zonalactual -->
-    <target name="dist_mod_zonalactual" description="Crea archivo de distribución Joomla para el modulo ZonalActual">
-        <echo message="Creando archivo de distribución de modulo ZonalActual"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_zonalactual.file}.zip" >
-            <fileset refid="mod_zonalactual_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zonalactual.ini" prefix="language" />
-        </zip>
-    </target>
+    Notice that overridden target depends on jar target and not only on 
+    compile target as regular run target does. Again, for list of available 
+    properties which you can use check the target you are overriding in 
+    nbproject/build-impl.xml file. 
 
-    <!-- modulo menuzonales -->
-    <target name="dist_mod_menuzonales" description="Crea archivo de distribución Joomla para el modulo MenuZonales">
-        <echo message="Creando archivo de distribución de modulo MenuZonales"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_menuzonales.file}.zip" >
-            <fileset refid="mod_menuzonales_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menuzonales.ini" prefix="admin/language" />
-        </zip>
-    </target>
-
-    <!-- modulo mapainicio -->
-    <target name="dist_mod_mapainicio" description="Crea archivo de distribución Joomla para el modulo MapaInicio">
-        <echo message="Creando archivo de distribución de modulo MapaInicio"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_mapainicio.file}.zip" >
-            <fileset refid="mod_mapainicio_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_mapainicio.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo tagger -->
-    <target name="dist_mod_tagger" description="Crea archivo de distribución Joomla para el modulo Tagger">
-        <echo message="Creando archivo de distribución de modulo Tagger"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_tagger.file}.zip" >
-            <fileset refid="mod_tagger_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_tagger.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo zbanners -->
-    <target name="dist_mod_zbanners" description="Crea archivo de distribución Joomla para el modulo ZBanners">
-        <echo message="Creando archivo de distribución de modulo ZBanners"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_zbanners.file}.zip" >
-            <fileset refid="mod_zbanners_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zbanners.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo soycorresponsal -->
-    <target name="dist_mod_soycorresponsal" description="Crea archivo de distribución Joomla para el modulo SoyCorresponsal">
-        <echo message="Creando archivo de distribución de modulo SoyCorresponsal"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_soycorresponsal.file}.zip" >
-            <fileset refid="mod_soycorresponsal_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_soycorresponsal.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo lavozdelvecino -->
-    <target name="dist_mod_lavozdelvecino" description="Crea archivo de distribución Joomla para el modulo LaVozDelVecino">
-        <echo message="Creando archivo de distribución de modulo LaVozDelVecino"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_lavozdelvecino.file}.zip" >
-            <fileset refid="mod_lavozdelvecino_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_lavozdelvecino.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo eq -->
-    <target name="dist_mod_eq" description="Crea archivo de distribución Joomla para el modulo Ecualizador de Interés">
-        <echo message="Creando archivo de distribución de modulo Ecualizador de Interés"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_eq.file}.zip" >
-            <fileset refid="mod_eq_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_eq.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo filtro -->
-    <target name="dist_mod_filtro" description="Crea archivo de distribución Joomla para el modulo Filtro de Fuente">
-        <echo message="Creando archivo de distribución de modulo Filtro de Fuente"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_filtro.file}.zip" >
-            <fileset refid="mod_filtro_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_eq.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo alias -->
-    <target name="dist_mod_alias" description="Crea archivo de distribución Joomla para el modulo Alias">
-        <echo message="Creando archivo de distribución de modulo Alias"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_alias.file}.zip" >
-            <fileset refid="mod_alias_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_alias.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo message -->
-    <target name="dist_mod_message" description="Crea archivo de distribución Joomla para el modulo Message">
-        <echo message="Creando archivo de distribución de modulo Message"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_message.file}.zip" >
-            <fileset refid="mod_message_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_message.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo zlogin -->
-    <target name="dist_mod_zlogin" description="Crea archivo de distribución Joomla para el modulo ZLogin">
-        <echo message="Creando archivo de distribución de modulo ZLogin"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_zlogin.file}.zip" >
-            <fileset refid="mod_zlogin_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_zlogin.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo pending -->
-    <target name="dist_mod_pending" description="Crea archivo de distribución Joomla para el modulo Pending">
-        <echo message="Creando archivo de distribución de modulo Pending"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_pending.file}.zip" >
-            <fileset refid="mod_pending_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_pending.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo sessioninfo -->
-    <target name="dist_mod_sessioninfo" description="Crea archivo de distribución Joomla para el modulo sessioninfo">
-        <echo message="Creando archivo de distribución de modulo sessioninfo"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_sessioninfo.file}.zip" >
-            <fileset refid="mod_sessioninfo_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_sessioninfo.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo zcloud -->
-    <target name="dist_mod_zcloud" description="Crea archivo de distribución Joomla para el modulo zcloud">
-        <echo message="Creando archivo de distribución de modulo zcloud"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_zcloud.file}.zip" >
-            <fileset refid="mod_zcloud_files"/>
-        </zip>
-    </target>
-
-    <!-- modulo combozona -->
-    <target name="dist_mod_combozona" description="Crea archivo de distribución Joomla para el modulo combozona">
-        <echo message="Creando archivo de distribución de modulo combozona"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_combozona.file}.zip" >
-            <fileset refid="mod_combozona_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_combozona.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- modulo menueditor -->
-    <target name="dist_mod_menueditor" description="Crea archivo de distribución Joomla para el modulo Menú Editor">
-        <echo message="Creando archivo de distribución de modulo Menú Editor"/>
-        <zip destfile="${src_dist_dir}/${dist.mod_menueditor.file}.zip" >
-            <fileset refid="mod_menueditor_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_menueditor.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- plugin zonalescontent -->
-    <target name="dist_plg_zonalescontent" description="Crea archivo de distribución Joomla para el plugin ZonalesContent">
-        <echo message="Creando archivo de distribución de plugin ZonalesContent"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_zonalescontent.file}.zip" >
-            <fileset refid="plg_zonalescontent_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_zonalescontent.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <target name="dist_plg_authproxy" description="Crea archivo de distribución Joomla para el plugin AuthProxy">
-        <echo message="Creando archivo de distribución de plugin AuthProxy"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_authproxy.file}.zip" >
-            <fileset refid="plg_authproxy_files"/>
-        </zip>
-    </target>
-
-    <!-- plugin solrsearch -->
-    <target name="dist_plg_solrsearch" description="Crea archivo de distribución Joomla para el plugin SolrSearch">
-        <echo message="Creando archivo de distribución de plugin SolrSearch"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_solrsearch.file}.zip" >
-            <fileset refid="plg_solrsearch_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_search_solrsearch.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- plugin eqevents -->
-    <target name="dist_plg_eqevents" description="Crea archivo de distribución Joomla para el plugin EqEvents">
-        <echo message="Creando archivo de distribución de plugin EqEvents"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_eqevents.file}.zip" >
-            <fileset refid="plg_eqevents_files"/>
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_user_eqevents.ini" prefix="language" />
-        </zip>
-    </target>
-   
-    <!-- plugin solrevents -->
-    <target name="dist_plg_solrevents" description="Crea archivo de distribución Joomla para el plugin SolrEvents">
-        <echo message="Creando archivo de distribución de plugin SolrEvents"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_solrevents.file}.zip" >
-            <fileset refid="plg_solrevents_files"/>
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_content_solrevents.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- plugin autotagging -->
-    <target name="dist_plg_autotagging" description="Crea archivo de distribución Joomla para el plugin Autotagging">
-        <echo message="Creando archivo de distribución de plugin Autotagging"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_autotagging.file}.zip" >
-            <fileset refid="plg_autotagging_files"/>
-            <!--<zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_content_solrevents.ini" prefix="language" />-->
-        </zip>
-    </target>
-
-    <target name="dist_plg_externallogin" description="Crea archivo de distribución Joomla para el plugin External Login">
-        <echo message="Creando archivo de distribución de plugin External Login"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_externallogin.file}.zip" >
-            <fileset refid="plg_externallogin_files"/>
-            <zipfileset dir="${src_libraries}/facebookconnect" includes="**" prefix="libraries/facebookconnect"/>
-            <zipfileset dir="${src_libraries}/twitter" includes="**" prefix="libraries/twitter"/>
-            <zipfileset dir="${src_libraries}/windowsliveid" includes="**" prefix="libraries/windowsliveid"/>
-            <zipfileset dir="${src_libraries}/openid" includes="**" prefix="libraries/openid"/>
-        </zip>
-    </target>
-
-    <!-- plugin plg_cptags -->
-    <target name="dist_plg_cptags" description="Crea archivo de distribución Joomla para el plugin CPTags">
-        <echo message="Creando archivo de distribución de plugin CPTags"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_cptags.file}.zip" >
-            <fileset refid="plg_cptags_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- plugin plg_cptags_btn -->
-    <target name="dist_plg_cptags_btn" description="Crea archivo de distribución Joomla para el plugin CPTags_btn">
-        <echo message="Creando archivo de distribución de plugin CPTags_btn"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_cptags_btn.file}.zip" >
-            <fileset refid="plg_cptags_btn_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- plugin plg_like -->
-    <target name="dist_plg_like" description="Crea archivo de distribución Joomla para el plugin Like">
-        <echo message="Creando archivo de distribución de plugin Like"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_like.file}.zip" >
-            <fileset refid="plg_like_files"/>
-            <!--zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.plg_cptags_btn.ini" prefix="language" /-->
-        </zip>
-    </target>
-        <!-- plugin plg_denunciar -->
-    <target name="dist_plg_denunciar" description="Crea archivo de distribución Joomla para el plugin denunciar">
-        <echo message="Creando archivo de distribución de plugin denunciar"/>
-        <zip destfile="${src_dist_dir}/${dist.plg_denunciar.file}.zip" >
-            <fileset refid="plg_denunciar_files"/>
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.plg_content_denunciar.ini" prefix="language" />
-        </zip>
-    </target>
-
-    <!-- componente zonales -->
-    <target name="dist_com_zonales" description="Crea archivo de distribución Joomla para el componente UserZonales">
-        <echo message="Creando archivo de distribución de componente UserZonales"/>
-        <zip destfile="${src_dist_dir}/${dist.com_zonales.file}.zip">
-            <fileset refid="com_zonales_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_zonales.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_zonales.ini" prefix="admin/language" />
-        </zip>
-    </target>
-
-    <!-- componente reservas -->
-    <target name="dist_com_reservas" description="Crea archivo de distribución Joomla para el componente Reservas">
-        <echo message="Creando archivo de distribución de componente Reservas"/>
-        <zip destfile="${src_dist_dir}/${dist.com_reservas.file}.zip">
-            <fileset refid="com_reservas_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_reservas.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_reservas.ini" prefix="admin/language" />
-        </zip>
-    </target>
-
-    <!-- componente com_customproperties (fork) -->
-    <target name="dist_com_customproperties" description="Crea archivo de distribución Joomla para el componente CustomProperties (fork)">
-        <echo message="Creando archivo de distribución de componente CustomProperties (fork)"/>
-        <zip destfile="${src_dist_dir}/${dist.com_customproperties.file}.zip">
-            <fileset refid="com_customproperties_files"/>
-        </zip>
-    </target>
-
-    <!-- componente com_jwf (fork) -->
-    <target name="dist_com_jwf" description="Crea archivo de distribución Joomla para el componente JWF (fork)">
-        <echo message="Creando archivo de distribución de componente JWF (fork)"/>
-        <zip destfile="${src_dist_dir}/${dist.com_jwf.file}.zip">
-            <fileset refid="com_jwf_files"/>
-        </zip>
-    </target>
-
-
-    <!-- componente eq_zonales -->
-    <target name="dist_com_eqzonales" description="Crea archivo de distribución Joomla para el componente Ecualizador Zonales">
-        <echo message="Creando archivo de distribución de componente Ecualizador Zonales"/>
-        <zip destfile="${src_dist_dir}/${dist.com_eqzonales.file}.zip">
-            <fileset refid="com_eqzonales_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_eqzonales.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_eqzonales.ini" prefix="admin/language" />
-            <zipfileset dir="${src_libraries}/solr" includes="**" prefix="libraries/solr" />
-        </zip>
-    </target>
-
-    <!-- componente com_aardvertiser (fork) CLASIFICADOS -->
-    <target name="dist_com_aardvertiser" description="Crea archivo de distribución Joomla para el componente Aardvertiser (fork)">
-        <echo message="Creando archivo de distribución de componente Aardvertiser (fork)"/>
-        <zip destfile="${src_dist_dir}/${dist.com_aardvertiser.file}.zip">
-            <fileset refid="com_aardvertiser_files"/>
-        </zip>
-    </target>
-
-    <!-- componente aapu -->
-    <target name="dist_com_aapu" description="Crea archivo de distribución Joomla para el componente A.A.P.U.">
-        <echo message="Creando archivo de distribución de componente A.A.P.U."/>
-        <zip destfile="${src_dist_dir}/${dist.com_aapu.file}.zip">
-            <fileset refid="com_aapu_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_aapu.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_aapu.ini" prefix="admin/language" />
-        </zip>
-    </target>
-
-    <!-- componente alias -->
-    <target name="dist_com_alias" description="Crea archivo de distribución Joomla para el componente Alias">
-        <echo message="Creando archivo de distribución de componente Alias"/>
-        <zip destfile="${src_dist_dir}/${dist.com_alias.file}.zip">
-            <fileset refid="com_alias_files"/>
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_alias.ini" prefix="language" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_alias.ini" prefix="admin/language" />
-        </zip>
-    </target>
-
-    <!-- componente com_content (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA-->
-    <target name="inst_com_content" description="Crea archivo de distribución con modificaciones hechas al componente Joomla">
-        <echo message="Creando archivos de distribución de componente content"/>
-        <zip destfile="${src_dist_dir}/${inst.com_content.file}.zip">
-            <zipfileset dir="${src_frontend_components}" includes="com_content/**" prefix="components" />
-        </zip>
-    </target>
-
-    <!-- componente mod_jxcomments_comment (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA -->
-    <target name="inst_mod_jxcomment" description="Crea archivo de distribución con modificaciones hechas a la extensión JXComments">
-        <echo message="Creando archivos de distribución de modificaciones a jxcomment"/>
-        <zip destfile="${src_dist_dir}/${inst.mod_jxcomments.file}.zip">
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_comments.ini" prefix="language/es-ES" />
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.mod_comments_*.ini" prefix="language/es-ES" />
-        </zip>
-    </target>
-
-    <!-- componente com_search (modificaciones) DESCOMPRIMIR EN RAIZ DE JOOMLA -->
-    <target name="inst_com_search" description="Crea archivo de distribución con modificaciones hechas en com_search">
-        <echo message="Creando archivos de distribución de modificaciones a com_search"/>
-        <zip destfile="${src_dist_dir}/${inst.com_search.file}.zip">
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_search.ini" prefix="language/es-ES" />
-        </zip>
-    </target>
-
-    <!-- componente user DESCOMPRIMIR EN RAIZ DE JOOMLA -->
-    <target name="inst_com_user" description="Crea archivo de distribución Joomla para el componente User">
-        <echo message="Creando archivo de distribución de componente User"/>
-        <zip destfile="${src_dist_dir}/${inst.com_user.file}.zip">
-            <zipfileset dir="${src_frontend_components}" includes="com_user/**" prefix="components" />
-            <zipfileset dir="${src_i18n_dir}/frontend/es-ES/" includes="es-ES.com_user.ini" prefix="language/es-ES" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_user.ini" prefix="administrator/language/es-ES" />
-            <zipfileset dir="${src_libraries}/joomla/database/table/" includes="user.php" prefix="libraries/joomla/database/table"/>
-        </zip>
-    </target>
-
-    <!-- componente menus DESCOMPRIMIR EN RAIZ DE JOOMLA -->
-    <target name="inst_com_menus" description="Crea archivo de distribución Joomla para el componente Menus">
-        <echo message="Creando archivo de distribución de componente Menus"/>
-        <zip destfile="${src_dist_dir}/${inst.com_menus.file}.zip">
-            <zipfileset dir="${src_frontend_components}" includes="com_menus/**" prefix="administrator/components" />
-            <zipfileset dir="${src_i18n_dir}/backend/es-ES/" includes="es-ES.com_menus.ini" prefix="administrator/language/es-ES" />
-        </zip>
-    </target>
-
-    <!-- Librerías e imágenes para zLogin DESCOMPRIMIR EN RAIZ DE JOOMLA-->
-    <target name="inst_lib_zlogin" description="Crea archivo de distribución con librerías y imágenes para zLogin">
-        <echo message="Creando archivos de distribución de librerías para zLogin"/>
-        <zip destfile="${src_dist_dir}/${inst.lib_zlogin.file}.zip">
-            <zipfileset dir="${src_libraries}" includes="facebookconnect/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="twitter/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="windowsliveid/**" prefix="libraries" />
-            <zipfileset dir="${src_images}" includes="login/**" prefix="images" />
-            <zipfileset dir="${src_images}" includes="message/**" prefix="images" />
-            <zipfileset dir="${src}" includes="xd_receiver.htm" prefix="" />
-            <zipfileset dir="${src_modules}/mod_zlogin" includes="webtoolkit.js" prefix="media/system/js" />
-        </zip>
-    </target>
-
-    <!-- template z1 -->
-    <target name="dist_tmpl_z1" description="Crea archivo de distribución Joomla para el template z1">
-        <echo message="Creando archivo de distribución de template z1"/>
-        <zip destfile="${src_dist_dir}/${dist.tmpl_z1.file}.zip">
-            <fileset refid="tmpl_z1_files"/>
-        </zip>
-    </target>
-
-    <!-- template z20 -->
-    <target name="dist_tmpl_z20" description="Crea archivo de distribución Joomla para el template z20">
-        <echo message="Creando archivo de distribución de template z20"/>
-        <zip destfile="${src_dist_dir}/${dist.tmpl_z20.file}.zip">
-            <fileset refid="tmpl_z20_files"/>
-        </zip>
-    </target>
-
-
-    <target name="dist_lib_g2p-utils" description="Crea archivo de distribución Joomla para la biblioteca G2P-utils">
-        <echo message="Creando archivo de distribución de la biblioteca g2p-utils"/>
-        <zip destfile="${src_dist_dir}/${dist.lib_g2p-utils.file}.zip">
-            <zipfileset dir="${src_libraries}" includes="g2p-utils/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="solr/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="joomla/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="json/**" prefix="libraries" />
-            <zipfileset dir="${src_libraries}" includes="recaptcha/**" prefix="libraries" />
-        </zip>
-    </target>
-
+    -->
 </project>
