@@ -62,7 +62,7 @@ function getSolrSources(myTab){
     }
     if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
         //res = "q=!source:(facebook+OR+twitter)";
-        res = "q=source:(zonales)";
+        res = "q=!source:(facebook+OR+twitter)";
     }
     if (myTab == "portada"){
         res = "q=tags:(Portada)";
@@ -85,10 +85,10 @@ function getSolrZones(myZone) {
 
 function getSolrBoosting(zCtx) {
     var tabs = new Array('portada','enlared','noticiasenlared');
-    var res  = '&bf=ord(modified)^100000000&bq=';
+    var res  = '&bf=ord(modified)^';
     if(!zCtx || !zCtx.selZone || zCtx.selZone == '' || tabs.indexOf(zCtx.zTab) == -1)
-        return res;
-   
+        return res+'100000000';
+    res += (zCtx.selZone.split(',').length*2+2)+'&bq=';
     var extendedString = zCtx.selZone;
     var boost = "";
     
@@ -100,9 +100,9 @@ function getSolrBoosting(zCtx) {
     boost += '+zoneExtendedString:"'+extendedString+'"^10000';
     boost += '+zonePartialExtendedString:"'+extendedString+'"^1000';
     
-    boost += '+modified:[NOW-48HOURS TO *]^1000000000000';
-    boost += '+modified:[NOW-7DAYS TO NOW-48HOURS]^10000000';
-    boost += '+modified:[NOW-30DAYS TO NOW-7DAYS]^100';    
+    boost += '+modified:[NOW-48HOURS TO *]^'+Math.pow(10,zCtx.selZone.split(',').length*4);
+    boost += '+modified:[NOW-7DAYS TO NOW-48HOURS]^'+Math.pow(10,zCtx.selZone.split(',').length*4-5);
+    boost += '+modified:[NOW-30DAYS TO NOW-7DAYS]^'+Math.pow(10,zCtx.selZone.split(',').length*4-10);
     
     return res + boost.replace(/\ /g,"+");
 }
