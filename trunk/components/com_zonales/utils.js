@@ -181,7 +181,7 @@ function populateOptions(event, field, add, elmts, callback){
             if(!add) {
                 field.set('value', container.getElement('.selected').get('html'));
                 if(typeof callback == 'function')
-                        callback(field.get('value'));
+                    callback(field.get('value'));
             } else {
                 var value = container.getElement('.selected').get('html').trim();
                 var fieldValue = field.get('value');
@@ -223,7 +223,7 @@ function populateOptions(event, field, add, elmts, callback){
             Array.each(elmts,function(el){
                 if(add && query.lastIndexOf(',') != -1)
                     query = query.substr(query.lastIndexOf(',')+1).trim();
-                if(el.toLowerCase().indexOf(query) != -1) {
+                if(checkRegExp(el.toLowerCase(),query)) {
                     new Element('p', {
                         'html': el
                     }).inject(container);
@@ -233,6 +233,11 @@ function populateOptions(event, field, add, elmts, callback){
                 container.firstChild.addClass('selected');
             break;
     }
+}
+
+function checkRegExp(str, patt){
+    var patt1 = new RegExp("^"+patt+"|,\ "+patt,"g");
+    return patt1.test(str);
 }
 
 function switchButtons(buttons){
