@@ -1138,17 +1138,20 @@ function armarTitulo(tabTemp){
     }
     console.log('zona2 '+zoneSeltemp);
     if (zoneEfectemp == zoneSeltemp){
-        $('tituloZone').innerHTML = "Ud. esta viendo "+zoneSeltemp;
+        $('tituloZone1').innerHTML = "Ud. esta viendo noticias nuevas de la zona "+zoneSeltemp;
+        $('tituloZone2').innerHTML = "";
     }
-    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && zoneSeltemp != "undefined"){
-        $('tituloZone').innerHTML = "Mostrando noticias de las ultimas 48hs de "+zoneEfectemp;
+    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
+        $('tituloZone1').innerHTML = "No se encontraron noticias nuevas para la zona "+zoneSeltemp;
+        $('tituloZone2').innerHTML = "Mostrando noticias nuevas de la zona "+zoneEfectemp;
         //$('tituloZone').innerHTML = "No existen noticias para la zona seleccionada. Mostrando ";
         /*if(zoneEfectemp == "")
             $('tituloZone').innerHTML += "todas las noticias";
         else $('tituloZone').innerHTML += "noticias de "+zoneEfectemp;*/
     }
-    if (zoneSeltemp == ""){
-        $('tituloZone').innerHTML = "Mostrando todas las noticias";
+    if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' ){
+        $('tituloZone1').innerHTML = "Mostrando todas las noticias";
+        $('tituloZone2').innerHTML = "";
     }
 
 }
