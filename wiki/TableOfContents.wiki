@@ -1,7 +1,7 @@
 [http://www.zonales.com/#portada http://zonales.dyndns.org:30082/logoZonales.gif]
 
   * [Index Zonales]
-    * [Content Manager]
+    * [ContentManager]
       * [InstructivoExtraciones Instructivo para carga de Extracciones]
     * [Contenidos]
       * [EtiquetadoAutomatico Etiquetado Automático]
