@@ -25,6 +25,15 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
+    client.on('getZonesExtendedString', function(name, fn) {
+        console.log('Recibi el evento getZonesExtendedString desde el cliente');
+        zoneService.getAllExtendedString(function(data){
+            if (typeof(data) != 'undefined') {
+                fn(data);
+            }
+        });
+    });
+
     client.on('getZonesByName', function(name, fn) {
         console.log('Recibi el evento getZonesByName desde el cliente');
         zoneService.getLikeName(name, function(data){
@@ -190,7 +199,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('updateGeoData', function(name, fn) {
-        console.log('Recibi el evento updateZone desde el cliente');
+        console.log('Recibi el evento updateGeoData desde el cliente');
         //var obj = eval('(' + name + ')');
         geoDataService.update(name.id, name, function(data){
             if (typeof(data) != 'undefined') {
@@ -495,6 +504,10 @@ module.exports.tryEvent = function tryEvent(client) {
         console.log('Recibi el evento savePlace desde el cliente');
         placeService.set(name, function(data){
             if (typeof(data) != 'undefined') {
+                zoneService.get({id:name.zone}, function(zone) {
+                    if (zone)
+                        placeService.updateExtendedString(name, zone.length > 0 ? zone[0] : null);
+                });
                 fn(data);
             }
         });
@@ -505,6 +518,10 @@ module.exports.tryEvent = function tryEvent(client) {
         //var obj = eval('(' + name + ')');
         placeService.update(name.id, name, function(data){
             if (typeof(data) != 'undefined') {
+                zoneService.get({id:name.zone}, function(zone) {
+                if (zone)
+                    placeService.updateExtendedString(name, zone.length > 0 ? zone[0] : null);
+                });
                 fn(data);
             }
         });
@@ -561,6 +578,7 @@ module.exports.tryEvent = function tryEvent(client) {
     client.on('getPlaceParentTypes', function(name, fn) {
         console.log('Recibi el evento getPlaceParentTypes desde el cliente');
         placeTypeService.get(name, function(data) {
+            console.log("ACACACACACACACACA: " + JSON.stringify(data));
             if (typeof(data) != 'undefined' && typeof(data[0].parents) != 'undefined') {
                 fn(data[0].parents);
             }

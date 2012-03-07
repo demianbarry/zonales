@@ -56,6 +56,7 @@ function getPlaceType(name){
 	  socket.emit('getPlaceTypeByFilters', {name: name}, function (data) {
        	var jsonObj = data[0];			  		
           typeof(jsonObj.name) != 'undefined' ? $('nombre').value = jsonObj.name.replace(/_/g, ' ').capitalize() : $('nombre').value = "";
+          typeof(jsonObj.description) != 'undefined' ? $('description').value = jsonObj.description : $('description').value = "";
           if (typeof(jsonObj.parents) != 'undefined') {
               jsonObj.parents.each(function(parent){
               		addParent(parent);

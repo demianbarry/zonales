@@ -22,7 +22,7 @@ window.addEvent('domready', function() {
 	  			}
 	  		});
 	    });
-	    socket.emit('getPlacesTypes', true, function (data) {			  		
+	    socket.emit('getPlaceTypes', true, function (data) {			  		
 	  		data.each(function(type) {
 	  			if (typeof(type.name) != 'undefined') { 
 	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('tipo'));
@@ -35,10 +35,10 @@ window.addEvent('domready', function() {
 			   }
 	      }
 	  	 });
-         socket.emit('getZones', true, function (data) {                    
+         socket.emit('getZonesExtendedString', true, function (data) {                    
             data.each(function(zone) {
-                if (typeof(zone.name) != 'undefined') { 
-                    zones.include(zone.name.replace(/_/g, ' ').capitalize());
+                if (typeof(zone.extendedString) != 'undefined') { 
+                    zones.include(zone.extendedString.replace(/_/g, ' ').capitalize());
                 }
             });
         });

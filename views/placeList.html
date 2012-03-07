@@ -31,7 +31,7 @@
                             <td width="35%" class="label"><label>Place</label></td>
                             <td>
                                 <div>
-                                    <input id="placeNameFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, places);">
+                                    <input id="placeNameFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, places);">
                                 </div>
                             </td>
                         </tr>
@@ -39,7 +39,7 @@
                             <td width="35%" class="label"><label>Zone</label></td>
                             <td>
                                 <div>
-                                    <input id="placeZoneFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);">
+                                    <input id="placeZoneFilter" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);">
                                 </div>
                             </td>
                         </tr>

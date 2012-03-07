@@ -3,7 +3,13 @@ var fs = require('fs'),
 express = require('express');
 
 // ----------------------- CONTROLLERS -----------------------
-var sioClientSwitch = require('./controllers/sioClientSwitch'); 
+//var sioClientSwitch = require('./controllers/sioClientSwitch'); 
+var sioContextSwitch = require('./controllers/sioContextSwitch'); 
+var sioGeoSwitch = require('./controllers/sioGeoSwitch'); 
+var sioPlacesSwitch = require('./controllers/sioPlacesSwitch'); 
+var sioProxySwitch = require('./controllers/sioProxySwitch'); 
+var sioTagsSwitch = require('./controllers/sioTagsSwitch'); 
+var sioZonesSwitch = require('./controllers/sioZonesSwitch'); 
 
 // ----------------------- SERVICES -----------------------
 var zoneService = require('./services/zones');
@@ -42,8 +48,13 @@ app.set('view options',{
 
 io.sockets.on('connection', function(client) {
 
-    sioClientSwitch.tryEvent(client);
-	
+    sioContextSwitch.tryEvent(client);
+	sioGeoSwitch.tryEvent(client);
+    sioPlacesSwitch.tryEvent(client);
+    sioProxySwitch.tryEvent(client);
+    sioTagsSwitch.tryEvent(client);
+    sioZonesSwitch.tryEvent(client);
+
 });
 
 
@@ -719,3 +730,33 @@ app.get('/geoData/remove', function(req, res) {
 
 app.listen(port);
 console.log('Servidor Express escuchando en el puerto ' + port + '!!!');
+
+
+//----------------------- PRUEBAS -----------------------
+
+//------------------- Prueba de servicios: Obtener los places de una Zona, Obtener la zona de un place -------------------
+
+/*placeService.getPlacesByZone(164, function (places) {
+   console.log("RECUPERO PLACES PARA LA ZONA 164: Chubut -------> " + JSON.stringify(places));
+});
+
+placeService.getZone(2, function (zone) {
+   console.log("RECUPERO LA ZONA PARA EL PLACE 2: UNPSJB Sede P. Madryn -------> " + JSON.stringify(zone));
+});*/
+
+//06-03-2012 12:05 -> Funcionó OK
+
+
+
+//------------------- Prueba de servicios: Obtener los hijos de un place, Obtener los padres de un place -------------------
+
+/*placeService.getChildrens(1, function (places) {
+   console.log("RECUPERO HIJOS DEL PLACE 1: UNPSJB -------> " + JSON.stringify(places) + "---------------->");
+});
+
+placeService.getParent(2, function (parent) {
+   console.log("RECUPERO PADRE DEL PLACE 2: UNPSJB Sede P. Madryn -------> " + JSON.stringify(parent) + "---------------->");
+});*/
+
+//06-03-2012 15:35 -> Funcionó OK
+

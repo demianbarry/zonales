@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
+var zoneService = require('./zones');
 
 //Esquema JSON para las zonas
 var placeSchema = new Schema(
@@ -21,7 +22,8 @@ var placeSchema = new Schema(
 	    	default: 'generated'
 	    },
 	    geoData: String, //Debe ser un id de un dato geográfico existente
-	    parent : String
+	    parent : String,
+	    extendedString : { type: String, unique: true}
 	}
 );
 
@@ -62,4 +64,66 @@ module.exports.update = function update(id, data, callback) {
 //Elimina un place existente (búsqueda por ID) 
 module.exports.remove = function remove(id, callback) {
 	return baseService.remove(places, 'id', id, callback);
+}
+
+module.exports.getPlacesByZone = function getPlacesByZone(zoneid, callback) {
+	this.get({zone:zoneid}, function(places) {
+		if (typeof(places) != 'undefined' && places != null && callback) {
+			callback(places);
+		}
+	});
+}
+
+module.exports.getZone = function getZone(id, callback) {
+	this.get({id:id}, function (place) {
+		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
+			zoneService.get({id:place[0].zone}, function (zone) {
+				if (typeof(zone) != 'undefined' && zone != null && callback) {
+					callback(zone);
+				}
+			});
+		}
+	});
+}
+
+module.exports.getChildrens = function getChildrens(id, callback) {
+	this.get({parent:id}, function(places) {
+		if (typeof(places) != 'undefined' && places != null && callback) {
+			callback(places);
+		}
+	});
+}
+
+module.exports.getParent = function getParent(id, callback) {
+	this.get({id:id}, function (place) {
+		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
+			baseService.get(places,{id:place[0].parent}, function (parent) {
+				if (typeof(parent) != 'undefined' && parent != null && callback) {
+					callback(parent);
+				}
+			});
+		}
+	});
+}
+
+module.exports.getExtendedString = function getExtendedString(id, callback) {
+	this.get({id:id}, function(place) {
+		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
+			callback(place.extendedString);
+		}
+	});
+}
+
+module.exports.updateExtendedString = function(place, zone){
+    updateExtendedString(place, zone);
+};
+
+function updateExtendedString(place, zone){
+    place.extendedString = place.name;
+    if (zone)
+        place.extendedString += ", "+zone.extendedString;
+
+    delete place._id;
+    baseService.update(places, 'id', place.id, place, function(){});
+    return place.extendedString;
 }
