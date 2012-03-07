@@ -29,3 +29,11 @@ Los filtros que se pueden utilizar son:
   * Periodo: Rango de tiempo en la cual fue cargada la extracción.
   * Tags: Lista de tags separados por coma.
   * Estado: estado en el que se encuentra la configuración de la extracción.
+
+
+[http://sursoftware.dyndns.org/pantalla1.gif]
+[http://sursoftware.dyndns.org/pantalla2.gif]
+[http://sursoftware.dyndns.org/pantalla3.gif]
+[http://sursoftware.dyndns.org/pantalla4.gif]
+[http://sursoftware.dyndns.org/pantalla5.gif]
+[http://sursoftware.dyndns.org/pantalla6.gif]
