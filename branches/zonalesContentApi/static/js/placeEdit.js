@@ -24,28 +24,28 @@ var map;
 var vectors;
 var formats;
 var popup;
-var ids = new Array();
+var ids = [];
 var cant = 0;
 var placeFilter = "";
 var stateFilter = "";
 var placeTypeFilter = "";
 var placeZoneFilter = "";
-var zones = Array();
-var zonesIds = Array();
-var parents = Array();
-var parentsIds = Array();
-var links = new Array();
+var zones = [];
+var zonesIds = [];
+var parents = [];
+var parentsIds = [];
+var links = [];
 var cantLinks = 0;
 
-window.addEvent('domready', function() {
+window.addEvent('domready', function () {
 	  init();
 	  socket = io.connect();
   	  socket.on('connect', function () { 
-        socket.emit('getZones', true, function (data) {                    
+        socket.emit('getZonesExtendedString', true, function (data) {                    
             data.each(function(zone) {
-                if (typeof(zone.name) != 'undefined') { 
-                    zones.include(zone.name.replace(/_/g, ' ').capitalize());
-                    zonesIds[zone.name.replace(/_/g, ' ').capitalize()] = zone.id;
+                if (typeof(zone.extendedString) != 'undefined') { 
+                    zones.include(zone.extendedString.replace(/_/g, ' ').capitalize());
+                    zonesIds[zone.extendedString.replace(/_/g, ' ').capitalize()] = zone.id;
                 }
             });
         });
@@ -55,10 +55,10 @@ window.addEvent('domready', function() {
 	  				new Element('option', {'value' : type.name, 'html' : type.name.replace(/_/g, ' ').capitalize()}).inject($('type'));
 	  			}
 	  		});
+            if(gup('id') != null && gup('id') != '') {
+                getPlace(gup('id'), false);
+             }
 	    });
-        if(gup('id') != null && gup('id') != '') {
-            getPlace(gup('id'), false);
-         }
         if(gup('place') != null && gup('place') != '') {
             placeFilter = gup('place');
          }
@@ -99,8 +99,8 @@ function getPlace(id, parent){
 	  //var jid = '{"id":"' + id + '"}';
 	  socket.emit('getPlaceByFilters', {id: id}, function (data) {
        	var jsonObj = data[0];			  		
-	  		if (parent) {
-             $('parent').value = jsonObj.name;
+	  	 if (parent) {
+             $('parent').value = jsonObj.extendedString.replace(/_/g, ' ').capitalize();
          } else {
              if (typeof($('id').value) != 'undefined') {
              	$('id').value = jsonObj.id;
@@ -113,8 +113,10 @@ function getPlace(id, parent){
              typeof(jsonObj.address) != 'undefined' ? $('address').value = jsonObj.address : $('address').value = "";
              if (typeof(jsonObj.zone) != 'undefined') {
                 socket.emit('getZoneByFilters', {id: jsonObj.zone}, function(data) {
-                    $('placeZone').value = data[0].name.replace(/_/g, ' ').capitalize();
-                    zonesIds[data[0].name.replace(/_/g, ' ').capitalize()] = data[0].id;
+                    if (typeof(data[0]) != 'undefined' && data[0] != null) {
+                        $('placeZone').value = data[0].extendedString.replace(/_/g, ' ').capitalize();
+                        zonesIds[data[0].extendedString.replace(/_/g, ' ').capitalize()] = data[0].id;
+                    }
                 });
              } else {
                 $('placeZone').value = "";  
@@ -134,7 +136,7 @@ function getPlace(id, parent){
                         addLink(link);
                   });
              }
-             if (typeof(jsonObj.geoData) != 'undefined') {
+             if (typeof(jsonObj.geoData) != 'undefined' && jsonObj.geoData != null) {
              	geoedit = true;
               	geoPlaceId = jsonObj.geoData;
               	//var gzid = '{"id":"' + geoPlaceId + '"}';
@@ -152,8 +154,10 @@ function getParents(type) {
 	 //var jtype = '{"type":"' + type + '"}';
 	 socket.emit('getPlaceByFilters', {type: type}, function (jsonObj) {
     		jsonObj.each(function(parent) {
-                parents.include(parent.name.replace(/_/g, ' ').capitalize());
-                parentsIds[parent.name.replace(/_/g, ' ').capitalize()] = parent.id;
+              if (typeof(parent.extendedString) != undefined && parent.extendedString != null && parent.extendedString != '') {
+                parents.include(parent.extendedString.replace(/_/g, ' ').capitalize());
+                parentsIds[parent.extendedString.replace(/_/g, ' ').capitalize()] = parent.id;
+              }
          });
     });
 }
@@ -164,7 +168,7 @@ function getParentTypes(type) {
 	 socket.emit('getPlaceParentTypes', {name: type}, function (jsonObj) {
 	 		console.log("PARENT TYPESSSS: " + JSON.stringify(jsonObj));
     		jsonObj.each(function(parentType) {
-                getParents(parentType.name);
+                getParents(parentType);
          });
     });	  		        
 }
@@ -196,7 +200,7 @@ function savePlace() {
         objGeo = eval('(' + $('geoJson').value + ')');    
     }
     
-    if(geoedit) {
+    if(geoedit && $('geoJson').value != '') {
     	jsonPlace += ',"geoData":"' + geoPlaceId + '"';
     	socket.emit('updateGeoData', objGeo, function (resp) {
     		//var resp = eval('(' + data + ')'); 
@@ -207,6 +211,7 @@ function savePlace() {
     		}
     	});	
     } else {
+        if ($('geoJson').value != '') {
     	  if (geoPlaceId != null) {
     	  		jsonPlace += ',"geoData":"' + geoPlaceId + '"';
 		    	socket.emit('saveGeoData', objGeo, function (resp) {
@@ -218,6 +223,9 @@ function savePlace() {
 		    		}
 		    	});	
     	  }
+          } else {
+              jsonPlace += ',"geoData":null';
+          }
     }
     jsonPlace += '}';
     

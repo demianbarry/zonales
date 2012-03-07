@@ -16,7 +16,7 @@ var zoneSchema = new Schema(
     default: 'generated'
     }, ////Generado, publicado, despublicado, anulado
     geoData: String, //Debe ser un id de un dato geográfico existente
-    extendedString : { type: String }
+    extendedString : { type: String, unique: true }
 }
 );
 
@@ -28,6 +28,10 @@ var zones = mongoose.model('zones', zoneSchema);
 //Retorna id y nombre de todas las zonas
 module.exports.getAll = function getAll(short, callback) {
     return baseService.getAll(zones, short, '["id", "name"]', callback);
+}
+
+module.exports.getAllExtendedString = function getAllExtendedString(callback) {
+    return baseService.getAll(zones, true, '["id", "extendedString"]', callback);
 }
 
 //Retorna un conjunto de zonas de acuerdo a los filtros utilizados 
@@ -60,8 +64,12 @@ module.exports.remove = function remove(id, callback) {
     return baseService.remove(zones, 'id', id, callback);
 }
 
-module.exports.zonesExtendedString = function (){
-
+module.exports.getExtendedString = function getExtendedString(id, callback) {
+    this.get({id:id}, function(zone) {
+        if (typeof(zone) != 'undefined' && zone != null && typeof(zone[0]) != 'undefined' && zone[0] != null) {
+            callback(zone.extendedString);
+        }
+    });
 }
 
 module.exports.updateExtendedString = function(zone, parent){
@@ -71,13 +79,13 @@ module.exports.updateExtendedString = function(zone, parent){
 function updateExtendedString(zone, parent){
     zone.extendedString = zone.name;
     if (parent)
-        zone.extendedString += ", "+parent.extendedString;
+        zone.extendedString += ", " + parent.extendedString;
 
-    baseService.get(zones, JSON.parse('{"parent":"'+zone.id+'"}'), function(leaves){
+    baseService.get(zones, {parent:zone.id}, function(leaves){
         leaves.forEach (function (leaf) {
             console.log('---------> ZONA: '+ zone.name);
             console.log(JSON.stringify(leaf._doc));
-            getExtendedString(leaf._doc, zone);
+            updateExtendedString(leaf._doc, zone);
         });
     });
     delete zone._id;
