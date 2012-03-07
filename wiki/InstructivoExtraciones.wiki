@@ -11,6 +11,7 @@ Puede acceder a CMUtils del ambiente QA que utilizaremos para las pruebas desde 
 La función principal es la Gestión de las Extracciones, que se lleva a cabo mediante dos pantallas básicas:
 
 CMUtils/index.php       => búsqueda y listado de extracciones cargadas.
+
 CMUtils/extractUtil.php => edición y carga de extracciones
 
 Además se incluye un conjunto de utilidades para Facebook, Twitter y para listar las extracciones programadas en el Scheduler.
