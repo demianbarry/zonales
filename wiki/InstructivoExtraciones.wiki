@@ -1,11 +1,30 @@
 #summary Instructivo para carga de extraciones en Zonales
 
-= Servicios =
+= CMUtils: gestión de extracciones y utilidades =
 
-La carga de extracciones se lleva a cabo mediante dos pantallas básicas:
+== Introducción ==
+
+CMUtils engloba un conjunto de funciones que permite administrar el back-end de noticias de Zonales.
+
+Puede acceder a CMUtils del ambiente QA que utilizaremos para las pruebas desde [http://200.69.225.53:30081/CMUtils/index.php aqui]
+
+La función principal es la Gestión de las Extracciones, que se lleva a cabo mediante dos pantallas básicas:
 
 CMUtils/index.php       => búsqueda y listado de extracciones cargadas.
 CMUtils/extractUtil.php => edición y carga de extracciones
 
-Se ingresa por el index.php y de allí se accede al otro servicio. La URL completa depende del servidor y la instancia a la que se desea acceder. En el caso de QA sería:
-http://200.69.225.53:30081/CMUtils/index.php
+Además se incluye un conjunto de utilidades para Facebook, Twitter y para listar las extracciones programadas en el Scheduler.
+
+= Búsqueda y listado de extracciones cargadas =
+
+La pantalla de búsqueda permite:
+  * Listar las extracciones programadas de acuerdo a un conjunto de filtros
+  * Acceder a la edición de una extracción desde la lista de resultados.
+  * Seleccionar un conjunto de extracciones de los resultados de la búsqueda y realizar un extracción de prueba.
+
+Los filtros que se pueden utilizar son:
+  * Zona: Cadena extendida que representa la zona configurada en la extracción.
+  * Fuente: Tipo de fuente configurada en la extracción. Por el momento Facebook, Twitter y Feed
+  * Periodo: Rango de tiempo en la cual fue cargada la extracción.
+  * Tags: Lista de tags separados por coma.
+  * Estado: estado en el que se encuentra la configuración de la extracción.
