@@ -88,7 +88,7 @@ function getSolrBoosting(zCtx) {
     var res  = '&bf=ord(modified)^';
     if(!zCtx || !zCtx.selZone || zCtx.selZone == '' || tabs.indexOf(zCtx.zTab) == -1)
         return res+'100000000';
-    res += (zCtx.selZone.split(',').length*2+2)+'&bq=';
+    res += Math.pow(10,(zCtx.selZone.split(',').length*2+2))+'&bq=';
     var extendedString = zCtx.selZone;
     var boost = "";
     
@@ -126,7 +126,7 @@ function getSolrKeyword(zCtx) {
 }
 
 function getSolrUrl(zCtx, nuevos) {
-    var urlSolr = "/solr/select?indent=on&version=2.2&start="+zCtx.start+"&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
+    var urlSolr = "/solr/select?indent=on&version=2.2&start="+(nuevos ? 0 : zCtx.start)+"&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
     getSolrSort(zCtx.zTab)+"&wt=json&explainOther=&hl.fl=&"+
     getSolrSources(zCtx.zTab)+
     getSolrZones()+
