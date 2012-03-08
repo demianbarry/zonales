@@ -13,6 +13,12 @@
     <div>
         <label id= "tituloZone2"></label>
     </div>
+   <div>
+        <label id= "tituloFiltro"></label>
+    </div>
+    <div>
+        <label id= "filtrosAct"></label>
+    </div>
 <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
 <div id="newPostsContainer" style="display:none">
 </div>
