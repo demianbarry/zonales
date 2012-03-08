@@ -109,10 +109,15 @@ function getSolrBoosting(zCtx) {
 
 function getSolrFilterQuery(zCtx) {
     console.log('=========> TAB: '+zCtx.zTab);
-    if(!zCtx || !zCtx.selZone || zCtx.selZone == '' || ['portada','enlared','noticiasenlared'].indexOf(zCtx.zTab) == -1 || zCtx.getFirstIndexTime() == "")
-        return "";
+    var res = '';
+    if(['relevantes','noticiasenlaredrelevantes'].indexOf(zCtx.zTab) != -1){
+        if(zCtx.getFirstIndexTime() != "")
+            res  = '&fq=relevance:['+zCtx.getMaxRelevance()+'+TO+*]';            
+    } else {        
+        res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
+    }
 
-    var res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+' TO *]';
+    
     return res;
 }
 
@@ -182,17 +187,18 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
                 resp.response.docs.forEach(function(doc){
                     if(!zCtx.getFirstIndexTime() || new Date(zCtx.getFirstIndexTime()) < new Date(doc.indexTime))
                         zCtx.setFirstIndexTime(doc.indexTime);
+                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < doc.relevance)
+                        zCtx.setMaxRelevance(doc.relevance);
                 });
             }
-            if(typeof(resp) != 'undefined'){                
+            if(typeof(resp) != 'undefined'){
+                zContextService.setStart(sessionId, resp.response.docs.length+1);
                 if(more){
-                    zContextService.setStart(sessionId, resp.response.docs.length+1);
                     client.emit('solrMorePosts',{
                         response: resp.response
                     });
                 } else {
-                    //zContextService.resetStart(sessionId);
-                    zContextService.setStart(sessionId, resp.response.docs.length+1);
+                    //zContextService.resetStart(sessionId);                    
                     client.emit('solrPosts',{
                         response: resp.response
                     });
@@ -209,10 +215,12 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                 console.log('FIRST INDEX TIME: '+zCtx.getFirstIndexTime());
                 resp.response.docs.forEach(function(doc){
                     console.log('DOC INDEX TIME: '+doc.indexTime);
-                    if(!zCtx.getFirstIndexTime() || new Date(zCtx.getFirstIndexTime()) < new Date(doc.indexTime)){                        
+                    if(!zCtx.getFirstIndexTime() || new Date(zCtx.getFirstIndexTime()) < new Date(doc.indexTime))
                         zCtx.setFirstIndexTime(doc.indexTime);
-                    }
+                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < doc.relevance)
+                        zCtx.setMaxRelevance(doc.relevance);
                 });
+                zContextService.setStart(sessionId, resp.response.docs.length+1);
             }
             if(typeof(resp) != 'undefined'){                
                 client.emit('solrNewPosts',{
