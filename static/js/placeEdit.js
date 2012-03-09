@@ -70,7 +70,10 @@ window.addEvent('domready', function () {
          }  
        if(gup('placeZone') != null && gup('placeZone') != '') {
             placeZoneFilter = gup('placeZone');
-         }  
+         }
+       if(gup('jsonInput') != null && gup('jsonInput') != 'true') {
+            $('jsonInput').style.display = "none";
+         }    
        $('backAnchor').href = '/CMUtils/placeList?place=' + placeFilter + '&state=' + stateFilter + '&placeType=' + placeTypeFilter + '&placeZone=' + placeZoneFilter;
 	  });
 });
@@ -127,7 +130,7 @@ function getPlace(id, parent){
              } else {
                  $('type').value = "";
              }
-             if (typeof(jsonObj.parent) != 'undefined' && jsonObj.parent != "") {
+             if (typeof(jsonObj.parent) != 'undefined'  && jsonObj.parent != null && jsonObj.parent != "") {
                  getPlace(jsonObj.parent, true);
              }
              typeof(jsonObj.image) != 'undefined' ? $('image').value = jsonObj.image : $('image').value = "";
@@ -136,13 +139,15 @@ function getPlace(id, parent){
                         addLink(link);
                   });
              }
-             if (typeof(jsonObj.geoData) != 'undefined' && jsonObj.geoData != null) {
+             if (typeof(jsonObj.geoData) != 'undefined'  && jsonObj.geoData != null && jsonObj.geoData != "") {
              	geoedit = true;
               	geoPlaceId = jsonObj.geoData;
               	//var gzid = '{"id":"' + geoPlaceId + '"}';
               	socket.emit('getGeoData', {id: geoPlaceId}, function(data) {
-						$('geoJson').value = JSON.stringify(data[0]);
-            		deserialize();              		
+                    if(typeof(data) != 'undefined' && data != null && typeof(data[0]) != 'undefined' && data[0] != null && data[0] != '') {
+					   $('geoJson').value = JSON.stringify(data[0]);
+            		   deserialize();              		
+                   }
               	});
              }  
          }	
@@ -331,15 +336,35 @@ function init() {
         displayProjection : new OpenLayers.Projection("EPSG:4326")
     });
 
-    //Create a base layer
-    var google_map = new OpenLayers.Layer.Google(
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+
+    //Create a base layers
+    var gphy = new OpenLayers.Layer.Google(
+        "Google Physical",
+        {type: google.maps.MapTypeId.TERRAIN}
+    );
+    var gmap = new OpenLayers.Layer.Google(
+        "Google Streets", // the default
+        {numZoomLevels: 20}
+    );
+    var ghyb = new OpenLayers.Layer.Google(
+        "Google Hybrid",
+        {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
+    );
+    var gsat = new OpenLayers.Layer.Google(
+        "Google Satellite",
+        {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
+    );
+
+    /*var google_map = new OpenLayers.Layer.Google(
         'Google Layer',
         {}
-    );
+    );*/
 
     vectors = new OpenLayers.Layer.Vector("Vector Layer");
 
-    map.addLayers([google_map, vectors]);
+    map.addLayers([ghyb, gmap, gsat, gphy, vectors]);
     map.addControl(new OpenLayers.Control.MousePosition());
     map.addControl(new OpenLayers.Control.EditingToolbar(vectors));
 

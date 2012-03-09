@@ -112,13 +112,20 @@ function getSolrFilterQuery(zCtx) {
     var res = '';
     if(['relevantes','noticiasenlaredrelevantes'].indexOf(zCtx.zTab) != -1){
         if(zCtx.getFirstIndexTime() != "")
-            res  = '&fq=relevance:['+zCtx.getMaxRelevance()+'+TO+*]';            
+            res  = '&fq=relevance:['+(zCtx.getMaxRelevance()+1)+'+TO+*]';            
     } else {        
         res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
     }
-
     
     return res;
+}
+
+function getSolrDate(d){
+    return d.getFullYear() + "-" + fixTime(d.getMonth()) + "-" + fixTime(d.getDate())+"T"+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + "."+d.getMilliseconds()+"Z";
+}
+
+function fixTime(i) {
+    return (i<10 ? "0" + i : i);
 }
 
 function getSolrKeyword(zCtx) {
