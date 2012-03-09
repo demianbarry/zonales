@@ -5,9 +5,9 @@ var selZoneName = "";
 var efZoneName = "";
 var provinceName = "";
 
-function Source() {
-    this.name = "";
-    this.checked = false;
+function Source(name, checked) {
+    this.name = name ? name : "";
+    this.checked = checked !== undefined ? checked : false;
 }
 
 function Tag() {
@@ -52,12 +52,17 @@ function initZCtx(callback) {
         socket.emit('getCtx', sessionId, function(zCtxFromServer) {
             if(!zCtx)
                 zCtx = new ZContext();
-            zCtx.filters = zCtxFromServer.filters;
+            zCtxFromServer.filters.sources.each(function(source){
+                zCtx.filters.sources.push(new Source(source.name, source.checked));
+            });
+            //zCtx.filters = zCtxFromServer.filters;
             zCtx.zTabs = zCtxFromServer.zTabs;
             zCtx.zTab = zCtxFromServer.zTab;
             zCtx.selZone = zCtxFromServer.selZone;
-            zCtx.efZone = zCtxFromServer.efZone;                
+            zCtx.efZone = zCtxFromServer.efZone;                            
             zCtx.searchKeyword = zCtxFromServer.searchKeyword;
+            if(!zCtx.selZone)
+                zCtx.selZone = '';
             selZoneName = efZoneName = zCtx.selZone.replace(/_/g, ' ').capitalize();
             callback(zCtx);
             /*getZoneById(zCtx.selZone, function(selZone) {
@@ -76,8 +81,7 @@ function initZCtx(callback) {
     });
     socket.on('solrPosts', function (response) {
         if($('postsContainer')){
-            zirClient.searching=false;
-            $('postsContainer').empty();
+            zirClient.searching=false;            
             updatePosts(response, $('postsContainer'));
         }
     });
@@ -249,7 +253,7 @@ function zcGetCheckedSources() {
     return sources;
 }
 
-//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -260,7 +264,7 @@ function zcSearchSource(zCtx, sourceStr) {
     return -1;
 }
 
-//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){
