@@ -7,10 +7,10 @@ var zoneService = require('./zones');
 //Esquema JSON para las zonas
 var placeSchema = new Schema(
 	{
-	    id : { type: String, unique: true }, //Este campo debe ser único. No es igual al ID que le pone MongoDB
+	    id : { type: String, unique: true }, //Este campo debe ser Ãºnico. No es igual al ID que le pone MongoDB
 	    name : String,
-	    description : String, //Descripción del lugar  --  OPCIONAL
-	    address : String, //Domicilio alfanumérico  --  OPCIONAL
+	    description : String, //DescripciÃ³n del lugar  --  OPCIONAL
+	    address : String, //Domicilio alfanumÃ©rico  --  OPCIONAL
 	    links : [String],  //Array de links a sitios relacionados con la zona  --  OPCIONAL
 	    image : String, //URL de una imagen del lugar  --  OPCIONAL
 	    zone : String, //ID de la zona a la que pertenece el lugar
@@ -21,13 +21,13 @@ var placeSchema = new Schema(
 	    	enum:['generated', 'published', 'unpublished', 'void'], 
 	    	default: 'generated'
 	    },
-	    geoData: String, //Debe ser un id de un dato geográfico existente
+	    geoData: String, //Debe ser un id de un dato geogrÃ¡fico existente
 	    parent : String,
-	    extendedString : { type: String, unique: true}
+	    extendedString : { type: String}
 	}
 );
 
-//Conecto con la DB y seteo el Model (TODO: Ver tema de la conexión para unificarla para todos los models)
+//Conecto con la DB y seteo el Model (TODO: Ver tema de la conexiÃ³n para unificarla para todos los models)
 mongoose.connect('mongodb://localhost/crawl');
 var places = mongoose.model('places', placeSchema);
 
@@ -41,12 +41,12 @@ module.exports.get = function get(filters, callback) {
 	return baseService.get(places, filters, callback);
 }
 
-//Retorna un conjunto de places con nombre similar al parámetro
+//Retorna un conjunto de places con nombre similar al parÃ¡metro
 module.exports.getLikeName = function getLikeName(name, callback) {
 	return baseService.getLikeName(places, name, callback);
 }
 
-//Retorna un conjunto de places con nombre similar al parámetro
+//Retorna un conjunto de places con nombre similar al parÃ¡metro
 module.exports.searchPlaces = function searchPlaces(filters, callback) {
 	return baseService.searchData(places, filters, callback);
 }
@@ -56,12 +56,12 @@ module.exports.set = function set(place, callback) {
 	return baseService.set(places, place, callback);
 }
 
-//Actualiza un place existente (búsqueda por ID)
+//Actualiza un place existente (bÃºsqueda por ID)
 module.exports.update = function update(id, data, callback) {
 	return baseService.update(places, 'id', id, data, callback);
 }
 
-//Elimina un place existente (búsqueda por ID) 
+//Elimina un place existente (bÃºsqueda por ID) 
 module.exports.remove = function remove(id, callback) {
 	return baseService.remove(places, 'id', id, callback);
 }

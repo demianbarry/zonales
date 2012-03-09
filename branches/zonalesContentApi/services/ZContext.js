@@ -29,7 +29,7 @@ function ZContext(){
     this.start=0;
     this.firstIndexTime="";
     this.maxRelevance=0;
-    this.searchKeywords="";
+    this.searchKeywords=""; 
     
     this.setFirstIndexTime=function(indexTime){
         this.firstIndexTime = indexTime;
@@ -82,7 +82,7 @@ module.exports.getZCtx = function getZCtx(sessionId, callback) {
 
 module.exports.addSource = function addSource(sessionId, source, callback) {
     callback = (callback || noop);
-	
+    
     try {
         var zCtx = contexts[sessionId];
         var index = searchSource(zCtx, source);
@@ -106,10 +106,10 @@ module.exports.addSource = function addSource(sessionId, source, callback) {
 
 module.exports.unckeckSource = function unckeckSource(sessionId, source, callback) {
     callback = (callback || noop);
-	
+    
     try {
         var zCtx = contexts[sessionId];
-        var index = searchSource(zCtx, source);	
+        var index = searchSource(zCtx, source); 
         if (index == -1) {
             var sourceObj = new Source();
             sourceObj.name = source;
@@ -127,7 +127,7 @@ module.exports.unckeckSource = function unckeckSource(sessionId, source, callbac
     }
 }
 
-//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
 function searchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -135,14 +135,14 @@ function searchSource(zCtx, sourceStr) {
                 return i;
         }
     }
-    return -1;	
+    return -1;  
 }
 
 //SETEO DE TAGS
 
 module.exports.addTag = function addTag(sessionId, tag, callback) {
     callback = (callback || noop);
-	
+    
     try {
         var zCtx = contexts[sessionId];
         var index = searchTag(zCtx, tag);
@@ -167,7 +167,7 @@ module.exports.addTag = function addTag(sessionId, tag, callback) {
 
 module.exports.addKeyword = function addKeyword(sessionId, keyword, callback) {
     callback = (callback || noop);
-	
+    
     try {
         var zCtx = contexts[sessionId];
         zCtx.setSearchKeyword(keyword);
@@ -186,10 +186,10 @@ module.exports.addKeyword = function addKeyword(sessionId, keyword, callback) {
 
 module.exports.unckeckTag = function unckeckTag(sessionId, tag, callback) {
     callback = (callback || noop);
-	
+    
     try {
         var zCtx = contexts[sessionId];
-        var index = searchTag(zCtx, tag);				
+        var index = searchTag(zCtx, tag);               
         if (index == -1) {
             var tagObj = new Tag();
             tagObj.name = tag;
@@ -209,19 +209,19 @@ module.exports.unckeckTag = function unckeckTag(sessionId, tag, callback) {
 
 module.exports.setSelectedZone = function setSelectedZone(sessionId, zone, callback) {
     callback = (callback || noop);
-	
+    
     try {
         contexts[sessionId].selZone = zone;
         contexts[sessionId].efZone = zone;
         /*getEfectiveZone(contexts[sessionId].zTab, zone, function(efZone) {
-		   if (efZone != null) {			
-				contexts[sessionId].efZone = efZone.id;
-			} else {
-				contexts[sessionId].efZone = "";
-			}
-			callback(efZone);
-			return(this);
-		});*/
+           if (efZone != null) {            
+                contexts[sessionId].efZone = efZone.id;
+            } else {
+                contexts[sessionId].efZone = "";
+            }
+            callback(efZone);
+            return(this);
+        });*/
         callback(zone);
     } catch (err) {
         console.log('Error al setear la zona seleccionada -> ' + err);
@@ -282,7 +282,7 @@ function getEfectiveZone(tab, zoneId, callback) {
 
 module.exports.setTemp = function setTemp(sessionId, temp, callback) {
     callback = (callback || noop);
-	
+    
     try {
         contexts[sessionId].filters.temp = temp;
         callback(errors.success);
@@ -296,7 +296,7 @@ module.exports.setTemp = function setTemp(sessionId, temp, callback) {
 
 module.exports.setTab = function setTab(sessionId, tab, callback) {
     callback = (callback || noop);
-	
+    
     try {
         contexts[sessionId].zTab = tab;
         callback(errors.success);
@@ -307,7 +307,7 @@ module.exports.setTab = function setTab(sessionId, tab, callback) {
         return(this);
     }
 }
-//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
 function searchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){
@@ -315,5 +315,5 @@ function searchTag(zCtx, tagStr) {
                 return i;
         }
     }
-    return -1;	
+    return -1;  
 }

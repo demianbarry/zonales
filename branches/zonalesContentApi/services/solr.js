@@ -107,14 +107,18 @@ function getSolrBoosting(zCtx) {
     return res + boost.replace(/\ /g,"+");
 }
 
-function getSolrFilterQuery(zCtx) {
+function getSolrFilterQuery(zCtx, nuevos) {
     console.log('=========> TAB: '+zCtx.zTab);
+    var tabs = new Array('relevantes','noticiasenlaredrelevantes');
     var res = '';
-    if(['relevantes','noticiasenlaredrelevantes'].indexOf(zCtx.zTab) != -1){
-        if(zCtx.getFirstIndexTime() != "")
-            res  = '&fq=relevance:['+(zCtx.getMaxRelevance()+1)+'+TO+*]';            
+    if(tabs.indexOf(zCtx.zTab) != -1){        
+        if(nuevos && zCtx.getMaxRelevance() != 0)        
+            res  += '&fq=relevance:['+(parseInt(zCtx.getMaxRelevance())+1)+'+TO+*]';
+        if(zCtx.filters.temp != '' && zCtx.filters.temp != '0')
+            res  += (res.length > 0 ? '+AND+' : '&fq=') + 'modified:[NOW-'+zCtx.filters.temp+'+TO+*]';        
     } else {        
-        res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
+        if(nuevos && zCtx.getFirstIndexTime() != "")
+            res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
     }
     
     return res;
@@ -144,7 +148,7 @@ function getSolrUrl(zCtx, nuevos) {
     getSolrZones()+
     getSolrKeyword(zCtx)+
     getSolrBoosting(zCtx)+     
-    (nuevos ? getSolrFilterQuery(zCtx) : '');
+    getSolrFilterQuery(zCtx, nuevos);
 
     return urlSolr;
 }
@@ -192,10 +196,10 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
         retrieveSolrPosts(zCtx, function(resp){
             if(resp && resp.response && resp.response.docs){
                 resp.response.docs.forEach(function(doc){
-                    if(!zCtx.getFirstIndexTime() || new Date(zCtx.getFirstIndexTime()) < new Date(doc.indexTime))
+                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime())
                         zCtx.setFirstIndexTime(doc.indexTime);
-                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < doc.relevance)
-                        zCtx.setMaxRelevance(doc.relevance);
+                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
+                        zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                 });
             }
             if(typeof(resp) != 'undefined'){
@@ -222,10 +226,10 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                 console.log('FIRST INDEX TIME: '+zCtx.getFirstIndexTime());
                 resp.response.docs.forEach(function(doc){
                     console.log('DOC INDEX TIME: '+doc.indexTime);
-                    if(!zCtx.getFirstIndexTime() || new Date(zCtx.getFirstIndexTime()) < new Date(doc.indexTime))
+                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime())).getTime() < (new Date(doc.indexTime)).getTime())
                         zCtx.setFirstIndexTime(doc.indexTime);
-                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < doc.relevance)
-                        zCtx.setMaxRelevance(doc.relevance);
+                    if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
+                        zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                 });
                 zContextService.setStart(sessionId, resp.response.docs.length+1);
             }
