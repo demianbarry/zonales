@@ -1155,21 +1155,21 @@ function armarTitulo(tabTemp){
         temp =index+1
         if(element.checked) {
             $('tituloFiltro').innerHTML = "del Tipo: ";
-                if(index != 0)
-                    $('filtrosAct').innerHTML += ", ";
-                 $('filtrosAct').innerHTML += element.value+" ";
+            if(index != 0)
+                $('filtrosAct').innerHTML += ", ";
+            $('filtrosAct').innerHTML += element.value+" ";
         }
 
 
     // $('filtrosAct').innerHTML += " activados "
     });
     if(temp == ($('filterTags').getElements('.checked').length)){
-              $('tituloFiltro').innerHTML = "";
-              $('filtrosAct').innerHTML = "";
+        $('tituloFiltro').innerHTML = "";
+        $('filtrosAct').innerHTML = "";
     }
     if(($('filterTags').getElements('.checked').length) ==0){
         $('tituloFiltro').innerHTML = "No hay ningun filtro de tag seleccionado";
-              $('filtrosAct').innerHTML = "";
+        $('filtrosAct').innerHTML = "";
     }
 }
 
