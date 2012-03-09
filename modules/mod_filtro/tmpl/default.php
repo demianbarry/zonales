@@ -72,7 +72,7 @@ las fuentes de informacion mostradas"; ?></p>
             <div class="splitter"></div>
         <div id="filterTags">
             <p class="titulos">TAGS</p>
-            <table id="tagsFilterTable">
+            <table id="tagsFilterTable" style="display: <?php echo $tagsFilterTable ?>">
 
             </table>
         </div>
