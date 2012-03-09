@@ -229,7 +229,7 @@ function initTagFilters(zCtx) {
         if (!tagChk) {
             var tagTr = new Element('tr');
             var tagChkBoxTd = new Element('td').inject(tagTr);
-            new Element('input', {
+            tagChk = new Element('input', {
                 'id': 'chkt' + tag.name,
                 'type': 'checkbox',
                 'checked': (tag.checked ? 'checked' : ''),
@@ -242,6 +242,8 @@ function initTagFilters(zCtx) {
             }).inject(tagTr);
             tagTr.inject($('tagsFilterTable'));
         }
+        if(tag.checked)
+            tagChk.addClass('checked');
     });
 }
 
@@ -950,13 +952,15 @@ function setTagVisible(tag, checked) {
 
     //Actualizo el contexto
     if (checked) {
+        if($('chkt'+tag))
+            $('chkt'+tag).addClass('checked');
         zcAddTag(tag);
     } else {
+        if($('chkt'+tag))
+            $('chkt'+tag).removeClass('checked');
         zcUncheckTag(tag);
-    }
+    }    
     refreshFiltro();
-
-
 }
 
 function refreshFiltro(){
