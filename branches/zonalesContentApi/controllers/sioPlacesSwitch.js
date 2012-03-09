@@ -1,6 +1,7 @@
 // ----------------------- SERVICES -----------------------
 
 var placeService = require('../services/places');
+var zoneService = require('../services/zones');
 var placeTypeService = require('../services/placeTypes');
 
 module.exports.tryEvent = function tryEvent(client) {
