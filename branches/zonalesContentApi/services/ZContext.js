@@ -16,7 +16,7 @@ function Tag() {
 
 function Filters(){
     this.sources = new Array();
-    this.temp = "";
+    this.temp = "24HOURS";
     this.tags = new Array();
 }
 
