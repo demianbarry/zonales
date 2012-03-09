@@ -21,6 +21,7 @@ var tagService = require('./services/tags');
 var tagTypeService = require('./services/tagTypes');
 var zContextService = require('./services/ZContext');
 var zProxyService = require('./services/zProxy');
+var incIdsService = require('./services/incIds');
 
 //----------------------- ERRORS -----------------------
 var errors = require('./errors/errors');
@@ -760,3 +761,19 @@ placeService.getParent(2, function (parent) {
 
 //06-03-2012 15:35 -> Funcionó OK
 
+
+//------------------- Prueba de servicios: Generación incremental de Id's -------------------
+
+/*incIdsService.getId("zones", function(id) {
+   console.log("ID recuperado: " + id);
+});
+
+incIdsService.incrementId("zones", function(res) {
+   console.log("ID incrementado?: " + res); 
+});*/
+
+/*incIdsService.set({key:"places", nextId: 4}, function() {
+    console.log("Inc OK");
+});*/
+
+//06-03-2012 15:35 -> Funcionó OK
