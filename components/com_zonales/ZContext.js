@@ -10,9 +10,9 @@ function Source(name, checked) {
     this.checked = checked !== undefined ? checked : false;
 }
 
-function Tag() {
-    this.name = "";
-    this.checked = false;
+function Tag(name, checked) {
+    this.name = name ? name : "";
+    this.checked = checked !== undefined ? checked : false;
 }
 
 function Filters(){
@@ -55,6 +55,10 @@ function initZCtx(callback) {
             zCtxFromServer.filters.sources.each(function(source){
                 zCtx.filters.sources.push(new Source(source.name, source.checked));
             });
+            zCtxFromServer.filters.tags.each(function(tag){
+                zCtx.filters.tags.push(new Tag(tag.name, tag.checked));
+            });
+            zCtx.filters.temp = zCtxFromServer.filters.temp;
             //zCtx.filters = zCtxFromServer.filters;
             zCtx.zTabs = zCtxFromServer.zTabs;
             zCtx.zTab = zCtxFromServer.zTab;
