@@ -247,6 +247,7 @@ function initTagFilters(zCtx) {
     });
 }
 
+
 function initTempFilters(zCtx) {
     $('tempoSelect').value = zCtx.filters.temp;
     $('tempoSelect').addEventListener('change', onTempoChange, false);
@@ -1165,7 +1166,11 @@ function armarTitulo(tabTemp){
     if(temp == ($('filterTags').getElements('.checked').length)){
               $('tituloFiltro').innerHTML = "";
               $('filtrosAct').innerHTML = "";
-        }
+    }
+    if(($('filterTags').getElements('.checked').length) ==0){
+        $('tituloFiltro').innerHTML = "No hay ningun filtro de tag seleccionado";
+              $('filtrosAct').innerHTML = "";
+    }
 }
 
 //zcSetTemp($('tempoSelect').value);
