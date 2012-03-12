@@ -4,9 +4,9 @@ var zones = Array();
 
 window.addEvent('domready', function() {
 	  $('newButton').addEvent('click', function() {
-	  		var urlPlaceEdit = "placeEdit";
+	  		var urlPlaceEdit = "placeEdit?jsonInput=true";
   			if ($('resultslist_content').getChildren().length > 0) {
-  				urlPlaceEdit += "?place=" + $('placeNameFilter').value 
+  				urlPlaceEdit += "&place=" + $('placeNameFilter').value 
 								 + "&state=" + $('placeStateFilter').value
 								 + "&placeType=" + $('tipo').value
                                  + "&placeZone=" + $('placeZoneFilter').value
