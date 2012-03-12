@@ -59,7 +59,7 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
         <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/map.js"></script>
+        <script language="javascript" type="text/javascript" src="components/com_zonales/map2.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node')?>:4000/socket.io/socket.io.js"></script>
