@@ -1,6 +1,6 @@
 function ZIRClient(){
     this.host = "localhost";
-    this.port = 38080;
+    this.port = 38081;
     //this.searching = false;
     this.firstIndexTime = null;
     this.lastIndexTime = null;
@@ -180,63 +180,46 @@ function ZIRClient(){
         return urlSolr;
     }
 
-    this.loadSolrPost=function(tab, zone, more, callback){
-       /* console.log(this.searching);
-        if(this.searching) {
-            callback();
-        } else {
-            this.searching = true;*/
-            var urlSolr = this.getSolrUrl(tab, zone, more, this.getSearchKeyword());
-            console.log(urlSolr);
-            socket.emit('proxyExecute', {
-                host: this.host,
-                port: this.port,
-                path: urlSolr,
-                method: 'GET'
-            }, function(jsonObj) {
-                console.log(jsonObj);
-             //   this.searching = false;
-                jsonObj.response.docs.each(function(doc) {
-                    var verbatim = eval('(' + doc.verbatim + ')');
-                    //alert("TYPE ZONE: " + typeof(verbatim.zone));
-                    //alert("ZONE: " + JSON.stringify(verbatim.zone));
-                    if (typeof(verbatim.zone) == 'object') {
-                        verbatim.zone = verbatim.zone.extendedString;
-                        doc.verbatim = JSON.stringify(verbatim);
-                    }
-                });
-                //console.log('Callback emit '+this.searching);
-                callback(jsonObj);
-            });
-       // }
+    this.loadSolrPost=function(id, callback){        
+        socket.emit('getSolrPost', {                            
+            id: id,
+            method: 'GET'
+        }, function(jsonObj) {
+            console.log(jsonObj);
+            var result;
+            jsonObj.response.docs.each(function(doc) {
+                result = JSON.parse(doc.verbatim);
+            });               
+            callback(result);
+        });       
     }
 
     this.loadMoreSolrPost=function(){
-        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
-       /* console.log(this.searching);
+        var sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+        /* console.log(this.searching);
         if(this.searching) {
             return;
         } else {
             this.searching = true;*/
-            socket.emit('loadMorePosts', {
-                sessionId: sessionId,
-                method: 'GET'
-            });
-       // }
+        socket.emit('loadMorePosts', {
+            sessionId: sessionId,
+            method: 'GET'
+        });
+    // }
     }
 
     this.loadNewSolrPost=function(){
-        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+        var sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
         /*console.log(this.searching);
         if(this.searching) {
             return;
         } else {
             this.searching = true;*/
-            socket.emit('loadNewPosts', {
-                sessionId: sessionId,
-                method: 'GET'
-            });
-       // }
+        socket.emit('loadNewPosts', {
+            sessionId: sessionId,
+            method: 'GET'
+        });
+    // }
     }
 
     this.resetStart=function(){
@@ -257,7 +240,7 @@ function ZIRClient(){
 }
 /*
 var host = "localhost";
-var port = 38080;
+var port = 38081;
 var searching = false;
 var searchKeyword = "";
 var firstIndexTime = null;
