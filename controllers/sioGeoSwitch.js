@@ -1,6 +1,7 @@
 // ----------------------- SERVICES -----------------------
 
 var geoDataService = require('../services/geoData');
+var incIdsService = require('../services/incIds');
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -32,6 +33,15 @@ module.exports.tryEvent = function tryEvent(client) {
         geoDataService.update(name.id, name, function(data){
             if (typeof(data) != 'undefined') {
                 fn(data);
+            }
+        });
+    });
+
+    client.on('getNextGeoId', function(ignored, fn) {
+        console.log('Recibi el evento getNextGeoId desde el cliente');
+        incIdsService.getId("geodata", function(id){
+            if (typeof(id) != 'undefined') {
+                fn(id);
             }
         });
     });

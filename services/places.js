@@ -24,7 +24,15 @@ var placeSchema = new Schema(
 	    },
 	    geoData: String, //Debe ser un id de un dato geográfico existente
 	    parent : String,
-	    extendedString : { type: String, unique: true}
+	    extendedString : { type: String, unique: true},
+	    created: {
+	    	creationDate: { type: Date, default: Date.now },
+	    	createdBy: Number
+	    },
+	    modified: {
+	    	modifiedDate: { type: Date, default: Date.now },
+	    	modifiedBy: Number
+	    }
 	}
 );
 
@@ -91,8 +99,8 @@ module.exports.getZone = function getZone(id, callback) {
 	this.get({id:id}, function (place) {
 		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
 			zoneService.get({id:place[0].zone}, function (zone) {
-				if (typeof(zone) != 'undefined' && zone != null && callback) {
-					callback(zone);
+				if (typeof(zone) != 'undefined' && zone != null && typeof(zone[0]) != 'undefined' && zone[0] != null && callback) {
+					callback(zone[0]);
 				}
 			});
 		}
@@ -101,9 +109,7 @@ module.exports.getZone = function getZone(id, callback) {
 
 module.exports.getChildrens = function getChildrens(id, callback) {
 	this.get({parent:id}, function(places) {
-		if (typeof(places) != 'undefined' && places != null && callback) {
 			callback(places);
-		}
 	});
 }
 
@@ -111,8 +117,8 @@ module.exports.getParent = function getParent(id, callback) {
 	this.get({id:id}, function (place) {
 		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
 			baseService.get(places,{id:place[0].parent}, function (parent) {
-				if (typeof(parent) != 'undefined' && parent != null && callback) {
-					callback(parent);
+				if (typeof(parent) != 'undefined' && parent != null && typeof(parent[0]) != 'undefined' && parent[0] != null && callback) {
+					callback(parent[0]);
 				}
 			});
 		}
@@ -122,8 +128,14 @@ module.exports.getParent = function getParent(id, callback) {
 module.exports.getExtendedString = function getExtendedString(id, callback) {
 	this.get({id:id}, function(place) {
 		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
-			callback(place.extendedString);
+			callback(place[0].extendedString);
 		}
+	});
+}
+
+module.exports.getUserPlaces = function getUserPlaces(userId, callback) {
+	this.get({"created.createdBy": userId}, function (places) {
+		callback(places);
 	});
 }
 
