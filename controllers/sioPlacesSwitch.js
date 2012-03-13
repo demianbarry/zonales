@@ -92,7 +92,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getZone', function(id, fn) {
+    client.on('getPlaceZone', function(id, fn) {
         console.log('Recibi el evento getZone desde el cliente');
         placeService.getZone(id, function(data){
             if (typeof(data) != 'undefined') {
@@ -101,7 +101,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getChildrens', function(id, fn) {
+    client.on('getPlaceChildrens', function(id, fn) {
         console.log('Recibi el evento getChildrens desde el cliente');
         placeService.getChildrens(id, function(data){
             if (typeof(data) != 'undefined') {
@@ -110,7 +110,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getParent', function(id, fn) {
+    client.on('getPlaceParent', function(id, fn) {
         console.log('Recibi el evento getParent desde el cliente');
         placeService.getParent(id, function(data){
             if (typeof(data) != 'undefined') {
@@ -119,7 +119,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getExtendedString', function(id, fn) {
+    client.on('getPlaceExtendedString', function(id, fn) {
         console.log('Recibi el evento getExtendedString desde el cliente');
         placeService.getExtendedString(id, function(data){
             if (typeof(data) != 'undefined') {
