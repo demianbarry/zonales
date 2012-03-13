@@ -3,6 +3,7 @@
 var placeService = require('../services/places');
 var zoneService = require('../services/zones');
 var placeTypeService = require('../services/placeTypes');
+var incIdsService = require('../services/incIds');
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -123,6 +124,24 @@ module.exports.tryEvent = function tryEvent(client) {
         placeService.getExtendedString(id, function(data){
             if (typeof(data) != 'undefined') {
                 fn(data);
+            }
+        });
+    });
+
+    client.on('getUserPlaces', function(userId, fn) {
+        console.log('Recibi el evento getUserPlaces desde el cliente');
+        placeService.getUserPlaces(userId, function(data){
+            if (typeof(data) != 'undefined') {
+                fn(data);
+            }
+        });
+    });
+
+    client.on('getNextPlaceId', function(ignored, fn) {
+        console.log('Recibi el evento getNextPlaceId desde el cliente');
+        incIdsService.getId("places", function(id){
+            if (typeof(id) != 'undefined') {
+                fn(id);
             }
         });
     });

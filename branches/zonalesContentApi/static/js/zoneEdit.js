@@ -29,6 +29,8 @@ var cant = 0;
 var zoneFilter = "";
 var stateFilter = "";
 var zoneTypeFilter = "";
+var parent_id = "";
+
 
 window.addEvent('domready', function() {
 	  init();
@@ -209,10 +211,12 @@ function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
     if (typeof(geoZoneId) == 'undefined' || geoZoneId == null) {
-    	geoZoneId = '40000' + $('id').value;
+    	  socket.emit('getNextGeoId', null, function (id) {
+            geoZoneId = id;
+            str = str.substring(0, str.length-2) + ',\n    "id": "' + geoZoneId + '"\n}';
+            document.getElementById('geoJson').value = str;
+        });
     }
-    str = str.substring(0, str.length-2) + ',\n    "id": "' + geoZoneId + '"\n}';
-    document.getElementById('geoJson').value = str;
 }
 
 function deserialize() {

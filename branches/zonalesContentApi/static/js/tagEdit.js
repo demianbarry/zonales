@@ -5,6 +5,7 @@ var tag = null;
 var tagFilter = "";
 var stateFilter = "";
 var tagTypeFilter = "";
+var parent_id = "";
 
 window.addEvent('domready', function() {
 	  socket = io.connect();

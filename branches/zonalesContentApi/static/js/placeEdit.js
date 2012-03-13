@@ -288,10 +288,12 @@ function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
     if (typeof(geoPlaceId) == 'undefined' || geoPlaceId == null) {
-    	geoPlaceId = '50000' + $('id').value;
+        socket.emit('getNextGeoId', null, function (id) {
+            geoPlaceId = id;
+            str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
+            document.getElementById('geoJson').value = str;
+        });
     }
-    str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
-    document.getElementById('geoJson').value = str;
 }
 
 function deserialize() {

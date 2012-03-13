@@ -2,6 +2,7 @@
 
 var zoneService = require('../services/zones');
 var zoneTypeService = require('../services/zoneTypes');
+var incIdsService = require('../services/incIds');
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -98,6 +99,15 @@ module.exports.tryEvent = function tryEvent(client) {
         zoneService.getExtendedString(id, function(data){
             if (typeof(data) != 'undefined') {
                 fn(data);
+            }
+        });
+    });
+
+    client.on('getNextZoneId', function(ignored, fn) {
+        console.log('Recibi el evento getNextZoneId desde el cliente');
+        incIdsService.getId("zones", function(id){
+            if (typeof(id) != 'undefined') {
+                fn(id);
             }
         });
     });

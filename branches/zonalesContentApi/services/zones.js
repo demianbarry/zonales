@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema;
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
+var incIdsService = require('./incIds');
 
 //Esquema JSON para las zonas
 var zoneSchema = new Schema(
@@ -51,7 +52,19 @@ module.exports.searchZones = function searchZones(filters, callback) {
 
 //Crea una nueva zona
 module.exports.set = function set(zone, callback) {
-    return baseService.set(zones, zone, callback);
+    incIdsService.getId("zones", function(id) {
+        //console.log("------>>>>>>----->>>>> NextId: " + id);
+        zone.id = id;
+        baseService.set(zones, zone, function(response) {
+            if (response.cod == 100) {
+                incIdsService.incrementId("zones", function() {
+                    console.log("ID de zones Incrementado");
+                });
+            }
+            callback(response);
+            return(this);
+        });
+    })
 }
 
 //Actualiza una zona existente (búsqueda por ID)
@@ -67,7 +80,7 @@ module.exports.remove = function remove(id, callback) {
 module.exports.getExtendedString = function getExtendedString(id, callback) {
     this.get({id:id}, function(zone) {
         if (typeof(zone) != 'undefined' && zone != null && typeof(zone[0]) != 'undefined' && zone[0] != null) {
-            callback(zone.extendedString);
+            callback(zone[0].extendedString);
         }
     });
 }
