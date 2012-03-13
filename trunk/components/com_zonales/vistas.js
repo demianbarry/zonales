@@ -750,6 +750,15 @@ function updatePosts(json, component, more) {
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
 
+        var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Lugar: ').inject(div_story_place);
+        var span_place = new Element('span').inject(div_story_place);
+     /*   new Element('a', {
+            'id':''
+        }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
+        var idInputZone = 'zone_'+doc.id;
+        var span_addZone = new Element('span').inject(div_story_zone);*/
+
         /*if(zUserGroups.indexOf("4") != -1){
                 new Element('a',{
                     'onclick':'if ( $("'+idInputZone+'").style.display == "none"){ $("'+idInputZone+'").setStyle("display","inline"); $("'+idButtonSetZone+'").setStyle("display","inline");}else{ $("'+idInputZone+'").setStyle("display","none"); $("'+idButtonSetZone+'").setStyle("display","none");}'
