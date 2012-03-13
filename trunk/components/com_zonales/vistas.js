@@ -308,6 +308,9 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
             loadPost(true);
         }*/
     });
+     getPlaces(id, function()    {
+        console.log('Obtengo los places para la zona seteada' + zCtx.selZone);
+    });
 }
 
 function onTempoChange() {
