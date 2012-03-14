@@ -3,6 +3,7 @@
   * [Index Zonales]
     * [ContentManager]
       * [InstructivoExtraciones Instructivo para carga de Extracciones]
+      * [InstructivoTags Instructivo para carga de nuevos tags]
     * [Contenidos]
       * [EtiquetadoAutomatico Etiquetado Automático]
       * [Clasificados Clasificados]
