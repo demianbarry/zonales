@@ -63,8 +63,9 @@ function getTag(id, parent){
 
 function getParents(type) {
 	 socket.emit('getTagByFilters', {type: type}, function (jsonObj) {
+             var el = new Element('option', {'value' : null, 'html' : ''}).inject($('padre'));
     		jsonObj.each(function(parent) {
-              var el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
+              el = new Element('option', {'value' : parent.id, 'html' : parent.name.replace(/_/g, ' ').capitalize()}).inject($('padre'));
               if (parent.id == parent_id) {
                   el.selected = true;
               }

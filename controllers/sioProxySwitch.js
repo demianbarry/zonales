@@ -37,6 +37,14 @@ module.exports.tryEvent = function tryEvent(client) {
         console.log('Recibí evento resetStart');
         zContextService.resetStart(data.sessionId);
     });
+    
+    client.on('getSolrPost', function(data, fn) {
+        console.log('Recibí evento getSolrPost');
+        solrService.getSolrPost(data.id, function(json){
+            fn(json);
+        });
+        
+    });
 
 }
 
