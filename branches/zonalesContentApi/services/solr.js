@@ -153,6 +153,11 @@ function getSolrUrl(zCtx, nuevos) {
     return urlSolr;
 }
 
+function getSolrUrlById(id) {
+    var urlSolr = "/solr/select?indent=on&version=2.2&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&wt=json&q=id:"+id;
+    return urlSolr;
+}
+
 module.exports.countSolrPost = function countSolrPost(zCtx, callback){
     console.log("ESTOY EN SOLR. tab: " + zCtx.zTab + "zone: " + zCtx.selZone);
 
@@ -240,6 +245,16 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
             }
         }); 
     });
+}
+
+module.exports.getSolrPost=function getSolrPost(id, callback){
+    var urlSolr = getSolrUrlById(id);
+    console.log("=========> URL SORL: "+ urlSolr);
+    
+    zProxy.execute(host, port, urlSolr, 'GET', function(jsonObj) {
+        //var jsonObj = eval('(' + response + ')');
+        callback(jsonObj);
+    });    
 }
 
 function getSolrHost() {
