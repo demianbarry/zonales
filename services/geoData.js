@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
+var incIdsService = require('./incIds');
 
 var featureSchema = new Schema(
 	{
