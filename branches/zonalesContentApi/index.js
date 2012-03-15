@@ -150,6 +150,12 @@ app.get('/CMUtils/solrCommands', function(req,res) {
     });
 });
 
+app.get('/CMUtils/wikimapiaExtractor', function(req,res) {
+    fs.readFile(__dirname + '/views/wikimapiaExtractor.html', 'utf8', function(err, text){
+        res.send(text);
+    });
+});
+
 
 //----------------------- SERVICES SWITCH -----------------------
 

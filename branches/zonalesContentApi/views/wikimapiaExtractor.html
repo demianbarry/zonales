@@ -1,0 +1,81 @@
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Content Manager Utilities - Zonales</title>
+    <link href="/css/ZoneStyle.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="/css/content.css">
+    <link type="text/css" rel="stylesheet" href="/css/global.css">
+    <script type="text/javascript" src="/js/mootools.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/OpenLayers/OpenLayers.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	 <script type="text/javascript" src="/js/viewutils.js"></script>     
+	 <script type="text/javascript" src="/js/wikimapiaExtractor.js"></script> 
+</head>
+
+<body>
+    <div id="container"/>
+    <div id="header">
+        <div id="logo">
+            <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
+        </div>
+        <div style="float:right;margin-top:18px">
+	     		<h1 style="margin-top: 0.7em; text-align: center">Extracción de Places</h1>
+        		<a style="float:right" href="/CMUtils">Volver</a>
+        </div>
+        <!--
+        <br>
+        <a style="float:right" href="crud_crawl_configs.php">Gestión de Fuentes de Extracción</a>
+        <br>
+        <a style="float:right" href="http://192.168.0.2:8080/ZCrawlScheduler/listJobs">Lista de extracciones programadas en Scheduler</a>
+        <br>
+        <a style="float:right" href="fbutils.php">Facebook Utilities</a>
+        <br>
+        <a style="float:right" href="twutils.php">Twitter Utilities</a>
+        -->
+    </div>
+    <div class="clearfix" id="wrapper">
+        <div id="view_content">
+            <div id="search_div">
+                <div id='map_element' style="width: 95%; height: 300px; border: solid 9px #F1F2F3;"></div>
+                <table class="advanced_search">
+                    <tbody>
+                        <tr><td colspan="2"><h2 style="margin-top: 0.7em;">Criterios</h2></td></tr>
+                        <tr>
+                            <td width="35%" class="label"><label>Categoría</label></td>
+                            <td>
+                                <div>
+                                    <input id="categoryFilter">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                             <td width="35%" class="label"><label>Cantidad</label></td>
+                             <td class="input">
+                                 <div>
+                                    <input id="countFilter">
+                                </div>
+                             </td>
+                         </tr>
+                        <tr>
+                            <td width="35%" class="label"><label>Página</label></td>
+                            <td>
+                                <div>
+                                    <input id="pageFilter">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="input">
+                                <input type="button" style="width: 33%; float: left;" value="Buscar" onclick="search();">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="resultado" style="width: 100%; float: left; height: 100px; background-repeat: no-repeat;"></div>
+            <div id="postsContainer"></div>
+        </div>
+        <div id="resultslist_content" style="float: right;">
+        </div>
+    </div>
+</body>

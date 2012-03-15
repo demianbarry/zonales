@@ -84,7 +84,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 
     client.on('getPlacesByZone', function(zoneid, fn) {
-        console.log('Recibi el evento getPlacesByZone desde el cliente');
+        console.log('Recibi el evento getPlacesByZone desde el cliente. ZoneID: ' + JSON.stringify(zoneid));
         placeService.getPlacesByZone(zoneid, function(data){
             if (typeof(data) != 'undefined') {
                 fn(data);
@@ -100,6 +100,14 @@ module.exports.tryEvent = function tryEvent(client) {
             }
         });
     });
+    client.on('getExtendedString', function(id, fn) {
+        console.log('Recibi el evento getExtendedString desde el cliente IdZone-->'+id);
+        placeService.getExtendedStrings({"zone":id}, function(data){
+            if (typeof(data) != 'undefined') {
+                fn(data);
+            }
+        });
+    }); 
 
     client.on('getPlaceChildrens', function(id, fn) {
         console.log('Recibi el evento getChildrens desde el cliente');

@@ -1,5 +1,6 @@
 var http = require('http');
 var querystring = require('querystring');
+var wikimapiaAPIKey = '7B86479B-8F9EF6D2-3A7530C8-D6BBDD38-6DE385E3-D86991CD-6BB9FCDF-A6726FCB';
 
 module.exports.execute = function execute(host, port, path, method, callback){
 
@@ -78,5 +79,38 @@ module.exports.solrCommand = function solrCommand(data, commit, callback) {
   if (!commit) {
     post_req.write(post_data);
   }
+  post_req.end();
+}
+
+module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category, count, page, callback) {
+
+  var post_options = {
+      host: 'api.wikimapia.org',
+      port: '80',
+      path: '/?function=box&key=' + wikimapiaAPIKey + '&bbox=' + bbox + '&disable=polygon&format=json&category=' + category + '&count=' + count + '&page=' + page,
+      method: 'GET'
+  };
+
+  var response = "";
+
+  var post_req = http.request(post_options, function(res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        
+        res.on('data', function (json) {
+           response += json;
+        });
+        
+        res.on('end', function() {
+           console.log('BODY: ' + response);
+           console.log("------------------------------------------------------------------------------------------");
+           //var jsonObj = JSON.parse(response);
+           callback(response);
+           return(this);
+        });
+  });
+
+  //post_req.write(post_data);
   post_req.end();
 }

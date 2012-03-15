@@ -46,5 +46,12 @@ module.exports.tryEvent = function tryEvent(client) {
         
     });
 
+    client.on('wikimapiaBboxSearch', function(data, fn) {
+        console.log('Recibí evento wikimapiaBboxSearch');
+        zProxyService.wikimapiaBboxSearch(data.bbox, data.category, data.count, data.page, function (response) {
+            fn(response);
+        });
+    });
+
 }
 
