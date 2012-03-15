@@ -94,7 +94,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getZoneExtendedString', function(id, fn) {
+    client.on('getZoneByExtendedString', function(id, fn) {
         console.log('Recibi el evento getExtendedString desde el cliente');
         zoneService.getExtendedString(id, function(data){
             if (typeof(data) != 'undefined') {

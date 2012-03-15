@@ -45,6 +45,27 @@ module.exports.getAll = function getAll(short, callback) {
 	return baseService.getAll(places, short, '["id", "name"]', callback);
 }
 
+//Retorna id y nombre de todas los places
+module.exports.getAllExtendedStrings = function getAllExtendedStrings(short, callback) {
+	return baseService.getAll(places, short, '["extendedString"]', function(docs){
+            var result = [];
+            docs.forEach(function(place){
+                result.push(place.extendedString);
+            });
+            callback(result);
+        });
+}
+//Retorna id y nombre de todas los places
+module.exports.getExtendedStrings = function getExtendedStrings(filters, callback) {
+        console.log("filters: "+filters);
+	return baseService.get(places, filters, function(docs){
+            var result = [];
+            docs.forEach(function(place){
+                result.push(place.extendedString);
+            });
+            callback(result);
+        });
+} 
 //Retorna un conjunto de places de acuerdo a los filtros utilizados 
 module.exports.get = function get(filters, callback) {
 	return baseService.get(places, filters, callback);
