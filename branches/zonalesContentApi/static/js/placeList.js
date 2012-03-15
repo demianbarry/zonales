@@ -57,19 +57,22 @@ window.addEvent('domready', function() {
 function searchPlaces(){
 
 	 var filters = '{"name": "' + $('placeNameFilter').value.replace(/ /g, '_').toLowerCase() + '"';
-     filters += ',"zone":"' + $('placeZoneFilter').value + '"';
- 	 if ($('placeStateFilter').value != 'all') {
- 	 	filters += ', "state": "' + $('placeStateFilter').value + '"'; 
- 	 }
- 	 if ($('tipo').value != 'all') {
- 	 	filters += ', "type": "' + $('tipo').value.replace(/ /g, '_').toLowerCase() + '"'; 
- 	 }
- 	 filters += '}';
- 	 
-    socket.emit('searchPlaces', eval('(' + filters + ')'), function (data) {			  		
-  		makePlacesTable(data);
-  	 });
- 	 
+     socket.emit('getZoneByFilters', {extendedString: $('placeZoneFilter').value.replace(', ', ',+').replace(' ', '_').replace(',+', ', ').toLowerCase()}, function (zone) {
+        if(typeof(zone) != 'undefined' && zone != null && typeof(zone[0]) != 'undefined' && zone[0] != null) {
+            filters += ',"zone":"' + zone[0].id + '"';       
+        }
+        if ($('placeStateFilter').value != 'all') {
+            filters += ', "state": "' + $('placeStateFilter').value + '"'; 
+         }
+         if ($('tipo').value != 'all') {
+            filters += ', "type": "' + $('tipo').value.replace(/ /g, '_').toLowerCase() + '"'; 
+         }
+         filters += '}';
+         
+        socket.emit('searchPlaces', eval('(' + filters + ')'), function (data) {                    
+            makePlacesTable(data);
+         });
+     }); 
 }
 
 function removePlace(id) {
