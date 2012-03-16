@@ -1,6 +1,20 @@
+Element.Properties['data-title'] = {
+
+    get: function(){
+        return this['data-title'];
+    },
+
+    set: function(value){
+        this['data-title'] = value;
+        this.setAttribute('data-title', value);
+    }
+
+};
+
 var nodeURL = 'http://192.168.0.2:4000';
 var sources = new Array();
 //var tags = new Array();
+var places = new Array();
 var zones = new Array();
 var allZones = new Array();
 var tab = "";
@@ -15,7 +29,7 @@ window.addEvent('domready', function() {
     }
 });
 
-function initVista(zCtx){    
+function initVista(zCtx){
     if($('postsContainer'))
         $('postsContainer').empty();
     if($('newPostsContainer'))
@@ -25,7 +39,7 @@ function initVista(zCtx){
     console.log("======> 0");
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);    
+    zirClient.setMinRelevance(null);
     console.log("======> 1");
     initFilters(zCtx);
     zCtx.setSearchKeyword("");
@@ -114,7 +128,7 @@ function initVista(zCtx){
 
 function initAll() {
     initZCtx(function(zCtx) {
-        console.log('Tab del ZContext: '+zCtx.zTab);        
+        console.log('Tab del ZContext: '+zCtx.zTab);
         if(!zCtx.zTab || zCtx.zTab == ""){
             console.log('InitAll antes de setTab');
             zcSetTab('portada');
@@ -224,7 +238,7 @@ function initSourceFilters(zCtx) {
 
 function initTagFilters(zCtx) {
     //Actualizo filtros de tags desde contexto
-    zCtx.filters.tags.each(function(tag) {       
+    zCtx.filters.tags.each(function(tag) {
         var tagChk = $('chkt'+tag.name);
         if (!tagChk) {
             var tagTr = new Element('tr');
@@ -292,7 +306,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
 
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);    
+    zirClient.setMinRelevance(null);
     $('zonalesSearchword').value = "buscar...";
     $('zoneExtended').value = zoneExtended;
     if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
@@ -301,16 +315,23 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     }
     console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        console.log('Despuï¿½s de setear: ' + zCtx.selZone);
-        
+        console.log('Despu�s de setear: ' + zoneExtended);
     //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
     /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
         }*/
     });
-     getPlaces(id, function()    {
-        console.log('Obtengo los places para la zona seteada' + zCtx.selZone);
+}
+
+function setPlace(zoneExtended){
+    getIdByZone(zoneExtended.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase(), function(idZone){
+        getPlaces(idZone, function(placesByZone){
+            places = placesByZone.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase();
+            
+        });
+
     });
+
 }
 
 function onTempoChange() {
@@ -331,7 +352,7 @@ function complete(number){
 
 function loadPost(first){
 //alert("LoadPost: " + JSON.stringify(zcGetContext()));
-    
+
 }
 
 function loadMorePost(){
@@ -340,12 +361,12 @@ function loadMorePost(){
 }
 
 function searchPost(keyword, zone) {
-    if (keyword != 'buscar...' && keyword != '') {        
+    if (keyword != 'buscar...' && keyword != '') {
         zirClient.setFirstIndexTime(null);
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
         zCtx.setSearchKeyword(keyword);
-    //zirClient.setSearchKeyword(keyword);            
+    //zirClient.setSearchKeyword(keyword);
     }
 }
 
@@ -385,30 +406,14 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-
-        if($('si_'+post.id))
-            $('postsContainer').removeChild($('si_'+post.id));
+        if($('si_'+post.get('id')))
+            $('si_'+post.get('id')).destroy();
 
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var newPost = post.clone(true, true);
             newPost.setStyle('display',$('chk'+(newPost.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
             newPost.injectTop($('postsContainer'));
-        /*$('newPostsContainer').getElements('span.story-item-real-modified-date').each(function(newCount){
-                var insertado = false;
-                newCountModifiedDate = new Date(newCount.innerHTML).getMilliseconds();
-                $('postsContainer').getElements('span.story-item-real-modified-date').each(function(count){
-                    countModifiedDate = new Date(count.innerHTML).getMilliseconds();
-                    if (newCountModifiedDate > countModifiedDate && !insertado) {
-                        insertado = true;
-                        newCount.getParent().getParent().getParent().getParent().getParent().injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                    }
-                });
-                if(!insertado){
-                    newCount.getParent().getParent().getParent().getParent().getParent().injectInside($('postsContainer'));
-                }
-            });*/
         }
-
         if (tab == "relevantes" || tab == "noticiasenlaredrelevantes"){
             $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
                 var insertado = false;
@@ -518,9 +523,10 @@ function updatePosts(json, component, more) {
         td_story_title = new Element('td').inject(tr_story_title),
         h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
         a_title = new Element('a', {
-            'target': '_blank',
-            'href' : getTarget(post)
-        }).set('html',post.title).inject(h3_story_item_title),
+            //'target': '_blank',
+            //'href' : getTarget(post)
+            'href' : 'javascript:ModalPopups.Alert(\''+post.title+'\',\'Detalle\',\''+getPost(post).get('html').replace(/"/g, '\\"').replace(/'/g, "\\'")+'\', {okButtonText: \'Close\'});'
+        }).set('html',post.title).inject(h3_story_item_title).addClass('lytebox').set('data-title', post.title),
         span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
         tr_story_description = new Element('tr').inject(table_story_item),
         //td_story_image = new Element('td').inject(tr_story_description),
@@ -679,7 +685,7 @@ function updatePosts(json, component, more) {
                         }
                     });
                 }
-                
+
                 if(!$('chkt'+tag)) {
                     var tr = new Element('tr');
                     new Element('input', {
@@ -698,8 +704,15 @@ function updatePosts(json, component, more) {
                 }
             });
         }
+
+        var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+        new Element('span').set('html','Lugar: ').inject(div_story_place);
+        var span_place = new Element('span').inject(div_story_place);
+
         var idInputTag = doc.id;
         var idButtonAddTags = 'buttonTags_'+doc.id;
+        var idInputPlace = 'places'+doc.id;
+        var idButtonAddPlaces = 'buttonPlaces_'+doc.id;
         if(zUserGroups.indexOf("4") != -1){
             var a_edit = new Element('a', {
                 'target': '_blank',
@@ -739,7 +752,40 @@ function updatePosts(json, component, more) {
                 show_confirm(idInputTag,$(idInputTag).value,tags);
                 $(idInputTag).value = '';
             });
+/*********/
 
+            var span_addPlaces = new Element('span',{
+                'id':'addPlaces_'+doc.id
+            }).inject(div_story_place);
+            var addPlaceButton = new Element('a').set('html','Add Place').inject(span_addPlaces);
+            addPlaceButton.addEvent('click',function(){
+                if ( $(idInputPlace).style.display == "none"){
+                    $(idInputPlace).setStyle("display","inline");
+                    $(idButtonAddPlaces).setStyle("display","inline");
+                    $(idInputPlace).focus();
+                }else {
+                    $(idInputPlace).setStyle("display","none");
+                    $(idButtonAddPlaces).setStyle("display","none");
+                }
+            });
+            
+            var selectedPlace = new Element('input',{
+                'id':idInputPlace,
+                'style':'display:none',
+                'onclick':'setPlace("'+post.zone.extendedString+'");',
+                'onkeyup':'populateOptions(event,this,true,places)',
+                'value':''
+            }).inject(span_addPlaces);        
+            var confimAddPlaceButton = new Element('img', {
+                'id':idButtonAddPlaces,
+                'style':'display:none',
+                'src': '/CMUtils/addIcon.gif'
+            }).set('html','Add').addClass('story-item-button').inject(div_story_place);
+            confimAddPlaceButton.addEvent('click',function(){
+                show_confirm(idInputPlace,$(idInputPlace).value,tags);
+                $(idInputPlace).value = '';
+            });
+            /*********/
         }
         var zone = post.zone.extendedString;
         var idButtonSetZone = 'buttonZone'+doc.id;
@@ -753,10 +799,8 @@ function updatePosts(json, component, more) {
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
 
-        var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
-        new Element('span').set('html','Lugar: ').inject(div_story_place);
-        var span_place = new Element('span').inject(div_story_place);
-     /*   new Element('a', {
+
+        /*   new Element('a', {
             'id':''
         }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
         var idInputZone = 'zone_'+doc.id;
@@ -798,7 +842,7 @@ function updatePosts(json, component, more) {
                 tr.inject($('noticiasEnLaRed'));
 
             zcAddSource(post.source);
-        }       
+        }
 
         if (zirClient.getMinRelevance() != null) {
             if (parseInt(post.relevance) < zirClient.getMinRelevance()) {
@@ -831,7 +875,16 @@ function updatePosts(json, component, more) {
 
     });
     refreshFiltro();
-    
+
+    var fileref=document.createElement('script');
+    fileref.setAttribute('id','lytebox');
+    fileref.setAttribute('type','text/javascript');
+    fileref.setAttribute('language','javascript');
+    fileref.setAttribute('src', '/media/system/js/lytebox.js');
+    if(document.getElementById("lytebox"))
+        document.getElementsByTagName("head")[0].removeChild(document.getElementById("lytebox"));
+    document.getElementsByTagName("head")[0].appendChild(fileref);
+//document.write('<script id="lytebox" type="text/javascript" language="javascript" src="/media/system/js/lytebox.js"></script>');
 }
 
 function show_confirm(idInputTag,selectedTag,tags)
@@ -968,7 +1021,7 @@ function setTagVisible(tag, checked) {
         if($('chkt'+tag))
             $('chkt'+tag).removeClass('checked');
         zcUncheckTag(tag);
-    }    
+    }
     refreshFiltro();
 }
 
@@ -977,7 +1030,7 @@ function refreshFiltro(){
     //Refresco visibilidad de Posts
     var zCtxChkTags = zcGetCheckedTags();
     var zCtxChkSource = zcGetCheckedSources();
-   
+
     var posts = $$('div#postsContainer div.story-item');
     if(typeOf(posts) == 'elements') {
         posts.each(function(post){
@@ -992,7 +1045,7 @@ function refreshFiltro(){
             });
             post.setStyle('display', visible ? 'block' : 'none');
             post.removeClass(!visible ? 'visible' : 'hidden');
-            post.addClass(visible ? 'visible' : 'hidden');            
+            post.addClass(visible ? 'visible' : 'hidden');
         });
     }
 
@@ -1023,14 +1076,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -1061,13 +1114,13 @@ function armarTitulo(tabTemp){
     tabTemp = tab;
     var zoneSeltemp = zcGetContext().selZone;
     var zoneEfectemp = "";
-    
+
     //var posts = $$('div#postsContainer div.story-item');
     //var posts = $$('div#postsContainer:first-child');
-    
+
     if($('postsContainer')){
         var firstPost = $('postsContainer').firstChild;
-        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML; 
+        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
     }
 
     $('tituloSup').innerHTML = "";
@@ -1084,7 +1137,7 @@ function armarTitulo(tabTemp){
 
             }
         });
-        
+
 
     }
 
@@ -1141,7 +1194,7 @@ function armarTitulo(tabTemp){
         });
     }
 
-    
+
 
     //console.log('zona2 '+zoneSeltemp);
     if (zoneEfectemp == zoneSeltemp){
@@ -1151,7 +1204,7 @@ function armarTitulo(tabTemp){
     if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
         $('tituloZone1').innerHTML = "No se encontraron noticias nuevas para la zona "+zoneSeltemp;
         $('tituloZone2').innerHTML = "Mostrando noticias nuevas de la zona "+zoneEfectemp;
-       
+
     }
     if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' ){
         $('tituloZone1').innerHTML = "Mostrando todas las noticias";
@@ -1159,7 +1212,7 @@ function armarTitulo(tabTemp){
     }
 
     $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
-                  
+
         temp =index+1
         if(element.checked) {
             $('tituloFiltro').innerHTML = "del Tipo: ";
@@ -1171,13 +1224,200 @@ function armarTitulo(tabTemp){
 
     // $('filtrosAct').innerHTML += " activados "
     });
-    console.log("elementos"+temp);
-    console.log("ckecked"+($('filterTags').getElements('.checked').length));
+    // console.log("elementos"+temp);
+    //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
     if(temp == ($('filterTags').getElements('.checked').length)){
         $('tituloFiltro').innerHTML = "";
         $('filtrosAct').innerHTML = "";
     }
-    
+
 }
 
 //zcSetTemp($('tempoSelect').value);
+
+
+function popup(id){
+    zirClient.loadSolrPost(id, function(doc){
+        updatePost(doc);
+    });
+}
+
+function getPost(doc){
+    var post = Object.clone(doc);
+    var modified = post.modified;
+    var div_story_item = new Element('div', {
+        'id': 'si_' + doc.id
+    }).addClass('story-item').addClass('group').addClass(post.source),
+    div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
+    div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
+    div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
+    div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
+    div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
+    span_relevance = new Element('span',{
+        "id":"relevance_"+doc.id
+    }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
+    div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
+    div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
+    div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
+    div_story_item_idPost = new Element('div', {
+        'html': doc.id,
+        'id':'idPostDiv'
+    }).addClass('group').inject(div_story_item).setStyle('display','none'),
+    div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
+    table_story_item = new Element('table').inject(div_story_item_header),
+    tr_story_title = new Element('tr').inject(table_story_item),
+    td_story_title = new Element('td').inject(tr_story_title),
+    h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
+    a_title = new Element('a', {
+        'target': '_blank',
+        'href' : getTarget(post)
+    }).set('html',post.title).inject(h3_story_item_title),
+    span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
+    tr_story_description = new Element('tr').inject(table_story_item),
+    //td_story_image = new Element('td').inject(tr_story_description),
+    td_story_description = new Element('td').inject(tr_story_description),
+    p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
+    a_story_item_source = new Element('a', {
+        'target': '_blank'
+    }).set('html','').addClass('story-item-source').inject(p_story_item_description),
+    a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
+    a_story_item_icon_image = new Element('img',{
+        'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
+    }).inject(a_story_item_icon).addClass('source_logo'),
+    a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + post.text.trim() : "").addClass('story-item-teaser').inject(a_story_item_source, 'after'),
+    ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
+    li_story_submitter = new Element('li', {}).set('html','Publicado en  ').addClass('story-item-submitter').inject(ul_story_item_meta).setStyle('display', post.fromUser.name ? 'block' : 'none'),
+    a_story_submitter = new Element('a', {
+        'target': '_blank',
+        'href': post.fromUser.url
+    }).set('html',post.source).inject(li_story_submitter),
+    span_storyitem_modified_real = new Element('span', {
+        'html': modified,
+        'style': 'display:none'
+    }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
+    span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
+    span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
+    div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
+    div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
+    div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
+
+    if(typeOf(post.actions) == 'array') {
+        post.actions.each(function(action){
+            switch (action.type) {
+                case 'comment':
+                    var li_story_item_comments = new Element('li', {}).set('html',action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
+                    new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
+                    break;
+                case 'like':
+                    var li_story_item_likes = new Element('li', {}).set('html',action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
+                    new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
+                    break;
+                case 'retweets':
+                    var li_story_item_retweets = new Element('li', {}).set('html',action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
+                    new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
+                    break;
+                case 'replies':
+                    var li_story_item_replies = new Element('li', {}).set('html',action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
+                    new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
+                    break;
+            }
+        });
+    }
+
+    var postLinks;
+
+    switch(post.source.toLowerCase()) {
+        case 'facebook':
+            postLinks =	post.links;
+            break;
+        default:
+            postLinks =	post.links;
+    }
+
+    var a_thumb = new Element('a', {
+        'href': getTarget(post),
+        'target': '_blank'
+    });
+
+    if(typeOf(postLinks) == 'array') {
+        postLinks.each(function(link){
+            switch (link.type) {
+                case 'picture':
+                    if(a_thumb.childNodes.length == 0 && link.url) {
+                        a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
+                        img = new Element('img', {
+                            'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
+                        }).inject(a_thumb);
+                    }
+                    break;
+                case 'video':
+                    var li_story_item_video = new Element('li').addClass('story-item-video').inject(ul_story_item_meta),
+                    a_story_item_video = new Element('a', {
+                        'href': link.url,
+                        'target': '_blank'
+                    }).addClass('story-item-video').inject(li_story_item_video);
+                    new Element('img', {
+                        'src': 'http://www.prophecycoal.com/images/video_icon.jpg',
+                        'alt': 'Video',
+                        'title': 'Video'
+                    }).addClass('story-item-video-icon').inject(a_story_item_video);
+                    break;
+                case 'link':
+                    var li_story_item_link = new Element('li').addClass('story-item-link').inject(ul_story_item_meta),
+                    a_story_item_link = new Element('a', {
+                        'href': link.url,
+                        'target': '_blank'
+                    }).set('html','Mas info...').addClass('story-item-link').inject(li_story_item_link);
+                    break;
+            }
+        });
+    }
+
+    //  var date = new Date(parseInt(post.created));
+    //  new Element('li', {}).set('html','Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
+
+    // date = new Date(parseInt(post.modified));
+
+
+    var tags = post.tags;
+    var div_story_tags = new Element('div',{
+        'id':'tagsDiv_'+doc.id
+    }).addClass('cp_tags').inject(div_story_item_content);
+    new Element('span').set('html','Tags: ').inject(div_story_tags);
+    if(typeOf(tags) == 'array') {
+        tags.each(function(tag){
+            var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
+            new Element('a', {
+                'html': tag,
+                'onclick': 'ckeckOnlyTag("' + tag + '");'
+            }).inject(span_tags);
+            div_story_item.addClass(tag);
+            if(zUserGroups.indexOf("4") != -1) {
+                var del_tag_img = new Element('img',{
+                    'src': '/images/eliminar.png'
+                }).inject(span_tags).addClass('delete_tag');
+                del_tag_img.addEvent('click', function(){
+                    if(confirm('Realmente desea eliminar el tag '+tag)){
+                        delTagFromPost(doc.id, tag);
+                    }
+                });
+            }
+        });
+    }
+    var idInputTag = doc.id;
+    var idButtonAddTags = 'buttonTags_'+doc.id;
+
+    var zone = post.zone.extendedString;
+    var idButtonSetZone = 'buttonZone'+doc.id;
+    var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+    new Element('span').set('html','Zona: ').inject(div_story_zone);
+    var span_zone = new Element('span').inject(div_story_zone);
+    new Element('a', {
+        'id':'zonePost',
+        'onclick':'setZone("'+zone+'","","","");'
+    }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
+    var idInputZone = 'zone_'+doc.id;
+    var span_addZone = new Element('span').inject(div_story_zone);
+
+    return div_story_item;
+}
