@@ -146,6 +146,28 @@ module.exports.getParent = function getParent(id, callback) {
 	});
 }
 
+//Retorna id y nombre de todas los places
+module.exports.getAllExtendedStrings = function getAllExtendedStrings(short, callback) {
+	return baseService.getAll(places, short, '["extendedString"]', function(docs){
+            var result = [];
+            docs.forEach(function(place){
+                result.push(place.extendedString);
+            });
+            callback(result);
+        });
+}
+//Retorna id y nombre de todas los places
+module.exports.getExtendedStrings = function getExtendedStrings(filters, callback) {
+        console.log("filters: "+filters);
+	return baseService.get(places, filters, function(docs){
+            var result = [];
+            docs.forEach(function(place){
+                result.push(place.extendedString);
+            });
+            callback(result);
+        });
+}
+
 module.exports.getExtendedString = function getExtendedString(id, callback) {
 	this.get({id:id}, function(place) {
 		if (typeof(place) != 'undefined' && place != null && typeof(place[0]) != 'undefined' && place[0] != null) {
