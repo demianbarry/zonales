@@ -1,3 +1,4 @@
+
 import com.google.gson.Gson;
 //import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.AbstractDocument.Content;
 import javax.swing.text.BadLocationException;
 
 import javax.xml.bind.JAXBContext;
@@ -30,6 +32,7 @@ import org.zonales.entities.FeedSelector;
 import org.zonales.entities.FeedSelectors;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
+
 import org.zonales.entities.Post;
 import org.zonales.entities.PostType;
 import org.zonales.entities.PostsType;
@@ -37,7 +40,9 @@ import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
+import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
+import org.zonales.tagsAndZones.objects.Place;
 
 /*
  * To change this template, choose Tools | Templates
@@ -52,10 +57,12 @@ public class ZCrawlFeedsHelper {
     StringWriter sw = new StringWriter();
     FeedSelectorDao dao;
     ZoneDao zoneDao;
+    PlaceDao placeDao;
 
     public ZCrawlFeedsHelper(String host, Integer port, String name) {
         dao = new FeedSelectorDao(host, port, name);
         zoneDao = new ZoneDao(host, port, name);
+        placeDao = new PlaceDao(host, port, name);
     }
 
     /**
@@ -94,8 +101,12 @@ public class ZCrawlFeedsHelper {
         FeedSelectors feedSelectors;
 
         String extendedString = (String) params.get("zone");
-        org.zonales.tagsAndZones.objects.Zone zone = zoneDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
-        
+        Place place = null;
+        if (params.containsKey("place")) {
+            place = placeDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
+        }
+        org.zonales.tagsAndZones.objects.Zone zone = zoneDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
+
         if (!json) {
             for (int i = 0; i < feed.getItemCount(); i++) {
                 FeedItem entry = feed.getItem(i);
@@ -111,7 +122,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntry.setSource(source);
-                    
+
                     newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
@@ -119,7 +130,7 @@ public class ZCrawlFeedsHelper {
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntry.setId(entry.getGUID());
-                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, null));
+                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescriptionAsText());
                     newEntry.setTags(new TagsType((ArrayList) params.get("tagslist")));
@@ -179,7 +190,7 @@ public class ZCrawlFeedsHelper {
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntrySolr.setId(entry.getGUID());
-                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, null));
+                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntrySolr.setTitle(entry.getTitle());
                     newEntrySolr.setText(entry.getDescriptionAsText());
                     newEntrySolr.setTags(new ArrayList<String>((ArrayList) params.get("tagslist")));

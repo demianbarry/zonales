@@ -38,6 +38,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         HashMap<String, Object> params = new HashMap<String, Object>();
@@ -57,6 +58,10 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         String longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
         params.put("longitud", longitud);
+
+        if (request.getParameter("place") != null) {
+            params.put("place", request.getParameter("place"));
+        }
 
         List<String> searchlist = new ArrayList<String>();
         List<String> blacklist = new ArrayList<String>();
