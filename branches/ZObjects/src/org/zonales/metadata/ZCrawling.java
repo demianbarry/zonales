@@ -4,6 +4,7 @@
  */
 package org.zonales.metadata;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,9 +14,26 @@ import java.util.List;
 public class ZCrawling {
 
     public ZCrawling() {
-        
+        this.comentarios = new ArrayList<String>();
+        this.criterios = new ArrayList<Criterio>();
+        this.descripcion = "";
+        this.filtros = new ArrayList<Filtro>();
+        this.fuente = "";
+        this.incluyeComentarios = false;
+        this.localidad = "";
+        this.noCriterios = new ArrayList<Criterio>();
+        this.nocriterio = false;
+        this.periodicidad = 20;
+        this.siosi = false;
+        this.sourceLatitude = 0.0;
+        this.sourceLongitude = 0.0;
+        this.place = "";
+        this.tags = new ArrayList<String>();
+        this.tagsFuente = false;
+        this.temporalidad = "";
+        this.ultimoHitDeExtraccion = 0L;
+        this.uriFuente = "";
     }
-
     private Long ultimoHitDeExtraccion;
 
     public Long getUltimoHitDeExtraccion() {
@@ -25,7 +43,6 @@ public class ZCrawling {
     public void setUltimoHitDeExtraccion(Long ultimoHitDeExtraccion) {
         this.ultimoHitDeExtraccion = ultimoHitDeExtraccion;
     }
-
     private Integer periodicidad;  //En minutos
 
     public Integer getPeriodicidad() {
@@ -35,7 +52,6 @@ public class ZCrawling {
     public void setPeriodicidad(Integer periodicidad) {
         this.periodicidad = periodicidad;
     }
-
     protected Boolean siosi = false;
 
     /**
@@ -55,7 +71,6 @@ public class ZCrawling {
     public void setSiosi(Boolean siosi) {
         this.siosi = siosi;
     }
-
     protected Boolean nocriterio = false;
 
     /**
@@ -75,8 +90,6 @@ public class ZCrawling {
     public void setNocriterio(Boolean nocriterio) {
         this.nocriterio = nocriterio;
     }
-
-    
     protected String descripcion;
 
     /**
@@ -96,8 +109,6 @@ public class ZCrawling {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    
     protected String localidad;
 
     /**
@@ -117,7 +128,6 @@ public class ZCrawling {
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
     }
-
     protected List<String> tags = null;
 
     /**
@@ -137,7 +147,6 @@ public class ZCrawling {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-
     protected String fuente = null;
 
     /**
@@ -157,7 +166,6 @@ public class ZCrawling {
     public void setFuente(String fuente) {
         this.fuente = fuente;
     }
-
     protected String uriFuente = null;
 
     /**
@@ -177,7 +185,6 @@ public class ZCrawling {
     public void setUriFuente(String uriFuente) {
         this.uriFuente = uriFuente;
     }
-
     protected List<Criterio> criterios = null;
 
     /**
@@ -197,7 +204,6 @@ public class ZCrawling {
     public void setCriterios(List<Criterio> criterios) {
         this.criterios = criterios;
     }
-
     protected List<Criterio> noCriterios = null;
 
     /**
@@ -217,7 +223,6 @@ public class ZCrawling {
     public void setNoCriterios(List<Criterio> noCriterios) {
         this.noCriterios = noCriterios;
     }
-    
     protected List<Filtro> filtros = null;
 
     /**
@@ -237,7 +242,6 @@ public class ZCrawling {
     public void setFiltros(List<Filtro> filtros) {
         this.filtros = filtros;
     }
-
     protected Boolean tagsFuente = false;
 
     /**
@@ -257,7 +261,6 @@ public class ZCrawling {
     public void setTagsFuente(Boolean tagsFuente) {
         this.tagsFuente = tagsFuente;
     }
-    
     protected List<String> comentarios;
 
     /**
@@ -265,7 +268,7 @@ public class ZCrawling {
      *
      * @return the value of comentarios
      */
-    public List<String> getComentarios() {        
+    public List<String> getComentarios() {
         return comentarios;
     }
 
@@ -277,7 +280,6 @@ public class ZCrawling {
     public void setComentarios(List<String> comentarios) {
         this.comentarios = comentarios;
     }
-
     protected Boolean incluyeComentarios = false;
 
     /**
@@ -302,7 +304,6 @@ public class ZCrawling {
     public String toString() {
         return "ZCrawling{" + "ultimoHitDeExtraccion=" + ultimoHitDeExtraccion + " - periodicidad=" + periodicidad + " - siosi=" + siosi + " - nocriterio=" + nocriterio + " - descripcion=" + descripcion + " - localidad=" + localidad + " - tags=" + tags + " - fuente=" + fuente + " - uriFuente=" + uriFuente + " - criterios=" + criterios + " - noCriterios=" + noCriterios + " - filtros=" + filtros + " - tagsFuente=" + tagsFuente + " - comentarios=" + comentarios + " - incluyeComentarios=" + incluyeComentarios + '}';
     }
-
     protected Double sourceLatitude;
 
     /**
@@ -322,7 +323,6 @@ public class ZCrawling {
     public void setSourceLatitude(Double sourceLatitude) {
         this.sourceLatitude = sourceLatitude;
     }
-
     protected Double sourceLongitude;
 
     /**
@@ -342,7 +342,6 @@ public class ZCrawling {
     public void setSourceLongitude(Double sourceLongitude) {
         this.sourceLongitude = sourceLongitude;
     }
-    
     protected String temporalidad;
 
     /**
@@ -362,4 +361,25 @@ public class ZCrawling {
     public void setTemporalidad(String temporalidad) {
         this.temporalidad = temporalidad;
     }
+    
+    protected String place;
+
+    /**
+     * Get the value of place
+     *
+     * @return the value of place
+     */
+    public String getPlace() {
+        return place;
+    }
+
+    /**
+     * Set the value of place
+     *
+     * @param place new value of place
+     */
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
 }

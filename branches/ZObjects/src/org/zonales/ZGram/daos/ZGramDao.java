@@ -84,24 +84,34 @@ public class ZGramDao extends BaseDao {
                     usuariosDoc.put("deLosUsuarios", usuariosToDoc);
                     criteriosToDoc.add(usuariosDoc);
                 }
-                if (criterio.getDeLosUsuariosLatitudes() != null) {
-                    List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
-                    ArrayList usuariosLatToDoc = new ArrayList();
-                    for (Double usuarioLat : usuariosLat) {
-                        usuariosLatToDoc.add(usuarioLat);
-                    }
-                    BasicDBObject usuariosLatDoc = new BasicDBObject();
-                    usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
-                    criteriosToDoc.add(usuariosLatDoc);
+                /*if (criterio.getDeLosUsuariosLatitudes() != null) {
+                List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
+                ArrayList usuariosLatToDoc = new ArrayList();
+                for (Double usuarioLat : usuariosLat) {
+                usuariosLatToDoc.add(usuarioLat);
+                }
+                BasicDBObject usuariosLatDoc = new BasicDBObject();
+                usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
+                criteriosToDoc.add(usuariosLatDoc);
                 }
                 if (criterio.getDeLosUsuariosLongitudes() != null) {
-                    List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
-                    ArrayList usuariosLonToDoc = new ArrayList();
-                    for (Double usuarioLon : usuariosLon) {
-                        usuariosLonToDoc.add(usuarioLon);
+                List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
+                ArrayList usuariosLonToDoc = new ArrayList();
+                for (Double usuarioLon : usuariosLon) {
+                usuariosLonToDoc.add(usuarioLon);
+                }
+                BasicDBObject usuariosLonDoc = new BasicDBObject();
+                usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
+                criteriosToDoc.add(usuariosLonDoc);
+                }*/
+                if (criterio.getDeLosUsuariosPlaces() != null) {
+                    List<String> usuariosPlace = criterio.getDeLosUsuariosPlaces();
+                    ArrayList usuariosStringToDoc = new ArrayList();
+                    for (String usuarioPlace : usuariosPlace) {
+                        usuariosStringToDoc.add(usuarioPlace);
                     }
                     BasicDBObject usuariosLonDoc = new BasicDBObject();
-                    usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
+                    usuariosLonDoc.put("deLosUsuariosPlaces", usuariosStringToDoc);
                     criteriosToDoc.add(usuariosLonDoc);
                 }
                 if (criterio.getAmigosDe() != null) {
@@ -299,25 +309,35 @@ public class ZGramDao extends BaseDao {
                             usuariosDoc.put("deLosUsuarios", usuariosToDoc);
                             criteriosToDoc.add(usuariosDoc);
                         }
-                        if (criterio.getDeLosUsuariosLatitudes() != null) {
-                            List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
-                            ArrayList usuariosLatToDoc = new ArrayList();
-                            for (Double usuarioLat : usuariosLat) {
-                                usuariosLatToDoc.add(usuarioLat);
-                            }
-                            BasicDBObject usuariosLatDoc = new BasicDBObject();
-                            usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
-                            criteriosToDoc.add(usuariosLatDoc);
+                        /*if (criterio.getDeLosUsuariosLatitudes() != null) {
+                        List<Double> usuariosLat = criterio.getDeLosUsuariosLatitudes();
+                        ArrayList usuariosLatToDoc = new ArrayList();
+                        for (Double usuarioLat : usuariosLat) {
+                        usuariosLatToDoc.add(usuarioLat);
+                        }
+                        BasicDBObject usuariosLatDoc = new BasicDBObject();
+                        usuariosLatDoc.put("deLosUsuariosLatitudes", usuariosLatToDoc);
+                        criteriosToDoc.add(usuariosLatDoc);
                         }
                         if (criterio.getDeLosUsuariosLongitudes() != null) {
-                            List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
+                        List<Double> usuariosLon = criterio.getDeLosUsuariosLongitudes();
+                        ArrayList usuariosLonToDoc = new ArrayList();
+                        for (Double usuarioLon : usuariosLon) {
+                        usuariosLonToDoc.add(usuarioLon);
+                        }
+                        BasicDBObject usuariosLonDoc = new BasicDBObject();
+                        usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
+                        criteriosToDoc.add(usuariosLonDoc);
+                        }*/
+                        if (criterio.getDeLosUsuariosPlaces() != null) {
+                            List<String> usuariosPlaces = criterio.getDeLosUsuariosPlaces();
                             ArrayList usuariosLonToDoc = new ArrayList();
-                            for (Double usuarioLon : usuariosLon) {
+                            for (String usuarioLon : usuariosPlaces) {
                                 usuariosLonToDoc.add(usuarioLon);
                             }
-                            BasicDBObject usuariosLonDoc = new BasicDBObject();
-                            usuariosLonDoc.put("deLosUsuariosLongitudes", usuariosLonToDoc);
-                            criteriosToDoc.add(usuariosLonDoc);
+                            BasicDBObject usuariosPlaceDoc = new BasicDBObject();
+                            usuariosPlaceDoc.put("deLosUsuariosPlaces", usuariosLonToDoc);
+                            criteriosToDoc.add(usuariosPlaceDoc);
                         }
                         if (criterio.getAmigosDe() != null) {
                             BasicDBObject amigosDoc = new BasicDBObject();
@@ -443,7 +463,7 @@ public class ZGramDao extends BaseDao {
                 if (newZgram.getPeriodicidad() != null) {
                     zgramDoc.put("periodicidad", newZgram.getPeriodicidad());
                 } else {
-                    zgramDoc.put("periodicidad", (Integer)(resp.get("periodicidad")));
+                    zgramDoc.put("periodicidad", (Integer) (resp.get("periodicidad")));
                 }
 
                 if (newZgram.getSiosi() != null) {
@@ -546,7 +566,7 @@ public class ZGramDao extends BaseDao {
         }
         if (filtros.getLocalidad() != null) {
             /*for (String localidad : filtros.getLocalidad().split(",")) {
-                or.add(new BasicDBObject("localidad", localidad));
+            or.add(new BasicDBObject("localidad", localidad));
             }*/
             or.add(new BasicDBObject("localidad", filtros.getLocalidad()));
             query.put("$or", or);

@@ -11,8 +11,15 @@ import java.util.List;
  * @author juanma
  */
 public class Criterio {
-    
+
     protected Boolean siosi;
+    protected List<String> palabras;
+    protected List<String> deLosUsuarios;
+    /*protected List<Double> deLosUsuariosLatitudes;
+    protected List<Double> deLosUsuariosLongitudes;*/
+    protected List<String> deLosUsuariosPlaces;
+    protected String amigosDe;
+    protected Boolean deTodo;
 
     /**
      * Get the value of siosi
@@ -32,9 +39,6 @@ public class Criterio {
         this.siosi = siosi;
     }
 
-
-    protected List<String> palabras;
-
     /**
      * Get the value of palabras
      *
@@ -52,7 +56,6 @@ public class Criterio {
     public void setPalabras(List<String> palabras) {
         this.palabras = palabras;
     }
-    protected List<String> deLosUsuarios;
 
     /**
      * Get the value of usuarios
@@ -71,49 +74,14 @@ public class Criterio {
     public void setDeLosUsuarios(List<String> usuarios) {
         this.deLosUsuarios = usuarios;
     }
-        
-    protected List<Double> deLosUsuariosLatitudes;
 
-    /**
-     * Get the value of deLosUsuariosLatitudes
-     *
-     * @return the value of deLosUsuariosLatitudes
-     */
-    public List<Double> getDeLosUsuariosLatitudes() {
-        return deLosUsuariosLatitudes;
+    public List<String> getDeLosUsuariosPlaces() {
+        return deLosUsuariosPlaces;
     }
 
-    /**
-     * Set the value of deLosUsuariosLatitudes
-     *
-     * @param deLosUsuariosLatitudes new value of deLosUsuariosLatitudes
-     */
-    public void setDeLosUsuariosLatitudes(List<Double> deLosUsuariosLatitudes) {
-        this.deLosUsuariosLatitudes = deLosUsuariosLatitudes;
+    public void setDeLosUsuariosPlaces(List<String> deLosUsuariosPlaces) {
+        this.deLosUsuariosPlaces = deLosUsuariosPlaces;
     }
-
-    protected List<Double> deLosUsuariosLongitudes;
-
-    /**
-     * Get the value of deLosUsuariosLongitudes
-     *
-     * @return the value of deLosUsuariosLongitudes
-     */
-    public List<Double> getDeLosUsuariosLongitudes() {
-        return deLosUsuariosLongitudes;
-    }
-
-    /**
-     * Set the value of deLosUsuariosLongitudes
-     *
-     * @param deLosUsuariosLongitudes new value of deLosUsuariosLongitudes
-     */
-    public void setDeLosUsuariosLongitudes(List<Double> deLosUsuariosLongitudes) {
-        this.deLosUsuariosLongitudes = deLosUsuariosLongitudes;
-    }
-
-    
-    protected String amigosDe;
 
     /**
      * Get the value of amigosDe
@@ -132,7 +100,6 @@ public class Criterio {
     public void setAmigosDe(String amigosDe) {
         this.amigosDe = amigosDe;
     }
-    protected Boolean deTodo;
 
     /**
      * Get the value of deTodo
@@ -154,9 +121,8 @@ public class Criterio {
 
     @Override
     public String toString() {
-        return "Criterio{" + "siosi=" + siosi + " - palabras=" + palabras + " - deLosUsuarios=" + deLosUsuarios + " - deLosUsuariosLatitudes=" + deLosUsuariosLatitudes + " - deLosUsuariosLongitudes=" + deLosUsuariosLongitudes + " - amigosDe=" + amigosDe + " - deTodo=" + deTodo + '}';
+        return super.toString();
     }
 
-
-
+    
 }
