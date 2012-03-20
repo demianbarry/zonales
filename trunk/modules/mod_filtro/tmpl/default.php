@@ -43,19 +43,19 @@ las fuentes de informacion mostradas"; ?></p>
         ?>-->
             <div id="filtersDiv">
                 <p class="titulos">FUENTES</p>
-                <table id="enLaRed" style="display: <?php echo $enLaRed ?>">
+                <table id="enLaRed">
 
             </table>
-            <table id="noticiasEnLaRed" style="display: <?php echo $noticiasEnLaRed ?>">
+            <table id="noticiasEnLaRed">
 
             </table>
             </div>
         
             
-            <div id="tempoDiv" style="display: <?php echo $tempoDiv ?>">
+            <div id="tempoDiv">
             <div class="splitter"></div>
                 <p class="titulos">TEMPORALIDAD</p>
-                <table id="temporalidad" style="display: <?php echo $temporalidad ?>">
+                <table id="temporalidad">
                 <tr>
                     <td>
                         <select id="tempoSelect" class="tempoclass">
@@ -72,7 +72,7 @@ las fuentes de informacion mostradas"; ?></p>
             <div class="splitter"></div>
         <div id="filterTags">
             <p class="titulos">TAGS</p>
-            <table id="tagsFilterTable" style="display: <?php echo $tagsFilterTable ?>">
+            <table id="tagsFilterTable">
 
             </table>
         </div>
