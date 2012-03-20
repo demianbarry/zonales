@@ -44,7 +44,9 @@ import org.zonales.entities.TagsType;
 import org.zonales.entities.ToUsersType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
+import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
+import org.zonales.tagsAndZones.objects.Place;
 
 /**
  * Example servlet showing request headers
@@ -71,6 +73,7 @@ public class TwitterRetrieval extends HttpServlet {
             HttpServletResponse response)
             throws IOException, ServletException {
 
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out;
         try {
@@ -105,16 +108,16 @@ public class TwitterRetrieval extends HttpServlet {
                 tagsArray = tags.split(",");
             }
 
-            String[] useArray = null;
+            String[] userArray = null;
 
             if (users != null) {
-                useArray = users.split(",");
-                int count = useArray.length;
+                userArray = users.split(",");
+                int count = userArray.length;
                 usuarios = new String[count];
                 latitud = new String[count];
                 longitud = new String[count];
-                for (int i = 0; i < useArray.length; i++) {
-                    temp = useArray[i];
+                for (int i = 0; i < userArray.length; i++) {
+                    temp = userArray[i];
                     if (temp != null) {
                         int hit1 = temp.indexOf("[");
                         int hit2 = temp.indexOf(";");
@@ -150,7 +153,9 @@ public class TwitterRetrieval extends HttpServlet {
                 props.load(stream);
             }
             ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
-            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.replace(", ", ",+").replace(" ", "_").replace("+"," ").toLowerCase());
+            PlaceDao placeDao = new PlaceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+            Place place = null;
+            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
 
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 d = MAX_TITLE_LENGTH;
@@ -167,10 +172,16 @@ public class TwitterRetrieval extends HttpServlet {
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
+
+                if (request.getParameter(tweet.getFromUser() + "Place") != null) {
+                    place = placeDao.retrieveByExtendedString(request.getParameter(tweet.getFromUser() + "Place"));
+                } else {
+                    place = null;
+                }
                 User usersolr = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource(), null);
+                        tweet.getSource(), place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -222,7 +233,8 @@ public class TwitterRetrieval extends HttpServlet {
                 if (tagsArray != null && tagsArray.length > 0) {
                     solrPost.setTags(new ArrayList<String>(Arrays.asList(tagsArray)));
                 }
-
+                
+                solrPost.setExtendedString((solrPost.getFromUser().getPlace() != null ? solrPost.getFromUser().getPlace().getName() + ", " : "") + solrPost.getZone().getExtendedString());
                 postList.add(solrPost);
 
                 post = new PostType();
@@ -233,7 +245,7 @@ public class TwitterRetrieval extends HttpServlet {
                 User user = new User(String.valueOf(tweet.getFromUserId()),
                         tweet.getFromUser(),
                         "http://twitter.com/#!/" + tweet.getFromUser(),
-                        tweet.getSource(), null);
+                        tweet.getSource(), place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null);
 
                 if (users != null) {
                     /*for (int i = 0; i < usuarios.length; i++) {
@@ -264,7 +276,7 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
                 post.setPostLatitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLatitude() : null);
-                post.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);
+                post.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);                
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
