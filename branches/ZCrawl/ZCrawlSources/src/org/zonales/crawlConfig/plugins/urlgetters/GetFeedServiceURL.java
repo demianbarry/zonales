@@ -4,6 +4,8 @@
  */
 package org.zonales.crawlConfig.plugins.urlgetters;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
@@ -75,18 +77,25 @@ public class GetFeedServiceURL implements GetServiceURL {
             }
         }
 
-        if (metadata.getSourceLatitude() != null) {
-             urlServlet += "&latitud="+ metadata.getSourceLatitude();
-             
-        }
-
-         if (metadata.getSourceLongitude() != null) {
-             urlServlet += "&longitud="+ metadata.getSourceLongitude();
+        /*if (metadata.getSourceLatitude() != null) {
+        urlServlet += "&latitud="+ metadata.getSourceLatitude();             
         }
         
+        if (metadata.getSourceLongitude() != null) {
+        urlServlet += "&longitud="+ metadata.getSourceLongitude();
+        }*/
+
+        if (metadata.getPlace() != null) {
+            try {
+                urlServlet += "&place=" + URLEncoder.encode(metadata.getPlace(), "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(GetFeedServiceURL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "FEED URL GETTER RESULT: {0}", new Object[]{urlServlet});
-         
+                "FEED URL GETTER RESULT: {0}", new Object[]{urlServlet});
+
         return urlServlet;
     }
 }

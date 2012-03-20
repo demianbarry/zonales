@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.zonales.crawlConfig.plugins.urlgetters;
 
 import java.util.ArrayList;
@@ -49,24 +48,24 @@ public class GetFacebookServiceURL implements GetServiceURL {
             for (Criterio criterio : metadata.getCriterios()) {
                 //Si hay usuarios, los agrego
                 if (criterio.getDeLosUsuarios() != null) {
-                    for(String usuario : criterio.getDeLosUsuarios()){
+                    for (String usuario : criterio.getDeLosUsuarios()) {
                         usuarios.add(usuario);
                     }
                 }
-                
+
                 //Agrego las latitudes
-                if (criterio.getDeLosUsuariosLatitudes() != null) {
-                    for(Double latitud : criterio.getDeLosUsuariosLatitudes()){
-                        latitudes.add(latitud);
-                    }
+                /*if (criterio.getDeLosUsuariosLatitudes() != null) {
+                for(Double latitud : criterio.getDeLosUsuariosLatitudes()){
+                latitudes.add(latitud);
+                }
                 }
                 
                 //Agrego las longitudes
                 if (criterio.getDeLosUsuariosLongitudes() != null) {
-                    for(Double longitud : criterio.getDeLosUsuariosLongitudes()){
-                        longitudes.add(longitud);
-                    }
+                for(Double longitud : criterio.getDeLosUsuariosLongitudes()){
+                longitudes.add(longitud);
                 }
+                }*/
 
                 //Si hay keywords, los agrego
                 if (criterio.getPalabras() != null) {
@@ -84,8 +83,9 @@ public class GetFacebookServiceURL implements GetServiceURL {
                 users += users.length() > 0 ? "," : "";
                 users += usuario;
                 if (latitudes.size() == usuarios.size() && longitudes.size() == usuarios.size()) {
-                    if (latitudes.get(key) != null && longitudes.get(key) != null)
+                    if (latitudes.get(key) != null && longitudes.get(key) != null) {
                         users += "[" + latitudes.get(key) + ";" + longitudes.get(key) + "]";
+                    }
                 }
                 key++;
             }
@@ -151,5 +151,4 @@ public class GetFacebookServiceURL implements GetServiceURL {
         }
         return urlServlet;
     }
-
 }
