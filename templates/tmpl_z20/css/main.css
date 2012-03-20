@@ -21,7 +21,7 @@ a{
     font-size:12px;
 }
 
-h3{ /* t�tulos de m�dulos */
+h3{ /* t?tulos de m?dulos */
     display:block;
     color:#444;
     background:#D7EBFF;
@@ -431,11 +431,16 @@ html body div#wrapper-web div#wrapper-body div#wrapper-content div#otherContent 
 }*/
 
 .cp_tags span a {
-    border-right: 1px solid silver;
+    /*border-right: 1px solid silver;*/
 }
 .cp_tags span a:last-child {
     border-right:none;
 }
+
+div.story-item-content .cp_tags span.cp_tags img.delete_tag {
+    vertical-align: middle;
+}
+
 .mymenu li {
     display: inline;
     list-style-type: none;

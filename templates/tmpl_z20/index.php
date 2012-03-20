@@ -66,7 +66,8 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
         </script>
-
+        <script type="text/javascript" language="javascript" src="/media/system/js/lytebox.js"></script>
+        <link rel="stylesheet" href="/media/system/css/lytebox.css" type="text/css" media="screen" />
     </head>
 
     <body>
