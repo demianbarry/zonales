@@ -4,6 +4,11 @@
  */
 package org.zonales.crawlConfig.plugins.urlgetters;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
@@ -40,13 +45,20 @@ public class GetTwitterServiceURL implements GetServiceURL {
 
                 urlServlet += "(";
 
+                String places = "";
                 if (criterio.getDeLosUsuarios() != null) {
-                    for (String usuario : criterio.getDeLosUsuarios()) {
-                        if (criterio.getDeLosUsuarios().indexOf(usuario) != 0) {
+                    String usuario = "";                    
+                    for (int i = 0; i < criterio.getDeLosUsuarios().size(); i++) {
+                        usuario = criterio.getDeLosUsuarios().get(i); 
+                        if (i != 0) {
                             urlServlet += "+OR+";
+                            places += ";";
                         }
+                        places += "&"+usuario+"Place=";
                         urlServlet += "from:" + usuario;
-                    }
+                        if(criterio.getDeLosUsuariosPlaces().get(i) != null)
+                            places += criterio.getDeLosUsuariosPlaces().get(i);
+                    }                    
                 }
 
                 if (criterio.getPalabras() != null) {
@@ -61,6 +73,11 @@ public class GetTwitterServiceURL implements GetServiceURL {
                     }
                 }
                 urlServlet += ")";
+                try {
+                    urlServlet += URLEncoder.encode(places, "UTF-8");
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 

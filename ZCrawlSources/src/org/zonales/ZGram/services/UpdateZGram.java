@@ -43,13 +43,13 @@ public class UpdateZGram extends BaseService {
 
         Gson metadataGson = new Gson();     
 
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Verbatim {0}", new Object[]{verbatim});
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Verbatim {0}", new Object[]{verbatim});        
         //Mapeo en un objeto ZCrawling la metadata que vienen en formato JSON en el request
-        Gson zGramGson = new Gson();
         ZGram zgram;
 
         if (metadataJson != null) {
             zgram = metadataGson.fromJson(metadataJson.replace("\\\"", "\""), ZGram.class);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Metadata {0}", new Object[]{metadataJson});
         } else {
             zgram = new ZGram();
             zgram.setIncluyeComentarios(null);
