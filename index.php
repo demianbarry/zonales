@@ -53,24 +53,21 @@ $usersLon = false;
 //Procesamiento de usuarios
 if ($usersStr) {
     $users = array();
-    $usersLat = array();
-    $usersLon = array();
-    $tok = strtok($usersStr, ",");
+    $extendedStrings = array();
+
+    $tok = strtok($usersStr, ";");
 
 
     if (strpos($tok, "[") > 0) {
         $user = substr($tok, 0, strpos($tok, "["));
-        $lat = substr($tok, strpos($tok, "[") + 1, strpos($tok, ";") - strpos($tok, "[") - 1);
-        $lon = substr($tok, strpos($tok, ";") + 1, strpos($tok, "]") - strpos($tok, ";") - 1);
+        $extendedString = substr($tok, strpos($tok, "[") + 1, strpos($tok, "]") - strpos($tok, "[") - 1);
     } else {
         $user = $tok;
-        $lat = "";
-        $lon = "";
+        $extendedString = "";
     }
 
     $users[] = $user;
-    $usersLat[] = $lat != "" ? $lat : "";
-    $usersLon[] = $lon != "" ? $lon : "";
+    $extendedStrings[] = $extendedString != "" ? $extendedString : "";
 
     while ($tok !== false) {
         $tok = strtok(",");
@@ -78,17 +75,20 @@ if ($usersStr) {
         if ($tok !== false) {
             if (strpos($tok, "[") > 0) {
                 $user = substr($tok, 0, strpos($tok, "["));
-                $lat = substr($tok, strpos($tok, "[") + 1, strpos($tok, ";") - strpos($tok, "[") - 1);
-                $lon = substr($tok, strpos($tok, ";") + 1, strpos($tok, "]") - strpos($tok, ";") - 1);
+                $extendedString = substr($tok, strpos($tok, "[") + 1, strpos($tok, "]") - strpos($tok, "[") - 1);
+                /* $lat = substr($tok, strpos($tok, "[") + 1, strpos($tok, ";") - strpos($tok, "[") - 1);
+                  $lon = substr($tok, strpos($tok, ";") + 1, strpos($tok, "]") - strpos($tok, ";") - 1); */
             } else {
                 $user = $tok;
-                $lat = "";
-                $lon = "";
+                $extendedString = "";
+                /* $lat = "";
+                  $lon = ""; */
             }
 
             $users[] = $user;
-            $usersLat[] = $lat != "" ? $lat : "";
-            $usersLon[] = $lon != "" ? $lon : "";
+            $extendedStrings[] = $extendedString != "" ? $extendedString : "";
+            /* $usersLat[] = $lat != "" ? $lat : "";
+              $usersLon[] = $lon != "" ? $lon : ""; */
         }
     }
 }
@@ -188,8 +188,8 @@ try {
             //Por cada uno de los feed recuperados del muro del usuario, chequeo si son posteados por él mismo.
             //El resto de los posts, chequeo contra el valor de commenters: si se especificó "all" incluyo todos los posts, sino solo lo de los commenters especificados
             //Además chequeo los keywords en caso de que se especifiquen.
-	    //var_dump($feeds);
-	    //exit(0);
+            //var_dump($feeds);
+            //exit(0);
             foreach ($feeds['data'] as $feed) {
                 $validPost = false;
                 if ($getCommenters) {
@@ -223,7 +223,7 @@ try {
                 if ($validPost) {
                     if (checkActions($feed, $minActions)) {
                         if (checkKeywords($feed, $keywords)) {
-                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key]);
+                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key]);
                         }
                     }
                 }
@@ -262,21 +262,21 @@ try {
             foreach ($feeds['data'] as $feed) {
                 if (checkActions($feed, $minActions)) {
                     //if (checkKeywords($feed, $keywords)) {
-                        if ($getCommenters) {
-                            if ($feed['from']['id'] != $user) {
-                                if (!array_key_exists($feed['from']['id'], $retCommentersInc)) {
-                                    $addCommenter = array();
-                                    $addCommenter['id'] = $feed['from']['id'];
-                                    $addCommenter['name'] = $feed['from']['name'];
-                                    $addCommenter['url'] = "http://www.facebook.com/profile.php?id=" . $feed['from']['id'];
-                                    $retCommenters[] = $addCommenter;
-                                    $retCommentersInc[$feed['from']['id']] = 1;
-                                } else {
-                                    $retCommentersInc[$feed['from']['id']] = $retCommentersInc[$feed['from']['id']] + 1;
-                                }
+                    if ($getCommenters) {
+                        if ($feed['from']['id'] != $user) {
+                            if (!array_key_exists($feed['from']['id'], $retCommentersInc)) {
+                                $addCommenter = array();
+                                $addCommenter['id'] = $feed['from']['id'];
+                                $addCommenter['name'] = $feed['from']['name'];
+                                $addCommenter['url'] = "http://www.facebook.com/profile.php?id=" . $feed['from']['id'];
+                                $retCommenters[] = $addCommenter;
+                                $retCommentersInc[$feed['from']['id']] = 1;
+                            } else {
+                                $retCommentersInc[$feed['from']['id']] = $retCommentersInc[$feed['from']['id']] + 1;
                             }
                         }
-                        $posts[] = processFeed($feed, $zone, $tags);
+                    }
+                    $posts[] = processFeed($feed, $zone, $tags);
                     //}
                 }
             }
@@ -348,7 +348,7 @@ if ($getCommenters) {
 
 /* * ****************** Procesamiento de feeds **************** */
 
-function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null) {
+function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null) {
     global $stop, $min, $since;  //$max
 
     $post = array();
@@ -364,6 +364,11 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
             $post['fromUser']['longitude'] = $lon;
         }
     }
+
+    if ($extendedString != null) {
+        $post['extendedString'] = $extendedString;
+    }
+
     if (isset($feed['to'])) {
         $post['toUsers'] = array();
         foreach ($feed['to']['data'] as $to) {
@@ -417,6 +422,7 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
         $action['cant'] = $feed['comments']['count'];
         $post['actions'][] = $action;
     }
+
     $post['created'] = strtotime($feed['created_time']) . "000";
     $post['modified'] = strtotime($feed['updated_time']) . "000";
     $post['relevance'] = ($feed['comments']['count'] * 3) + $feed['likes']['count'];
