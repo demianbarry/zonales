@@ -35,6 +35,7 @@ if (!isset($zCtx)) {
     $zCtx = new ZContext();
     $session->set('zCtx', $zCtx);
 }
+JHTML::_('behavior.modal');
 ?>
 <!-- 26042011 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,7 +51,8 @@ if (!isset($zCtx)) {
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>
+	
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/templates/z20/js/swfobject.js"></script>
@@ -62,12 +64,17 @@ if (!isset($zCtx)) {
         <script language="javascript" type="text/javascript" src="components/com_zonales/map2.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
+
+	<!--
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node')?>:4000/socket.io/socket.io.js"></script>
+	-->
+	<script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','",(JUserHelper::getUserGroups(JFactory::getUser()->get('id'))))?>'];
         </script>
-        <script type="text/javascript" language="javascript" src="/media/system/js/lytebox.js"></script>
-        <link rel="stylesheet" href="/media/system/css/lytebox.css" type="text/css" media="screen" />
+	<script type="text/javascript" src="/media/system/js/shCore.js" language="javascript"></script>
+        <script type="text/javascript" src="/media/system/js/shBrushJScript.js" language="javascript"></script>
+        <script type="text/javascript" src="/media/system/js/ModalPopups.js" language="javascript"></script>        
     </head>
 
     <body>
@@ -124,7 +131,7 @@ if (!isset($zCtx)) {
                         </div>
                         <div id="module-searchTop">
                             <div class="searchbox">
-                                <button class="button" value="Search" type="submit" onclick="searchPost($('zonalesSearchword').value, zcGetEfectiveZoneName())">BUSCAR</button>
+                                <button class="button" value="Search" type="submit" onclick="searchPost($('zonalesSearchword').value, zcGetZone())">BUSCAR</button>
                                 <input class="text" id="zonalesSearchword" type="text" name="searchword" maxlength="125" alt="buscar..." size="20" value="buscar..." onblur="if(this.value=='') this.value='buscar...';" onfocus="if(this.value=='buscar...') this.value='';"></input>
                             </div>
                             <!--
@@ -195,7 +202,7 @@ if (!isset($zCtx)) {
     if (isset($eq_actual) && $eq_actual != null):
         $eq = $eq_actual[0]->eq;
         $bands = $eq_actual[0]->bands;
-        $bands_js;
+        $bands_js = "";
 
         if (!empty($eq) && !empty($bands)) {
 
@@ -255,6 +262,14 @@ if (!isset($zCtx)) {
                             // ]]></script>
 
                         -->
+                        <div id="mapDiv">
+                            <!--
+                            <img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: inline"/>
+                            -->
+                            <label>Ud. está cerca de: </label>
+                            <spam id="breadCrumb"></spam>
+                            <div id='map_element' style="width: 96%; height: 530px; border: solid 9px #F1F2F3;"></div>
+                        </div>
 
                         <div id="fl_cdba" style="margin-bottom:10px;">zonales.com</div>
 
@@ -270,7 +285,7 @@ if (!isset($zCtx)) {
 
                         <div id="lavoz">
 
-                            <!-- # acÃ¡ van las notas de los vecinos... ver index_tmpl.html -->
+                            <!-- # acá van las notas de los vecinos... ver index_tmpl.html -->
 
                         </div><!-- end #lavoz -->
                         <jdoc:include type="modules" name="other" />
@@ -285,12 +300,12 @@ if (!isset($zCtx)) {
 
                     <div id="module-loginRight">
 
-                        <!-- acÃ¡ va el mÃ³dulo de login... tal vez los div "module-loginRight" se pueden eliminar -->
+                        <!-- acá va el módulo de login... tal vez los div "module-loginRight" se pueden eliminar -->
                         <jdoc:include type="modules" name="right"/>
 
                     </div><!-- end #module-loginRight -->
 
-                    <!-- acÃ¡ van los mÃ³dulos de banners... que tambiÃ©n podrÃ­an ir todos en la posiciÃ³n "right" -->
+                    <!-- acá van los módulos de banners... que también podrían ir todos en la posición "right" -->
                     <jdoc:include type="modules" name="bannerRight" />
                     <div>
                         <a href="http://www.facebook.com/zonales"><img src="images/bot_facebook.jpg" alt="Facebook" /></a>

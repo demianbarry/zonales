@@ -136,7 +136,8 @@ function setSelectedZone(zone, zoneName, parent, parentName, callback) {
         zone: zone
     }, function() {
         //alert(JSON.stringify(response));
-        callback();
+        if (callback)
+            callback();
         return(this);
     });
 }
@@ -257,7 +258,7 @@ function zcGetCheckedSources() {
     return sources;
 }
 
-//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -268,7 +269,7 @@ function zcSearchSource(zCtx, sourceStr) {
     return -1;
 }
 
-//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){
@@ -309,6 +310,27 @@ function getZoneById(id, callback) {
         "id":id
     }, function(response) {
         callback(response[0]);
+        return(this);
+    });
+}
+function getIdByZone(extendedString, callback) {
+    console.log("dentro de getIdByZone con "+extendedString);
+    socket.emit('getZoneByFilters', {
+        "extendedString":extendedString
+    }, function(zones) {
+       // alert(JSON.stringify(zones[0]));
+      //  MyZoneId = zones[0].id;
+        callback(zones[0].id);
+        return(this);
+    });
+    
+}
+
+function getPlaces(zoneid, callback) {
+    //alert(typeof(zoneid));
+    socket.emit('getExtendedString', zoneid, function(response) {
+       // alert(response);
+        callback(response);
         return(this);
     });
 }

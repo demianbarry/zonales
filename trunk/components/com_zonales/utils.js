@@ -10,12 +10,22 @@ String.prototype.capitalize = function(){
     } );
 };
 
-String.prototype.trim = function(){
+/*String.prototype.trim = function(){
     var i=0, j=this.length-1;
     while(this.charAt(i) == ' ')i++;
     while(this.charAt(j) == ' ')j--;
     return this.substring(i,j+1);
-};
+};*/
+
+String.prototype.trim = function() {
+	return this.replace(/^\s+|\s+$/g,"");
+}
+String.prototype.ltrim = function() {
+	return this.replace(/^\s+/,"");
+}
+String.prototype.rtrim = function() {
+	return this.replace(/\s+$/,"");
+}
 
 function gup( name ) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -179,7 +189,8 @@ function populateOptions(event, field, add, elmts, callback){
     switch(event.keyCode){
         case 13:
             if(!add) {
-                field.set('value', container.getElement('.selected').get('html'));
+                if (container.getElement('.selected'))
+                    field.set('value', container.getElement('.selected').get('html'));
                 if(typeof callback == 'function')
                     callback(field.get('value'));
             } else {
