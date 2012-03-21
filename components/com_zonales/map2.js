@@ -84,10 +84,13 @@ function breadCrumbToExtendedString(zone) {
         }
 
         if (isZone) {
-            extendedString += element.innerHTML;
+            if (element.innerHTML == ',')
+                extendedString += element.innerHTML + ' ';
+            else
+                extendedString += element.innerHTML;
         }
     });
-    return extendedString.replace(', ',',+').replace(' ','_').replace(',+',', ').replace('_','').toLowerCase();
+    return extendedString;
 }
 
 function setBreadCrumb(extendedString) {
@@ -95,7 +98,10 @@ function setBreadCrumb(extendedString) {
     clearBreadcrumb();
     var zones = extendedString.split(',');
     zones.each(function (zone) {
-        element = new Element('a', {'html': zone.replace(/_/g, " ").capitalize(), 'onclick': 'drawMap(breadCrumbToExtendedString(this.innerHTML));'}).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
+        element = new Element('a', {
+            'html': zone.trim().replace(/_/g, " ").capitalize(),
+            'onclick': 'setZone(breadCrumbToExtendedString(this.innerHTML));drawMap(breadCrumbToExtendedString(this.innerHTML));'
+        }).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
         element = new Element('spam', {'html': ','}).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
     });
     element.dispose();
@@ -123,6 +129,7 @@ function ajustMapToGeo(geoData) {
 function drawMap(extendedString) {
     clearMap();
     setBreadCrumb(extendedString);
+    extendedString = extendedString.replace(/, /g,',+').replace(/ /g,'_').replace(/,\+/g,', ').toLowerCase();
 
     socket.emit("getPlaceByFilters", {extendedString:extendedString}, function(places) {
 
@@ -136,7 +143,7 @@ function drawMap(extendedString) {
                 });
             }
 
-            socket.emit("getPlaceByFilters", {parent:place[0].id}, function(childs) {
+            socket.emit("getPlaceByFilters", {parent:places[0].id}, function(childs) {
                 childs.each(function(child) {
                     socket.emit("getGeoData", {id: child.geoData}, function(geoData) {
                         if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
@@ -192,7 +199,10 @@ function on_unselect_feature(event){
 
 function on_select_feature(event){
     var selectedFeature = event.feature;
-    drawMap(selectedFeature.data.extendedString);
+    if (typeof(selectedFeature.data.extendedString) != 'undefined' && selectedFeature.data.extendedString != null && selectedFeature.data.extendedString != '') {
+        setZone(selectedFeature.data.extendedString.replace(/_/g, " ").capitalize());
+    }
+    drawMap(selectedFeature.data.extendedString.replace(/_/g, " ").capitalize());
 }
 
 
@@ -283,6 +293,9 @@ function initMap() {
     map.events.register('moveend', this, on_move);
 
     updateFormats();
-    drawMap('argentina');
+    if (zcGetZone() == '')
+        drawMap('Argentina');
+    else
+        drawMap(zcGetZone());
 
 }

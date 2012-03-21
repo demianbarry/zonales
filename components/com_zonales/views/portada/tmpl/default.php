@@ -29,11 +29,3 @@
         <input id="verMas" value="Ver más" onclick="loadMorePost();" type="button">
     </div>
 </div>
-<div id="mapDiv">
-    <!--
-    <img id="ajaxLoader" src="/images/ajax_loader_bar.gif" style="display: inline"/>
-    -->
-    <label>Ud. está cerca de: </label>
-    <spam id="breadCrumb"></spam>
-    <div id='map_element' style="width: 96%; height: 650px; border: solid 9px #F1F2F3;"></div>
-</div>

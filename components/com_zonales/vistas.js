@@ -14,7 +14,7 @@ Element.Properties['data-title'] = {
 var nodeURL = 'http://192.168.0.2:4000';
 var sources = new Array();
 //var tags = new Array();
-var places = new Array();
+//var places = new Array();
 var zones = new Array();
 var allZones = new Array();
 var tab = "";
@@ -47,35 +47,19 @@ function initVista(zCtx){
         tab = 'portada';
         zcSetTab('portada');
     }
-    if (zCtx.zTab != 'geoActivos') {
-        $('postsDiv').set({
-            style: 'display:block'
-        });
-        $('mapDiv').set({
-            style: 'display:none'
-        });
-        $('verMas').setStyle('display','block');
-    //loadPost(true);
-    //setZone(zCtx.selZone, zcGetSelectedZoneName());
-    } else {
-        $('postsDiv').set({
-            style: 'display:none'
-        });
-        $('mapDiv').set({
-            style: 'display:block'
-        });
-        $('verMas').setStyle('display','none');
-        initMapTab();
-        $('enLaRed').set({
-            style: 'display:inline'
-        });
-        $('noticiasEnLaRed').set({
-            style: 'display:inline'
-        });
-        $('tempoDiv').set({
-            style: 'display:inline'
-        });
-    }
+    
+    
+    initMapTab();
+    $('enLaRed').set({
+        style: 'display:inline'
+    });
+    $('noticiasEnLaRed').set({
+        style: 'display:inline'
+    });
+    $('tempoDiv').set({
+        style: 'display:inline'
+    });
+
     if (zCtx.zTab == 'portada'){
         $('enLaRed').set({
             style: 'display:inline'
@@ -87,6 +71,7 @@ function initVista(zCtx){
             style: 'display:inline'
         });
     }
+
     if (zCtx.zTab == 'relevantes'  || zCtx.zTab == 'enlared'){
         $('enLaRed').set({
             style: 'display:inline'
@@ -294,7 +279,6 @@ function initTempFilters(zCtx) {
 }*/
 
 function setZone(zoneExtended, zoneName, parentId, parentName) {
-    //alert("SetZone. zoneId: " + zoneId + " zoneName: " + zoneName + " parendId: " + parentId + " parentName: " + parentName);
     if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
         zoneExtended = '';
     if (zoneName == null || typeof(zoneName) == 'undefined')
@@ -313,9 +297,9 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
         $('postsContainer').empty();
         $('newPostsContainer').empty();
     }
-    console.log('Antes de setear: ' + zoneExtended);
+    //console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        console.log('Despu�s de setear: ' + zoneExtended);
+    //console.log('Despu�s de setear: ' + zoneExtended);
     //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
     /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -323,16 +307,14 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     });
 }
 
-function setPlace(zoneExtended){
-    getIdByZone(zoneExtended.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase(), function(idZone){
-        getPlaces(idZone, function(placesByZone){
-            places = placesByZone.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase();
-            
+/*function setPlace(zoneExtended){
+    console.log('Aca esta: '+zoneExtended.replace(/, /g, ",+").replace(/ /g,"_").replace(/,\+/g,", ").toLowerCase());
+    getIdByZone(zoneExtended.replace(/, /g, ",+").replace(/ /g,"_").replace(/,\+/g,", ").toLowerCase(), function(idZone){
+        getPlaces(idZone, function(placesByZone)    {
+            places = placesByZone
         });
-
     });
-
-}
+}*/
 
 function onTempoChange() {
     if (tab != 'geoActivos' && $('postsContainer')) {
@@ -705,14 +687,14 @@ function updatePosts(json, component, more) {
             });
         }
 
-        var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
+   /*     var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Lugar: ').inject(div_story_place);
         var span_place = new Element('span').inject(div_story_place);
-
+    */
         var idInputTag = doc.id;
         var idButtonAddTags = 'buttonTags_'+doc.id;
-        var idInputPlace = 'places'+doc.id;
-        var idButtonAddPlaces = 'buttonPlaces_'+doc.id;
+        //var idInputPlace = 'places'+doc.id;
+        //var idButtonAddPlaces = 'buttonPlaces_'+doc.id;
         if(zUserGroups.indexOf("4") != -1){
             var a_edit = new Element('a', {
                 'target': '_blank',
@@ -753,7 +735,7 @@ function updatePosts(json, component, more) {
                 $(idInputTag).value = '';
             });
 /*********/
-
+/*
             var span_addPlaces = new Element('span',{
                 'id':'addPlaces_'+doc.id
             }).inject(div_story_place);
@@ -768,14 +750,14 @@ function updatePosts(json, component, more) {
                     $(idButtonAddPlaces).setStyle("display","none");
                 }
             });
-            
+
             var selectedPlace = new Element('input',{
                 'id':idInputPlace,
                 'style':'display:none',
                 'onclick':'setPlace("'+post.zone.extendedString+'");',
                 'onkeyup':'populateOptions(event,this,true,places)',
                 'value':''
-            }).inject(span_addPlaces);        
+            }).inject(span_addPlaces);
             var confimAddPlaceButton = new Element('img', {
                 'id':idButtonAddPlaces,
                 'style':'display:none',
@@ -785,7 +767,8 @@ function updatePosts(json, component, more) {
                 show_confirm(idInputPlace,$(idInputPlace).value,tags);
                 $(idInputPlace).value = '';
             });
-            /*********/
+            */
+/*********/
         }
         var zone = post.zone.extendedString;
         var idButtonSetZone = 'buttonZone'+doc.id;

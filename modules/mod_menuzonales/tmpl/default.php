@@ -46,7 +46,6 @@ defined('_JEXEC') or die('Restricted Access');
         <li id="s0"><a id="menuPortada" onclick="setZTab('portada');" href="#"><?php echo JText::_('Portada'); ?></a></li>
         <li id="s30"><a id="menuEnLaRed" onclick="setZTab('enlared');" href="#"><?php echo JText::_('En la Red'); ?></a></li>
         <li id="s45"><a id="menuNoticias" onclick="setZTab('noticiasenlared');" href="#"><?php echo JText::_('Noticias'); ?></a></li>
-        <li id="s50"><a id="menuMapa" onclick="setZTab('geoActivos');" href="#"><?php echo JText::_('Mapa'); ?></a></li>
     </ul>
 </div>
 <div id="sublinks">
