@@ -234,7 +234,7 @@ final public class Rule$fuente extends Rule
                   int c2 = 0;
                   for (int i2 = 0; i2 < 1 && f2; i2++)
                   {
-                    rule = Rule$geoFeed.parse(context);
+                    rule = Rule$place.parse(context);
                     if ((f2 = rule != null))
                     {
                       e2.add(rule);

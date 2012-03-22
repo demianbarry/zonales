@@ -1,9 +1,9 @@
 /* -----------------------------------------------------------------------------
- * Rule$dias.java
+ * Rule$palce.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Fri Sep 23 12:10:58 ART 2011
+ * Produced : Thu Aug 04 12:08:11 ART 2011
  *
  * -----------------------------------------------------------------------------
  */
@@ -11,10 +11,11 @@ package org.zonales.parser.parser;
 
 import java.util.ArrayList;
 import org.zonales.metadata.ZCrawling;
+import org.zonales.tagsAndZones.daos.PlaceDao;
 
-final public class Rule$dias extends Rule {
+final public class Rule$place extends Rule {
 
-    private Rule$dias(String spelling, ArrayList<Rule> rules) {
+    private Rule$place(String spelling, ArrayList<Rule> rules) {
         super(spelling, rules);
     }
 
@@ -22,8 +23,8 @@ final public class Rule$dias extends Rule {
         return visitor.visit(zcrawling, this);
     }
 
-    public static Rule$dias parse(ParserContext context) {
-        context.push("dias");
+    public static Rule$place parse(ParserContext context) {
+        context.push("place");
 
         boolean parsed = true;
         int s0 = context.index;
@@ -40,7 +41,7 @@ final public class Rule$dias extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Rule$int.parse(context);
+                        rule = Terminal$StringValue.parse(context, "[");
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -52,7 +53,28 @@ final public class Rule$dias extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Terminal$StringValue.parse(context, "dias");
+                        rule = Rule$cadena.parse(context);
+                        if (rule != null) {
+                            PlaceDao placeDao = new PlaceDao(Globals.host, Globals.port, Globals.db);
+
+                            if (placeDao.retrieveByExtendedString(rule.spelling.replace(", ", ",+").replace(" ", "_").replace("\"", "").replace(",+", ", ").toLowerCase()) == null) {
+                                rule = null;
+                                context.setMessage("El lugar no existe en la base de datos."
+                                        + " Por favor, utilice las sugerencias que le ofrece la interfaz.\n");
+                            }
+                        }
+                        if ((f1 = rule != null)) {
+                            e1.add(rule);
+                            c1++;
+                        }
+                    }
+                    parsed = c1 == 1;
+                }
+                if (parsed) {
+                    boolean f1 = true;
+                    int c1 = 0;
+                    for (int i1 = 0; i1 < 1 && f1; i1++) {
+                        rule = Terminal$StringValue.parse(context, "]");
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -70,18 +92,14 @@ final public class Rule$dias extends Rule {
 
         rule = null;
         if (parsed) {
-            rule = new Rule$dias(context.text.substring(s0, context.index), e0);
+            rule = new Rule$place(context.text.substring(s0, context.index), e0);
         } else {
             context.index = s0;
         }
+        
+        context.pop("place", parsed);
 
-        context.pop("dias", parsed);
-
-        if (rule != null) {
-            context.getZcrawling().setTemporalidad(String.valueOf(Integer.valueOf(rule.spelling.trim()) * 24 * 60));
-        }
-
-        return (Rule$dias) rule;
+        return (Rule$place) rule;
     }
 }
 

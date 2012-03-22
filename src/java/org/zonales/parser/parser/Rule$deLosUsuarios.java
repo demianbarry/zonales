@@ -12,7 +12,6 @@ package org.zonales.parser.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.ZCrawling;
@@ -71,34 +70,31 @@ final public class Rule$deLosUsuarios extends Rule {
         context.pop("deLosUsuarios", parsed);
 
         if (rule != null) {
-            Pattern pattern = Pattern.compile("\\[([-|+]?([0-9]*\\.[0-9]+)),([-|+]?([0-9]*\\.[0-9]+))\\]");            
+            //Pattern pattern = Pattern.compile("\\[([-|+]?([0-9]*\\.[0-9]+)),([-|+]?([0-9]*\\.[0-9]+))\\]");            
+            Pattern pattern = Pattern.compile("\\[\"[^\\[]+\"\\]");
 
             Criterio criterio = new Criterio();
             List<String> usuarios = new ArrayList<String>();
-            for(String usuario : Arrays.asList(pattern.matcher(rule.spelling).replaceAll("").split(","))){
+            for (String usuario : Arrays.asList(pattern.matcher(rule.spelling).replaceAll("").split(","))) {
                 usuarios.add(usuario.trim());
             }
-            List<Double> latitudes = new ArrayList<Double>();
-            List<Double> longitudes = new ArrayList<Double>();
+            List<String> places = new ArrayList<String>();
 
             int index;
             for (String usuario : usuarios) {
                 index = rule.spelling.indexOf(usuario) + usuario.length();
-                while(index < rule.spelling.length() && rule.spelling.charAt(index) != '[' && rule.spelling.charAt(index) != ','){
+                while (index < rule.spelling.length() && rule.spelling.charAt(index) != '[' && rule.spelling.charAt(index) != ',') {
                     index++;
                 }
-                if(index < rule.spelling.length() && rule.spelling.charAt(index) == '['){                    
-                    latitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(',', index)))));
-                    longitudes.add(Double.valueOf(rule.spelling.substring(index+1, (index = rule.spelling.indexOf(']', index)))));
+                if (index < rule.spelling.length() && rule.spelling.charAt(index) == '[') {
+                    places.add(rule.spelling.substring(index + 1, (index = rule.spelling.indexOf(']', index))));
                 } else {
-                    latitudes.add(null);
-                    longitudes.add(null);
+                    places.add(null);
                 }
-                
             }
+            
             criterio.setDeLosUsuarios(usuarios);
-            criterio.setDeLosUsuariosLatitudes(latitudes);
-            criterio.setDeLosUsuariosLongitudes(longitudes);
+            criterio.setDeLosUsuariosPlaces(places);
             if (context.getZcrawling().getNocriterio()) {
                 context.getZcrawling().getNoCriterios().add(criterio);
             } else {

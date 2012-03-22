@@ -42,6 +42,7 @@ public class ZCrawlParser extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -51,7 +52,6 @@ public class ZCrawlParser extends HttpServlet {
         Globals.host = props.getProperty("db_host");
         Globals.port = Integer.valueOf(props.getProperty("db_port"));
         Globals.db = props.getProperty("db_name");
-
 
         ZCrawling zcrawling = new ZCrawling();
         String extraction = request.getParameter("q");

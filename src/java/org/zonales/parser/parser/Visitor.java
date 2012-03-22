@@ -37,6 +37,8 @@ public interface Visitor
   public Object visit(ZCrawling zcrawling, Rule$num rule);
   public Object visit(ZCrawling zcrawling, Rule$commenters rule);
   public Object visit(ZCrawling zcrawling, Rule$usuario rule);
+  public Object visit(ZCrawling zcrawling, Rule$place rule);
+  public Object visit(ZCrawling zcrawling, Rule$feedPlace rule);
   public Object visit(ZCrawling zcrawling, Rule$palabras rule);
   public Object visit(ZCrawling zcrawling, Rule$palabra rule);
   public Object visit(ZCrawling zcrawling, Rule$filtros rule);
