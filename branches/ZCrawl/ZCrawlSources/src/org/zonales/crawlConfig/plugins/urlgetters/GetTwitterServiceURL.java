@@ -26,14 +26,16 @@ public class GetTwitterServiceURL implements GetServiceURL {
             return null;
         }
 
-        String urlServlet = service.getUri() 
-                                + "?zone="
-                                + metadata.getLocalidad()
-                                + "&q=";
+        String urlServlet = service.getUri()
+                + "?zone="
+                + metadata.getLocalidad()
+                + "&q=";
 
         if (metadata.getUltimoHitDeExtraccion() != null) {
-            urlServlet += "+since_id:" + metadata.getUltimoHitDeExtraccion()+"+";
+            urlServlet += "+since_id:" + metadata.getUltimoHitDeExtraccion() + "+";
         }
+
+        String places = "";
 
         if (metadata.getCriterios() != null) {
 
@@ -45,20 +47,20 @@ public class GetTwitterServiceURL implements GetServiceURL {
 
                 urlServlet += "(";
 
-                String places = "";
                 if (criterio.getDeLosUsuarios() != null) {
-                    String usuario = "";                    
+                    String usuario = "";
                     for (int i = 0; i < criterio.getDeLosUsuarios().size(); i++) {
-                        usuario = criterio.getDeLosUsuarios().get(i); 
+                        usuario = criterio.getDeLosUsuarios().get(i);
                         if (i != 0) {
                             urlServlet += "+OR+";
                             places += ";";
                         }
-                        places += "&"+usuario+"Place=";
+                        places += "&" + usuario + "Place=";
                         urlServlet += "from:" + usuario;
-                        if(criterio.getDeLosUsuariosPlaces().get(i) != null)
+                        if (criterio.getDeLosUsuariosPlaces().get(i) != null) {
                             places += criterio.getDeLosUsuariosPlaces().get(i);
-                    }                    
+                        }
+                    }
                 }
 
                 if (criterio.getPalabras() != null) {
@@ -73,11 +75,6 @@ public class GetTwitterServiceURL implements GetServiceURL {
                     }
                 }
                 urlServlet += ")";
-                try {
-                    urlServlet += URLEncoder.encode(places, "UTF-8");
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         }
 
@@ -118,6 +115,11 @@ public class GetTwitterServiceURL implements GetServiceURL {
             }
         }
 
+        try {
+            urlServlet += URLEncoder.encode(places, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return urlServlet;
     }
 }
