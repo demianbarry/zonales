@@ -55,7 +55,7 @@ public class GetTwitterServiceURL implements GetServiceURL {
                             urlServlet += "+OR+";
                             places += ";";
                         }
-                        places += "&" + usuario + "Place=";
+                        places += usuario + "Place=";
                         urlServlet += "from:" + usuario;
                         if (criterio.getDeLosUsuariosPlaces() != null && criterio.getDeLosUsuariosPlaces().get(i) != null) {
                             places += criterio.getDeLosUsuariosPlaces().get(i);
@@ -116,7 +116,7 @@ public class GetTwitterServiceURL implements GetServiceURL {
         }
 
         try {
-            urlServlet += URLEncoder.encode(places, "UTF-8");
+            urlServlet += "&" + URLEncoder.encode(places, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
         }
