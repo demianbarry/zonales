@@ -40,8 +40,9 @@ public class GetFacebookServiceURL implements GetServiceURL {
         }
         //Si hay criterios, voy agregando los parámetros
         List<String> usuarios = new ArrayList<String>();
-        List<Double> latitudes = new ArrayList<Double>();
-        List<Double> longitudes = new ArrayList<Double>();
+        //List<Double> latitudes = new ArrayList<Double>();
+        //List<Double> longitudes = new ArrayList<Double>();
+        List<String> extendedStrings = new ArrayList<String>();
 
         if (metadata.getCriterios() != null) {
 
@@ -67,6 +68,13 @@ public class GetFacebookServiceURL implements GetServiceURL {
                 }
                 }*/
 
+                //Agrego las longitudes
+                if (criterio.getDeLosUsuariosPlaces() != null) {
+                    for(String extendedString : criterio.getDeLosUsuariosPlaces()){
+                        extendedStrings.add(extendedString);
+                    }
+                }
+
                 //Si hay keywords, los agrego
                 if (criterio.getPalabras() != null) {
                     keywords += keywords.length() > 0 ? "," : "";
@@ -80,11 +88,11 @@ public class GetFacebookServiceURL implements GetServiceURL {
         if (usuarios.size() > 0) {
             int key = 0;
             for (String usuario : usuarios) {
-                users += users.length() > 0 ? "," : "";
+                users += users.length() > 0 ? ";" : "";
                 users += usuario;
-                if (latitudes.size() == usuarios.size() && longitudes.size() == usuarios.size()) {
-                    if (latitudes.get(key) != null && longitudes.get(key) != null) {
-                        users += "[" + latitudes.get(key) + ";" + longitudes.get(key) + "]";
+                if (extendedStrings.size() == usuarios.size()) {
+                    if (extendedStrings.get(key) != null) {
+                        users += "[" + extendedStrings.get(key) + "]";
                     }
                 }
                 key++;
