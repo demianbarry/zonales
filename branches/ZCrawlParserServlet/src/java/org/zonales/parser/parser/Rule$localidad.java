@@ -45,7 +45,7 @@ final public class Rule$localidad extends Rule {
                         if (rule != null) {
                             ZoneDao zoneDao = new ZoneDao(Globals.host, Globals.port, Globals.db);
 
-                            if (zoneDao.retrieve(rule.spelling.replace(" ", "_").replace("\"", "").toLowerCase()) == null) {
+                            if (zoneDao.retrieveByExtendedString(rule.spelling.replace(", ",",+").replace(" ", "_").replace("\"", "").replace(",+",", ").toLowerCase()) == null) {
                                 rule = null;
                                 context.setMessage("La localidad no existe en la base de datos."
                                         + " Por favor, utilice las sugerencias que le ofrece la interfaz.\n");

@@ -1,9 +1,9 @@
 /* -----------------------------------------------------------------------------
- * Rule$dias.java
+ * Rule$feedPlace.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
- * Produced : Fri Sep 23 12:10:58 ART 2011
+ * Produced : Thu Mar 15 18:49:12 ART 2012
  *
  * -----------------------------------------------------------------------------
  */
@@ -12,9 +12,9 @@ package org.zonales.parser.parser;
 import java.util.ArrayList;
 import org.zonales.metadata.ZCrawling;
 
-final public class Rule$dias extends Rule {
+final public class Rule$feedPlace extends Rule {
 
-    private Rule$dias(String spelling, ArrayList<Rule> rules) {
+    private Rule$feedPlace(String spelling, ArrayList<Rule> rules) {
         super(spelling, rules);
     }
 
@@ -22,8 +22,8 @@ final public class Rule$dias extends Rule {
         return visitor.visit(zcrawling, this);
     }
 
-    public static Rule$dias parse(ParserContext context) {
-        context.push("dias");
+    public static Rule$feedPlace parse(ParserContext context) {
+        context.push("feedPlace");
 
         boolean parsed = true;
         int s0 = context.index;
@@ -40,19 +40,7 @@ final public class Rule$dias extends Rule {
                     boolean f1 = true;
                     int c1 = 0;
                     for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Rule$int.parse(context);
-                        if ((f1 = rule != null)) {
-                            e1.add(rule);
-                            c1++;
-                        }
-                    }
-                    parsed = c1 == 1;
-                }
-                if (parsed) {
-                    boolean f1 = true;
-                    int c1 = 0;
-                    for (int i1 = 0; i1 < 1 && f1; i1++) {
-                        rule = Terminal$StringValue.parse(context, "dias");
+                        rule = Rule$place.parse(context);
                         if ((f1 = rule != null)) {
                             e1.add(rule);
                             c1++;
@@ -70,18 +58,18 @@ final public class Rule$dias extends Rule {
 
         rule = null;
         if (parsed) {
-            rule = new Rule$dias(context.text.substring(s0, context.index), e0);
+            rule = new Rule$feedPlace(context.text.substring(s0, context.index), e0);
         } else {
             context.index = s0;
         }
 
-        context.pop("dias", parsed);
-
         if (rule != null) {
-            context.getZcrawling().setTemporalidad(String.valueOf(Integer.valueOf(rule.spelling.trim()) * 24 * 60));
+            context.getZcrawling().setPlace(rule.spelling.replace("[", "").replace("]", "").replace("\"", ""));
         }
 
-        return (Rule$dias) rule;
+        context.pop("feedPlace", parsed);
+
+        return (Rule$feedPlace) rule;
     }
 }
 

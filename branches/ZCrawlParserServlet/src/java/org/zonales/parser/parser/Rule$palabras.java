@@ -148,6 +148,9 @@ final public class Rule$palabras extends Rule {
         context.getZcrawling().setSiosi(false);
 
         if (context.getZcrawling().getNocriterio()) {
+            if (context.getZcrawling().getNoCriterios() == null) {
+                context.getZcrawling().setNoCriterios(new ArrayList<Criterio>());
+            }
             context.getZcrawling().getNoCriterios().add(criterio);
         } else {
             context.getZcrawling().getCriterios().add(criterio);

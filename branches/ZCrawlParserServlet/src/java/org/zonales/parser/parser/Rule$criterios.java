@@ -179,6 +179,7 @@ final public class Rule$criterios extends Rule {
                                         if ((f2 = rule != null)) {
                                             e2.add(rule);
                                             c2++;
+                                            context.getZcrawling().setNocriterio(true);
                                         }
                                     }
                                     parsed = c2 == 1;

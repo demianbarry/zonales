@@ -389,7 +389,7 @@ final public class Rule$criterio extends Rule
 
     context.pop("criterio", parsed);
 
-    context.getZcrawling().setNocriterio(false);
+    //context.getZcrawling().setNocriterio(false);
     
     return (Rule$criterio)rule;
   }
