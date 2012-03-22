@@ -57,7 +57,7 @@ public class GetTwitterServiceURL implements GetServiceURL {
                         }
                         places += "&" + usuario + "Place=";
                         urlServlet += "from:" + usuario;
-                        if (criterio.getDeLosUsuariosPlaces().get(i) != null) {
+                        if (criterio.getDeLosUsuariosPlaces() != null && criterio.getDeLosUsuariosPlaces().get(i) != null) {
                             places += criterio.getDeLosUsuariosPlaces().get(i);
                         }
                     }
