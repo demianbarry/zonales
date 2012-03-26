@@ -5,6 +5,8 @@
     //tab ="portada";
     
     -->
+    if(zcGetTab() == '')
+        zcSetTab('enlared');
 
 </script>
 <div id="postsDiv">
@@ -19,7 +21,7 @@
         <label id= "tituloFiltro"></label>
         <label id= "filtrosAct"></label>
     </div>
-    
+
     <input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
     <div id="newPostsContainer" style="display:none">
     </div>
