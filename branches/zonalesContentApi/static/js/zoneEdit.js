@@ -157,7 +157,7 @@ function saveZone() {
                 }
               }); 
           } else {
-                jsonPlace += '}';
+                jsonZone += '}';
                 saveZoneEmit(jsonZone);
           }
     }
@@ -165,7 +165,8 @@ function saveZone() {
 }
 
 function saveZoneEmit(jsonZone) {
-  var objZone = eval('(' + jsonZone + ')');
+  console.log(jsonZone);
+  var objZone = JSON.parse(jsonZone);
     
    if (edit) {
       socket.emit('updateZone', objZone, function (resp) {
@@ -217,7 +218,7 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    
+    document.getElementById('geoJson').value = str;
 }
 
 function deserialize() {

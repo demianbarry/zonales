@@ -290,7 +290,7 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    
+    document.getElementById('geoJson').value = str;
 }
 
 function deserialize() {
