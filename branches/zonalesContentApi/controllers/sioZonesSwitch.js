@@ -103,11 +103,13 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getNextZoneId', function(ignored, fn) {
-        console.log('Recibi el evento getNextZoneId desde el cliente');
-        incIdsService.getId("zones", function(id){
-            if (typeof(id) != 'undefined') {
-                fn(id);
+    client.on('addGeoDataToZone', function(data, fn) {
+        console.log('Recibi el evento addGeoDataToZone desde el cliente');
+        console.log("------------_>>>PARAMETROS: " + JSON.stringify(data));
+        console.log("------------_>>>ENDPARAMETROS: ");
+        zoneService.addGeoDataToZone(data.zone, data.geodata, function(response){
+            if (typeof(response) != 'undefined') {
+                fn(response);
             }
         });
     });

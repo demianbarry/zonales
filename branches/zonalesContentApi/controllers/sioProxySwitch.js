@@ -53,5 +53,19 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
+    client.on('wikimapiaGetObject', function(id, fn) {
+        console.log('Recibí evento wikimapiaGetObject');
+        zProxyService.wikimapiaGetObject(id, function (response) {
+            fn(response);
+        });
+    });
+
+    client.on('googleMapSearch', function(query, fn) {
+        console.log('Recibí evento googleMapSearch');
+        zProxyService.googleMapSearch(query, function (response) {
+            fn(response);
+        });
+    });
+
 }
 

@@ -210,6 +210,8 @@ function savePlace() {
     	socket.emit('updateGeoData', objGeo, function (resp) {
     		//var resp = eval('(' + data + ')'); 
     		if (resp.cod == 100) {
+                jsonPlace += '}';
+                savePlaceEmit(jsonPlace);
     			alert("Se ha actualizado el dato geográfico"); 
     		} else {
     			alert("Error al actualizar el dato geográfico");
@@ -217,45 +219,46 @@ function savePlace() {
     	});	
     } else {
         if ($('geoJson').value != '') {
-    	  if (geoPlaceId != null) {
-    	  		jsonPlace += ',"geoData":"' + geoPlaceId + '"';
-		    	socket.emit('saveGeoData', objGeo, function (resp) {
-		    		//var resp = eval('(' + data + ')'); 
-    				if (resp.cod == 100) {
-		    			alert("Se ha guardado el dato geográfico"); 
-		    		} else {
-		    			alert("Error al guardar el dato geográfico");
-		    		}
-		    	});	
-    	  }
+	    	socket.emit('saveGeoData', objGeo, function (resp) {
+	    		//var resp = eval('(' + data + ')'); 
+				if (resp.cod == 100) {
+                    jsonPlace += ',"geoData":' + resp.id + '}';
+                    savePlaceEmit(jsonPlace);
+	    			alert("Se ha guardado el dato geográfico"); 
+	    		} else {
+	    			alert("Error al guardar el dato geográfico");
+	    		}
+	    	});	
           } else {
-              jsonPlace += ',"geoData":null';
+                jsonPlace += '}';
+                savePlaceEmit(jsonPlace);
           }
     }
-    jsonPlace += '}';
     
-	 var objPlace = eval('(' + jsonPlace + ')');
+}
+
+function savePlaceEmit(jsonPlace) {
+    var objPlace = eval('(' + jsonPlace + ')');
     
-	 if (edit) {
-    	socket.emit('updatePlace', objPlace, function (resp) {
-    		//var resp = eval('(' + data + ')'); 
-    		if (resp.cod == 100) {
-    			alert("Se ha actualizado el place"); 
-    		} else {
-    			alert("Error al actualizar el place");
-    		}
-    	});	
+     if (edit) {
+        socket.emit('updatePlace', objPlace, function (resp) {
+            //var resp = eval('(' + data + ')'); 
+            if (resp.cod == 100) {
+                alert("Se ha actualizado el place"); 
+            } else {
+                alert("Error al actualizar el place");
+            }
+        }); 
     } else {
-    	socket.emit('savePlace', objPlace, function (resp) {
-    		//var resp = eval('(' + data + ')'); 
-    		if (resp.cod == 100) {
-    			alert("Se ha guardado el place"); 
-    		} else {
-    			alert("Error al guardar el place");
-    		}
-    	});
+        socket.emit('savePlace', objPlace, function (resp) {
+            //var resp = eval('(' + data + ')'); 
+            if (resp.cod == 100) {
+                alert("Se ha guardado el place"); 
+            } else {
+                alert("Error al guardar el place");
+            }
+        });
     }    
-    
 }
 
 //Funciones de manejo del mapa
@@ -287,13 +290,7 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    if (typeof(geoPlaceId) == 'undefined' || geoPlaceId == null) {
-        socket.emit('getNextGeoId', null, function (id) {
-            geoPlaceId = id;
-            str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
-            document.getElementById('geoJson').value = str;
-        });
-    }
+    
 }
 
 function deserialize() {

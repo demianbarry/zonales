@@ -16,7 +16,7 @@ var placeSchema = new Schema(
 	    image : String, //URL de una imagen del lugar  --  OPCIONAL
 	    zone : String, //ID de la zona a la que pertenece el lugar
 	    type : String, //Debe ser el nombre de un tipo de lugar existente
-	    typeTrash : String, //Tipo de lugar original, obtenido desde el extractor de lugares  --  OPCIONAL
+	    categories : [String], //Categorías de lugar original, obtenido desde el extractor de lugares  --  OPCIONAL
 	    state : {
 	    	type:String, 
 	    	enum:['generated', 'published', 'unpublished', 'void'], 
@@ -86,12 +86,9 @@ module.exports.set = function set(place, callback) {
 	incIdsService.getId("places", function(id) {
 		//console.log("------>>>>>>----->>>>> NextId: " + id);
 		place.id = id;
+		place.extendedString = place.name;
 		baseService.set(places, place, function(response) {
-			if (response.cod == 100) {
-				incIdsService.incrementId("places", function() {
-					console.log("ID de places Incrementado");
-				});
-			}
+			response.id = id;
 			callback(response);
 			return(this);
 		});
@@ -112,6 +109,26 @@ module.exports.getPlacesByZone = function getPlacesByZone(zoneid, callback) {
 	this.get({zone:zoneid}, function(places) {
 		if (typeof(places) != 'undefined' && places != null && callback) {
 			callback(places);
+		}
+	});
+}
+
+module.exports.getPlaceById = function getPlaceById(id, callback) {
+	this.get({id:id}, function(places) {
+		if (typeof(places) != 'undefined' && places != null && typeof(places[0]) != 'undefined' && places[0] != null && callback) {
+			callback(places[0]);
+		}
+	});
+}
+
+module.exports.getPlaceByExtendedString = function getPlaceByExtendedString(extendedString, callback) {
+	console.log('PLACE SERVICE, cadena: ' + extendedString);
+	this.get({extendedString:extendedString}, function(places) {
+		console.log('PLACE SERVICE: ' + JSON.stringify(places));
+		if (typeof(places) != 'undefined' && places != null && typeof(places[0]) != 'undefined' && places[0] != null && callback) {
+			callback(places[0]);
+		} else {
+			callback(null);
 		}
 	});
 }
@@ -156,17 +173,6 @@ module.exports.getAllExtendedStrings = function getAllExtendedStrings(short, cal
             callback(result);
         });
 }
-//Retorna id y nombre de todas los places
-module.exports.getExtendedStrings = function getExtendedStrings(filters, callback) {
-        console.log("filters: "+filters);
-	return baseService.get(places, filters, function(docs){
-            var result = [];
-            docs.forEach(function(place){
-                result.push(place.extendedString);
-            });
-            callback(result);
-        });
-}
 
 module.exports.getExtendedString = function getExtendedString(id, callback) {
 	this.get({id:id}, function(place) {
@@ -187,7 +193,7 @@ module.exports.updateExtendedString = function(place, zone){
 };
 
 function updateExtendedString(place, zone){
-    place.extendedString = place.name;
+    place.extendedString = place.name.replace(/ /g, '_').toLowerCase();;
     if (zone)
         place.extendedString += ", "+zone.extendedString;
 

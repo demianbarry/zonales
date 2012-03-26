@@ -209,6 +209,7 @@ app.get('/place/getExtendedStrings', function(req,res) {
     }
 });
 
+
 //----------------------- ZONES -----------------------
 
 //Servicio que obtiene el id y el nombre de todas las zonas.

@@ -87,7 +87,77 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
   var post_options = {
       host: 'api.wikimapia.org',
       port: '80',
-      path: '/?function=box&key=' + wikimapiaAPIKey + '&bbox=' + bbox + '&disable=polygon&format=json&category=' + category + '&count=' + count + '&page=' + page,
+      path: '/?function=box&key=' + wikimapiaAPIKey + '&bbox=' + bbox + '&disable=polygon&format=json&category=' + (category != '' ? category : 'all') + '&count=' + count + '&page=' + page,
+      method: 'GET'
+  };
+
+  console.log("------------------>>>>>>" + JSON.stringify(post_options));
+
+  var response = "";
+
+  var post_req = http.request(post_options, function(res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        
+        res.on('data', function (json) {
+           response += json;
+        });
+        
+        res.on('end', function() {
+           console.log('BODY: ' + response);
+           console.log("------------------------------------------------------------------------------------------");
+           var jsonObj = JSON.parse(response);
+           callback(jsonObj);
+           return(this);
+        });
+  });
+
+  //post_req.write(post_data);
+  post_req.end();
+}
+
+module.exports.googleMapSearch = function googleMapSearch(query, callback) {
+
+  var post_options = {
+      host: 'maps.google.com',
+      port: '80',
+      path: '/maps/api/geocode/json?address=' + encodeURIComponent(query) + '&sensor=false',
+      method: 'GET'
+  };
+
+  console.log("---->" + JSON.stringify(post_options));
+
+  var response = "";
+
+  var post_req = http.request(post_options, function(res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        
+        res.on('data', function (json) {
+           response += json;
+        });
+        
+        res.on('end', function() {
+           console.log('BODY: ' + response);
+           console.log("------------------------------------------------------------------------------------------");
+           var jsonObj = JSON.parse(response);
+           callback(jsonObj);
+           return(this);
+        });
+  });
+
+  //post_req.write(post_data);
+  post_req.end();
+}
+
+module.exports.wikimapiaGetObject = function wikimapiaGetObject(id, callback) {
+
+  var post_options = {
+      host: 'api.wikimapia.org',
+      port: '80',
+      path: '/?function=object&key=' + wikimapiaAPIKey + '&id=' + id + '&format=json',
       method: 'GET'
   };
 
@@ -105,8 +175,8 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
         res.on('end', function() {
            console.log('BODY: ' + response);
            console.log("------------------------------------------------------------------------------------------");
-           //var jsonObj = JSON.parse(response);
-           callback(response);
+           var jsonObj = JSON.parse(response);
+           callback(jsonObj);
            return(this);
         });
   });

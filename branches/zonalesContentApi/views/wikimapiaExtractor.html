@@ -36,6 +36,10 @@
     <div class="clearfix" id="wrapper">
         <div id="view_content">
             <div id="search_div">
+                <div>
+                    <label>Buscar: </label>
+                    <input id="search" onkeyup='searchAndZoom(event, this);' style="width:88%">
+                </div>
                 <div id='map_element' style="width: 95%; height: 300px; border: solid 9px #F1F2F3;"></div>
                 <table class="advanced_search">
                     <tbody>
@@ -66,7 +70,9 @@
                         </tr>
                         <tr>
                             <td class="input">
-                                <input type="button" style="width: 33%; float: left;" value="Buscar" onclick="search();">
+                                <input id="searchButton" type="button" style="width: 33%; float: left;" value="Buscar" onclick="search();">
+                                <input id="moreInfoButton" type="button" style="width: 33%; float: left;" value="Más Info" onclick="moreInfo();">
+                                <input id="savePlacesButton" type="button" style="width: 33%; float: left;" value="Save Places" onclick="savePlaces();">
                             </td>
                         </tr>
                     </tbody>

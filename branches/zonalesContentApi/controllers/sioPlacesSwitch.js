@@ -145,15 +145,6 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getNextPlaceId', function(ignored, fn) {
-        console.log('Recibi el evento getNextPlaceId desde el cliente');
-        incIdsService.getId("places", function(id){
-            if (typeof(id) != 'undefined') {
-                fn(id);
-            }
-        });
-    });
-
 	
     //EVENTOS RELACIONADOS CON LA GESTION DE TIPOS DE PLACES
     //=============================================================================

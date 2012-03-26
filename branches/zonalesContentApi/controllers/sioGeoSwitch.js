@@ -37,13 +37,19 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
 
-    client.on('getNextGeoId', function(ignored, fn) {
-        console.log('Recibi el evento getNextGeoId desde el cliente');
-        incIdsService.getId("geodata", function(id){
-            if (typeof(id) != 'undefined') {
-                fn(id);
-            }
-        });
+    client.on('drawChildren', function(name, fn) {
+        console.log('Recibi el evento drawChildren desde el cliente');
+        geoDataService.drawChildren(name.extendedString, client);
+        fn("OK");
     });
+
+    client.on('getGeoDataByZoneExtendedString', function(name, fn) {
+        console.log('Recibi el evento getGeoDataByZoneExtendedString desde el cliente');
+        geoDataService.getGeoDataByZoneExtendedString(name.extendedString, function(data) {
+            if (typeof(data) != 'undefined') {
+                fn(data);
+            } 
+        });
+    });    
 	
 }
