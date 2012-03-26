@@ -18,13 +18,13 @@ String.prototype.capitalize = function(){
 };*/
 
 String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+$/g,"");
+    return this.replace(/^\s+|\s+$/g,"");
 }
 String.prototype.ltrim = function() {
-	return this.replace(/^\s+/,"");
+    return this.replace(/^\s+/,"");
 }
 String.prototype.rtrim = function() {
-	return this.replace(/\s+$/,"");
+    return this.replace(/\s+$/,"");
 }
 
 function gup( name ) {
@@ -181,6 +181,7 @@ getAllTags();
 getAllExtendedStrings();
 function populateOptions(event, field, add, elmts, callback){
     var container;
+
     if((container = field.getNext()) == null) {
         container = new Element('div', {
             'class': 'suggestions'
@@ -188,25 +189,32 @@ function populateOptions(event, field, add, elmts, callback){
     }
     switch(event.keyCode){
         case 13:
+            elmts = eval(JSON.stringify(Array.from(elmts)));
             if(!add) {
                 if (container.getElement('.selected'))
                     field.set('value', container.getElement('.selected').get('html'));
-                if(typeof callback == 'function')
-                    callback(field.get('value'));
+                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
+                    if(typeof callback == 'function'){
+                        callback(field.get('value'));
+                    }
             } else {
-                var value = container.getElement('.selected').get('html').trim();
-                var fieldValue = field.get('value');
-                if(fieldValue.indexOf(',') != -1) {
-                    field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
-                    if(typeof callback == 'function')
-                        callback(field.get('value'));
-                } else {                    
-                    field.set('value', value);
-                    if(typeof callback == 'function')
-                        callback(field.get('value'));
+                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1){
+                    var value = container.getElement('.selected').get('html').trim();
+                    var fieldValue = field.get('value');
+                    if(fieldValue.indexOf(',') != -1) {
+                        field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
+                        if(typeof callback == 'function')
+                            callback(field.get('value'));
+                    } else {
+                        field.set('value', value);
+                        if(typeof callback == 'function')
+                            callback(field.get('value'));
+                    }
                 }
             }
+
             container.empty();
+
             break;
         case 27:
             container.empty();
@@ -226,7 +234,9 @@ function populateOptions(event, field, add, elmts, callback){
             }
             break;
         default:
+
             container.empty();
+            // alert("Field: "+field.get('value'));
             var query = field.get('value').toLowerCase().trim();
             if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
                 return;
@@ -242,8 +252,14 @@ function populateOptions(event, field, add, elmts, callback){
             });
             if(container.childNodes.length > 0)
                 container.firstChild.addClass('selected');
+            else {
+                var fieldValue2 = field.get('value');
+                fieldValue2 = fieldValue2.substr(0, fieldValue2.length -1);
+                field.set('value', fieldValue2);
+            }
             break;
     }
+
 }
 
 function checkRegExp(str, patt){
@@ -264,4 +280,13 @@ function switchButtons(buttons){
         $('generateQuery').setStyle('display','inline');
     if($('volverButton'))
         $('volverButton').setStyle('display','inline');
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
 }
