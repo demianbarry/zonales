@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema;
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
+var geoService = require('./geoData');
 var incIdsService = require('./incIds');
 
 //Esquema JSON para las zonas
@@ -53,14 +54,11 @@ module.exports.searchZones = function searchZones(filters, callback) {
 //Crea una nueva zona
 module.exports.set = function set(zone, callback) {
     incIdsService.getId("zones", function(id) {
-        //console.log("------>>>>>>----->>>>> NextId: " + id);
+        console.log("------>>>>>>----->>>>> ZONES NextId: " + id);
         zone.id = id;
+        zone.extendedString = zone.name;
         baseService.set(zones, zone, function(response) {
-            if (response.cod == 100) {
-                incIdsService.incrementId("zones", function() {
-                    console.log("ID de zones Incrementado");
-                });
-            }
+            response.id = id;
             callback(response);
             return(this);
         });
@@ -85,12 +83,32 @@ module.exports.getExtendedString = function getExtendedString(id, callback) {
     });
 }
 
+module.exports.getZoneById = function getZoneById(id, callback) {
+    this.get({id:id}, function(zones) {
+        if (typeof(zones) != 'undefined' && zones != null && typeof(zones[0]) != 'undefined' && zones[0] != null && callback) {
+            callback(zones[0]);
+        }
+    });
+}
+
+module.exports.getZoneByExtendedString = function getZoneByExtendedString(extendedString, callback) {
+    console.log('ZONE SERVICE, cadena: ' + extendedString);
+    this.get({extendedString:extendedString}, function(zones) {
+        console.log('ZONE SERVICE: ' + JSON.stringify(zones));
+        if (typeof(zones) != 'undefined' && zones != null && typeof(zones[0]) != 'undefined' && zones[0] != null && callback) {
+            callback(zones[0]);
+        } else {
+            callback(null);
+        }
+    });
+}
+
 module.exports.updateExtendedString = function(zone, parent){
     updateExtendedString(zone, parent);
 };
 
 function updateExtendedString(zone, parent){
-    zone.extendedString = zone.name;
+    zone.extendedString = zone.name.replace(/ /g, '_').toLowerCase();
     if (parent)
         zone.extendedString += ", " + parent.extendedString;
 
@@ -104,5 +122,21 @@ function updateExtendedString(zone, parent){
     delete zone._id;
     baseService.update(zones, 'id', zone.id, zone, function(){});
     return zone.extendedString;
+}
+
+
+module.exports.addGeoDataToZone = function(zone, geodata, callback) {
+    geoService.set(geodata, function(response) {
+        console.log("------------_>>> GEODATA GUARDADO, ID: " + response.id);
+        if (typeof(response) != 'undefined' && response != null && typeof(response.id) != 'undefined' && response.id != null) {
+            zone.geoData = response.id;
+            delete zone._id;
+            baseService.update(zones, 'id', zone.id, zone, function(resp) {
+                console.log("------------_>>> ZONA ACTUALIZADA, RESP: " + JSON.stringify(resp));
+                callback(resp);
+                return(this);
+            });
+        }
+    });
 }
 

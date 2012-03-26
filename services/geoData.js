@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
 var incIdsService = require('./incIds');
+var zoneService = require('./zones');
+var placeService = require('./places');
 
 var featureSchema = new Schema(
 	{
@@ -62,11 +64,7 @@ module.exports.set = function set(geoData, callback) {
 		//console.log("------>>>>>>----->>>>> NextId: " + id);
 		geoData.id = id;
 		baseService.set(geo, geoData, function(response) {
-			if (response.cod == 100) {
-				incIdsService.incrementId("geodata", function() {
-					console.log("ID de geodata Incrementado");
-				});
-			}
+			response.id = id;
 			callback(response);
 			return(this);
 		});
@@ -82,6 +80,93 @@ module.exports.update = function update(id, data, callback) {
 //Elimina una zona existente (búsqueda por ID) 
 module.exports.remove = function remove(id, callback) {
 	return baseService.remove(geo, 'id', id, callback);	
+}
+
+module.exports.drawChildren = function drawChildren(extendedString, client) {
+	console.log('================================================================================');
+	console.log('Cadena: ' + extendedString);
+	placeService.getPlaceByExtendedString(extendedString, function(place) {
+		console.log('PLACE: ' + JSON.stringify(place));
+		if (typeof(place) != 'undefined' && place != null) {
+			//recupero los hijos
+			placeService.getPlaceByFilters({parent:place.id}, function(places) {
+				places.forEach(function(place) {
+					var data = {};
+					data.data = place;
+					if (typeof(place.geoData) != 'undefined' && place.geoData != null) {
+						baseService.get(geo, {id: place.geoData}, function(geoData) {
+							if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
+								delete geoData[0].geospatial;
+								data.geoData = geoData[0];
+								client.emit('drawGeoData', data);
+							}
+						});
+					}
+				});
+			});
+		} else {
+			zoneService.getZoneByExtendedString(extendedString, function(zone) {
+				console.log('ZONE: ' + JSON.stringify(zone));
+				if (typeof(zone) != 'undefined' && zone != null) {
+					//recupero los hijos
+					zoneService.get({parent:zone.id}, function(zones) {
+						zones.forEach(function(zone) {
+							var data = {};
+							data.data = zone;
+							if (typeof(zone.geoData) != 'undefined' && zone.geoData != null) {
+								baseService.get(geo, {id: zone.geoData}, function(geoData) {
+									if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
+										delete geoData[0].geospatial;
+										data.geoData = geoData[0];
+										client.emit('drawGeoData', data);
+									}
+								});
+							}
+						});
+					});
+					placeService.get({zone:zone.id}, function(places) {
+						places.forEach(function(place) {
+							var data = {};
+							data.data = place;
+							if (typeof(place.geoData) != 'undefined' && place.geoData != null) {
+								baseService.get(geo, {id: place.geoData}, function(geoData) {
+									if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
+										delete geoData[0].geospatial;
+										data.geoData = geoData[0];
+										client.emit('drawGeoData', data);
+									}
+								});
+							}
+						});
+					});
+				}
+			});
+		}
+	});	
+}
+
+module.exports.getGeoDataByZoneExtendedString = function getGeoDataByZoneExtendedString(extendedString, callback) {
+	zoneService.getZoneByExtendedString(extendedString, function(zone) {
+		if (typeof(zone) != 'undefined' && zone != null) {
+			baseService.get(geo, {id: zone.geoData}, function(geoData) {
+				if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
+					var data = {};
+					delete geoData[0].geospatial;
+					data.geoData = geoData[0];
+					data.extendedString = extendedString;
+					callback(data);
+				}
+			});
+		}
+	});
+}
+
+module.exports.getGeoDataById = function getGeoDataById(id, callback) {
+	this.get({id:id}, function(geoDatas) {
+		if (typeof(geoDatas) != 'undefined' && geoDatas != null && typeof(geoDatas[0]) != 'undefined' && geoDatas[0] != null && callback) {
+			callback(geoDatas[0]);
+		}
+	});
 }
 
 function copyGeometricalDataToGeospatial(geoData) {

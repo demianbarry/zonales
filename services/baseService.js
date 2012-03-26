@@ -47,7 +47,7 @@ module.exports.get = function get(model, filters, callback) {
 		  if (err) {
 			  throw errors.apiError;
 		  }
-		  console.log(JSON.stringify(docs));
+		  //console.log(JSON.stringify(docs));
 		  callback(docs);
 		  return(this);
 	   });
