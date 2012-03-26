@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.entities.Posts;
@@ -44,7 +45,7 @@ public class ZExtractor {
 
             //Obtengo la URL para realizar la extracción
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo URL para la metadata: {0}", metadata);
-            String url = zCralwSourcesURL + "getServiceURL?q=" + metadata;
+            String url = zCralwSourcesURL + "getServiceURL?q=" + URLEncoder.encode(metadata, "UTF-8");
             if (lastHit != 0) {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Since: {0}", lastHit);
                 url += "&since=" + lastHit;
