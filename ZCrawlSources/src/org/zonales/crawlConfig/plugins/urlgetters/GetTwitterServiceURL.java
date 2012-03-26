@@ -71,7 +71,11 @@ public class GetTwitterServiceURL implements GetServiceURL {
                                 urlServlet += "OR+";
                             }
                         }
-                        urlServlet += palabra.trim();
+                        try {
+                            urlServlet += URLEncoder.encode(palabra.trim(), "UTF-8");
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
                 urlServlet += ")";
@@ -109,7 +113,11 @@ public class GetTwitterServiceURL implements GetServiceURL {
                         if (criterio.getPalabras().indexOf(palabra) != 0) {
                             urlServlet += "+-";
                         }
-                        urlServlet += palabra.trim();
+                        try {
+                            urlServlet += URLEncoder.encode(palabra.trim(), "UTF-8");
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(GetTwitterServiceURL.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }

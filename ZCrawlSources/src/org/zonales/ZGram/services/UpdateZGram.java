@@ -51,11 +51,14 @@ public class UpdateZGram extends BaseService {
             zgram = metadataGson.fromJson(metadataJson.replace("\\\"", "\""), ZGram.class);
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Metadata {0}", new Object[]{metadataJson});
         } else {
-            zgram = new ZGram();
+            String zgramJson = zGramDao.retrieveJson(id);
+            zgram = metadataGson.fromJson(zgramJson, ZGram.class);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "=====>> ZGRAM: {0}", new Object[]{metadataJson});
+            /*zgram = new ZGram();
             zgram.setIncluyeComentarios(null);
             zgram.setTagsFuente(null);
             zgram.setSiosi(null);
-            zgram.setNocriterio(null);
+            zgram.setNocriterio(null);*/
         }
 
         if (codStr != null) {
