@@ -22,6 +22,8 @@ var formats;
 var geoLayer;
 var hoverSelectFeature;
 var clickSelectFeature;
+var selectedFeature;
+var popup;
 
 function initMapTab () {
     if (!iniciado) {
@@ -58,7 +60,7 @@ function clearBreadcrumb() {
         $('breadCrumb').empty();
 }
 
-function deserialize(geoJson, vector, dataObj) {
+function deserialize(geoJson, vector, dataObj, draw) {
     var type = "geojson";
     var features = formats['in'][type].read(geoJson);
     if(features) {
@@ -68,9 +70,12 @@ function deserialize(geoJson, vector, dataObj) {
         features.forEach(function(feature) {
             feature.data = dataObj;
         });
-        vector.addFeatures(features);
+        if (draw)
+            vector.addFeatures(features);
+        return features;
     } else {
-        alert('Bad input ' + type);
+        //alert('Bad input ' + type);
+        return null;
     }
 }
 
@@ -100,30 +105,25 @@ function setBreadCrumb(extendedString) {
     zones.each(function (zone) {
         element = new Element('a', {
             'html': zone.trim().replace(/_/g, " ").capitalize(),
-            'onclick': 'setZone(breadCrumbToExtendedString(this.innerHTML));drawMap(breadCrumbToExtendedString(this.innerHTML));'
+            'onclick': 'setZone(breadCrumbToExtendedString(this.innerHTML));drawMap(breadCrumbToExtendedString(this.innerHTML));ajustMapToExtendedString(breadCrumbToExtendedString(this.innerHTML));'
         }).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
         element = new Element('spam', {'html': ','}).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
     });
     element.dispose();
 }
 
-function ajustMapToGeo(geoData) {
-    var type = "geojson";
-    var features = formats['in'][type].read(geoData);
-    var bounds;
-    if(features) {
-        if(features.constructor != Array) {
-            features = [features];
-        }
-        for(var i=0; i<features.length; ++i) {
-            if (!bounds) {
-                bounds = features[i].geometry.getBounds();
-            } else {
-                bounds.extend(features[i].geometry.getBounds());
-            }
-        }
-        map.zoomToExtent(bounds);
-    }
+function ajustMapToGeo(feature) {
+    var bounds = feature.geometry.getBounds();
+    map.zoomToExtent(bounds);
+}
+
+function ajustMapToExtendedString(extendedString) {
+    extendedString = extendedString.replace(/, /g, ',+').replace(/ /g, '_').replace(/,\+/g, ', ').toLowerCase();
+    socket.emit('getGeoDataByZoneExtendedString', {extendedString: extendedString}, function(data) {
+        var eString = data.extendedString.replace(/_/g, ' ').capitalize();
+        var feature = deserialize(data.geoData, geoLayer, null, false)[0];
+        ajustMapToGeo(feature);
+    });
 }
 
 function drawMap(extendedString) {
@@ -131,66 +131,10 @@ function drawMap(extendedString) {
     setBreadCrumb(extendedString);
     extendedString = extendedString.replace(/, /g,',+').replace(/ /g,'_').replace(/,\+/g,', ').toLowerCase();
 
-    socket.emit("getPlaceByFilters", {extendedString:extendedString}, function(places) {
+    socket.emit('drawChildren', {extendedString:extendedString}, function(resp) {
 
-        if (typeof(places) != 'undefined' && places != null && typeof(places[0]) != 'undefined' && places[0] != null) {
-
-            if (typeof(places[0].geoData) != 'undefined' && places[0].geoData != null && places[0].geoData != "") {
-                socket.emit("getGeoData", {id: places[0].geoData}, function(geoData) {
-                    if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-                        ajustMapToGeo(geoData[0]);
-                    }
-                });
-            }
-
-            socket.emit("getPlaceByFilters", {parent:places[0].id}, function(childs) {
-                childs.each(function(child) {
-                    socket.emit("getGeoData", {id: child.geoData}, function(geoData) {
-                        if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-                            deserialize(geoData[0], geoLayer, child);
-                        }
-                    });
-                });
-            });
-
-        } else {
-
-            socket.emit("getZoneByFilters", {extendedString:extendedString}, function(zones) {
-                if (typeof(zones) != 'undefined' && zones != null && typeof(zones[0]) != 'undefined' && zones[0] != null) {
-                    
-                    if (typeof(zones[0].geoData) != 'undefined' && zones[0].geoData != null && zones[0].geoData != "") {
-                        socket.emit("getGeoData", {id: zones[0].geoData}, function(geoData) {
-                            if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-                                ajustMapToGeo(geoData[0]);
-                            }
-                        });
-                    }
-
-                    socket.emit("getZoneByFilters", {parent:zones[0].id}, function(childs) {
-                        childs.each(function(child) {
-                            socket.emit("getGeoData", {id: child.geoData}, function(geoData) {
-                                if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-                                    deserialize(geoData[0], geoLayer, child);
-                                }
-                            });
-                        });
-                    });
-
-                    socket.emit("getPlaceByFilters", {zone:zones[0].id}, function(childs) {
-                        childs.each(function(child) {
-                            socket.emit("getGeoData", {id: child.geoData}, function(geoData) {
-                                if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-                                    deserialize(geoData[0], geoLayer, child);
-                                }
-                            });
-                        });
-                    });
-
-                }
-            });
-        }
     });
-    
+
 }
 
 function on_unselect_feature(event){
@@ -198,7 +142,18 @@ function on_unselect_feature(event){
 }
 
 function on_select_feature(event){
-    var selectedFeature = event.feature;
+    selectedFeature = event.feature;
+    var extendedString = selectedFeature.data.extendedString.replace(/_/g, " ").capitalize();
+    ajustMapToGeo(selectedFeature);
+    if (typeof(selectedFeature.data.extendedString) != 'undefined' && selectedFeature.data.extendedString != null && selectedFeature.data.extendedString != '') {
+        setZone(selectedFeature.data.extendedString.replace(/_/g, " ").capitalize());
+    }
+    drawMap(extendedString);
+    //drawPopup(event);
+}
+
+function on_select_zone() {
+    map.removePopup(popup);
     if (typeof(selectedFeature.data.extendedString) != 'undefined' && selectedFeature.data.extendedString != null && selectedFeature.data.extendedString != '') {
         setZone(selectedFeature.data.extendedString.replace(/_/g, " ").capitalize());
     }
@@ -226,19 +181,19 @@ function initMap() {
 
     //Create a base layers
     var gphy = new OpenLayers.Layer.Google(
-        "Google Physical",
+        "Físico",
         {type: google.maps.MapTypeId.TERRAIN}
     );
     var gmap = new OpenLayers.Layer.Google(
-        "Google Streets", // the default
+        "Rutero", // the default
         {numZoomLevels: 20}
     );
     var ghyb = new OpenLayers.Layer.Google(
-        "Google Hybrid",
+        "Híbrido",
         {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
     );
     var gsat = new OpenLayers.Layer.Google(
-        "Google Satellite",
+        "Satelital",
         {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
     );
 
@@ -248,14 +203,14 @@ function initMap() {
         {}
         );*/
     map.addLayer(gmap);
-    map.addLayer(gsat);
     map.addLayer(ghyb);
+    map.addLayer(gsat);
     map.addLayer(gphy);
-    
+
     map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
         .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), maxZoomOut);
 
-    geoLayer = new OpenLayers.Layer.Vector("Zones 'n Places");
+    geoLayer = new OpenLayers.Layer.Vector("Zonas y lugares");
 
     map.addLayer(geoLayer);
 
@@ -292,10 +247,84 @@ function initMap() {
     geoLayer.events.register('featureunselected', this, on_unselect_feature);
     map.events.register('moveend', this, on_move);
 
+    socket.on('drawGeoData', function(data) {
+        deserialize(data.geoData, geoLayer, data.data, true);
+    });
+
     updateFormats();
+    var mapZone;
+
     if (zcGetZone() == '')
-        drawMap('Argentina');
+        mapZone = 'Argentina';
     else
-        drawMap(zcGetZone());
+        mapZone = zcGetZone();
+
+    drawMap(mapZone);
+    ajustMapToExtendedString(mapZone);
+
 
 }
+
+function drawPopup(event) {
+    var mapsources = [];
+    var source = [];
+
+    source[0] = 'Facebook';
+    source[1] = '36';
+    mapsources.push(source);
+
+    source[0] = 'Twitter';
+    source[1] = '53';
+    mapsources.push(source);
+
+    var maptags = [];
+    var tag = [];
+
+    tag[0] = 'Interes General';
+    tag[1] = '43';
+    maptags.push(tag);
+
+    tag[0] = 'Actualidad';
+    tag[1] = '46';
+    maptags.push(tag);
+
+    var popupContentHTML = "";
+
+    popupContentHTML += '<h3 id="popupTitle">' + selectedFeature.data.extendedString + '</h3>';
+
+    popupContentHTML += "<br><img src='/images/ver_post.gif' alt='Seleccionar' onClick='on_select_zone();'>";
+
+    popupContentHTML += "</div>";
+
+    popupContentHTML += "<br>";
+
+    popupContentHTML += "<p>La zona seleccionada tiene información de las fuentes: <p><ul>";
+
+    //Muestro los contadores de fuentes
+    for(var i = 0; i < mapsources.length; i++) {
+        popupContentHTML += "<li><strong>"
+        + mapsources[i][0]
+        + ": </strong>"
+        + mapsources[i][1]
+        + "</li>";
+    }
+
+    popupContentHTML += "</ul><br><p>con los tags:</p>";
+
+    //Muestro los contadores de tags
+    for(var i = 0; i < maptags.length; i++) {
+        popupContentHTML += "<li><strong>"
+        + maptags[i][0]
+        + ": </strong>"
+        + maptags[i][1]
+        + "</li>";
+    }
+
+    //Armo el popup
+    var lonlat = new OpenLayers.LonLat(event.feature.geometry.getCentroid().x,event.feature.geometry.getCentroid().y);
+    var size = new OpenLayers.Size(50, 100);
+    popup = new OpenLayers.Popup.FramedCloud("countPopup", lonlat, size, popupContentHTML, null, true, null);
+    popup.displayClass = OpenLayers.Popup.FramedCloud
+    map.addPopup(popup, true);
+}
+
