@@ -48,7 +48,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         </div>-->
 
         <!-- This <div> holds alert messages to be display in the sample page. -->
-        <div id="alerts">
+             <div id="alerts">
             <noscript>
                 <p>
                     <strong>CKEditor requires JavaScript to run</strong>. In a browser with no JavaScript
@@ -70,11 +70,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         </tr>
                         <tr>
                             <td class="label"><label>Creado</label></td>
-                            <td class="input"><input type="text" id="created" value=""></input></td>   <!-- readonly="true" -->
+                            <td class="input"><input type="text" id="created" value="" readonly="true" ></input></td>   <!-- readonly="true" -->
                         </tr>
                         <tr>
                             <td class="label"><label>Modificado</label></td>
-                            <td class="input"><input type="text" id="modified" value=""></input></td>  <!-- readonly="true" -->
+                            <td class="input"><input type="text" id="modified" value="" readonly="true" ></input></td>  <!-- readonly="true" -->
                         </tr>
 
                         <tr>
@@ -97,7 +97,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Tags</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zTags);" autocomplete="off">
+                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zTags);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
