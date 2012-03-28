@@ -25,7 +25,7 @@ module.exports.execute = function execute(host, port, path, method, callback){
             });
   		      
             res.on('end', function() {
-    		       console.log('BODY: ' + response);
+    		       //console.log('BODY: ' + response);
                console.log("------------------------------------------------------------------------------------------");
                if (res.statusCode == 200) {
                     var jsonObj = JSON.parse(response);
@@ -68,7 +68,7 @@ module.exports.solrCommand = function solrCommand(data, commit, callback) {
         });
         
         res.on('end', function() {
-           console.log('BODY: ' + response);
+           //console.log('BODY: ' + response);
            console.log("------------------------------------------------------------------------------------------");
            //var jsonObj = JSON.parse(response);
            callback(response);
@@ -87,17 +87,22 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
   var post_options = {
       host: 'api.wikimapia.org',
       port: '80',
-      path: '/?function=box&key=' + wikimapiaAPIKey + '&bbox=' + bbox + '&disable=polygon&format=json&category=' + (category != '' ? category : 'all') + '&count=' + count + '&page=' + page,
+      path: '/?function=box&key=' + wikimapiaAPIKey + '&bbox=' + bbox + '&disable=polygon&format=json' + (category != '' ? '&category=' + category : '') + '&count=' + count + '&page=' + page,
       method: 'GET'
   };
 
-  console.log("------------------>>>>>>" + JSON.stringify(post_options));
+  //console.log("------------------>>>>>>" + JSON.stringify(post_options));
+  console.log("Llamando API box de Wikimapia.");
+  console.log("--BBox: " + bbox);
+  console.log("--Category: " + category);
+  console.log("--Count: " + count);
+  console.log("--Page: " + page);
 
   var response = "";
 
   var post_req = http.request(post_options, function(res) {
-        console.log('STATUS: ' + res.statusCode);
-        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        //console.log('STATUS: ' + res.statusCode);
+        //console.log('HEADERS: ' + JSON.stringify(res.headers));
         res.setEncoding('utf8');
         
         res.on('data', function (json) {
@@ -105,8 +110,8 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
         });
         
         res.on('end', function() {
-           console.log('BODY: ' + response);
-           console.log("------------------------------------------------------------------------------------------");
+           //console.log('BODY: ' + response);
+           //console.log("------------------------------------------------------------------------------------------");
            var jsonObj = JSON.parse(response);
            callback(jsonObj);
            return(this);
@@ -140,7 +145,7 @@ module.exports.googleMapSearch = function googleMapSearch(query, callback) {
         });
         
         res.on('end', function() {
-           console.log('BODY: ' + response);
+           //console.log('BODY: ' + response);
            console.log("------------------------------------------------------------------------------------------");
            var jsonObj = JSON.parse(response);
            callback(jsonObj);
@@ -161,11 +166,14 @@ module.exports.wikimapiaGetObject = function wikimapiaGetObject(id, callback) {
       method: 'GET'
   };
 
+  console.log("Llamando API Object de Wikimapia.");
+  console.log("--ID: " + id);
+
   var response = "";
 
   var post_req = http.request(post_options, function(res) {
-        console.log('STATUS: ' + res.statusCode);
-        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        //console.log('STATUS: ' + res.statusCode);
+        //console.log('HEADERS: ' + JSON.stringify(res.headers));
         res.setEncoding('utf8');
         
         res.on('data', function (json) {
@@ -173,8 +181,8 @@ module.exports.wikimapiaGetObject = function wikimapiaGetObject(id, callback) {
         });
         
         res.on('end', function() {
-           console.log('BODY: ' + response);
-           console.log("------------------------------------------------------------------------------------------");
+           //console.log('BODY: ' + response);
+           //console.log("------------------------------------------------------------------------------------------");
            var jsonObj = JSON.parse(response);
            callback(jsonObj);
            return(this);

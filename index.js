@@ -26,6 +26,9 @@ var incIdsService = require('./services/incIds');
 //----------------------- ERRORS -----------------------
 var errors = require('./errors/errors');
 
+// ----------------------- SCRIPTS -----------------------
+var wikimapiaCategoriesScript = require('./scripts/wikimapiaCategories');
+
 //----------------------- GLOBALS -----------------------
 var app = express.createServer(),
 io = require('socket.io').listen(app),
@@ -763,6 +766,31 @@ app.get('/geoData/remove', function(req, res) {
         res.write(JSON.stringify(err));
         res.end();
     }
+});
+
+//Servicio que elimina un dato geográfico. Parámetros: Nombre del tipo de lugar a eliminar
+app.get('/wikimapia/fetchCategories', function(req, res) {
+    res.writeHead(200, {
+        "Content-Type": "text/javascript"
+    });
+    //try {
+        res.write("Ejecutando Script para extraccion de categorias. Revise log de Node.js...");
+        wikimapiaCategoriesScript.fetchCategories(
+            parseFloat(req.query.west), 
+            parseFloat(req.query.north), 
+            parseFloat(req.query.east), 
+            parseFloat(req.query.south), 
+            parseFloat(req.query.londelta), 
+            parseFloat(req.query.latdelta),
+            parseInt(req.query.count),
+            req.query.category
+        );
+        res.end();
+    /*} catch (err) {
+        res.write("Error extrayendo categorías desde Wikimapia!");
+        res.write("Error: " + err);
+        res.end();
+    }*/
 });
 
 //----------------------- SERVER -----------------------
