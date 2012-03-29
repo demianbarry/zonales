@@ -700,46 +700,58 @@ var idButtonAddTags = 'buttonTags_'+doc.id;
 //var idInputPlace = 'places'+doc.id;
 //var idButtonAddPlaces = 'buttonPlaces_'+doc.id;
 if(zUserGroups.indexOf("4") != -1){
-    var a_edit = new Element('a', {
-        'target': '_blank',
-        'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
-    }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
-    a_edit_image = new Element('img',{
-        'src': '/media/system/images/edit.png'
-    }).inject(a_edit).addClass('edit_img');
-    var span_addTags = new Element('span',{
-        'id':'addTags_'+doc.id
-    }).inject(div_story_tags);
-    var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
-    addTagsButton.addEvent('click',function(){
-        if ( $(idInputTag).style.display == "none"){
-            $(idInputTag).setStyle("display","inline");
-            $(idButtonAddTags).setStyle("display","inline");
-            $(idInputTag).focus();
-        }else {
-            $(idInputTag).setStyle("display","none");
-            $(idButtonAddTags).setStyle("display","none");
-        }
-    });
+            var a_edit = new Element('a', {
+                'target': '_blank',
+                'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
+            }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
+            a_edit_image = new Element('img',{
+                'src': '/media/system/images/edit.png'
+            }).inject(a_edit).addClass('edit_img');
+            var span_addTags = new Element('span',{
+                'id':'addTags_'+doc.id
+            }).inject(div_story_tags);
+            var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
+            addTagsButton.addEvent('click',function(){
+                if ( $(idInputTag).style.display == "none"){
+                    $(idInputTag).setStyle("display","inline");
+                  //  $(idButtonAddTags).setStyle("display","none");
+                    $(idInputTag).focus();
+                }else {
+                    $(idInputTag).setStyle("display","none");
+                   // $(idButtonAddTags).setStyle("display","none");
+                }
+            });
 
-    var selectedTag = new Element('input',{
-        'id':idInputTag,
-        'style':'display:none',
-        'onkeyup':'populateOptions(event,this,true,zTags)',
-        'value':''
-    }).inject(span_addTags);
+            var selectedTag = new Element('input',{
+                'id':idInputTag,
+                'style':'display:none',
+                'onkeyup':'populateOptions(event,this,false,zTags,function(){'+
+                                                                    'show_confirm("'+idInputTag+'",$("'+idInputTag+'").value,"'+tags+'");'+
+                                                                    '$("'+idInputTag+'").value = "";'+
+                                                                    '})',
+                //'onkeydown':'checkTag(this.value,"'+idButtonAddTags+'")',
+                'value':''
+            }).inject(span_addTags);
 
-    var confimAddTagButton = new Element('img', {
-        'id':idButtonAddTags,
-        'style':'display:none',
-        'src': '/CMUtils/addIcon.gif'
-    }).set('html','Add').addClass('story-item-button').inject(div_story_tags);
-    confimAddTagButton.addEvent('click',function(){
-        show_confirm(idInputTag,$(idInputTag).value,tags);
-        $(idInputTag).value = '';
-    });
-    /*********/
-    /*
+            // if((zTags.indexOf($(idInputTag).value)!= -1 ){
+
+
+            //&&  (zTags.indexOf($(idInputTag).value))=! -1
+
+            var confimAddTagButton = new Element('img', {
+                'id':idButtonAddTags,
+                'style':'display:none',
+                'src': '/CMUtils/addIcon.gif'
+            }).set('html','Add').addClass('story-item-button');//inject(div_story_tags);
+
+            confimAddTagButton.addEvent('click',function(){
+                show_confirm(idInputTag,$(idInputTag).value,tags);
+                $(idInputTag).value = '';
+
+            });
+
+        /*********/
+        /*
             var span_addPlaces = new Element('span',{
                 'id':'addPlaces_'+doc.id
             }).inject(div_story_place);
@@ -771,9 +783,9 @@ if(zUserGroups.indexOf("4") != -1){
                 show_confirm(idInputPlace,$(idInputPlace).value,tags);
                 $(idInputPlace).value = '';
             });
-     */
-    /*********/
-}
+            */
+        /*********/
+        }
 var zone = post.zone.extendedString;
 var idButtonSetZone = 'buttonZone'+doc.id;
 var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
