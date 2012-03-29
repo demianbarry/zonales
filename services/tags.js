@@ -36,19 +36,29 @@ module.exports.get = function get(filters, callback) {
 
 //Retorna un conjunto de tags con nombre similar al parámetro
 module.exports.searchTags = function searchTags(filters, callback) {
+	return baseService.getLikeName(tags, name, callback);
+}
+
+//Retorna un conjunto de tags con nombre similar al parámetro
+module.exports.searchTags = function searchTags(filters, callback) {
 	return baseService.searchData(tags, filters, callback);
 }
 
 //Crea un nuevo tag
 module.exports.set = function set(tag, callback) {
 	incIdsService.getId("tags", function(id) {
+		//console.log("------>>>>>>----->>>>> NextId: " + id);
 		tag.id = id;
-        baseService.set(tags, tag, function(response) {
-            response.id = id;
-            callback(response);
-            return(this);
-        });
-	});
+		baseService.set(tags, tag, function(response) {
+			if (response.cod == 100) {
+				incIdsService.incrementId("tags", function() {
+					console.log("ID de tags Incrementado");
+				});
+			}
+			callback(response);
+			return(this);
+		});
+	})
 }
 
 //Actualiza un tag existente (búsqueda por ID)
