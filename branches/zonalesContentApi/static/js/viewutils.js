@@ -16,26 +16,44 @@ function gup( name ) {
         return results[1];
 }
 
-function populateOptions(event, field, add, array){	
-	var container;
-	if((container = field.getNext()) == null) {
-		container = new Element('div', {'class': 'suggestions'}).inject(field, 'after');
-	}
+function populateOptions(event, field, add, elmts, callback){
+    var container;
+
+    if((container = field.getNext()) == null) {
+        container = new Element('div', {
+            'class': 'suggestions'
+        }).inject(field, 'after');
+    }
     switch(event.keyCode){
-        case 13:			
+        case 13:
+            elmts = eval(JSON.stringify(Array.from(elmts)));
             if(!add) {
-                field.set('value', container.getElement('.selected').get('html'));
+                if (container.getElement('.selected'))
+                    field.set('value', container.getElement('.selected').get('html'));
+                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
+                    if(typeof callback == 'function'){
+                        callback(field.get('value'));
+                    }
             } else {
-                var value = container.getElement('.selected').get('html');
-                var fieldValue = field.get('value');
-                if(fieldValue.indexOf(',') != -1)
-                    field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
-                else
-                    field.set('value', value);
+                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1){
+                    var value = container.getElement('.selected').get('html').trim();
+                    var fieldValue = field.get('value');
+                    if(fieldValue.indexOf(',') != -1) {
+                        field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
+                        if(typeof callback == 'function')
+                            callback(field.get('value'));
+                    } else {
+                        field.set('value', value);
+                        if(typeof callback == 'function')
+                            callback(field.get('value'));
+                    }
+                }
             }
+
             container.empty();
+
             break;
-		case 27:
+        case 27:
             container.empty();
             break;
         case 38:
@@ -53,23 +71,37 @@ function populateOptions(event, field, add, array){
             }
             break;
         default:
+
             container.empty();
-            var query = field.get('value').toLowerCase();
-            if(query.length - query.lastIndexOf(',') - 1 < 3)
+            // alert("Field: "+field.get('value'));
+            var query = field.get('value').toLowerCase().trim();
+            if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
                 return;
-            array.each(function(el){				
+            elmts = eval(JSON.stringify(Array.from(elmts)));
+            Array.each(elmts,function(el){
                 if(add && query.lastIndexOf(',') != -1)
                     query = query.substr(query.lastIndexOf(',')+1).trim();
-                if(el.toLowerCase().indexOf(query) != -1) {
+                if(checkRegExp(el.toLowerCase(),query)) {
                     new Element('p', {
                         'html': el
-                    }).inject(container);				
+                    }).inject(container);
                 }
             });
             if(container.childNodes.length > 0)
                 container.firstChild.addClass('selected');
+            else {
+                var fieldValue2 = field.get('value');
+                fieldValue2 = fieldValue2.substr(0, fieldValue2.length -1);
+                field.set('value', fieldValue2);
+            }
             break;
     }
+}
+
+
+function checkRegExp(str, patt){
+    var patt1 = new RegExp("^"+patt+"|,\ "+patt,"g");
+    return patt1.test(str);
 }
 
 function accentsTidy(s){

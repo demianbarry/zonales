@@ -146,7 +146,9 @@ module.exports.drawChildren = function drawChildren(extendedString, client) {
 }
 
 module.exports.getGeoDataByZoneExtendedString = function getGeoDataByZoneExtendedString(extendedString, callback) {
+	console.log('ZONE GEODATA. EXTENDED STRING: ' + extendedString);
 	zoneService.getZoneByExtendedString(extendedString, function(zone) {
+		console.log('ZONE GEODATA. ZONE: ' + JSON.stringify(zone));
 		if (typeof(zone) != 'undefined' && zone != null) {
 			baseService.get(geo, {id: zone.geoData}, function(geoData) {
 				if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
@@ -154,6 +156,7 @@ module.exports.getGeoDataByZoneExtendedString = function getGeoDataByZoneExtende
 					delete geoData[0].geospatial;
 					data.geoData = geoData[0];
 					data.extendedString = extendedString;
+					console.log('ZONE GEODATA: ' + JSON.stringify(data));
 					callback(data);
 				}
 			});

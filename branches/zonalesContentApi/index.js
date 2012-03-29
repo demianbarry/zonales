@@ -1,6 +1,10 @@
 // ----------------------- MODULES -----------------------
-var fs = require('fs'),
-express = require('express');
+var 
+fs = require('fs'),
+express = require('express'),
+MemStore = require('connect').session.MemoryStore,
+Mongoose = require('mongoose'), //(npm install mongoose)
+db = Mongoose.connect('mongodb://localhost/crawl');
 
 // ----------------------- CONTROLLERS -----------------------
 //var sioClientSwitch = require('./controllers/sioClientSwitch'); 
@@ -8,6 +12,7 @@ var sioContextSwitch = require('./controllers/sioContextSwitch');
 var sioGeoSwitch = require('./controllers/sioGeoSwitch'); 
 var sioPlacesSwitch = require('./controllers/sioPlacesSwitch'); 
 var sioProxySwitch = require('./controllers/sioProxySwitch'); 
+var sioSelectorsSwitch = require('./controllers/sioSelectorsSwitch'); 
 var sioTagsSwitch = require('./controllers/sioTagsSwitch'); 
 var sioZonesSwitch = require('./controllers/sioZonesSwitch'); 
 
@@ -17,6 +22,7 @@ var zoneTypeService = require('./services/zoneTypes');
 var placeService = require('./services/places');
 var placeTypeService = require('./services/placeTypes');
 var geoDataService = require('./services/geoData');
+var selectorsService = require('./services/selectors');
 var tagService = require('./services/tags');
 var tagTypeService = require('./services/tagTypes');
 var zContextService = require('./services/ZContext');
@@ -48,14 +54,81 @@ app.set('view options',{
     layout: true
 });
 
+app.use(express.cookieParser());
+
+app.use(express.session({
+    store: MemStore({
+        reapInterval: 60000 * 10
+    }), 
+    secret:'zonales'
+}));
+
+app.dynamicHelpers({
+    session: function(req, res) {
+        return req.session;
+    },
+
+    flash: function(req, res) {
+        return req.flash();
+    }
+});
+
+
+function requiresLogin(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/sessions/new?redir=' + req.url);
+    }
+}
+
+/* Sessions */
+
+require('./static/js/users');
+
+var User = db.model('User');
+
+app.get('/sessions/new', function(req, res) {
+    res.render('sessions/new', {        
+        locals: {
+            redir: req.query.redir
+        }
+    });
+});
+
+app.post('/sessions', function(req, res) {
+    //  User.authenticate(req.body.login, req.body.password).first(function(user) {
+    User.authenticate(req.body.login, req.body.password, function(user) {
+        if (user) {
+            req.session.user = user;
+            res.redirect(req.body.redir || '/');
+        } else {
+            req.flash('warn', 'Login failed');
+            res.render('sessions/new', {
+                locals: {
+                    redir: req.body.redir
+                }
+            });
+        }
+    });
+});
+
+app.get('/sessions/destroy', function(req, res) {
+    delete req.session.user;
+    res.redirect('/sessions/new');
+});
+
+
+
 //----------------------- SOCKET.IO -----------------------
 
 io.sockets.on('connection', function(client) {
 
     sioContextSwitch.tryEvent(client);
-	sioGeoSwitch.tryEvent(client);
+    sioGeoSwitch.tryEvent(client);
     sioPlacesSwitch.tryEvent(client);
     sioProxySwitch.tryEvent(client);
+    sioSelectorsSwitch.tryEvent(client);
     sioTagsSwitch.tryEvent(client);
     sioZonesSwitch.tryEvent(client);
 
@@ -68,97 +141,108 @@ app.get('/', function(req,res) {
 
 //----------------------- CMUTILS PAGES -----------------------
 
-app.get('/CMUtils', function(req,res) {
+app.get('/CMUtils', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/index.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/zoneList', function(req,res) {
+app.get('/CMUtils/zoneList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/zoneList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/zoneEdit', function(req,res) {
+app.get('/CMUtils/zoneEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/zoneEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/zoneTypeList', function(req,res) {
+app.get('/CMUtils/zoneTypeList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/zoneTypeList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/zoneTypeEdit', function(req,res) {
+app.get('/CMUtils/zoneTypeEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/zoneTypeEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
 
-app.get('/CMUtils/tagList', function(req,res) {
+app.get('/CMUtils/tagList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/tagList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/tagEdit', function(req,res) {
+app.get('/CMUtils/tagEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/tagEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/tagTypeList', function(req,res) {
+app.get('/CMUtils/tagTypeList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/tagTypeList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/tagTypeEdit', function(req,res) {
+app.get('/CMUtils/tagTypeEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/tagTypeEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/placeList', function(req,res) {
+app.get('/CMUtils/placeList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/placeList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/placeEdit', function(req,res) {
+app.get('/CMUtils/placeEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/placeEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/placeTypeList', function(req,res) {
+app.get('/CMUtils/placeTypeList', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/placeTypeList.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/placeTypeEdit', function(req,res) {
+app.get('/CMUtils/placeTypeEdit', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/placeTypeEdit.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/solrCommands', function(req,res) {
+app.get('/CMUtils/solrCommands', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/solrCommands.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
-app.get('/CMUtils/wikimapiaExtractor', function(req,res) {
+app.get('/CMUtils/wikimapiaExtractor', requiresLogin, function(req,res) {
     fs.readFile(__dirname + '/views/wikimapiaExtractor.html', 'utf8', function(err, text){
         res.send(text);
     });
 });
 
+app.get('/CMUtils/selectorsList', requiresLogin, function(req,res) {
+    fs.readFile(__dirname + '/views/selectorList.html', 'utf8', function(err, text){
+        res.send(text);
+    });
+});
+
+app.get('/CMUtils/selectorsEdit', requiresLogin, function(req,res) {
+    fs.readFile(__dirname + '/views/selectorEdit.html', 'utf8', function(err, text){
+        res.send(text);
+    });
+});
 
 //----------------------- SERVICES SWITCH -----------------------
 
@@ -773,24 +857,15 @@ app.get('/wikimapia/fetchCategories', function(req, res) {
     res.writeHead(200, {
         "Content-Type": "text/javascript"
     });
-    //try {
+    try {
         res.write("Ejecutando Script para extraccion de categorias. Revise log de Node.js...");
-        wikimapiaCategoriesScript.fetchCategories(
-            parseFloat(req.query.west), 
-            parseFloat(req.query.north), 
-            parseFloat(req.query.east), 
-            parseFloat(req.query.south), 
-            parseFloat(req.query.londelta), 
-            parseFloat(req.query.latdelta),
-            parseInt(req.query.count),
-            req.query.category
-        );
+        wikimapiaCategoriesScript.fetchCategories();
         res.end();
-    /*} catch (err) {
+    } catch (err) {
         res.write("Error extrayendo categorías desde Wikimapia!");
         res.write("Error: " + err);
         res.end();
-    }*/
+    }
 });
 
 //----------------------- SERVER -----------------------
