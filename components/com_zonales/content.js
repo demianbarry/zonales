@@ -276,7 +276,7 @@ function makeContentTable(jsonObj, container){
             'html' : post.state
         }).inject(config_title_tr);
         new Element('td', {
-            'html' : post.zone
+            'html' : post.zone.extendedString
         }).inject(config_title_tr);
         new Element('td', {
             'html' : post.tags.join(',')
