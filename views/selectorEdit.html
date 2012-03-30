@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Content Manager Utilities - Zonales</title>
+        <link href="/css/ZoneStyle.css" rel="stylesheet" type="text/css" />
+        <link type="text/css" rel="stylesheet" href="/css/content.css">
+        <link type="text/css" rel="stylesheet" href="/css/global.css">
+        <script type="text/javascript" src="/js/mootools.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/viewutils.js"></script>
+        <script type="text/javascript" src="/js/selectorsEdit.js"></script>
+
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <div id="logo">
+                    <a href="/CMUtils"><img alt="Zonales" src="/images/logo.gif"></a>
+                </div>
+                <div style="float:right;margin-top:18px">
+                    <h1 style="margin-top: 0.7em; text-align: center">Edición de Selectores CSS para Feeds</h1>
+                    <a id="backAnchor" style="float:right">Volver</a>
+                </div>
+            </div>
+
+            <div class="clearfix" id="wrapper">
+                <div id="container_content">
+                    <table class="advanced_search" style="width: 100%">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <h2 style="margin-top: 0.7em;">Datos</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <label>URL</label>
+                                </td>
+                                <td class="input">
+                                    <input type="text" id="url" value="">
+                                    <img onclick="window.open($('url').value, 'feedWindow')" src="/images/lupa.jpeg">
+                                </td>
+                            </tr>
+                            <tr id="selectorsRow">
+                                <td class="label">
+                                    <label>Selectores</label>
+                                </td>
+                                <td class="input">
+                                    <select id="selectorType">
+                                        <option id="picture" value="picture">Imágenes</option>
+                                        <option id="comments" value="comments">Comentarios</option>
+                                        <option id="content" value="content">Noticia</option>
+                                    </select>
+                                    <input type="text" id="selector" value="">
+                                    <img alt="Agregar selector" style="float: right" src="/images/addIcon.gif" title="Agregar selector" onclick="addSelector({'type' : $('selectorType').value, 'selector' : $('selector').value}); checkSelectorTypes();">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="selectorsDiv"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input id="guardarButton" value="Guardar" type="button" onclick="saveSelectors();">
+                                    <input id="publicarButton" value="Publicar" type="button" onclick="">
+                                    <input id="despublicarButton" value="Despublicar" type="button" onclick="">
+                                    <input id="nuevoButton" value="Nuevo" type="button" onclick="window.location.href = 'SelectorEdit'">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="table_content">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
