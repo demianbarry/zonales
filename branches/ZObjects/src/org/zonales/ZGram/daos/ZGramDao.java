@@ -70,6 +70,10 @@ public class ZGramDao extends BaseDao {
         if (zgram.getUriFuente() != null) {
             zgramDoc.put("uriFuente", zgram.getUriFuente());
         }
+        
+        if (zgram.getPlace() != null) {
+            zgramDoc.put("place", zgram.getPlace());
+        }
 
         if (zgram.getCriterios() != null) {
             ArrayList criteriosToDoc = new ArrayList();
@@ -294,6 +298,12 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("uriFuente", newZgram.getUriFuente());
                 } else {
                     zgramDoc.put("uriFuente", (String) resp.get("uriFuente"));
+                }
+                
+                if (newZgram.getPlace() != null) {
+                    zgramDoc.put("place", newZgram.getPlace());
+                } else {
+                    zgramDoc.put("place", (String) resp.get("place"));
                 }
 
                 if (newZgram.getCriterios() != null) {
