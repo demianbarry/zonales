@@ -805,7 +805,7 @@ function updatePosts(json, component, more) {
         var span_zone = new Element('span').inject(div_story_zone);
         new Element('a', {
             'id':'zonePost',
-            'onclick':'setZone("'+zone+'","","","");'
+            'onclick':'setZone("'+zone.replace(/_/g," ").capitalize()+'","","","");'
         }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
         var idInputZone = 'zone_'+doc.id;
         var span_addZone = new Element('span').inject(div_story_zone);
