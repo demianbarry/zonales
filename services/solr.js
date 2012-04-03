@@ -128,6 +128,7 @@ function getSolrDate(d){
     return d.getFullYear() + "-" + fixTime(d.getMonth()) + "-" + fixTime(d.getDate())+"T"+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + "."+d.getMilliseconds()+"Z";
 }
 
+
 function fixTime(i) {
     return (i<10 ? "0" + i : i);
 }
@@ -202,7 +203,7 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
             if(resp && resp.response && resp.response.docs){
                 resp.response.docs.forEach(function(doc){
                     if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime())
-                        zCtx.setFirstIndexTime(doc.indexTime);
+                        zCtx.setFirstIndexTime(addMilli(doc.indexTime));
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                 });
@@ -232,7 +233,7 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                 resp.response.docs.forEach(function(doc){
                     console.log('DOC INDEX TIME: '+doc.indexTime);
                     if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime())).getTime() < (new Date(doc.indexTime)).getTime())
-                        zCtx.setFirstIndexTime(doc.indexTime);
+                        zCtx.setFirstIndexTime(addMilli(doc.indexTime));
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                 });
@@ -263,4 +264,16 @@ function getSolrHost() {
 
 function getSolrPort() {
     return port;
+}
+
+function reduceMilli(date) {
+    var milli = parseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1));
+    var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli - 1) + 'Z';
+    return finalDate;
+}
+
+function addMilli(date) {
+    var milli = parseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1));
+    var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
+    return finalDate;
 }
