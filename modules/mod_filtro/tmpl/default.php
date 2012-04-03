@@ -43,6 +43,9 @@ las fuentes de informacion mostradas"; ?></p>
         ?>-->
             <div id="filtersDiv">
                 <p class="titulos">FUENTES</p>
+                <table id="filtroSources">
+
+            </table>
                 <table id="enLaRed">
 
             </table>
