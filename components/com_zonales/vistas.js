@@ -11,7 +11,7 @@ Element.Properties['data-title'] = {
 
 };
 
-var nodeURL = 'http://200.69.225.53:4000';
+var nodeURL = 'http://192.168.0.2:4000';
 var sources = new Array();
 //var tags = new Array();
 //var places = new Array();
@@ -22,7 +22,7 @@ var zoneInitiated = false;
 var zUserGroups = new Array();
 var postInterval = null;
 var host = "localhost";
-var port = "38081";
+var port = "38080";
 
 window.addEvent('domready', function() {
     if($('postsContainer')){
@@ -49,8 +49,8 @@ function initVista(zCtx){
         tab = 'portada';
         zcSetTab('portada');
     }
-    
-    
+
+
     initMapTab();
     $('enLaRed').set({
         style: 'display:inline'
@@ -61,7 +61,7 @@ function initVista(zCtx){
     $('tempoDiv').set({
         style: 'display:inline'
     });
-    //filtroSources
+
     if (zCtx.zTab == 'portada'){
         $('enLaRed').set({
             style: 'display:none'
@@ -225,12 +225,10 @@ function initSourceFilters(zCtx) {
                 'html': source.name
             }).inject(sourcesTr);
             sourcesTr.inject($('filtroSources'));
-        /*            if (source.name == 'Facebook' || source.name == 'Twitter')
-                sourcesTr.inject($('filtroSources'));
-                //sourcesTr.inject($('enLaRed'));        $('filtroSources').set({
+        /*   if (source.name == 'Facebook' || source.name == 'Twitter')
+                sourcesTr.inject($('enLaRed'));
             else
-                sourcesTr.inject($('filtroSources'));
-                //sourcesTr.inject($('noticiasEnLaRed'));*/
+                sourcesTr.inject($('noticiasEnLaRed'));*/
         }
     });
 }
@@ -293,6 +291,7 @@ function initTempFilters(zCtx) {
 }*/
 
 function setZone(zoneExtended, zoneName, parentId, parentName) {
+    console.log("dentro de setZone"+zoneExtended)
     if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
         zoneExtended = '';
     if (zoneName == null || typeof(zoneName) == 'undefined')
@@ -313,14 +312,12 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     }
     //console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        zcSetTab('enlared');
-    //console.log('Despuï¿½s de setear: ' + zoneExtended);
-    //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-    /*if (tab != 'geoActivos' && $('postsContainer')) {
+        //console.log('Despu�s de setear: ' + zoneExtended);
+        //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
+        /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
         }*/
-    });
-
+        });
 }
 
 /*function setPlace(zoneExtended){
@@ -404,8 +401,11 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-        if($('si_'+post.get('id')))
-            $('si_'+post.get('id')).destroy();
+        if($('postsContainer').getChildren('[id=si_-187b0286+375f45f2]').length > 0)
+            $('postsContainer').getChildren('[id=si_-187b0286+375f45f2]').each(function(post){
+                post.dispose();
+            });
+
 
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var newPost = post.clone(true, true);
@@ -435,7 +435,7 @@ function verNuevos(){
 }
 
 function incRelevance(id,relevance){
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38081/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
     var urlProxy = '/curl_proxy.php';
 
     new Request({
@@ -443,7 +443,7 @@ function incRelevance(id,relevance){
         method: 'post',
         data: {
             'host': host ? host : "localhost",
-            'port': port ? port : "38081",
+            'port': port ? port : "38080",
             'ws_path':url
         },
         onRequest: function(){
@@ -706,7 +706,7 @@ function updatePosts(json, component, more) {
         /*     var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
         new Element('span').set('html','Lugar: ').inject(div_story_place);
         var span_place = new Element('span').inject(div_story_place);
- */
+    */
         var idInputTag = doc.id;
         var idButtonAddTags = 'buttonTags_'+doc.id;
         //var idInputPlace = 'places'+doc.id;
@@ -852,7 +852,6 @@ function updatePosts(json, component, more) {
                 tr.inject($('enLaRed'));
             else
                 tr.inject($('noticiasEnLaRed'));*/
-
             zcAddSource(post.source);
         }
 
@@ -899,6 +898,16 @@ function updatePosts(json, component, more) {
 //document.write('<script id="lytebox" type="text/javascript" language="javascript" src="/media/system/js/lytebox.js"></script>');
 }
 
+function checkTag(tag, bottonId){
+    // alert("tag "+tag+" indexOF "+zTags.indexOf(tag) );
+    if(zTags.indexOf(tag)!= -1 ){
+
+        $(bottonId).setStyle('display','inline');
+    } else {
+        $(bottonId).setStyle('display','none');
+    }
+}
+
 function show_confirm(idInputTag,selectedTag,tags)
 {
     var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
@@ -914,14 +923,14 @@ function show_confirm(idInputTag,selectedTag,tags)
 function addTagToPost(idPost,tags,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38081/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
     var urlProxy = '/curl_proxy.php';
     new Request({
         url: urlProxy,
         method: 'post',
         data: {
             'host': host ? host : "localhost",
-            'port': port ? port : "38081",
+            'port': port ? port : "38080",
             'ws_path':url
         },
         onRequest: function(){
@@ -949,14 +958,14 @@ function addTagToPost(idPost,tags,selectedTag){
 function delTagFromPost(idPost,selectedTag){
     //\"tags\":[\"Espectaculos\"]
 
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38081/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&rTag='+selectedTag;
+    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&rTag='+selectedTag;
     var urlProxy = '/curl_proxy.php';
     new Request({
         url: urlProxy,
         method: 'post',
         data: {
             'host': host ? host : "localhost",
-            'port': port ? port : "38081",
+            'port': port ? port : "38080",
             'ws_path':url
         },
         onRequest: function(){
@@ -1065,17 +1074,9 @@ function refreshFiltro(){
     armarTitulo(tab);
 }
 
-function addMilli(date) {
-    var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
-    var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
-    return finalDate;
-}
 
-function reduceMilli(date) {
-    var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
-    var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli - 1) + 'Z';
-    return finalDate;
-}
+
+
 
 //	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
 
@@ -1088,14 +1089,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -1218,11 +1219,6 @@ function armarTitulo(tabTemp){
     }
 
 }
-
-/*******************/
-
-/******************/
-
 //zcSetTemp($('tempoSelect').value);
 
 
