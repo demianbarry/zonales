@@ -267,13 +267,25 @@ function getSolrPort() {
 }
 
 function reduceMilli(date) {
-    var milli = parseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1));
+    var milli = TryParseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1), 1);
     var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli - 1) + 'Z';
     return finalDate;
 }
 
 function addMilli(date) {
-    var milli = parseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1));
+    var milli = TryParseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1), 998);
     var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
     return finalDate;
+}
+
+function TryParseInt(str,defaultValue){
+    var retValue = defaultValue;
+    if(str!=null){
+        if(str.length>0){
+            if (!isNaN(str)){
+                retValue = parseInt(str);
+            }
+        }
+    }
+    return retValue;
 }
