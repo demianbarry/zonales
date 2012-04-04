@@ -127,7 +127,7 @@ function initAll() {
         console.log('Tab del ZContext: '+zCtx.zTab);
         if(!zCtx.zTab || zCtx.zTab == ""){
             console.log('InitAll antes de setTab');
-            zcSetTab('portada');
+            zcSetTab('enlared');
         }
         tab = zcGetTab();
         //setZone(zCtx.selZone, zcGetSelectedZoneName());
