@@ -6,7 +6,7 @@
     
     -->
     if(zcGetTab() == '')
-        zcSetTab('enlared');
+       zcSetTab('enlared');
 
 </script>
 <div id="postsDiv">

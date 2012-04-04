@@ -49,8 +49,8 @@ function initVista(zCtx){
         tab = 'portada';
         zcSetTab('portada');
     }
-
-
+    
+    
     initMapTab();
     $('enLaRed').set({
         style: 'display:inline'
@@ -312,7 +312,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     }
     //console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        //console.log('Despu�s de setear: ' + zoneExtended);
+        //console.log('Despuï¿½s de setear: ' + zoneExtended);
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
         /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -401,11 +401,11 @@ function verNuevos(){
     $$('div#newPostsContainer div.story-item').set({
         style: 'background:#DCEFF4'
     }).reverse().each(function(post){
-        if($('postsContainer').getChildren('[id=si_-187b0286+375f45f2]').length > 0)
-            $('postsContainer').getChildren('[id=si_-187b0286+375f45f2]').each(function(post){
+        if($('postsContainer').getChildren('[id='+post.get('id')+']').length > 0)
+            $('postsContainer').getChildren('[id='+post.get('id')+']').each(function(post){
                 post.dispose();
             });
-
+            
 
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var newPost = post.clone(true, true);
@@ -492,6 +492,11 @@ function updatePosts(json, component, more) {
     }
     //alert(JSON.stringify(docs));
     docs.each(function(doc){
+        if(component.getChildren('[id='+'si_' + doc.id+']').length > 0)
+            component.getChildren('[id='+'si_' + doc.id+']').each(function(post){
+                post.dispose();
+            });
+            
         var time = new Date(doc.indexTime).getTime();
         zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
         var modified = doc.modified;
@@ -746,22 +751,22 @@ function updatePosts(json, component, more) {
             }).inject(span_addTags);
 
             // if((zTags.indexOf($(idInputTag).value)!= -1 ){
-
-
+                
+            
             //&&  (zTags.indexOf($(idInputTag).value))=! -1
-
+                
             var confimAddTagButton = new Element('img', {
                 'id':idButtonAddTags,
                 'style':'display:none',
                 'src': '/CMUtils/addIcon.gif'
             }).set('html','Add').addClass('story-item-button');//inject(div_story_tags);
-
+            
             confimAddTagButton.addEvent('click',function(){
                 show_confirm(idInputTag,$(idInputTag).value,tags);
                 $(idInputTag).value = '';
-
+                
             });
-
+            
         /*********/
         /*
             var span_addPlaces = new Element('span',{
@@ -1089,14 +1094,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'mañana'], // 60*60*24*2
-    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
+    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
+    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -1122,8 +1127,131 @@ function prettyDate(time){
 }
 
 
+/*function armarTitulo(tabTemp){
+    var temp = 0 ;
+    tabTemp = tab;
+    var zoneSeltemp = zcGetContext().selZone;
+    var zoneEfectemp = "";
+
+    //var posts = $$('div#postsContainer div.story-item');
+    //var posts = $$('div#postsContainer:first-child');
+
+    if($('postsContainer')){
+        var firstPost = $('postsContainer').firstChild;
+        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
+    }
+
+    $('tituloSup').innerHTML = "";
+    $('filtrosAct').innerHTML = "";
+
+
+    if (tabTemp == 'relevantes'){
+        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked) {
+                $('titulo1').innerHTML = "De la Red Social: "
+                if(index != 0)
+                    $('tituloSup').innerHTML += ", ";
+                $('tituloSup').innerHTML += element.value+" ";
+
+            }
+        });
+
+
+    }
+
+    if (tabTemp == 'noticiasenlared'){
+        temp = 0;
+        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            //alert (element.checked);
+            if(element.checked){
+                temp++;
+                if(temp < 5  ) {
+                    //alert (index);
+                    $('titulo1').innerHTML = "De los diarios OnLine: "
+                    if(index != 0)
+                        $('tituloSup').innerHTML += ", ";
+                    $('tituloSup').innerHTML += element.value;
+                }
+                else if (temp > 5 ){
+                    $('tituloSup').innerHTML = "";
+                    $('titulo1').innerHTML = "De mas de 5 diarios";
+
+                }
+            }
+        });
+    }
+
+    if (tabTemp == 'noticiasenlaredrelevantes'){
+        temp = 0;
+        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked){
+                temp++;
+                if(temp < 5 ) {
+                    $('titulo1').innerHTML = "De los diarios OnLine: "
+                    if(index != 0)
+                        $('tituloSup').innerHTML += ", ";
+                    $('tituloSup').innerHTML += element.value;
+                }
+                else if (temp > 5){
+                    $('tituloSup').innerHTML = "";
+                    $('titulo1').innerHTML = "De mas de 5 diarios";
+                }
+            }
+        });
+    }
+
+    if (tabTemp == 'enlared'){
+        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
+            if(element.checked) {
+                $('titulo1').innerHTML = "De la Red Social: "
+                if(index != 0)
+                    $('tituloSup').innerHTML += ", ";
+                $('tituloSup').innerHTML += element.value+" ";
+
+            }
+        });
+    }
+
+
+
+    //console.log('zona2 '+zoneSeltemp);
+    if (zoneEfectemp == zoneSeltemp){
+        $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
+        $('tituloZone2').innerHTML = "";
+    }
+    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
+        $('tituloZone1').innerHTML = "No se encontraron noticias nuevas para la zona "+zoneSeltemp;
+        $('tituloZone2').innerHTML = "Mostrando noticias nuevas de la zona "+zoneEfectemp;
+
+    }
+    if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
+        $('tituloZone1').innerHTML = "Mostrando todas las noticias";
+        $('tituloZone2').innerHTML = "";
+    }
+
+    $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
+
+        temp =index+1
+        if(element.checked) {
+            $('tituloFiltro').innerHTML = "del Tipo: ";
+            if(index != 0)
+                $('filtrosAct').innerHTML += ", ";
+            $('filtrosAct').innerHTML += element.value+" ";
+        }
+
+
+    // $('filtrosAct').innerHTML += " activados "
+    });
+    // console.log("elementos"+temp);
+    //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
+    if(temp == ($('filterTags').getElements('.checked').length)){
+        $('tituloFiltro').innerHTML = "";
+        $('filtrosAct').innerHTML = "";
+    }
+
+}*/
 function armarTitulo(tabTemp){
-     var temp = 0 ;
+    var temp = 0 ;
     tabTemp = tab;
     var zoneSeltemp = zcGetContext().selZone;
     var zoneEfectemp = "";
@@ -1141,63 +1269,63 @@ function armarTitulo(tabTemp){
     $('titulo1').innerHTML = "";
 
 
-        if (zoneEfectemp == zoneSeltemp){
-             if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                 $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
-                 $('tituloZone2').innerHTML = "";
-                 if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
+    if (zoneEfectemp == zoneSeltemp){
+        if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
+            $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
+            $('tituloZone2').innerHTML = "";
+            if (tabTemp == 'relevantes'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
             }else {
-                $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-           }
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }
+        }else {
+            $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
+            $('tituloZone2').innerHTML = "";
+            if (tabTemp == 'noticiasenlared'){
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }else if (tabTemp == 'enlared'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
+            }
+        }
     }
 
     if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
         if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                 $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
-                 $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
-                 if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
+            $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
+            $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
+            if (tabTemp == 'relevantes'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
             }else {
-                $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-           }
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }
+        }else {
+            $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
+            $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
+            if (tabTemp == 'noticiasenlared'){
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }else if (tabTemp == 'enlared'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
+            }
         }
+    }
     if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
         if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                 $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
-                 $('tituloZone2').innerHTML = "";
-                 if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
+            $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
+            $('tituloZone2').innerHTML = "";
+            if (tabTemp == 'relevantes'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
             }else {
-                $('tituloZone1').innerHTML = "Mostrando todas las noticias";
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-           }
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }
+        }else {
+            $('tituloZone1').innerHTML = "Mostrando todas las noticias";
+            $('tituloZone2').innerHTML = "";
+            if (tabTemp == 'noticiasenlared'){
+                $('titulo1').innerHTML = "De los Diarios OnLine "
+            }else if (tabTemp == 'enlared'){
+                $('titulo1').innerHTML = "De las Redes Sociales "
+            }
+        }
     }
 
 
@@ -1217,7 +1345,6 @@ function armarTitulo(tabTemp){
         $('tituloFiltro').innerHTML = "";
         $('filtrosAct').innerHTML = "";
     }
-
 }
 //zcSetTemp($('tempoSelect').value);
 

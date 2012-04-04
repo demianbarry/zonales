@@ -258,7 +258,7 @@ function zcGetCheckedSources() {
     return sources;
 }
 
-//Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
 function zcSearchSource(zCtx, sourceStr) {
     if (zCtx.filters.sources.length > 0) {
         for (var i = 0; i < zCtx.filters.sources.length; i++){
@@ -269,7 +269,7 @@ function zcSearchSource(zCtx, sourceStr) {
     return -1;
 }
 
-//Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
+//Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
 function zcSearchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
         for (var i = 0; i < zCtx.filters.tags.length; i++){

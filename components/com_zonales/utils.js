@@ -181,7 +181,7 @@ getAllTags();
 getAllExtendedStrings();
 function populateOptions(event, field, add, elmts, callback){
     var container;
-
+    
     if((container = field.getNext()) == null) {
         container = new Element('div', {
             'class': 'suggestions'
@@ -234,7 +234,7 @@ function populateOptions(event, field, add, elmts, callback){
             }
             break;
         default:
-
+           
             container.empty();
             // alert("Field: "+field.get('value'));
             var query = field.get('value').toLowerCase().trim();
@@ -259,7 +259,7 @@ function populateOptions(event, field, add, elmts, callback){
             }
             break;
     }
-
+        
 }
 
 function checkRegExp(str, patt){
