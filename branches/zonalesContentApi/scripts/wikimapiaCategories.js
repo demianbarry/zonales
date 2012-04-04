@@ -1,3 +1,4 @@
+var htmlparser = require("htmlparser");
 var zProxyService = require('../services/zProxy');
 var wikimapiaCategoriesService = require('../services/wikimapiaCategories');
 
@@ -111,15 +112,39 @@ function fetchTags(wikimapiaTags) {
 	if (typeof(wikimapiaTags) != 'undefined' && wikimapiaTags != null) {
 		console.log("Tags obtenidos " + JSON.stringify(wikimapiaTags));
 		wikimapiaTags.forEach(function (tag) {
-			console.log("Busco category " + tag.id);
-			wikimapiaCategoriesService.getById(tag.id, function(wikimapiaCategory) {
-				if (!wikimapiaCategory) {
-					console.log("Guardo category " + tag.id);
-					wikimapiaCategoriesService.set(tag, function(response) {
-						console.log("Categoría de wikimapia insertada, id: " + tag.id);
-					});
-				}
-			})			
+			saveTag(tag.title);			
 		});
 	}
+}
+
+
+function saveTag(tagId) {
+	var tag = {};
+	tag.id = tagId;
+	zProxyService.execute('wikimapia.org', 80, '/object/category/?type=view&id=' + tagId + '&lng=0', 'get', function(response) {
+		var dom = parseHtml(response);
+		tag.title = dom[2].children[3].children[1].children[3].children[1].children[1].children[1].children[0].children[0].raw.replace(/ \([a-z]{2}\) /g,'');
+		zProxyService.execute('wikimapia.org', 80, '/object/category/?type=view&id=' + tagId + '&lng=3', 'get', function(response) {
+			dom = parseHtml(response);
+			tag.title_es = dom[2].children[3].children[1].children[3].children[1].children[1].children[1].children[0].children[0].raw.replace(/ \([a-z]{2}\) /g,'');
+			wikimapiaCategoriesService.upsert(tag.id, tag, function(response) {
+				console.log("Categoría de wikimapia insertada, id: " + tag.id + " title: " + tag.title.replace(/ \([a-z]{2}\) /g,''));
+			});
+		});
+	});
+}
+
+function parseHtml(rawHtml) {
+	var handler = new htmlparser.DefaultHandler(function (error, dom) {
+	    if (error)
+	        console.log('Error: ' + error);
+	    else
+	        console.log('Parsing Done');
+	});
+
+	var parser = new htmlparser.Parser(handler);
+
+	parser.parseComplete(rawHtml);
+
+	return handler.dom;
 }
