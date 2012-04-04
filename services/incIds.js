@@ -20,7 +20,7 @@ module.exports.getId = function getId(model, callback) {
 	this.get({key:model}, function(incModel) {
 		if(typeof(incModel) != 'undefined' && incModel != null && typeof(incModel[0]) != 'undefined' && incModel[0] != null) {
 				incrementId(model, function() {
-					console.log("Indice de " + model + " incrementado. Nuevo valor: " + incModel[0].nextId + 1);
+					console.log("Indice de " + model + " incrementado. Nuevo valor: " + incModel[0].nextId);
 				});
 				callback(incModel[0].nextId);
 			} else {
