@@ -1,4 +1,4 @@
-//Parámetros globales
+//ParÃ¡metros globales
 var cantMax = '1000';
 var maxZoomOut = 4;
 var openLayersProxyHost = '/cgi-bin/proxy.cgi?url=';
@@ -95,13 +95,36 @@ function initMap() {
         projection : new OpenLayers.Projection('EPSG:4326'),
         displayProjection : new OpenLayers.Projection("EPSG:4326")
     });
+    
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+    //Create a base layers
+    var gphy = new OpenLayers.Layer.Google(
+        "Google Physical",
+        {type: google.maps.MapTypeId.TERRAIN}
+    );
+    var gmap = new OpenLayers.Layer.Google(
+        "Google Streets", // the default
+        {numZoomLevels: 20}
+    );
+    var ghyb = new OpenLayers.Layer.Google(
+        "Google Hybrid",
+        {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
+    );
+    var gsat = new OpenLayers.Layer.Google(
+        "Google Satellite",
+        {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
+    );
 
     //Create a base layer
-    var google_map = new OpenLayers.Layer.Google(
+    /*var google_map = new OpenLayers.Layer.Google(
         'Google Layer',
         {}
-        );
-    map.addLayer(google_map);
+        );*/
+    map.addLayer(gmap);
+    map.addLayer(gsat);
+    map.addLayer(ghyb);
+    map.addLayer(gphy);
 
     map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
         .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), maxZoomOut);
@@ -110,7 +133,7 @@ function initMap() {
     strategy.distance = strategyDistance;
 
     //Add vector layer
-    vector_layer = new OpenLayers.Layer.Vector('Flickr Data',
+    vector_layer = new OpenLayers.Layer.Vector('ZonalesPost',
     {
         projection: new OpenLayers.Projection('EPSG:4326'),
         protocol: new OpenLayers.Protocol.HTTP({
@@ -191,7 +214,7 @@ function initMap() {
         maptags = new Array();
         mapzones = new Array();
         zirClient.clearSolrIds();
-        setSolrRows(20);
+        //setSolrRows(20);
         cant = 0;
 
         //Store the clusters
@@ -211,11 +234,11 @@ function initMap() {
 
         var popupContentHTML = "";
 
-        popupContentHTML += '<h3 id="popupTitle">Información</h3>';
+        popupContentHTML += '<h3 id="popupTitle">InformaciÃ³n</h3>';
         popupContentHTML += "<br><div style='verticalAlign: center'><img src='/images/ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
 
         if (cant < 200) {
-            setSolrRows(event.feature.attributes.count);
+            //setSolrRows(event.feature.attributes.count);
             popupContentHTML += "<br><img src='/images/ver_post.gif' alt='Ver posts' onClick='mapToPost();'>";
         }
 
@@ -223,7 +246,7 @@ function initMap() {
 
         popupContentHTML += "<br>";
 
-        popupContentHTML += "<p>Usted está viendo información de las zonas:<p><ul>";
+        popupContentHTML += "<p>Usted estÃ¡ viendo informaciÃ³n de las zonas:<p><ul>";
 
         //Muestro las zonas
         for(var i = 0; i < mapzones.length; i++) {

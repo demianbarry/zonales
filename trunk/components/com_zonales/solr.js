@@ -237,6 +237,17 @@ function ZIRClient(){
     this.getSolrPort=function() {
         return this.port;
     }
+    function reduceMilli(date) {
+        var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
+        var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli - 1) + 'Z';
+        return finalDate;
+    }
+
+    function addMilli(date) {
+        var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
+        var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
+        return finalDate;
+    }
 }
 /*
 var host = "localhost";
