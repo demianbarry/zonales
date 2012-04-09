@@ -45,12 +45,6 @@ function initVista(zCtx){
     console.log("======> 1");
     initFilters(zCtx);
     zCtx.setSearchKeyword("");
-    if(zCtx.zTab == ''){
-        tab = 'portada';
-        zcSetTab('portada');
-    }
-    
-    
     initMapTab();
     $('enLaRed').set({
         style: 'display:inline'
