@@ -214,6 +214,7 @@ function commit(){
 
 function publishContent(publish){
     zContent.state = publish ? 'published' : 'saved';
+     zContent.modified = (new Date()).getTime();
     saveContent();
 }
 
