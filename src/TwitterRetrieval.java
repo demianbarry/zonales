@@ -18,6 +18,7 @@
  */
 
 import com.google.gson.Gson;
+import com.sun.xml.internal.ws.util.StringUtils;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -123,9 +124,11 @@ public class TwitterRetrieval extends HttpServlet {
                         int hit2 = temp.indexOf(";");
                         int hit3 = temp.indexOf("]");
                         latslongs.put(temp.substring(0, hit1), new LatLon(temp.substring(hit1 + 1, hit2), temp.substring(hit2 + 1, hit3)));
-                        /*usuarios[i] = temp.substring(0, hit1);
-                        latitud[i] = temp.substring(hit1 + 1, hit2);
-                        longitud[i] = temp.substring(hit2 + 1, hit3);*/
+                        /*
+                         * usuarios[i] = temp.substring(0, hit1); latitud[i] =
+                         * temp.substring(hit1 + 1, hit2); longitud[i] =
+                         * temp.substring(hit2 + 1, hit3);
+                         */
                     }
                 }
             }
@@ -168,7 +171,7 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
+                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), StringUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
@@ -184,12 +187,13 @@ public class TwitterRetrieval extends HttpServlet {
                         tweet.getSource(), place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null);
 
                 if (users != null) {
-                    /*for (int i = 0; i < usuarios.length; i++) {
-                    if (tweet.getFromUser().equals(usuarios[i])) {
-                    usersolr.setLatitude(Double.parseDouble(latitud[i]));
-                    usersolr.setLongitude(Double.parseDouble(longitud[i]));
+                    /*
+                     * for (int i = 0; i < usuarios.length; i++) { if
+                     * (tweet.getFromUser().equals(usuarios[i])) {
+                     * usersolr.setLatitude(Double.parseDouble(latitud[i]));
+                     * usersolr.setLongitude(Double.parseDouble(longitud[i])); }
                     }
-                    }*/
+                     */
                     //usersolr.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
                     //usersolr.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
                 }
@@ -233,12 +237,13 @@ public class TwitterRetrieval extends HttpServlet {
                 if (tagsArray != null && tagsArray.length > 0) {
                     solrPost.setTags(new ArrayList<String>(Arrays.asList(tagsArray)));
                 }
-                
-                solrPost.setExtendedString((solrPost.getFromUser().getPlace() != null ? solrPost.getFromUser().getPlace().getName() + ", " : "") + solrPost.getZone().getExtendedString());
+
+
+                solrPost.setExtendedString(StringUtils.capitalize((solrPost.getFromUser().getPlace() != null ? solrPost.getFromUser().getPlace().getName() + ", " : "") + solrPost.getZone().getExtendedString().replace("_", " ")));
                 postList.add(solrPost);
 
                 post = new PostType();
-                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
+                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), StringUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
@@ -248,12 +253,13 @@ public class TwitterRetrieval extends HttpServlet {
                         tweet.getSource(), place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null);
 
                 if (users != null) {
-                    /*for (int i = 0; i < usuarios.length; i++) {
-                    if (tweet.getFromUser().equals(usuarios[i])) {
-                    user.setLatitude(Double.parseDouble(latitud[i]));
-                    user.setLongitude(Double.parseDouble(longitud[i]));
+                    /*
+                     * for (int i = 0; i < usuarios.length; i++) { if
+                     * (tweet.getFromUser().equals(usuarios[i])) {
+                     * user.setLatitude(Double.parseDouble(latitud[i]));
+                     * user.setLongitude(Double.parseDouble(longitud[i])); }
                     }
-                    }*/
+                     */
                     //user.setLatitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).latitud));
                     //user.setLongitude(Double.parseDouble(latslongs.get(tweet.getFromUser()).longitud));
                 }
@@ -276,7 +282,7 @@ public class TwitterRetrieval extends HttpServlet {
                 post.setModified(String.valueOf(tweet.getCreatedAt().getTime()));
                 post.setRelevance(actions.size() == 2 ? actions.get(0).getCant() * 3 + actions.get(1).getCant() : 0);
                 post.setPostLatitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLatitude() : null);
-                post.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);                
+                post.setPostLongitude(tweet.getGeoLocation() != null ? tweet.getGeoLocation().getLongitude() : null);
 
                 links = new ArrayList<LinkType>();
                 links.add(new LinkType("avatar", tweet.getProfileImageUrl()));
