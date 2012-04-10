@@ -1,5 +1,6 @@
 
 import com.google.gson.Gson;
+import com.sun.xml.internal.ws.util.StringUtils;
 //import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
@@ -45,8 +46,8 @@ import org.zonales.tagsAndZones.daos.ZoneDao;
 import org.zonales.tagsAndZones.objects.Place;
 
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
 /**
  *
@@ -66,15 +67,14 @@ public class ZCrawlFeedsHelper {
     }
 
     /**
-     * Parses the given feed and extracts out and parsers all linked items within
-     * the feed, using the underlying ROME feed parsing library.
+     * Parses the given feed and extracts out and parsers all linked items
+     * within the feed, using the underlying ROME feed parsing library.
      *
-     * @param rss
-     *          A {@link Content} object representing the feed that is being
-     *          parsed by this {@link Parser}.
+     * @param rss A {@link Content} object representing the feed that is being
+     * parsed by this {@link Parser}.
      *
      * @return A {@link ParseResult} containing all {@link Parse}d feeds that
-     *         were present in the feed file that this {@link Parser} dealt with.
+     * were present in the feed file that this {@link Parser} dealt with.
      *
      */
     public String getParse(String url, boolean json, HashMap<String, Object> params) throws Exception {
@@ -123,7 +123,7 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntry.setSource(source);
 
-                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
+                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), StringUtils.capitalize(zone.getExtendedString().replace("_", " "))));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -183,7 +183,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
+                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), StringUtils.capitalize(zone.getExtendedString().replace("_", " "))));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -230,7 +230,9 @@ public class ZCrawlFeedsHelper {
         List<LinkType> list = new ArrayList<LinkType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
-        /*************/
+        /**
+         * **********
+         */
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
             feedSelectors = dao.retrieve("default");
         }
@@ -260,12 +262,16 @@ public class ZCrawlFeedsHelper {
 
     }
 
-    /*************************************/
+    /**
+     * **********************************
+     */
     public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
         List<ActionType> list = new ArrayList<ActionType>();
 
         //FileInputStream datos= new FileInputStream (ConDatos);
-        /*************/
+        /**
+         * **********
+         */
         if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
             feedSelectors = dao.retrieve("default");
         }
@@ -292,47 +298,38 @@ public class ZCrawlFeedsHelper {
 
     public boolean findWords(String title, Document doc, List<String> slist, List<String> blist, FeedSelectors feedSelectors) throws FileNotFoundException, IOException, BadLocationException {
         return true;
-        /*String contenido = null;
-        
-        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
-        feedSelectors = dao.retrieve("default");
-        }
-        if (feedSelectors == null || feedSelectors.getSelectors() == null || feedSelectors.getSelectors().isEmpty()) {
-        return false;
-        }
-        
-        Elements noticia = null;
-        for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
-        if ("content".equals(feedSelector.getType())) {
-        noticia = doc.select(feedSelector.getSelector());
-        }
-        }
-        
-        if (noticia != null) {
-        contenido = noticia.text();
-        }
-        
-        if (slist != null && !slist.isEmpty()) {
-        // System.out.println("Entro slist.isEmpty()");
-        for (String palabra : slist) {
-        if ((title == null || title.indexOf(palabra) == -1) && (contenido == null || contenido.indexOf(palabra) == -1)) {
-        return false;
-        }
-        
-        }
-        }
-        
-        if (blist != null && !blist.isEmpty()) {
-        // System.out.println("Entro blist.isEmpty()");
-        for (String palabra : blist) {
-        if ((title != null && title.indexOf(palabra) != -1) || (contenido != null && contenido.indexOf(palabra) != -1)) {
-        return false;
-        }
-        }
-        }
-        
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "findWords result: {0}", new Object[]{true});
-        return true;*/
+        /*
+         * String contenido = null;
+         *
+         * if (feedSelectors == null || feedSelectors.getSelectors() == null ||
+         * feedSelectors.getSelectors().isEmpty()) { feedSelectors =
+         * dao.retrieve("default"); } if (feedSelectors == null ||
+         * feedSelectors.getSelectors() == null ||
+         * feedSelectors.getSelectors().isEmpty()) { return false; }
+         *
+         * Elements noticia = null; for (FeedSelector feedSelector :
+         * feedSelectors.getSelectors()) { if
+         * ("content".equals(feedSelector.getType())) { noticia =
+         * doc.select(feedSelector.getSelector()); } }
+         *
+         * if (noticia != null) { contenido = noticia.text(); }
+         *
+         * if (slist != null && !slist.isEmpty()) { // System.out.println("Entro
+         * slist.isEmpty()"); for (String palabra : slist) { if ((title == null
+         * || title.indexOf(palabra) == -1) && (contenido == null ||
+         * contenido.indexOf(palabra) == -1)) { return false; }
+         *
+         * }
+         * }
+         *
+         * if (blist != null && !blist.isEmpty()) { // System.out.println("Entro
+         * blist.isEmpty()"); for (String palabra : blist) { if ((title != null
+         * && title.indexOf(palabra) != -1) || (contenido != null &&
+         * contenido.indexOf(palabra) != -1)) { return false; } } }
+         *
+         * Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+         * "findWords result: {0}", new Object[]{true}); return true;
+         */
     }
 
     public void Feed2XML(PostsType posts, Writer out) throws Exception {
