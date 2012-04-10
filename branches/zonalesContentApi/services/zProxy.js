@@ -101,8 +101,8 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
   var response = "";
 
   var post_req = http.request(post_options, function(res) {
-        //console.log('STATUS: ' + res.statusCode);
-        //console.log('HEADERS: ' + JSON.stringify(res.headers));
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
         res.setEncoding('utf8');
         
         res.on('data', function (json) {
@@ -110,8 +110,8 @@ module.exports.wikimapiaBboxSearch = function wikimapiaBboxSearch(bbox, category
         });
         
         res.on('end', function() {
-           //console.log('BODY: ' + response);
-           //console.log("------------------------------------------------------------------------------------------");
+           console.log('BODY: ' + response);
+           console.log("------------------------------------------------------------------------------------------");
            var jsonObj = JSON.parse(response);
            callback(jsonObj);
            return(this);

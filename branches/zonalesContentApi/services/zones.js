@@ -54,6 +54,7 @@ module.exports.searchZones = function searchZones(filters, callback) {
 //Crea una nueva zona
 module.exports.set = function set(zone, callback) {
     incIdsService.getId("zones", function(id) {
+        console.log("------>>>>>>----->>>>> ZONES NextId: " + id);
         zone.id = id;
         zone.extendedString = zone.name;
         baseService.set(zones, zone, function(response) {

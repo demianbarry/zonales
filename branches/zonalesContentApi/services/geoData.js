@@ -146,7 +146,7 @@ module.exports.drawChildren = function drawChildren(extendedString, client) {
 }
 
 module.exports.getGeoDataByZoneExtendedString = function getGeoDataByZoneExtendedString(extendedString, callback) {
-	//console.log('ZONE GEODATA. EXTENDED STRING: ' + extendedString);
+	console.log('ZONE GEODATA. EXTENDED STRING: ' + extendedString);
 	zoneService.getZoneByExtendedString(extendedString, function(zone) {
 		//console.log('ZONE GEODATA. ZONE: ' + JSON.stringify(zone));
 		if (typeof(zone) != 'undefined' && zone != null) {

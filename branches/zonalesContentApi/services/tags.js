@@ -35,9 +35,9 @@ module.exports.get = function get(filters, callback) {
 }
 
 //Retorna un conjunto de tags con nombre similar al parámetro
-/*module.exports.searchTags = function searchTags(filters, callback) {
+module.exports.searchTags = function searchTags(filters, callback) {
 	return baseService.getLikeName(tags, name, callback);
-}*/
+}
 
 //Retorna un conjunto de tags con nombre similar al parámetro
 module.exports.searchTags = function searchTags(filters, callback) {

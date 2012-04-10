@@ -131,62 +131,54 @@ function saveZone() {
     if ($('geoJson').value != '') {
         objGeo = eval('(' + $('geoJson').value + ')');    
     }
-
-    if(geoedit && $('geoJson').value != '') {
-      jsonZone += ',"geoData":"' + geoZoneId + '"';
-      socket.emit('updateGeoData', objGeo, function (resp) {
-        //var resp = eval('(' + data + ')'); 
-        if (resp.cod == 100) {
-                jsonZone += '}';
-                saveZoneEmit(jsonZone);
-          alert("Se ha actualizado el dato geográfico"); 
-        } else {
-          alert("Error al actualizar el dato geográfico");
-        }
-      }); 
+    
+    if(geoedit) {
+    	jsonZone += ',"geoData":"' + geoZoneId + '"';
+    	socket.emit('updateGeoData', objGeo, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha actualizado el dato geográfico"); 
+    		} else {
+    			alert("Error al actualizar el dato geográfico");
+    		}
+    	});	
     } else {
-        if ($('geoJson').value != '') {
-            socket.emit('saveGeoData', objGeo, function (resp) {
-                //var resp = eval('(' + data + ')'); 
-              if (resp.cod == 100) {
-                          jsonZone += ',"geoData":' + resp.id + '}';
-                          saveZoneEmit(jsonZone);
-                  alert("Se ha guardado el dato geográfico"); 
-                } else {
-                  alert("Error al guardar el dato geográfico");
-                }
-              }); 
-          } else {
-                jsonZone += '}';
-                saveZoneEmit(jsonZone);
-          }
+    	  if (geoZoneId != null) {
+    	  		jsonZone += ',"geoData":"' + geoZoneId + '"';
+		    	socket.emit('saveGeoData', objGeo, function (resp) {
+		    		//var resp = eval('(' + data + ')'); 
+    				if (resp.cod == 100) {
+		    			alert("Se ha guardado el dato geográfico"); 
+		    		} else {
+		    			alert("Error al guardar el dato geográfico");
+		    		}
+		    	});	
+    	  }
     }
+    jsonZone += '}';
     
-}
-
-function saveZoneEmit(jsonZone) {
-  console.log(jsonZone);
-  var objZone = JSON.parse(jsonZone);
+	 var objZone = eval('(' + jsonZone + ')');
     
-   if (edit) {
-      socket.emit('updateZone', objZone, function (resp) {
-        //var resp = eval('(' + data + ')'); 
-        if (resp.cod == 100) {
-          alert("Se ha actualizado la zona"); 
-        } else {
-          alert("Error al actualizar la zona");
-        }
-      }); 
+	 if (edit) {
+    	socket.emit('updateZone', objZone, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha actualizado la zona"); 
+    		} else {
+    			alert("Error al actualizar la zona");
+    		}
+    	});	
     } else {
-      socket.emit('saveZone', objZone, function (resp) {
-        //var resp = eval('(' + data + ')'); 
-        if (resp.cod == 100) {
-          alert("Se ha guardado la zona"); 
-        } else {
-          alert("Error al guardar la zona");
-        }
-      });
+    	socket.emit('saveZone', objZone, function (resp) {
+    		//var resp = eval('(' + data + ')'); 
+    		if (resp.cod == 100) {
+    			alert("Se ha guardado la zona"); 
+    		} else {
+    			alert("Error al guardar la zona");
+    		}
+    	});
     }    
+    
 }
 
 //Funciones de manejo del mapa
@@ -218,7 +210,10 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    document.getElementById('geoJson').value = str;
+    if (typeof(geoZoneId) == 'undefined' || geoZoneId == null) {
+        str = str.substring(0, str.length-2) + ',\n    "id": "' + geoZoneId + '"\n}';
+        document.getElementById('geoJson').value = str;
+    }
 }
 
 function deserialize() {
