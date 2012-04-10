@@ -5,6 +5,7 @@
 package org.zonales.scheduler.services;
 
 import com.google.gson.Gson;
+import com.sun.xml.internal.ws.util.StringUtils;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -116,12 +117,12 @@ public final class ZSolrServer extends BaseService {
         SolrPost oldSolrPost = null;
         if (post.getId() != null && !"".equals(post.getId())) {
             SolrQuery query = new SolrQuery();
-            query.setQuery("id:\"" + post.getId()+ "\"");
+            query.setQuery("id:\"" + post.getId() + "\"");
             QueryResponse rsp = server.query(query);
             if (rsp.getResults().getNumFound() == 1) {
-                oldSolrPost = rsp.getBeans(SolrPost.class).get(0);                
+                oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(oldSolrPost));
-                Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);                
+                Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "POST FROM VERBATIM: {0}", gson.toJson(postIn));
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
@@ -165,21 +166,24 @@ public final class ZSolrServer extends BaseService {
     public Posts retrievePosts(String query) {
         Posts posts = new Posts();
         /*
-        SolrQuery query = new SolrQuery();
-        query.setQuery( "*:*" );
-        
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Antes query {0}",new Object[]{query});
+         * SolrQuery query = new SolrQuery(); query.setQuery( "*:*" );
+         *
+         * Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Antes
+         * query {0}",new Object[]{query});
          */
-        /*QueryResponse rsp = server.query( query );
-        
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Respuesta {0}",new Object[]{rsp});
-        
-        List<PostType> posts = rsp.getBeans(PostType.class);
-        
-        for (PostType pos : posts) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Post {0}",new Object[]{pos});
-        out.print(pos.getId());
-        }*/
+        /*
+         * QueryResponse rsp = server.query( query );
+         *
+         * Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+         * "Respuesta {0}",new Object[]{rsp});
+         *
+         * List<PostType> posts = rsp.getBeans(PostType.class);
+         *
+         * for (PostType pos : posts) {
+         * Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Post
+         * {0}",new Object[]{pos}); out.print(pos.getId());
+        }
+         */
         return posts;
     }
 
@@ -236,7 +240,10 @@ public final class ZSolrServer extends BaseService {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   /***/
+
+    /**
+     * 
+     */
     public void addPlaces(String id, String place) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
@@ -249,11 +256,13 @@ public final class ZSolrServer extends BaseService {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
                 placeDao.retrieveByExtendedString(place);
                 post.getFromUser().setPlace(new Place());
-                   /* if (!post.getTags().contains(tag.trim())) {
-                        post.getTags().add(tag.trim());
-                        post.setModified((new Date()).getTime());
-                    }*/
-                
+                /*
+                 * if (!post.getTags().contains(tag.trim())) {
+                 * post.getTags().add(tag.trim()); post.setModified((new
+                 * Date()).getTime());
+                    }
+                 */
+
                 SolrPost newSolrPost = new SolrPost();
                 postToSolr(newSolrPost, post);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
@@ -273,13 +282,15 @@ public final class ZSolrServer extends BaseService {
                 SolrPost oldSolrPost = rsp.getBeans(SolrPost.class).get(0);
                 Post post = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SolrPost: {0}", gson.toJson(oldSolrPost));
-                 if (post.getFromUser().getPlace() == null) {
-                        post.getFromUser().setPlace(new Place());
-                  }
-              /*  if (post.getTags().contains(tag)) {
-                    post.getTags().remove(tag);
-                    post.setModified((new Date()).getTime());
-                }*/
+                if (post.getFromUser().getPlace() == null) {
+                    post.getFromUser().setPlace(new Place());
+                }
+                /*
+                 * if (post.getTags().contains(tag)) {
+                 * post.getTags().remove(tag); post.setModified((new
+                 * Date()).getTime());
+                }
+                 */
                 SolrPost newSolrPost = new SolrPost();
                 postToSolr(newSolrPost, post);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
@@ -289,7 +300,10 @@ public final class ZSolrServer extends BaseService {
             Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   /***/
+
+    /**
+     * 
+     */
     public void updateRelevance(String id, Integer relevance) throws IOException {
         try {
             SolrQuery query = new SolrQuery();
@@ -346,17 +360,17 @@ public final class ZSolrServer extends BaseService {
         Zone zone = post.getZone();
         Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, "------------>ZONE: {0}", zone);
         if (zone != null) {
-            if(zone.getId() == null || "".equals(zone.getId()) || zone.getName() == null || "".equals(zone.getName()) || zone.getType() == null || "".equals(zone.getType())) {
+            if (zone.getId() == null || "".equals(zone.getId()) || zone.getName() == null || "".equals(zone.getName()) || zone.getType() == null || "".equals(zone.getType())) {
                 org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.getExtendedString());
                 zone.setId(String.valueOf(zoneObj.getId()));
                 zone.setName(zoneObj.getName());
                 zone.setType(zoneObj.getType().getName());
             }
-                
+
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
-            solrPost.setZoneExtendedString(post.getZone().getExtendedString());
+            solrPost.setZoneExtendedString(StringUtils.capitalize(post.getZone().getExtendedString().replace("_", " ")));
         }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
@@ -377,7 +391,7 @@ public final class ZSolrServer extends BaseService {
         solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
-        solrPost.setExtendedString(post.getExtendedString());
+        solrPost.setExtendedString(StringUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString().replace("_", " ")));
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
@@ -397,7 +411,7 @@ public final class ZSolrServer extends BaseService {
             if (json != null) {
                 post = gson.fromJson(json.replace("\\\"", "\"").replace("\\'", "\""), Post.class);
             }
-            
+
             zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
 
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> Doc: {0}\n-----------> Post: {1}", new Object[]{json, post});
