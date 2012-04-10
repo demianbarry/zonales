@@ -4430,3 +4430,15 @@ div.story-item-content div.cp_tags img.story-item-button {
 div.story-item-content div.cp_tags span input {
     margin-left: 3px;
 }
+
+.olLayerGooglePoweredBy {
+    display: none;
+}
+
+path:hover {
+    fill: #cdcdcd;
+}
+
+.resultTable td {
+    padding: 3px;
+}

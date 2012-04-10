@@ -191,6 +191,7 @@ function populateOptions(event, field, add, elmts, callback){
         case 13:
             elmts = eval(JSON.stringify(Array.from(elmts)));
             if(!add) {
+                
                 if (container.getElement('.selected'))
                     field.set('value', container.getElement('.selected').get('html'));
                 if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
@@ -198,6 +199,7 @@ function populateOptions(event, field, add, elmts, callback){
                         callback(field.get('value'));
                     }
             } else {
+     
                 if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1){
                     var value = container.getElement('.selected').get('html').trim();
                     var fieldValue = field.get('value');

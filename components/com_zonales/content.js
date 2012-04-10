@@ -229,12 +229,72 @@ function makeContentTable(jsonObj, container){
 
     var configs_table = new Element('table', {
         'id' : 'resultTable'
-    }).addClass('resultTable').inject(container);	
+    }).addClass('resultTable').inject(container);
+
+    var filters_tr = new Element('tr', {
+        'class': 'tableRow'
+    }).inject(configs_table);
+    var titleFilterTd = new Element('td').inject(filters_tr);
+    new Element('input', {
+        'id': 'titleFilter',
+        'type': 'text'
+    }).inject(titleFilterTd);
+    var statusFilterTd = new Element('td').inject(filters_tr);
+    var statusSelect = new Element('select', {
+        'id': 'statusFilter'
+    }).inject(statusFilterTd);
+    new Element('option', {
+        'value' : 'all',
+        'html' : 'Todos'
+    }).inject(statusSelect);
+    new Element('option', {
+        'value' : 'new',
+        'html' : 'Nuevo'
+    }).inject(statusSelect);
+    new Element('option', {
+        'value' : 'saved',
+        'html' : 'Guardado'
+    }).inject(statusSelect);
+    new Element('option', {
+        'value' : 'published',
+        'html' : 'Publicado'
+    }).inject(statusSelect);
+    new Element('option', {
+        'value' : 'unpublished',
+        'html' : 'Despublicado'
+    }).inject(statusSelect);
+    new Element('option', {
+        'value' : 'void',
+        'html' : 'Anulado'
+    }).inject(statusSelect);
+    var zoneFilterTd = new Element('td').inject(filters_tr);
+    new Element('input', {
+        'id': 'zoneFilter',
+        'type': 'text',
+        'onkeyup' : "populateOptions(event, this, false, extendedStrings);"
+    }).inject(zoneFilterTd);
+    var tagFilterTd = new Element('td').inject(filters_tr);
+    new Element('input', {
+        'id': 'tagFilter',
+        'type': 'text',
+        'onkeyup' : "populateOptions(event, this, false, zTags);"
+    }).inject(tagFilterTd);
+    var createdFilterTd = new Element('td').inject(filters_tr);
+    var modifiedFilterTd = new Element('td').inject(filters_tr);
+    var chkFilterTd = new Element('td').inject(filters_tr);
+    var filterButtonTd = new Element('td').inject(filters_tr);
+    new Element ('input',{
+        'type':'submit',
+        'value':'Filtrar',
+        'id': 'filterContenButton',
+        'onclick': "filterContent();"
+    }).inject(filterButtonTd);
+
     var config_title_tr = new Element('tr', {
         'class': 'tableRowHeader'
     }).inject(configs_table);
     new Element('td', {
-        'html' : 'T?tulo'
+        'html' : 'Título'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Estado'

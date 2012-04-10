@@ -1,4 +1,4 @@
-//ParÃ¡metros globales
+//Parámetros globales
 var maxZoomOut = 4;
 var maxZoomIn = 20;
 
@@ -122,9 +122,14 @@ function ajustMapToGeo(feature) {
 function ajustMapToExtendedString(extendedString) {
     extendedString = extendedString.replace(/, /g, ',+').replace(/ /g, '_').replace(/,\+/g, ', ').toLowerCase();
     socket.emit('getGeoDataByZoneExtendedString', {extendedString: extendedString}, function(data) {
-        var eString = data.extendedString.replace(/_/g, ' ').capitalize();
-        var feature = deserialize(data.geoData, geoLayer, null, false)[0];
-        ajustMapToGeo(feature);
+        if (data) {
+            if (data.extendedString)
+                var eString = data.extendedString.replace(/_/g, ' ').capitalize();
+            if (data.geoData) {
+                var feature = deserialize(data.geoData, geoLayer, null, false)[0];
+                ajustMapToGeo(feature);
+            }
+        }
     });
 }
 
@@ -183,7 +188,7 @@ function initMap() {
 
     //Create a base layers
     var gphy = new OpenLayers.Layer.Google(
-        "FÃ­sico",
+        "Físico",
         {type: google.maps.MapTypeId.TERRAIN}
     );
     var gmap = new OpenLayers.Layer.Google(
@@ -191,7 +196,7 @@ function initMap() {
         {numZoomLevels: 20}
     );
     var ghyb = new OpenLayers.Layer.Google(
-        "HÃ­brido",
+        "Híbrido",
         {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}
     );
     var gsat = new OpenLayers.Layer.Google(
@@ -300,7 +305,7 @@ function drawPopup(event) {
 
     popupContentHTML += "<br>";
 
-    popupContentHTML += "<p>La zona seleccionada tiene informaciÃ³n de las fuentes: <p><ul>";
+    popupContentHTML += "<p>La zona seleccionada tiene información de las fuentes: <p><ul>";
 
     //Muestro los contadores de fuentes
     for(var i = 0; i < mapsources.length; i++) {
