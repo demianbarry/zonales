@@ -39,15 +39,15 @@ function Zone(){
 function Content(id){
     this.source = 'Zonales';
     this.id = id ? id : null;
-    this.fromUser = new User();    
+    this.fromUser = new User();
     this.title = '';
     this.text = '';
     this.created = (new Date()).getTime();
-    this.modified = '';    
+    this.modified = (new Date()).getTime();
     this.relevance = 0;
     this.tags = new Array();
     this.zone = new Zone();
-    this.state = 'created';    
+    this.state = 'created';
 }
 
 function SolrContent(id){
@@ -60,11 +60,11 @@ function SolrContent(id){
     this.title = '';
     this.text = '';
     this.created = zirClient.getSolrDate(new Date());
-    this.modified = '';    
+    this.modified = '';
     this.relevance = 0;
     this.tags = '';
     this.zone = '';
-    this.state = 'created';    
+    this.state = 'created';
 }
 
 function contentToSolr(content){
@@ -80,9 +80,9 @@ function contentToSolr(content){
     solrContent.modified = content.modified;
     solrContent.relevance = content.relevance;
     solrContent.tags = content.tags;
-    solrContent.state = content.state;    
+    solrContent.state = content.state;
     return solrContent;
-} 
+}
 
 function refreshContent(){
     if(zContent === undefined){
@@ -93,19 +93,20 @@ function refreshContent(){
     }
     zContent.fromUser.name = $('fromUserName').value;
     zContent.fromUser.id = $('fromUserId').value;
-    
+
     zContent.id = $('id').value;
-    zContent.title = $('title').value;    
+    zContent.title = $('title').value;
     zContent.text = CKEDITOR.instances.text.getData();
     if (!$('created').value) {
         $('created').value = getReadableDate(new Date());
     }
-    zContent.created = (new Date($('created').value.substr(3,2) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6))).getTime();
+
+    //zContent.created = (new Date($('created').value.substr(3,2) + "/" + $('created').value.substr(0,2) + "/" + $('created').value.substr(6))).getTime();
     //zContent.modified = (new Date()).getTime();
     if (!$('modified').value) {
         $('modified').value = getReadableDate(new Date());
     }
-    zContent.modified = (new Date($('modified').value.substr(3,2) + "/" + $('modified').value.substr(0,2) + "/" + $('modified').value.substr(6))).getTime();
+    //zContent.modified = (new Date($('modified').value.substr(3,2) + "/" + $('modified').value.substr(0,2) + "/" + $('modified').value.substr(6))).getTime();
     zContent.tags = $('tags').value.split(',');
 
     if(zContent.zone === undefined){
@@ -119,7 +120,7 @@ function refreshForm(){
     $('fromUserName').value = zContent.fromUser ? zContent.fromUser.name : '';
     $('fromUserId').value = zContent.fromUser ? zContent.fromUser.id : '';
     $('id').value = zContent.id;
-    $('title').value = zContent.title ? zContent.title : '';    
+    $('title').value = zContent.title ? zContent.title : '';
     $('text').value = zContent.text ? zContent.text : '';
     $('created').value = getReadableDate(zContent.created ? new Date(parseInt(zContent.created)) : new Date());
     $('modified').value = getReadableDate(zContent.modified ? new Date(parseInt(zContent.modified)) : new Date());
@@ -137,10 +138,10 @@ function getContent(id){
             'host': host,
             'port': port,
             'ws_path':url
-        },        
+        },
         onRequest: function(){
         },
-        onSuccess: function(response) {            
+        onSuccess: function(response) {
             var doc = response.response.docs[0];
             zContent = JSON.decode(doc.verbatim);
             if(!zContent.id)
@@ -150,13 +151,13 @@ function getContent(id){
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
-        onFailure: function(){            
+        onFailure: function(){
         }
     }).send();
 }
 
 function saveContent(){
-    refreshContent();    
+    refreshContent();
     var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc='+encodeURIComponent(JSON.encode(zContent));
     var urlProxy = '/curl_proxy.php';
     new Request.JSON({
@@ -166,16 +167,16 @@ function saveContent(){
             'host': host,
             'port': port,
             'ws_path':url
-        },        
+        },
         onRequest: function(){
         },
-        onSuccess: function(response) {			
+        onSuccess: function(response) {
             //        commit();
             if(response && response.length != 0){
                 if(response.id && response.id.length > 0){
                     zContent.id = response.id;
                     refreshForm();
-                    alert("Se guard? correctamente el documento con el ID "+zContent.id);                    
+                    alert("Se guard? correctamente el documento con el ID "+zContent.id);
                 } else {
                     alert("Ocurri? un error al intentar guardar el documento: "+response);
                     zContent.state = 'created';
@@ -185,7 +186,7 @@ function saveContent(){
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
-        onFailure: function(){            
+        onFailure: function(){
         }
     }).send();
 }
@@ -200,21 +201,22 @@ function commit(){
             'host': host,
             'port': port,
             'ws_path':url
-        },        
-        onRequest: function(){            
         },
-        onSuccess: function(response) {            
+        onRequest: function(){
+        },
+        onSuccess: function(response) {
         },
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
-        onFailure: function(){            
+        onFailure: function(){
         }
     }).send();
 }
 
 function publishContent(publish){
     zContent.state = publish ? 'published' : 'saved';
-     zContent.modified = (new Date()).getTime();
+    zContent.modified = (new Date()).getTime();
+    //alert(JSON.stringify(zContent));
     saveContent();
 }
 
@@ -302,27 +304,27 @@ function makeContentTable(jsonObj, container){
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Zona'
-    }).inject(config_title_tr);    
+    }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Tags'
-    }).inject(config_title_tr);        
+    }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Creado'
     }).inject(config_title_tr);
     new Element('td', {
         'html' : 'Modificado'
     }).inject(config_title_tr);
-    var checktd = new Element('td').inject(config_title_tr);	
+    var checktd = new Element('td').inject(config_title_tr);
     var checkbox = new Element ('input',{
         'type':'checkbox'
-    }).inject(checktd).addEvent('click', function(){		
+    }).inject(checktd).addEvent('click', function(){
         $$("table#resultTable.resultTable tr.tableRow td input").each(function(check){
             check.checked = checkbox.checked;
         });
     });
     new Element('td', {
         'html' : 'Editar'
-    }).inject(config_title_tr);	
+    }).inject(config_title_tr);
 
     jsonObj.each(function(post){
         var id = post.id;
@@ -347,12 +349,12 @@ function makeContentTable(jsonObj, container){
         }).inject(config_title_tr);
         new Element('td', {
             'html' : getReadableDate(new Date(parseInt(post.modified)))
-        }).inject(config_title_tr);        
+        }).inject(config_title_tr);
         var checktd = new Element('td').inject(config_title_tr);
         new Element ('input',{
             'type':'checkbox'
         }).inject(checktd);
-        
+
         var editbutton = new Element('td').inject(config_title_tr);
         new Element ('input',{
             'type':'submit',
@@ -360,8 +362,8 @@ function makeContentTable(jsonObj, container){
             'name':post.id,
             'onclick':"window.location.href = 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id="+id+"';"
         }).inject(editbutton);
-        				
-    /*tags = tags.toLowerCase().replace(/ /g,'_');				
+
+    /*tags = tags.toLowerCase().replace(/ /g,'_');
         config_title_tr.addClass(post.source).addClass(tags.replace(/,/g, ' ')).addClass(post.descripcion).addClass(post.estado).addClass(post.modificado);*/
     });
 }
@@ -379,11 +381,11 @@ function loadPosts(container){
             //status.set('innerHTML', 'Recuperando posts...');
             searching = true;
         },
-        onComplete: function(jsonObj) {            
-            searching = false;            
+        onComplete: function(jsonObj) {
+            searching = false;
         },
         onSuccess: function(jsonObj) {
-            // actualizar pagina            
+            // actualizar pagina
             if(typeof jsonObj != 'undefined'){
                 makeContentTable(jsonObj.response.docs, container);
             }
@@ -406,16 +408,16 @@ function workflow(buttons){
                 $(button).setStyle('display','inline');
         });
     if(zContent.state == 'created' || zContent.state == 'saved'){
-        $('guardarButton').setStyle('display','inline');   
-    } 
+        $('guardarButton').setStyle('display','inline');
+    }
     if(zContent.state == 'saved'){
-        $('publicarButton').setStyle('display','inline');   
-        $('anularButton').setStyle('display','inline');   
+        $('publicarButton').setStyle('display','inline');
+        $('anularButton').setStyle('display','inline');
     }
     if(zContent.state == 'published'){
-        $('despublicarButton').setStyle('display','inline');   
-        $('anularButton').setStyle('display','inline');   
+        $('despublicarButton').setStyle('display','inline');
+        $('anularButton').setStyle('display','inline');
     }
-    
+
     $('volverButton').setStyle('display','inline');
 }
