@@ -135,33 +135,7 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
 	try {
 		var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');
 		//var odata = JSON.parse(data);
-		console.log("------------------------ ZONALES BASE ------------------------------");
-		console.log(JSON.stringify(oid));
-        console.log(JSON.stringify(data));
-        console.log("------------------------ END BASE ------------------------------");
 		model.update(oid, data, function(err) {
-			if (err) {
-				  console.log('Error actualizando el dato --> ' + err);
-				  throw errors.apiError;
-			  }
-			  callback(errors.success);
-		  	  return(this);
-		});
-	} catch (err) {
-		console.log('Error --> ' + err);
-		throw errors.apiError;
-	}
-}
-
-//Actualiza un dato existente
-module.exports.upsert = function upsert(model, searchFieldName, searchFieldData, data, callback) {
-	// Make sure a callback is defined.
-	callback = (callback || noop);
-	
-	try {
-		var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');
-		//var odata = JSON.parse(data);
-		model.update(oid, data, {upsert: true}, function(err) {
 			if (err) {
 				  console.log('Error actualizando el dato --> ' + err);
 				  throw errors.apiError;

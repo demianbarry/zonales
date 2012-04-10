@@ -852,53 +852,17 @@ app.get('/geoData/remove', function(req, res) {
     }
 });
 
-//Obtener categorías desde Wikimapia
+//Servicio que elimina un dato geográfico. Parámetros: Nombre del tipo de lugar a eliminar
 app.get('/wikimapia/fetchCategories', function(req, res) {
     res.writeHead(200, {
         "Content-Type": "text/javascript"
     });
     try {
         res.write("Ejecutando Script para extraccion de categorias. Revise log de Node.js...");
-        wikimapiaCategoriesScript.fetchCategories(
-            parseFloat(req.query.west), 
-            parseFloat(req.query.north), 
-            parseFloat(req.query.east), 
-            parseFloat(req.query.south), 
-            parseFloat(req.query.londelta), 
-            parseFloat(req.query.latdelta),
-            parseInt(req.query.count),
-            req.query.category
-        );
+        wikimapiaCategoriesScript.fetchCategories();
         res.end();
     } catch (err) {
         res.write("Error extrayendo categorías desde Wikimapia!");
-        res.write("Compruebe que ha ingresado correctamente los parámetros");
-        res.write("Error: " + err);
-        res.end();
-    }
-});
-
-//Obtener places desde Wikimapia por categoría
-app.get('/wikimapia/fetchZones', function(req, res) {
-    res.writeHead(200, {
-        "Content-Type": "text/javascript"
-    });
-    try {
-        res.write("Ejecutando Script para extraccion de Zonas. Revise log de Node.js...");
-        wikimapiaZonesScript.fetchZones(
-            parseFloat(req.query.west), 
-            parseFloat(req.query.south), 
-            parseFloat(req.query.east), 
-            parseFloat(req.query.north), 
-            parseFloat(req.query.londelta), 
-            parseFloat(req.query.latdelta),
-            parseInt(req.query.count),
-            req.query.category
-        );
-        res.end();
-    } catch (err) {
-        res.write("Error extrayendo places desde Wikimapia!");
-        res.write("Compruebe que ha ingresado correctamente los parámetros");
         res.write("Error: " + err);
         res.end();
     }

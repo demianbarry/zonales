@@ -219,6 +219,7 @@ function savePlace() {
     	});	
     } else {
         if ($('geoJson').value != '') {
+	  		jsonPlace += ',"geoData":"' + geoPlaceId + '"';
 	    	socket.emit('saveGeoData', objGeo, function (resp) {
 	    		//var resp = eval('(' + data + ')'); 
 				if (resp.cod == 100) {
@@ -290,7 +291,10 @@ function updateFormats() {
 function serialize(event) {
     var type = 'geojson';
     var str = formats['out'][type].write(vectors.features, true);
-    document.getElementById('geoJson').value = str;
+    if (typeof(geoPlaceId) == 'undefined' || geoPlaceId == null) {
+        str = str.substring(0, str.length-2) + ',\n    "id": "' + geoPlaceId + '"\n}';
+        document.getElementById('geoJson').value = str;
+    }
 }
 
 function deserialize() {
