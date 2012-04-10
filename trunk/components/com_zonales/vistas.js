@@ -12,6 +12,7 @@ Element.Properties['data-title'] = {
 };
 
 var nodeURL = 'http://192.168.0.2:4000';
+var detalleURL = 'http://192.168.0.2:82';
 var sources = new Array();
 //var tags = new Array();
 //var places = new Array();
@@ -45,6 +46,12 @@ function initVista(zCtx){
     console.log("======> 1");
     initFilters(zCtx);
     zCtx.setSearchKeyword("");
+    /*if(zCtx.zTab == ''){
+        tab = 'portada';
+        zcSetTab('portada');
+    }*/
+    
+    
     initMapTab();
     $('enLaRed').set({
         style: 'display:inline'
@@ -306,7 +313,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     }
     //console.log('Antes de setear: ' + zoneExtended);
     setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        //console.log('Despuï¿½s de setear: ' + zoneExtended);
+        //console.log('Despu�s de setear: ' + zoneExtended);
         //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
         /*if (tab != 'geoActivos' && $('postsContainer')) {
             loadPost(true);
@@ -359,13 +366,16 @@ function searchPost(keyword, zone) {
     }
 }
 
-function getTarget(post) {
+function getTarget(post, id) {
     ret = '';
     if ((post.source).toLowerCase() == 'twitter') {
         ret = 'http://twitter.com/#!/' + post.fromUser.name;
     } else if ((post.source).toLowerCase() == 'facebook') {
         ret = post.fromUser.url;
-    } else {
+    }else if ((post.source).toLowerCase() == 'zonales') {
+        ret = detalleURL+"/detalle.html?id="+id;
+    }
+    else {
         if(typeOf(post.links) == 'array') {
             post.links.each(function(link) {
                 if (link.type == 'source') {
@@ -520,10 +530,9 @@ function updatePosts(json, component, more) {
         td_story_title = new Element('td').inject(tr_story_title),
         h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
         a_title = new Element('a', {
-            //'target': '_blank',
-            //'href' : getTarget(post)
-            'href' : 'javascript:ModalPopups.Alert(\''+post.title+'\',\'Detalle\',\''+getPost(post).get('html').replace(/"/g, '\\"').replace(/'/g, "\\'")+'\', {okButtonText: \'Close\'});'
-        }).set('html',post.title).inject(h3_story_item_title).addClass('lytebox').set('data-title', post.title),
+            'target': '_blank',
+            'href' : getTarget(post, doc.id)
+        }).set('html',post.title).inject(h3_story_item_title),
         span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
         tr_story_description = new Element('tr').inject(table_story_item),
         //td_story_image = new Element('td').inject(tr_story_description),
@@ -1088,14 +1097,14 @@ function prettyDate(time){
     [3600, 'minutos', 60], // 60*60, 60
     [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
     [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-    [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+    [172800, '1 dia', 'mañana'], // 60*60*24*2
+    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
     [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
     [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-    [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
     [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
     [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
     ];
@@ -1339,6 +1348,7 @@ function armarTitulo(tabTemp){
         $('tituloFiltro').innerHTML = "";
         $('filtrosAct').innerHTML = "";
     }
+
 }
 //zcSetTemp($('tempoSelect').value);
 

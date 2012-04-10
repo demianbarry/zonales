@@ -1,4 +1,4 @@
-//ParÃ¡metros globales
+//Parámetros globales
 var cantMax = '1000';
 var maxZoomOut = 4;
 var openLayersProxyHost = '/cgi-bin/proxy.cgi?url=';
@@ -234,7 +234,7 @@ function initMap() {
 
         var popupContentHTML = "";
 
-        popupContentHTML += '<h3 id="popupTitle">InformaciÃ³n</h3>';
+        popupContentHTML += '<h3 id="popupTitle">Información</h3>';
         popupContentHTML += "<br><div style='verticalAlign: center'><img src='/images/ampliar.gif' alt='Ampliar' onClick='ampliar(" + event.feature.geometry.x + "," + event.feature.geometry.y +")'>";
 
         if (cant < 200) {
@@ -246,7 +246,7 @@ function initMap() {
 
         popupContentHTML += "<br>";
 
-        popupContentHTML += "<p>Usted estÃ¡ viendo informaciÃ³n de las zonas:<p><ul>";
+        popupContentHTML += "<p>Usted está viendo información de las zonas:<p><ul>";
 
         //Muestro las zonas
         for(var i = 0; i < mapzones.length; i++) {
