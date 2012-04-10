@@ -97,7 +97,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                 <label>Tags</label>
                             </td>
                             <td class="input">
-                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zTags);" autocomplete="off">
+                                <input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zTags);" autocomplete="off">
                                 </input>
                             </td>
                         </tr>
