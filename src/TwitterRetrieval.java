@@ -18,6 +18,7 @@
  */
 
 import com.google.gson.Gson;
+
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
@@ -171,7 +172,7 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), StringUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
+                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), WordUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
@@ -239,11 +240,11 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
 
-                solrPost.setExtendedString(StringUtils.capitalize((solrPost.getFromUser().getPlace() != null ? solrPost.getFromUser().getPlace().getName() + ", " : "") + solrPost.getZone().getExtendedString().replace("_", " ")));
+                solrPost.setExtendedString(WordUtils.capitalize((solrPost.getFromUser().getPlace() != null ? solrPost.getFromUser().getPlace().getName() + ", " : "") + solrPost.getZone().getExtendedString().replace("_", " ")));
                 postList.add(solrPost);
 
                 post = new PostType();
-                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), StringUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
+                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), WordUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
