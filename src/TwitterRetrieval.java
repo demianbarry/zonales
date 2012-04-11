@@ -18,7 +18,6 @@
  */
 
 import com.google.gson.Gson;
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -27,6 +26,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import org.apache.commons.lang3.StringUtils;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
