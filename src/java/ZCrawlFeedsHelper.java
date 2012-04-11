@@ -1,6 +1,6 @@
 
 import com.google.gson.Gson;
-import com.sun.xml.internal.ws.util.StringUtils;
+
 //import com.sun.syndication.feed.rss.Content;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
@@ -22,6 +22,7 @@ import javax.swing.text.BadLocationException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import org.apache.commons.lang3.text.WordUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -123,7 +124,7 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntry.setSource(source);
 
-                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), StringUtils.capitalize(zone.getExtendedString().replace("_", " "))));
+                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), WordUtils.capitalize(zone.getExtendedString().replace("_", " "))));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -183,7 +184,7 @@ public class ZCrawlFeedsHelper {
                         source = source.substring(0, source.indexOf("/") + 1);
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), StringUtils.capitalize(zone.getExtendedString().replace("_", " "))));
+                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), WordUtils.capitalize(zone.getExtendedString().replace("_", " "))));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
