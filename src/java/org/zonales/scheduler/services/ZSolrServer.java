@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -371,7 +371,7 @@ public final class ZSolrServer extends BaseService {
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
-            solrPost.setZoneExtendedString(StringUtils.capitalize(post.getZone().getExtendedString().replace("_", " ")));
+            solrPost.setZoneExtendedString(WordUtils.capitalize(post.getZone().getExtendedString().replace("_", " ")));
         }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
@@ -392,7 +392,7 @@ public final class ZSolrServer extends BaseService {
         solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
-        solrPost.setExtendedString(StringUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString().replace("_", " ")));
+        solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString().replace("_", " ")));
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
