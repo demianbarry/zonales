@@ -9,6 +9,7 @@ defined('_JEXEC') or die('Restricted Access');
     function setZTab(newTab){
             tab = newTab;
             zcSetTab(newTab);
+            setActiveTab(newTab);
             if(!$('postsContainer'))
                 window.location.href='/#';
             else{
@@ -16,31 +17,36 @@ defined('_JEXEC') or die('Restricted Access');
                 initVista(zcGetContext());
             }
     }
-    
-    window.addEvent('domready', function(){
-            
-        // show by default the first submenu
-        $('s0_m').setStyle('display', 'block');
 
-        $$('#mymenu li').each(function(el){
-            el.getElement('a').addEvent('mouseover', function(subLinkId){
-                var layer = subLinkId+"_m";
-                $('sublinks').getElements('ul').setStyle('display', 'none');
-                if($(layer)){
-                    if($(layer).getChildren('li').length > 0){
-                        $(layer).getParent().getParent().setStyle('height','42px');
-                    } else {
-                        $(layer).getParent().getParent().setStyle('height','18px');
-                    }
-                    $(layer).setStyle('display', 'block');
-                }
-            }.pass(el.id));
-        });        
-    });
-    // ]]>
+    function setActiveTab(newTab) {
+        if (newTab == 'portada') {
+            $('portada_anchor').addClass('active');
+            $('enlared_anchor').removeClass('active');
+            $('noticias_anchor').removeClass('active');
+        }
+
+        if (newTab == 'enlared') {
+            $('portada_anchor').removeClass('active');
+            $('enlared_anchor').addClass('active');
+            $('noticias_anchor').removeClass('active');
+        }
+
+        if (newTab == 'noticiasenlared') {
+            $('portada_anchor').removeClass('active');
+            $('enlared_anchor').removeClass('active');
+            $('noticias_anchor').addClass('active');
+        }
+
+    }
 </script>
 
-<!-- glassmenu -->
+<div>
+    <div id="mainMenu"><p><a id="portada_anchor" href="#" onclick="setZTab('portada');">Portada</a> | <a id="enlared_anchor" href="#" onclick="setZTab('enlared');" class="active">En la red</a> | <a id="noticias_anchor" href="#" onclick="setZTab('noticiasenlared');">Noticas</a></p></div>
+    <div id="ordenar"><p>Ordenar por <img src="templates/<?php echo $template; ?>/img/arrow_right.gif" /> <a href="#">Más relevantes</a> | <a href="#">Más recientes</a></p></div>
+</div>
+
+
+<!-- glassmenu
 <div id="navigation">
     <ul id="mymenu">
         <li id="s0"><a id="menuPortada" onclick="setZTab('portada');" href="#"><?php echo JText::_('Portada'); ?></a></li>
@@ -59,12 +65,6 @@ defined('_JEXEC') or die('Restricted Access');
         <li><a id="submenuNoticiasNuevas" onclick="setZTab('noticiasenlared');" href="#">Noticias nuevas</a></li>
         <li><a id="submenuNoticiasRelevantes" onclick="setZTab('noticiasenlaredrelevantes');" href="#">Noticias relevantes</a></li>
     </ul>
-    <!--<ul id="s50_m">
-        <li><a href="/index.php?option=com_zonales&task=zonal&view=geoActivos">Zonales Activos</a></li>
-        <li><a href="">Contenido Relevante</a></li>
-        <li><a href="">Contenido Nuevo</a></li>
-        <li><a href="">Contenido Cercano</a></li>
-    </ul>-->
 
 </div>
-<!-- glassmenu -->
+-->

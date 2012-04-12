@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
+<install version="1.7" type="template">
+    <name>Z30</name>
+    <creationDate>11 de abril de 2012</creationDate>
+    <author>Mediabit</author>
+    <authorEmail>sschipa@mediabit.com.ar</authorEmail>
+    <authorUrl>http://www.mediabit.com.ar</authorUrl>
+    <version>3.0</version>
+    <description>.</description>
+    
+    <files>
+        <file>favicon.ico</file>
+        <file>index.php</file>
+        <file>index.html</file>
+        <file>component_edit.php</file>
+        <file>component_only.php</file>
+        <file>templateDetails.xml</file>
+        <folder>css</folder>
+        <folder>img</folder>
+    </files>
+
+    <positions>
+        <position>header</position>
+        <position>top</position>
+        <position>login</position>
+    </positions>
+
+</install>

@@ -3,10 +3,8 @@
     //sources.push("Facebook", "Twitter");
     //tags = new Array();
     //tab ="portada";
-    
+
     -->
-    if(zcGetTab() == '')
-       zcSetTab('enlared');
 
 </script>
 <div id="postsDiv">
@@ -28,6 +26,6 @@
     <div id="postsContainer">
     </div>
     <div>
-        <input id="verMas" value="Ver más" onclick="loadMorePost();" type="button">
+        <div id="verMas"><p><a href="#" onclick="loadMorePost();">Ver más <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
     </div>
 </div>

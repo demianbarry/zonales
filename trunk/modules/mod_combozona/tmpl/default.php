@@ -16,6 +16,17 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 ?>
 
+<div id="top_bar_right">
+    <p><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
+               onfocus="if(this.value=='Seleccione una zona...') this.value='';"/></p>
+
+    <input type="hidden" value="setZonalById" name="task">
+    <input type="hidden" value="com_zonales" name="option">
+    <?php echo JHTML::_('form.token'); ?>
+</div><!-- /#top_bar_right -->
+
+
+<!--
 <style>
     span#z_provincias_container{
         margin-left:10px;
@@ -42,3 +53,5 @@ JHTML::_('behavior.formvalidation');
     <input type="hidden" value="com_zonales" name="option">
     <?php echo JHTML::_('form.token'); ?>
 </div>
+
+-->
