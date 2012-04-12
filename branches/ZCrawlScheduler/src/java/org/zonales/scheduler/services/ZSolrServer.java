@@ -410,7 +410,8 @@ public final class ZSolrServer extends BaseService {
             Post post = null;
 
             if (json != null) {
-                post = gson.fromJson(json.replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+           //     post = gson.fromJson(json.replace("\\\"", "\"").replace("\\'", "\""), Post.class);
+                post = gson.fromJson(json, Post.class);
             }
 
             zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
