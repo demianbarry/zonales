@@ -44,16 +44,16 @@ function initVista(zCtx){
     zirClient.setLastIndexTime(null);
     zirClient.setMinRelevance(null);
     console.log("======> 1");
-    initFilters(zCtx);
+    //initFilters(zCtx);
     zCtx.setSearchKeyword("");
     /*if(zCtx.zTab == ''){
         tab = 'portada';
         zcSetTab('portada');
     }*/
-    
-    
-    initMapTab();
-    $('enLaRed').set({
+
+
+    //initMapTab();
+    /*$('enLaRed').set({
         style: 'display:inline'
     });
     $('noticiasEnLaRed').set({
@@ -117,7 +117,7 @@ function initVista(zCtx){
         $('filtroSources').set({
             style: 'display:inline'
         });
-    }
+    }*/
 
 //zcSetTab(tab);
 //alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
@@ -409,7 +409,7 @@ function verNuevos(){
             $('postsContainer').getChildren('[id='+post.get('id')+']').each(function(post){
                 post.dispose();
             });
-            
+
 
         if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
             var newPost = post.clone(true, true);
@@ -434,7 +434,7 @@ function verNuevos(){
     //$('postsContainer').set({ style: 'background:#FFFFFF'});
     $('verNuevos').setStyle('display','none');
     $('newPostsContainer').empty();
-    refreshFiltro();
+    //refreshFiltro();
 // $('postsContainer').setStyle('backgroundColor','#FFFFFF');
 }
 
@@ -500,7 +500,7 @@ function updatePosts(json, component, more) {
             component.getChildren('[id='+'si_' + doc.id+']').each(function(post){
                 post.dispose();
             });
-            
+
         var time = new Date(doc.indexTime).getTime();
         zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
         var modified = doc.modified;
@@ -530,8 +530,18 @@ function updatePosts(json, component, more) {
         td_story_title = new Element('td').inject(tr_story_title),
         h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
         a_title = new Element('a', {
-            'target': '_blank',
-            'href' : getTarget(post, doc.id)
+          //  'target': '_blank'
+            //'href' : getTarget(post, doc.id)
+            //'href' : ''
+        }).addEvent("click", function(){
+            var SM = new SimpleModal();
+            SM.show({
+                "model":"modal-ajax",
+                "title":"",
+                "param":{
+                    "url": detalleURL + "/detalle.html?id="+(post.id).replace("+","%2b")
+                }
+            });
         }).set('html',post.title).inject(h3_story_item_title),
         span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
         tr_story_description = new Element('tr').inject(table_story_item),
@@ -693,7 +703,7 @@ function updatePosts(json, component, more) {
                 }
 
                 if(!$('chkt'+tag)) {
-                    var tr = new Element('tr');
+                    /*var tr = new Element('tr');
                     new Element('input', {
                         'id': 'chkt'+tag,
                         'type': 'checkbox',
@@ -704,7 +714,7 @@ function updatePosts(json, component, more) {
                     new Element('td', {
                         'html': tag
                     }).inject(tr);
-                    tr.inject($('tagsFilterTable'));
+                    tr.inject($('tagsFilterTable'));*/
 
                     zcAddTag(tag);
                 }
@@ -754,22 +764,22 @@ function updatePosts(json, component, more) {
             }).inject(span_addTags);
 
             // if((zTags.indexOf($(idInputTag).value)!= -1 ){
-                
-            
+
+
             //&&  (zTags.indexOf($(idInputTag).value))=! -1
-                
+
             var confimAddTagButton = new Element('img', {
                 'id':idButtonAddTags,
                 'style':'display:none',
                 'src': '/CMUtils/addIcon.gif'
             }).set('html','Add').addClass('story-item-button');//inject(div_story_tags);
-            
+
             confimAddTagButton.addEvent('click',function(){
                 show_confirm(idInputTag,$(idInputTag).value,tags);
                 $(idInputTag).value = '';
-                
+
             });
-            
+
         /*********/
         /*
             var span_addPlaces = new Element('span',{
@@ -844,7 +854,7 @@ function updatePosts(json, component, more) {
             }*/
 
         if(!$('chk'+post.source)) {
-            var tr = new Element('tr');
+            /*var tr = new Element('tr');
             new Element('input', {
                 'id': 'chk'+post.source,
                 'type': 'checkbox',
@@ -855,7 +865,7 @@ function updatePosts(json, component, more) {
             new Element('td', {
                 'html': post.source
             }).inject(tr);
-            tr.inject($('filtroSources'));
+            tr.inject($('filtroSources'));*/
             /*if (tab == "enlared" || tab == "relevantes" )
                 tr.inject($('enLaRed'));
             else
@@ -893,13 +903,13 @@ function updatePosts(json, component, more) {
         }
 
     });
-    refreshFiltro();
+    //refreshFiltro();
 
     var fileref=document.createElement('script');
     fileref.setAttribute('id','lytebox');
     fileref.setAttribute('type','text/javascript');
     fileref.setAttribute('language','javascript');
-    fileref.setAttribute('src', '/media/system/js/lytebox.js');
+    //fileref.setAttribute('src', '/media/system/js/lytebox.js');
     if(document.getElementById("lytebox"))
         document.getElementsByTagName("head")[0].removeChild(document.getElementById("lytebox"));
     document.getElementsByTagName("head")[0].appendChild(fileref);
@@ -1016,7 +1026,7 @@ function setSourceVisible(source, visible) {
     } else {
         zcUncheckSource(source);
     }
-    refreshFiltro();
+    //refreshFiltro();
 }
 
 function ckeckOnlyTag(tag) {
@@ -1051,7 +1061,7 @@ function setTagVisible(tag, checked) {
             $('chkt'+tag).removeClass('checked');
         zcUncheckTag(tag);
     }
-    refreshFiltro();
+    //refreshFiltro();
 }
 
 function refreshFiltro(){

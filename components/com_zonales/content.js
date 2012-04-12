@@ -368,34 +368,37 @@ function makeContentTable(jsonObj, container){
     });
 }
 
-function loadPosts(container){
-    if(searching)
-        return;
-    urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=200&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Zonales)";
-    var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(urlSolr);
+var contentRetieval = {
 
-    new Request.JSON({
-        url: urlProxy,
-        method: 'get',
-        onRequest: function(){
-            //status.set('innerHTML', 'Recuperando posts...');
-            searching = true;
-        },
-        onComplete: function(jsonObj) {
-            searching = false;
-        },
-        onSuccess: function(jsonObj) {
-            // actualizar pagina
-            if(typeof jsonObj != 'undefined'){
-                makeContentTable(jsonObj.response.docs, container);
+    urlSolr: "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=200&qt=zonalesContent&sort=max(modified,created)+desc&wt=json&explainOther=&hl.fl=&q=source:(Zonales)",
+    loadZonalesContent: function (container){
+        if(searching)
+            return;
+        var urlProxy = '/curl_proxy.php?host='+(host ? host : "localhost")+'&port='+(port ? port : "38080")+'&ws_path=' + encodeURIComponent(this.urlSolr);
+
+        new Request.JSON({
+            url: urlProxy,
+            method: 'get',
+            onRequest: function(){
+                //status.set('innerHTML', 'Recuperando posts...');
+                searching = true;
+            },
+            onComplete: function(jsonObj) {
+                searching = false;
+            },
+            onSuccess: function(jsonObj) {
+                // actualizar pagina
+                if(typeof jsonObj != 'undefined'){
+                    makeContentTable(jsonObj.response.docs, container);
+                }
+            },
+            // Our request will most likely succeed, but just in case, we'll add an
+            // onFailure method which will let the user know what happened.
+            onFailure: function(){
+            //status.set('innerHTML', 'Twitter: The request failed.');
             }
-        },
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        //status.set('innerHTML', 'Twitter: The request failed.');
-        }
-    }).send();
+        }).send();
+    }
 }
 
 function workflow(buttons){
