@@ -67,9 +67,10 @@ body{
 
 #content-only {
     margin:auto;
-    width:932px;    
+    width:932px;
     background-repeat:repeat-y;
     background-position:530px;
+    background: none repeat scroll 0 0 #CED8F6;
 }
 
 #content-left{
@@ -135,7 +136,7 @@ body{
 }
 
 /* POPULATE OPTIONS */
-div.suggestions {    
+div.suggestions {
     background: none repeat scroll 0% 0% #009ECD;
     border-style: groove;
     border-width: 0px 2px 2px 2px;
@@ -145,19 +146,19 @@ div.suggestions {
     padding: 5px;
     position: absolute;
     z-index: 999;
-    opacity: 0.95;  
+    opacity: 0.95;
 }
 
-div.suggestions p {        
+div.suggestions p {
     border-radius: 2px 2px 2px 2px;
     padding: 3px;
-    color: white;    
+    color: white;
 }
 
 div.suggestions p.selected  {
     background: none repeat scroll 0% 0% #78E0FF;
     position: relative;
-    color: white;    
+    color: white;
 }
 /* FIN POPULATE OPTIONS */
 
@@ -174,12 +175,12 @@ div#content-right ul.menuEditor li {
 }
 
 div#content-right ul.menuEditor li:hover {
-    background: #78E0FF;    
+    background: #78E0FF;
 }
 
 div#content-right ul.menuEditor li a {
     color: white;
-    font-weight: bold;    
+    font-weight: bold;
     text-decoration: none;
 }
 /* FIN MENU EDITOR */
@@ -187,7 +188,22 @@ div#content-right ul.menuEditor li a {
 /* EDITOR ZONALES */
 div#table_content table.advanced_search tbody tr td.input input {
     border: 1px groove;
+    border-color: #CECEF6;
     margin: 10px;
+     width: 80%;
+}
+
+html body div#content-only div.border1 div.padding10 h1.samples{
+    font-family: 'PT Sans Narrow',sans-serif;
+    text-align: center;
+    background: none repeat scroll 0 0 #009CC9;
+    padding: 6px;
+    font-size: 20px;
+    color: white;
+}
+
+div#table_content table.advanced_search tbody tr td.label label{
+    font-family: 'PT Sans Narrow',sans-serif;
 }
 /* FIN EDITOR ZONALES */
 
