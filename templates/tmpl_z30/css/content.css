@@ -156,7 +156,7 @@ p.buttons a{
 	color:#FFF;
 }
 
-#nuevos_post p{
+#verNuevos p{
 	text-align:center;
 	text-transform:uppercase;
 	font-family: 'Open Sans Condensed', sans-serif;
@@ -164,13 +164,13 @@ p.buttons a{
 	color:#009cc9;
 }
 
-#nuevos_post p a{
+#verNuevos p a{
 	display:block;
 	text-decoration:none;
 	color:inherit;
 }
 
-#nuevos_post p a img{
+#verNuevos p a img{
 	padding:0 0 3px 4px;
 }
 

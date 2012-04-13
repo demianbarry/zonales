@@ -43,13 +43,13 @@ JHTML::_('behavior.modal');
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Zonales</title>
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/general.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />-->
+<!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>-->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
@@ -59,13 +59,9 @@ JHTML::_('behavior.modal');
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css" />
-
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
-        <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
+        
         <script language="javascript" type="text/javascript" src="components/com_zonales/map2.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
@@ -77,7 +73,7 @@ JHTML::_('behavior.modal');
             var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];
         </script>
     </head>
-        
+
     <body>
 
         <div id="top_bar" style="">
@@ -100,8 +96,6 @@ JHTML::_('behavior.modal');
                         <div id="topNav">
                             <jdoc:include type="modules" name="top" />
                         </div><!-- end #topNav -->
-
-                        <div id="nuevos_post"><p><a href="#">Hay 3 nuevos post <img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/img/arrow_down.gif" /></a></p></div>
 
                         <jdoc:include type="component" />
 
