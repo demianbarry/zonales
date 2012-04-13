@@ -60,8 +60,14 @@ body{
 #content{
     margin:auto;
     width:932px;
-
     background:url(../img/bg-line-ccc.gif);
+    background-repeat:repeat-y;
+    background-position:530px;
+}
+
+#content-only {
+    margin:auto;
+    width:932px;    
     background-repeat:repeat-y;
     background-position:530px;
 }
@@ -157,6 +163,7 @@ div.suggestions p.selected  {
 
 /* MENU EDITOR */
 div#content-right ul.menuEditor {
+    font-family: 'PT Sans Narrow',sans-serif;
     float: right;
     width: 40%;
 }
@@ -170,8 +177,15 @@ div#content-right ul.menuEditor li a {
     color: white;
     font-weight: bold;    
     text-decoration: none;
-}    
+}
 /* FIN MENU EDITOR */
+
+/* EDITOR ZONALES */
+div#table_content table.advanced_search tbody tr td.input input {
+    border: 1px groove;
+    margin: 10px;
+}
+/* FIN EDITOR ZONALES */
 
 {font-family: 'Open Sans', sans-serif;}
 {font-family: 'PT Sans Narrow', sans-serif;}
