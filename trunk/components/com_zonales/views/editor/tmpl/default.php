@@ -30,7 +30,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     </head>
     <body>
         <h1 class="samples">
-            Carga de noticias Zonales
+            CARGA NOTICIAS ZONALES
         </h1>
         <!--<div class="description">
             <p>
