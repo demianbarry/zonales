@@ -26,10 +26,10 @@ var host = "localhost";
 var port = "38080";
 
 window.addEvent('domready', function() {
-    if($('postsContainer')){
+    //if($('postsContainer')){
         console.log('domready antes de initAll');
         initAll();
-    }
+    //}
 });
 
 function initVista(zCtx){
@@ -393,7 +393,7 @@ function getVerMas(text){
         for( ;text.charAt(i) != ' ';i--);
         var shortText = text.substring(0,i);
         var otherText = text.substring(i);
-        return shortText + "<span id=\"verMas\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
+        return shortText + "<span id=\"verMasPost\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
     }
     return text;
 }
@@ -472,448 +472,43 @@ function incRelevance(id,relevance){
 
 }
 
+function showPost(title, id) {
+    var SM = new SimpleModal();
+    SM.show({
+        "model":"modal-ajax",
+        "title": title,
+        "param":{
+            "url": detalleURL + "/detalle.html?id="+id.replace("+","%2b")
+        }
+    });
+}
+
+function getPostTitle(title, target) {
+    var a_title = "<a target=\"_blank\" href=\"" + target + "\">" + title + "</a>";
+    return a_title;
+}
+
 
 function updatePosts(json, component, more) {
-    var docs = null;
-    if (!more)
-        docs = json.response.docs.reverse();
-    else
-        docs = json.response.docs;
-    //reverseFlag = false;
-    console.log(docs);
-
-    if(docs.length == 0)
-        return;
-    if(typeof(json) == 'undefined')
-        return;
-    if(typeof more == 'undefined' || !more) {
-        //docs = docs/.reverse();
-        if(!zirClient.getFirstIndexTime()) {
-            zirClient.setFirstIndexTime(docs.pick().indexTime);
-        }
-    } else {
-        zirClient.setFirstIndexTime(docs.getLast().indexTime);
-    }
-    //alert(JSON.stringify(docs));
-    docs.each(function(doc){
-        if(component.getChildren('[id='+'si_' + doc.id+']').length > 0)
-            component.getChildren('[id='+'si_' + doc.id+']').each(function(post){
-                post.dispose();
-            });
-
-        var time = new Date(doc.indexTime).getTime();
-        zirClient.setLastIndexTime((time > zirClient.getLastIndexTime()) ||  zirClient.getLastIndexTime() == null ? time : zirClient.getLastIndexTime());
-        var modified = doc.modified;
-        zirClient.setFirstModifiedTime((modified < zirClient.getFirstModifiedTime()) ||  zirClient.getFirstModifiedTime() == null ? modified : zirClient.getFirstModifiedTime());
-        var post = eval('('+doc.verbatim+')');
-        var div_story_item = new Element('div', {
-            'id': 'si_' + doc.id
-        }).addClass('story-item').addClass('group').addClass(post.source),
-        div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
-        div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
-        div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
-        div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
-        div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
-        span_relevance = new Element('span',{
-            "id":"relevance_"+doc.id
-        }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
-        div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
-        div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
-        div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
-        div_story_item_idPost = new Element('div', {
-            'html': doc.id,
-            'id':'idPostDiv'
-        }).addClass('group').inject(div_story_item).setStyle('display','none'),
-        div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
-        table_story_item = new Element('table').inject(div_story_item_header),
-        tr_story_title = new Element('tr').inject(table_story_item),
-        td_story_title = new Element('td').inject(tr_story_title),
-        h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
-        a_title = new Element('a', {
-          //  'target': '_blank'
-            //'href' : getTarget(post, doc.id)
-            //'href' : ''
-        }).addEvent("click", function(){
-            var SM = new SimpleModal();
-            SM.show({
-                "model":"modal-ajax",
-                "title":"",
-                "param":{
-                    "url": detalleURL + "/detalle.html?id="+(post.id).replace("+","%2b")
-                }
-            });
-        }).set('html',post.title).inject(h3_story_item_title),
-        span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
-        tr_story_description = new Element('tr').inject(table_story_item),
-        //td_story_image = new Element('td').inject(tr_story_description),
-        td_story_description = new Element('td').inject(tr_story_description),
-        p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
-        a_story_item_source = new Element('a', {
-            'target': '_blank'
-        }).set('html','').addClass('story-item-source').inject(p_story_item_description),
-        a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
-        a_story_item_icon_image = new Element('img',{
-            'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
-        }).inject(a_story_item_icon).addClass('source_logo'),
-        a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + getVerMas(post.text.trim()) : '').addClass('story-item-teaser').inject(a_story_item_source, 'after'),
-        ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
-        li_story_submitter = new Element('li', {}).set('html','Publicado en  ').addClass('story-item-submitter').inject(ul_story_item_meta).setStyle('display', post.fromUser.name ? 'block' : 'none'),
-        a_story_submitter = new Element('a', {
-            'target': '_blank',
-            'href': post.fromUser.url
-        }).set('html',post.source).inject(li_story_submitter),
-        span_storyitem_modified_real = new Element('span', {
-            'html': modified,
-            'style': 'display:none'
-        }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
-        span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
-        span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
-        div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
-        div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
-        div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
-
-        if(typeOf(post.actions) == 'array') {
-            post.actions.each(function(action){
-                switch (action.type) {
-                    case 'comment':
-                        var li_story_item_comments = new Element('li', {}).set('html',action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
-                        new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
-                        break;
-                    case 'like':
-                        var li_story_item_likes = new Element('li', {}).set('html',action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
-                        new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
-                        break;
-                    case 'retweets':
-                        var li_story_item_retweets = new Element('li', {}).set('html',action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
-                        new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
-                        break;
-                    case 'replies':
-                        var li_story_item_replies = new Element('li', {}).set('html',action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
-                        new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
-                        break;
-                }
-            });
-        }
-
-        div_zonales_count_wrapper_up.addEvent('click',function(){
-            var inc = 1;
-            if(zUserGroups.length == 0 || zUserGroups[0] == ''){
-                if(confirm('Debe registrarse para otorgar puntos!')) {
-                    window.location.href='/index.php/component/users/?view=registration';
-                }
-            }else {
-                if(zUserGroups.indexOf("4") != -1){
-                    inc = prompt('Indique en cuanto desea incrementar la relevancia','1');
-                }
-                incRelevance(doc.id,inc);
-            }
-        });
-
-        div_zonales_count_wrapper_down.addEvent('click',function(){
-            var inc = 1;
-            if(zUserGroups.length == 0 || zUserGroups[0] == ''){
-                if(confirm('Debe registrarse para otorgar puntos!')) {
-                    window.location.href='/index.php/component/users/?view=registration';
-                }
-            }else{
-                if(zUserGroups.indexOf("4") != -1){
-                    inc = prompt('Indique en cuanto desea decrementar la relevancia','1');
-                }
-                incRelevance(doc.id,inc*(parseInt(inc) > 0 ? (-1): 1));
-            }
-        });
-
-        var postLinks;
-
-        switch(post.source.toLowerCase()) {
-            case 'facebook':
-                postLinks =	post.links;
-                break;
-            default:
-                postLinks =	post.links;
-        }
-
-        var a_thumb = new Element('a', {
-            'href': getTarget(post),
-            'target': '_blank'
-        });
-
-        if(typeOf(postLinks) == 'array') {
-            postLinks.each(function(link){
-                switch (link.type) {
-                    case 'picture':
-                        if(a_thumb.childNodes.length == 0 && link.url) {
-                            a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
-                            img = new Element('img', {
-                                'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
-                            }).inject(a_thumb);
-                        }
-                        break;
-                    case 'video':
-                        var li_story_item_video = new Element('li').addClass('story-item-video').inject(ul_story_item_meta),
-                        a_story_item_video = new Element('a', {
-                            'href': link.url,
-                            'target': '_blank'
-                        }).addClass('story-item-video').inject(li_story_item_video);
-                        new Element('img', {
-                            'src': 'http://www.prophecycoal.com/images/video_icon.jpg',
-                            'alt': 'Video',
-                            'title': 'Video'
-                        }).addClass('story-item-video-icon').inject(a_story_item_video);
-                        break;
-                    case 'link':
-                        var li_story_item_link = new Element('li').addClass('story-item-link').inject(ul_story_item_meta),
-                        a_story_item_link = new Element('a', {
-                            'href': link.url,
-                            'target': '_blank'
-                        }).set('html','Mas info...').addClass('story-item-link').inject(li_story_item_link);
-                        break;
-                }
-            });
-        }
-
-        //  var date = new Date(parseInt(post.created));
-        //  new Element('li', {}).set('html','Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
-
-        // date = new Date(parseInt(post.modified));
-
-
-        var tags = post.tags;
-        var div_story_tags = new Element('div',{
-            'id':'tagsDiv_'+doc.id
-        }).addClass('cp_tags').inject(div_story_item_content);
-        new Element('span').set('html','Tags: ').inject(div_story_tags);
-        if(typeOf(tags) == 'array') {
-            tags.each(function(tag){
-                var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
-                new Element('a', {
-                    'html': tag,
-                    'onclick': 'ckeckOnlyTag("' + tag + '");'
-                }).inject(span_tags);
-                div_story_item.addClass(tag);
-                if(zUserGroups.indexOf("4") != -1) {
-                    var del_tag_img = new Element('img',{
-                        'src': '/images/eliminar.png'
-                    }).inject(span_tags).addClass('delete_tag');
-                    del_tag_img.addEvent('click', function(){
-                        if(confirm('Realmente desea eliminar el tag '+tag)){
-                            delTagFromPost(doc.id, tag);
-                        }
-                    });
-                }
-
-                if(!$('chkt'+tag)) {
-                    /*var tr = new Element('tr');
-                    new Element('input', {
-                        'id': 'chkt'+tag,
-                        'type': 'checkbox',
-                        'checked': 'checked',
-                        'value': tag,
-                        'onclick':'setTagVisible(this.value, this.checked);'
-                    }).inject(new Element('td').inject(tr)).addClass('checked');
-                    new Element('td', {
-                        'html': tag
-                    }).inject(tr);
-                    tr.inject($('tagsFilterTable'));*/
-
-                    zcAddTag(tag);
-                }
-            });
-        }
-
-        /*     var div_story_place = new Element('div').addClass('cp_tags').inject(div_story_item_content);
-        new Element('span').set('html','Lugar: ').inject(div_story_place);
-        var span_place = new Element('span').inject(div_story_place);
-    */
-        var idInputTag = doc.id;
-        var idButtonAddTags = 'buttonTags_'+doc.id;
-        //var idInputPlace = 'places'+doc.id;
-        //var idButtonAddPlaces = 'buttonPlaces_'+doc.id;
-        if(zUserGroups.indexOf("4") != -1){
-            var a_edit = new Element('a', {
-                'target': '_blank',
-                'href' : 'index.php?option=com_zonales&task=zonal&view=editor&tmpl=component_edit&id='+doc.id
-            }).setStyle('display',post.source == 'Zonales' ? 'inline' : 'none').inject(div_story_item_header),
-            a_edit_image = new Element('img',{
-                'src': '/media/system/images/edit.png'
-            }).inject(a_edit).addClass('edit_img');
-            var span_addTags = new Element('span',{
-                'id':'addTags_'+doc.id
-            }).inject(div_story_tags);
-            var addTagsButton = new Element('a').set('html','Add Tags').inject(span_addTags);
-            addTagsButton.addEvent('click',function(){
-                if ( $(idInputTag).style.display == "none"){
-                    $(idInputTag).setStyle("display","inline");
-                    //  $(idButtonAddTags).setStyle("display","none");
-                    $(idInputTag).focus();
-                }else {
-                    $(idInputTag).setStyle("display","none");
-                // $(idButtonAddTags).setStyle("display","none");
-                }
-            });
-
-            var selectedTag = new Element('input',{
-                'id':idInputTag,
-                'style':'display:none',
-                'onkeyup':'populateOptions(event,this,false,zTags,function(){'+
-                'show_confirm("'+idInputTag+'",$("'+idInputTag+'").value,"'+tags+'");'+
-                '$("'+idInputTag+'").value = "";'+
-                '})',
-                //'onkeydown':'checkTag(this.value,"'+idButtonAddTags+'")',
-                'value':''
-            }).inject(span_addTags);
-
-            // if((zTags.indexOf($(idInputTag).value)!= -1 ){
-
-
-            //&&  (zTags.indexOf($(idInputTag).value))=! -1
-
-            var confimAddTagButton = new Element('img', {
-                'id':idButtonAddTags,
-                'style':'display:none',
-                'src': '/CMUtils/addIcon.gif'
-            }).set('html','Add').addClass('story-item-button');//inject(div_story_tags);
-
-            confimAddTagButton.addEvent('click',function(){
-                show_confirm(idInputTag,$(idInputTag).value,tags);
-                $(idInputTag).value = '';
-
-            });
-
-        /*********/
-        /*
-            var span_addPlaces = new Element('span',{
-                'id':'addPlaces_'+doc.id
-            }).inject(div_story_place);
-            var addPlaceButton = new Element('a').set('html','Add Place').inject(span_addPlaces);
-            addPlaceButton.addEvent('click',function(){
-                if ( $(idInputPlace).style.display == "none"){
-                    $(idInputPlace).setStyle("display","inline");
-                    $(idButtonAddPlaces).setStyle("display","inline");
-                    $(idInputPlace).focus();
-                }else {
-                    $(idInputPlace).setStyle("display","none");
-                    $(idButtonAddPlaces).setStyle("display","none");
-                }
-            });
-
-            var selectedPlace = new Element('input',{
-                'id':idInputPlace,
-                'style':'display:none',
-                'onclick':'setPlace("'+post.zone.extendedString+'");',
-                'onkeyup':'populateOptions(event,this,true,places)',
-                'value':''
-            }).inject(span_addPlaces);
-            var confimAddPlaceButton = new Element('img', {
-                'id':idButtonAddPlaces,
-                'style':'display:none',
-                'src': '/CMUtils/addIcon.gif'
-            }).set('html','Add').addClass('story-item-button').inject(div_story_place);
-            confimAddPlaceButton.addEvent('click',function(){
-                show_confirm(idInputPlace,$(idInputPlace).value,tags);
-                $(idInputPlace).value = '';
-            });
-            */
-        /*********/
-        }
-        var zone = post.zone.extendedString;
-        var idButtonSetZone = 'buttonZone'+doc.id;
-        var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
-        new Element('span').set('html','Zona: ').inject(div_story_zone);
-        var span_zone = new Element('span').inject(div_story_zone);
-        new Element('a', {
-            'id':'zonePost',
-            'onclick':'setZone("'+zone.replace(/_/g," ").capitalize()+'","","","");;drawMap("'+zone+'");ajustMapToExtendedString("'+zone+'");'
-        }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
-        var idInputZone = 'zone_'+doc.id;
-        var span_addZone = new Element('span').inject(div_story_zone);
-
-
-        /*   new Element('a', {
-            'id':''
-        }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
-        var idInputZone = 'zone_'+doc.id;
-        var span_addZone = new Element('span').inject(div_story_zone);*/
-
-        /*if(zUserGroups.indexOf("4") != -1){
-                new Element('a',{
-                    'onclick':'if ( $("'+idInputZone+'").style.display == "none"){ $("'+idInputZone+'").setStyle("display","inline"); $("'+idButtonSetZone+'").setStyle("display","inline");}else{ $("'+idInputZone+'").setStyle("display","none"); $("'+idButtonSetZone+'").setStyle("display","none");}'
-                }).set('html','Set Zone').inject(span_addZone);
-                var selectedZone = new Element('input',{
-                    'id':idInputZone,
-                    'style':'display:none',
-                    'onkeyup':'populateOptions(event,this,true,allZones)',
-                    'value':''
-                }).inject(span_addZone);
-                new Element('img', {
-                    'id':idButtonSetZone,
-                    'style':'display:none',
-                    'src': '/CMUtils/addIcon.gif',
-                    'onclick':'show_confirm("' + idInputZone + '",$(\'' + idInputZone + '\').value,"'+zone+'")'
-                }).set('html','Add').addClass('story-item-button').inject(div_story_zone);
-            }*/
-
-        if(!$('chk'+post.source)) {
-            /*var tr = new Element('tr');
-            new Element('input', {
-                'id': 'chk'+post.source,
-                'type': 'checkbox',
-                'checked': 'checked',
-                'value': post.source,
-                'onclick':'setSourceVisible(this.value, this.checked);'
-            }).inject(new Element('td').inject(tr));
-            new Element('td', {
-                'html': post.source
-            }).inject(tr);
-            tr.inject($('filtroSources'));*/
-            /*if (tab == "enlared" || tab == "relevantes" )
-                tr.inject($('enLaRed'));
-            else
-                tr.inject($('noticiasEnLaRed'));*/
-            zcAddSource(post.source);
-        }
-
-        if (zirClient.getMinRelevance() != null) {
-            if (parseInt(post.relevance) < zirClient.getMinRelevance()) {
-                zirClient.setMinRelevance(parseInt(post.relevance));
-            }
-        } else {
-            zirClient.setMinRelevance(parseInt(post.relevance));
-        }
-
-        //div_story_item.setStyle('display',$('chk'+post.source) && $('chk'+post.source).checked ? 'block' : 'none');
-
-        /*var insertado = false;
-            var modifiedDate = new Date(modified).getMilliseconds();
-            component.getElements('span.story-item-real-modified-date').each(function(count){
-                postModifiedDate = new Date(count.innerHTML).getMilliseconds();
-                if (modifiedDate > postModifiedDate && !insertado) {
-                    insertado = true;
-                    div_story_item.injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                }
-            });
-            if(!insertado){
-                div_story_item.injectInside($('postsContainer'));
-            }*/
-
-        if(typeof more == 'undefined' || !more) {
-            div_story_item.injectTop(component);
-        } else {
-            div_story_item.injectInside(component);
-        }
-
+    //Recupero los post del verbatim y realizo los cambios necesarios
+    var posts = [];
+    json.response.docs.each(function (doc) {
+       var post = JSON.parse(doc.verbatim);
+       post.modified = prettyDate(doc.modified);
+       var target = getTarget(post, doc.id);
+       post.title = getPostTitle(post.title, target);
+       post.text = getVerMas(post.text ? post.text : "");
+       posts.push(post);
     });
-    //refreshFiltro();
 
-    var fileref=document.createElement('script');
-    fileref.setAttribute('id','lytebox');
-    fileref.setAttribute('type','text/javascript');
-    fileref.setAttribute('language','javascript');
-    //fileref.setAttribute('src', '/media/system/js/lytebox.js');
-    if(document.getElementById("lytebox"))
-        document.getElementsByTagName("head")[0].removeChild(document.getElementById("lytebox"));
-    document.getElementsByTagName("head")[0].appendChild(fileref);
-//document.write('<script id="lytebox" type="text/javascript" language="javascript" src="/media/system/js/lytebox.js"></script>');
+    //Renderizo
+    var htmlPosts = Tempo.prepare('postTemplate').notify(function(event) {
+            if (event.type === TempoEvent.Types.RENDER_STARTING || event.type === TempoEvent.Types.RENDER_COMPLETE) {
+                    $('postTemplate').toggleClass('loading');
+            }
+    });
+    htmlPosts.starting();
+    htmlPosts.render(posts);
 }
 
 function checkTag(tag, bottonId){
