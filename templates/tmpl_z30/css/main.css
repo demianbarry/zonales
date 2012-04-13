@@ -127,7 +127,32 @@ body{
 	padding:10px;
 }
 
+/* POPULATE OPTIONS */
+div.suggestions {    
+    background: none repeat scroll 0% 0% #009ECD;
+    border-style: groove;
+    border-width: 0px 2px 2px 2px;
+    border-radius: 0px 0px 5px 5px;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    position: absolute;
+    z-index: 999;
+    opacity: 0.95;  
+}
 
+div.suggestions p {        
+    border-radius: 2px 2px 2px 2px;
+    padding: 3px;
+    color: white;    
+}
+
+div.suggestions p.selected  {
+    background: none repeat scroll 0% 0% #78E0FF;
+    position: relative;
+    color: white;    
+}
+/* FIN POPULATE OPTIONS */
 
 {font-family: 'Open Sans', sans-serif;}
 {font-family: 'PT Sans Narrow', sans-serif;}
