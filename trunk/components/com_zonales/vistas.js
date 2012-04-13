@@ -305,7 +305,7 @@ function setZone(zoneExtended, zoneName, parentId, parentName) {
     zirClient.setFirstIndexTime(null);
     zirClient.setLastIndexTime(null);
     zirClient.setMinRelevance(null);
-    $('zonalesSearchword').value = "buscar...";
+    //$('zonalesSearchword').value = "buscar...";
     $('zoneExtended').value = zoneExtended;
     if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
         $('postsContainer').empty();
@@ -472,20 +472,14 @@ function incRelevance(id,relevance){
 
 }
 
-function showPost(title, id) {
-    var SM = new SimpleModal();
-    SM.show({
-        "model":"modal-ajax",
-        "title": title,
-        "param":{
-            "url": detalleURL + "/detalle.html?id="+id.replace("+","%2b")
-        }
-    });
-}
-
 function getPostTitle(title, target) {
     var a_title = "<a target=\"_blank\" href=\"" + target + "\">" + title + "</a>";
     return a_title;
+}
+
+function getZoneForPost(zone) {
+    var a_zone = "<a id=\"zonePost\" onclick=\"setZone('" +zone.replace(/_/g," ").capitalize() + "','','','');drawMap('" +zone + "');ajustMapToExtendedString('" + zone + "');\">" + zone.replace(/_/g, " ").capitalize() + "</a>";
+    return a_zone;
 }
 
 
@@ -498,6 +492,7 @@ function updatePosts(json, component, more) {
        var target = getTarget(post, doc.id);
        post.title = getPostTitle(post.title, target);
        post.text = getVerMas(post.text ? post.text : "");
+       post.zone = getZoneForPost(post.zone.extendedString);
        posts.push(post);
     });
 

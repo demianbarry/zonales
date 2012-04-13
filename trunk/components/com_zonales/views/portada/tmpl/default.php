@@ -23,7 +23,7 @@
 
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
-                    <p class="autor">Publicado por {{fromUser.name}} en {{zone.extendedString}}</p>
+                    <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
@@ -52,7 +52,7 @@
 
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
-                    <p class="autor">Publicado por {{fromUser.name}} en {{zone.extendedString}}</p>
+                    <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
@@ -81,7 +81,7 @@
 
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
-                    <p class="autor">Publicado por {{fromUser.name}} en {{zone.extendedString}}</p>
+                    <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
