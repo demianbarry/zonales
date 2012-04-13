@@ -39,6 +39,7 @@
         <filename>solr.js</filename>
         <filename>map.js</filename>
         <filename>map2.js</filename>
+        <filename>tempo.js</filename>
 
         <filename>views/index.html</filename>
         <filename>views/zonal/view.html.php</filename>

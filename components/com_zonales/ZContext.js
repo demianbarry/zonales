@@ -28,7 +28,7 @@ function ZContext(){
     this.selZone = "";
     this.efZone = "";
     this.searchKeyword = "";
-    
+
     this.setSearchKeyword=function(keyword) {
         //Persisto el contexto en el servidor
         socket.emit('addKeywordToZCtx', {
@@ -37,7 +37,7 @@ function ZContext(){
         },function(){
             this.searchKeyword = keyword;
         });
-        
+
     }
 
     this.getSearchKeyword=function() {
@@ -63,7 +63,7 @@ function initZCtx(callback) {
             zCtx.zTabs = zCtxFromServer.zTabs;
             zCtx.zTab = zCtxFromServer.zTab;
             zCtx.selZone = zCtxFromServer.selZone;
-            zCtx.efZone = zCtxFromServer.efZone;                            
+            zCtx.efZone = zCtxFromServer.efZone;
             zCtx.searchKeyword = zCtxFromServer.searchKeyword;
             if(!zCtx.selZone)
                 zCtx.selZone = '';
@@ -84,29 +84,29 @@ function initZCtx(callback) {
         });
     });
     socket.on('solrPosts', function (response) {
-        if($('postsContainer')){
-            zirClient.searching=false;            
+        //if($('postsContainer')){
+            zirClient.searching=false;
             updatePosts(response, $('postsContainer'));
-        }
+        //}
     });
-    
+
     socket.on('solrMorePosts', function (response) {
-        if($('postsContainer')){            
+        //if($('postsContainer')){
             zirClient.searching=false;
             updatePosts(response, $('postsContainer'), true);
-        }
+        //}
     });
     socket.on('solrNewPosts', function (response) {
-        if($('newPostsContainer')){            
+        //if($('newPostsContainer')){
             zirClient.searching=false;
             updatePosts(response,$('newPostsContainer'));
             if($('newPostsContainer').childNodes.length > 0){
-                $('verNuevos').value= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
+                $('verNuevos').innerHTML= $('newPostsContainer').getChildren('div').length+' nuevo'+($('newPostsContainer').getChildren('div').length > 1 ? 's' : '')+'...';
                 $('verNuevos').setStyle('display','block');
             } else{
                 $('verNuevos').setStyle('display','none');
             }
-        }
+        //}
     });
 }
 
@@ -192,7 +192,7 @@ function zcUncheckSource(source){
         sessionId: sessionId,
         source: source
     }, function(response) {
-        
+
         });
 }
 
@@ -232,7 +232,7 @@ function zcUncheckTag(tag){
         sessionId: sessionId,
         tag: tag
     }, function(response) {
-        
+
         });
 }
 
@@ -323,7 +323,7 @@ function getIdByZone(extendedString, callback) {
         callback(zones[0].id);
         return(this);
     });
-    
+
 }
 
 function getPlaces(zoneid, callback) {
@@ -352,7 +352,7 @@ function zcSetTemp(temp) {
         sessionId: sessionId,
         temp: temp
     }, function(response) {
-        
+
         });
 }
 
@@ -368,7 +368,7 @@ function zcSetTab(tab) {
             sessionId: sessionId,
             tab: tab
         }, function(response) {
-            
+
             });
 }
 
