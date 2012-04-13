@@ -173,6 +173,10 @@ div#content-right ul.menuEditor li {
     padding: 5px;
 }
 
+div#content-right ul.menuEditor li:hover {
+    background: #78E0FF;    
+}
+
 div#content-right ul.menuEditor li a {
     color: white;
     font-weight: bold;    
