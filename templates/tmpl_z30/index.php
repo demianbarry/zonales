@@ -61,10 +61,7 @@ JHTML::_('behavior.modal');
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css" />
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
-        
-        <script language="javascript" type="text/javascript" src="components/com_zonales/map2.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
+
         <!--
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node') ?>:4000/socket.io/socket.io.js"></script>
 -->
@@ -105,11 +102,12 @@ JHTML::_('behavior.modal');
                 </div><!-- /#content-left -->
 
                 <div id="content-right">
+                    <jdoc:include type="modules" name="map" />
                     <div class="padding10">
                         <p>&nbsp;</p>
                     </div><!-- /.padding10 -->
+                    <jdoc:include type="modules" name="other" />
                 </div><!-- /#content-right -->
-
                 <div class="clear"></div>
 
             </div><!-- /.border1 -->
