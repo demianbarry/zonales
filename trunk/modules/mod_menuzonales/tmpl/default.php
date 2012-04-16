@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted Access');
     // <![CDATA[
     function setZTab(newTab){
             tab = newTab;
-            zcSetTab(newTab);
+            zTab.zCtx.zcSetTab(newTab);
             setActiveTab(newTab);
             if(!$('postsContainer'))
                 window.location.href='/#';
