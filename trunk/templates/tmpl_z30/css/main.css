@@ -215,6 +215,21 @@ div#content-only div.border1 div.padding10 form div#buttons input{
 }
 /* FIN EDITOR ZONALES */
 
+/*LISTA NOTICIAS ZONALES*/
+html body div#content-only div.border1 div.padding10 div#wrapper.clearfix div#resultado table#resultTable.resultTable tr.tableRowHeader{
+    font-family: 'PT Sans Narrow',sans-serif;
+    text-align: center;
+    background: none repeat scroll 0 0 #009CC9;
+    padding: 6px;
+    font-size: 20px;
+    color: white;
+}
+html body div#content-only div.border1 div.padding10 div#wrapper.clearfix div#resultado{
+    font-size: 15px;
+    font-family: 'PT Sans Narrow',sans-serif;
+}
+/*FIN LISTA*/
+
 {font-family: 'Open Sans', sans-serif;}
 {font-family: 'PT Sans Narrow', sans-serif;}
 {font-family: 'PT Sans', sans-serif;}
