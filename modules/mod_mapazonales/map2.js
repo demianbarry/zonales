@@ -229,7 +229,7 @@ function initMap() {
     //Create a style object to be used by a StyleMap object
     var vector_style = new OpenLayers.Style({
      'fillColor': '#009CC9',
-     'fillOpacity': .4,
+     'fillOpacity': .7,
      'strokeColor': '#009CC9',
      'strokeWidth': 1
      });
