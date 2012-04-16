@@ -24,6 +24,8 @@
         <position>header</position>
         <position>top</position>
         <position>login</position>
+        <position>map</position>
+        <position>other</position>
     </positions>
 
 </install>
