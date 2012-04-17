@@ -11,1130 +11,713 @@ Element.Properties['data-title'] = {
 
 };
 
-var nodeURL = 'http://192.168.0.2:4000';
-var detalleURL = 'http://192.168.0.2:82';
-var sources = new Array();
-//var tags = new Array();
-//var places = new Array();
-var zones = new Array();
-var allZones = new Array();
-var tab = "";
-var zoneInitiated = false;
-var zUserGroups = new Array();
-var postInterval = null;
-var host = "localhost";
-var port = "38080";
+function ZTabs() {
+    this.nodeURL = 'http://192.168.0.2:4000';
+    this.detalleURL = 'http://192.168.0.2:82';
+    this.sources = new Array();
+    this.zones = new Array();
+    this.allZones = new Array();
+    this.tab = "";
+    var zUserGroups = new Array();
+    this.zUserGroups = zUserGroups;
+    this.postInterval = null;
+    this.host = "localhost";
+    this.port = "38080";
+    this.sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+    var socket = io.connect(this.nodeURL);
+    this.socket = socket;
+    var zCtx = new ZContext(this.socket, this.sessionId, this.nodeURL);
+    this.zCtx = zCtx;
+    var zirClient = new ZIRClient(this.socket, this.sessionId);    
+    this.zirClient = zirClient;
+    var htmlPosts;
+    var newPosts = new Array();
+    this.newPosts = newPosts;
+    
+    var postsContainer = null;
+    var filtersContainer = null;
+    var verNuevosButton = null;
+    this.setComponents = function(postsContainerParam, filtersContainerParam, verNuevosParam){
+        postsContainer = postsContainerParam;
+        filtersContainer = filtersContainerParam;
+        verNuevosButton = verNuevosParam;
+        htmlPosts = Tempo.prepare(postsContainer);
+    }    
 
-window.addEvent('domready', function() {
-    //if($('postsContainer')){
-        console.log('domready antes de initAll');
-        initAll();
+    socket.on('solrPosts', function (response) {
+        console.log("SOLR POSTS: ");
+        console.log(response);
+        updatePosts(response.response.docs);
     //}
-});
-
-function initVista(zCtx){
-    if($('postsContainer'))
-        $('postsContainer').empty();
-    if($('newPostsContainer'))
-        $('newPostsContainer').empty();
-    $('verNuevos').setStyle('display','none');
-    //zirClient.resetStart();
-    console.log("======> 0");
-    zirClient.setFirstIndexTime(null);
-    zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);
-    console.log("======> 1");
-    //initFilters(zCtx);
-    zCtx.setSearchKeyword("");
-    /*if(zCtx.zTab == ''){
-        tab = 'portada';
-        zcSetTab('portada');
-    }*/
-
-
-    //initMapTab();
-    /*$('enLaRed').set({
-        style: 'display:inline'
-    });
-    $('noticiasEnLaRed').set({
-        style: 'display:inline'
-    });
-    $('tempoDiv').set({
-        style: 'display:inline'
     });
 
-    if (zCtx.zTab == 'portada'){
-        $('enLaRed').set({
-            style: 'display:none'
-        });
-        $('noticiasEnLaRed').set({
-            style: 'display:none'
-        });
-        $('tempoDiv').set({
-            style: 'display:inline'
-        });
-        $('filtroSources').set({
-            style: 'display:inline'
-        });
-    }
-
-    if (zCtx.zTab == 'relevantes'  || zCtx.zTab == 'enlared'){
-        $('enLaRed').set({
-            style: 'display:none'
-        });
-        $('noticiasEnLaRed').set({
-            style: 'display:none'
-        });
-        if(zCtx.zTab == 'enlared'){
-            $('tempoDiv').set({
-                style: 'display:none'
-            });
-        } else {
-            $('tempoDiv').set({
-                style: 'display:inline'
-            });
-        }
-        $('filtroSources').set({
-            style: 'display:inline'
-        });
-    }
-    if (zCtx.zTab == 'noticiasenlared'  || zCtx.zTab == 'noticiasenlaredrelevantes'){
-        $('enLaRed').set({
-            style: 'display:none'
-        });
-        $('noticiasEnLaRed').set({
-            style: 'display:none'
-        });
-        if(zCtx.zTab == 'noticiasenlared'){
-            $('tempoDiv').set({
-                style: 'display:none'
-            });
-        } else {
-            $('tempoDiv').set({
-                style: 'display:inline'
-            });
-        }
-        $('filtroSources').set({
-            style: 'display:inline'
-        });
-    }*/
-
-//zcSetTab(tab);
-//alert("SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-}
-
-function initAll() {
-    initZCtx(function(zCtx) {
-        console.log('Tab del ZContext: '+zCtx.zTab);
-        if(!zCtx.zTab || zCtx.zTab == ""){
-            console.log('InitAll antes de setTab');
-            zcSetTab('enlared');
-        }
-        tab = zcGetTab();
-        //setZone(zCtx.selZone, zcGetSelectedZoneName());
-        initZonas(zCtx.selZone);
-        initVista(zCtx);
+    socket.on('solrMorePosts', function (response) {
+        updatePosts(response.response.docs, true);
+    //}
     });
-    zUserGroups = loguedUser;
-}
-
-function initPost() {
-    if (tab != 'geoActivos' && $('postsContainer')) {
-        if(postInterval) {
-            clearInterval(postInterval);
-            postInterval = null;
+    socket.on('solrNewPosts', function (response) {
+        console.log("NEW SOLR POSTS: ");
+        console.log(response);
+        newPosts.append(response.response.docs);
+        if(newPosts.length > 0){
+            verNuevosButton.innerHTML= newPosts.length+' nuevo'+(newPosts.length > 1 ? 's' : '')+'...';
+            verNuevosButton.setStyle('display','block');
+        } else{
+            verNuevosButton.setStyle('display','none');
         }
-        postInterval = setInterval(function () {
-            zirClient.loadNewSolrPost();
-        }, 60000);
-    } else {
-        if(postInterval) {
-            clearInterval(postInterval);
-            postInterval = null;
-        }
-    }
-//loadPost(true);
-//getAllTags();
-}
+    });  
 
-function initFilters(zCtx) {
-    initSourceFilters(zCtx);
-    initTagFilters(zCtx);
-    initTempFilters(zCtx);
-    initPost();
-}
-
-function initZonas(selZone) {
-    if (!zoneInitiated) {
-        zoneInitiated = true;
-        if (zcGetContext().selZone != '') {
-            $('zoneExtended').value = zcGetContext().selZone;
-        }
-    /*getProvincias(function(provincias) {
-            provincias.each(function(provincia) {
-                new Element('option', {
-                    'value': provincia.id,
-                    'html': provincia.name.replace(/_/g, ' ').capitalize()
-                }).inject($('provincias'));
-            });*/
-    /*$('zoneExtended').addEvent('click', function(){
-            if($('zoneExtended').value && $('zoneExtended').value.length > 0)
-                //alert("ZONA: "+ $('zoneExtended').value);
-                setZone($('zoneExtended').value, '', '', '');
-        //loadMunicipios($('provincias').selectedIndex == 0 ? '' : $('provincias').value, null);
-        //zcSetProvinceName($('provincias').selectedIndex == 0 ? '' : $('provincias').options[$('provincias').selectedIndex].innerHTML);
-        });*/
-    /*if (selZone != "" && typeof(selZone) != 'undefined') {
-                getZoneById(selZone, function(zone) {
-                    if (zone.type != 'provincia') {
-                        loadMunicipios(zone.parent, zone.id);
-                        getZoneById(zone.parent, function(parent) {
-                            $('provincias').value = parent.id;
-                        });
-                    } else {
-                        loadMunicipios(zone.id, null);
-                        $('provincias').value = zone.id;
-                    }
-                });
-            }
-        });*/
-
-    /*getAllZones(function(zones) {
-           zones.each(function(zone) {
-               allZones.push(zone.name.replace(/_/g, ' ').capitalize());
-            });
-        });*/
-    }
-}
-
-function initSourceFilters(zCtx) {
-    //Actualizo filtros de fuente desde contexto
-    zCtx.filters.sources.each(function(source) {
-        var sourceChk = $('chk'+source.name);
-        if (!sourceChk) {
-            var sourcesTr = new Element('tr');
-            var sourceChkBoxTd = new Element('td').inject(sourcesTr);
-            new Element('input', {
-                'id': 'chk' + source.name,
-                'type': 'checkbox',
-                'checked': (source.checked ? 'checked' : ''),
-                'name': source.name,
-                'value': source.name,
-                'onclick': 'setSourceVisible(this.value,this.checked);'
-            }).inject(sourceChkBoxTd);
-            new Element('td', {
-                'html': source.name
-            }).inject(sourcesTr);
-            sourcesTr.inject($('filtroSources'));
-        /*   if (source.name == 'Facebook' || source.name == 'Twitter')
-                sourcesTr.inject($('enLaRed'));
-            else
-                sourcesTr.inject($('noticiasEnLaRed'));*/
-        }
-    });
-}
-
-function initTagFilters(zCtx) {
-    //Actualizo filtros de tags desde contexto
-    zCtx.filters.tags.each(function(tag) {
-        var tagChk = $('chkt'+tag.name);
-        if (!tagChk) {
-            var tagTr = new Element('tr');
-            var tagChkBoxTd = new Element('td').inject(tagTr);
-            tagChk = new Element('input', {
-                'id': 'chkt' + tag.name,
-                'type': 'checkbox',
-                'checked': (tag.checked ? 'checked' : ''),
-                'name': tag.name,
-                'value': tag.name,
-                'onclick': 'setTagVisible(this.value,this.checked);'
-            }).inject(tagChkBoxTd).addClass(tag.checked ? 'checked': '');
-            new Element('td', {
-                'html': tag.name
-            }).inject(tagTr);
-            tagTr.inject($('tagsFilterTable'));
-        }
-        if(tag.checked)
-            tagChk.addClass('checked');
-    });
-}
-
-
-function initTempFilters(zCtx) {
-    $('tempoSelect').value = zCtx.filters.temp;
-    $('tempoSelect').addEventListener('change', onTempoChange, false);
-}
-
-/*function loadMunicipios(id_provincia, selZone) {
-    $('zonalid').empty();
-    new Element('option', {
-        'value': '',
-        'html': 'Seleccione un municipio...',
-        'onclick': "setZone(this.value, '', $('provincias').value, zcGetProvinceName())"
-    }).inject($('zonalid'));
-
-    if (id_provincia != '') {
-        getZonesByProvincia(id_provincia, function(zones) {
-            zones.each(function(zone) {
-                new Element('option', {
-                    'value': zone.id,
-                    'html': zone.name.replace(/_/g, ' ').capitalize()
-                }).inject($('zonalid'));
-            });
-            $('zonalid').addEvent('change', function(){
-                setZone($('zonalid').value, $('zonalid').selectedIndex == 0 ? '' : $('zonalid').options[$('zonalid').selectedIndex].innerHTML, $('provincias').value, zcGetProvinceName())
-            });
-            if (selZone != null) {
-                $('zonalid').value = selZone;
+    var initAll = function initAll() {            
+        zCtx.initZCtx(function() {            
+            tab = zCtx.zcGetZTab();
+            initZonas(zCtx.zcGetZone());
+            initVista(zCtx);
+            if(typeof initMapTab == 'function'){
+                initMapTab();
             }
         });
+        zUserGroups = loguedUser;
     }
-}*/
-
-function setZone(zoneExtended, zoneName, parentId, parentName) {
-    console.log("dentro de setZone"+zoneExtended)
-    if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
-        zoneExtended = '';
-    if (zoneName == null || typeof(zoneName) == 'undefined')
-        zoneName = '';
-    if (parentId == null || typeof(parentId) == 'undefined')
-        parentId = '';
-    if (parentName == null || typeof(parentName) == 'undefined')
-        parentName = '';
-
-    zirClient.setFirstIndexTime(null);
-    zirClient.setLastIndexTime(null);
-    zirClient.setMinRelevance(null);
-    //$('zonalesSearchword').value = "buscar...";
-    $('zoneExtended').value = zoneExtended;
-    if (tab != 'geoActivos' && tab != 'editor' && tab != 'list' && $('postsContainer') && $('newPostsContainer')) {
-        $('postsContainer').empty();
-        $('newPostsContainer').empty();
+    this.initAll = initAll;
+    
+    var initZonas = function initZonas(selZone) {        
+        if (selZone && selZone != '') {
+            $('zoneExtended').value = selZone;
+        }
     }
-    //console.log('Antes de setear: ' + zoneExtended);
-    setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-        //console.log('Despu�s de setear: ' + zoneExtended);
-        //alert("CUANDO VUELVO DEL setSelectedZone. SelZoneCode: " + zCtx.selZone + " SelZoneName: " + zcGetSelectedZoneName() + " EfZoneCode: " + zCtx.efZone + " EfZoneNane: " + zcGetEfectiveZoneName());
-        /*if (tab != 'geoActivos' && $('postsContainer')) {
-            loadPost(true);
-        }*/
-        });
-}
-
-/*function setPlace(zoneExtended){
-    console.log('Aca esta: '+zoneExtended.replace(/, /g, ",+").replace(/ /g,"_").replace(/,\+/g,", ").toLowerCase());
-    getIdByZone(zoneExtended.replace(/, /g, ",+").replace(/ /g,"_").replace(/,\+/g,", ").toLowerCase(), function(idZone){
-        getPlaces(idZone, function(placesByZone)    {
-            places = placesByZone
-        });
-    });
-}*/
-
-function onTempoChange() {
-    if (tab != 'geoActivos' && $('postsContainer')) {
-        $('postsContainer').empty();
-        $('newPostsContainer').empty();
-    }
-    zirClient.setLastIndexTime(null);
-    zcSetTemp($('tempoSelect').value);
-/*if (tab != 'geoActivos' && $('postsContainer')) {
-        loadPost(true);
-    }*/
-}
-
-function complete(number){
-    return (number > 9 ? ''+number : '0'+number);
-}
-
-function loadPost(first){
-//alert("LoadPost: " + JSON.stringify(zcGetContext()));
-
-}
-
-function loadMorePost(){
-    console.log('loadMorePost');
-    zirClient.loadMoreSolrPost();
-}
-
-function searchPost(keyword, zone) {
-    if (keyword != 'buscar...' && keyword != '') {
+    this.initZonas = initZonas;
+    
+    var initVista = function initVista(zCtx){
+        //        if(postsContainer)
+        //            postsContainer.empty();
+        if(newPosts)
+            newPosts.empty();
+        verNuevosButton.setStyle('display','none');
+        //this.zirClient.resetStart();
         zirClient.setFirstIndexTime(null);
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
-        zCtx.setSearchKeyword(keyword);
-    //zirClient.setSearchKeyword(keyword);
+        //initFilters(zCtx);
+        initPost();
+        zCtx.setSearchKeyword("");
     }
-}
-
-function getTarget(post, id) {
-    ret = '';
-    if ((post.source).toLowerCase() == 'twitter') {
-        ret = 'http://twitter.com/#!/' + post.fromUser.name;
-    } else if ((post.source).toLowerCase() == 'facebook') {
-        ret = post.fromUser.url;
-    }else if ((post.source).toLowerCase() == 'zonales') {
-        ret = detalleURL+"/detalle.html?id="+id;
-    }
-    else {
-        if(typeOf(post.links) == 'array') {
-            post.links.each(function(link) {
-                if (link.type == 'source') {
-                    ret = link.url;
-                }
-            });
-        }
-    }
-    return ret;
-}
-
-function getVerMas(text){
-    if(text.length > 255){
-        var i=255;
-        for( ;text.charAt(i) != ' ';i--);
-        var shortText = text.substring(0,i);
-        var otherText = text.substring(i);
-        return shortText + "<span id=\"verMasPost\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
-    }
-    return text;
-}
-
-function verNuevos(){
-    $$('div#postsContainer div.story-item').set({
-        style: 'background:#FFFFFF'
-    });
-    $$('div#newPostsContainer div.story-item').set({
-        style: 'background:#DCEFF4'
-    }).reverse().each(function(post){
-        if($('postsContainer').getChildren('[id='+post.get('id')+']').length > 0)
-            $('postsContainer').getChildren('[id='+post.get('id')+']').each(function(post){
-                post.dispose();
-            });
-
-
-        if (tab == "enlared" || tab == "noticiasenlared" || tab == "portada"){
-            var newPost = post.clone(true, true);
-            newPost.setStyle('display',$('chk'+(newPost.getElement("div.story-item-gutters div.story-item-content ul.story-item-meta li.story-item-submitter a").innerHTML)).checked ? 'block' : 'none');
-            newPost.injectTop($('postsContainer'));
-        }
-        if (tab == "relevantes" || tab == "noticiasenlaredrelevantes"){
-            $('newPostsContainer').getElements('span.zonales-count').each(function(newCount){
-                var insertado = false;
-                $('postsContainer').getElements('span.zonales-count').each(function(count){
-                    if (parseInt(newCount.innerHTML) > parseInt(count.innerHTML) && !insertado) {
-                        insertado = true;
-                        newCount.getParent().getParent().getParent().getParent().getParent().injectBefore(count.getParent().getParent().getParent().getParent().getParent());
-                    }
-                });
-                if(!insertado){
-                    newCount.getParent().getParent().getParent().getParent().getParent().injectInside($('postsContainer'));
-                }
-            });
-        }
-    });
-    //$('postsContainer').set({ style: 'background:#FFFFFF'});
-    $('verNuevos').setStyle('display','none');
-    $('newPostsContainer').empty();
-    //refreshFiltro();
-// $('postsContainer').setStyle('backgroundColor','#FFFFFF');
-}
-
-function incRelevance(id,relevance){
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
-    var urlProxy = '/curl_proxy.php';
-
-    new Request({
-        url: urlProxy,
-        method: 'post',
-        data: {
-            'host': host ? host : "localhost",
-            'port': port ? port : "38080",
-            'ws_path':url
-        },
-        onRequest: function(){
-        },
-        onSuccess: function(response) {
-            if(response && response.length != 0){
-                response = JSON.decode(response);
-                if(response.id && response.id.length > 0 && $('relevance_'+response.id)){
-                    $('relevance_'+response.id).innerHTML = parseInt($('relevance_'+response.id).innerHTML)+parseInt(relevance);
-                    if(zUserGroups.indexOf("4") == -1){
-                        $('relevance_'+response.id).getPrevious().removeEvents('click');
-                        $('relevance_'+response.id).getNext().removeEvents('click');
-                    }
-                }
+    this.initVista = initVista;
+ 
+    var initPost = function initPost() {
+        if (this.tab != 'geoActivos' && postsContainer) {
+            if(this.postInterval) {
+                clearInterval(this.postInterval);
+                this.postInterval = null;
             }
-        },
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        }
-    }).send();
-
-}
-
-function getPostTitle(title, target) {
-    var a_title = "<a target=\"_blank\" href=\"" + target + "\">" + title + "</a>";
-    return a_title;
-}
-
-function getZoneForPost(zone) {
-    var a_zone = "<a id=\"zonePost\" onclick=\"setZone('" +zone.replace(/_/g," ").capitalize() + "','','','');drawMap('" +zone + "');ajustMapToExtendedString('" + zone + "');\">" + zone.replace(/_/g, " ").capitalize() + "</a>";
-    return a_zone;
-}
-
-
-function updatePosts(json, component, more) {
-    //Recupero los post del verbatim y realizo los cambios necesarios
-    var posts = [];
-    json.response.docs.each(function (doc) {
-       var post = JSON.parse(doc.verbatim);
-       post.modified = prettyDate(doc.modified);
-       var target = getTarget(post, doc.id);
-       post.title = getPostTitle(post.title, target);
-       post.text = getVerMas(post.text ? post.text : "");
-       post.zone = getZoneForPost(post.zone.extendedString);
-       posts.push(post);
-    });
-
-    //Renderizo
-    var htmlPosts = Tempo.prepare('postTemplate').notify(function(event) {
-            if (event.type === TempoEvent.Types.RENDER_STARTING || event.type === TempoEvent.Types.RENDER_COMPLETE) {
-                    $('postTemplate').toggleClass('loading');
-            }
-    });
-    htmlPosts.starting();
-    htmlPosts.render(posts);
-}
-
-function checkTag(tag, bottonId){
-    // alert("tag "+tag+" indexOF "+zTags.indexOf(tag) );
-    if(zTags.indexOf(tag)!= -1 ){
-
-        $(bottonId).setStyle('display','inline');
-    } else {
-        $(bottonId).setStyle('display','none');
-    }
-}
-
-function show_confirm(idInputTag,selectedTag,tags)
-{
-    var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
-    if (r==true)
-    {
-        addTagToPost(idInputTag,tags,selectedTag);
-    }
-    else
-    {
-        alert("Cancelado");
-    }
-}
-function addTagToPost(idPost,tags,selectedTag){
-    //\"tags\":[\"Espectaculos\"]
-
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
-    var urlProxy = '/curl_proxy.php';
-    new Request({
-        url: urlProxy,
-        method: 'post',
-        data: {
-            'host': host ? host : "localhost",
-            'port': port ? port : "38080",
-            'ws_path':url
-        },
-        onRequest: function(){
-        },
-        onSuccess: function(response) {
-            if(response.length > 0) {
-                response = JSON.decode(response);
-                if(response.id){
-                    var span_tags = new Element('span').addClass('cp_tags').inject($('tagsDiv_'+response.id).getLast().getPrevious(),'before');
-                    new Element('a', {
-                        'html': selectedTag,
-                        'onclick': 'ckeckOnlyTag("' + selectedTag + '");'
-                    }).inject(span_tags);
-                    $('tagsDiv_'+response.id).addClass(selectedTag);
-                }
-            }
-        },
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        }
-    }).send();
-}
-
-function delTagFromPost(idPost,selectedTag){
-    //\"tags\":[\"Espectaculos\"]
-
-    var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&rTag='+selectedTag;
-    var urlProxy = '/curl_proxy.php';
-    new Request({
-        url: urlProxy,
-        method: 'post',
-        data: {
-            'host': host ? host : "localhost",
-            'port': port ? port : "38080",
-            'ws_path':url
-        },
-        onRequest: function(){
-        },
-        onSuccess: function(response) {
-            if(response.length > 0) {
-                response = JSON.decode(response);
-                if(response.id){
-                    $('tagsDiv_'+response.id).getElements('span.cp_tags a').each(function(tagA){
-                        if(tagA.innerHTML == selectedTag)
-                            tagA.getParent().dispose();
-                    });
-                    $('tagsDiv_'+response.id).removeClass(selectedTag);
-                }
-            }
-        },
-        // Our request will most likely succeed, but just in case, we'll add an
-        // onFailure method which will let the user know what happened.
-        onFailure: function(){
-        }
-    }).send();
-}
-
-function spanishDate(d){
-    var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
-
-    var monthname=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-
-    return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear();
-}
-
-function fixTime(i) {
-    return (i<10 ? "0" + i : i);
-}
-
-function setSourceVisible(source, visible) {
-
-    if (visible) {
-        zcAddSource(source);
-    } else {
-        zcUncheckSource(source);
-    }
-    //refreshFiltro();
-}
-
-function ckeckOnlyTag(tag) {
-    var zCtxChkTags = zcGetCheckedTags();
-
-    zCtxChkTags.each(function (chkTag) {
-        if (chkTag != tag) {
-            zcUncheckTag(chkTag);
-        }
-    });
-
-    var tagFilters = $$('table#tagsFilterTable input');
-    tagFilters.each(function(input) {
-        if (input.id == 'chkt' + tag) {
-            input.checked = true;
+            this.postInterval = setInterval(function () {
+                zirClient.loadNewSolrPost();
+            }, 60000);
         } else {
-            input.checked = false;
+            if(this.postInterval) {
+                clearInterval(this.postInterval);
+                this.postInterval = null;
+            }
         }
-    });
-    setTagVisible(tag, true);
-}
-
-function setTagVisible(tag, checked) {
-
-    //Actualizo el contexto
-    if (checked) {
-        if($('chkt'+tag))
-            $('chkt'+tag).addClass('checked');
-        zcAddTag(tag);
-    } else {
-        if($('chkt'+tag))
-            $('chkt'+tag).removeClass('checked');
-        zcUncheckTag(tag);
+    //loadPost(true);
+    //getAllTags();
     }
-    //refreshFiltro();
-}
+    this.initPost = initPost;
 
-function refreshFiltro(){
-    //var zCtxTemp = zcGetContext();
-    //Refresco visibilidad de Posts
-    var zCtxChkTags = zcGetCheckedTags();
-    var zCtxChkSource = zcGetCheckedSources();
+    this.initFilters = function initFilters(zCtx) {
+        this.initSourceFilters(zCtx);
+        this.initTagFilters(zCtx);
+        this.initTempFilters(zCtx);
+        //this.initPost();
+    }   
 
-    var posts = $$('div#postsContainer div.story-item');
-    if(typeOf(posts) == 'elements') {
-        posts.each(function(post){
-            var visible = false;
-            zCtxChkSource.each(function (source){
-                if(post.hasClass(source)) {
-                    zCtxChkTags.each(function (tag) {
-                        if(post.hasClass(tag))
-                            visible = true;
-                    });
-                }
-            });
-            post.setStyle('display', visible ? 'block' : 'none');
-            post.removeClass(!visible ? 'visible' : 'hidden');
-            post.addClass(visible ? 'visible' : 'hidden');
-        });
-    }
-
-    //    sendFilter(source,visible);
-    armarTitulo(tab);
-}
-
-
-
-
-
-//	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
-
-//	2010-08-28T20:24:17Z
-
-function prettyDate(time){
-    var time_formats = [
-    [60, 'segundos', 1], // 60
-    [120, ' hace 1 minuto', 'hace 1 minuto'], // 60*2
-    [3600, 'minutos', 60], // 60*60, 60
-    [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
-    [86400, 'horas', 3600], // 60*60*24, 60*60
-    [172800, '1 dia', 'mañana'], // 60*60*24*2
-    [604800, 'días', 86400], // 60*60*24*7, 60*60*24
-    [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
-    [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-    [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
-    [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-    [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-    [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-    [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
-    [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
-    ];
-    //var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    //if(time.substr(time.length-4,1)==".") time =time.substr(0,time.length-4);
-    var seconds = (new Date - new Date(time)) / 1000;
-    var token = ' hace', list_choice = 1;
-    if (seconds < 0) {
-        //seconds += 10800;
-        seconds = Math.abs(seconds);
-        //token = 'desde ahora';
-        list_choice = 2;
-    }
-    var i = 0, format;
-    while (format = time_formats[i++])
-        if (seconds < format[0]) {
-            if (typeof format[2] == 'string')
-                return format[list_choice];
+    this.initSourceFilters = function initSourceFilters(zCtx) {
+        //Actualizo filtros de fuente desde contexto
+        zCtx.zcGetFilters().sources.each(function(source) {
+            var sourceChk = $('chk'+source.name);
+            if (!sourceChk) {
+                var sourcesTr = new Element('tr');
+                var sourceChkBoxTd = new Element('td').inject(sourcesTr);
+                new Element('input', {
+                    'id': 'chk' + source.name,
+                    'type': 'checkbox',
+                    'checked': (source.checked ? 'checked' : ''),
+                    'name': source.name,
+                    'value': source.name,
+                    'onclick': 'setSourceVisible(this.value,this.checked);'
+                }).inject(sourceChkBoxTd);
+                new Element('td', {
+                    'html': source.name
+                }).inject(sourcesTr);
+                sourcesTr.inject($('filtroSources'));
+            /*   if (source.name == 'Facebook' || source.name == 'Twitter')
+                sourcesTr.inject($('enLaRed'));
             else
-                return (token+ ' ' + Math.floor(seconds / format[2]) + ' ' + format[1]);
-        }
-    return time;
-}
-
-
-/*function armarTitulo(tabTemp){
-    var temp = 0 ;
-    tabTemp = tab;
-    var zoneSeltemp = zcGetContext().selZone;
-    var zoneEfectemp = "";
-
-    //var posts = $$('div#postsContainer div.story-item');
-    //var posts = $$('div#postsContainer:first-child');
-
-    if($('postsContainer')){
-        var firstPost = $('postsContainer').firstChild;
-        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
-    }
-
-    $('tituloSup').innerHTML = "";
-    $('filtrosAct').innerHTML = "";
-
-
-    if (tabTemp == 'relevantes'){
-        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            if(element.checked) {
-                $('titulo1').innerHTML = "De la Red Social: "
-                if(index != 0)
-                    $('tituloSup').innerHTML += ", ";
-                $('tituloSup').innerHTML += element.value+" ";
-
-            }
-        });
-
-
-    }
-
-    if (tabTemp == 'noticiasenlared'){
-        temp = 0;
-        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            //alert (element.checked);
-            if(element.checked){
-                temp++;
-                if(temp < 5  ) {
-                    //alert (index);
-                    $('titulo1').innerHTML = "De los diarios OnLine: "
-                    if(index != 0)
-                        $('tituloSup').innerHTML += ", ";
-                    $('tituloSup').innerHTML += element.value;
-                }
-                else if (temp > 5 ){
-                    $('tituloSup').innerHTML = "";
-                    $('titulo1').innerHTML = "De mas de 5 diarios";
-
-                }
+                sourcesTr.inject($('noticiasEnLaRed'));*/
             }
         });
     }
 
-    if (tabTemp == 'noticiasenlaredrelevantes'){
-        temp = 0;
-        $('noticiasEnLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            if(element.checked){
-                temp++;
-                if(temp < 5 ) {
-                    $('titulo1').innerHTML = "De los diarios OnLine: "
-                    if(index != 0)
-                        $('tituloSup').innerHTML += ", ";
-                    $('tituloSup').innerHTML += element.value;
-                }
-                else if (temp > 5){
-                    $('tituloSup').innerHTML = "";
-                    $('titulo1').innerHTML = "De mas de 5 diarios";
-                }
+    this.initTagFilters = function initTagFilters(zCtx) {
+        //Actualizo filtros de tags desde contexto
+        zCtx.zcGetFilters().tags.each(function(tag) {
+            var tagChk = $('chkt'+tag.name);
+            if (!tagChk) {
+                var tagTr = new Element('tr');
+                var tagChkBoxTd = new Element('td').inject(tagTr);
+                tagChk = new Element('input', {
+                    'id': 'chkt' + tag.name,
+                    'type': 'checkbox',
+                    'checked': (tag.checked ? 'checked' : ''),
+                    'name': tag.name,
+                    'value': tag.name,
+                    'onclick': 'setTagVisible(this.value,this.checked);'
+                }).inject(tagChkBoxTd).addClass(tag.checked ? 'checked': '');
+                new Element('td', {
+                    'html': tag.name
+                }).inject(tagTr);
+                tagTr.inject($('tagsFilterTable'));
             }
-        });
-    }
-
-    if (tabTemp == 'enlared'){
-        $('enLaRed').getElements('input[id^=chk]').each(function(element, index) {
-            if(element.checked) {
-                $('titulo1').innerHTML = "De la Red Social: "
-                if(index != 0)
-                    $('tituloSup').innerHTML += ", ";
-                $('tituloSup').innerHTML += element.value+" ";
-
-            }
+            if(tag.checked)
+                tagChk.addClass('checked');
         });
     }
 
 
-
-    //console.log('zona2 '+zoneSeltemp);
-    if (zoneEfectemp == zoneSeltemp){
-        $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
-        $('tituloZone2').innerHTML = "";
-    }
-    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
-        $('tituloZone1').innerHTML = "No se encontraron noticias nuevas para la zona "+zoneSeltemp;
-        $('tituloZone2').innerHTML = "Mostrando noticias nuevas de la zona "+zoneEfectemp;
-
-    }
-    if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
-        $('tituloZone1').innerHTML = "Mostrando todas las noticias";
-        $('tituloZone2').innerHTML = "";
+    this.initTempFilters = function initTempFilters(zCtx) {
+        $('tempoSelect').value = zCtx.zcGetTemp();
+        $('tempoSelect').addEventListener('change', onTempoChange, false);
     }
 
-    $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
+    var setZone = function setZone(zoneExtended, zoneName, parentId, parentName) {
+        if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
+            zoneExtended = '';
+        if (zoneName == null || typeof(zoneName) == 'undefined')
+            zoneName = '';
+        if (parentId == null || typeof(parentId) == 'undefined')
+            parentId = '';
+        if (parentName == null || typeof(parentName) == 'undefined')
+            parentName = '';
 
-        temp =index+1
-        if(element.checked) {
-            $('tituloFiltro').innerHTML = "del Tipo: ";
-            if(index != 0)
-                $('filtrosAct').innerHTML += ", ";
-            $('filtrosAct').innerHTML += element.value+" ";
+        zirClient.setFirstIndexTime(null);
+        zirClient.setLastIndexTime(null);
+        zirClient.setMinRelevance(null);
+        //$('zonalesSearchword').value = "buscar...";
+        $('zoneExtended').value = zoneExtended;
+        if (this.tab != 'geoActivos' && this.tab != 'editor' && this.tab != 'list' && postsContainer && newPosts) {
+            //            postsContainer.empty();
+            newPosts.empty();
         }
+        zCtx.setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
+            });
+    }
+    this.setZone = setZone;
 
-
-    // $('filtrosAct').innerHTML += " activados "
-    });
-    // console.log("elementos"+temp);
-    //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
-    if(temp == ($('filterTags').getElements('.checked').length)){
-        $('tituloFiltro').innerHTML = "";
-        $('filtrosAct').innerHTML = "";
+    this.onTempoChange = function onTempoChange() {
+        if (this.tab != 'geoActivos' && postsContainer) {
+            //            postsContainer.empty();
+            newPosts.empty();
+        }
+        zirClient.setLastIndexTime(null);
+        zCtx.zcSetTemp($('tempoSelect').value);
+    /*if (this.tab != 'geoActivos' && postsContainer) {
+        loadPost(true);
+    }*/
     }
 
-}*/
-function armarTitulo(tabTemp){
-    var temp = 0 ;
-    tabTemp = tab;
-    var zoneSeltemp = zcGetContext().selZone;
-    var zoneEfectemp = "";
-
-    //var posts = $$('div#postsContainer div.story-item');
-    //var posts = $$('div#postsContainer:first-child');
-
-    if($('postsContainer')){
-        var firstPost = $('postsContainer').firstChild;
-        zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
+    this.complete = function complete(number){
+        return (number > 9 ? ''+number : '0'+number);
     }
 
-    $('tituloSup').innerHTML = "";
-    $('filtrosAct').innerHTML = "";
-    $('titulo1').innerHTML = "";
+    this.loadPost = function loadPost(first){
+    //alert("LoadPost: " + JSON.sSy(zcGetContext()));
 
+    }
 
-    if (zoneEfectemp == zoneSeltemp){
-        if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-            $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
-            $('tituloZone2').innerHTML = "";
-            if (tabTemp == 'relevantes'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }else {
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }
-        }else {
-            $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
-            $('tituloZone2').innerHTML = "";
-            if (tabTemp == 'noticiasenlared'){
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }else if (tabTemp == 'enlared'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }
+    this.loadMorePost = function loadMorePost(){
+        console.log('loadMorePost');
+        this.zirClient.loadMoreSolrPost();
+    }
+
+    this.searchPost = function searchPost(keyword, zone) {
+        if (keyword != 'buscar...' && keyword != '') {
+            zirClient.setFirstIndexTime(null);
+            zirClient.setLastIndexTime(null);
+            zirClient.setMinRelevance(null);
+            zCtx.setSearchKeyword(keyword);
+        //this.zirClient.setSearchKeyword(keyword);
         }
     }
 
-    if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
-        if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-            $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
-            $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
-            if (tabTemp == 'relevantes'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }else {
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }
-        }else {
-            $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
-            $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
-            if (tabTemp == 'noticiasenlared'){
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }else if (tabTemp == 'enlared'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }
+    var getTarget = function getTarget(post, id) {
+        var ret = '';
+        if ((post.source).toLowerCase() == 'twitter') {
+            ret = 'http://twitter.com/#!/' + post.fromUser.name;
+        } else if ((post.source).toLowerCase() == 'facebook') {
+            ret = post.fromUser.url;
+        }else if ((post.source).toLowerCase() == 'zonales') {
+            ret = this.detalleURL+"/detalle.html?id="+id;
         }
-    }
-    if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
-        if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-            $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
-            $('tituloZone2').innerHTML = "";
-            if (tabTemp == 'relevantes'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }else {
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }
-        }else {
-            $('tituloZone1').innerHTML = "Mostrando todas las noticias";
-            $('tituloZone2').innerHTML = "";
-            if (tabTemp == 'noticiasenlared'){
-                $('titulo1').innerHTML = "De los Diarios OnLine "
-            }else if (tabTemp == 'enlared'){
-                $('titulo1').innerHTML = "De las Redes Sociales "
-            }
-        }
-    }
-
-
-    $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
-
-        temp =index+1
-        if(element.checked) {
-            $('tituloFiltro').innerHTML = "del Tipo: ";
-            if(index != 0)
-                $('filtrosAct').innerHTML += ", ";
-            $('filtrosAct').innerHTML += element.value+" ";
-        }
-    });
-    // console.log("elementos"+temp);
-    //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
-    if(temp == ($('filterTags').getElements('.checked').length)){
-        $('tituloFiltro').innerHTML = "";
-        $('filtrosAct').innerHTML = "";
-    }
-
-}
-//zcSetTemp($('tempoSelect').value);
-
-
-function popup(id){
-    zirClient.loadSolrPost(id, function(doc){
-        updatePost(doc);
-    });
-}
-
-function getPost(doc){
-    var post = Object.clone(doc);
-    var modified = post.modified;
-    var div_story_item = new Element('div', {
-        'id': 'si_' + doc.id
-    }).addClass('story-item').addClass('group').addClass(post.source),
-    div_story_item_gutters = new Element('div').addClass('story-item-gutters').inject(div_story_item).addClass('group'),
-    div_story_item_zonalesbtn = new Element('div').addClass('story-item-zonalesbtn').inject(div_story_item_gutters),
-    div_zonalesbtn_hast = new Element('div').addClass('zonales-btn has-tooltip').inject(div_story_item_zonalesbtn),
-    div_zonales_count_wrapper = new Element('div').addClass('zonales-count-wrapper').inject(div_zonalesbtn_hast),
-    div_zonales_count_wrapper_up = new Element('div').addClass('zonales-count-wrapper-up').inject(div_zonales_count_wrapper),
-    span_relevance = new Element('span',{
-        "id":"relevance_"+doc.id
-    }).addClass('zonales-count').set('html',post.relevance).inject(div_zonales_count_wrapper),
-    div_zonales_count_wrapper_down = new Element('div').addClass('zonales-count-wrapper-down').inject(div_zonales_count_wrapper),
-    div_story_item_content = new Element('div').addClass('story-item-content').addClass('group').inject(div_story_item_zonalesbtn, 'after'),
-    div_story_item_details = new Element('div').addClass('story-item-details').inject(div_story_item_content),
-    div_story_item_idPost = new Element('div', {
-        'html': doc.id,
-        'id':'idPostDiv'
-    }).addClass('group').inject(div_story_item).setStyle('display','none'),
-    div_story_item_header = new Element('div').addClass('story_item_header').inject(div_story_item_details),
-    table_story_item = new Element('table').inject(div_story_item_header),
-    tr_story_title = new Element('tr').inject(table_story_item),
-    td_story_title = new Element('td').inject(tr_story_title),
-    h3_story_item_title = new Element('h3').addClass('story-item-title').inject(td_story_title),
-    a_title = new Element('a', {
-        'target': '_blank',
-        'href' : getTarget(post)
-    }).set('html',post.title).inject(h3_story_item_title),
-    span_external_link_icon = new Element('span').addClass('external-link-icon').inject(a_title, 'after'),
-    tr_story_description = new Element('tr').inject(table_story_item),
-    //td_story_image = new Element('td').inject(tr_story_description),
-    td_story_description = new Element('td').inject(tr_story_description),
-    p_story_item_description = new Element('p').addClass('story-item-description').inject(td_story_description),
-    a_story_item_source = new Element('a', {
-        'target': '_blank'
-    }).set('html','').addClass('story-item-source').inject(p_story_item_description),
-    a_story_item_icon = new Element('a').addClass('story-item-icon').inject(a_story_item_source, 'before'),
-    a_story_item_icon_image = new Element('img',{
-        'src': '/logo_'+post.source.replace('/','').toLowerCase()+'.png'
-    }).inject(a_story_item_icon).addClass('source_logo'),
-    a_story_item_teaser = new Element('span', {}).set('html',post.text ? ' - ' + post.text.trim() : "").addClass('story-item-teaser').inject(a_story_item_source, 'after'),
-    ul_story_item_meta = new Element('ul').addClass('story-item-meta').addClass('group').inject(div_story_item_content),
-    li_story_submitter = new Element('li', {}).set('html','Publicado en  ').addClass('story-item-submitter').inject(ul_story_item_meta).setStyle('display', post.fromUser.name ? 'block' : 'none'),
-    a_story_submitter = new Element('a', {
-        'target': '_blank',
-        'href': post.fromUser.url
-    }).set('html',post.source).inject(li_story_submitter),
-    span_storyitem_modified_real = new Element('span', {
-        'html': modified,
-        'style': 'display:none'
-    }).addClass('story-item-real-modified-date').inject(a_story_submitter,'after'),
-    span_storyitem_modified = new Element('span', {}).set('html',prettyDate(modified)).addClass('story-item-modified-date').inject(a_story_submitter,'after'),
-    span_storyitem_fromuser = new Element('span', {}).set('html',post.fromUser =((post.fromUser.name).indexOf(post.source )!=-1)? "" : ' por '+post.fromUser.name).inject(a_story_submitter,'after'),
-    div_inline_comment_container = new Element('div').addClass('inline-comment-container').inject(div_story_item_content),
-    div_story_item_activity = new Element('div').addClass('story-item-activity').addClass('group').addClass('hidden').inject(div_story_item_content),
-    div_story_item_media   = new Element('div').addClass('story-item-media').inject(div_story_item_content, 'after');
-
-    if(typeOf(post.actions) == 'array') {
-        post.actions.each(function(action){
-            switch (action.type) {
-                case 'comment':
-                    var li_story_item_comments = new Element('li', {}).set('html',action.cant).addClass('story-item-comments').inject(ul_story_item_meta);
-                    new Element('div').addClass('story-item-comments-icon').inject(li_story_item_comments);
-                    break;
-                case 'like':
-                    var li_story_item_likes = new Element('li', {}).set('html',action.cant).addClass('story-item-likes').inject(ul_story_item_meta);
-                    new Element('div').addClass('story-item-likes-icon').inject(li_story_item_likes);
-                    break;
-                case 'retweets':
-                    var li_story_item_retweets = new Element('li', {}).set('html',action.cant).addClass('story-item-retweets').inject(ul_story_item_meta);
-                    new Element('div').addClass('story-item-retweets-icon').inject(li_story_item_retweets);
-                    break;
-                case 'replies':
-                    var li_story_item_replies = new Element('li', {}).set('html',action.cant).addClass('story-item-replies').inject(ul_story_item_meta);
-                    new Element('div').addClass('story-item-replies-icon').inject(li_story_item_replies);
-                    break;
-            }
-        });
-    }
-
-    var postLinks;
-
-    switch(post.source.toLowerCase()) {
-        case 'facebook':
-            postLinks =	post.links;
-            break;
-        default:
-            postLinks =	post.links;
-    }
-
-    var a_thumb = new Element('a', {
-        'href': getTarget(post),
-        'target': '_blank'
-    });
-
-    if(typeOf(postLinks) == 'array') {
-        postLinks.each(function(link){
-            switch (link.type) {
-                case 'picture':
-                    if(a_thumb.childNodes.length == 0 && link.url) {
-                        a_thumb.inject(a_story_item_icon, 'before').addClass('thumb').addClass('thumb-s'),
-                        img = new Element('img', {
-                            'src': link.url.indexOf('/') == 0 ? 'http://' + post.source + link.url.substr(1) : (link.url.indexOf('http://') == 0 ? link.url : 'http://' + post.source + link.url)
-                        }).inject(a_thumb);
-                    }
-                    break;
-                case 'video':
-                    var li_story_item_video = new Element('li').addClass('story-item-video').inject(ul_story_item_meta),
-                    a_story_item_video = new Element('a', {
-                        'href': link.url,
-                        'target': '_blank'
-                    }).addClass('story-item-video').inject(li_story_item_video);
-                    new Element('img', {
-                        'src': 'http://www.prophecycoal.com/images/video_icon.jpg',
-                        'alt': 'Video',
-                        'title': 'Video'
-                    }).addClass('story-item-video-icon').inject(a_story_item_video);
-                    break;
-                case 'link':
-                    var li_story_item_link = new Element('li').addClass('story-item-link').inject(ul_story_item_meta),
-                    a_story_item_link = new Element('a', {
-                        'href': link.url,
-                        'target': '_blank'
-                    }).set('html','Mas info...').addClass('story-item-link').inject(li_story_item_link);
-                    break;
-            }
-        });
-    }
-
-    //  var date = new Date(parseInt(post.created));
-    //  new Element('li', {}).set('html','Creado: ' + spanishDate(date)).addClass('story-item-created-date').inject(ul_story_item_meta);
-
-    // date = new Date(parseInt(post.modified));
-
-
-    var tags = post.tags;
-    var div_story_tags = new Element('div',{
-        'id':'tagsDiv_'+doc.id
-    }).addClass('cp_tags').inject(div_story_item_content);
-    new Element('span').set('html','Tags: ').inject(div_story_tags);
-    if(typeOf(tags) == 'array') {
-        tags.each(function(tag){
-            var span_tags = new Element('span').addClass('cp_tags').inject(div_story_tags);
-            new Element('a', {
-                'html': tag,
-                'onclick': 'ckeckOnlyTag("' + tag + '");'
-            }).inject(span_tags);
-            div_story_item.addClass(tag);
-            if(zUserGroups.indexOf("4") != -1) {
-                var del_tag_img = new Element('img',{
-                    'src': '/images/eliminar.png'
-                }).inject(span_tags).addClass('delete_tag');
-                del_tag_img.addEvent('click', function(){
-                    if(confirm('Realmente desea eliminar el tag '+tag)){
-                        delTagFromPost(doc.id, tag);
+        else {
+            if(typeOf(post.links) == 'array') {
+                post.links.each(function(link) {
+                    if (link.type == 'source') {
+                        ret = link.url;
                     }
                 });
             }
-        });
+        }
+        return ret;
     }
-    var idInputTag = doc.id;
-    var idButtonAddTags = 'buttonTags_'+doc.id;
 
-    var zone = post.zone.extendedString;
-    var idButtonSetZone = 'buttonZone'+doc.id;
-    var div_story_zone = new Element('div').addClass('cp_tags').inject(div_story_item_content);
-    new Element('span').set('html','Zona: ').inject(div_story_zone);
-    var span_zone = new Element('span').inject(div_story_zone);
-    new Element('a', {
-        'id':'zonePost',
-        'onclick':'setZone("'+zone+'","","","");'
-    }).set('html',zone.replace(/_/g, " ").capitalize()).inject(span_zone);
-    var idInputZone = 'zone_'+doc.id;
-    var span_addZone = new Element('span').inject(div_story_zone);
+    var getVerMas = function getVerMas(text){
+        if(text.length > 255){
+            var i=255;
+            for( ;text.charAt(i) != ' ';i--);
+            var shortText = text.substring(0,i);
+            var otherText = text.substring(i);
+            return shortText + "<span id=\"verMasPost\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
+        }
+        return text;
+    }
 
-    return div_story_item;
+    var verNuevos = function verNuevos(){
+        postsContainer.getChildren().set({
+            style: 'background:#FFFFFF'
+        });
+        updatePosts(newPosts, false, true);
+        verNuevosButton.setStyle('display','none');
+        newPosts.empty();
+        //refreshFiltro();
+        // postsContainer.setStyle('backgroundColor','#FFFFFF');
+    }
+    this.verNuevos = verNuevos;
+
+    this.incRelevance = function incRelevance(id,relevance){
+        var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
+        var urlProxy = '/curl_proxy.php';
+
+        new Request({
+            url: urlProxy,
+            method: 'post',
+            data: {
+                'host': this.host ? this.host : "localhost",
+                'port': this.port ? this.port : "38080",
+                'ws_path':url
+            },
+            onRequest: function(){
+            },
+            onSuccess: function(response) {
+                if(response && response.length != 0){
+                    response = JSON.decode(response);
+                    if(response.id && response.id.length > 0 && $('relevance_'+response.id)){
+                        $('relevance_'+response.id).innerHTML = parseInt($('relevance_'+response.id).innerHTML)+parseInt(relevance);
+                        if(this.zUserGroups.indexOf("4") == -1){
+                            $('relevance_'+response.id).getPrevious().removeEvents('click');
+                            $('relevance_'+response.id).getNext().removeEvents('click');
+                        }
+                    }
+                }
+            },
+            // Our request will most likely succeed, but just in case, we'll add an
+            // onFailure method which will let the user know what happened.
+            onFailure: function(){
+            }
+        }).send();
+
+    }
+
+    var getPostTitle = function getPostTitle(title, target) {
+        var a_title = "<a target=\"_blank\" href=\"" + target + "\">" + title + "</a>";
+        return a_title;
+    }
+
+    var getZoneForPost = function getZoneForPost(zone) {
+        var a_zone = "<a id=\"zonePost\" onclick=\"zTab.setZone('" +zone.replace(/_/g," ").capitalize() + "','','','');drawMap('" +zone + "');ajustMapToExtendedString('" + zone + "');\">" + zone.replace(/_/g, " ").capitalize() + "</a>";
+        return a_zone;
+    }
+
+
+    var updatePosts = function updatePosts(docs, more, newPosts) {
+        //Recupero los post del verbatim y realizo los cambios necesarios
+        var posts = [];
+        docs.each(function (doc) {
+            var post = JSON.parse(doc.verbatim);
+            post.modified = prettyDate(doc.modified);
+            var target = getTarget(post, doc.id);
+            post.title = getPostTitle(post.title, target);
+            post.text = getVerMas(post.text ? post.text : "");
+            post.zone = getZoneForPost(post.zone.extendedString);
+            posts.push(post);
+        });
+        if(more){
+            htmlPosts.append(posts).notify(function(event) {
+                //console.log(JSON.stringify(event));
+                if (event.type == TempoEvent.Types.RENDER_STARTING) {
+                    postsContainer.addClass('loading');
+                }
+                if (event.type == TempoEvent.Types.RENDER_COMPLETE) {
+                    postsContainer.removeClass('loading');
+                }
+            });
+        } else if(newPosts) {
+            htmlPosts.prepend(posts).notify(function(event) {
+                //console.log(JSON.stringify(event));
+                if (event.type == TempoEvent.Types.RENDER_STARTING) {
+                    postsContainer.addClass('loading');
+                }
+                if (event.type == TempoEvent.Types.RENDER_COMPLETE) {
+                    postsContainer.removeClass('loading');
+                }
+            });
+        } else {
+            htmlPosts.render(posts).notify(function(event) {
+                //console.log(JSON.stringify(event));
+                if (event.type == TempoEvent.Types.RENDER_STARTING) {
+                    postsContainer.addClass('loading');
+                }
+                if (event.type == TempoEvent.Types.RENDER_COMPLETE) {
+                    postsContainer.removeClass('loading');
+                }
+            });
+        }
+    }        
+
+    
+    this.updatePosts = updatePosts;
+
+    this.checkTag = function checkTag(tag, bottonId){
+        // alert("tag "+tag+" indexOF "+zTags.indexOf(tag) );
+        if(zCtx.zTags.indexOf(tag)!= -1 ){
+
+            $(bottonId).setStyle('display','inline');
+        } else {
+            $(bottonId).setStyle('display','none');
+        }
+    }
+
+    this.show_confirm = function show_confirm(idInputTag,selectedTag,tags)
+    {
+        var r=confirm("Esta seguro de Agregar el Tag: "+selectedTag);
+        if (r==true)
+        {
+            addTagToPost(idInputTag,tags,selectedTag);
+        }
+        else
+        {
+            alert("Cancelado");
+        }
+    }
+    this.addTagToPost = function addTagToPost(idPost,tags,selectedTag){
+        //\"tags\":[\"Espectaculos\"]
+
+        var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&aTags='+tags+','+selectedTag;
+        var urlProxy = '/curl_proxy.php';
+        new Request({
+            url: urlProxy,
+            method: 'post',
+            data: {
+                'host': this.host ? this.host : "localhost",
+                'port': this.port ? this.port : "38080",
+                'ws_path':url
+            },
+            onRequest: function(){
+            },
+            onSuccess: function(response) {
+                if(response.length > 0) {
+                    response = JSON.decode(response);
+                    if(response.id){
+                        var span_tags = new Element('span').addClass('cp_tags').inject($('tagsDiv_'+response.id).getLast().getPrevious(),'before');
+                        new Element('a', {
+                            'html': selectedTag,
+                            'onclick': 'ckeckOnlyTag("' + selectedTag + '");'
+                        }).inject(span_tags);
+                        $('tagsDiv_'+response.id).addClass(selectedTag);
+                    }
+                }
+            },
+            // Our request will most likely succeed, but just in case, we'll add an
+            // onFailure method which will let the user know what happened.
+            onFailure: function(){
+            }
+        }).send();
+    }
+
+    this.delTagFromPost = function delTagFromPost(idPost,selectedTag){
+        //\"tags\":[\"Espectaculos\"]
+
+        var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(idPost)+'"}&rTag='+selectedTag;
+        var urlProxy = '/curl_proxy.php';
+        new Request({
+            url: urlProxy,
+            method: 'post',
+            data: {
+                'host': this.host ? this.host : "localhost",
+                'port': this.port ? this.port : "38080",
+                'ws_path':url
+            },
+            onRequest: function(){
+            },
+            onSuccess: function(response) {
+                if(response.length > 0) {
+                    response = JSON.decode(response);
+                    if(response.id){
+                        $('tagsDiv_'+response.id).getElements('span.cp_tags a').each(function(tagA){
+                            if(tagA.innerHTML == selectedTag)
+                                tagA.getParent().dispose();
+                        });
+                        $('tagsDiv_'+response.id).removeClass(selectedTag);
+                    }
+                }
+            },
+            // Our request will most likely succeed, but just in case, we'll add an
+            // onFailure method which will let the user know what happened.
+            onFailure: function(){
+            }
+        }).send();
+    }
+
+    this.spanishDate = function spanishDate(d){
+        var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
+
+        var monthname=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+        return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear();
+    }
+
+    this.fixTime = function fixTime(i) {
+        return (i<10 ? "0" + i : i);
+    }
+
+    this.setSourceVisible = function setSourceVisible(source, visible) {
+
+        if (visible) {
+            zcAddSource(source);
+        } else {
+            zcUncheckSource(source);
+        }
+    //refreshFiltro();
+    }
+
+    this.ckeckOnlyTag = function ckeckOnlyTag(tag) {
+        var zCtxChkTags = this.zcGetCheckedTags();
+
+        zCtxChkTags.each(function (chkTag) {
+            if (chkTag != tag) {
+                zcUncheckTag(chkTag);
+            }
+        });
+
+        var tagFilters = $$('table#tagsFilterTable input');
+        tagFilters.each(function(input) {
+            if (input.id == 'chkt' + tag) {
+                input.checked = true;
+            } else {
+                input.checked = false;
+            }
+        });
+        setTagVisible(tag, true);
+    }
+
+    this.setTagVisible = function setTagVisible(tag, checked) {
+
+        //Actualizo el contexto
+        if (checked) {
+            if($('chkt'+tag))
+                $('chkt'+tag).addClass('checked');
+            zcAddTag(tag);
+        } else {
+            if($('chkt'+tag))
+                $('chkt'+tag).removeClass('checked');
+            zcUncheckTag(tag);
+        }
+    //refreshFiltro();
+    }
+
+    this.refreshFiltro = function refreshFiltro(){
+        //var zCtxTemp = zcGetContext();
+        //Refresco visibilidad de Posts
+        var zCtxChkTags = this.zcGetCheckedTags();
+        var zCtxChkSource = this.zcGetCheckedSources();
+
+        var posts = $$('div#postsContainer div.story-item');
+        if(typeOf(posts) == 'elements') {
+            posts.each(function(post){
+                var visible = false;
+                zCtxChkSource.each(function (source){
+                    if(post.hasClass(source)) {
+                        zCtxChkTags.each(function (tag) {
+                            if(post.hasClass(tag))
+                                visible = true;
+                        });
+                    }
+                });
+                post.setStyle('display', visible ? 'block' : 'none');
+                post.removeClass(!visible ? 'visible' : 'hidden');
+                post.addClass(visible ? 'visible' : 'hidden');
+            });
+        }
+
+        //    sendFilter(source,visible);
+        armarTitulo(this.tab);
+    }
+
+
+
+
+
+    //	Fri Sep 23 2011 09:51:35 GM /0300 (AR )
+
+    //	2010-08-28T20:24:17Z
+
+    var prettyDate = function prettyDate(time){
+        var time_formats = [
+        [60, 'segundos', 1], // 60
+        [120, ' hace 1 minuto', 'hace 1 minuto'], // 60*2
+        [3600, 'minutos', 60], // 60*60, 60
+        [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
+        [86400, 'horas', 3600], // 60*60*24, 60*60
+        [172800, '1 dia', 'maï¿½ana'], // 60*60*24*2
+        [604800, 'dï¿½as', 86400], // 60*60*24*7, 60*60*24
+        [1209600, ' en la ultima semana', 'prï¿½xima semana'], // 60*60*24*7*4*2
+        [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
+        [4838400, ' ultimo mes', 'prï¿½ximo mes'], // 60*60*24*7*4*2
+        [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
+        [58060800, ' en el ultimo aï¿½o', 'proximo aï¿½o'], // 60*60*24*7*4*12*2
+        [2903040000, 'aï¿½os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+        [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
+        [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
+        ];
+        //var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        //if(time.substr(time.length-4,1)==".") time =time.substr(0,time.length-4);
+        var seconds = (new Date - new Date(time)) / 1000;
+        var token = ' hace', list_choice = 1;
+        if (seconds < 0) {
+            //seconds += 10800;
+            seconds = Math.abs(seconds);
+            //token = 'desde ahora';
+            list_choice = 2;
+        }
+        var i = 0, format;
+        while (format = time_formats[i++])
+            if (seconds < format[0]) {
+                if (typeof format[2] == 'string')
+                    return format[list_choice];
+                else
+                    return (token+ ' ' + Math.floor(seconds / format[2]) + ' ' + format[1]);
+            }
+        return time;
+    }
+
+    this.armarTitulo = function armarTitulo(tabTemp){
+        var temp = 0 ;
+        tabTemp = this.tab;
+        var zoneSeltemp = this.zcGetZone();
+        var zoneEfectemp = "";
+
+        //var posts = $$('div#postsContainer div.story-item');
+        //var posts = $$('div#postsContainer:first-child');
+
+        if(postsContainer){
+            var firstPost = postsContainer.firstChild;
+            zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
+        }
+
+        $('tituloSup').innerHTML = "";
+        $('filtrosAct').innerHTML = "";
+        $('titulo1').innerHTML = "";
+
+
+        if (zoneEfectemp == zoneSeltemp){
+            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
+                $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "";
+                if (tabTemp == 'relevantes'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }else {
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }
+            }else {
+                $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "";
+                if (tabTemp == 'noticiasenlared'){
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }else if (tabTemp == 'enlared'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }
+            }
+        }
+
+        if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
+            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
+                $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
+                if (tabTemp == 'relevantes'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }else {
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }
+            }else {
+                $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
+                if (tabTemp == 'noticiasenlared'){
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }else if (tabTemp == 'enlared'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }
+            }
+        }
+        if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
+            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
+                $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
+                $('tituloZone2').innerHTML = "";
+                if (tabTemp == 'relevantes'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }else {
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }
+            }else {
+                $('tituloZone1').innerHTML = "Mostrando todas las noticias";
+                $('tituloZone2').innerHTML = "";
+                if (tabTemp == 'noticiasenlared'){
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }else if (tabTemp == 'enlared'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }
+            }
+        }
+
+
+        $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
+
+            temp =index+1
+            if(element.checked) {
+                $('tituloFiltro').innerHTML = "del Tipo: ";
+                if(index != 0)
+                    $('filtrosAct').innerHTML += ", ";
+                $('filtrosAct').innerHTML += element.value+" ";
+            }
+        });
+        // console.log("elementos"+temp);
+        //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
+        if(temp == ($('filterTags').getElements('.checked').length)){
+            $('tituloFiltro').innerHTML = "";
+            $('filtrosAct').innerHTML = "";
+        }
+
+    }
+
+    this.popup = function popup(id){
+        this.zirClient.loadSolrPost(id, function(doc){
+            updatePost(doc);
+        });
+    }    
 }
+
+var zTab = new ZTabs();
+
+window.addEvent('domready', function() {
+    //if(postsContainer){
+    console.log('domready antes de initAll');
+    zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
+    zTab.initAll();    
+});
