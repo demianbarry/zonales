@@ -39,10 +39,14 @@ body{
 }
 
 #verNuevos{
-    display:block;
-    background:#e2e1e1;
-    margin:0 0 20px 0;
-    padding:10px;
+    font-family: 'PT Sans Narrow',sans-serif;
+    background-color: #E2E1E1;
+    color: #009CC9;
+    display: block;
+    margin: 0 0 20px;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;    
 }
 
 .border1{
@@ -67,7 +71,7 @@ body{
 
 #content-only {
     margin:auto;
-    width:932px;
+    width:932px;    
     background-repeat:repeat-y;
     background-position:530px;
     background: none repeat scroll 0 0 #CED8F6;
@@ -136,7 +140,7 @@ body{
 }
 
 /* POPULATE OPTIONS */
-div.suggestions {
+div.suggestions {    
     background: none repeat scroll 0% 0% #009ECD;
     border-style: groove;
     border-width: 0px 2px 2px 2px;
@@ -146,19 +150,19 @@ div.suggestions {
     padding: 5px;
     position: absolute;
     z-index: 999;
-    opacity: 0.95;
+    opacity: 0.95;  
 }
 
-div.suggestions p {
+div.suggestions p {        
     border-radius: 2px 2px 2px 2px;
     padding: 3px;
-    color: white;
+    color: white;    
 }
 
 div.suggestions p.selected  {
     background: none repeat scroll 0% 0% #78E0FF;
     position: relative;
-    color: white;
+    color: white;    
 }
 /* FIN POPULATE OPTIONS */
 
@@ -175,12 +179,12 @@ div#content-right ul.menuEditor li {
 }
 
 div#content-right ul.menuEditor li:hover {
-    background: #78E0FF;
+    background: #78E0FF;    
 }
 
 div#content-right ul.menuEditor li a {
     color: white;
-    font-weight: bold;
+    font-weight: bold;    
     text-decoration: none;
 }
 /* FIN MENU EDITOR */
@@ -190,7 +194,7 @@ div#table_content table.advanced_search tbody tr td.input input {
     border: 1px groove;
     border-color: #CECEF6;
     margin: 10px;
-     width: 80%;
+    width: 80%;
 }
 
 html body div#content-only div.border1 div.padding10 h1.samples{
@@ -214,7 +218,6 @@ div#content-only div.border1 div.padding10 form div#buttons input{
     background: none repeat scroll 0 0 #E2E1E1;
 }
 /* FIN EDITOR ZONALES */
-
 /*LISTA NOTICIAS ZONALES*/
 html body div#content-only div.border1 div.padding10 div#wrapper.clearfix div#resultado table#resultTable.resultTable tr.tableRowHeader{
     font-family: 'PT Sans Narrow',sans-serif;
@@ -230,11 +233,7 @@ html body div#content-only div.border1 div.padding10 div#wrapper.clearfix div#re
 }
 /*FIN LISTA*/
 
-{font-family: 'Open Sans', sans-serif;}
-{font-family: 'PT Sans Narrow', sans-serif;}
-{font-family: 'PT Sans', sans-serif;}
-{font-family: 'Open Sans Condensed', sans-serif;}
-
+/* MAPA */
 div#mapDiv {
     padding: 10px;
 }
@@ -279,3 +278,15 @@ div#mapDiv a {
 path:hover {
     fill: #FFFFFF;
 }
+/* FIN MAPA */
+
+.loading {
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;
+}
+
+
+{font-family: 'Open Sans', sans-serif;}
+{font-family: 'PT Sans Narrow', sans-serif;}
+{font-family: 'PT Sans', sans-serif;}
+{font-family: 'Open Sans Condensed', sans-serif;}
