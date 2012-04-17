@@ -1,7 +1,6 @@
-function ZIRClient(){
+function ZIRClient(socket, sessionId){
     this.host = "localhost";
     this.port = 38081;
-    //this.searching = false;
     this.firstIndexTime = null;
     this.lastIndexTime = null;
     this.minRelevance = null;
@@ -9,6 +8,8 @@ function ZIRClient(){
     this.timeInterval = 10800001;
     this.rows = 20;
     this.ids = new Array();
+    this.socket = socket;
+    this.sessionId = sessionId;
     this.setSolrRows=function(cant){
         this.rows = cant;
     };
@@ -181,7 +182,7 @@ function ZIRClient(){
     }
 
     this.loadSolrPost=function(id, callback){        
-        socket.emit('getSolrPost', {                            
+        this.socket.emit('getSolrPost', {                            
             id: id,
             method: 'GET'
         }, function(jsonObj) {
@@ -194,38 +195,35 @@ function ZIRClient(){
         });       
     }
 
-    this.loadMoreSolrPost=function(){
-        var sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+    this.loadMoreSolrPost=function(){        
         /* console.log(this.searching);
         if(this.searching) {
             return;
         } else {
             this.searching = true;*/
-        socket.emit('loadMorePosts', {
-            sessionId: sessionId,
+        this.socket.emit('loadMorePosts', {
+            sessionId: this.sessionId,
             method: 'GET'
         });
     // }
     }
 
-    this.loadNewSolrPost=function(){
-        var sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
+    this.loadNewSolrPost=function(){        
         /*console.log(this.searching);
         if(this.searching) {
             return;
         } else {
             this.searching = true;*/
-        socket.emit('loadNewPosts', {
-            sessionId: sessionId,
+        this.socket.emit('loadNewPosts', {
+            sessionId: this.sessionId,
             method: 'GET'
         });
     // }
     }
 
-    this.resetStart=function(){
-        sessionId = Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
-        socket.emit('resetStart', {
-            sessionId: sessionId,
+    this.resetStart=function(){        
+        this.socket.emit('resetStart', {
+            sessionId: this.sessionId,
             method: 'GET'
         });
     }
@@ -237,227 +235,4 @@ function ZIRClient(){
     this.getSolrPort=function() {
         return this.port;
     }
-    function reduceMilli(date) {
-        var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
-        var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli - 1) + 'Z';
-        return finalDate;
-    }
-
-    function addMilli(date) {
-        var milli = date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1);
-        var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
-        return finalDate;
-    }
 }
-/*
-var host = "localhost";
-var port = 38081;
-var searching = false;
-var searchKeyword = "";
-var firstIndexTime = null;
-var lastIndexTime = null;
-var minRelevance = null;
-var firstModifiedTime = null;
-var timeInterval = 10800001;
-var rows = 20;
-var ids = new Array();
-
-function setSolrRows(cant) {
-    rows = cant;
-}
-
-function getSeolrRows() {
-    return rows;
-}
-
-function addIdToSolrSearch(id) {
-    ids.push(id);
-}
-
-function clearSolrIds() {
-    ids.empty();
-}
-
-function setFirstIndexTime(time) {
-    firstIndexTime = time;
-}
-
-function getFirstIndexTime() {
-    return firstIndexTime;
-}
-
-function setFirstModifiedTime(time) {
-    firstModifiedTime = time;
-}
-
-function getFirstModifiedTime() {
-    return firstModifiedTime;
-}
-
-function setLastIndexTime(time) {
-    lastIndexTime = time;
-}
-
-function getLastIndexTime() {
-    return lastIndexTime;
-}
-
-function setMinRelevance(relevance) {
-    minRelevance = relevance;
-}
-
-function getMinRelevance() {
-    return minRelevance;
-}
-
-function setSearchKeyword(keyword) {
-    searchKeyword = keyword;
-}
-
-function getSearchKeyword() {
-    return searchKeyword;
-}
-
-function getSolrDate(millis){
-    var date = new Date(millis);
-    return date.getFullYear() + '-' + complete(date.getMonth() + 1) + '-' + complete(date.getDate()) + 'T' +
-    complete(date.getHours()) + ':' + complete(date.getMinutes()) + ':' + complete(date.getSeconds()) + '.' + date.getMilliseconds() + 'Z';
-}
-
-function getSolrSort(myTab){
-
-    var res = "";
-
-    if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada"){
-        res = "modified+desc";
-    }
-    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
-        res = "relevance+desc";
-
-    return res;
-}
-
-function getSolrSources(myTab){
-    var res = "";
-    if (myTab == "enlared" || myTab == "relevantes"){
-        res = "q=source:(facebook+OR+twitter)";
-    }
-    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
-        res = "q=!source:(facebook+OR+twitter)";
-    }
-    if (myTab == "portada"){
-        res = "q=tags:(Portada)";
-    }
-    if (myTab == "geoActivos"){
-        res = "q=";
-    }
-
-    return res;
-
-
-}
-
-function getSolrZones(myZone)
-{
-    var res = "";
-    if (zcGetTab() != 'geoActivos') {
-        if(typeof(myZone) == 'undefined' || !myZone || myZone == '')
-            return "";
-
-        res  = '+AND+zone:"';
-        res += myZone.replace(/_/g, ' ').capitalize();
-        res += '"';
-    }
-
-    return res.replace(' ', '+');
-
-}
-
-function getSolrKeyword(keyword) {
-    if(typeof(keyword) == 'undefined' || !keyword || keyword == '' || keyword == null)
-        return "";
-
-    var res  = '+AND+' + keyword.replace(/ /g, '+');
-
-    return res;
-}
-
-function getSolrIds() {
-    var res = "";
-    if (zcGetTab() == 'geoActivos') {
-        ids.each(function(id,index) {
-            res += (index != 0 ? "+OR+" : "")+'id:"' + encodeURIComponent(id) + '"';
-        });
-    }
-    return res;
-}
-
-function getSolrRange(myTab, more){
-
-    var res = "";
-
-    if (myTab == "enlared" || myTab == "noticiasenlared" || myTab == "portada" ){
-        if (!more) {
-            res = (lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + timeInterval)+'+TO+*]' : '');
-        } else {
-            if (myTab == "portada") {
-                res = '&fq=modified:[*+TO+'+ reduceMilli(firstModifiedTime.replace('Z', '.000Z')) + ']';
-            } else {
-                res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']';
-            }
-        }
-    }
-
-    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" ){
-        if (!more){
-            res =(lastIndexTime ? '&fq=indexTime:['+getSolrDate(lastIndexTime + timeInterval)+'+TO+*]' : '&fq=modified:['+($('tempoSelect').value != '0' ? 'NOW-'+
-                ($('tempoSelect').value) : '*')+'+TO+*]') + '&fq=!relevance:0+AND+relevance:[' + (minRelevance ? minRelevance : 0) + '+TO+*]' ;
-
-        }
-        else
-            res = '&fq=indexTime:[*+TO+'+reduceMilli(firstIndexTime)+']'+'&fq=!relevance:0+AND+relevance:[*+TO+' + (minRelevance ? minRelevance : 0) + ']' ;
-    }
-    return res;
-}
-
-function getSolrUrl(tab, zone, more, keyword) {
-    var urlSolr = "/solr/select?indent=on&version=2.2&start=0&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
-    getSolrSort(tab)+"&wt=json&explainOther=&hl.fl=&"+
-    getSolrSources(tab)+
-    getSolrZones(zone)+
-    getSolrKeyword(keyword)+
-    getSolrIds()+
-    getSolrRange(tab,more);
-
-    return urlSolr;
-}
-
-function loadSolrPost(tab, zone, more, callback){
-    if(searching) {
-        callback();
-        return(this);
-    }
-
-    var urlSolr = getSolrUrl(tab, zone, more, getSearchKeyword());
-
-    socket.emit('proxyExecute', {
-        host: host,
-        port: port,
-        path: urlSolr,
-        method: 'GET'
-    }, function(jsonObj) {
-        console.log(jsonObj);
-        callback(jsonObj);
-        return(this);
-    });
-
-}
-
-function getSolrHost() {
-    return host;
-}
-
-function getSolrPort() {
-    return port;
-}*/
-var zirClient = new ZIRClient();

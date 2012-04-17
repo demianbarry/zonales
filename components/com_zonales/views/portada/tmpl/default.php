@@ -1,12 +1,17 @@
 <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
-<script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
+<script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/tempo.js"></script>
 <!--<script language="javascript" type="text/javascript" src="media/system/js/simple-modal.js"></script>-->
 
-<div id="verNuevos"><p><a href="#"><img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
-<input id="verNuevos" value="" onclick="verNuevos();" type="button" style="display:none">
+<div id="verNuevos" onclick="zTab.verNuevos();">
+    <p>
+        <a href="#">
+            <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" />
+        </a>
+    </p>
+</div>
 <div id="newPostsContainer" style="display:none"></div>
 <ol id="postTemplate">
     <li data-template data-if-source="Facebook" style="display: none;">
