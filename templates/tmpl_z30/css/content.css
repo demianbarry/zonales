@@ -121,7 +121,7 @@ p.buttons a{
     margin:auto;
     margin-bottom:-5px;
     background:#FFF;
-    width:250px;
+    width:300px;
 
     font-family: 'PT Sans Narrow', sans-serif;
     color:#999;
@@ -137,6 +137,14 @@ p.buttons a{
 #ordenar p a{
     text-decoration:none;
     color:#009cc9;
+    cursor: pointer;
+    padding: 0px 5px;
+}
+
+#ordenar p a.active{
+    background: none repeat scroll 0 0 #009CC9;
+    color: #FFFFFF;
+    padding: 0px 5px;
 }
 
 #mainMenu p{
@@ -186,6 +194,7 @@ p.buttons a{
     display:block;
     text-decoration:none;
     color:inherit;
+    cursor: pointer;
 }
 
 #verMas p a img{
@@ -205,30 +214,84 @@ p.buttons a{
 
 #login-form input {
     border: none;
+    cursor: pointer;
 }
 
-#modlgn-username {    
+#modlgn-username {
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 }
-#modlgn-passwd {    
+#modlgn-passwd {
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 
 }
-#formzlogin_submit.button{
+#formzlogin_submit, #registeruser{
     font-size: 12px;
     color: inherit;
     font-family: 'PT Sans Narrow',sans-serif;
     background: none repeat scroll 0 0 #E2E1E1;
+    width:49px;
+    height:22px;
 }
 
-p#form-login-username {
+#form-login-username {
     float: left;
     margin-right: 10px;
 }
 
-p#form-login-password {
+#form-login-password {
     float: left;
     margin-right: 10px;
+}
+#login-buttons{
+    margin-left: 250px;
+    margin-top: -34px;
+}
+#login-buttons p{
+    padding: 1px;
+}
+#login-form a{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 10px;
+}
+#idlogin-greeting{
+    font-size: 14px;
+    color: white;
+    font-family: 'PT Sans Narrow',sans-serif;
+    text-decoration: none;
+    margin: 2px;
+
+}
+#idlogout-button a{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12px;
+}
+#submit-logout{
+    font-size: 12px;
+    color: inherit;
+    font-family: 'PT Sans Narrow',sans-serif;
+    background: none repeat scroll 0 0 #E2E1E1;
+
+}
+
+#postTemplate a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+#postTemplate a:visited {
+    color: inherit;
+}
+#verMasPost {
+    cursor: pointer;
+}
+
+#resetZoneButton {
+    cursor: pointer;
 }
