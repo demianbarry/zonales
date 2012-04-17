@@ -17,7 +17,7 @@ JHTML::_('behavior.formvalidation');
 ?>
 
 <div id="top_bar_right">
-    <p><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
+    <p><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
                onfocus="if(this.value=='Seleccione una zona...') this.value='';"/></p>
 
     <input type="hidden" value="setZonalById" name="task">
