@@ -38,11 +38,7 @@ defined('_JEXEC') or die('Restricted Access');
             $('relevantesOrder').removeClass('active');
             $('recientesOrder').addClass('active');
         }        
-    }
-    
-    window.addEvent('domready', function(){                     
-        setActiveTab(zTab.zCtx.scGetZTab());
-    });
+    }    
 </script>
 
 <div>
