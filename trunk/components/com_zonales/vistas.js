@@ -73,7 +73,10 @@ function ZTabs() {
             initZonas(zCtx.zcGetZone());
             initVista(zCtx);
             if(typeof initMapTab == 'function'){
-                initMapTab();
+                initMapTab();                
+            }
+            if(typeof setActiveTab == 'function'){
+                setActiveTab(zTab.zCtx.zcGetZTab());
             }
         });
         zUserGroups = loguedUser;
@@ -127,7 +130,7 @@ function ZTabs() {
         this.initSourceFilters(zCtx);
         this.initTagFilters(zCtx);
         this.initTempFilters(zCtx);
-        //this.initPost();
+    //this.initPost();
     }   
 
     this.initSourceFilters = function initSourceFilters(zCtx) {
@@ -287,8 +290,8 @@ function ZTabs() {
         updatePosts(newPosts, false, true);
         verNuevosButton.setStyle('display','none');
         newPosts.empty();
-        //refreshFiltro();
-        // postsContainer.setStyle('backgroundColor','#FFFFFF');
+    //refreshFiltro();
+    // postsContainer.setStyle('backgroundColor','#FFFFFF');
     }
     this.verNuevos = verNuevos;
 
@@ -719,5 +722,5 @@ window.addEvent('domready', function() {
     //if(postsContainer){
     console.log('domready antes de initAll');
     zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
-    zTab.initAll();    
+    zTab.initAll();        
 });
