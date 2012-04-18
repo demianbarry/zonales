@@ -28,12 +28,12 @@ function ZTabs() {
     this.socket = socket;
     var zCtx = new ZContext(this.socket, this.sessionId, this.nodeURL);
     this.zCtx = zCtx;
-    var zirClient = new ZIRClient(this.socket, this.sessionId);    
+    var zirClient = new ZIRClient(this.socket, this.sessionId);
     this.zirClient = zirClient;
     var htmlPosts;
     var newPosts = new Array();
     this.newPosts = newPosts;
-    
+
     var postsContainer = null;
     var filtersContainer = null;
     var verNuevosButton = null;
@@ -42,7 +42,7 @@ function ZTabs() {
         filtersContainer = filtersContainerParam;
         verNuevosButton = verNuevosParam;
         htmlPosts = Tempo.prepare(postsContainer);
-    }    
+    }
 
     socket.on('solrPosts', function (response) {
         console.log("SOLR POSTS: ");
@@ -65,15 +65,15 @@ function ZTabs() {
         } else{
             verNuevosButton.setStyle('display','none');
         }
-    });  
+    });
 
-    var initAll = function initAll() {            
-        zCtx.initZCtx(function() {            
+    var initAll = function initAll() {
+        zCtx.initZCtx(function() {
             tab = zCtx.zcGetZTab();
             initZonas(zCtx.zcGetZone());
             initVista(zCtx);
             if(typeof initMapTab == 'function'){
-                initMapTab();                
+                initMapTab();
             }
             if(typeof setActiveTab == 'function'){
                 setActiveTab(zTab.zCtx.zcGetZTab());
@@ -82,14 +82,14 @@ function ZTabs() {
         zUserGroups = loguedUser;
     }
     this.initAll = initAll;
-    
-    var initZonas = function initZonas(selZone) {        
+
+    var initZonas = function initZonas(selZone) {
         if (selZone && selZone != '') {
             $('zoneExtended').value = selZone;
         }
     }
     this.initZonas = initZonas;
-    
+
     var initVista = function initVista(zCtx){
         //        if(postsContainer)
         //            postsContainer.empty();
@@ -105,7 +105,7 @@ function ZTabs() {
         zCtx.setSearchKeyword("");
     }
     this.initVista = initVista;
- 
+
     var initPost = function initPost() {
         if (this.tab != 'geoActivos' && postsContainer) {
             if(this.postInterval) {
@@ -131,7 +131,7 @@ function ZTabs() {
         this.initTagFilters(zCtx);
         this.initTempFilters(zCtx);
     //this.initPost();
-    }   
+    }
 
     this.initSourceFilters = function initSourceFilters(zCtx) {
         //Actualizo filtros de fuente desde contexto
@@ -339,6 +339,10 @@ function ZTabs() {
         return a_zone;
     }
 
+    var getRelevanceForPost = function (relevance, id) {
+        var r_post = "<spam id='relevance_" + id + "'>" + relevance + "</spam>";
+        return r_post;
+    }
 
     var updatePosts = function updatePosts(docs, more, newPosts) {
         //Recupero los post del verbatim y realizo los cambios necesarios
@@ -350,6 +354,12 @@ function ZTabs() {
             post.title = getPostTitle(post.title, target);
             post.text = getVerMas(post.text ? post.text : "");
             post.zone = getZoneForPost(post.zone.extendedString);
+            post.actions.each(function (action){
+                if(action.type == 'comment') action.type = 'comentarios';
+                if(action.type == 'like') action.type = 'me gusta';
+                 if(action.type == 'replies') action.type = 'respuestas';
+            });
+            post.relevance = getRelevanceForPost(post.relevance, post.id);
             posts.push(post);
         });
         if(more){
@@ -383,9 +393,9 @@ function ZTabs() {
                 }
             });
         }
-    }        
+    }
 
-    
+
     this.updatePosts = updatePosts;
 
     this.checkTag = function checkTag(tag, bottonId){
@@ -579,15 +589,15 @@ function ZTabs() {
         [3600, 'minutos', 60], // 60*60, 60
         [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
         [86400, 'horas', 3600], // 60*60*24, 60*60
-        [172800, '1 dia', 'mañana'], // 60*60*24*2
-        [604800, 'días', 86400], // 60*60*24*7, 60*60*24
-        [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
+        [172800, '1 dia', 'ma�ana'], // 60*60*24*2
+        [604800, 'd�as', 86400], // 60*60*24*7, 60*60*24
+        [1209600, ' en la ultima semana', 'pr�xima semana'], // 60*60*24*7*4*2
         [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-        [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
+        [4838400, ' ultimo mes', 'pr�ximo mes'], // 60*60*24*7*4*2
         [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-        [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
-        [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
-        [5806080000, 'ultimo siglo', 'próximo siglo'], // 60*60*24*7*4*12*100*2
+        [58060800, ' en el ultimo a�o', 'proximo a�o'], // 60*60*24*7*4*12*2
+        [2903040000, 'a�os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+        [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
         [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
         ];
         //var time = ('' + date_str).replace(/-/g,"/").replace(/[TZ]/g," ").replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -713,7 +723,7 @@ function ZTabs() {
         this.zirClient.loadSolrPost(id, function(doc){
             updatePost(doc);
         });
-    }    
+    }
 }
 
 var zTab = new ZTabs();
@@ -722,5 +732,5 @@ window.addEvent('domready', function() {
     //if(postsContainer){
     console.log('domready antes de initAll');
     zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
-    zTab.initAll();        
+    zTab.initAll();
 });
