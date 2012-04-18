@@ -33,7 +33,7 @@ function ZTabs() {
     var htmlPosts;
     var newPosts = new Array();
     this.newPosts = newPosts;
-    var firstPostZone;
+    this.firstPostZone = "";
 
     var postsContainer = null;
     var filtersContainer = null;
@@ -292,7 +292,7 @@ function ZTabs() {
         verNuevosButton.setStyle('display','none');
         newPosts.empty();
         postsContainer.setStyle('backgroundColor','#EFF8FB');
-        setTimeout('setStylePostCont(postsContainer);',2000);
+        setTimeout(setStylePostCont(zTab.postsContainer),2000);
 
     }
     this.setStylePostCont = function setStylePostCont(postsContainer){
@@ -382,7 +382,7 @@ function ZTabs() {
             post.text = getVerMas(post.text ? post.text : "");
             post.zone = getZoneForPost(post.zone.extendedString);
             if(first){
-                firstPostZone = post.zone;
+                zTab.firstPostZone = post.zone;
                 first = false;
             }
             post.actions.each(function (action){
@@ -425,7 +425,7 @@ function ZTabs() {
                 }
             });
         }
-        //armarTitulo(firstPostZone);
+        zTab.armarTitulo(zTab.firstPostZone);
     }
 
 
@@ -657,8 +657,8 @@ function ZTabs() {
    this.armarTitulo = function armarTitulo(firstPostZone){
         var temp = 0 ;
        // tabTemp = this.tab;
-        var zoneSeltemp = this.zcGetZone();
-        var zoneEfectemp = firstPostZone;
+        var zoneSeltemp = zTab.zCtx.zcGetZone();
+        var zoneEfectemp = zTab.firstPostZone;
 
         //var posts = $$('div#postsContainer div.story-item');
         //var posts = $$('div#postsContainer:first-child');
@@ -669,14 +669,14 @@ function ZTabs() {
         }*/
 /**************************************/
         $('tituloSup').innerHTML = "";
-        $('filtrosAct').innerHTML = "";
-        $('titulo1').innerHTML = "";
+//        $('filtrosAct').innerHTML = "";
+//        $('titulo1').innerHTML = "";
 
 
 
 
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
-            $('tituloZone1').innerHTML = "No se encontraron noticias para la zona seleccionada";
+            $('tituloSup').innerHTML = "No se encontraron noticias para la zona seleccionada";
             /*if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
                 $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
                 $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
