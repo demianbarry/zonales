@@ -290,8 +290,8 @@ function ZTabs() {
         updatePosts(newPosts, false, true);
         verNuevosButton.setStyle('display','none');
         newPosts.empty();
-    //refreshFiltro();
-    // postsContainer.setStyle('backgroundColor','#FFFFFF');
+     //refreshFiltro();
+     postsContainer.setStyle('backgroundColor','#CEE3F6');
     }
     this.verNuevos = verNuevos;
 
@@ -314,10 +314,10 @@ function ZTabs() {
                     response = JSON.decode(response);
                     if(response.id && response.id.length > 0 && $('relevance_'+response.id)){
                         $('relevance_'+response.id).innerHTML = parseInt($('relevance_'+response.id).innerHTML)+parseInt(relevance);
-                        if(this.zUserGroups.indexOf("4") == -1){
-                            $('relevance_'+response.id).getPrevious().removeEvents('click');
-                            $('relevance_'+response.id).getNext().removeEvents('click');
-                        }
+//                        if(this.zUserGroups.indexOf("4") == -1){
+//                            $('relevance_'+response.id).getPrevious().removeEvents('click');
+//                            $('relevance_'+response.id).getNext().removeEvents('click');
+//                        }
                     }
                 }
             },
