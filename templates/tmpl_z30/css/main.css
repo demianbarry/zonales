@@ -46,7 +46,8 @@ body{
     margin: 0 0 20px;
     padding: 10px;
     text-align: center;
-    text-transform: uppercase;    
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
 .border1{
