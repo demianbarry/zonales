@@ -4,14 +4,6 @@ defined('_JEXEC') or die('Restricted Access');
 ?>
 
 <script type="text/javascript" defer="defer">
-
-    // <![CDATA[
-    function setZTab(newTab){
-        tab = newTab;
-        zTab.zCtx.zcSetTab(newTab);
-        setActiveTab(newTab);
-    }
-
     function setActiveTab() {
         if(zTab.zCtx.zcGetOrder() == 'relevantes') {
             $('relevantesOrder').addClass('active');
