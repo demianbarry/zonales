@@ -24,6 +24,8 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
     var selZoneName = "";
     var efZoneName = "";
     var provinceName = "";
+    var order = '';
+    this.order = order;
     var socket = socketParam;
     var sessionId = sessionIdParam;//Cookie.read("cfaf9bd7c00084b9c67166a357300ba3"); //Revisar esto!!!
     var nodeURL = nodeURLParam;
@@ -57,6 +59,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
             //this.filters = zCtxFromServer.filters;
             zTabs = zCtxFromServer.zTabs;
             zTab = zCtxFromServer.zTab;
+            order = zCtxFromServer.order;
             selZone = zCtxFromServer.selZone;
             efZone = zCtxFromServer.efZone;
             searchKeyword = zCtxFromServer.searchKeyword;
@@ -348,5 +351,49 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
 
     this.zcGetZone = function zcGetZone() {
         return selZone;
+    }
+    
+    this.zcGetOrder = function() {
+        return order;
+    }
+    
+    this.zcSetOrder = function(myOrder, callback) {
+        if(socket)
+            socket.emit('setOrderToCtx', {
+                sessionId: sessionId,
+                order: myOrder
+            }, function(response) {
+                order = myOrder;
+                if(typeof callback === 'function')
+                    callback();
+            });        
+    }
+    
+    this.zcAddTab = function zcAddTab(tab) {
+        if(zTabs.indexOf(tab) == -1) {
+            zTabs.push(tab);
+            if(socket)
+                socket.emit('addTabToCtx', {
+                    sessionId: sessionId,
+                    tab: tab
+                }, function(response) {});
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    this.zcRemoveTab = function zcRemoveTab(tab) {	
+        if(zTabs.indexOf(tab) != -1 && zTabs.length > 1){
+            zTabs.splice(zTabs.indexOf(tab),1);        
+            if(socket)
+                socket.emit('removeTabToCtx', {
+                    sessionId: sessionId,
+                    tab: tab
+                }, function(response) {});
+            return true;
+        } else {
+            return false;
+        }
     }   
 }
