@@ -320,10 +320,10 @@ public final class ZSolrServer extends BaseService {
                     post.setModified((new Date()).getTime());
                 }
                 post.setRelevance(post.getRelevance() + relevance);
-                post.setRelevance(post.getRelevanceDelta() + relevance);
+                post.setRelevanceDelta(post.getRelevanceDelta() + relevance);
                 SolrPost newSolrPost = new SolrPost();
                 postToSolr(newSolrPost, post);
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> SolrPost: {0}", gson.toJson(oldSolrPost));
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "-----------> NewSolrPost: {0}", gson.toJson(newSolrPost));
                 indexSolrPost(oldSolrPost, newSolrPost);
             }
         } catch (SolrServerException ex) {
