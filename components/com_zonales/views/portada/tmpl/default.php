@@ -12,6 +12,7 @@
         </a>
     </p>
 </div>
+<label id="tituloSup"></label>
 <div id="newPostsContainer" style="display:none"></div>
 <ol id="postTemplate">
     <li data-template data-if-source="Facebook" style="display: none;">
