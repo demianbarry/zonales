@@ -20,7 +20,7 @@
                 <p>
                     <img src="templates/<?php echo $template; ?>/img/post_fcbk.gif" />
                 </p>
-                <p><img src="templates/<?php echo $template; ?>/img/avatar_demo1.jpg" /></p>
+                <p>{{avatar}}</p>
                 <p data-template="actions">{{type}}<br />{{cant}}</p>
             </div><!-- /#col1 -->
             <div class="col2">
@@ -50,7 +50,7 @@
                 <p>
                     <img src="templates/<?php echo $template; ?>/img/post_twttr.gif" />
                 </p>
-                <p><img src="templates/<?php echo $template; ?>/img/avatar_demo1.jpg" /></p>
+                <p>{{avatar}}</p>
                 <p data-template="actions">{{type}}<br />{{cant}}</p>
             </div><!-- /#col1 -->
             <div class="col2">
@@ -80,7 +80,7 @@
                 <p>
                     <img src="templates/<?php echo $template; ?>/img/post_medio.gif" />
                 </p>
-                <p><img src="templates/<?php echo $template; ?>/img/avatar_demo1.jpg" /></p>
+                <p>{{avatar}}</p>
                 <p data-template="actions">{{type}}<br />{{cant}}</p>
             </div><!-- /#col1 -->
             <div class="col2">

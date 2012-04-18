@@ -33,6 +33,7 @@ function ZTabs() {
     var htmlPosts;
     var newPosts = new Array();
     this.newPosts = newPosts;
+    var firstPostZone;
 
     var postsContainer = null;
     var filtersContainer = null;
@@ -290,10 +291,15 @@ function ZTabs() {
         updatePosts(newPosts, false, true);
         verNuevosButton.setStyle('display','none');
         newPosts.empty();
-     //refreshFiltro();
-     postsContainer.setStyle('backgroundColor','#CEE3F6');
+        postsContainer.setStyle('backgroundColor','#EFF8FB');
+        setTimeout('setStylePostCont(postsContainer);',2000);
+
+    }
+    this.setStylePostCont = function setStylePostCont(postsContainer){
+        postsContainer.setStyle('backgroundColor','#FFFFFF');
     }
     this.verNuevos = verNuevos;
+
 
     this.incRelevance = function incRelevance(id,relevance){
         var url = '/ZCrawlScheduler/indexPosts?url=http://localhost:38080/solr&doc={"id":"'+encodeURIComponent(id)+'"}&rel='+relevance;
@@ -344,9 +350,30 @@ function ZTabs() {
         return r_post;
     }
 
+    var getAvatarForPost = function (links, source) {
+        var avatar;
+
+        //Analizo los links, para avatar e imágenes
+        if (links) {
+            links.each(function(link) {
+                //AVATARS
+                if (link.type == 'avatar') avatar = link.url;
+            });
+        }
+        //Si no tengo avatars, porgo por defecto
+        if (!avatar) {
+            if (source == 'Facebook') avatar = '/images/facebook.png';
+            else if (source == 'Twitter') avatar = '/images/twitter.png';
+            else avatar = '/images/rss.png'
+        }
+
+        return '<img src="' + avatar + '"/>';
+    }
+
     var updatePosts = function updatePosts(docs, more, newPosts) {
         //Recupero los post del verbatim y realizo los cambios necesarios
         var posts = [];
+        var first = true;
         docs.each(function (doc) {
             var post = JSON.parse(doc.verbatim);
             post.modified = prettyDate(doc.modified);
@@ -354,12 +381,17 @@ function ZTabs() {
             post.title = getPostTitle(post.title, target);
             post.text = getVerMas(post.text ? post.text : "");
             post.zone = getZoneForPost(post.zone.extendedString);
+            if(first){
+                firstPostZone = post.zone;
+                first = false;
+            }
             post.actions.each(function (action){
                 if(action.type == 'comment') action.type = 'comentarios';
                 if(action.type == 'like') action.type = 'me gusta';
                  if(action.type == 'replies') action.type = 'respuestas';
             });
             post.relevance = getRelevanceForPost(post.relevance, post.id);
+            post.avatar = getAvatarForPost(post.links, post.source);
             posts.push(post);
         });
         if(more){
@@ -393,6 +425,7 @@ function ZTabs() {
                 }
             });
         }
+        //armarTitulo(firstPostZone);
     }
 
 
@@ -549,8 +582,8 @@ function ZTabs() {
     this.refreshFiltro = function refreshFiltro(){
         //var zCtxTemp = zcGetContext();
         //Refresco visibilidad de Posts
-        var zCtxChkTags = this.zcGetCheckedTags();
-        var zCtxChkSource = this.zcGetCheckedSources();
+        //var zCtxChkTags = this.zcGetCheckedTags();
+        //var zCtxChkSource = this.zcGetCheckedSources();
 
         var posts = $$('div#postsContainer div.story-item');
         if(typeOf(posts) == 'elements') {
@@ -621,26 +654,49 @@ function ZTabs() {
         return time;
     }
 
-    this.armarTitulo = function armarTitulo(tabTemp){
+   this.armarTitulo = function armarTitulo(firstPostZone){
         var temp = 0 ;
-        tabTemp = this.tab;
+       // tabTemp = this.tab;
         var zoneSeltemp = this.zcGetZone();
-        var zoneEfectemp = "";
+        var zoneEfectemp = firstPostZone;
 
         //var posts = $$('div#postsContainer div.story-item');
         //var posts = $$('div#postsContainer:first-child');
 
-        if(postsContainer){
+       /* if(postsContainer){
             var firstPost = postsContainer.firstChild;
             zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
-        }
-
+        }*/
+/**************************************/
         $('tituloSup').innerHTML = "";
         $('filtrosAct').innerHTML = "";
         $('titulo1').innerHTML = "";
 
 
-        if (zoneEfectemp == zoneSeltemp){
+
+
+        if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
+            $('tituloZone1').innerHTML = "No se encontraron noticias para la zona seleccionada";
+            /*if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
+                $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
+                if (tabTemp == 'relevantes'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }else {
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }
+            }else {
+                $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
+                $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
+                if (tabTemp == 'noticiasenlared'){
+                    $('titulo1').innerHTML = "De los Diarios OnLine "
+                }else if (tabTemp == 'enlared'){
+                    $('titulo1').innerHTML = "De las Redes Sociales "
+                }
+            }*/
+        }
+        /**********************************/
+                /*if (zoneEfectemp == zoneSeltemp){
             if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
                 $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
                 $('tituloZone2').innerHTML = "";
@@ -658,28 +714,9 @@ function ZTabs() {
                     $('titulo1').innerHTML = "De las Redes Sociales "
                 }
             }
-        }
+        }*/
 
-        if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
-            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
-                if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
-            }else {
-                $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-            }
-        }
-        if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
+        /*if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
             if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
                 $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
                 $('tituloZone2').innerHTML = "";
@@ -697,10 +734,10 @@ function ZTabs() {
                     $('titulo1').innerHTML = "De las Redes Sociales "
                 }
             }
-        }
+        }*/
 
 
-        $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
+/*        $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
 
             temp =index+1
             if(element.checked) {
@@ -709,13 +746,13 @@ function ZTabs() {
                     $('filtrosAct').innerHTML += ", ";
                 $('filtrosAct').innerHTML += element.value+" ";
             }
-        });
+        });*/
         // console.log("elementos"+temp);
         //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
-        if(temp == ($('filterTags').getElements('.checked').length)){
+        /*if(temp == ($('filterTags').getElements('.checked').length)){
             $('tituloFiltro').innerHTML = "";
             $('filtrosAct').innerHTML = "";
-        }
+        }*/
 
     }
 
