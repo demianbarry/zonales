@@ -1,8 +1,8 @@
 <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/ZContext.js"></script>
-<script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/tempo.js"></script>
+<script language="javascript" type="text/javascript" src="components/com_zonales/vistas.js"></script>
 <!--<script language="javascript" type="text/javascript" src="media/system/js/simple-modal.js"></script>-->
 
 <div id="verNuevos" onclick="zTab.verNuevos();">
@@ -29,6 +29,7 @@
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
+                    <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
@@ -36,7 +37,7 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
@@ -58,6 +59,7 @@
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
+                    <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
@@ -65,7 +67,7 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
@@ -87,6 +89,7 @@
                     <h2>{{title}}</h2>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
+                    <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha">{{modified}}</p>
 
                 </div><!-- /.padding10 -->
@@ -94,7 +97,7 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
@@ -103,5 +106,5 @@
     </li>
 </ol>
 <div>
-    <div id="verMas"><p><a href="#" onclick="loadMorePost();">Ver más <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
+    <div id="verMas"><p><a onclick="zTab.loadMorePost();">Ver más <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
 </div>
