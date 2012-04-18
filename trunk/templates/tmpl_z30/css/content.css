@@ -162,6 +162,7 @@ p.buttons a{
     background:#009cc9;
     padding:0 5px 0 5px;
     color:#FFF;
+    cursor: pointer;
 }
 
 #nuevos_post p{
@@ -221,7 +222,7 @@ p.buttons a{
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 }
-#modlgn-passwd {
+#modlgn-passwd {    
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 
@@ -276,7 +277,7 @@ p.buttons a{
     color: inherit;
     font-family: 'PT Sans Narrow',sans-serif;
     background: none repeat scroll 0 0 #E2E1E1;
-
+    
 }
 
 #postTemplate a {
