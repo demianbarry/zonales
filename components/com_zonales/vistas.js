@@ -360,7 +360,7 @@ function ZTabs() {
             else avatar = '/images/rss.png'
         }
 
-        return '<img src="' + avatar + '"/>';
+         return '<img class="avatar" src="' + avatar + '"/>';
     }
 
     this.removeNewClass = function () {
