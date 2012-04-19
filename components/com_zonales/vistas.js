@@ -34,6 +34,7 @@ function ZTabs() {
     var newPosts = new Array();
     this.newPosts = newPosts;
     this.firstPostZone = "";
+    var newPostTime = 5000; //Tiempo durante el que se destacan los nuevos post en milisegundo
 
     var postsContainer = null;
     var filtersContainer = null;
@@ -285,19 +286,11 @@ function ZTabs() {
     }
 
     var verNuevos = function verNuevos(){
-        postsContainer.getChildren().set({
-            style: 'background:#FFFFFF'
-        });
         updatePosts(newPosts, false, true);
         verNuevosButton.setStyle('display','none');
         newPosts.empty();
-        postsContainer.setStyle('backgroundColor','#EFF8FB');
-        setTimeout(setStylePostCont(zTab.postsContainer),2000);
+    }
 
-    }
-    this.setStylePostCont = function setStylePostCont(postsContainer){
-        postsContainer.setStyle('backgroundColor','#FFFFFF');
-    }
     this.verNuevos = verNuevos;
 
 
@@ -370,6 +363,10 @@ function ZTabs() {
         return '<img src="' + avatar + '"/>';
     }
 
+    this.removeNewClass = function () {
+        $$('li.newPost').removeClass('newPost');
+    }
+
     var updatePosts = function updatePosts(docs, more, newPosts) {
         //Recupero los post del verbatim y realizo los cambios necesarios
         var posts = [];
@@ -393,6 +390,10 @@ function ZTabs() {
             post.relevance = getRelevanceForPost(post.relevance, post.id);
             post.avatar = getAvatarForPost(post.links, post.source);
             posts.push(post);
+            if (newPosts)
+                post.clase = 'newPost';
+            else
+                post.clase = '';
         });
         if(more){
             htmlPosts.append(posts).notify(function(event) {
@@ -414,6 +415,7 @@ function ZTabs() {
                     postsContainer.removeClass('loading');
                 }
             });
+            setTimeout("zTab.removeNewClass();", newPostTime);
         } else {
             htmlPosts.render(posts).notify(function(event) {
                 //console.log(JSON.stringify(event));
