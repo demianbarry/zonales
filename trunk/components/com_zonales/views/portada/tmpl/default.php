@@ -12,10 +12,12 @@
         </a>
     </p>
 </div>
-<label id="tituloSup"></label>
+<div id="tituloZone">
+   <label id="tituloSup"></label>
+</div>
 <div id="newPostsContainer" style="display:none"></div>
 <ol id="postTemplate">
-    <li data-template data-if-source="Facebook" style="display: none;">
+    <li data-template data-if-source="Facebook" style="display: none;" class="{{clase}}">
         <div class="post post_fcbk">
             <div class="col1">
                 <p>
@@ -45,7 +47,7 @@
             <hr class="splitter" />
         </div><!-- /.post post_fcbk -->
     </li>
-    <li data-template data-if-source="Twitter" style="display: none;">
+    <li data-template data-if-source="Twitter" style="display: none;" class="{{clase}}">
         <div class="post post_twttr">
             <div class="col1">
                 <p>
@@ -75,7 +77,7 @@
             <hr class="splitter" />
         </div><!-- /.post post_fcbk -->
     </li>
-    <li data-template style="display: none;">
+    <li data-template style="display: none;" class="{{clase}}">
         <div class="post post_medio">
             <div class="col1">
                 <p>
