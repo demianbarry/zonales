@@ -658,103 +658,14 @@ function ZTabs() {
 
    this.armarTitulo = function armarTitulo(firstPostZone){
         var temp = 0 ;
-       // tabTemp = this.tab;
         var zoneSeltemp = zTab.zCtx.zcGetZone();
         var zoneEfectemp = zTab.firstPostZone;
 
-        //var posts = $$('div#postsContainer div.story-item');
-        //var posts = $$('div#postsContainer:first-child');
-
-       /* if(postsContainer){
-            var firstPost = postsContainer.firstChild;
-            zoneEfectemp = firstPost.getElement('#zonePost').innerHTML;
-        }*/
-/**************************************/
+        
         $('tituloSup').innerHTML = "";
-//        $('filtrosAct').innerHTML = "";
-//        $('titulo1').innerHTML = "";
-
-
-
-
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
             $('tituloSup').innerHTML = "No se encontraron noticias para la zona seleccionada";
-            /*if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                $('tituloZone1').innerHTML = "No se encontraron noticias relevantes para la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "Mostrando noticias relevantes de la zona "+zoneEfectemp;
-                if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
-            }else {
-                $('tituloZone1').innerHTML = "No se encontraron noticias para la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "Mostrando noticias de la zona "+zoneEfectemp;
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-            }*/
         }
-        /**********************************/
-                /*if (zoneEfectemp == zoneSeltemp){
-            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                $('tituloZone1').innerHTML = "Ud. esta viendo noticias relevantes de la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
-            }else {
-                $('tituloZone1').innerHTML = "Ud. esta viendo noticias de la zona "+zoneSeltemp;
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-            }
-        }*/
-
-        /*if (zoneSeltemp == "" || typeof(zoneSeltemp) == 'undefined' || zoneSeltemp == 'Argentina'){
-            if (tabTemp == 'relevantes' || tabTemp == 'noticiasenlaredrelevantes' ){
-                $('tituloZone1').innerHTML = "Mostrando todas las noticias relevantes";
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'relevantes'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }else {
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }
-            }else {
-                $('tituloZone1').innerHTML = "Mostrando todas las noticias";
-                $('tituloZone2').innerHTML = "";
-                if (tabTemp == 'noticiasenlared'){
-                    $('titulo1').innerHTML = "De los Diarios OnLine "
-                }else if (tabTemp == 'enlared'){
-                    $('titulo1').innerHTML = "De las Redes Sociales "
-                }
-            }
-        }*/
-
-
-/*        $('tagsFilterTable').getElements('input[id^=chk]').each(function(element, index) {
-
-            temp =index+1
-            if(element.checked) {
-                $('tituloFiltro').innerHTML = "del Tipo: ";
-                if(index != 0)
-                    $('filtrosAct').innerHTML += ", ";
-                $('filtrosAct').innerHTML += element.value+" ";
-            }
-        });*/
-        // console.log("elementos"+temp);
-        //  console.log("ckecked"+($('filterTags').getElements('.checked').length));
-        /*if(temp == ($('filterTags').getElements('.checked').length)){
-            $('tituloFiltro').innerHTML = "";
-            $('filtrosAct').innerHTML = "";
-        }*/
 
     }
 
