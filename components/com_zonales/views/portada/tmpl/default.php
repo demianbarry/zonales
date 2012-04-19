@@ -30,6 +30,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
+                     {{img}}
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
@@ -60,6 +61,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
+                        {{img}}
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
@@ -90,6 +92,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
+                        {{img}}
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
