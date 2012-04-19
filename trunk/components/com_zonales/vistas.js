@@ -49,6 +49,8 @@ function ZTabs() {
     socket.on('solrPosts', function (response) {
         console.log("SOLR POSTS: ");
         console.log(response);
+        newPosts.empty();
+        verNuevosButton.setStyle('display','none');
         updatePosts(response.response.docs);
     //}
     });
@@ -360,7 +362,25 @@ function ZTabs() {
             else avatar = '/images/rss.png'
         }
 
-         return '<img class="avatar" src="' + avatar + '"/>';
+        return '<img class="avatar" src="' + avatar + '"/>';
+    }
+
+    var getImgForPost = function (links) {
+        var img;
+        var display = "none";
+
+        if (links) {
+            links.each(function(link) {
+                if (link.type == 'picture'){
+                    img = link.url;
+                    display = "inline";
+                    return;
+            }
+            });
+        }
+
+
+        return '<img class="img" style="display:' + display + '" src="' + img + '"/>';
     }
 
     this.removeNewClass = function () {
@@ -377,17 +397,19 @@ function ZTabs() {
             var target = getTarget(post, doc.id);
             post.title = getPostTitle(post.title, target);
             post.text = getVerMas(post.text ? post.text : "");
-            post.zone = getZoneForPost(post.zone.extendedString);
+            var zone = getZoneForPost(post.zone.extendedString);
             if(first){
-                zTab.firstPostZone = post.zone;
+                zTab.firstPostZone = post.zone.extendedString;
                 first = false;
             }
+            post.zone = zone;
             post.actions.each(function (action){
                 if(action.type == 'comment') action.type = 'comentarios';
                 if(action.type == 'like') action.type = 'me gusta';
                  if(action.type == 'replies') action.type = 'respuestas';
             });
             post.relevance = getRelevanceForPost(post.relevance, post.id);
+            post.img = getImgForPost(post.links);
             post.avatar = getAvatarForPost(post.links, post.source);
             posts.push(post);
             if (newPosts)
@@ -658,15 +680,19 @@ function ZTabs() {
 
    this.armarTitulo = function armarTitulo(firstPostZone){
         var temp = 0 ;
+       // tabTemp = this.tab;
         var zoneSeltemp = zTab.zCtx.zcGetZone();
         var zoneEfectemp = zTab.firstPostZone;
-
-        
+        console.log("zona seleccionada"+zoneSeltemp);
+        console.log("zona efectiva"+zoneEfectemp);
         $('tituloSup').innerHTML = "";
+
+
+
+
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
             $('tituloSup').innerHTML = "No se encontraron noticias para la zona seleccionada";
         }
-
     }
 
     this.popup = function popup(id){
