@@ -22,14 +22,15 @@ function Filters(){
 
 function ZContext(){
     this.filters = new Filters();
-    this.zTabs = new Array();
-    this.zTab = "";
+    this.zTabs = ['enlared','noticias'];
+    this.zTab = "enlared";
     this.selZone = "";
     this.efZone = "";
     this.start=0;
     this.firstIndexTime="";
     this.maxRelevance=0;
     this.searchKeywords=""; 
+    this.order = "";
     
     this.setFirstIndexTime=function(indexTime){
         this.firstIndexTime = indexTime;
@@ -307,6 +308,53 @@ module.exports.setTab = function setTab(sessionId, tab, callback) {
         return(this);
     }
 }
+
+module.exports.addTab = function addTab(sessionId, tab, callback) {
+    callback = (callback || noop);
+	
+    try {
+        if(contexts[sessionId].zTabs.indexOf(tab) == -1)
+            contexts[sessionId].zTabs.push(tab);
+        callback(errors.success);
+        return(this);
+    } catch (err) {
+        console.log('Error al agregar el tab ' + tab + '-> ' + err);
+        callback(errors.zctxError);
+        return(this);
+    }
+}
+
+module.exports.removeTab = function removeTab(sessionId, tab, callback) {
+    callback = (callback || noop);
+	
+    try {
+        if(contexts[sessionId].zTabs.indexOf(tab) != -1)
+            contexts[sessionId].zTabs.splice(contexts[sessionId].zTabs.indexOf(tab),1);
+        callback(errors.success);
+        return(this);
+    } catch (err) {
+        console.log('Error al agregar el tab ' + tab + '-> ' + err);
+        callback(errors.zctxError);
+        return(this);
+    }
+}
+
+module.exports.setOrder = function setOrder(sessionId, order, callback) {
+    //callback = (callback || noop);	
+    console.log('-------------> SETEANDO ORDER: '+order);
+    try {
+        contexts[sessionId].order = order;
+        if(typeof callback === 'function')
+            callback(errors.success);
+        return(this);
+    } catch (err) {
+        console.log('Error al setear el tab -> ' + err);
+        if(typeof callback === 'function')
+            callback(errors.zctxError);
+        return(this);
+    }
+}
+
 //Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
 function searchTag(zCtx, tagStr) {
     if (zCtx.filters.tags.length > 0) {
