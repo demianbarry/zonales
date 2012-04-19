@@ -174,6 +174,11 @@ try {
         foreach ($users as $key => $user) {
 
             /* Llamado a la API */
+
+            /* Obtengo datos del usuario */
+            $api = '/' . $user;
+            $userData = $facebook->api($api);
+
             $api = '/' . $user . '/feed?limit=' . $limit;
 
             if ($since) {
@@ -223,7 +228,7 @@ try {
                 if ($validPost) {
                     if (checkActions($feed, $minActions)) {
                         if (checkKeywords($feed, $keywords)) {
-                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key]);
+                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key], $userData);
                         }
                     }
                 }
@@ -348,7 +353,7 @@ if ($getCommenters) {
 
 /* * ****************** Procesamiento de feeds **************** */
 
-function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null) {
+function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null, $userData = null) {
     global $stop, $min, $since;  //$max
 
     $post = array();
@@ -408,6 +413,12 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
             $link['url'] = $feed['link'];
             $post['links'][] = $link;
             break;
+    }
+    if ($userData != null) {
+        $link = array();
+        $link['type'] = "avatar";
+        $link['url'] = $userData['picture'];
+        $post['links'][] = $link;
     }
     $post['actions'] = array();
     if (isset($feed['likes'])) {
