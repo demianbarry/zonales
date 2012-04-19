@@ -41,33 +41,31 @@ function getSolrDate(millis){
     complete(date.getHours()) + ':' + complete(date.getMinutes()) + ':' + complete(date.getSeconds()) + '.' + date.getMilliseconds() + 'Z';
 }
 
-function getSolrSort(myTab){
+function getSolrSort(order){
 
     var res = "";
-
+    /*
     if (myTab == "enlared" || myTab == "noticiasenlared"){
         res = "";
     }
-    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes")
+    if (myTab == "relevantes" || myTab == "noticiasenlaredrelevantes" || myTab == "portadarelevantes")
         res = "relevance+desc";
-
+*/
+    if(order === 'relevantes') {
+        res = "relevance+desc";
+    }
     return res;
 }
 
-function getSolrSources(myTab){
+function getSolrSources(myTabs){
 
     var res = "";
-    if (myTab == "enlared" || myTab == "relevantes"){
-        res = "q=source:(facebook+OR+twitter)";
-    }
-    if (myTab == "noticiasenlared" || myTab == "noticiasenlaredrelevantes"){
-        //res = "q=!source:(facebook+OR+twitter)";
+    if (myTabs.indexOf("enlared") == -1){
         res = "q=!source:(facebook+OR+twitter)";
+    }    
+    if (myTabs.indexOf("noticias") == -1){
+        res = (res.length > 0 ? '+AND+' : '')+"q=source:(facebook+OR+twitter)";
     }
-    if (myTab == "portada"){
-        res = "q=tags:(Portada)";
-    }
-
     return res;
 }
 
@@ -83,10 +81,9 @@ function getSolrZones(myZone) {
 
 }
 
-function getSolrBoosting(zCtx) {
-    var tabs = new Array('portada','enlared','noticiasenlared');
+function getSolrBoosting(zCtx) {    
     var res  = '&bf=ord(modified)^';
-    if(!zCtx || !zCtx.selZone || zCtx.selZone == '' || tabs.indexOf(zCtx.zTab) == -1)
+    if(!zCtx || !zCtx.selZone || zCtx.selZone == '' || zCtx.order === 'relevantes')
         return res+'100000000';
     res += Math.pow(10,(zCtx.selZone.split(',').length*2))+'&bq=';
     var extendedString = zCtx.selZone;
@@ -107,11 +104,9 @@ function getSolrBoosting(zCtx) {
     return res + boost.replace(/\ /g,"+");
 }
 
-function getSolrFilterQuery(zCtx, nuevos) {
-    console.log('=========> TAB: '+zCtx.zTab);
-    var tabs = new Array('relevantes','noticiasenlaredrelevantes');
+function getSolrFilterQuery(zCtx, nuevos) {    
     var res = '';
-    if(tabs.indexOf(zCtx.zTab) != -1){
+    if(zCtx.order == 'relevantes'){
         if(nuevos && zCtx.getMaxRelevance() != 0)        
             res  += '&fq=relevance:['+(parseInt(zCtx.getMaxRelevance())+1)+'+TO+*]';
         if(zCtx.filters.temp != '' && zCtx.filters.temp != '0')
@@ -121,7 +116,7 @@ function getSolrFilterQuery(zCtx, nuevos) {
             res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
     }
     
-    if(zCtx.selZone && zCtx.selZone.trim() != '' && (nuevos || tabs.indexOf(zCtx.zTab) != -1)) {
+    if(zCtx.selZone && zCtx.selZone.trim() != '' && (nuevos || zCtx.order === 'relevantes')) {
         res  += (res.length > 0 ? '+AND+' : '&fq=') + 'zoneExtendedString:"'+zCtx.selZone+'"';
     }
     
@@ -148,8 +143,8 @@ function getSolrKeyword(zCtx) {
 
 function getSolrUrl(zCtx, nuevos) {
     var urlSolr = "/solr/select?indent=on&version=2.2&start="+(nuevos ? 0 : zCtx.start)+"&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&sort="+
-    getSolrSort(zCtx.zTab)+"&wt=json&explainOther=&hl.fl=&"+
-    getSolrSources(zCtx.zTab)+
+    getSolrSort(zCtx.order)+"&wt=json&explainOther=&hl.fl=&"+
+    getSolrSources(zCtx.zTabs)+
     getSolrZones()+
     getSolrKeyword(zCtx)+
     getSolrBoosting(zCtx, nuevos)+

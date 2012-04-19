@@ -83,5 +83,26 @@ module.exports.tryEvent = function tryEvent(client) {
             solrService.loadPostsFromSolr(client, data.sessionId);
         });
     });
-	
+    
+    client.on('addTabToCtx', function(data, fn) {
+        console.log('RecibÃ­ evento setTabToCtx, tab = ' + data.tab);
+        zContextService.addTab(data.sessionId, data.tab, function (response) {
+            fn(response);
+            solrService.loadPostsFromSolr(client, data.sessionId);
+        });
+    });	
+    client.on('removeTabToCtx', function(data, fn) {
+        console.log('RecibÃ­ evento setTabToCtx, tab = ' + data.tab);
+        zContextService.removeTab(data.sessionId, data.tab, function (response) {
+            fn(response);
+            solrService.loadPostsFromSolr(client, data.sessionId);
+        });
+    });
+    client.on('setOrderToCtx', function(data, fn) {
+        console.log('RecibÃ­ evento setOrderToCtx, temp = ' + data.order);
+        zContextService.setOrder(data.sessionId, data.order, function (response) {
+            fn(response);
+            solrService.loadPostsFromSolr(client, data.sessionId);
+        });
+    });
 }
