@@ -139,7 +139,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntry.getLinks() == null) {
                         newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
                     }
-                    if ((links = getLinks(feedSelectors, doc)) != null) {
+                    if ((links = getLinks(feedSelectors, doc, entry.getLink().getHost())) != null) {
                         newEntry.getLinks().getLink().addAll(links);
                     }
                     newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
@@ -199,7 +199,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntrySolr.getLinks() == null) {
                         newEntrySolr.setLinks(new ArrayList<LinkType>());
                     }
-                    if ((links = getLinks(feedSelectors, doc)) != null) {
+                    if ((links = getLinks(feedSelectors, doc, entry.getLink().getHost())) != null) {
                         newEntrySolr.getLinks().addAll(links);
                     }
                     newEntrySolr.getLinks().add(new LinkType("source", entry.getLink().toString()));
@@ -226,7 +226,9 @@ public class ZCrawlFeedsHelper {
         }
     }
 
-    public List<LinkType> getLinks(FeedSelectors feedSelectors, Document doc) throws FileNotFoundException, IOException, BadLocationException {
+    public List<LinkType> getLinks(FeedSelectors feedSelectors, Document doc, String host) throws FileNotFoundException, IOException, BadLocationException {
+
+        Boolean isAvatar = false;
 
         List<LinkType> list = new ArrayList<LinkType>();
 
@@ -245,14 +247,30 @@ public class ZCrawlFeedsHelper {
             if ("picture".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
                 for (Element elmt : elmts) {
-                    list.add(new LinkType("picture", elmt.attr("src")));
+                    String link = addHost(elmt.attr("src"), host);
+                    list.add(new LinkType("picture", link));
                 }
             } else if ("link".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
                 for (Element elmt : elmts) {
-                    list.add(new LinkType("link", elmt.attr("href")));
+                    String link = addHost(elmt.attr("href"), host);
+                    list.add(new LinkType("link", link));
+                }
+            } else if ("avatar".equals(feedSelector.getType())) {
+                elmts = doc.select(feedSelector.getSelector());
+                for (Element elmt : elmts) {
+                    String link = addHost(elmt.attr("src"), host);
+                    list.add(new LinkType("avatar", link));
+                    isAvatar = true;
                 }
             }
+        }
+
+
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Antes logo");
+        if (!isAvatar && feedSelectors.getUrlLogo() != null) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obtengo logo por defecto: {0}", feedSelectors.getUrlLogo());
+            list.add(new LinkType("avatar", feedSelectors.getUrlLogo()));
         }
 
         if (list.isEmpty()) {
@@ -261,6 +279,13 @@ public class ZCrawlFeedsHelper {
             return list;
         }
 
+    }
+    
+    private String addHost(String link, String host) {
+        if (link.startsWith("/"))
+            return "http://" + host + link;
+
+        return link;
     }
 
     /**
