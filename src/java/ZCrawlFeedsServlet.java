@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -73,25 +74,19 @@ public class ZCrawlFeedsServlet extends HttpServlet {
 
         if (!"".equals(words)) {
             searchlist = new ArrayList<String>();
-            for (String palabra : words.split(",")) {
-                searchlist.add(palabra);
-            }
+            searchlist.addAll(Arrays.asList(words.split(",")));
         }
         params.put("searchlist", searchlist);
 
         if (!"".equals(nowords)) {
             blacklist = new ArrayList<String>();
-            for (String nopalabra : nowords.split(",")) {
-                blacklist.add(nopalabra);
-            }
+            blacklist.addAll(Arrays.asList(nowords.split(",")));
         }
         params.put("blacklist", blacklist);
 
         if (!"".equals(tags)) {
             tagslist = new ArrayList<String>();
-            for (String tag : tags.split(",")) {
-                tagslist.add(tag);
-            }
+            tagslist.addAll(Arrays.asList(tags.split(",")));
         }
         params.put("tagslist", tagslist);
 
