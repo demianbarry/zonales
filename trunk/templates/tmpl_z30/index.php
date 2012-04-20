@@ -75,7 +75,7 @@ JHTML::_('behavior.modal');
 
         <div id="top_bar" style="">
             <div id="top_bar_left">
-                <a href="#" title="Zonales"><img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/img/zonales_logo.png" alt="Zonales" id="logo_top" /></a>
+                <a onclick="zTab.zCtx.zcSetOrder('reciente', setActiveTab); zTab.zCtx.zcAddTab('enlared'); zTab.zCtx.zcAddTab('noticias');" href="#" title="Zonales"><img src="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/img/zonales_logo.png" alt="Zonales" id="logo_top" /></a>
             </div><!-- #top_bar_left -->
 
             <jdoc:include type="modules" name="header"/>
@@ -107,7 +107,7 @@ JHTML::_('behavior.modal');
                         <p>&nbsp;</p>
                     </div><!-- /.padding10 -->
                     <jdoc:include type="modules" name="other" />
-                </div><!-- /#content-right -->
+                </div><!-- /#content-right -->                
                 <div class="clear"></div>
 
             </div><!-- /.border1 -->

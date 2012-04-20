@@ -23,10 +23,22 @@ body{
     padding:8px 0 0 40px;
 }
 
-#top_bar_right{
+#top_bar_right {
     float: left;
     margin-left: 80px;
     padding: 14px 0 0;
+}
+
+#top_bar_right p{
+    font-size:0;
+}
+
+#top_bar_right p img{
+    vertical-align:top;
+    margin:0;
+    padding:0;
+    height: 31px;
+    cursor: pointer;
 }
 
 #mainMenu{
@@ -142,22 +154,32 @@ body{
 
 /* POPULATE OPTIONS */
 div.suggestions {
-    background: none repeat scroll 0% 0% #009ECD;
-    border-style: groove;
-    border-width: 0px 2px 2px 2px;
-    border-radius: 0px 0px 5px 5px;
-    color: white;
-    font-weight: bold;
+    /*    background: none repeat scroll 0% 0% #009ECD;
+        border-style: groove;
+        border-width: 0px 2px 2px 2px;
+        border-radius: 0px 0px 5px 5px;
+        color: white;
+        font-weight: bold;
+        padding: 5px;
+        position: absolute;
+        z-index: 999;
+        opacity: 0.95;  */
+    background: none repeat scroll 0 0 #009ECD;
+    border-radius: 0 0 5px 5px;
+    color: #FFF;
     padding: 5px;
     position: absolute;
     z-index: 999;
-    opacity: 0.95;
 }
 
 div.suggestions p {
     border-radius: 2px 2px 2px 2px;
     padding: 3px;
     color: white;
+}
+
+#top_bar_right div.suggestions p {
+    font-size: 15px;
 }
 
 div.suggestions p.selected  {
@@ -278,13 +300,12 @@ div#mapDiv a {
 
 path:hover {
     fill: #FFFFFF;
+    opacity: 10%;
 }
 /* FIN MAPA */
-html body div#content div.border1 div#content-left div.padding10 div#tituloZone{
+div#tituloZone{
     font-family: 'PT Sans Narrow',sans-serif;
-    text-align: center;
-    /*background: none repeat scroll 0 0 #E2E1E1;*/
-    padding-top:20px;
+    text-align: center;        
     padding-bottom: 20px;
     font-size: 18px;
     color: #313131;
@@ -294,16 +315,6 @@ html body div#content div.border1 div#content-left div.padding10 div#tituloZone{
     background-image: url('../img/loading.gif');
     background-repeat: no-repeat;
 }
-
-div#ordenar div.suggestions p.selected {
-    color: white;
-    font-family: 'PT Sans Narrow',sans-serif;
-    font-size: 12px;
-    margin: auto;
-    text-align: left;
-    text-transform: none;
-}
-
 
 {font-family: 'Open Sans', sans-serif;}
 {font-family: 'PT Sans Narrow', sans-serif;}
