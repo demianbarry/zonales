@@ -116,13 +116,44 @@ p.buttons a{
     text-decoration:none;
 }
 
+/* SELECTOR DE TEMPORALIDAD */
+span#tempoSelect.suggestions {    
+    background: none repeat scroll 0 0 #009ECD;
+    border-radius: 5px;
+    color: #FFF;
+    padding: 5px;
+    position: absolute;
+    z-index: 999;
+    border-color: #006F91;
+    border-width: 1px;
+    border-style: solid;
+}
+
+span#tempoSelect.suggestions p {
+    width: auto;
+    background-color: #009ECD;
+    cursor: pointer;
+    color: white;
+    margin: auto;
+    text-align: left;
+}
+
+span#tempoSelect.suggestions p:hover{
+    background-color: #78E0FF;
+}
+
+span#tempoSelect.suggestions p.selected {    
+    background-color: #78E0FF;
+}
+/* FIN SELECTOR DE TEMPORALIDAD */
+
+/* ORDEN */
 #ordenar p{
     text-align:center;
     margin:auto;
     margin-bottom:-5px;
     background:#FFF;
     width:300px;
-
     font-family: 'PT Sans Narrow', sans-serif;
     color:#999;
     font-size:12px;
@@ -132,6 +163,10 @@ p.buttons a{
 #ordenar p img{
     padding-bottom:2px;
     margin:0 5px 0 2px;
+}
+
+#ordenar img.down{
+    cursor: pointer;
 }
 
 #ordenar p a{
@@ -146,6 +181,7 @@ p.buttons a{
     color: #FFFFFF;
     padding: 0px 5px;
 }
+/* FIN ORDEN */
 
 #mainMenu p{
     text-align:center;
@@ -162,7 +198,7 @@ p.buttons a{
 #mainMenu p a.active{
     background:#009cc9;
     padding:0 5px 0 5px;
-    color:#FFF;
+    color:#FFF;    
 }
 
 #nuevos_post p{
@@ -308,3 +344,14 @@ div.contador p img {
 .avatar {
     width: 50px;
 }
+
+img.img {
+    margin:10px 10px 12px 0px;
+    background:#e2e1e1;
+    float: left;
+    width: 100px;
+    display: inline;
+    overflow: hidden;
+    position: relative;
+}
+
