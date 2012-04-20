@@ -33,7 +33,7 @@ function ZTabs() {
     var htmlPosts;
     var newPosts = new Array();
     this.newPosts = newPosts;
-    this.firstPostZone = "";
+    var firstPostZone = "";
     var newPostTime = 5000; //Tiempo durante el que se destacan los nuevos post en milisegundo
 
     var postsContainer = null;
@@ -315,10 +315,10 @@ function ZTabs() {
                     response = JSON.decode(response);
                     if(response.id && response.id.length > 0 && $('relevance_'+response.id)){
                         $('relevance_'+response.id).innerHTML = parseInt($('relevance_'+response.id).innerHTML)+parseInt(relevance);
-//                        if(this.zUserGroups.indexOf("4") == -1){
-//                            $('relevance_'+response.id).getPrevious().removeEvents('click');
-//                            $('relevance_'+response.id).getNext().removeEvents('click');
-//                        }
+                    //                        if(this.zUserGroups.indexOf("4") == -1){
+                    //                            $('relevance_'+response.id).getPrevious().removeEvents('click');
+                    //                            $('relevance_'+response.id).getNext().removeEvents('click');
+                    //                        }
                     }
                 }
             },
@@ -375,12 +375,14 @@ function ZTabs() {
                     img = link.url;
                     display = "inline";
                     return;
-            }
+                }
             });
         }
 
-
-        return '<img class="img" style="display:' + display + '" src="' + img + '"/>';
+        if (img)
+            return '<img class="img" style="display:' + display + '" src="' + img + '"/>';
+        else
+            return '';
     }
 
     this.removeNewClass = function () {
@@ -391,32 +393,33 @@ function ZTabs() {
         //Recupero los post del verbatim y realizo los cambios necesarios
         var posts = [];
         var first = true;
-        docs.each(function (doc) {
-            var post = JSON.parse(doc.verbatim);
-            post.modified = prettyDate(doc.modified);
-            var target = getTarget(post, doc.id);
-            post.title = getPostTitle(post.title, target);
-            post.text = getVerMas(post.text ? post.text : "");
-            var zone = getZoneForPost(post.zone.extendedString);
-            if(first){
-                zTab.firstPostZone = post.zone.extendedString;
-                first = false;
-            }
-            post.zone = zone;
-            post.actions.each(function (action){
-                if(action.type == 'comment') action.type = 'comentarios';
-                if(action.type == 'like') action.type = 'me gusta';
-                 if(action.type == 'replies') action.type = 'respuestas';
+        if(docs && typeOf(docs) == 'array')
+            docs.each(function (doc) {
+                var post = JSON.parse(doc.verbatim);
+                post.modified = prettyDate(doc.modified);
+                var target = getTarget(post, doc.id);
+                post.title = getPostTitle(post.title, target);
+                post.text = getVerMas(post.text ? post.text : "");
+                var zone = getZoneForPost(post.zone.extendedString);
+                if(first){
+                    firstPostZone = post.zone.extendedString;
+                    first = false;
+                }
+                post.zone = zone;
+                post.actions.each(function (action){
+                    if(action.type == 'comment') action.type = 'comentarios';
+                    if(action.type == 'like') action.type = 'me gusta';
+                    if(action.type == 'replies') action.type = 'respuestas';
+                });
+                post.relevance = getRelevanceForPost(post.relevance, post.id);
+                post.img = getImgForPost(post.links);
+                post.avatar = getAvatarForPost(post.links, post.source);
+                posts.push(post);
+                if (newPosts)
+                    post.clase = 'newPost';
+                else
+                    post.clase = '';
             });
-            post.relevance = getRelevanceForPost(post.relevance, post.id);
-            post.img = getImgForPost(post.links);
-            post.avatar = getAvatarForPost(post.links, post.source);
-            posts.push(post);
-            if (newPosts)
-                post.clase = 'newPost';
-            else
-                post.clase = '';
-        });
         if(more){
             htmlPosts.append(posts).notify(function(event) {
                 //console.log(JSON.stringify(event));
@@ -449,7 +452,7 @@ function ZTabs() {
                 }
             });
         }
-        zTab.armarTitulo(zTab.firstPostZone);
+        armarTitulo(firstPostZone);
     }
 
 
@@ -647,13 +650,13 @@ function ZTabs() {
         [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
         [86400, 'horas', 3600], // 60*60*24, 60*60
         [172800, '1 dia', 'ma�ana'], // 60*60*24*2
-        [604800, 'd�as', 86400], // 60*60*24*7, 60*60*24
-        [1209600, ' en la ultima semana', 'pr�xima semana'], // 60*60*24*7*4*2
+        [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+        [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
         [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-        [4838400, ' ultimo mes', 'pr�ximo mes'], // 60*60*24*7*4*2
+        [4838400, ' ultimo mes', 'próximo mes'], // 60*60*24*7*4*2
         [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-        [58060800, ' en el ultimo a�o', 'proximo a�o'], // 60*60*24*7*4*12*2
-        [2903040000, 'a�os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+        [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+        [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
         [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
         [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
         ];
@@ -678,22 +681,21 @@ function ZTabs() {
         return time;
     }
 
-   this.armarTitulo = function armarTitulo(firstPostZone){
+
+    var armarTitulo = function armarTitulo(){
         var temp = 0 ;
-       // tabTemp = this.tab;
-        var zoneSeltemp = zTab.zCtx.zcGetZone();
-        var zoneEfectemp = zTab.firstPostZone;
-        console.log("zona seleccionada"+zoneSeltemp);
-        console.log("zona efectiva"+zoneEfectemp);
+        // tabTemp = this.tab;
+        var zoneSeltemp = zCtx.zcGetZone();
+        var zoneEfectemp = firstPostZone;
+        //console.log("zona seleccionada"+zoneSeltemp);
+        //console.log("zona efectiva"+zoneEfectemp);
         $('tituloSup').innerHTML = "";
-
-
-
 
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
             $('tituloSup').innerHTML = "No se encontraron noticias para la zona seleccionada";
         }
     }
+    this.armarTitulo = armarTitulo;
 
     this.popup = function popup(id){
         this.zirClient.loadSolrPost(id, function(doc){
