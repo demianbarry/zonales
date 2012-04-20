@@ -24,7 +24,16 @@ defined('_JEXEC') or die('Restricted Access');
         } else {
             $('noticias_anchor').removeClass('active');
         }
-        
+        var temp = zTab.zCtx.zcGetTemp();
+        if(temp == '24HOURS'){
+            $('relevantesOrder').set('html','Más relevantes de hoy');
+        } else if(temp == '7DAYS'){
+            $('relevantesOrder').set('html','Más relevantes de la última semana');
+        } else if(temp == '30DAYS'){
+            $('relevantesOrder').set('html','Más relevantes del último mes');
+        } else if(temp == '0'){
+            $('relevantesOrder').set('html','Más relevantes histórico');
+        }
     }
     
     window.addEvent('domready', function(){        
@@ -61,22 +70,22 @@ defined('_JEXEC') or die('Restricted Access');
                     new Element('p', {
                         'html': 'Hoy'                    
                     }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '24HOURS' ? 'selected' : '').addEvent('click', function(){
-                        changeTemp(this, '24HOURS');                        
+                        changeTemp(this, '24HOURS', ' de hoy');                        
                     });
                     new Element('p', {
                         'html': 'Última semana'
                     }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '7DAYS' ? 'selected' : '').addEvent('click', function(){
-                        changeTemp(this, '7DAYS');                        
+                        changeTemp(this, '7DAYS', ' de la última semana');                        
                     });
                     new Element('p', {
-                        'html': 'Último mes'
+                        'html': 'Ultimo mes'
                     }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '30DAYS' ? 'selected' : '').addEvent('click', function(){
-                        changeTemp(this, '30DAYS');
+                        changeTemp(this, '30DAYS', ' del último mes');
                     });
                     new Element('p', {
                         'html': 'Histórico'
                     }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '0' ? 'selected' : '').addEvent('click', function(){
-                        changeTemp(this, '0');
+                        changeTemp(this, '0', ' histórico');
                     });
                     $('showTemp').set('src','/media/system/images/arrow_up1.png');
                 } else {
@@ -87,15 +96,16 @@ defined('_JEXEC') or die('Restricted Access');
         });        
     });
     
-    function changeTemp(element, temp){
+    function changeTemp(element, temp, tempText){
         zTab.zCtx.zcSetTemp(temp);        
         $('tempoSelect').dispose();
-        $('showTemp').set('src','/media/system/images/arrow_down1.png');
+        $('showTemp').set('src','/media/system/images/arrow_down1.png');        
+        $('relevantesOrder').set('html','Más relevantes'+ tempText);
     }
 </script>
 
 <div>
     <div id="mainMenu"><p><a style="display: none" id="portada_anchor">Portada</a><a id="enlared_anchor">En la red</a> | <a id="noticias_anchor">Noticas</a></p></div>
     <div id="ordenar">
-        <p>Ordenar por <img src="templates/<?php echo $template; ?>/img/arrow_right.gif" /><a id="relevantesOrder">Mas relevantes</a><img id="showTemp" class="down"> | <a id="recientesOrder">Más recientes</a></p></div>
+        <p>Ordenar por <img src="templates/<?php echo $template; ?>/img/arrow_right.gif" /><a id="relevantesOrder">Más relevantes</a><img id="showTemp" class="down"> | <a id="recientesOrder">Más recientes</a></p></div>
 </div>
