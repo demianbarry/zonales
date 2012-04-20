@@ -32,6 +32,26 @@ public class FeedSelectors {
         this.url = url;
     }
 
+    protected String urlLogo;
+
+    /**
+     * Get the value of url
+     *
+     * @return the value of url
+     */
+    public String getUrlLogo() {
+        return urlLogo;
+    }
+
+    /**
+     * Set the value of url
+     *
+     * @param url new value of url
+     */
+    public void setUrlLogo(String urlLogo) {
+        this.urlLogo = urlLogo;
+    }
+
     protected List<FeedSelector> selectors;
 
     /**
