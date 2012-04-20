@@ -14,5 +14,7 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+// template
+$app =& JFactory::getApplication();
+$template = $app->getTemplate();
 require(JModuleHelper::getLayoutPath('mod_combozona'));

@@ -18,14 +18,15 @@ JHTML::_('behavior.formvalidation');
 
 <div id="top_bar_right">
     <p><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
-               onfocus="if(this.value=='Seleccione una zona...') this.value='';"/></p>
-    <span style="top: 3.4%;">
+               onfocus="if(this.value=='Seleccione una zona...') this.value='';"/>
+    <img src="templates/<?php echo $template; ?>/img/search_close.gif" onmouseover="this.src='templates/<?php echo $template; ?>/img/search_close_active.gif'" onmouseout="this.src='templates/<?php echo $template; ?>/img/search_close.gif'" alt="Eliminar b�squeda" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');"/></p>
+    <!--<span style="top: 3.4%;">
         <img id="resetZoneButton" src="/images/reset.gif" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');">
-    </span>
+    </span>-->
     <input type="hidden" value="setZonalById" name="task">
     <input type="hidden" value="com_zonales" name="option">
     <?php echo JHTML::_('form.token'); ?>
-</div><!-- /#top_bar_right -->
+</div><!-- /#top_bar_right --> 
 
 
 <!--
