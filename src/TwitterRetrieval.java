@@ -338,7 +338,7 @@ public class TwitterRetrieval extends HttpServlet {
     }
 
     private List<LinkType> getLinks(String text) {
-        String pattern = "^http://[a-zA-Z0-9]+(\\.([a-zA-Z0-9])+)+(\\/([a-zA-Z0-9])*)*$";
+        String pattern = "(\\b(https?|ftp|file):\\/\\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|])i";
         StringTokenizer st = new StringTokenizer(text);
         String token;
         List<LinkType> result = new ArrayList<LinkType>();
