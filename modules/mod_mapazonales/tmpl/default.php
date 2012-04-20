@@ -9,5 +9,5 @@
             <spam id="breadCrumb"></spam>
         </p>
     </div>
-    <div id='map_element' style="width: 96%; height: 530px; border: solid 9px #F1F2F3;"></div>
+    <div id='map_element' style="height: 530px; border: solid 10px #E2E1E1;"></div>
 </div>
