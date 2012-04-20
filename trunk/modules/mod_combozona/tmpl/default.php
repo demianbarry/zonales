@@ -15,14 +15,19 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 ?>
-
+<script language="javascript" type="text/javascript">
+    window.addEvent('domready', function(){
+        if(navigator.userAgent.indexOf('Chrome') == -1)
+            $('zoneExtended').setStyle('font-size', '16px');
+    });
+</script>
 <div id="top_bar_right">
-    <p><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
-               onfocus="if(this.value=='Seleccione una zona...') this.value='';"/>
-    <img src="templates/<?php echo $template; ?>/img/search_close.gif" onmouseover="this.src='templates/<?php echo $template; ?>/img/search_close_active.gif'" onmouseout="this.src='templates/<?php echo $template; ?>/img/search_close.gif'" alt="Eliminar bï¿½squeda" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');"/></p>
-    <!--<span style="top: 3.4%;">
-        <img id="resetZoneButton" src="/images/reset.gif" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');">
-    </span>-->
+    <span><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);});"
+                 onfocus="if(this.value=='Seleccione una zona...') this.value='';"/>
+        <img src="templates/<?php echo $template; ?>/img/search_close.gif" onmouseover="this.src='templates/<?php echo $template; ?>/img/search_close_active.gif'" onmouseout="this.src='templates/<?php echo $template; ?>/img/search_close.gif'" alt="Eliminar búsqueda" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');"/></span>
+        <!--<span style="top: 3.4%;">
+            <img id="resetZoneButton" src="/images/reset.gif" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');">
+        </span>-->
     <input type="hidden" value="setZonalById" name="task">
     <input type="hidden" value="com_zonales" name="option">
     <?php echo JHTML::_('form.token'); ?>
@@ -54,7 +59,7 @@ JHTML::_('behavior.formvalidation');
 
     <input type="hidden" value="setZonalById" name="task">
     <input type="hidden" value="com_zonales" name="option">
-    <?php echo JHTML::_('form.token'); ?>
+<?php echo JHTML::_('form.token'); ?>
 </div>
 
 -->
