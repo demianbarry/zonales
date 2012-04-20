@@ -7,7 +7,8 @@
     width:330px;
     font-family: 'PT Sans Narrow', sans-serif;
     font-size:17px;
-    border:0;
+    border: 0px;    
+    margin: 0px;
     padding:4px;
     color:#313131;
 }
@@ -258,7 +259,7 @@ span#tempoSelect.suggestions p.selected {
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 }
-#modlgn-passwd {
+#modlgn-passwd {    
     font-size: 12px;
     font-family: 'PT Sans Narrow',sans-serif;
 

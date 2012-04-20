@@ -41,6 +41,20 @@ JHTML::_('behavior.modal');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
     <head>
+        <script language="javascript" type="text/javascript">
+            var console;
+            var alertFallback = false;
+            if (typeof console === "undefined" || typeof console.log === "undefined") {
+                console = {};
+                if (alertFallback) {
+                    console.log = function(msg) {
+                        alert(msg);
+                    };
+                } else {
+                    console.log = function() {};
+                }
+            }
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Zonales</title>
 <!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css" />-->
@@ -50,10 +64,10 @@ JHTML::_('behavior.modal');
 <!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/modules.css" type="text/css" />-->
 <!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/mod_eq.css" type="text/css" />-->
 <!--        <link rel="stylesheet" href="<?php echo $this->baseurl ?>/media/system/css/ZoneStyle.css" type="text/css"/>-->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' />
 
 
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" />
@@ -64,7 +78,7 @@ JHTML::_('behavior.modal');
 
         <!--
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node') ?>:4000/socket.io/socket.io.js"></script>
--->
+        -->
         <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];
