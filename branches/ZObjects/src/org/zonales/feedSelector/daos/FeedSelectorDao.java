@@ -110,6 +110,8 @@ public class FeedSelectorDao extends BaseDao {
 
         myFeedSelectors.setUrl((String) resp.get("url"));
 
+        myFeedSelectors.setUrlLogo((String) resp.get("urlLogo"));
+
 
         selectors = (ArrayList<BasicDBObject>) resp.get("selectors");
 
