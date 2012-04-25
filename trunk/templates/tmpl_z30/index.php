@@ -37,7 +37,6 @@ if (!isset($zCtx)) {
 }
 JHTML::_('behavior.modal');
 ?>
-<!-- 26042011 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
     <head>
@@ -75,7 +74,7 @@ JHTML::_('behavior.modal');
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css" />
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
-
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/json2-compressed.js"></script>
         <!--
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node') ?>:4000/socket.io/socket.io.js"></script>
         -->
@@ -129,7 +128,7 @@ JHTML::_('behavior.modal');
 
         <div id="footer">
             <div class="padding10">
-                <p><a href="#">Términos y condiciones</a> | <a href="#">Reclamos y consultas</a><br />
+                <p><a href="#">TÃ©rminos y condiciones</a> | <a href="#">Reclamos y consultas</a><br />
                     Copyright 2012 - Zonales.com - www.zonales.com - info@zonales.com</p>
             </div>
         </div><!-- /#footer -->
