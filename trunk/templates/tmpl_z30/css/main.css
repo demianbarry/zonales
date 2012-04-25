@@ -176,6 +176,7 @@ div.suggestions p {
     border-radius: 2px 2px 2px 2px;
     padding: 3px;
     color: white;    
+    cursor: pointer;
 }
 
 #top_bar_right div.suggestions p {
