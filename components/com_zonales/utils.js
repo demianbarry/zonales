@@ -262,7 +262,7 @@ function populateOptions(event, field, add, elmts, callback){
 }
 
 function checkRegExp(str, patt){
-    var patt1 = new RegExp("^"+patt+"|,\ "+patt,"g");
+    var patt1 = new RegExp("^"+patt+"|\ "+patt,"g");
     return patt1.test(str);
 }
 
