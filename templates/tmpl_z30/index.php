@@ -52,7 +52,7 @@ JHTML::_('behavior.modal');
                 } else {
                     console.log = function() {};
                 }
-            }
+    }
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Zonales</title>
@@ -80,7 +80,7 @@ JHTML::_('behavior.modal');
         -->
         <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
-            var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];
+            var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];             
         </script>
     </head>
 
