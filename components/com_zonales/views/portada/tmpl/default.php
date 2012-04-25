@@ -17,7 +17,7 @@
 </div>
 <div id="newPostsContainer" style="display:none"></div>
 <ol id="postTemplate">
-    <li data-template data-if-source="Facebook" style="display: none;" class="{{clase}}">
+    <li data-template data-if-source="Facebook" style="display: none;" class="{{clase}}" id="{{id}}">
         <div class="post post_fcbk">
             <div class="col1">
                 <p>
@@ -30,11 +30,11 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                     {{img}}
+                     <p class="images"><a href="#">{{img}}</a></p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
-                    <p class="fecha">{{modified}}</p>
+                    <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
 
                 </div><!-- /.padding10 -->
             </div><!-- /#col2 -->
@@ -48,7 +48,7 @@
             <hr class="splitter" />
         </div><!-- /.post post_fcbk -->
     </li>
-    <li data-template data-if-source="Twitter" style="display: none;" class="{{clase}}">
+    <li data-template data-if-source="Twitter" style="display: none;" class="{{clase}}" id="{{id}}">
         <div class="post post_twttr">
             <div class="col1">
                 <p>
@@ -61,11 +61,11 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                        {{img}}
+                        <p class="images"><a href="#">{{img}}</a></p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
-                    <p class="fecha">{{modified}}</p>
+                    <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
 
                 </div><!-- /.padding10 -->
             </div><!-- /#col2 -->
@@ -79,7 +79,7 @@
             <hr class="splitter" />
         </div><!-- /.post post_fcbk -->
     </li>
-    <li data-template style="display: none;" class="{{clase}}">
+    <li data-template style="display: none;" class="{{clase}}" id="{{id}}">
         <div class="post post_medio">
             <div class="col1">
                 <p>
@@ -92,11 +92,11 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                        {{img}}
+                        <p class="images"><a href="#">{{img}}</a></p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
-                    <p class="fecha">{{modified}}</p>
+                    <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
 
                 </div><!-- /.padding10 -->
             </div><!-- /#col2 -->

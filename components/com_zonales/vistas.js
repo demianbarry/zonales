@@ -69,6 +69,7 @@ function ZTabs() {
         } else{
             verNuevosButton.setStyle('display','none');
         }
+        updatePostDate();
     });
 
     var initAll = function initAll() {
@@ -396,7 +397,9 @@ function ZTabs() {
         if(docs && typeOf(docs) == 'array')
             docs.each(function (doc) {
                 var post = JSON.parse(doc.verbatim);
-                post.modified = prettyDate(doc.modified);
+                $$('#' + post.id).dispose(); //Eliminar el post HTML si ya existe en la página
+                post.modifiedPretty = prettyDate(doc.modified);
+                post.modified = doc.modified;
                 var target = getTarget(post, doc.id);
                 post.title = getPostTitle(post.title, target);
                 post.text = getVerMas(post.text ? post.text : "");
@@ -408,6 +411,7 @@ function ZTabs() {
                 post.zone = zone;
                 post.actions.each(function (action){
                     if(action.type == 'comment') action.type = 'comentarios';
+                    if(action.type == 'comments') action.type = 'comentarios';
                     if(action.type == 'like') action.type = 'me gusta';
                     if(action.type == 'replies') action.type = 'respuestas';
                 });
@@ -454,7 +458,6 @@ function ZTabs() {
         }
         armarTitulo(firstPostZone);
     }
-
 
     this.updatePosts = updatePosts;
 
@@ -649,7 +652,7 @@ function ZTabs() {
         [3600, 'minutos', 60], // 60*60, 60
         [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
         [86400, 'horas', 3600], // 60*60*24, 60*60
-        [172800, '1 dia', 'ma�ana'], // 60*60*24*2
+        [172800, '1 dia', 'mañana'], // 60*60*24*2
         [604800, 'días', 86400], // 60*60*24*7, 60*60*24
         [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
         [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
@@ -679,6 +682,12 @@ function ZTabs() {
                     return (token+ ' ' + Math.floor(seconds / format[2]) + ' ' + format[1]);
             }
         return time;
+    }
+
+    var updatePostDate = function () {
+        $$('p.fecha').each(function(p) {
+           p.innerHTML = prettyDate(p.title);
+        });
     }
 
 
