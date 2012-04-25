@@ -79,12 +79,12 @@ function deserialize(geoJson, vector, dataObj, draw) {
     }
 }
 
-function breadCrumbToExtendedString(zone) {
+function breadCrumbToExtendedString() {
     var isZone = false;
     var extendedString = "";
 
     $('breadCrumb').getChildren().each (function (element) {
-        if (element.innerHTML == zone) {
+        if (element.hasClass("selectedBreadCrumZone")) {
             isZone = true;
         }
 
@@ -105,7 +105,7 @@ function setBreadCrumb(extendedString) {
     zones.each(function (zone) {
         element = new Element('a', {
             'html': zone.trim().replace(/_/g, " ").capitalize(),
-            'onclick': 'zTab.setZone(breadCrumbToExtendedString(this.innerHTML));drawMap(breadCrumbToExtendedString(this.innerHTML));ajustMapToExtendedString(breadCrumbToExtendedString(this.innerHTML));'
+            'onclick': 'this.addClass("selectedBreadCrumZone");zTab.setZone(breadCrumbToExtendedString());ajustMapToExtendedString(breadCrumbToExtendedString());drawMap(breadCrumbToExtendedString());'
         }).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
         element = new Element('spam', {'html': ','}).addClass('zonalesBreadcrumb').inject($('breadCrumb'));
     });
@@ -184,7 +184,10 @@ function initMap() {
         displayProjection : new OpenLayers.Projection("EPSG:4326")
     });
 
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    var switcherOptions = {
+        roundedCornerColor: '#88AF05'
+    }
+    map.addControl(new OpenLayers.Control.LayerSwitcher(switcherOptions));
 
     //Create a base layers
     var gphy = new OpenLayers.Layer.Google(
@@ -268,7 +271,6 @@ function initMap() {
 
     drawMap(mapZone);
     ajustMapToExtendedString(mapZone);
-
 
 }
 
