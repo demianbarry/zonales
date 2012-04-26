@@ -221,7 +221,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
         return sources;
     }
 
-    //Retorn el Ã­ndice en el array si la fuente ya existe, o -1 en caso contrario
+    //Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
     this.zcSearchSource = function zcSearchSource(zCtx, sourceStr) {
         if (filters.sources.length > 0) {
             for (var i = 0; i < filters.sources.length; i++){
@@ -232,7 +232,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
         return -1;
     }
 
-    //Retorn el Ã­ndice en el array si el tag ya existe, o -1 en caso contrario
+    //Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
     this.zcSearchTag = function zcSearchTag(zCtx, tagStr) {
         if (filters.tags.length > 0) {
             for (var i = 0; i < filters.tags.length; i++){

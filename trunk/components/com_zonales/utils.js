@@ -1,8 +1,10 @@
-//document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
+//document.write('<script type="text/javascript" src="/media/system/js/json2-compressed.js"></script>');
 
-
-var proxy = '/curl_proxy.php?host=localhost&port=4000&ws_path=';
-var servletUri = 'zone';
+var zUtilsJS = true;
+var nodeProxy = '/curl_proxy.php?host=localhost&port=4000&ws_path=';
+var servletProxy = '/curl_proxy.php?host=localhost&port=38080&ws_path=';
+var nodeUri = 'zone';
+var servletUri = 'ZCrawlSources';
 
 String.prototype.capitalize = function(){
     return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){
@@ -148,7 +150,7 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 var zTags = new Array();
 function getAllTags(){
     var url = servletUri + "/getTag?name=allNames";
-    var urlProxy = proxy + encodeURIComponent(url);
+    var urlProxy = servletProxy + encodeURIComponent(url);
     new Request({
         url: urlProxy,
         method: 'get',
@@ -163,8 +165,8 @@ function getAllTags(){
 }
 var extendedStrings = new Array();
 function getAllExtendedStrings(){
-    var url = servletUri + "/getAllExtendedStrings";
-    var urlProxy = proxy + encodeURIComponent(url);
+    var url = nodeUri + "/getAllExtendedStrings";
+    var urlProxy = nodeProxy + encodeURIComponent(url);
     new Request({
         url: urlProxy,
         method: 'get',
@@ -192,7 +194,7 @@ function populateOptions(event, field, add, elmts, callback){
     switch(event.keyCode){
         case 13:
             //elmts = eval(JSON.stringify(Array.from(elmts)));
-            setOption(field, add, elmts, callback, container);
+            setOption(field, add, elmts, container, callback);
             break;
         case 27:
             container.setStyle('display','none');
@@ -247,8 +249,9 @@ function populateOptions(event, field, add, elmts, callback){
                     })
                     .addEvent('mouseout', function(){
                         container.getChildren('.selected').removeClass('selected');
-                    }).addEvent('click', function(){
-                        setOption(field, add, elmts, callback, container);
+                    })
+                    .addEvent('click', function(){
+                        setOption(field, add, elmts, container, callback);
                     });                    
                 }
             });
@@ -265,7 +268,7 @@ function populateOptions(event, field, add, elmts, callback){
         
 }
 
-function setOption(field, add, elmts, callback, container){
+function setOption(field, add, elmts, container, callback){
     if(!add) {                
         if (container.getElement('.selected'))
             field.set('value', container.getElement('.selected').get('html'));
