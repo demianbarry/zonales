@@ -150,8 +150,13 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
 
-                    newEntry.setCreated(String.valueOf(entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
-                    newEntry.setModified(String.valueOf(entry.getModDate() != null ? entry.getModDate().getTime() : newEntry.getCreated()));
+                    if (entry.getPubDate() != null)
+                        newEntry.setCreated(String.valueOf(entry.getPubDate().getTime()));
+                    
+                    
+                    if (entry.getModDate() != null)
+                        newEntry.setModified(String.valueOf(entry.getModDate().getTime()));
+
                     newEntry.setRelevance(entry.getTitle().length() * 3);
                     if (!json) {
                         newEntry.setVerbatim(gson.toJson(newEntry));
@@ -210,8 +215,10 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
 
-                    newEntrySolr.setCreated((entry.getPubDate() != null ? entry.getPubDate().getTime() : (new Date()).getTime()));
-                    newEntrySolr.setModified((entry.getModDate() != null ? entry.getModDate().getTime() : newEntrySolr.getCreated()));
+                     if (entry.getPubDate() != null)
+                    newEntrySolr.setCreated((entry.getPubDate().getTime()));
+                     if (entry.getModDate() != null)
+                    newEntrySolr.setModified((entry.getModDate().getTime()));
                     newEntrySolr.setRelevance(entry.getTitle().length() * 3);
                     if (!json) {
                         newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
