@@ -62,14 +62,14 @@ public class GetZone extends BaseService {
                         } else {
                             retrieve = zoneDao.retrieveJson(zone, state, true);
                         }
-                    } else if ("allExtendedStrings".equals(name)) {
+                    } /*else if ("allExtendedStrings".equals(name)) {
                         if (zone == null && state == null) {
                             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo todos los nombres de las zonas");
                             retrieve = zoneDao.retrieveAllExtendedStrings();
                         } else {
                             retrieve = zoneDao.retrieveJson(zone, state, true);
                         }
-                    } else {
+                    } */else {
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Obteniendo la zona {0}", new Object[]{name});
                         retrieve = zoneDao.retrieveJson(name);
                     }
