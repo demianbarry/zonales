@@ -1,8 +1,8 @@
 //document.write('<script type="text/javascript" src="http://api.mygeoposition.com/api/geopicker/api.js"></script>');
 
 
-var proxy = '/curl_proxy.php?host=localhost&port=38080&ws_path=';
-var servletUri = 'ZCrawlSources';
+var proxy = '/curl_proxy.php?host=localhost&port=4000&ws_path=';
+var servletUri = 'zone';
 
 String.prototype.capitalize = function(){
     return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){
@@ -163,21 +163,22 @@ function getAllTags(){
 }
 var extendedStrings = new Array();
 function getAllExtendedStrings(){
-    var url = servletUri + "/getZone?name=allExtendedStrings";
+    var url = servletUri + "/getAllExtendedStrings";
     var urlProxy = proxy + encodeURIComponent(url);
     new Request({
         url: urlProxy,
         method: 'get',
         onSuccess: function(response) {
-            JSON.parse(response.replace(/'/g,'"')).each(function(zone) {
-                extendedStrings.include(zone.replace(/_/g, ' ').capitalize());
+            JSON.parse(response).each(function(zone) {
+                if(zone)
+                    extendedStrings.include(zone.replace(/_/g, ' ').capitalize());
             });
         },
         onFailure: function(){
         }
     }).send();
 }
-getAllTags();
+//getAllTags();
 getAllExtendedStrings();
 function populateOptions(event, field, add, elmts, callback){
     var container;
@@ -191,26 +192,7 @@ function populateOptions(event, field, add, elmts, callback){
     switch(event.keyCode){
         case 13:
             //elmts = eval(JSON.stringify(Array.from(elmts)));
-            if(!add) {                
-                if (container.getElement('.selected'))
-                    field.set('value', container.getElement('.selected').get('html'));
-                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
-                    container.setStyle('display','none');
-                container.empty();
-                if(typeof callback == 'function'){
-                    callback(field.get('value'));
-                }
-            } else {                
-                var fieldValue = field.get('value');
-                var value = container.getElement('.selected').get('html').trim();
-                add = (typeof add === 'string' ? add : ',');                    
-                field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(add)+1).trim() + value);                    
-                container.setStyle('display','none');
-                container.empty();
-                if(typeof callback == 'function')
-                    callback(field.get('value'));
-                
-            }            
+            setOption(field, add, elmts, callback, container);
             break;
         case 27:
             container.setStyle('display','none');
@@ -244,8 +226,17 @@ function populateOptions(event, field, add, elmts, callback){
                     query = query.substr(query.lastIndexOf(typeof add === 'string' ? add : ',')+1).trim();
                 if(checkRegExp(el.toLowerCase(),query)) {
                     new Element('p', {
-                        'html': el
-                    }).inject(container);
+                        'html': el                        
+                    }).inject(container)
+                    .addEvent('mouseover', function(){
+                        container.getChildren('.selected').removeClass('selected');
+                        this.addClass('selected')
+                    })
+                    .addEvent('mouseout', function(){
+                        container.getChildren('.selected').removeClass('selected');
+                    }).addEvent('click', function(){
+                        setOption(field, add, elmts, callback, container);
+                    });                    
                 }
             });
             if(container.childNodes.length > 0) {
@@ -259,6 +250,29 @@ function populateOptions(event, field, add, elmts, callback){
             break;
     }
         
+}
+
+function setOption(field, add, elmts, callback, container){
+    if(!add) {                
+        if (container.getElement('.selected'))
+            field.set('value', container.getElement('.selected').get('html'));
+        if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
+            container.setStyle('display','none');
+        container.empty();
+        if(typeof callback == 'function'){
+            callback(field.get('value'));
+        }
+    } else {                
+        var fieldValue = field.get('value');
+        var value = container.getElement('.selected').get('html').trim();
+        add = (typeof add === 'string' ? add : ',');                    
+        field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(add)+1).trim() + value);                    
+        container.setStyle('display','none');
+        container.empty();
+        if(typeof callback == 'function')
+            callback(field.get('value'));
+                
+    }
 }
 
 function checkRegExp(str, patt){
