@@ -199,18 +199,31 @@ function populateOptions(event, field, add, elmts, callback){
             container.empty();
             break;
         case 38:
-            if(container.getElement('.selected') != container.getFirst()){
-                var previous = container.getElement('.selected').getPrevious();
-                container.getElement('.selected').removeClass('selected');
-                previous.addClass('selected');
+            if(container.getElement('.selected')){
+                if(container.getElement('.selected') != container.getFirst()){
+                    var previous = container.getElement('.selected').getPrevious();
+                    container.getElement('.selected').removeClass('selected');
+                    previous.addClass('selected');
+                }
+            } else {
+                if(container.childNodes.length > 0) {
+                    container.firstChild.addClass('selected');
+                }
             }
             break;
         case 40:
-            if(container.getElement('.selected') != container.getLast()){
-                var next = container.getElement('.selected').getNext();
-                container.getElement('.selected').removeClass('selected');
-                next.addClass('selected');
+            if(container.getElement('.selected')){
+                if(container.getElement('.selected') != container.getLast()){
+                    var next = container.getElement('.selected').getNext();
+                    container.getElement('.selected').removeClass('selected');
+                    next.addClass('selected');
+                }
+            } else {
+                if(container.childNodes.length > 0) {
+                    container.firstChild.addClass('selected');
+                }
             }
+            
             break;
         default:
             if(event.keyCode > 126 || event.keyCode < 32 )
