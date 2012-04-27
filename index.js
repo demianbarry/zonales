@@ -331,8 +331,28 @@ app.get('/zone/get', function(req, res) {
     }
 });
 
+//Servicio que obtiene la cadena extendida de una zona.
+app.get('/zone/getAllExtendedStrings', function(req, res) {
+    res.writeHead(200, {
+        "Content-Type": "text/javascript"
+    });
+    try {
+        zoneService.getAllExtendedStrings(function(docs){
+            var result = new Array();
+            docs.forEach(function(doc){
+                result.push(doc.extendedString);
+            });
+            res.write(JSON.stringify(result));
+            res.end();
+        });        
+    } catch (err) {
+        res.write(JSON.stringify(err));
+        res.end();
+    }
+});
+
 //Servicio que 
-app.get('/zone/updateExtendedString', function(req, res) {
+app.get('/zone/updateExtendedStrings', function(req, res) {
     res.writeHead(200, {
         "Content-Type": "text/javascript"
     });

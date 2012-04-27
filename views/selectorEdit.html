@@ -41,15 +41,26 @@
                                     <img onclick="window.open($('url').value, 'feedWindow')" src="/images/lupa.jpeg">
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td class="label">
+                                    <label>URL logo por defecto</label>
+                                </td>
+                                <td class="input">
+                                    <input type="text" id="urlLogo" value="">
+                                </td>
+                            </tr>
+
                             <tr id="selectorsRow">
                                 <td class="label">
                                     <label>Selectores</label>
                                 </td>
                                 <td class="input">
                                     <select id="selectorType">
-                                        <option id="picture" value="picture">Imágenes</option>
-                                        <option id="comments" value="comments">Comentarios</option>
-                                        <option id="content" value="content">Noticia</option>
+                                        <option id="s_picture" value="picture">Imágenes</option>
+                                        <option id="s_comments" value="comments">Comentarios</option>
+                                        <option id="s_content" value="content">Noticia</option>
+                                        <option id="s_avatar" value="avatar">Avatar</option>
                                     </select>
                                     <input type="text" id="selector" value="">
                                     <img alt="Agregar selector" style="float: right" src="/images/addIcon.gif" title="Agregar selector" onclick="addSelector({'type' : $('selectorType').value, 'selector' : $('selector').value}); checkSelectorTypes();">

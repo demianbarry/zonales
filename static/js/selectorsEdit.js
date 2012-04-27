@@ -73,15 +73,20 @@ function removeSelector(selectorLine){
 
 function getSelectors(url){
     console.log(url);
-    socket.emit('getSelector', url, function (data) {                
-        console.log(data);
-        $('url').value = data.url === undefined ? "" : data.url;
-        if (typeOf(data.selectors) == 'array') {
-            data.selectors.each(function(selector){
-                addSelector(selector);
-            });
-            checkSelectorTypes();
-        }            
+    socket.emit('getSelector', url, function (data) {
+        if (data) {
+            console.log(data);
+            $('url').value = data.url === undefined ? "" : data.url;
+            $('urlLogo').value = data.urlLogo === undefined ? "" : data.urlLogo;
+            if (typeOf(data.selectors) == 'array') {
+                data.selectors.each(function(selector){
+                    addSelector(selector);
+                });
+                checkSelectorTypes();
+            }
+        } else {
+            $('url').value = url;
+        }
     });
 }
 
@@ -104,20 +109,23 @@ function checkSelectorTypes(){
 }
 
 function saveSelectors() {
-    var jsonSelectors = '{"url":"' + $('url').value.replace(/ /g, '_').toLowerCase() + '"';
+    var objSelectors = {
+        url: $('url').value,
+        selectors: [],
+        urlLogo: $('urlLogo').value
+    }
+
     if (selectors.length > 0) {
-        jsonSelectors += ',"selectors":[';
         for (x in selectors) {
             if (selectors[x] != null && selectors[x].type != undefined && selectors[x].selector != undefined) {
-                jsonSelectors += '{"type":"' + selectors[x].type + '","selector": "'+ selectors[x].selector + '"},';
+                var selector = {
+                    type: selectors[x].type,
+                    selector: selectors[x].selector
+                };
+                objSelectors.selectors.push(selector);
             }
         }
-        jsonSelectors = jsonSelectors.substring(0, jsonSelectors.length - 1);
-        jsonSelectors += ']'
     }
-    jsonSelectors += '}';
-    console.log(jsonSelectors);
-    var objSelectors = JSON.parse(jsonSelectors);
     
     if (gup('url') != null && gup('url') != '') {
         socket.emit('updateSelector', objSelectors, function (resp) {
