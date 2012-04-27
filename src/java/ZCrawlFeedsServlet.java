@@ -102,7 +102,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                     "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
 
-            response.getWriter().print(ZMessages.NO_DB_FAILED);
+            response.getWriter().print(ZMessages.UNKNOWN_ERROR);
         }
     }
 

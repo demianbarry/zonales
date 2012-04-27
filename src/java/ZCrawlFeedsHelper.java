@@ -118,9 +118,16 @@ public class ZCrawlFeedsHelper {
                 feedSelectors = dao.retrieve(url);
                 if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
                     newEntry = new PostType();
-                    String source = feed.getHeader().getLink().toString().substring(7);
-                    if (source.indexOf("/") != -1) {
-                        source = source.substring(0, source.indexOf("/") + 1);
+                    String source;
+                    if (feed.getHeader() == null || feed.getHeader().getLink() == null) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "NULL: Link");
+                        source = feedURL.getHost();
+                    } else {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "NO NULL: {0}", feed.getHeader().getLink().toString());
+                        source = feed.getHeader().getLink().getHost();
+//                        if (source.indexOf("/") != -1) {
+//                            source = source.substring(0, source.indexOf("/") + 1);
+//                        }
                     }
                     newEntry.setSource(source);
 
@@ -131,7 +138,7 @@ public class ZCrawlFeedsHelper {
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntry.setId(entry.getGUID());
-                    newEntry.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
+                    newEntry.setFromUser(new User(null, source, null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescriptionAsText());
                     newEntry.setTags(new TagsType((ArrayList) params.get("tagslist")));
@@ -157,7 +164,12 @@ public class ZCrawlFeedsHelper {
                     if (entry.getModDate() != null)
                         newEntry.setModified(String.valueOf(entry.getModDate().getTime()));
 
-                    newEntry.setRelevance(entry.getTitle().length() * 3);
+                    for (ActionType action : newEntry.getActions().getAction()) {
+                        if ("comments".equals(action.getType())) {
+                            newEntry.setRelevance(action.getCant());
+                        }
+                    }
+
                     if (!json) {
                         newEntry.setVerbatim(gson.toJson(newEntry));
                     }
@@ -184,9 +196,16 @@ public class ZCrawlFeedsHelper {
                 feedSelectors = dao.retrieve(url);
                 if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
                     newEntrySolr = new Post();
-                    String source = feed.getHeader().getLink().toString().substring(7);
-                    if (source.indexOf("/") != -1) {
-                        source = source.substring(0, source.indexOf("/") + 1);
+                    String source;
+                    if (feed.getHeader() == null || feed.getHeader().getLink() == null) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "NULL: Link");
+                        source = feedURL.getHost();
+                    } else {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "NO NULL: {0}", feed.getHeader().getLink().toString());
+                        source = feed.getHeader().getLink().getHost();
+//                        if (source.indexOf("/") != -1) {
+//                            source = source.substring(0, source.indexOf("/") + 1);
+//                        }
                     }
                     newEntrySolr.setSource(source);
                     newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), WordUtils.capitalize(zone.getExtendedString().replace("_", " "))));
@@ -196,7 +215,7 @@ public class ZCrawlFeedsHelper {
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
                     newEntrySolr.setId(entry.getGUID());
-                    newEntrySolr.setFromUser(new User(null, feed.getHeader().getLink().toString().substring(7), null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
+                    newEntrySolr.setFromUser(new User(null, source, null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntrySolr.setTitle(entry.getTitle());
                     newEntrySolr.setText(entry.getDescriptionAsText());
                     newEntrySolr.setTags(new ArrayList<String>((ArrayList) params.get("tagslist")));
@@ -219,7 +238,13 @@ public class ZCrawlFeedsHelper {
                     newEntrySolr.setCreated((entry.getPubDate().getTime()));
                      if (entry.getModDate() != null)
                     newEntrySolr.setModified((entry.getModDate().getTime()));
-                    newEntrySolr.setRelevance(entry.getTitle().length() * 3);
+
+                    for (ActionType action : newEntrySolr.getActions()) {
+                        if ("comments".equals(action.getType())) {
+                            newEntrySolr.setRelevance(action.getCant());
+                        }
+                    }
+
                     if (!json) {
                         newEntrySolr.setVerbatim(gson.toJson(newEntrySolr));
                     }
