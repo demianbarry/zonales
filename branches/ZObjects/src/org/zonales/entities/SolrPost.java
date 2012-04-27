@@ -8,6 +8,8 @@ package org.zonales.entities;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.solr.client.solrj.beans.Field;
 
 public class SolrPost {
@@ -334,10 +336,19 @@ public class SolrPost {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof SolrPost) {
             SolrPost solrPost = (SolrPost) obj;
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREADO ES IGUAL? {0}", solrPost.getCreated().equals(this.getCreated()));
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "MODIFICADO ES IGUAL? {0}", solrPost.getModified().equals(this.getModified()));
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "ID ES IGUAL? {0}", solrPost.getId().equals(this.getId()));
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RELEVANCIA ES IGUAL? {0}", solrPost.getRelevance() == this.getRelevance() - this.getRelevanceDelta());
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RELEVANCIA THIS: {0}", this.getRelevance());
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RELEVANCIA THIS DELTA: {0}", this.getRelevanceDelta());
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RELEVANCIA COMPRARE: {0}", solrPost.getRelevance());
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RELEVANCIA COMPARE DELTA: {0}", solrPost.getRelevanceDelta());
+
             return solrPost.getCreated().equals(this.getCreated()) &&
                    solrPost.getModified().equals(this.getModified()) &&
                    solrPost.getId().equals(this.getId()) &&
-                   solrPost.getRelevance() == this.getRelevance() - this.getRelevanceDelta();
+                   solrPost.getRelevance() - solrPost.getRelevanceDelta() == this.getRelevance() - this.getRelevanceDelta();
         } else {
             return false;
         }
