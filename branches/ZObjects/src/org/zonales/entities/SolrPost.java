@@ -334,7 +334,10 @@ public class SolrPost {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof SolrPost) {
             SolrPost solrPost = (SolrPost) obj;
-            return solrPost.getCreated().equals(this.getCreated()) && solrPost.getModified().equals(this.getModified()) && solrPost.getId().equals(this.getId());
+            return solrPost.getCreated().equals(this.getCreated()) &&
+                   solrPost.getModified().equals(this.getModified()) &&
+                   solrPost.getId().equals(this.getId()) &&
+                   solrPost.getRelevance() == this.getRelevance() - this.getRelevanceDelta();
         } else {
             return false;
         }
