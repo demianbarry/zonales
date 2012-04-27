@@ -28,14 +28,14 @@ function ZTabs() {
     this.socket = socket;
     var zCtx = new ZContext(this.socket, this.sessionId, this.nodeURL);
     this.zCtx = zCtx;
-    var zirClient = new ZIRClient(this.socket, this.sessionId);    
+    var zirClient = new ZIRClient(this.socket, this.sessionId);
     this.zirClient = zirClient;
     var htmlPosts;
     var newPosts = new Array();
     this.newPosts = newPosts;
     var firstPostZone = "";
     var newPostTime = 5000; //Tiempo durante el que se destacan los nuevos post en milisegundo
-    
+
     var postsContainer = null;
     var filtersContainer = null;
     var verNuevosButton = null;
@@ -44,7 +44,7 @@ function ZTabs() {
         filtersContainer = filtersContainerParam;
         verNuevosButton = verNuevosParam;
         htmlPosts = Tempo.prepare(postsContainer);
-    }    
+    }
 
     socket.on('solrPosts', function (response) {
         console.log("SOLR POSTS: ");
@@ -70,15 +70,15 @@ function ZTabs() {
             verNuevosButton.setStyle('display','none');
         }
         updatePostDate();
-    });  
+    });
 
-    var initAll = function initAll() {            
-        zCtx.initZCtx(function() {            
+    var initAll = function initAll() {
+        zCtx.initZCtx(function() {
             tab = zCtx.zcGetZTab();
             initZonas(zCtx.zcGetZone());
             initVista(zCtx);
             if(typeof initMapTab == 'function'){
-                initMapTab();                
+                initMapTab();
             }
             if(typeof setActiveTab == 'function'){
                 setActiveTab(zTab.zCtx.zcGetZTab());
@@ -87,14 +87,14 @@ function ZTabs() {
         zUserGroups = loguedUser;
     }
     this.initAll = initAll;
-    
-    var initZonas = function initZonas(selZone) {        
+
+    var initZonas = function initZonas(selZone) {
         if (selZone && selZone != '') {
             $('zoneExtended').value = selZone;
         }
     }
     this.initZonas = initZonas;
-    
+
     var initVista = function initVista(zCtx){
         //        if(postsContainer)
         //            postsContainer.empty();
@@ -110,7 +110,7 @@ function ZTabs() {
         zCtx.setSearchKeyword("");
     }
     this.initVista = initVista;
- 
+
     var initPost = function initPost() {
         if (this.tab != 'geoActivos' && postsContainer) {
             if(this.postInterval) {
@@ -136,7 +136,7 @@ function ZTabs() {
         this.initTagFilters(zCtx);
         this.initTempFilters(zCtx);
     //this.initPost();
-    }   
+    }
 
     this.initSourceFilters = function initSourceFilters(zCtx) {
         //Actualizo filtros de fuente desde contexto
@@ -369,7 +369,7 @@ function ZTabs() {
     var getImgForPost = function (links) {
         var img;
         var display = "none";
-        
+
         if (links) {
             links.each(function(link) {
                 if (link.type == 'picture'){
@@ -397,7 +397,9 @@ function ZTabs() {
         if(docs && typeOf(docs) == 'array')
             docs.each(function (doc) {
                 var post = JSON.parse(doc.verbatim);
-                $$('#' + post.id).dispose(); //Eliminar el post HTML si ya existe en la página
+                //console.log("IDS. post: " + post.id + "doc: " + doc.id);
+                if ($(post.id))
+                    $(post.id).dispose(); //Eliminar el post HTML si ya existe en la página
                 post.modifiedPretty = prettyDate(doc.modified);
                 post.modified = doc.modified;
                 var target = getTarget(post, doc.id);
@@ -457,8 +459,8 @@ function ZTabs() {
             });
         }
         armarTitulo(firstPostZone);
-    }        
-    
+    }
+
     this.updatePosts = updatePosts;
 
     this.checkTag = function checkTag(tag, bottonId){
@@ -690,7 +692,7 @@ function ZTabs() {
         });
     }
 
-   
+
     var armarTitulo = function armarTitulo(){
         var temp = 0 ;
         // tabTemp = this.tab;
@@ -710,7 +712,7 @@ function ZTabs() {
         this.zirClient.loadSolrPost(id, function(doc){
             updatePost(doc);
         });
-    }    
+    }
 }
 
 var zTab = new ZTabs();
@@ -719,5 +721,5 @@ window.addEvent('domready', function() {
     //if(postsContainer){
     console.log('domready antes de initAll');
     zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
-    zTab.initAll();        
+    zTab.initAll();
 });
