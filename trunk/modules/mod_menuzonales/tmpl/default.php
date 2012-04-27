@@ -26,13 +26,13 @@ defined('_JEXEC') or die('Restricted Access');
         }
         var temp = zTab.zCtx.zcGetTemp();
         if(temp == '24HOURS'){
-            $('relevantesOrder').set('html','MÃ¡s relevantes (hoy)');
+            $('relevantesOrder').set('html','Más relevantes (hoy)');
         } else if(temp == '7DAYS'){
-            $('relevantesOrder').set('html','MÃ¡s relevantes (Ãºltima semana)');
+            $('relevantesOrder').set('html','Más relevantes (última semana)');
         } else if(temp == '30DAYS'){
-            $('relevantesOrder').set('html','MÃ¡s relevantes (Ãºltimo mes)');
+            $('relevantesOrder').set('html','Más relevantes (último mes)');
         } else if(temp == '0'){
-            $('relevantesOrder').set('html','MÃ¡s relevantes (histÃ³rico)');
+            $('relevantesOrder').set('html','Más relevantes (histórico)');
         }
     }
     
@@ -77,19 +77,19 @@ defined('_JEXEC') or die('Restricted Access');
                 changeTemp(this, '24HOURS', ' (hoy)');                        
             });
             new Element('p', {
-                'html': 'Ãšltima semana'
+                'html': 'Última semana'
             }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '7DAYS' ? 'selected' : '').addEvent('click', function(){
-                changeTemp(this, '7DAYS', ' (Ãºltima semana)');                        
+                changeTemp(this, '7DAYS', ' (última semana)');                        
             });
             new Element('p', {
-                'html': 'Ãšltimo mes'
+                'html': 'Último mes'
             }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '30DAYS' ? 'selected' : '').addEvent('click', function(){
-                changeTemp(this, '30DAYS', ' (Ãºltimo mes)');
+                changeTemp(this, '30DAYS', ' (último mes)');
             });
             new Element('p', {
-                'html': 'HistÃ³rico'
+                'html': 'Histórico'
             }).inject(container).addClass(zTab.zCtx.zcGetTemp() == '0' ? 'selected' : '').addEvent('click', function(){
-                changeTemp(this, '0', ' (histÃ³rico)');
+                changeTemp(this, '0', ' (histórico)');
             });
             $('showTemp').set('src','/media/system/images/arrow_up1.png');
         } else {
@@ -105,12 +105,12 @@ defined('_JEXEC') or die('Restricted Access');
         zTab.zCtx.zcSetTemp(temp);        
         $('tempoSelect').dispose();
         $('showTemp').set('src','/media/system/images/arrow_down1.png');        
-        $('relevantesOrder').set('html','MÃ¡s relevantes'+ tempText);
+        $('relevantesOrder').set('html','Más relevantes'+ tempText);
     }
 </script>
 
 <div>
     <div id="mainMenu"><p><a style="display: none" id="portada_anchor">Portada</a><a id="enlared_anchor">En la red</a> | <a id="noticias_anchor">Noticas</a></p></div>
     <div id="ordenar">
-        <p>Ordenar por <img src="templates/<?php echo $template; ?>/img/arrow_right.gif" /><a id="relevantesOrder">MÃ¡s relevantes</a><img id="showTemp" class="down" src="/media/system/images/arrow_down1.png"> | <a id="recientesOrder">MÃ¡s recientes</a></p></div>
+        <p>Ordenar por <img src="templates/<?php echo $template; ?>/img/arrow_right.gif" /><a id="relevantesOrder">Más relevantes</a><img id="showTemp" class="down" src="/media/system/images/arrow_down1.png"> | <a id="recientesOrder">Más recientes</a></p></div>
 </div>
