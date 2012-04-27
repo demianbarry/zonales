@@ -32,7 +32,7 @@ module.exports.getAll = function getAll(short, callback) {
     return baseService.getAll(zones, short, '["id", "name"]', callback);
 }
 
-module.exports.getAllExtendedString = function getAllExtendedString(callback) {
+module.exports.getAllExtendedStrings = function getAllExtendedStrings(callback) {
     return baseService.getAll(zones, true, '["id", "extendedString"]', callback);
 }
 

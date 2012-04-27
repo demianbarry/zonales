@@ -17,6 +17,7 @@ var selectorsSchema = new Schema(
         type: String, 
         unique: true
     },
+    urlLogo : String,
     selectors : [selectorSchema]  //Array de links a sitios relacionados con la zona  --  OPCIONAL	    
 }
 );

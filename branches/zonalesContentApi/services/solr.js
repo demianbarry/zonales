@@ -59,12 +59,12 @@ function getSolrSort(order){
 
 function getSolrSources(myTabs){
 
-    var res = "";
+    var res = "q=";
     if (myTabs.indexOf("enlared") == -1){
-        res = "q=!source:(facebook+OR+twitter)";
+        res += "!source:(facebook+OR+twitter)";
     }    
     if (myTabs.indexOf("noticias") == -1){
-        res = (res.length > 0 ? '+AND+' : '')+"q=source:(facebook+OR+twitter)";
+        res += (res.length > 0 ? '+AND+' : '')+"source:(facebook+OR+twitter)";
     }
     return res;
 }
