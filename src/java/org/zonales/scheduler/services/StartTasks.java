@@ -67,7 +67,7 @@ public class StartTasks extends HttpServlet {
                 for (String id : idList) {
                     String resp = ZScheduler.scheduleJob(id, props, contex);
                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Schedule Job, respuesta: {0}", resp);
-                    Thread.sleep(60000);
+                    Thread.sleep(20000);
                 }
             } catch (MalformedURLException ex) {
                 Logger.getLogger(StartTasks.class.getName()).log(Level.SEVERE, null, ex);

@@ -141,14 +141,28 @@ public final class ZSolrServer extends BaseService {
         String verbatim = gson.toJson(post, Post.class);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Indexando post: {0}", verbatim);
 
-        Date created = new Date();
-        if (post.getCreated() != null) {
-            created = new Date(post.getCreated());
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREATED: {0}", post.getCreated());
+
+        if (post.getCreated() == null) {
+            if (oldSolrPost != null && oldSolrPost.getCreated() != null) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "FECHA CREADO EXISTENTE: {0}", oldSolrPost.getCreated().getTime());
+                post.setCreated(oldSolrPost.getCreated().getTime());
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "FECHA CREADO HOY: {0}", (new Date()).getTime());
+                post.setCreated((new Date()).getTime());
+            }
         }
 
-        Date modified = new Date();
-        if (post.getModified() != null) {
-            modified = new Date(post.getModified());
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "MODIFIED: {0}", post.getModified());
+
+        if (post.getModified() == null) {
+            if (oldSolrPost != null && oldSolrPost.getModified() != null) {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "FECHA MODIFICADO EXISTENTE: {0}", oldSolrPost.getModified().getTime());
+                post.setModified(oldSolrPost.getModified().getTime());
+            } else {
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "FECHA MODIFICADO HOY: {0}", (new Date()).getTime());
+                post.setModified((new Date()).getTime());
+            }
         }
 
         //Logger.getLogger(this.getClass().getName()).log(Level.INFO, "CREATED: " + modified + " MODIFIED: " + modified);
