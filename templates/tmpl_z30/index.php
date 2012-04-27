@@ -101,6 +101,7 @@ JHTML::_('behavior.modal');
             <div class="border1">
 
                 <div id="content-left">
+                    <div style="background-image: url('/templates/z30/img/loading.gif'); position: absolute; background-repeat: no-repeat; background-position: center center; background-color: white; height: 80%; background-size: auto auto; width: 27.5%;" id="loadingDiv"></div>
                     <div class="padding10">
 
                         <div id="topNav">
