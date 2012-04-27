@@ -125,6 +125,8 @@ public final class ZSolrServer extends BaseService {
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Encontré SOLRPOST: {0}", gson.toJson(oldSolrPost));
                 Post postIn = gson.fromJson(oldSolrPost.getVerbatim(), Post.class);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "POST FROM VERBATIM: {0}", gson.toJson(postIn));
+                oldSolrPost.setRelevance(postIn.getRelevance());
+                oldSolrPost.setRelevanceDelta(postIn.getRelevanceDelta());
                 if (postIn.getTags() != null) {
                     for (String tag : postIn.getTags()) {
                         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "TAG POSTIN: {0}", tag.trim());
