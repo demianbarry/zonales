@@ -189,6 +189,11 @@ function populateOptions(event, field, add, elmts, callback){
         container = new Element('div', {
             'class': 'suggestions'
         }).inject(field, 'after').setStyle('display','none');
+        field.addEvent('blur', function(){
+            if(field.getNext())
+                field.getNext().empty();
+            
+        });
     }
     
     switch(event.keyCode){
