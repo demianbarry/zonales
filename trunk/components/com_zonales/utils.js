@@ -192,7 +192,7 @@ function populateOptions(event, field, add, elmts, callback){
         field.addEvent('blur', function(){
             if(field.getNext())
                 field.getNext().empty();
-            
+                //field.value = 'Seleccione una zona...';
         });
     }
     
