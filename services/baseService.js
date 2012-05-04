@@ -130,21 +130,41 @@ module.exports.set = function set(model, data, callback) {
 }
 
 //Actualiza un dato existente
-module.exports.update = function update(model, searchFieldName, searchFieldData, data, callback) {
+module.exports.update = function update(model, searchFieldName, searchFieldData, data, callback, fields) {
     // Make sure a callback is defined.
     callback = (callback || noop);
 	
     try {
-        var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');
-        //var odata = JSON.parse(data);
-        model.update(oid, data, function(err) {
-            if (err) {
-                console.log('Error actualizando el dato --> ' + err);
-                throw errors.apiError;
-            }
-            callback(errors.success);
-            return(this);
-        });
+        var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');        
+        if(fields){
+            model.findOne(oid, function(err, reg) {
+                if (err) {
+                    console.log('Error buscando el dato --> ' + err);
+                    throw errors.apiError;
+                }            
+                fields.forEach(function(field){
+                    reg[field] = data[field];
+                });
+            
+                model.update(oid, data, function(err) {
+                    if (err) {
+                        console.log('Error actualizando el dato --> ' + err);
+                        throw errors.apiError;
+                    }
+                    callback(errors.success);
+                    return(this);
+                });
+            });
+        } else {        
+            model.update(oid, data, function(err) {
+                if (err) {
+                    console.log('Error actualizando el dato --> ' + err);
+                    throw errors.apiError;
+                }
+                callback(errors.success);
+                return(this);
+            });
+        }
     } catch (err) {
         console.log('Error --> ' + err);
         throw errors.apiError;

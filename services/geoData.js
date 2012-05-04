@@ -150,16 +150,39 @@ module.exports.getGeoDataByZoneExtendedString = function getGeoDataByZoneExtende
 	zoneService.getZoneByExtendedString(extendedString, function(zone) {
 		//console.log('ZONE GEODATA. ZONE: ' + JSON.stringify(zone));
 		if (typeof(zone) != 'undefined' && zone != null) {
-			baseService.get(geo, {id: zone.geoData}, function(geoData) {
-				if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
-					var data = {};
-					delete geoData[0].geospatial;
-					data.geoData = geoData[0];
-					data.extendedString = extendedString;
-					//console.log('ZONE GEODATA: ' + JSON.stringify(data));
-					callback(data);
+			if (zone.geoData) {
+				baseService.get(geo, {id: zone.geoData}, function(geoData) {
+					if (typeof(geoData) != 'undefined' && geoData != null && typeof(geoData[0]) != 'undefined' && geoData[0] != null) {
+						console.log("ENCONTRE GEO PARA LA ZONA " + zone.extendedString + ", NO BUSCO PADRE");
+						var data = {};
+						delete geoData[0].geospatial;
+						data.geoData = geoData[0];
+						data.extendedString = extendedString;
+						//console.log('ZONE GEODATA: ' + JSON.stringify(data));
+						callback(data);
+					} else {
+						callback();
+					}
+				});
+			} else {
+				console.log("NO ENCONTRE GEO PARA LA ZONA " + zone.extendedString + ", BUSCO PADRE");
+				if (zone.parent) {
+					console.log("ID PADRE: " + zone.parent);
+					zoneService.get({id: zone.parent}, function(zone) {
+						console.log("PADRE (ARRAY): " + JSON.stringify(zone));
+						if (zone && zone[0]) {
+							getGeoDataByZoneExtendedString(zone[0].extendedString, callback);
+						} else {
+							callback();
+						}
+					});
+				} else {
+					console.log("LA ZONA " + zone.extendedString + ", NO TIENE PADRE");
+					callback();
 				}
-			});
+			}
+		} else {
+			callback();
 		}
 	});
 }

@@ -15,7 +15,7 @@ var zoneSchema = new Schema(
     state : {
         type:String,
         enum:['generated', 'published', 'unpublished', 'void'],
-    default: 'generated'
+        default: 'generated'
     }, ////Generado, publicado, despublicado, anulado
     geoData: String, //Debe ser un id de un dato geográfico existente
     extendedString : { type: String, unique: true }
@@ -67,7 +67,7 @@ module.exports.set = function set(zone, callback) {
 
 //Actualiza una zona existente (búsqueda por ID)
 module.exports.update = function update(id, data, callback) {
-    return baseService.update(zones, 'id', id, data, callback);
+    return baseService.update(zones, 'id', id, data, callback, ['parent', 'type', 'state', 'geoData']);
 }
 
 //Elimina una zona existente (búsqueda por ID) 
