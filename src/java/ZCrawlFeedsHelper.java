@@ -5,10 +5,13 @@ import com.google.gson.Gson;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
 import it.sauronsoftware.feed4j.bean.FeedItem;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import javax.swing.text.BadLocationException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,11 +64,13 @@ public class ZCrawlFeedsHelper {
     FeedSelectorDao dao;
     ZoneDao zoneDao;
     PlaceDao placeDao;
+    Integer maxImgSize;
 
-    public ZCrawlFeedsHelper(String host, Integer port, String name) {
+    public ZCrawlFeedsHelper(String host, Integer port, String name, Integer maxImgSize) {
         dao = new FeedSelectorDao(host, port, name);
         zoneDao = new ZoneDao(host, port, name);
         placeDao = new PlaceDao(host, port, name);
+        this.maxImgSize = maxImgSize;
     }
 
     /**
@@ -113,7 +119,11 @@ public class ZCrawlFeedsHelper {
                 FeedItem entry = feed.getItem(i);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
 
-                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
+                Connection conn = Jsoup.connect(entry.getLink().toString());
+                conn.timeout(60000);
+                doc = conn.get();
+                String responseURL = conn.response().url().getHost();
+//                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
                 feedSelectors = dao.retrieve(url);
                 if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
@@ -146,7 +156,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntry.getLinks() == null) {
                         newEntry.setLinks(new LinksType(new ArrayList<LinkType>()));
                     }
-                    if ((links = getLinks(feedSelectors, doc, entry.getLink().getHost())) != null) {
+                    if ((links = getLinks(feedSelectors, doc, responseURL)) != null) {
                         newEntry.getLinks().getLink().addAll(links);
                     }
                     newEntry.getLinks().getLink().add(new LinkType("source", entry.getLink().toString()));
@@ -191,7 +201,12 @@ public class ZCrawlFeedsHelper {
                 FeedItem entry = feed.getItem(i);
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Intentando conectar a {0}", new Object[]{entry.getLink().toString()});
 
-                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
+                Connection conn = Jsoup.connect(entry.getLink().toString());
+                conn.timeout(60000);
+                doc = conn.get();
+                String responseURL = conn.response().url().getHost();
+//                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "RESPONSE URL: {0}", responseURL);
+//                doc = Jsoup.connect(entry.getLink().toString()).timeout(60000).get();
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Parseando la URL: {0}", new Object[]{entry.getLink().toString()});
                 feedSelectors = dao.retrieve(url);
                 if (findWords(entry.getTitle(), doc, (ArrayList) params.get("searchlist"), (ArrayList) params.get("blacklist"), feedSelectors)) {
@@ -223,7 +238,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntrySolr.getLinks() == null) {
                         newEntrySolr.setLinks(new ArrayList<LinkType>());
                     }
-                    if ((links = getLinks(feedSelectors, doc, entry.getLink().getHost())) != null) {
+                    if ((links = getLinks(feedSelectors, doc, responseURL)) != null) {
                         newEntrySolr.getLinks().addAll(links);
                     }
                     newEntrySolr.getLinks().add(new LinkType("source", entry.getLink().toString()));
@@ -280,7 +295,13 @@ public class ZCrawlFeedsHelper {
                 elmts = doc.select(feedSelector.getSelector());
                 for (Element elmt : elmts) {
                     String link = addHost(elmt.attr("src"), host);
-                    list.add(new LinkType("picture", link));
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "PICTURE URL: {0}", link);
+                    if (checkImgSize(link)) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SIZE VALIDO, AGREGO PICTURE");
+                        list.add(new LinkType("picture", link));
+                    } else {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SIZE NO VALIDO: {0}", link);
+                    }
                 }
             } else if ("link".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
@@ -314,10 +335,30 @@ public class ZCrawlFeedsHelper {
     }
     
     private String addHost(String link, String host) {
-        if (link.startsWith("/"))
-            return "http://" + host + link;
+        if (!link.startsWith("http")) {
+            if (link.startsWith("/"))
+                return "http://" + host + link;
+            else
+                return "http://" + host + "/" + link;
+        }
 
         return link;
+    }
+    
+    private Boolean checkImgSize(String imageURL) {
+        try {
+            URL url = new URL(imageURL);
+            Image image = Toolkit.getDefaultToolkit().getImage(url);
+            Integer size = image.getHeight(null) * image.getWidth(null);
+            if (size == 1) //El link no es una imagen, sino ASP, PHP o algo por el estilo
+                return true;
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "IMAGE SIZE: {0}", size);
+            if (maxImgSize < size)
+                return true;
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ZCrawlFeedsHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
