@@ -1,3 +1,8 @@
+String.prototype.capitalize = function(){
+    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){
+        return p1+p2.toUpperCase();
+    } );
+};
 // ----------------------- MODULES -----------------------
 var 
 fs = require('fs'),
@@ -315,6 +320,33 @@ app.get('/zone/getAll', function(req,res) {
     }
 });
 
+
+//Servicio que obtiene el archivo de zonas.
+app.get('/zone/getFile', function(req,res) {
+    res.writeHead(200, {
+        "Content-Type": "text/javascript"
+    });
+    try {
+        zoneService.getAllExtendedStrings(function(docs){
+            var result = new Object();
+            fs.open(__dirname + '/locales/es.js', 'w', function(err, text){
+
+            });
+            docs.forEach(function(doc){
+                if (doc.extendedString)
+                    result[doc.extendedString] = doc.extendedString.replace(/_/g,' ').capitalize();
+            });
+            //result.sort();
+            fs.writeFile(__dirname + '/locales/es.js', JSON.stringify(result), function(err, text){} );
+            res.write(JSON.stringify(result));
+            res.end();
+        });
+    } catch (err) {
+        res.write(JSON.stringify(err));
+        res.end();
+    }
+});
+
 //Servicio que obtiene un conjunto de zonas de acuerdo a los filtros utilizados. El parámetro filtro es JSON.
 app.get('/zone/get', function(req, res) {
     res.writeHead(200, {
@@ -342,6 +374,7 @@ app.get('/zone/getAllExtendedStrings', function(req, res) {
             docs.forEach(function(doc){
                 result.push(doc.extendedString);
             });
+            result.sort();
             res.write(JSON.stringify(result));
             res.end();
         });        
