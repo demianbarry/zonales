@@ -176,8 +176,8 @@ try {
             /* Llamado a la API */
 
             /* Obtengo datos del usuario */
-            $api = '/' . $user;
-            $userData = $facebook->api($api);
+//            $api = '/' . $user;
+//            $userData = $facebook->api($api);
 
             $api = '/' . $user . '/feed?limit=' . $limit;
 
@@ -228,7 +228,7 @@ try {
                 if ($validPost) {
                     if (checkActions($feed, $minActions)) {
                         if (checkKeywords($feed, $keywords)) {
-                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key], $userData);
+                            $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key]);
                         }
                     }
                 }
@@ -353,8 +353,10 @@ if ($getCommenters) {
 
 /* * ****************** Procesamiento de feeds **************** */
 
-function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null, $userData = null) {
+function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null) {
     global $stop, $min, $since;  //$max
+    
+    $userData = null;
 
     $post = array();
     $post['source'] = 'Facebook';
@@ -414,10 +416,10 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
             $post['links'][] = $link;
             break;
     }
-    if ($userData != null) {
+    if (isset($feed['from'])) {
         $link = array();
         $link['type'] = "avatar";
-        $link['url'] = $userData['picture'];
+        $link['url'] = 'https://graph.facebook.com/' . $feed['from']['id'] . '/picture';
         $post['links'][] = $link;
     }
     $post['actions'] = array();
