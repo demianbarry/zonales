@@ -90,7 +90,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         }
         params.put("tagslist", tagslist);
 
-        ZCrawlFeedsHelper helper = new ZCrawlFeedsHelper(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
+        ZCrawlFeedsHelper helper = new ZCrawlFeedsHelper(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"), Integer.valueOf(props.getProperty("max_img_size")));
         try {
             response.getWriter().println(helper.getParse(java.net.URLEncoder.encode(url.toString(), "UTF-8"), "json".equalsIgnoreCase(formato), params));
         } catch (Exception ex) {
