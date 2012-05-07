@@ -141,7 +141,7 @@ function drawMap(extendedString) {
     zTab.socket.emit('drawChildren', {extendedString:extendedString}, function(resp) {
 
     });
-
+    
 }
 
 function on_unselect_feature(event){
@@ -216,7 +216,7 @@ function initMap() {
     map.addLayer(ghyb);
     map.addLayer(gsat);
     map.addLayer(gphy);
-
+    
     map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
         .transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), maxZoomOut);
 
