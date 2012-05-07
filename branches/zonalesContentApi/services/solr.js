@@ -64,7 +64,7 @@ function getSolrSources(myTabs){
         res += "!source:(facebook+OR+twitter)";
     }    
     if (myTabs.indexOf("noticias") == -1){
-        res += (res.length > 0 ? '+AND+' : '')+"source:(facebook+OR+twitter)";
+        res += (res.length > 2 ? '+AND+' : '')+"source:(facebook+OR+twitter)";
     }
     return res;
 }
