@@ -52,7 +52,7 @@ JHTML::_('behavior.modal');
                 } else {
                     console.log = function() {};
                 }
-    }
+            }
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Zonales</title>
@@ -67,21 +67,18 @@ JHTML::_('behavior.modal');
         <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css' />
         <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css' />
         <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' />
-
-
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/reset.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/main.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css" />
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
-        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/json2-compressed.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/css/content.css" />        
         <!--
         <script language="javascript" type="text/javascript" src="http://<?php echo gethostbyname('g2p2-node') ?>:4000/socket.io/socket.io.js"></script>
         -->
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-core.js"></script>
         <script language="javascript" type="text/javascript" src="http://192.168.0.2:4000/socket.io/socket.io.js"></script>
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];             
         </script>
+        <link type="image/x-icon" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/favicon.ico" rel="icon">
     </head>
 
     <body>
@@ -129,10 +126,14 @@ JHTML::_('behavior.modal');
 
         <div id="footer">
             <div class="padding10">
-                <p><a href="#">TÃ©rminos y condiciones</a> | <a href="#">Reclamos y consultas</a><br />
+                <p><a href="#">Términos y condiciones</a> | <a href="#">Reclamos y consultas</a><br />
                     Copyright 2012 - Zonales.com - www.zonales.com - info@zonales.com</p>
             </div>
-        </div><!-- /#footer -->
-
+        </div><!-- /#footer -->        
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/mootools-more.js"></script>
+        <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/json2-compressed.js"></script>
+        <script language="javascript" type="text/javascript" src="modules/mod_mapazonales/map2.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="/media/system/js/OpenLayers.js"></script>
     </body>
 </html>
