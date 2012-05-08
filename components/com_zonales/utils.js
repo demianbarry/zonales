@@ -12,19 +12,14 @@ String.prototype.capitalize = function(){
     } );
 };
 
-/*String.prototype.trim = function(){
-    var i=0, j=this.length-1;
-    while(this.charAt(i) == ' ')i++;
-    while(this.charAt(j) == ' ')j--;
-    return this.substring(i,j+1);
-};*/
-
 String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g,"");
+    return this.ltrim().rtrim();
 }
+
 String.prototype.ltrim = function() {
     return this.replace(/^\s+/,"");
 }
+
 String.prototype.rtrim = function() {
     return this.replace(/\s+$/,"");
 }
@@ -182,24 +177,26 @@ function getAllExtendedStrings(){
 }
 //getAllTags();
 getAllExtendedStrings();
-function populateOptions(event, field, add, elmts, callback){
+function populateOptions(event, field, add, elmts, callback, fill){
     var container;
-    
+    fill = fill ? fill : '';
+    //new Event(event).stop();
     if((container = field.getNext()) == null || !container.hasClass('suggestions')) {
         container = new Element('div', {
             'class': 'suggestions'
         }).inject(field, 'after').setStyle('display','none');
-        field.addEvent('blur', function(){
-            if(field.getNext())
-                field.getNext().empty();
-                //field.value = 'Seleccione una zona...';
+        field.addEvent('blur', function(event){
+            if(container && !container.getElement('.selected')){
+                container.empty();
+                container.setStyle('display','none');                
+            }
         });
     }
     
     switch(event.keyCode){
         case 13:
-            //elmts = eval(JSON.stringify(Array.from(elmts)));
-            setOption(field, add, elmts, container, callback);
+            setOption(field, add, container, callback, fill);
+            //field.fireEvent('blur');
             break;
         case 27:
             container.setStyle('display','none');
@@ -233,7 +230,7 @@ function populateOptions(event, field, add, elmts, callback){
             
             break;
         default:
-            if(event.keyCode > 126 || event.keyCode < 32 )
+            if(event.keyCode != 8 && (event.keyCode > 126 || event.keyCode < 32 ))
                 return;
             container.empty();
             // alert("Field: "+field.get('value'));
@@ -256,44 +253,44 @@ function populateOptions(event, field, add, elmts, callback){
                         container.getChildren('.selected').removeClass('selected');
                     })
                     .addEvent('click', function(){
-                        setOption(field, add, elmts, container, callback);
+                        setOption(field, add, container, callback, fill);
                     });                    
                 }
             });
             if(container.childNodes.length > 0) {
-                container.setStyle('display','block');
-                container.firstChild.addClass('selected');                
-            } else {
-                var fieldValue2 = field.get('value');
-                fieldValue2 = fieldValue2.substr(0, fieldValue2.length -1);
-                field.set('value', fieldValue2);
+                container.setStyle('display','block');                
             }
             break;
     }
         
 }
 
-function setOption(field, add, elmts, container, callback){
-    if(!add) {                
-        if (container.getElement('.selected'))
-            field.set('value', container.getElement('.selected').get('html'));
-        if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
-            container.setStyle('display','none');
-        container.empty();
+function setOption(field, add, container, callback, fill){
+    var value = "";
+    var fieldValue = field.get('value');
+    if (container.getElement('.selected')) {
+        value = container.getElement('.selected').get('html').trim();
+        if(!add) {            
+            field.set('value', value);            
+        } else {            
+            add = (typeof add === 'string' ? add : ',');
+            var finalValue = fieldValue.substr(0, fieldValue.lastIndexOf(add)+1).trim();
+            field.set('value', finalValue + value);
+        }
         if(typeof callback == 'function'){
             callback(field.get('value'));
         }
-    } else {                
-        var fieldValue = field.get('value');
-        var value = container.getElement('.selected').get('html').trim();
-        add = (typeof add === 'string' ? add : ',');                    
-        field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(add)+1).trim() + value);                    
-        container.setStyle('display','none');
-        container.empty();
-        if(typeof callback == 'function')
-            callback(field.get('value'));
-                
+    } else {
+        if(fieldValue){
+            if(fieldValue != fill)
+                alert("El valor seleccionado no se encuentra en la lista.");
+        
+        }
+        field.set('value',fill);
     }
+        
+    container.setStyle('display','none');
+    container.empty();    
 }
 
 function checkRegExp(str, patt){
