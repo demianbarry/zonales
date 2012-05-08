@@ -14,6 +14,14 @@ body{
     display: none;
 }
 
+.loading{
+    background-image: url('/templates/z30/img/loading.gif'); 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    background-color: white;
+    background-size: auto auto;
+}
+
 #top_bar{
     margin:auto;
     width:999px;
