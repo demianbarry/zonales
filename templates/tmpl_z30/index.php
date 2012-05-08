@@ -78,7 +78,6 @@ JHTML::_('behavior.modal');
         <script language="javascript" type="text/javascript">
             var loguedUser = ['<?php echo implode("','", (JUserHelper::getUserGroups(JFactory::getUser()->get('id')))) ?>'];             
         </script>
-        <link type="image/x-icon" href="<?php echo $this->baseurl ?>/templates/<?php echo $mainframe->getTemplate(); ?>/favicon.ico" rel="icon">
     </head>
 
     <body>
@@ -98,8 +97,8 @@ JHTML::_('behavior.modal');
             <div class="border1">
 
                 <div id="content-left">
-                    <div style="background-image: url('/templates/z30/img/loading.gif'); position: absolute; background-repeat: no-repeat; background-position: center center; background-color: white; height: 80%; background-size: auto auto; width: 27.5%;" id="loadingDiv"></div>
-                    <div class="padding10">
+                    <div style="background-image: url('/templates/z30/img/loading.gif'); position: absolute; background-repeat: no-repeat; background-position: center center; background-color: white; height: 50%; background-size: auto auto; width: 529px;" id="loadingDiv"></div>
+                    <div class="padding10" id="postsDiv" class="hidden">
 
                         <div id="topNav">
                             <jdoc:include type="modules" name="top" />
