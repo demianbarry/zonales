@@ -50,7 +50,9 @@ function ZTabs() {
                 }*/
             if (event.type == TempoEvent.Types.RENDER_COMPLETE) {
                 if($('loadingDiv'))
-                    $('loadingDiv').setStyle('display','none');
+                    $('loadingDiv').addClass('hidden');
+                if($('postsDiv'))
+                    $('postsDiv').removeClass('hidden');
             }
         });
     }    
