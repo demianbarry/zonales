@@ -147,7 +147,7 @@ function getSolrUrl(zCtx, nuevos) {
     getSolrSources(zCtx.zTabs)+
     getSolrZones()+
     getSolrKeyword(zCtx)+
-    getSolrBoosting(zCtx, nuevos)+
+    getSolrBoosting(zCtx)+
     getSolrFilterQuery(zCtx, nuevos);
 
     return urlSolr;
