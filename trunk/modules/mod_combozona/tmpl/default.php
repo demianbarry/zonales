@@ -25,9 +25,9 @@ JHTML::_('behavior.formvalidation');
             }); 
 </script>
 <div id="top_bar_right">
-    <span><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);}, 'Seleccione una zona...');"
+    <span><input name="" type="text" value="Seleccione una zona..." id="zoneExtended" onkeyup="populateOptions(event, this, false, extendedStrings,function(zone){zTab.setZone(zone, '', '', '');drawMap(zone);ajustMapToExtendedString(zone);}, zTab.zCtx.zcGetZone() ? zTab.zCtx.zcGetZone() : 'Seleccione una zona...');"
                  onfocus="if(this.value=='Seleccione una zona...') this.value='';" />
-        <img src="templates/<?php echo $template; ?>/img/search_close.gif" onmouseover="this.src='templates/<?php echo $template; ?>/img/search_close_active.gif'" onmouseout="this.src='templates/<?php echo $template; ?>/img/search_close.gif'" alt="Eliminar búsqueda" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');"/></span>
+        <img src="templates/<?php echo $template; ?>/img/search_close.gif" onmouseover="this.src='templates/<?php echo $template; ?>/img/search_close_active.gif'" onmouseout="this.src='templates/<?php echo $template; ?>/img/search_close.gif'" alt="Eliminar bï¿½squeda" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');"/></span>
         <!--<span style="top: 3.4%;">
             <img id="resetZoneButton" src="/images/reset.gif" onclick="zTab.setZone(''); $('zoneExtended').value = 'Seleccione una zona...';drawMap('Argentina');ajustMapToExtendedString('Argentina');">
         </span>-->
