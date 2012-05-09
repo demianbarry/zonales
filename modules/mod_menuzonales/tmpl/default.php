@@ -6,6 +6,12 @@ defined('_JEXEC') or die('Restricted Access');
 <script type="text/javascript" defer="defer">
 
     function setActiveTab() {
+        if($('postsDiv') && !$('postsDiv').hasClass('hidden')) {
+            $('postsDiv').addClass('hidden');
+            if($('loadingDiv'))
+                $('loadingDiv').removeClass('hidden');
+        }
+        
         if(zTab.zCtx.zcGetOrder() == 'relevantes') {
             $('relevantesOrder').addClass('active');
             $('recientesOrder').removeClass('active');
