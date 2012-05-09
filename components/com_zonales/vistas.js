@@ -12,8 +12,8 @@ Element.Properties['data-title'] = {
 };
 
 function ZTabs() {
-    this.nodeURL = 'http://192.168.0.2:4000';
-    this.detalleURL = 'http://192.168.0.2:82';
+    this.nodeURL = 'http://zonales.com:4000';
+    this.detalleURL = 'http://zonales.com:82';
     this.sources = new Array();
     this.zones = new Array();
     this.allZones = new Array();
@@ -97,7 +97,7 @@ function ZTabs() {
             }*/
             if(typeof setActiveTab == 'function'){
                 setActiveTab(zTab.zCtx.zcGetZTab());
-            }
+            }            
         });
         zUserGroups = loguedUser;
     }
@@ -123,6 +123,11 @@ function ZTabs() {
         //initFilters(zCtx);
         initPost();
         zCtx.setSearchKeyword("");
+        var fileref=document.createElement('script');    
+        fileref.setAttribute('type','text/javascript'); 
+        fileref.setAttribute('src', '/media/system/js/OpenLayers.js');
+        fileref.setAttribute('onload', 'if(typeof initMapTab=="function"){initMapTab()}');    
+        document.getElementsByTagName("head")[0].appendChild(fileref);
     }
     this.initVista = initVista;
     
@@ -217,6 +222,10 @@ function ZTabs() {
     }
 
     var setZone = function setZone(zoneExtended, zoneName, parentId, parentName) {
+        if($('loadingDiv'))
+            $('loadingDiv').removeClass('hidden');
+        if($('postsDiv'))
+            $('postsDiv').addClass('hidden');
         if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
             zoneExtended = '';
         if (zoneName == null || typeof(zoneName) == 'undefined')
@@ -386,7 +395,7 @@ function ZTabs() {
         return '<img class="avatar" src="' + avatar + '"/>';
     }
 
-    var getImgForPost = function (links) {
+    var getImgForPost = function (links, target) {
         var img;
         var display = "none";
         
@@ -401,7 +410,7 @@ function ZTabs() {
         }
 
         if (img)
-            return '<img class="img" style="display:' + display + '" src="' + img + '"/>';
+            return '<a target="_blank" href="' + target + '"><img class="img" style="display:' + display + '" src="' + img + '"/></a>';
         else
             return '';
     }
@@ -438,7 +447,7 @@ function ZTabs() {
                     if(action.type == 'replies') action.type = 'respuestas';
                 });
                 post.relevance = getRelevanceForPost(post.relevance, post.id);
-                post.img = getImgForPost(post.links);
+                post.img = getImgForPost(post.links, target);
                 post.avatar = getAvatarForPost(post.links, post.source);
                 posts.push(post);
                 if (newPosts)
@@ -666,14 +675,14 @@ function ZTabs() {
         [3600, 'minutos', 60], // 60*60, 60
         [7200, ' hace 1 hora', 'hace 1 hora'], // 60*60*2
         [86400, 'horas', 3600], // 60*60*24, 60*60
-        [172800, '1 dia', 'maÃ±ana'], // 60*60*24*2
-        [604800, 'dÃ­as', 86400], // 60*60*24*7, 60*60*24
-        [1209600, ' en la ultima semana', 'prÃ³xima semana'], // 60*60*24*7*4*2
+        [172800, '1 día', 'mañana'], // 60*60*24*2
+        [604800, 'días', 86400], // 60*60*24*7, 60*60*24
+        [1209600, ' en la ultima semana', 'próxima semana'], // 60*60*24*7*4*2
         [2419200, 'semanas', 604800], // 60*60*24*7*4, 60*60*24*7
-        [4838400, ' ultimo mes', 'prÃ³ximo mes'], // 60*60*24*7*4*2
+        [4838400, ' último mes', 'próximo mes'], // 60*60*24*7*4*2
         [29030400, 'meses', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
-        [58060800, ' en el ultimo aÃ±o', 'proximo aÃ±o'], // 60*60*24*7*4*12*2
-        [2903040000, 'aÃ±os', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+        [58060800, ' en el ultimo año', 'proximo año'], // 60*60*24*7*4*12*2
+        [2903040000, 'años', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
         [5806080000, 'ultimo siglo', 'proximo siglo'], // 60*60*24*7*4*12*100*2
         [58060800000, 'siglos', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
         ];
@@ -733,5 +742,5 @@ window.addEvent('domready', function() {
     //if(postsContainer){
     //console.log('domready antes de initAll');
     zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
-    zTab.initAll();        
+    zTab.initAll();    
 });
