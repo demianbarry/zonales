@@ -25,7 +25,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                     <p class="images"><a href="#">{{img}}</a></p>
+                     <p class="images">{{img}}</p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
@@ -36,7 +36,8 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+<!--                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>-->
+                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
@@ -56,7 +57,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                        <p class="images"><a href="#">{{img}}</a></p>
+                        <p class="images">{{img}}</p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
@@ -67,7 +68,7 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
@@ -87,7 +88,7 @@
                 <div class="padding10">
 
                     <h2>{{title}}</h2>
-                        <p class="images"><a href="#">{{img}}</a></p>
+                        <p class="images">{{img}}</p>
                     <p class="cuerpo">{{text}}</p>
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
@@ -98,7 +99,7 @@
             <div class="col3">
                 <div class="contador">
                     <p>{{relevance}}</p>
-                    <p><img onclick="zTab.incRelevance('{{id}}', -1)" src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img onclick="zTab.incRelevance('{{id}}', 1)" src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
+                    <p><img src="templates/<?php echo $template; ?>/img/contador_down.gif" /><img src="templates/<?php echo $template; ?>/img/contador_up.gif" /></p>
                 </div><!-- /.contador -->
             </div><!-- /#col3 -->
             <div class="clear"></div>
