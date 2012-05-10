@@ -356,3 +356,6 @@ img.img {
     position: relative;
 }
 
+#postTemplate a.textLink {
+    text-decoration: underline;
+}

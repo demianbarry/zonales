@@ -322,11 +322,11 @@ function ZTabs() {
         if(text.length > 255){
             var i=255;
             for( ;text.charAt(i) != ' ';i--);
-            var shortText = text.substring(0,i);
-            var otherText = text.substring(i);
+            var shortText = text.substring(0,i).replace(/(https?:\/\/[^ ]*)/g, '<a class="textLink" target="_blank" href="$1">$1</a>');
+            var otherText = text.substring(i).replace(/(https?:\/\/[^ ]*)/g, '<a class="textLink" target="_blank" href="$1">$1</a>');
             return shortText + "<span id=\"verMasPost\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
         }
-        return text.replace(/(https?:\/\/[^ ]*)/g, '<a target="_blank" href="$1">$1</a>');
+        return text.replace(/(https?:\/\/[^ ]*)/g, '<a class="textLink" target="_blank" href="$1">$1</a>');
     }
 
     var verNuevos = function verNuevos(){
