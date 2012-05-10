@@ -12,8 +12,8 @@ Element.Properties['data-title'] = {
 };
 
 function ZTabs() {
-    this.nodeURL = 'http://zonales.com:4000';
-    this.detalleURL = 'http://zonales.com:82';
+    this.nodeURL = 'http://192.168.0.2:4000';
+    this.detalleURL = 'http://192.168.0.2:82';
     this.sources = new Array();
     this.zones = new Array();
     this.allZones = new Array();
@@ -68,11 +68,23 @@ function ZTabs() {
             if($('loadingDiv'))
                 $('loadingDiv').addClass('hidden');
         }
+        if(response.response.docs && response.response.docs.length < 20) {
+            $('verMasAnchor').set('html','No hay más posts...');
+        } else {
+            $('verMasAnchor').set('html','Ver más...');
+        }
     //}
     });
 
     socket.on('solrMorePosts', function (response) {
         updatePosts(response.response.docs, true);
+        if(response.response.docs && response.response.docs.length < 20) {
+            $('verMasAnchor').set('html','No hay más posts...');
+        } else {
+            $('verMasAnchor').set('html','Ver más...');
+        }
+        $('verMas').removeClass('hidden');
+        $('verMasLoading').addClass('hidden');
     //}
     });
     socket.on('solrNewPosts', function (response) {
@@ -314,7 +326,7 @@ function ZTabs() {
             var otherText = text.substring(i);
             return shortText + "<span id=\"verMasPost\" onclick=\"if (this.getNext()) {this.getNext().innerHTML = unescape(this.getNext().innerHTML); this.getNext().setStyle('display','inline'); this.style.display = 'none';}\" style=\"display: inline;\">... [+]</span><span style=\"display: none;\" id=\"resto\">"+escape(otherText)+"</span>";
         }
-        return text;
+        return text.replace(/(https?:\/\/[^ ]*)/g, '<a target="_blank" href="$1">$1</a>');
     }
 
     var verNuevos = function verNuevos(){
