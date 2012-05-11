@@ -15,6 +15,7 @@ log_action("REQUEST: ");
 define("_DEFAULT_LIMIT_", 20);
 define("_DEFAULT_FORMAT_", "json");
 define("_DEFAULT_MIN_ACTIONS_", 0);
+define("_COMMENTS_OFFSET_", 50);
 
 
 /* * ************** Extracción de parámetros ************** */
@@ -29,6 +30,7 @@ $commentersStr = FormTools::getParameter('commenters');
 $minActions = FormTools::getParameter('minactions') === false ? _DEFAULT_MIN_ACTIONS_ : FormTools::getParameter('minactions');
 $userName = FormTools::getParameter('getId');
 $getCommenters = FormTools::getParameter('getCommenters');
+$getComments = FormTools::getParameter('getComments') === false ? false : true;
 
 
 /* * ************** Procesamiento de parámetros ************** */
@@ -106,6 +108,8 @@ if ($keywordsStr) {
             $keywords[] = $ktok;
         }
     }
+} else {
+    $keywords = null;
 }
 
 //Procesamiento de tags
@@ -139,6 +143,9 @@ if ($commentersStr) {
             }
         }
     }
+} else {
+    $allCommenters = false;
+    $commenters = null;
 }
 
 /*
@@ -215,10 +222,12 @@ try {
                     if ($feed['from']['id'] == $user) {
                         $validPost = true;
                     } else {
-                        foreach ($commenters as $commenter) {
-                            if ($feed['from']['id'] == $commenter) {
-                                $validPost = true;
-                                //break;
+                        if ($commenters != null) {
+                            foreach ($commenters as $commenter) {
+                                if ($feed['from']['id'] == $commenter) {
+                                    $validPost = true;
+                                    //break;
+                                }
                             }
                         }
                     }
@@ -354,9 +363,7 @@ if ($getCommenters) {
 /* * ****************** Procesamiento de feeds **************** */
 
 function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null, $extendedString = null) {
-    global $stop, $min, $since;  //$max
-    
-    $userData = null;
+    global $format, $facebook, $getComments;  //$max
 
     $post = array();
     $post['source'] = 'Facebook';
@@ -454,6 +461,31 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
             $post['tags'][] = $tag;
         }
     }
+    
+    if ($getComments && $feed['comments']['count'] > 0) {
+        $limit = _COMMENTS_OFFSET_;
+//        log_action("Limit: " + _COMMENTS_OFFSET_);
+        $offset = 0;
+        
+        while ($offset <= $feed['comments']['count']) {
+//            log_action("Offset: " . $offset);
+            $api = '/' . $feed['id'] . '/comments?limit=' . $limit . '&offset=' . $offset;
+            $fbComments = $facebook->api($api);
+            foreach ($fbComments['data'] as $fbComment) {
+                $comment = array();
+                $comment['id'] = $fbComment['id'];
+                $comment['text'] = $fbComment['message'];
+                $comment['timestamp'] = $fbComment['created_time'];
+                $commentUser = $fbComment['from'];
+                $commentUser['url'] = "http://www.facebook.com/profile.php?id=" . $fbComment['from']['id'];
+                $commentUser['avatar'] = 'https://graph.facebook.com/' . $fbComment['from']['id'] . '/picture';
+                $comment['author'] = $commentUser;
+//                log_action("COMMENT: " . indent(json_encode($comment)));
+                $post['comments'][] = $comment;
+            }
+            $offset += $limit;
+        }        
+    }
 
     if ($format == "xml") {
         $post['verbatim'] = indent(json_encode($post));
@@ -464,73 +496,83 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
 /* * ****************** Chequeo de keywords **************** */
 
 function checkKeywords($feed, $keywords) {
-    $ret = false;
 
-    $searchList = getSearchList($keywords);
-    $blackList = getBlackList($keywords);
+    if ($keywords != null) {
+    
+        $searchList = getSearchList($keywords);
+        $blackList = getBlackList($keywords);
 
-    //Unifico en un solo string el título y el texto del post (Por el momento, podrían agregarse otros campos)
-    $text = $feed['name'] . ' ' . $feed['message'];
+        //Unifico en un solo string el título y el texto del post (Por el momento, podrían agregarse otros campos)
+        $text = $feed['name'] . ' ' . $feed['message'];
 
-    //Divido el string en palabras, utilizando como separadores los blancos (espacios, tabs, etc.), comas, puntos y puntos y coma (Puede que haya que agregar otros símbolos a la expresión regular)
-    foreach (preg_split("/[\s,.;]+/", $text) as $word) {
-        //Seteo un array de strings utilizando como índice la raiz de la palabra
-        $string[stemm_es::stemm(strtolower($word))] = 1;
-    }
-
-    //Si no existen palabras en ninguna de las dos listas, no hay que filtran, por lo tanto retorno true
-    if (empty($searchList) && empty($blackList)) {
-        return true;
-    }
-
-    //Si existen palabras en la lista negra, pero no en la otra, solo filtro los post que contengan esas palabras
-    if (empty($searchList) && !empty($blackList)) {
-        //Chequeo si existen en el índice los keywords buscados (la raiz en realidad) y en ese caso retorno false para omitir el post
-        foreach ($blackList as $keyword) {
-            if (isset($string[stemm_es::stemm(strtolower($keyword))])) {
-                return false;
-            }
+        //Divido el string en palabras, utilizando como separadores los blancos (espacios, tabs, etc.), comas, puntos y puntos y coma (Puede que haya que agregar otros símbolos a la expresión regular)
+        foreach (preg_split("/[\s,.;]+/", $text) as $word) {
+            //Seteo un array de strings utilizando como índice la raiz de la palabra
+            $string[stemm_es::stemm(strtolower($word))] = 1;
         }
-        return true;
-    }
 
-    //Si existen palabras en la lista de términos a buscar, solo retorno los post que contengan esas palabras, y de ellos chequeo que no tengan palabras de la lista negra.
-    foreach ($searchList as $keyword) {
-        if (!empty($blackList)) {
-            foreach ($blackList as $blackKeyword) {
-                if (isset($string[stemm_es::stemm(strtolower($blackKeyword))])) {
+        //Si no existen palabras en ninguna de las dos listas, no hay que filtran, por lo tanto retorno true
+        if (empty($searchList) && empty($blackList)) {
+            return true;
+        }
+
+        //Si existen palabras en la lista negra, pero no en la otra, solo filtro los post que contengan esas palabras
+        if (empty($searchList) && !empty($blackList)) {
+            //Chequeo si existen en el índice los keywords buscados (la raiz en realidad) y en ese caso retorno false para omitir el post
+            foreach ($blackList as $keyword) {
+                if (isset($string[stemm_es::stemm(strtolower($keyword))])) {
                     return false;
                 }
             }
-        }
-        if (isset($string[stemm_es::stemm(strtolower($keyword))])) {
             return true;
         }
-        return false;
+
+        //Si existen palabras en la lista de términos a buscar, solo retorno los post que contengan esas palabras, y de ellos chequeo que no tengan palabras de la lista negra.
+        foreach ($searchList as $keyword) {
+            if (!empty($blackList)) {
+                foreach ($blackList as $blackKeyword) {
+                    if (isset($string[stemm_es::stemm(strtolower($blackKeyword))])) {
+                        return false;
+                    }
+                }
+            }
+            if (isset($string[stemm_es::stemm(strtolower($keyword))])) {
+                return true;
+            }
+            return false;
+        }
+    } else {
+        return true;
     }
 }
 
 function getSearchList($keywords) {
     $searchList = array();
 
-    //Divido los keywords en searchList y blackList
-    foreach ($keywords as $keyword) {
-        if (substr($keyword, 0, 1) != "!") {
-            $searchList[] = $keyword;
+    if ($keywords != null) {
+        //Divido los keywords en searchList y blackList
+        foreach ($keywords as $keyword) {
+            if (substr($keyword, 0, 1) != "!") {
+                $searchList[] = $keyword;
+            }
         }
     }
+    
     return $searchList;
 }
 
 function getBlackList($keywords) {
     $blackList = array();
 
-    //Divido los keywords en searchList y blackList
-    foreach ($keywords as $keyword) {
-        if (substr($keyword, 0, 1) == "!") {
-            $blackList[] = substr($keyword, 1);
+    if ($keywords != null) {
+        //Divido los keywords en searchList y blackList
+        foreach ($keywords as $keyword) {
+            if (substr($keyword, 0, 1) == "!") {
+                $blackList[] = substr($keyword, 1);
+            }
         }
     }
+    
     return $blackList;
 }
 
