@@ -387,7 +387,7 @@ public final class ZSolrServer extends BaseService {
             solrPost.setZoneId(post.getZone().getId());
             solrPost.setZoneName(post.getZone().getName());
             solrPost.setZoneType(post.getZone().getType());
-            solrPost.setZoneExtendedString(WordUtils.capitalize(post.getZone().getExtendedString().replace("_", " ")));
+            solrPost.setZoneExtendedString(post.getZone().getExtendedString());
         }
         solrPost.setState(post.getState());
         solrPost.setCreated(new Date(post.getCreated()));
@@ -408,7 +408,7 @@ public final class ZSolrServer extends BaseService {
         solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
-        solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString().replace("_", " ")));
+        solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString()));
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
