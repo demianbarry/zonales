@@ -21,7 +21,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Date timestamp, String id, User author, String text) {
+    public Comment(String id, User author, String text , Date timestamp) {
         this.timestamp = timestamp;
         this.id = id;
         this.author = author;
