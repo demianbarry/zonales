@@ -60,6 +60,9 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         String longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
         params.put("longitud", longitud);
 
+        String comments = request.getParameter("comments") != null ? request.getParameter("comments") : "";
+
+
         if (request.getParameter("place") != null) {
             params.put("place", request.getParameter("place"));
         }

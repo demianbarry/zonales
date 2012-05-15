@@ -45,6 +45,7 @@ import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
+import org.zonales.entities.Comment;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
 import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
@@ -65,6 +66,7 @@ public class ZCrawlFeedsHelper {
     ZoneDao zoneDao;
     PlaceDao placeDao;
     Integer maxImgSize;
+    List<Comment> comments = null;
 
     public ZCrawlFeedsHelper(String host, Integer port, String name, Integer maxImgSize) {
         dao = new FeedSelectorDao(host, port, name);
@@ -103,7 +105,7 @@ public class ZCrawlFeedsHelper {
 
         List<LinkType> links;
 
-        Document doc;
+         Document doc;
 
         FeedSelectors feedSelectors;
 
@@ -141,7 +143,7 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntry.setSource(source);
 
-                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), WordUtils.capitalize(zone.getExtendedString().replace("_", " "))));
+                    newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -167,12 +169,14 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
 
-                    if (entry.getPubDate() != null)
+                    if (entry.getPubDate() != null) {
                         newEntry.setCreated(String.valueOf(entry.getPubDate().getTime()));
-                    
-                    
-                    if (entry.getModDate() != null)
+                    }
+
+
+                    if (entry.getModDate() != null) {
                         newEntry.setModified(String.valueOf(entry.getModDate().getTime()));
+                    }
 
                     for (ActionType action : newEntry.getActions().getAction()) {
                         if ("comments".equals(action.getType())) {
@@ -195,7 +199,7 @@ public class ZCrawlFeedsHelper {
             news = new PostsType(newsList);
             completeLinks(news);
             Feed2XML(news, sw);
-            return sw.toString();
+            return sw.toString() + comments.toString();
         } else {
             for (int i = 0; i < feed.getItemCount(); i++) {
                 FeedItem entry = feed.getItem(i);
@@ -223,7 +227,7 @@ public class ZCrawlFeedsHelper {
 //                        }
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), WordUtils.capitalize(zone.getExtendedString().replace("_", " "))));
+                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(),zone.getExtendedString()));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -249,10 +253,12 @@ public class ZCrawlFeedsHelper {
                     }
                     newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
 
-                     if (entry.getPubDate() != null)
-                    newEntrySolr.setCreated((entry.getPubDate().getTime()));
-                     if (entry.getModDate() != null)
-                    newEntrySolr.setModified((entry.getModDate().getTime()));
+                    if (entry.getPubDate() != null) {
+                        newEntrySolr.setCreated((entry.getPubDate().getTime()));
+                    }
+                    if (entry.getModDate() != null) {
+                        newEntrySolr.setModified((entry.getModDate().getTime()));
+                    }
 
                     for (ActionType action : newEntrySolr.getActions()) {
                         if ("comments".equals(action.getType())) {
@@ -269,7 +275,7 @@ public class ZCrawlFeedsHelper {
                     // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
                 }
             }
-            return "{post: " + gson.toJson(newsListSolr) + "}";
+            return "{post: " + gson.toJson(newsListSolr) + "}" + comments.toString();
         }
     }
 
@@ -333,28 +339,32 @@ public class ZCrawlFeedsHelper {
         }
 
     }
-    
+
     private String addHost(String link, String host) {
         if (!link.startsWith("http")) {
-            if (link.startsWith("/"))
+            if (link.startsWith("/")) {
                 return "http://" + host + link;
-            else
+            } else {
                 return "http://" + host + "/" + link;
+            }
         }
 
         return link;
     }
-    
+
     private Boolean checkImgSize(String imageURL) {
         try {
             URL url = new URL(imageURL);
             Image image = Toolkit.getDefaultToolkit().getImage(url);
             Integer size = image.getHeight(null) * image.getWidth(null);
             if (size == 1) //El link no es una imagen, sino ASP, PHP o algo por el estilo
+            {
                 return true;
+            }
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "IMAGE SIZE: {0}", size);
-            if (maxImgSize < size)
+            if (maxImgSize < size) {
                 return true;
+            }
         } catch (MalformedURLException ex) {
             Logger.getLogger(ZCrawlFeedsHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -365,8 +375,12 @@ public class ZCrawlFeedsHelper {
      * **********************************
      */
     public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
-        List<ActionType> list = new ArrayList<ActionType>();
 
+        List<ActionType> list = new ArrayList<ActionType>();
+        
+        String selectorAuthor = null , selectorText  = null, selectorDate = null ;
+        String author, text , id  = null, timestamp = null;
+        
         //FileInputStream datos= new FileInputStream (ConDatos);
         /**
          * **********
@@ -378,14 +392,35 @@ public class ZCrawlFeedsHelper {
             return null;
         }
 
-        Elements elmts;
+        Elements elmts = null;
+        boolean commenters = false;
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
+
+            if ("commentsAuthor".equals(feedSelector.getType())) {
+                    selectorAuthor = feedSelector.getSelector();
+            }
+            if ("commentsText".equals(feedSelector.getType())) {
+                    selectorText = feedSelector.getSelector();
+            }
+            if ("commentsDate".equals(feedSelector.getType())) {
+                    selectorDate = feedSelector.getSelector();
+            }
+
             if ("comments".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
                 list.add(new ActionType("comments", elmts.size()));
-
+                commenters = true;
             }
         }
+        
+       /* if(commenters){
+         for (Element comment : elmts) {
+                     author = comment.select(selectorAuthor).text();
+                     text = comment.select(selectorText).text();
+                     timestamp = comment.select(selectorDate).text();
+                     comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
+                }
+        }*/
 
         if (list.isEmpty()) {
             return new ArrayList();
