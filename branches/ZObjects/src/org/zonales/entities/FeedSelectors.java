@@ -54,6 +54,7 @@ public class FeedSelectors {
 
     protected List<FeedSelector> selectors;
 
+    protected List<FeedValidator> validators;
     /**
      * Get the value of selectors
      *
@@ -64,12 +65,24 @@ public class FeedSelectors {
     }
 
     /**
-     * Set the value of selectors
+     * Set the value of validators
      *
-     * @param selectors new value of selectors
+     * @param selectors new value of validators
      */
     public void setSelectors(List<FeedSelector> selectors) {
         this.selectors = selectors;
     }
 
+    public List<FeedValidator> getValidators() {
+        return validators;
+    }
+
+    /**
+     * Set the value of validators
+     *
+     * @param validators new value of validators
+     */
+    public void setValidators(List<FeedValidator> validators) {
+        this.validators = validators;
+    }
 }
