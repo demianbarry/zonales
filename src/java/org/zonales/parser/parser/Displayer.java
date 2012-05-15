@@ -85,6 +85,10 @@ public class Displayer implements Visitor {
     public Object visit(ZCrawling zcrawling, Rule$longitude rule) {
         return visitRules(zcrawling, rule.rules);
     }
+    
+    public Object visit(ZCrawling zcrawling, Rule$extraePublicacionesDeTerceros rule) {
+        return visitRules(zcrawling, rule.rules);
+    }
 
     public Object visit(ZCrawling zcrawling, Rule$incluyeComentarios rule) {
         return visitRules(zcrawling, rule.rules);

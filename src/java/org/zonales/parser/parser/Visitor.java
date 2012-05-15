@@ -32,6 +32,7 @@ public interface Visitor
   public Object visit(ZCrawling zcrawling, Rule$geo rule);
   public Object visit(ZCrawling zcrawling, Rule$latitude rule);
   public Object visit(ZCrawling zcrawling, Rule$longitude rule);
+  public Object visit(ZCrawling zcrawling, Rule$extraePublicacionesDeTerceros rule);
   public Object visit(ZCrawling zcrawling, Rule$incluyeComentarios rule);
   public Object visit(ZCrawling zcrawling, Rule$pnum rule);
   public Object visit(ZCrawling zcrawling, Rule$num rule);

@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Rule$incluyeComentarios.java
+ * Rule$extraePublicacionesDeTerceros.java
  * -----------------------------------------------------------------------------
  *
  * Producer : com.parse2.aparse.Parser 2.0
@@ -13,21 +13,21 @@ package org.zonales.parser.parser;
 import java.util.ArrayList;
 import org.zonales.metadata.ZCrawling;
 
-final public class Rule$incluyeComentarios extends Rule
+final public class Rule$extraePublicacionesDeTerceros extends Rule
 {
-  private Rule$incluyeComentarios(String spelling, ArrayList<Rule> rules)
+  private Rule$extraePublicacionesDeTerceros(String spelling, ArrayList<Rule> rules)
   {
     super(spelling, rules);
   }
 
-  public Object accept(ZCrawling zcrawling, Visitor visitor)
+  public Object accept(ZCrawling zCrawling, Visitor visitor)
   {
-    return visitor.visit(zcrawling,this);
+    return visitor.visit(zCrawling, this);
   }
 
-  public static Rule$incluyeComentarios parse(ParserContext context)
+  public static Rule$extraePublicacionesDeTerceros parse(ParserContext context)
   {
-    context.push("incluyeComentarios");
+    context.push("extraePublicacionesDeTerceros");
 
     boolean parsed = true;
     int s0 = context.index;
@@ -62,7 +62,7 @@ final public class Rule$incluyeComentarios extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Terminal$StringValue.parse(context, "incluye");
+            rule = Terminal$StringValue.parse(context, "extrae");
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -92,7 +92,67 @@ final public class Rule$incluyeComentarios extends Rule
           int c1 = 0;
           for (int i1 = 0; i1 < 1 && f1; i1++)
           {
-            rule = Terminal$StringValue.parse(context, "comentarios");
+            rule = Terminal$StringValue.parse(context, "publicaciones");
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Rule$mspace.parse(context);
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Terminal$StringValue.parse(context, "de");
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Rule$mspace.parse(context);
+            if ((f1 = rule != null))
+            {
+              e1.add(rule);
+              c1++;
+            }
+          }
+          parsed = c1 == 1;
+        }
+        if (parsed)
+        {
+          boolean f1 = true;
+          int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            rule = Terminal$StringValue.parse(context, "terceros");
             if ((f1 = rule != null))
             {
               e1.add(rule);
@@ -110,19 +170,19 @@ final public class Rule$incluyeComentarios extends Rule
 
     rule = null;
     if (parsed)
-      rule = new Rule$incluyeComentarios(context.text.substring(s0, context.index), e0);
+      rule = new Rule$extraePublicacionesDeTerceros(context.text.substring(s0, context.index), e0);
     else
       context.index = s0;
-
+    
     if(rule != null) {
-        context.getZcrawling().setIncluyeComentarios(true);        
+        context.getZcrawling().setExtraePublicacionesDeTerceros(true);        
     } else {
-        context.getZcrawling().setIncluyeComentarios(false);
+        context.getZcrawling().setExtraePublicacionesDeTerceros(false);
     }
 
-    context.pop("incluyeComentarios", parsed);
+    context.pop("extraePublicacionesDeTerceros", parsed);
 
-    return (Rule$incluyeComentarios)rule;
+    return (Rule$extraePublicacionesDeTerceros)rule;
   }
 }
 
