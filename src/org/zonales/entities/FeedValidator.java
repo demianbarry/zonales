@@ -11,7 +11,7 @@ package org.zonales.entities;
  */
 public class FeedValidator {
 
-    protected String type;
+      protected String type;
 
     /**
      * Get the value of type
@@ -33,20 +33,20 @@ public class FeedValidator {
     protected String validator;
 
     /**
-     * Get the value of selector
+     * Get the value of validator
      *
-     * @return the value of selector
+     * @return the value of validator
      */
-    public String getValidator() {
+    public String getSelector() {
         return validator;
     }
 
     /**
-     * Set the value of selector
+     * Set the value of validator
      *
-     * @param selector new value of selector
+     * @param validator new value of validator
      */
-    public void setValidator(String validator) {
+    public void setSelector(String selector) {
         this.validator = validator;
     }
 
@@ -57,5 +57,4 @@ public class FeedValidator {
         this.type = type;
         this.validator = validator;
     }
-
 }
