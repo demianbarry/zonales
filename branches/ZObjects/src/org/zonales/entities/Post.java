@@ -12,6 +12,7 @@ public class Post {
 
     protected String id;
     protected String docType;
+    protected String sourcePost;
     protected String source;
     protected Double postLatitude;
     protected Double postLongitude;
@@ -57,6 +58,29 @@ public class Post {
         this.relevanceDelta = relevanceDelta;
         this.verbatim = verbatim;
     }
+    
+    public Post(String id, String docType, String sourcePost, String source, Double sourceLatitude, Double sourceLongitude, User fromUser, ArrayList<User> toUsers, String title, String text, ArrayList<LinkType> links, ArrayList<ActionType> actions, Zone zone, String extendedString, ArrayList<String> tags, Long created, Long modified, int relevance, int relevanceDelta, String verbatim) {
+        this.id = id;
+        this.docType = docType;
+        this.sourcePost = sourcePost;
+        this.source = source;
+        this.postLatitude = sourceLatitude;
+        this.postLongitude = sourceLongitude;
+        this.fromUser = fromUser;
+        this.toUsers = toUsers;
+        this.title = title;
+        this.text = text;
+        this.links = links;
+        this.actions = actions;
+        this.zone = zone;
+        this.extendedString = extendedString;
+        this.tags = tags;
+        this.created = created;
+        this.modified = modified;
+        this.relevance = relevance;
+        this.relevanceDelta = relevanceDelta;
+        this.verbatim = verbatim;
+    }
 
     public Double getSourceLatitude() {
         return sourceLatitude;
@@ -72,6 +96,14 @@ public class Post {
 
     public void setSourceLongitude(Double sourceLongitude) {
         this.sourceLongitude = sourceLongitude;
+    }
+
+    public String getSourcePost() {
+        return sourcePost;
+    }
+
+    public void setSourcePost(String sourcePost) {
+        this.sourcePost = sourcePost;
     }
 
     public ArrayList<ActionType> getActions() {
