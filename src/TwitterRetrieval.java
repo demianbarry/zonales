@@ -46,6 +46,7 @@ import org.zonales.entities.TagsType;
 import org.zonales.entities.ToUsersType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
+import org.zonales.helpers.Utils;
 import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
 import org.zonales.tagsAndZones.objects.Place;
@@ -159,7 +160,7 @@ public class TwitterRetrieval extends HttpServlet {
             ZoneDao zoneDao = new ZoneDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             PlaceDao placeDao = new PlaceDao(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"));
             Place place = null;
-            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(zone.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
+            org.zonales.tagsAndZones.objects.Zone zoneObj = zoneDao.retrieveByExtendedString(Utils.normalizeZone(zone));
 
             for (Tweet tweet : (List<Tweet>) result.getTweets()) {
                 d = MAX_TITLE_LENGTH;
@@ -172,7 +173,7 @@ public class TwitterRetrieval extends HttpServlet {
                 }
 
                 solrPost = new Post();
-                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), WordUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
+                solrPost.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
                 solrPost.setSource("Twitter");
 
                 solrPost.setId(String.valueOf(tweet.getId()));
@@ -244,7 +245,7 @@ public class TwitterRetrieval extends HttpServlet {
                 postList.add(solrPost);
 
                 post = new PostType();
-                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), WordUtils.capitalize(zoneObj.getExtendedString().replace("_", " "))));
+                post.setZone(new Zone(String.valueOf(zoneObj.getId()), zoneObj.getName(), zoneObj.getType().getName(), zoneObj.getExtendedString()));
                 post.setSource("Twitter");
 
                 post.setId(String.valueOf(tweet.getId()));
