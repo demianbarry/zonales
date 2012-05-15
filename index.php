@@ -31,6 +31,7 @@ $minActions = FormTools::getParameter('minactions') === false ? _DEFAULT_MIN_ACT
 $userName = FormTools::getParameter('getId');
 $getCommenters = FormTools::getParameter('getCommenters');
 $getComments = FormTools::getParameter('getComments') === false ? false : true;
+$ThirdPartyPosts = FormTools::getParameter('getThirdPartyPosts') === false ? false : true;
 
 
 /* * ************** Procesamiento de parámetros ************** */
@@ -128,23 +129,17 @@ if ($tagsStr) {
 
 //Procesamiento de commenters
 if ($commentersStr) {
-    if ($commentersStr == 'all') {
-        $allCommenters = true;
-    } else {
-        $allCommenters = false;
-        $commenters = array();
-        $ctok = strtok($commentersStr, ",");
-        $commenters[] = $ctok;
+    $commenters = array();
+    $ctok = strtok($commentersStr, ",");
+    $commenters[] = $ctok;
 
-        while ($ctok !== false) {
-            $ctok = strtok(",");
-            if ($ctok !== false) {
-                $commenters[] = $ctok;
-            }
+    while ($ctok !== false) {
+        $ctok = strtok(",");
+        if ($ctok !== false) {
+            $commenters[] = $ctok;
         }
     }
 } else {
-    $allCommenters = false;
     $commenters = null;
 }
 
@@ -203,7 +198,7 @@ try {
             //var_dump($feeds);
             //exit(0);
             foreach ($feeds['data'] as $feed) {
-                $validPost = false;
+                $validPost = true;
                 if ($getCommenters) {
                     if ($feed['from']['id'] != $user) {
                         if (!array_key_exists($feed['from']['id'], $retCommentersInc)) {
@@ -218,26 +213,44 @@ try {
                         }
                     }
                 }
-                if (!$allCommenters) {
-                    if ($feed['from']['id'] == $user) {
-                        $validPost = true;
-                    } else {
-                        if ($commenters != null) {
-                            foreach ($commenters as $commenter) {
-                                if ($feed['from']['id'] == $commenter) {
-                                    $validPost = true;
-                                    //break;
-                                }
-                            }
+                if (!$ThirdPartyPosts) {
+                    if ($feed['from']['id'] != $user) {
+                        $validPost = false;
+                    }
+                }
+                
+                if ($commenters != null) {
+                    $isCommenter = false;
+                    foreach ($commenters as $commenter) {
+                        if ($feed['from']['id'] == $commenter) {
+                            $isCommenter = true;
                         }
                     }
-                } else {
-                    $validPost = true;
+                    $validPost = $isCommenter;
                 }
+                 
                 if ($validPost) {
                     if (checkActions($feed, $minActions)) {
                         if (checkKeywords($feed, $keywords)) {
                             $posts[] = processFeed($feed, $zone, $tags, $usersLat[$key], $usersLon[$key], $extendedStrings[$key]);
+                            if ($getComments) {
+                                $comments = processComments($feed);
+                                foreach ($comments as $comment) {
+                                    $validComment = true;
+                                    
+                                    if ($commenters != null) {
+                                        $validComment = false;
+                                        foreach ($commenters as $commenter) {
+                                            if ($comment['fromUser']['id'] == $commenter) {
+                                                $validComment = true;
+                                            }
+                                        }
+                                    }
+                                    
+                                    if ($validComment)
+                                        $posts[] = $comment;
+                                }
+                            }
                         }
                     }
                 }
@@ -366,6 +379,7 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
     global $format, $facebook, $getComments;  //$max
 
     $post = array();
+    $post['docType'] = 'post';
     $post['source'] = 'Facebook';
     $post['id'] = $feed['id'];
     if (isset($feed['from'])) {
@@ -460,37 +474,50 @@ function processFeed($feed, $zone = null, $tags = null, $lat = null, $lon = null
         foreach ($tags as $tag) {
             $post['tags'][] = $tag;
         }
-    }
-    
-    if ($getComments && $feed['comments']['count'] > 0) {
-        $limit = _COMMENTS_OFFSET_;
-//        log_action("Limit: " + _COMMENTS_OFFSET_);
-        $offset = 0;
-        
-        while ($offset <= $feed['comments']['count']) {
-//            log_action("Offset: " . $offset);
-            $api = '/' . $feed['id'] . '/comments?limit=' . $limit . '&offset=' . $offset;
-            $fbComments = $facebook->api($api);
-            foreach ($fbComments['data'] as $fbComment) {
-                $comment = array();
-                $comment['id'] = $fbComment['id'];
-                $comment['text'] = $fbComment['message'];
-                $comment['timestamp'] = $fbComment['created_time'];
-                $commentUser = $fbComment['from'];
-                $commentUser['url'] = "http://www.facebook.com/profile.php?id=" . $fbComment['from']['id'];
-                $commentUser['avatar'] = 'https://graph.facebook.com/' . $fbComment['from']['id'] . '/picture';
-                $comment['author'] = $commentUser;
-//                log_action("COMMENT: " . indent(json_encode($comment)));
-                $post['comments'][] = $comment;
-            }
-            $offset += $limit;
-        }        
-    }
+    }   
 
     if ($format == "xml") {
         $post['verbatim'] = indent(json_encode($post));
     }
     return $post;
+}
+
+function processComments($feed) {
+    global $format, $facebook;
+    
+    $posts = array();
+    
+    if ($feed['comments']['count'] > 0) {
+        $limit = _COMMENTS_OFFSET_;
+        $offset = 0;
+        
+        while ($offset <= $feed['comments']['count']) {
+            $api = '/' . $feed['id'] . '/comments?limit=' . $limit . '&offset=' . $offset;
+            $fbComments = $facebook->api($api);
+            foreach ($fbComments['data'] as $fbComment) {
+                $post = array();
+                $post['docType'] = 'comment';
+                $post['sourcePost'] = $feed['id'];
+                $post['source'] = 'Facebook';
+                $post['id'] = $fbComment['id'];
+                $post['text'] = $fbComment['message'];
+                $post['created'] = $fbComment['created_time'];
+                $post['fromUser'] = $fbComment['from'];
+                $post['fromUser']['url'] = "http://www.facebook.com/profile.php?id=" . $fbComment['from']['id'];
+                $link = array();
+                $link['type'] = "avatar";
+                $link['url'] = 'https://graph.facebook.com/' . $fbComment['from']['id'] . '/picture';
+                $post['links'][] = $link;
+                if ($format == "xml") {
+                    $post['verbatim'] = indent(json_encode($post));
+                }
+                $posts[] = $post;
+            }
+            $offset += $limit;
+        }        
+    }
+    
+    return $posts;
 }
 
 /* * ****************** Chequeo de keywords **************** */
