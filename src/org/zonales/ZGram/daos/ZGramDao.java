@@ -217,6 +217,7 @@ public class ZGramDao extends BaseDao {
         }
 
         zgramDoc.put("incluyeComentarios", zgram.getIncluyeComentarios());
+        zgramDoc.put("extraePublicacionesDeTerceros", zgram.getExtraePublicacionesDeTerceros());
 
         zgramDoc.put("verbatim", zgram.getVerbatim());
         zgramDoc.put("estado", zgram.getEstado());
@@ -456,6 +457,12 @@ public class ZGramDao extends BaseDao {
                     zgramDoc.put("incluyeComentarios", newZgram.getIncluyeComentarios());
                 } else {
                     zgramDoc.put("incluyeComentarios", (Boolean) resp.get("incluyeComentarios"));
+                }
+                
+                if (newZgram.getExtraePublicacionesDeTerceros() != null) {
+                    zgramDoc.put("extraePublicacionesDeTerceros", newZgram.getExtraePublicacionesDeTerceros());
+                } else {
+                    zgramDoc.put("extraePublicacionesDeTerceros", (Boolean) resp.get("extraePublicacionesDeTerceros"));
                 }
 
                 if (newZgram.getEstado() != null) {

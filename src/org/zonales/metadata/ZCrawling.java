@@ -20,6 +20,7 @@ public class ZCrawling {
         this.filtros = new ArrayList<Filtro>();
         this.fuente = "";
         this.incluyeComentarios = false;
+        this.extraePublicacionesDeTerceros = false;
         this.localidad = "";
         this.noCriterios = new ArrayList<Criterio>();
         this.nocriterio = false;
@@ -280,6 +281,17 @@ public class ZCrawling {
     public void setComentarios(List<String> comentarios) {
         this.comentarios = comentarios;
     }
+    
+    protected Boolean extraePublicacionesDeTerceros = false;
+
+    public Boolean getExtraePublicacionesDeTerceros() {
+        return extraePublicacionesDeTerceros;
+    }
+
+    public void setExtraePublicacionesDeTerceros(Boolean extraePublicacionesDeTerceros) {
+        this.extraePublicacionesDeTerceros = extraePublicacionesDeTerceros;
+    }
+    
     protected Boolean incluyeComentarios = false;
 
     /**
