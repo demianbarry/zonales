@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.helpers.Utils;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
 import org.zonales.metadata.ZCrawling;
@@ -36,7 +37,7 @@ public class GetFacebookServiceURL implements GetServiceURL {
             return null;
         } else {
             //Agrego la zona
-            urlServlet += "zone=" + metadata.getLocalidad();
+            urlServlet += "zone=" + Utils.normalizeZone(metadata.getLocalidad());
         }
         //Si hay criterios, voy agregando los parámetros
         List<String> usuarios = new ArrayList<String>();

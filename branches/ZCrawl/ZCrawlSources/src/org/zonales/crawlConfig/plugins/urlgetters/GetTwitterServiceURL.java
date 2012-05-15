@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.helpers.Utils;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.Filtro;
 import org.zonales.metadata.ZCrawling;
@@ -28,7 +29,7 @@ public class GetTwitterServiceURL implements GetServiceURL {
 
         String urlServlet = service.getUri()
                 + "?zone="
-                + metadata.getLocalidad()
+                + Utils.normalizeZone(metadata.getLocalidad())
                 + "&q=";
 
         if (metadata.getUltimoHitDeExtraccion() != null) {
