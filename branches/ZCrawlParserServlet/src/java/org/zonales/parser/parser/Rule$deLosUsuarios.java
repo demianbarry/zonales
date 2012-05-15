@@ -101,6 +101,12 @@ final public class Rule$deLosUsuarios extends Rule {
                 context.getZcrawling().getCriterios().add(criterio);
             }
             context.getZcrawling().setNocriterio(false);
+        } else {
+            for (Criterio criterio : context.getZcrawling().getCriterios()) {
+                if (criterio.getDeLosUsuarios() != null) {
+                    context.getZcrawling().getCriterios().remove(criterio);
+                }
+            }
         }
 
         return (Rule$deLosUsuarios) rule;
