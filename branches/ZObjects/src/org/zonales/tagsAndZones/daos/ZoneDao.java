@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.zonales.BaseDao;
 import org.zonales.crawlConfig.objets.State;
+import org.zonales.helpers.Utils;
 import org.zonales.tagsAndZones.objects.Type;
 import org.zonales.tagsAndZones.objects.Zone;
 
@@ -283,7 +284,7 @@ public class ZoneDao extends BaseDao {
     
     public Zone retrieveByExtendedString(String extendedString) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Buscando zone por cadena extendida: {0}", new Object[]{extendedString});
-        BasicDBObject query = new BasicDBObject("extendedString", extendedString.replace(", ", ",+").replace(" ", "_").replace(",+", ", ").toLowerCase());        
+        BasicDBObject query = new BasicDBObject("extendedString", Utils.normalizeZone(extendedString));        
         return getZone(query);
     }
 
