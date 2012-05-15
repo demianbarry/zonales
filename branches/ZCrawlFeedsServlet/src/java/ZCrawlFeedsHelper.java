@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +24,6 @@ import javax.swing.text.BadLocationException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import org.apache.commons.lang3.text.WordUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +43,6 @@ import org.zonales.entities.PostsType;
 import org.zonales.entities.TagsType;
 import org.zonales.entities.User;
 import org.zonales.entities.Zone;
-import org.zonales.entities.Comment;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
 import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
@@ -66,7 +63,7 @@ public class ZCrawlFeedsHelper {
     ZoneDao zoneDao;
     PlaceDao placeDao;
     Integer maxImgSize;
-    List<Comment> comments = null;
+    //List<Comment> comments = new ArrayList<Comment>();
 
     public ZCrawlFeedsHelper(String host, Integer port, String name, Integer maxImgSize) {
         dao = new FeedSelectorDao(host, port, name);
@@ -112,9 +109,9 @@ public class ZCrawlFeedsHelper {
         String extendedString = (String) params.get("zone");
         Place place = null;
         if (params.containsKey("place")) {
-            place = placeDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
+            place = placeDao.retrieveByExtendedString(extendedString);
         }
-        org.zonales.tagsAndZones.objects.Zone zone = zoneDao.retrieveByExtendedString(extendedString.replace(", ", ",+").replace(" ", "_").replace("+", " ").toLowerCase());
+        org.zonales.tagsAndZones.objects.Zone zone = zoneDao.retrieveByExtendedString(extendedString);
 
         if (!json) {
             for (int i = 0; i < feed.getItemCount(); i++) {
@@ -199,7 +196,7 @@ public class ZCrawlFeedsHelper {
             news = new PostsType(newsList);
             completeLinks(news);
             Feed2XML(news, sw);
-            return sw.toString() + comments.toString();
+            return sw.toString();// + comments.toString();
         } else {
             for (int i = 0; i < feed.getItemCount(); i++) {
                 FeedItem entry = feed.getItem(i);
@@ -275,7 +272,7 @@ public class ZCrawlFeedsHelper {
                     // addToMap(parseResult, feed, feedLink, entry, content, newEntry);
                 }
             }
-            return "{post: " + gson.toJson(newsListSolr) + "}" + comments.toString();
+            return "{post: " + gson.toJson(newsListSolr) + "}";// + comments.toString();
         }
     }
 
