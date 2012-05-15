@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zonales.crawlConfig.objets.Service;
+import org.zonales.helpers.Utils;
 import org.zonales.metadata.Criterio;
 import org.zonales.metadata.ZCrawling;
 
@@ -65,7 +66,7 @@ public class GetFeedServiceURL implements GetServiceURL {
             }
         }
 
-        urlServlet += "&zone=" + metadata.getLocalidad();
+        urlServlet += "&zone=" + Utils.normalizeZone(metadata.getLocalidad());
         if (metadata.getTags() != null) {
             for (String tag : metadata.getTags()) {
                 if (metadata.getTags().indexOf(tag) != 0) {
