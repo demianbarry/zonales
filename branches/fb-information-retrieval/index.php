@@ -501,7 +501,7 @@ function processComments($feed) {
                 $post['source'] = 'Facebook';
                 $post['id'] = $fbComment['id'];
                 $post['text'] = $fbComment['message'];
-                $post['created'] = $fbComment['created_time'];
+                $post['created'] = strtotime($fbComment['created_time']) . "000";
                 $post['fromUser'] = $fbComment['from'];
                 $post['fromUser']['url'] = "http://www.facebook.com/profile.php?id=" . $fbComment['from']['id'];
                 $link = array();
