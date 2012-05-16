@@ -374,6 +374,7 @@ public final class ZSolrServer extends BaseService {
     public void postToSolr(SolrPost solrPost, Post post) {
         solrPost.setId(post.getId());
         solrPost.setDocType(post.getDocType());
+        solrPost.setSourcePost(post.getSourcePost());
         Zone zone = post.getZone();
         Logger.getLogger(ZSolrServer.class.getName()).log(Level.SEVERE, "------------>ZONE: {0}", zone);
         if (zone != null) {
@@ -408,7 +409,8 @@ public final class ZSolrServer extends BaseService {
         solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
-        solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone().getExtendedString()));
+        if (post.getFromUser() != null)
+            solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone() != null ? post.getZone().getExtendedString() : ""));
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
