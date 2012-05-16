@@ -19,6 +19,8 @@ public class SolrPost {
     @Field
     protected String source;
     @Field
+    protected String sourcePost;
+    @Field
     protected Double postLatitude;
     @Field
     protected Double postLongitude;
@@ -75,6 +77,37 @@ public class SolrPost {
     public SolrPost(String docType, String source, Double postLatitude, Double postLongitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, String fromUserPlaceId, String fromUserPlaceName, String fromUserPlaceType, String title, String text, String zoneId, String zoneName, String zoneType, String extendedString, String zoneExtendedString, List<String> tags, Date created, Date modified, int relevance, int relevanceDelta, String state, String verbatim) {
         this.docType = docType;
         this.source = source;
+        this.postLatitude = postLatitude;
+        this.postLongitude = postLongitude;
+        this.id = id;
+        this.fromUserName = fromUserName;
+        this.fromUserCategory = fromUserCategory;
+        this.fromUserId = fromUserId;
+        this.fromUserUrl = fromUserUrl;
+        this.fromUserPlaceId = fromUserPlaceId;
+        this.fromUserPlaceName = fromUserPlaceName;
+        this.fromUserPlaceType = fromUserPlaceType;
+        this.title = title;
+        this.text = text;
+        this.created = created;
+        this.modified = modified;
+        this.relevance = relevance;
+        this.relevanceDelta = relevanceDelta;
+        this.tags = tags;
+        this.zoneId = zoneId;
+        this.zoneName = zoneName;
+        this.zoneType = zoneType;
+        this.zone = zoneName;
+        this.extendedString = extendedString;
+        this.zoneExtendedString = zoneExtendedString;
+        this.state = state;
+        this.verbatim = verbatim;
+    }
+    
+    public SolrPost(String docType, String source, String sourcePost, Double postLatitude, Double postLongitude, String id, String fromUserName, String fromUserCategory, String fromUserId, String fromUserUrl, String fromUserPlaceId, String fromUserPlaceName, String fromUserPlaceType, String title, String text, String zoneId, String zoneName, String zoneType, String extendedString, String zoneExtendedString, List<String> tags, Date created, Date modified, int relevance, int relevanceDelta, String state, String verbatim) {
+        this.docType = docType;
+        this.source = source;
+        this.sourcePost = sourcePost;
         this.postLatitude = postLatitude;
         this.postLongitude = postLongitude;
         this.id = id;
@@ -172,6 +205,22 @@ public class SolrPost {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getSourcePost() {
+        return sourcePost;
+    }
+
+    public void setSourcePost(String sourcePost) {
+        this.sourcePost = sourcePost;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 
     public List<String> getTags() {
