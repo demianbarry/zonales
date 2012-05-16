@@ -15,10 +15,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.text.AbstractDocument.Content;
 import javax.swing.text.BadLocationException;
 
@@ -34,6 +37,7 @@ import org.zonales.entities.ActionType;
 import org.zonales.entities.ActionsType;
 import org.zonales.entities.FeedSelector;
 import org.zonales.entities.FeedSelectors;
+import org.zonales.entities.FeedValidator;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
 
@@ -63,7 +67,8 @@ public class ZCrawlFeedsHelper {
     ZoneDao zoneDao;
     PlaceDao placeDao;
     Integer maxImgSize;
-    //List<Comment> comments = new ArrayList<Comment>();
+    PostType newEntryComments;
+    List<PostType> newsList = new ArrayList<PostType>();
 
     public ZCrawlFeedsHelper(String host, Integer port, String name, Integer maxImgSize) {
         dao = new FeedSelectorDao(host, port, name);
@@ -95,6 +100,7 @@ public class ZCrawlFeedsHelper {
         List<Post> newsListSolr = new ArrayList<Post>();
 
         PostType newEntry;
+        PostType newEntryComments;
         Post newEntrySolr;
         //SyndFeed feed = null;           
 
@@ -102,7 +108,7 @@ public class ZCrawlFeedsHelper {
 
         List<LinkType> links;
 
-         Document doc;
+        Document doc;
 
         FeedSelectors feedSelectors;
 
@@ -139,7 +145,7 @@ public class ZCrawlFeedsHelper {
 //                        }
                     }
                     newEntry.setSource(source);
-
+                    newEntry.setDocType("post");
                     newEntry.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntry.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
@@ -224,7 +230,8 @@ public class ZCrawlFeedsHelper {
 //                        }
                     }
                     newEntrySolr.setSource(source);
-                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(),zone.getExtendedString()));
+                    newEntrySolr.setDocType("post");
+                    newEntrySolr.setZone(new Zone(String.valueOf(zone.getId()), zone.getName(), zone.getType().getName(), zone.getExtendedString()));
 
                     newEntrySolr.setPostLatitude(Double.parseDouble((String) params.get("latitud")));
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
@@ -374,10 +381,12 @@ public class ZCrawlFeedsHelper {
     public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
 
         List<ActionType> list = new ArrayList<ActionType>();
-        
-        String selectorAuthor = null , selectorText  = null, selectorDate = null ;
-        String author, text , id  = null, timestamp = null;
-        
+
+        String selectorAuthor = null, selectorText = null, selectorDate = null;
+        String expressionAuthor = null, expressionText = null, expressionDate = null;
+        String author = null, text = null, id = null, timestamp = null;
+        Matcher matcher;
+        Pattern patron;
         //FileInputStream datos= new FileInputStream (ConDatos);
         /**
          * **********
@@ -394,13 +403,13 @@ public class ZCrawlFeedsHelper {
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
 
             if ("commentsAuthor".equals(feedSelector.getType())) {
-                    selectorAuthor = feedSelector.getSelector();
+                selectorAuthor = feedSelector.getSelector();
             }
             if ("commentsText".equals(feedSelector.getType())) {
-                    selectorText = feedSelector.getSelector();
+                selectorText = feedSelector.getSelector();
             }
             if ("commentsDate".equals(feedSelector.getType())) {
-                    selectorDate = feedSelector.getSelector();
+                selectorDate = feedSelector.getSelector();
             }
 
             if ("comments".equals(feedSelector.getType())) {
@@ -409,15 +418,48 @@ public class ZCrawlFeedsHelper {
                 commenters = true;
             }
         }
-        
-       /* if(commenters){
-         for (Element comment : elmts) {
-                     author = comment.select(selectorAuthor).text();
-                     text = comment.select(selectorText).text();
-                     timestamp = comment.select(selectorDate).text();
-                     comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
+        if (feedSelectors != null && feedSelectors.getValidators() != null && !feedSelectors.getValidators().isEmpty()) {
+            for (FeedValidator feedValidator : feedSelectors.getValidators()) {
+
+                if ("expressionAuthor".equals(feedValidator.getType())) {
+                    expressionAuthor = feedValidator.getValidator();
                 }
-        }*/
+                if ("expressionText".equals(feedValidator.getType())) {
+                    expressionText = feedValidator.getValidator();
+                }
+                if ("expressionDate".equals(feedValidator.getType())) {
+                    expressionDate = feedValidator.getValidator();
+                }
+            }
+        }
+        newEntryComments = new PostType();
+
+        if (commenters) {
+            for (Element comment : elmts) {
+
+                author = comment.select(selectorAuthor).text();
+                if (expressionAuthor != null) {
+                    patron = Pattern.compile(expressionAuthor);
+                    matcher = patron.matcher(author);
+                    matcher.find();
+                    author.replaceAll(matcher.group(1), "");
+                }
+
+                text = comment.select(selectorText).text();
+                if (expressionText != null) {
+                }
+
+                timestamp = comment.select(selectorDate).text();
+                if (expressionDate != null) {
+                }
+                newEntryComments.setDocType("comment");
+                newEntryComments.setFromUser(new User(id, author, null, null, null));
+                newEntryComments.setText(text);
+                newEntryComments.setCreated(timestamp);
+                newsList.add(newEntryComments);
+                // comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
+            }
+        }
 
         if (list.isEmpty()) {
             return new ArrayList();
