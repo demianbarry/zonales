@@ -148,7 +148,11 @@ public class GetFacebookServiceURL implements GetServiceURL {
 
         //Si agregué commenters, los pongo en la URL
         if (metadata.getIncluyeComentarios()) {
-            urlServlet += "&commenters=all";
+            urlServlet += "&getComments=true";
+        }
+        
+        if (metadata.getExtraePublicacionesDeTerceros()) {
+            urlServlet += "&getThirdPartyPosts=true";
         }
 
         if (!"".equals(commenters)) {
