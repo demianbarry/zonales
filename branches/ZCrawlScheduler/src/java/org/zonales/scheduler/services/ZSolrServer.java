@@ -409,8 +409,7 @@ public final class ZSolrServer extends BaseService {
         solrPost.setPostLongitude(post.getPostLongitude());
         solrPost.setText(post.getText());
         solrPost.setTitle(post.getTitle());
-        if (post.getFromUser() != null)
-            solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + post.getZone() != null ? post.getZone().getExtendedString() : ""));
+        solrPost.setExtendedString(WordUtils.capitalize((post.getFromUser().getPlace() != null ? post.getFromUser().getPlace().getName() + ", " : "") + (post.getZone() != null ? post.getZone().getExtendedString() : "")));
         solrPost.setTags(post.getTags());
         solrPost.setVerbatim(gson.toJson(post, Post.class));
     }
