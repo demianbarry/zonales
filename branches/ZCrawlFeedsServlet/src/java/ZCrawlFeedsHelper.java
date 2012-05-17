@@ -15,7 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,7 +39,6 @@ import org.zonales.entities.ActionType;
 import org.zonales.entities.ActionsType;
 import org.zonales.entities.FeedSelector;
 import org.zonales.entities.FeedSelectors;
-import org.zonales.entities.FeedValidator;
 import org.zonales.entities.LinkType;
 import org.zonales.entities.LinksType;
 
@@ -68,7 +69,9 @@ public class ZCrawlFeedsHelper {
     PlaceDao placeDao;
     Integer maxImgSize;
     PostType newEntryComments;
+    Post newEntryCommentsSolr;
     List<PostType> newsList = new ArrayList<PostType>();
+    List<Post> newsListSolr = new ArrayList<Post>();
 
     public ZCrawlFeedsHelper(String host, Integer port, String name, Integer maxImgSize) {
         dao = new FeedSelectorDao(host, port, name);
@@ -96,11 +99,11 @@ public class ZCrawlFeedsHelper {
         Feed feed = FeedParser.parse(feedURL);
 
 
-        List<PostType> newsList = new ArrayList<PostType>();
-        List<Post> newsListSolr = new ArrayList<Post>();
+        //List<PostType> newsList = new ArrayList<PostType>();
+
 
         PostType newEntry;
-        PostType newEntryComments;
+        // PostType newEntryComments;
         Post newEntrySolr;
         //SyndFeed feed = null;           
 
@@ -170,7 +173,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntry.getActions() == null) {
                         newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
                     }
-                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc)));
+                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc, newEntry.getId(), json)));
 
                     if (entry.getPubDate() != null) {
                         newEntry.setCreated(String.valueOf(entry.getPubDate().getTime()));
@@ -255,7 +258,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntrySolr.getActions() == null) {
                         newEntrySolr.setActions(new ArrayList<ActionType>());
                     }
-                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc));
+                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc, newEntrySolr.getId(), json));
 
                     if (entry.getPubDate() != null) {
                         newEntrySolr.setCreated((entry.getPubDate().getTime()));
@@ -300,6 +303,7 @@ public class ZCrawlFeedsHelper {
             return null;
         }
         Elements elmts;
+
         for (FeedSelector feedSelector : feedSelectors.getSelectors()) {
             if ("picture".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
@@ -378,7 +382,7 @@ public class ZCrawlFeedsHelper {
     /**
      * **********************************
      */
-    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc) throws IOException, BadLocationException {
+    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc, String idPost, boolean json) throws IOException, BadLocationException {
 
         List<ActionType> list = new ArrayList<ActionType>();
 
@@ -387,6 +391,7 @@ public class ZCrawlFeedsHelper {
         String author = null, text = null, id = null, timestamp = null;
         Matcher matcher;
         Pattern patron;
+        
         //FileInputStream datos= new FileInputStream (ConDatos);
         /**
          * **********
@@ -417,46 +422,61 @@ public class ZCrawlFeedsHelper {
                 list.add(new ActionType("comments", elmts.size()));
                 commenters = true;
             }
-        }
-        if (feedSelectors != null && feedSelectors.getValidators() != null && !feedSelectors.getValidators().isEmpty()) {
-            for (FeedValidator feedValidator : feedSelectors.getValidators()) {
-
-                if ("expressionAuthor".equals(feedValidator.getType())) {
-                    expressionAuthor = feedValidator.getValidator();
-                }
-                if ("expressionText".equals(feedValidator.getType())) {
-                    expressionText = feedValidator.getValidator();
-                }
-                if ("expressionDate".equals(feedValidator.getType())) {
-                    expressionDate = feedValidator.getValidator();
-                }
+            if ("expressionAuthor".equals(feedSelector.getValidator())) {
+                expressionAuthor = feedSelector.getValidator();
             }
-        }
-        newEntryComments = new PostType();
+            if ("expressionText".equals(feedSelector.getValidator())) {
+                expressionText = feedSelector.getValidator();
+            }
+            if ("expressionDate".equals(feedSelector.getValidator())) {
+                expressionDate = feedSelector.getValidator();
+            }
 
+        }
+
+        newEntryComments = new PostType();
+        newEntryCommentsSolr = new Post();
+        
         if (commenters) {
+
             for (Element comment : elmts) {
 
-                author = comment.select(selectorAuthor).text();
-                if (expressionAuthor != null) {
-                    patron = Pattern.compile(expressionAuthor);
-                    matcher = patron.matcher(author);
-                    matcher.find();
-                    author.replaceAll(matcher.group(1), "");
+                if (selectorAuthor != null) {
+                    author = comment.select(selectorAuthor).text();
+                    if (expressionAuthor != null) {
+                        patron = Pattern.compile(expressionAuthor);
+                        matcher = patron.matcher(author);
+                        matcher.find();
+                        author.replaceAll(matcher.group(1), "");
+                    }
                 }
 
-                text = comment.select(selectorText).text();
-                if (expressionText != null) {
+                if (selectorText != null) {
+                    text = comment.select(selectorText).text();
+                    if (expressionText != null) {
+                    }
                 }
 
-                timestamp = comment.select(selectorDate).text();
-                if (expressionDate != null) {
+                if (selectorDate != null) {
+                    timestamp = comment.select(selectorDate).text();
+                    if (expressionDate != null) {
+                    }
                 }
-                newEntryComments.setDocType("comment");
-                newEntryComments.setFromUser(new User(id, author, null, null, null));
-                newEntryComments.setText(text);
-                newEntryComments.setCreated(timestamp);
-                newsList.add(newEntryComments);
+                if (!json) {
+                    newEntryComments.setSourcePost(idPost);
+                    newEntryComments.setDocType("comment");
+                    newEntryComments.setFromUser(new User(id, author, null, null, null));
+                    newEntryComments.setText(text);
+                    newEntryComments.setCreated(timestamp);
+                    newsList.add(newEntryComments);
+                } else {
+                    newEntryCommentsSolr.setSourcePost(idPost);
+                    newEntryCommentsSolr.setDocType("comment");
+                    newEntryCommentsSolr.setFromUser(new User(id, author, null, null, null));
+                    newEntryCommentsSolr.setText(text);
+                   // newEntryCommentsSolr.setCreated();
+                    newsListSolr.add(newEntryCommentsSolr);
+                }
                 // comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
             }
         }
