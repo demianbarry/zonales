@@ -102,10 +102,11 @@ function ZTabs() {
     socket.on('solrComments', function (solrResponse) {
         var response = solrResponse.response;
         if (response.numFound > 0) {
-            if (response.numFound > 3) {
-                $('commentsMore_' + comment.sourcePost).setStyle('display', 'block');
-                $('commentsMoreText_' + comment.sourcePost).innerHTML = "Ver más comentarios (" + response.numFound - 3 + ")";
-            }
+                var comment = JSON.parse(response.docs[0].verbatim);
+                if (response.numFound > 3) {
+                    $('commentsMore_' + comment.sourcePost).setStyle('display', 'block');
+                    $('commentsMoreText_' + comment.sourcePost).innerHTML = "Ver más comentarios (" + (response.numFound - 3) + ")";
+                }
             response.docs.each(function(doc) {
                 var comment = JSON.parse(doc.verbatim);
                 var commentLi = new Element('li');
@@ -267,10 +268,6 @@ function ZTabs() {
     }
 
     var setZone = function setZone(zoneExtended, callback) {
-        if($('loadingDiv'))
-            $('loadingDiv').removeClass('hidden');
-        if($('postsDiv'))
-            $('postsDiv').addClass('hidden');
         if($('loadingDiv'))
             $('loadingDiv').removeClass('hidden');
         if($('postsDiv'))
@@ -780,8 +777,8 @@ function ZTabs() {
         // tabTemp = this.tab;
         var zoneSeltemp = zCtx.zcGetZone();
         var zoneEfectemp = firstPostZone;
-        console.log("zona seleccionada"+zoneSeltemp);
-        console.log("zona efectiva"+zoneEfectemp);
+        //console.log("zona seleccionada"+zoneSeltemp);
+        //console.log("zona efectiva"+zoneEfectemp);
         $('tituloSup').innerHTML = "";
 
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){
