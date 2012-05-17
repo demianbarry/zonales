@@ -3,6 +3,14 @@
 var zoneService = require('../services/zones');
 var zoneTypeService = require('../services/zoneTypes');
 var incIdsService = require('../services/incIds');
+var i18n = require('i18n');
+i18n.configure({
+    //
+    locales:['es'],
+    //
+    //register: global,
+    directory: '../locales'
+});
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -13,6 +21,9 @@ module.exports.tryEvent = function tryEvent(client) {
         console.log('Recibi el evento getZones desde el cliente');
         zoneService.getAll(name, function(data){
             if (typeof(data) != 'undefined') {
+                data.forEach(function(zone){
+                    zone.name = i18n.__(zone.name);    
+                });                
                 fn(data);
             }
         });
@@ -20,8 +31,11 @@ module.exports.tryEvent = function tryEvent(client) {
 
     client.on('getZonesExtendedString', function(name, fn) {
         console.log('Recibi el evento getZonesExtendedString desde el cliente');
-        zoneService.getAllExtendedString(function(data){
+        zoneService.getAllExtendedStrings(function(data){
             if (typeof(data) != 'undefined') {
+                data.forEach(function(zone){
+                    zone.extendedString = i18n.__(zone.extendedString);
+                });
                 fn(data);
             }
         });

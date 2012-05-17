@@ -59,6 +59,16 @@ module.exports.tryEvent = function tryEvent(client) {
             }
         });
     });
+    
+    client.on('upsertSelector', function(selector, fn) {
+        console.log('Recibi el evento upsertSelector desde el cliente');
+        //var obj = eval('(' + name + ')');
+        selectorsService.upsert(selector.url, selector, function(data){
+            if (typeof(data) != 'undefined') {                
+                fn(data);
+            }
+        });
+    });
 	
     client.on('removeSelector', function(url, fn) {
         console.log('Recibi el evento removeSelector desde el cliente');

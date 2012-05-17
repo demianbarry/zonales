@@ -7,7 +7,8 @@ var baseService = require('./baseService');
 var selectorSchema = new Schema(
 {
     type : String,
-    selector : String    
+    selector : String,
+    validator : String
 }
 );
 
@@ -18,7 +19,7 @@ var selectorsSchema = new Schema(
         unique: true
     },
     urlLogo : String,
-    selectors : [selectorSchema]  //Array de links a sitios relacionados con la zona  --  OPCIONAL	    
+    selectors : [selectorSchema]  //Array de links a sitios relacionados con la zona  --  OPCIONAL
 }
 );
 
@@ -52,6 +53,10 @@ module.exports.set = function set(selector, callback) {
 //Actualiza un selector existente (búsqueda por ID)
 module.exports.update = function update(url, data, callback) {
     return baseService.update(selectors, 'url', url, data, callback);
+}
+
+module.exports.upsert = function upsert(url, data, callback) {
+    return baseService.upsert(selectors, 'url', url, data, callback);
 }
 
 //Elimina un selector existente (búsqueda por ID) 

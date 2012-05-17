@@ -1,5 +1,6 @@
 var zProxy = require('./zProxy');
 var zContextService = require('./ZContext');
+var i18n = require("i18n");
 
 var host = "localhost";
 var port = 38080;
@@ -59,12 +60,12 @@ function getSolrSort(order){
 
 function getSolrSources(myTabs){
 
-    var res = "q=";
+    var res = "q=docType:post";
     if (myTabs.indexOf("enlared") == -1){
-        res += "!source:(facebook+OR+twitter)";
+        res += '+AND+!source:(facebook+OR+twitter)';
     }    
     if (myTabs.indexOf("noticias") == -1){
-        res += (res.length > 2 ? '+AND+' : '')+"source:(facebook+OR+twitter)";
+        res += '+AND+source:(facebook+OR+twitter)';
     }
     return res;
 }
@@ -200,11 +201,16 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
     zContextService.getZCtx(sessionId, function(zCtx){
         retrieveSolrPosts(zCtx, function(resp){
             if(resp && resp.response && resp.response.docs){
+                var verbatim = {};
                 resp.response.docs.forEach(function(doc){
                     if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime())
                         zCtx.setFirstIndexTime(addMilli(doc.indexTime));
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
+                    doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
+                    verbatim = JSON.parse(doc.verbatim);
+                    verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
+                    doc.verbatim = JSON.stringify(verbatim);
                 });
             }
             if(typeof(resp) != 'undefined'){
@@ -235,6 +241,10 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                         zCtx.setFirstIndexTime(addMilli(doc.indexTime));
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
+                    doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
+                    verbatim = JSON.parse(doc.verbatim);
+                    verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
+                    doc.verbatim = JSON.stringify(verbatim);
                 });
                 zContextService.setStart(sessionId, resp.response.docs.length+1);
             }

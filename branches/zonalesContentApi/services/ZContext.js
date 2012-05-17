@@ -1,6 +1,11 @@
 var errors = require('../errors/errors');
 var zoneService = require('./zones');
 var solrService = require('./solr');
+var i18n = require('i18n');
+i18n.configure({
+    locales:['es'],
+    directory: './locales'
+});
 
 var contexts = new Array();
 
@@ -212,18 +217,9 @@ module.exports.setSelectedZone = function setSelectedZone(sessionId, zone, callb
     callback = (callback || noop);
 	
     try {
-        contexts[sessionId].selZone = zone;
-        contexts[sessionId].efZone = zone;
-        /*getEfectiveZone(contexts[sessionId].zTab, zone, function(efZone) {
-		   if (efZone != null) {			
-				contexts[sessionId].efZone = efZone.id;
-			} else {
-				contexts[sessionId].efZone = "";
-			}
-			callback(efZone);
-			return(this);
-		});*/
-        callback(zone);
+        contexts[sessionId].selZone = i18n.r__(zone);
+        contexts[sessionId].efZone = i18n.__(zone);
+        callback(contexts[sessionId]);
     } catch (err) {
         console.log('Error al setear la zona seleccionada -> ' + err);
         callback(errors.zctxError);
@@ -247,36 +243,6 @@ module.exports.resetStart = function resetStart(sessionId) {
         contexts[sessionId].start = 0;        
     } catch (err) {
         console.log('Error al setear el start -> ' + err);        
-        return(this);
-    }
-}
-
-function getEfectiveZone(tab, zoneId, callback) {
-    console.log(zoneId);
-    if (zoneId != '' && zoneId != null && typeof(zoneId) != 'undefined') {
-        zoneService.get({
-            id: zoneId
-        }, function(zones) {
-            var zone = zones[0];
-            solrService.countSolrPost(tab, zone.name, function(cant) {
-                if (cant > 0) {
-                    callback(zone);
-                    return(this);
-                } else {
-                    if (zone.parent == '0') {
-                        callback(null);
-                        return(this);
-                    } else {
-                        getEfectiveZone(tab, zone.parent, function(efZone) {
-                            callback(efZone);
-                            return(this);
-                        });
-                    }
-                }
-            });
-        });
-    } else {
-        callback(null);
         return(this);
     }
 }

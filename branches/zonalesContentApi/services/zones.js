@@ -1,9 +1,18 @@
+var express = require('express'),
+i18n = require("i18n");
 var mongoose = require('mongoose'),
 Schema = mongoose.Schema;
 var errors = require('../errors/errors');
 var baseService = require('./baseService');
 var geoService = require('./geoData');
 var incIdsService = require('./incIds');
+i18n.configure({
+    //
+    locales:['es'],
+    //
+    //register: global,
+    directory: './locales'
+});
 
 //Esquema JSON para las zonas
 var zoneSchema = new Schema(
@@ -47,8 +56,14 @@ module.exports.getLikeName = function getLikeName(name, callback) {
 }
 
 //Retorna un conjunto de zonas con nombre similar al parámetro
-module.exports.searchZones = function searchZones(filters, callback) {
-    return baseService.searchData(zones, filters, callback);
+module.exports.searchZones = function searchZones(filters, callback) {    
+    filters.name = i18n.r__(filters.name);    
+    return baseService.get(zones, {'name': new RegExp(filters.name,'i'), 'type': new RegExp(filters.type,'i'),'state': new RegExp(filters.state,'i')}, function(docs){
+        docs.forEach(function(doc){
+            doc.name = i18n.__(doc.name);
+        });
+        callback(docs);
+    });
 }
 
 //Crea una nueva zona
@@ -56,13 +71,17 @@ module.exports.set = function set(zone, callback) {
     incIdsService.getId("zones", function(id) {
         console.log("------>>>>>>----->>>>> ZONES NextId: " + id);
         zone.id = id;
+        var zoneNorm = normZone(zone.name);
         zone.extendedString = zone.name;
+        i18n.add(zoneNorm,zone.name);
+        zone.name = zoneNorm;
         baseService.set(zones, zone, function(response) {
             response.id = id;
             callback(response);
             return(this);
         });
     })
+    
 }
 
 //Actualiza una zona existente (búsqueda por ID)
@@ -108,7 +127,8 @@ module.exports.updateExtendedString = function(zone, parent){
 };
 
 function updateExtendedString(zone, parent){
-    zone.extendedString = zone.name.replace(/ /g, '_').toLowerCase();
+    zone.extendedString = normZone(zone.name);
+
     if (parent)
         zone.extendedString += ", " + parent.extendedString;
 
@@ -120,10 +140,24 @@ function updateExtendedString(zone, parent){
         });
     });
     delete zone._id;
+    i18n.add(zone.extendedString, i18n.__(zone.name)+', '+i18n.__(parent.extendedString)); 
     baseService.update(zones, 'id', zone.id, zone, function(){});
     return zone.extendedString;
 }
 
+function normZone(word) {
+
+        word = word.toLowerCase();
+        word = word.replace(/ /g, '_');
+        word = word.replace(/à|á|ä|â/, "a");
+        word = word.replace(/è|é|ë|ê/, "e");
+        word = word.replace(/ì|í|ï|î/, "i");
+        word = word.replace(/ò|ó|ö|ô/, "o");
+        word = word.replace(/ù|ú|ü|û/, "u");
+
+        return word;
+
+}
 
 module.exports.addGeoDataToZone = function(zone, geodata, callback) {
     geoService.set(geodata, function(response) {

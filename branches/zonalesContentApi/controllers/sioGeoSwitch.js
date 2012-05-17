@@ -2,6 +2,7 @@
 
 var geoDataService = require('../services/geoData');
 var incIdsService = require('../services/incIds');
+var i18n = require('i18n');
 
 module.exports.tryEvent = function tryEvent(client) {
 
@@ -39,13 +40,13 @@ module.exports.tryEvent = function tryEvent(client) {
 
     client.on('drawChildren', function(name, fn) {
         console.log('Recibi el evento drawChildren desde el cliente');
-        geoDataService.drawChildren(name.extendedString, client);
+        geoDataService.drawChildren(i18n.r__(name.extendedString), client);
         fn("OK");
     });
 
     client.on('getGeoDataByZoneExtendedString', function(name, fn) {
         console.log('Recibi el evento getGeoDataByZoneExtendedString desde el cliente');
-        geoDataService.getGeoDataByZoneExtendedString(name.extendedString, function(data) {
+        geoDataService.getGeoDataByZoneExtendedString(i18n.r__(name.extendedString), function(data) {
             if (typeof(data) != 'undefined') {
                 fn(data);
             } 

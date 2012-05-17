@@ -70,7 +70,7 @@ module.exports.getLikeName = function getLikeName(model, name, callback) {
             if (err) {
                 console.log('Error obteniendo datos --> ' + err);
                 throw errors.apiError;
-            }
+            }            
             callback(docs);
             return(this);
         });
@@ -88,17 +88,18 @@ module.exports.searchData = function searchData(model, filters, callback) {
     try {
         //var myregex = RegExp(name);
         //TODO: Chanchada, arreglar esto con parámetros
-        if (typeof(filters.name) != 'undefined') {
+        /* if (typeof(filters.name) != 'undefined') {
             filters.name = RegExp(filters.name);
         }
         if (typeof(filters.zone) != 'undefined') {
             filters.zone = RegExp(filters.zone);
-        }
+        }*/
         model.find(filters, function(err, docs) { 
             if (err) {
                 console.log('Error obteniendo datos --> ' + err);
                 throw errors.apiError;
-            }
+            }            
+            console.log('--------------------------------->Docs: '+JSON.stringify(docs));
             callback(docs);
             return(this);
         });
@@ -165,6 +166,27 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
                 return(this);
             });
         }
+    } catch (err) {
+        console.log('Error --> ' + err);
+        throw errors.apiError;
+    }
+}
+
+//Actualiza un dato existente
+module.exports.upsert = function upsert(model, searchFieldName, searchFieldData, data, callback) {
+    // Make sure a callback is defined.
+    callback = (callback || noop);
+	
+    try {
+        var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');        
+        model.update(oid, data, {upsert: true}, function(err) {
+            if (err) {
+                console.log('Error actualizando el dato --> ' + err);
+                throw errors.apiError;
+            }
+            callback(errors.success);
+            return(this);
+        });
     } catch (err) {
         console.log('Error --> ' + err);
         throw errors.apiError;

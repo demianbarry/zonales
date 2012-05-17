@@ -38,7 +38,7 @@ window.addEvent('domready', function() {
          socket.emit('getZonesExtendedString', true, function (data) {                    
             data.each(function(zone) {
                 if (typeof(zone.extendedString) != 'undefined') { 
-                    zones.include(zone.extendedString.replace(/_/g, ' ').capitalize());
+                    zones.include(zone.extendedString);
                 }
             });
         });
