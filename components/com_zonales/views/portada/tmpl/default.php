@@ -23,14 +23,28 @@
             </div><!-- /#col1 -->
             <div class="col2">
                 <div class="padding10">
-
                     <h2>{{title}}</h2>
                      <p class="images">{{img}}</p>
                     <p class="cuerpo">{{text}}</p>
-                    <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
+                    <p class="autor">
+                        <a>Publicado por {{fromUser.name}}</a>
+                        <a data-template="toUsers"> en {{name}}</a>
+                        en {{zone}}
+                    </p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
-
+                    
+<!--                    <p class="buttons"><a href="#">Compartir</a> | <a href="#">Comentar</a></p>-->
+            
+                    <div id="commentsDiv_{{id}}" class="comentarios" style="display:none">
+                        <div id="commentsMore_{{id}}" class="verMasComentarios" style="display:none">
+                            <p id="commentsMoreText_{{id}}" class="comentario"><a href="#"></a></p>
+                            <hr class="splitter" />
+                        </div>
+                        <ol id="commentsOl_{{id}}">
+                        </ol>
+                        <p><input name="" type="text" value="Escribí un comentario" class="input_comment" /></p>
+                    </div><!-- /.comentarios -->
                 </div><!-- /.padding10 -->
             </div><!-- /#col2 -->
             <div class="col3">
@@ -55,7 +69,6 @@
             </div><!-- /#col1 -->
             <div class="col2">
                 <div class="padding10">
-
                     <h2>{{title}}</h2>
                         <p class="images">{{img}}</p>
                     <p class="cuerpo">{{text}}</p>
@@ -108,7 +121,8 @@
     </li>
 </ol>
 <div>
-    <div id="verMas"><p><a onclick="zTab.loadMorePost();">Ver más <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
+    <div class="hidden" style="background-image: url('/templates/z30/img/loading.gif'); position: absolute; background-repeat: no-repeat; background-position: center center; background-color: white; background-size: auto auto; width: 512px; height: 50px;" id="verMasLoading"></div>
+    <div id="verMas"><p><a id="verMasAnchor" onclick="$('verMas').addClass('hidden');$('verMasLoading').removeClass('hidden');zTab.loadMorePost();">Ver más <img src="templates/<?php echo $template; ?>/img/arrow_down.gif" /></a></p></div>
 </div>
 <script language="javascript" type="text/javascript" src="components/com_zonales/utils.js"></script>
 <script language="javascript" type="text/javascript" src="components/com_zonales/solr.js"></script>

@@ -65,7 +65,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
             searchKeyword = zCtxFromServer.searchKeyword;
             if(!selZone)
                 selZone = '';
-            selZoneName = efZoneName = selZone.replace(/_/g, ' ').capitalize();
+            selZoneName = efZoneName = selZone;
             callback();
         /*getZoneById(this.selZone, function(selZone) {
                 if (typeof(selZone) != 'undefined' && selZone != null) {
@@ -83,19 +83,15 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
     }
     this.initZCtx = initZCtx;
     
-    this.setSelectedZone = function setSelectedZone(zone, zoneName, parent, parentName, callback) {
+    this.setSelectedZone = function setSelectedZone(zone, callback) {
         //alert("EN CONTEXT: SetZone. zoneId: " + zone + " zoneName: " + zoneName + " parendId: " + parent + " parentName: " + parentName);
         //Actualizo en contexto en el cliente
-        if (zone == '' && parent == '') {
+        if (zone == '' ) {
             selZone = '';
             selZoneName = '';
-        } else if (zone == '' && parent != '') {
-            selZone = parent;
-            selZoneName = parentName;
-            zone = parent;
         } else {
             selZone = zone;
-            selZoneName = zoneName;
+            selZoneName = zone;
         }
 
         //Persisto el contexto en el servidor
@@ -103,10 +99,12 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
         socket.emit('setSelectedZoneToCtx', {
             sessionId: sessionId,
             zone: zone
-        }, function() {
-            //alert(JSON.stringify(response));
+        }, function(zCtxFromServer) {
+            selZone = zCtxFromServer.selZone;
+            efZone = zCtxFromServer.efZone;
+            console.log(JSON.stringify(zCtxFromServer));
             if (callback)
-                callback();
+                callback(zCtxFromServer);
             return(this);
         });
     }
@@ -221,7 +219,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
         return sources;
     }
 
-    //Retorn el índice en el array si la fuente ya existe, o -1 en caso contrario
+    //Retorn el ï¿½ndice en el array si la fuente ya existe, o -1 en caso contrario
     this.zcSearchSource = function zcSearchSource(zCtx, sourceStr) {
         if (filters.sources.length > 0) {
             for (var i = 0; i < filters.sources.length; i++){
@@ -232,7 +230,7 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
         return -1;
     }
 
-    //Retorn el índice en el array si el tag ya existe, o -1 en caso contrario
+    //Retorn el ï¿½ndice en el array si el tag ya existe, o -1 en caso contrario
     this.zcSearchTag = function zcSearchTag(zCtx, tagStr) {
         if (filters.tags.length > 0) {
             for (var i = 0; i < filters.tags.length; i++){
@@ -351,6 +349,10 @@ function ZContext(socketParam, sessionIdParam, nodeURLParam){
 
     this.zcGetZone = function zcGetZone() {
         return selZone;
+    }
+    
+    this.zcGetEfZone = function zcGetEfZone() {
+        return efZone;
     }
     
     this.zcGetOrder = function() {

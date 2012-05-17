@@ -98,11 +98,44 @@ function ZTabs() {
             verNuevosButton.setStyle('display','none');
         }        
     });  
+    
+    socket.on('solrComments', function (solrResponse) {
+        var response = solrResponse.response;
+        if (response.numFound > 0) {
+            if (response.numFound > 3) {
+                $('commentsMore_' + comment.sourcePost).setStyle('display', 'block');
+                $('commentsMoreText_' + comment.sourcePost).innerHTML = "Ver más comentarios (" + response.numFound - 3 + ")";
+            }
+            response.docs.each(function(doc) {
+                var comment = JSON.parse(doc.verbatim);
+                var commentLi = new Element('li');
+                var commentText = new Element('p', {
+                    'class': 'comentario',
+                    'html': comment.text
+                }).inject(commentLi);
+                var commentAuthor = new Element('p', {
+                    'class': 'autor',
+                    'html': 'Publicado por: ' + comment.fromUser.name
+                }).inject(commentLi);
+                var commentDate = new Element('p', {
+                    'class': 'fecha',
+                    'title': doc.modified,
+                    'html': prettyDate(doc.modified)
+                }).inject(commentLi);
+                var splitter = new Element('hr', {
+                    'class': 'splitter'
+                }).inject(commentLi);
+                $('commentsDiv_' + comment.sourcePost).setStyle('display', 'block');
+                commentLi.inject($('commentsOl_' + comment.sourcePost));
+            });
+        }
+        
+    }); 
 
     var initAll = function initAll() {            
         zCtx.initZCtx(function() {            
             tab = zCtx.zcGetZTab();
-            initZonas(zCtx.zcGetZone());
+            initZonas(zCtx.zcGetEfZone());
             initVista(zCtx);
             /*if(typeof initMapTab == 'function'){
                 initMapTab();                
@@ -233,31 +266,32 @@ function ZTabs() {
         $('tempoSelect').addEventListener('change', onTempoChange, false);
     }
 
-    var setZone = function setZone(zoneExtended, zoneName, parentId, parentName) {
+    var setZone = function setZone(zoneExtended, callback) {
+        if($('loadingDiv'))
+            $('loadingDiv').removeClass('hidden');
+        if($('postsDiv'))
+            $('postsDiv').addClass('hidden');
         if($('loadingDiv'))
             $('loadingDiv').removeClass('hidden');
         if($('postsDiv'))
             $('postsDiv').addClass('hidden');
         if (zoneExtended == null || typeof(zoneExtended) == 'undefined')
             zoneExtended = '';
-        if (zoneName == null || typeof(zoneName) == 'undefined')
-            zoneName = '';
-        if (parentId == null || typeof(parentId) == 'undefined')
-            parentId = '';
-        if (parentName == null || typeof(parentName) == 'undefined')
-            parentName = '';
-
         zirClient.setFirstIndexTime(null);
         zirClient.setLastIndexTime(null);
         zirClient.setMinRelevance(null);
         //$('zonalesSearchword').value = "buscar...";
-        $('zoneExtended').value = zoneExtended;
+        //$('zoneExtended').value = zoneExtended;
         if (this.tab != 'geoActivos' && this.tab != 'editor' && this.tab != 'list' && postsContainer && newPosts) {
             //            postsContainer.empty();
             newPosts.empty();
         }
-        zCtx.setSelectedZone(zoneExtended, zoneName, parentId, parentName, function() {
-            });
+        zCtx.setSelectedZone(zoneExtended, function(zCtxFromServer) {
+            if(typeof callback == 'function')
+                callback(zCtxFromServer);
+            if(zCtx.zcGetEfZone().trim() != '')
+                $('zoneExtended').value = zCtx.zcGetEfZone();
+        });
     }
     this.setZone = setZone;
 
@@ -378,7 +412,7 @@ function ZTabs() {
     }
 
     var getZoneForPost = function getZoneForPost(zone) {
-        var a_zone = "<a id=\"zonePost\" onclick=\"zTab.setZone('" +zone.replace(/_/g," ").capitalize() + "','','','');drawMap('" +zone + "');ajustMapToExtendedString('" + zone + "');\">" + zone.replace(/_/g, " ").capitalize() + "</a>";
+        var a_zone = "<a id=\"zonePost\" onclick=\"zTab.setZone('" +zone + "','','','');drawMap('" +zone + "');ajustMapToExtendedString('" + zone + "');\">" + zone + "</a>";
         return a_zone;
     }
 
@@ -425,6 +459,20 @@ function ZTabs() {
             return '<a target="_blank" href="' + target + '"><img class="img" style="display:' + display + '" src="' + img + '"/></a>';
         else
             return '';
+    }
+    
+    var getComments = function (posts) {
+        posts.each(function(post) {
+           if (post.actions) {
+               post.actions.each(function(action) {
+                  if (action.type == 'comentarios') {
+                      if (action.cant > 0) {
+                          zirClient.loadComment(post.id, 3);
+                      }
+                  }
+               });
+           }
+        });
     }
 
     this.removeNewClass = function () {
@@ -491,6 +539,7 @@ function ZTabs() {
         } else {            
             htmlPosts.render(posts);            
         }
+        getComments(posts);
         armarTitulo(firstPostZone);
     }        
     
@@ -731,8 +780,8 @@ function ZTabs() {
         // tabTemp = this.tab;
         var zoneSeltemp = zCtx.zcGetZone();
         var zoneEfectemp = firstPostZone;
-        //console.log("zona seleccionada"+zoneSeltemp);
-        //console.log("zona efectiva"+zoneEfectemp);
+        console.log("zona seleccionada"+zoneSeltemp);
+        console.log("zona efectiva"+zoneEfectemp);
         $('tituloSup').innerHTML = "";
 
         if (zoneEfectemp != zoneSeltemp && zoneSeltemp != "" && typeof(zoneSeltemp) != 'undefined'){

@@ -168,7 +168,7 @@ function getAllExtendedStrings(){
         onSuccess: function(response) {
             JSON.parse(response).each(function(zone) {
                 if(zone)
-                    extendedStrings.include(zone.replace(/_/g, ' ').capitalize());
+                    extendedStrings.include(zone);
             });
         },
         onFailure: function(){
@@ -294,8 +294,8 @@ function setOption(field, add, container, callback, fill){
 }
 
 function checkRegExp(str, patt){
-    var patt1 = new RegExp("^"+patt+"|\ "+patt,"g");
-    return patt1.test(str);
+    var patt1 = new RegExp("^"+patt+"|\ "+patt,"ig");
+    return patt1.test(norm(str));
 }
 
 function switchButtons(buttons){
@@ -320,4 +320,14 @@ function clone(obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
     }
     return copy;
+}
+
+function norm(word) {
+        word = word.replace(/à|á|ä|â/, "a");
+        word = word.replace(/è|é|ë|ê/, "e");
+        word = word.replace(/ì|í|ï|î/, "i");
+        word = word.replace(/ò|ó|ö|ô/, "o");
+        word = word.replace(/ù|ú|ü|û/, "u");
+        return word;
+
 }
