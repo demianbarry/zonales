@@ -125,7 +125,7 @@ function getParentTypes(type) {
 
 function saveZone() {
 
-    var jsonZone = '{"name":"' + $('nombre').value.replace(/ /g, '_').toLowerCase() + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
+    var jsonZone = '{"name":"' + $('nombre').value + '","id":"' + $('id').value + '","parent":"' + $('padre').value + '","type":"' + $('tipo').value + '"';
 
 	var objGeo;
     if ($('geoJson').value != '') {

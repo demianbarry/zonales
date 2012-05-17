@@ -31,6 +31,9 @@ function addSelector(selector) {
             'html' : 'Selector CSS'
         }).inject(selector_title_tr);
         new Element('td', {
+            'html' : 'Validador'
+        }).inject(selector_title_tr);
+        new Element('td', {
             'html' : 'Eliminar'
         }).inject(selector_title_tr);
     }
@@ -43,13 +46,17 @@ function addSelector(selector) {
     new Element('td', {
         'html': selector.selector
     }).inject(selector_line);
+    new Element('td', {
+        'html': selector.validator
+    }).inject(selector_line);
+
     var removeSelector_td = new Element('td').inject(selector_line);
     new Element('img', {
         'width' : '16', 
         'height' : '16', 
         'border': '0', 
         'alt': cantSelectors, 
-        'title' : 'Eliminar seleto', 
+        'title' : 'Eliminar selector',
         'src': '/images/publish_x.png', 
         'onclick' : 'removeSelector('+ cantSelectors + ')'
     }).inject(removeSelector_td);
@@ -117,34 +124,24 @@ function saveSelectors() {
 
     if (selectors.length > 0) {
         for (x in selectors) {
-            if (selectors[x] != null && selectors[x].type != undefined && selectors[x].selector != undefined) {
+            if (selectors[x] != null && selectors[x].type != undefined && selectors[x].selector != undefined && selectors[x].validator != undefined) {
                 var selector = {
                     type: selectors[x].type,
-                    selector: selectors[x].selector
+                    selector: selectors[x].selector,
+                    validator: selectors[x].validator
                 };
                 objSelectors.selectors.push(selector);
             }
         }
     }
     
-    if (gup('url') != null && gup('url') != '') {
-        socket.emit('updateSelector', objSelectors, function (resp) {
-            //var resp = eval('(' + data + ')'); 
-            if (resp.cod == 100) {
-                alert("Se ha actualizado el selector"); 
-            } else {
-                alert("Error al actualizar el tipo de tag");
-            }
-        });	
-    } else {
-        socket.emit('saveSelector', objSelectors, function (resp) {
-            //var resp = eval('(' + data + ')'); 
-            if (resp.cod == 100) {
-                alert("Se ha guardado el tipo de tag"); 
-            } else {
-                alert("Error al guardar el tipo de tag");
-            }
-        });
-    }    
+    socket.emit('upsertSelector', objSelectors, function (resp) {
+        //var resp = eval('(' + data + ')'); 
+        if (resp.cod == 100) {
+            alert("Se ha actualizado el selector"); 
+        } else {
+            alert("Error al actualizar el tipo de tag");
+        }
+    });	 
     
 }

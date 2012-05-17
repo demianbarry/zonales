@@ -59,11 +59,25 @@
                                     <select id="selectorType">
                                         <option id="s_picture" value="picture">Imágenes</option>
                                         <option id="s_comments" value="comments">Comentarios</option>
+                                        <option id="s_acomments" value="commentsAuthor">AuthorComentario</option>
+                                        <option id="s_fcomments" value="commentsDate">FechaComentarios</option>
+                                        <option id="s_tcomments" value="commentsText">TextoComentarios</option>
                                         <option id="s_content" value="content">Noticia</option>
                                         <option id="s_avatar" value="avatar">Avatar</option>
                                     </select>
                                     <input type="text" id="selector" value="">
-                                    <img alt="Agregar selector" style="float: right" src="/images/addIcon.gif" title="Agregar selector" onclick="addSelector({'type' : $('selectorType').value, 'selector' : $('selector').value}); checkSelectorTypes();">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <label>Validador</label>
+                                </td>
+                                <td class="input">
+                                    <input type="text" id="validator" value="">
+                                </td>
+                                <td class="input">
+                                    
+                                    <img alt="Agregar selector" style="float: right" src="/images/addIcon.gif" title="Agregar selector" onclick="addSelector({'type' : $('selectorType').value, 'selector' : $('selector').value , 'validator' : $('validator').value}); checkSelectorTypes();">
                                 </td>
                             </tr>
                             <tr>

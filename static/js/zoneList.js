@@ -1,6 +1,7 @@
 var socket;
 var zones = Array();
 
+
 window.addEvent('domready', function() {
 	  $('newButton').addEvent('click', function() {
 	  		var urlZoneEdit = "zoneEdit";
@@ -15,8 +16,9 @@ window.addEvent('domready', function() {
   	  socket.on('connect', function () { 
 	    socket.emit('getZones', true, function (data) {			  		
 	  		data.each(function(zone) {
-	  			if (typeof(zone.name) != 'undefined') { 
-	  				zones.include(zone.name.replace(/_/g, ' ').capitalize());
+	  			if (typeof(zone.name) != 'undefined') {
+                                        zones.include(zone.name);
+	  				//zones.include(zone.name.replace(/_/g, ' ').capitalize());
 	  			}
 	  		});
 	    });
@@ -47,7 +49,7 @@ window.addEvent('domready', function() {
 
 function searchZones(){
 
-	 var filters = '{"name": "' + $('zoneNameFilter').value.replace(/ /g, '_').toLowerCase() + '"';
+	 var filters = '{"name": "' + $('zoneNameFilter').value + '"';
  	 if ($('zoneStateFilter').value != 'all') {
  	 	filters += ', "state": "' + $('zoneStateFilter').value + '"'; 
  	 }
@@ -110,7 +112,7 @@ function makeZonesTable(jsonObj){
             'html' : zone.id
             }).inject(config_title_tr);
         new Element('td', {
-            'html' : zone.name.replace(/_/g, ' ').capitalize()
+            'html' : zone.name//.replace(/_/g, ' ').capitalize()
             }).inject(config_title_tr);
         new Element('td', {
             'html' : zone.type

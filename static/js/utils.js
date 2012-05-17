@@ -138,6 +138,7 @@ function getAllZones(){
         onSuccess: function(response) {
             
             JSON.parse(response.replace(/'/g,'"')).each(function(zone) {
+               // zones.include(zone);
                 zones.include(zone.replace(/_/g, ' ').capitalize());
             });
         },

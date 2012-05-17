@@ -42,7 +42,7 @@ function searchSelectors(){
 }
 
 function removeSelectors(name) {
-    if (confirm("¿Seguro que deseas eliminar el selector?")) {
+    if (confirm("ï¿½Seguro que deseas eliminar el selector?")) {
         socket.emit('removeSelectors', name, function (resp) {
             if (resp.cod == 100) {
                 $('resultTable').removeChild($('tr_'+ name)); 
@@ -80,6 +80,9 @@ function makeSelectorsTable(jsonObj){
         }).inject(configs_table);
         new Element('td', {
             'html' : selector.url
+        }).inject(config_title_tr);
+         new Element('td', {
+            'html' : selector.validator
         }).inject(config_title_tr);
         new Element('td', {
             'html' : JSON.stringify(selector.selectors)
