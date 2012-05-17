@@ -220,6 +220,10 @@ function ZIRClient(socket, sessionId){
         });
     // }
     }
+    
+    this.loadComment=function(id, rows){        
+        this.socket.emit('getPostComments', {id:id, rows:rows});
+    }
 
     this.resetStart=function(){        
         this.socket.emit('resetStart', {
