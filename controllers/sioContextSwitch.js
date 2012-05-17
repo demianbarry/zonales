@@ -10,7 +10,7 @@ module.exports.tryEvent = function tryEvent(client) {
     //=============================================================================
 
     client.on('getCtx', function(sessionId, fn) {
-        console.log('RecibÃ­ evento getCtx - SessionId: ' + sessionId);
+        console.log('Recibi­ evento getCtx - SessionId: ' + sessionId);
         zContextService.getZCtx(sessionId, function(zCtx) {
             zCtx.start = 0;
             fn(zCtx);
@@ -18,7 +18,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('addSourceToZCtx', function(data, fn) {
-        console.log('RecibÃ­ evento addSourceToZCtx, fuente = ' + data.source);
+        console.log('Recibi­ evento addSourceToZCtx, fuente = ' + data.source);
         zContextService.addSource(data.sessionId, data.source, function (response) {
             fn(response);
         //loadPostsFromSolr(client, data.sessionId);
@@ -26,7 +26,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('uncheckSourceFromZCtx', function(data, fn) {
-        console.log('RecibÃ­ evento uncheckSourceFromZCtx, fuente = ' + data.source);
+        console.log('Recibi­ evento uncheckSourceFromZCtx, fuente = ' + data.source);
         zContextService.unckeckSource(data.sessionId, data.source, function (response) {
             fn(response);
         //loadPostsFromSolr(client, data.sessionId);
@@ -34,7 +34,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('addTagToZCtx', function(data, fn) {
-        console.log('RecibÃ­ evento addTagToZCtx, tag = ' + data.tag);
+        console.log('Recibi­ evento addTagToZCtx, tag = ' + data.tag);
         zContextService.addTag(data.sessionId, data.tag, function (response) {
             if(fn)
                 fn(response);
@@ -43,7 +43,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
     
     client.on('addKeywordToZCtx', function(data, fn) {
-        console.log('RecibÃ­ evento addKeywordToZCtx, keyword = ' + data.keyword);
+        console.log('Recibi­ evento addKeywordToZCtx, keyword = ' + data.keyword);
         zContextService.addKeyword(data.sessionId, data.keyword, function (response) {
             if(fn)
                 fn(response);
@@ -52,7 +52,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('uncheckTagFromZCtx', function(data, fn) {
-        console.log('RecibÃ­ evento uncheckTagFromZCtx, tag = ' + data.tag);
+        console.log('Recibi­ evento uncheckTagFromZCtx, tag = ' + data.tag);
         zContextService.unckeckTag(data.sessionId, data.tag, function (response) {
             fn(response);
         //loadPostsFromSolr(client, data.sessionId);
@@ -60,7 +60,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('setSelectedZoneToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setSelectedZoneToCtx, zone = ' + data.zone);
+        console.log('Recibi­ evento setSelectedZoneToCtx, zone = ' + data.zone);
         zContextService.setSelectedZone(data.sessionId, data.zone, function (response) {
             console.log(response);
             fn(response);
@@ -69,7 +69,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('setTempToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setTempToCtx, temp = ' + data.temp);
+        console.log('Recibi­ evento setTempToCtx, temp = ' + data.temp);
         zContextService.setTemp(data.sessionId, data.temp, function (response) {
             fn(response);
             solrService.loadPostsFromSolr(client, data.sessionId);
@@ -77,7 +77,7 @@ module.exports.tryEvent = function tryEvent(client) {
     });
 	
     client.on('setTabToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setTabToCtx, tab = ' + data.tab);
+        console.log('Recibi­ evento setTabToCtx, tab = ' + data.tab);
         zContextService.setTab(data.sessionId, data.tab, function (response) {
             fn(response);
             solrService.loadPostsFromSolr(client, data.sessionId);
@@ -85,24 +85,28 @@ module.exports.tryEvent = function tryEvent(client) {
     });
     
     client.on('addTabToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setTabToCtx, tab = ' + data.tab);
+        console.log('Recibi­ evento setTabToCtx, tab = ' + data.tab);
         zContextService.addTab(data.sessionId, data.tab, function (response) {
             fn(response);
             solrService.loadPostsFromSolr(client, data.sessionId);
         });
     });	
     client.on('removeTabToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setTabToCtx, tab = ' + data.tab);
+        console.log('Recibi­ evento setTabToCtx, tab = ' + data.tab);
         zContextService.removeTab(data.sessionId, data.tab, function (response) {
             fn(response);
             solrService.loadPostsFromSolr(client, data.sessionId);
         });
     });
     client.on('setOrderToCtx', function(data, fn) {
-        console.log('RecibÃ­ evento setOrderToCtx, temp = ' + data.order);
+        console.log('Recibi­ evento setOrderToCtx, temp = ' + data.order);
         zContextService.setOrder(data.sessionId, data.order, function (response) {
             fn(response);
             solrService.loadPostsFromSolr(client, data.sessionId);
         });
+    });
+    client.on('getPostComments', function(data) {
+        console.log('Recibi­ evento getPostComments, id = ' + data.id + ', rows: ' + data.rows);
+        solrService.getSolrPostComments(data.id, data.rows, client);
     });
 }
