@@ -132,6 +132,8 @@ body{
     display:block;
     background:#e9eaea;
     padding:10px;
+    float: left;
+    width: 380px
 }
 
 
