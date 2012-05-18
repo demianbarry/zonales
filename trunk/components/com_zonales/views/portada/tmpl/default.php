@@ -33,9 +33,10 @@
                     </p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
-                    
-<!--                    <p class="buttons"><a href="#">Compartir</a> | <a href="#">Comentar</a></p>-->
+                </div><!-- /.padding10 -->
+                <!--                    <p class="buttons"><a href="#">Compartir</a> | <a href="#">Comentar</a></p>-->
             
+                <div class="padding10">
                     <div id="commentsDiv_{{id}}" class="comentarios" style="display:none">
                         <div id="commentsMore_{{id}}" class="verMasComentarios" style="display:none">
                             <p class="comentario"><a id="commentsMoreText_{{id}}" onclick="zTab.verMasComentarios('{{id}}');"></a></p>
@@ -45,7 +46,7 @@
                         </ol>
                         <p><input name="" type="text" value="Escribí un comentario" class="input_comment" /></p>
                     </div><!-- /.comentarios -->
-                </div><!-- /.padding10 -->
+                </div>
             </div><!-- /#col2 -->
             <div class="col3">
                 <div class="contador">
@@ -75,8 +76,9 @@
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
-<!--                    <p class="buttons"><a href="#">Compartir</a> | <a href="#">Comentar</a></p>-->
-            
+                </div><!-- /.padding10 -->
+                
+                <div class="padding10">
                     <div id="commentsDiv_{{id}}" class="comentarios" style="display:none">
                         <div id="commentsMore_{{id}}" class="verMasComentarios" style="display:none">
                             <p class="comentario"><a id="commentsMoreText_{{id}}" onclick="zTab.verMasComentarios('{{id}}');"></a></p>
@@ -86,7 +88,7 @@
                         </ol>
                         <p><input name="" type="text" value="Escribí un comentario" class="input_comment" /></p>
                     </div><!-- /.comentarios -->
-                </div><!-- /.padding10 -->
+                </div>
             </div><!-- /#col2 -->
             <div class="col3">
                 <div class="contador">
@@ -116,8 +118,9 @@
                     <p class="autor">Publicado por {{fromUser.name}} en {{zone}}</p>
                     <!--<p class="tag">Tags {{tag}}</p>-->
                     <p class="fecha" title="{{modified}}">{{modifiedPretty}}</p>
-<!--                    <p class="buttons"><a href="#">Compartir</a> | <a href="#">Comentar</a></p>-->
-            
+                </div><!-- /.padding10 -->
+                
+                <div class="padding10">
                     <div id="commentsDiv_{{id}}" class="comentarios" style="display:none">
                         <div id="commentsMore_{{id}}" class="verMasComentarios" style="display:none">
                             <p class="comentario"><a id="commentsMoreText_{{id}}" onclick="zTab.verMasComentarios('{{id}}');"></a></p>
@@ -127,7 +130,7 @@
                         </ol>
                         <p><input name="" type="text" value="Escribí un comentario" class="input_comment" /></p>
                     </div><!-- /.comentarios -->
-                </div><!-- /.padding10 -->
+                </div>
             </div><!-- /#col2 -->
             <div class="col3">
                 <div class="contador">

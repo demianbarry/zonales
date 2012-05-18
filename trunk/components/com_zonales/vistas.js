@@ -123,7 +123,7 @@ function ZTabs() {
                 }).inject(commentLi);
                 var commentAuthor = new Element('p', {
                     'class': 'autor',
-                    'html': 'Publicado por: ' + comment.fromUser.name
+                    'html': 'Publicado por ' + comment.fromUser.name
                 }).inject(commentLi);
                 var commentDate = new Element('p', {
                     'class': 'fecha',
