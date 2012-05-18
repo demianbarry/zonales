@@ -23,6 +23,7 @@ h2{
     font-family: 'Open Sans Condensed', sans-serif;
     font-size:18px;
     color:#009cc9;
+    word-wrap: break-word;
 }
 
 p{
@@ -30,10 +31,16 @@ p{
     font-size:14px;
     color:#313131;
     cursor: default;
+    word-wrap: break-word;
+}
+
+p.actions {
+    word-wrap: normal;
 }
 
 a{
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .col1 p{
