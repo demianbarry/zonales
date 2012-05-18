@@ -7,9 +7,15 @@ String.prototype.capitalize = function(){
 var 
 fs = require('fs'),
 express = require('express'),
+i18n = require("i18n"),
+solr = require("solr"),
 MemStore = require('connect').session.MemoryStore,
 Mongoose = require('mongoose'), //(npm install mongoose)
 db = Mongoose.connect('mongodb://localhost/crawl');
+var solrClient = solr.createClient({
+    host: 'localhost', 
+    port: '38080'
+});
 
 // ----------------------- CONTROLLERS -----------------------
 //var sioClientSwitch = require('./controllers/sioClientSwitch'); 
@@ -44,15 +50,30 @@ var wikimapiaCategoriesScript = require('./scripts/wikimapiaCategories');
 var app = express.createServer(),
 io = require('socket.io').listen(app),
 port = 4000;
- 
+
+i18n.configure({
+    locales:['es'],
+    register: global,
+    directory: './locales',
+    debug:true
+});
+
+app.helpers({
+    __i: i18n.__,
+    __n: i18n.__n,
+    r__i: i18n.r__,
+    r__n: i18n.r__n
+});
+
 app.configure(function() {
     app.use(express.logger());
     app.use(express.errorHandler());
     app.use(express.bodyParser());
-    app.use(express.methodOverride()   );
+    app.use(express.methodOverride()   );    
     app.use(express.static(__dirname + '/static'));
 }); 
-
+app.use(i18n.init);
+//app.use(app.router);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('view options',{
@@ -304,6 +325,11 @@ app.get('/place/getExtendedStrings', function(req,res) {
 
 //----------------------- ZONES -----------------------
 
+app.get('/solr/test', function(req,res) {    
+    updatePosts();
+    res.end();           
+});
+
 //Servicio que obtiene el id y el nombre de todas las zonas.
 app.get('/zone/getAll', function(req,res) {
     res.writeHead(200, {
@@ -331,7 +357,7 @@ app.get('/zone/getFile', function(req,res) {
             var result = new Object();
             fs.open(__dirname + '/locales/es.js', 'w', function(err, text){
 
-            });
+                });
             docs.forEach(function(doc){
                 if (doc.extendedString)
                     result[doc.extendedString] = doc.extendedString.replace(/_/g,' ').capitalize();
@@ -341,6 +367,28 @@ app.get('/zone/getFile', function(req,res) {
             res.write(JSON.stringify(result));
             res.end();
         });
+    } catch (err) {
+        res.write(JSON.stringify(err));
+        res.end();
+    }
+});
+
+//Servicio que traduce zonas.
+app.get('/zone/zoneTranslated', function(req,res) {
+    try {
+        var zone = __(req.query.zone);
+        res.send(JSON.stringify(zone));
+    } catch (err) {
+        res.write(JSON.stringify(err));
+        res.end();
+    }
+});
+
+//Servicio que traduce zonas.
+app.get('/zone/zoneRTranslated', function(req,res) {
+    try {
+        var zone = r__(req.query.zone);    
+        res.send(JSON.stringify(zone));
     } catch (err) {
         res.write(JSON.stringify(err));
         res.end();
@@ -372,7 +420,7 @@ app.get('/zone/getAllExtendedStrings', function(req, res) {
         zoneService.getAllExtendedStrings(function(docs){
             var result = new Array();
             docs.forEach(function(doc){
-                result.push(doc.extendedString);
+                result.push(__(doc.extendedString));
             });
             result.sort();
             res.write(JSON.stringify(result));
@@ -971,3 +1019,19 @@ incIdsService.incrementId("zones", function(res) {
 });*/
 
 //06-03-2012 15:35 -> Funcionó OK
+
+function normZone(word) {
+
+    word = word.toLowerCase();
+    word = word.replace(/, /g, ',+');
+    word = word.replace(/ /g, '_');
+    word = word.replace(/\+/g, ' ');
+    word = word.replace(/\ {2}/g,' ');
+    word = word.replace(/à|á|ä|â/, "a");
+    word = word.replace(/è|é|ë|ê/, "e");
+    word = word.replace(/ì|í|ï|î/, "i");
+    word = word.replace(/ò|ó|ö|ô/, "o");
+    word = word.replace(/ù|ú|ü|û/, "u");
+
+    return word;
+}
