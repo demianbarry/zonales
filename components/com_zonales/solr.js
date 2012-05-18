@@ -221,8 +221,8 @@ function ZIRClient(socket, sessionId){
     // }
     }
     
-    this.loadComment=function(id, rows){        
-        this.socket.emit('getPostComments', {id:id, rows:rows});
+    this.loadComments=function(id, rows, start){        
+        this.socket.emit('getPostComments', {id:id, rows:rows, start:start});
     }
 
     this.resetStart=function(){        
