@@ -14,6 +14,7 @@ import org.zonales.BaseDao;
 import org.zonales.entities.FeedSelector;
 import org.zonales.entities.FeedSelectors;
 
+
 /**
  *
  * @author nacho
@@ -40,19 +41,18 @@ public class FeedSelectorDao extends BaseDao {
                 BasicDBObject paramDoc = new BasicDBObject();
                 paramDoc.put("type", selector.getType());
                 paramDoc.put("selector", selector.getSelector());
+                paramDoc.put("validator", selector.getSelector());
+                paramDoc.put("format", selector.getSelector());
                 paramsToDoc.add(paramDoc);
             }
             feedSelectorsDoc.put("selectors", paramsToDoc);
         }
-
-        System.out.println(feedSelectorsDoc.toString());
-
         this.feedSelectors.insert(feedSelectorsDoc);
     }
 
     public void update(String url, FeedSelectors feedSelector) throws MongoException {
         BasicDBObject query = new BasicDBObject("url", url);
-        DBObject resp = this.feedSelectors.findOne(query);       
+        DBObject resp = this.feedSelectors.findOne(query);
 
         if (resp != null) {
             BasicDBObject feedSelectorsDoc = new BasicDBObject();
@@ -60,7 +60,7 @@ public class FeedSelectorDao extends BaseDao {
             if (feedSelector.getUrl() != null) {
                 feedSelectorsDoc.put("url", feedSelector.getUrl());
             } else {
-                feedSelectorsDoc.put("url", (String)resp.get("url"));
+                feedSelectorsDoc.put("url", (String) resp.get("url"));
             }
 
             List<FeedSelector> myFeedSelectors = feedSelector.getSelectors();
@@ -68,20 +68,23 @@ public class FeedSelectorDao extends BaseDao {
             if (myFeedSelectors != null) {
                 ArrayList paramsToDoc = new ArrayList();
 
-                for (FeedSelector param: myFeedSelectors) {
+                for (FeedSelector param : myFeedSelectors) {
                     BasicDBObject paramDoc = new BasicDBObject();
                     paramDoc.put("type", param.getType());
                     paramDoc.put("selector", param.getSelector());
+                    paramDoc.put("validator", param.getSelector());
+                    paramDoc.put("format", param.getSelector());
                     paramsToDoc.add(paramDoc);
                 }
                 feedSelectorsDoc.put("selectors", paramsToDoc);
             } else {
                 feedSelectorsDoc.put("selectors", resp.get("selectors"));
             }
+
             this.feedSelectors.update(new BasicDBObject().append("url", url), feedSelectorsDoc);
         }
     }
-    
+
     public String retrieveJson(String url) {
         BasicDBObject query = new BasicDBObject("url", url);
         DBObject resp = this.feedSelectors.findOne(query);
@@ -95,15 +98,15 @@ public class FeedSelectorDao extends BaseDao {
     public FeedSelectors retrieve(String url) {
         BasicDBObject query = new BasicDBObject("url", url);
         DBObject resp = this.feedSelectors.findOne(query);
-        
+
         FeedSelectors myFeedSelectors = new FeedSelectors();
         ArrayList<BasicDBObject> selectors;
 
-        if(resp == null) {
+        if (resp == null) {
             return null;
         }
-            
-        
+
+
         resp.removeField("_id");
 
         System.out.println(resp);
@@ -118,10 +121,9 @@ public class FeedSelectorDao extends BaseDao {
         if (selectors != null) {
             myFeedSelectors.setSelectors(new ArrayList<FeedSelector>());
             for (BasicDBObject selector : selectors) {
-                myFeedSelectors.getSelectors().add(new FeedSelector((String) selector.get("type"), (String) selector.get("selector")));
+                myFeedSelectors.getSelectors().add(new FeedSelector((String) selector.get("type"), (String) selector.get("selector"),(String) selector.get("validator"),(String) selector.get("format")));
             }
         }
-
         return myFeedSelectors;
 
     }
