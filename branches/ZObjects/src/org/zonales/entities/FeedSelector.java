@@ -31,6 +31,27 @@ public class FeedSelector {
     }
     protected String selector;
 
+    protected String validator;
+
+    protected String format;
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+
+    public String getValidator() {
+        return validator;
+    }
+
+    public void setValidator(String validator) {
+        this.validator = validator;
+    }
+
     /**
      * Get the value of selector
      *
@@ -52,9 +73,11 @@ public class FeedSelector {
     public FeedSelector() {
     }
 
-    public FeedSelector(String type, String selector) {
+    public FeedSelector(String type, String selector, String validator, String format) {
         this.type = type;
         this.selector = selector;
+        this.validator = validator;
+        this.format = format;
     }
 
 }
