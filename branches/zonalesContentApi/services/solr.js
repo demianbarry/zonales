@@ -267,8 +267,8 @@ module.exports.getSolrPost=function getSolrPost(id, callback){
     });    
 }
 
-module.exports.getSolrPostComments=function getSolrPostComments(id, rows, client){
-    var urlSolr = "/solr/select?indent=on&version=2.2&fl=*%2Cscore&rows=" + rows + "&qt=zonalesContent&wt=json&q=sourcePost:"+id+'+AND+docType:comment';
+module.exports.getSolrPostComments=function getSolrPostComments(id, rows, start, client){
+    var urlSolr = "/solr/select?indent=on&version=2.2&fl=*%2Cscore&rows=" + rows + "&start=" + start + "&qt=zonalesContent&wt=json&q=sourcePost:("+id+")+AND+docType:comment";
     console.log("=========> URL SORL: "+ urlSolr);
     
     zProxy.execute(host, port, urlSolr, 'GET', function(resp) {

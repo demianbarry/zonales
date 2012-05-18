@@ -106,7 +106,7 @@ module.exports.tryEvent = function tryEvent(client) {
         });
     });
     client.on('getPostComments', function(data) {
-        console.log('Recibi­ evento getPostComments, id = ' + data.id + ', rows: ' + data.rows);
-        solrService.getSolrPostComments(data.id, data.rows, client);
+        console.log('Recibi­ evento getPostComments, id = ' + data.id + ', rows: ' + data.rows + ', start: ' + data.start);
+        solrService.getSolrPostComments(data.id, data.rows, data.start, client);
     });
 }
