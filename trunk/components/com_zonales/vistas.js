@@ -35,6 +35,8 @@ function ZTabs() {
     this.newPosts = newPosts;
     var firstPostZone = "";
     var newPostTime = 5000; //Tiempo durante el que se destacan los nuevos post en milisegundo
+    var initialCantComment = 3;
+    var pageCantComment = 50;
     
     var postsContainer = null;
     var filtersContainer = null;
@@ -100,12 +102,17 @@ function ZTabs() {
     });  
     
     socket.on('solrComments', function (solrResponse) {
+//        if (console && console.log)
+//            console.log(JSON.stringify(solrResponse));
         var response = solrResponse.response;
         if (response.numFound > 0) {
                 var comment = JSON.parse(response.docs[0].verbatim);
-                if (response.numFound > 3) {
+                if (response.numFound > (response.docs.length + response.start)) {
                     $('commentsMore_' + comment.sourcePost).setStyle('display', 'block');
-                    $('commentsMoreText_' + comment.sourcePost).innerHTML = "Ver más comentarios (" + (response.numFound - 3) + ")";
+                    $('commentsMoreText_' + comment.sourcePost).innerHTML = "Ver más comentarios (" + (response.numFound - (response.docs.length + response.start)) + ")";
+                    $('commentsMoreText_' + comment.sourcePost).title = (response.docs.length + response.start);
+                } else {
+                    $('commentsMore_' + comment.sourcePost).setStyle('display', 'none');
                 }
             response.docs.each(function(doc) {
                 var comment = JSON.parse(doc.verbatim);
@@ -127,7 +134,7 @@ function ZTabs() {
                     'class': 'splitter'
                 }).inject(commentLi);
                 $('commentsDiv_' + comment.sourcePost).setStyle('display', 'block');
-                commentLi.inject($('commentsOl_' + comment.sourcePost));
+                commentLi.inject($('commentsOl_' + comment.sourcePost), 'top');
             });
         }
         
@@ -458,19 +465,26 @@ function ZTabs() {
             return '';
     }
     
-    var getComments = function (posts) {
+    var getComments = function (posts, rows) {
         posts.each(function(post) {
            if (post.actions) {
                post.actions.each(function(action) {
                   if (action.type == 'comentarios') {
                       if (action.cant > 0) {
-                          zirClient.loadComment(post.id, 3);
+                          zirClient.loadComments(post.id, rows, 0);
                       }
                   }
                });
            }
         });
     }
+    
+    var verMasComentarios = function (postId) {
+        var start = parseInt($('commentsMoreText_' + postId).title);
+        zirClient.loadComments(postId, pageCantComment, start);
+    }
+    
+    this.verMasComentarios = verMasComentarios;
 
     this.removeNewClass = function () {
         $$('li.newPost').removeClass('newPost');
@@ -536,7 +550,7 @@ function ZTabs() {
         } else {            
             htmlPosts.render(posts);            
         }
-        getComments(posts);
+        getComments(posts, initialCantComment);
         armarTitulo(firstPostZone);
     }        
     
@@ -775,7 +789,7 @@ function ZTabs() {
     var armarTitulo = function armarTitulo(){
         var temp = 0 ;
         // tabTemp = this.tab;
-        var zoneSeltemp = zCtx.zcGetZone();
+        var zoneSeltemp = zCtx.zcGetEfZone();
         var zoneEfectemp = firstPostZone;
         //console.log("zona seleccionada"+zoneSeltemp);
         //console.log("zona efectiva"+zoneEfectemp);

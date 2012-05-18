@@ -29,6 +29,11 @@ p{
     font-family: 'PT Sans Narrow', sans-serif;
     font-size:14px;
     color:#313131;
+    cursor: default;
+}
+
+a{
+    cursor: pointer;
 }
 
 .col1 p{
@@ -317,8 +322,14 @@ span#tempoSelect.suggestions p.selected {
 
 }
 
-#postTemplate a {
+div.post div.col2 div.padding10 h2 a {
     text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+div.post div.col2 div.padding10 p.cuerpo a.textLink {
+    text-decoration: underline;
     color: inherit;
     cursor: pointer;
 }
@@ -356,6 +367,6 @@ img.img {
     position: relative;
 }
 
-#postTemplate a.textLink {
-    text-decoration: underline;
+div.verMasComentarios p.comentario a {
+    color:#799a0a;
 }
