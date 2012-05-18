@@ -133,6 +133,6 @@ JHTML::_('behavior.modal');
         <script type="text/javascript" src="<?php echo $this->baseurl ?>/media/system/js/json2-compressed.js"></script>
         <script language="javascript" type="text/javascript" src="modules/mod_mapazonales/map2.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript" src="/media/system/js/OpenLayers.js" onload="if(typeof initMapTab=='function'){initMapTab()}"></script>
+        <!--<script type="text/javascript" src="/media/system/js/OpenLayers.js" onload="if(typeof initMapTab=='function'){initMapTab()}"></script>-->
     </body>
 </html>
