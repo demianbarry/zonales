@@ -53,8 +53,6 @@ public class FeedSelectors {
     }
 
     protected List<FeedSelector> selectors;
-
-    protected List<FeedValidator> validators;
     /**
      * Get the value of selectors
      *
@@ -73,16 +71,9 @@ public class FeedSelectors {
         this.selectors = selectors;
     }
 
-    public List<FeedValidator> getValidators() {
-        return validators;
-    }
-
     /**
      * Set the value of validators
      *
      * @param validators new value of validators
      */
-    public void setValidators(List<FeedValidator> validators) {
-        this.validators = validators;
-    }
 }
