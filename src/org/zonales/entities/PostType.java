@@ -75,6 +75,8 @@ public class PostType {
     @XmlElement(required = true)
     protected String source;
     @XmlElement(required = true)
+    protected String sourcePost;
+    @XmlElement(required = true)
     protected Double postLatitude;
     @XmlElement(required = true)
     protected Double postLongitude;
@@ -151,6 +153,48 @@ public class PostType {
         this.verbatim = verbatim;
     }
 
+    public PostType(String id, String docType, String source,String sourcePost ,Double postLatitude, Double postLongitude, User fromUser, ToUsersType toUsers, String title, String text, LinksType links, ActionsType actions, Zone zone, TagsType tags, String created, String modified, int relevance, int relevanceDelta, String state, String verbatim) {
+
+        this.id = id;
+
+        this.docType = docType;
+
+        this.source = source;
+
+         this.sourcePost = sourcePost;
+
+        this.postLatitude = postLatitude;
+
+        this.postLongitude = postLongitude;
+
+        this.fromUser = fromUser;
+
+        this.toUsers = toUsers;
+
+        this.title = title;
+
+        this.text = text;
+
+        this.links = links;
+
+        this.actions = actions;
+
+        this.zone = zone;
+
+        this.tags = tags;
+
+        this.created = created;
+
+        this.modified = modified;
+
+        this.relevance = relevance;
+
+        this.relevanceDelta = relevanceDelta;
+
+        this.state = state;
+
+        this.verbatim = verbatim;
+    }
     /**
      * Gets the value of the zone property.
      * 
@@ -198,6 +242,15 @@ public class PostType {
     public void setSource(String value) {
         this.source = value;
     }
+
+    public String getSourcePost() {
+        return sourcePost;
+    }
+
+    public void setSourcePost(String sourcePost) {
+        this.sourcePost = sourcePost;
+    }
+
 
     /**
      * Gets the value of the source property.
