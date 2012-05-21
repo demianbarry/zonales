@@ -14,6 +14,8 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -389,9 +391,10 @@ public class ZCrawlFeedsHelper {
         String selectorAuthor = null, selectorText = null, selectorDate = null;
         String expressionAuthor = null, expressionText = null, expressionDate = null;
         String author = null, text = null, id = null, timestamp = null;
+        String patternDate = null;
         Matcher matcher;
         Pattern patron;
-        
+
         //FileInputStream datos= new FileInputStream (ConDatos);
         /**
          * **********
@@ -409,12 +412,22 @@ public class ZCrawlFeedsHelper {
 
             if ("commentsAuthor".equals(feedSelector.getType())) {
                 selectorAuthor = feedSelector.getSelector();
+                if (!feedSelector.getValidator().equals("")) {
+                    expressionAuthor = feedSelector.getValidator();
+                }
             }
+
             if ("commentsText".equals(feedSelector.getType())) {
                 selectorText = feedSelector.getSelector();
+                if (!feedSelector.getValidator().equals("")) {
+                    expressionText = feedSelector.getValidator();
+                }
             }
             if ("commentsDate".equals(feedSelector.getType())) {
                 selectorDate = feedSelector.getSelector();
+                if (!feedSelector.getValidator().equals("")) {
+                    expressionDate = feedSelector.getValidator();
+                }
             }
 
             if ("comments".equals(feedSelector.getType())) {
@@ -422,21 +435,17 @@ public class ZCrawlFeedsHelper {
                 list.add(new ActionType("comments", elmts.size()));
                 commenters = true;
             }
-            if ("expressionAuthor".equals(feedSelector.getValidator())) {
-                expressionAuthor = feedSelector.getValidator();
-            }
-            if ("expressionText".equals(feedSelector.getValidator())) {
-                expressionText = feedSelector.getValidator();
-            }
-            if ("expressionDate".equals(feedSelector.getValidator())) {
-                expressionDate = feedSelector.getValidator();
+
+
+            if (feedSelector.getFormat() !=null && !feedSelector.getFormat().equals("")) {
+                patternDate = feedSelector.getFormat();
             }
 
         }
 
         newEntryComments = new PostType();
         newEntryCommentsSolr = new Post();
-        
+
         if (commenters) {
 
             for (Element comment : elmts) {
@@ -474,7 +483,7 @@ public class ZCrawlFeedsHelper {
                     newEntryCommentsSolr.setDocType("comment");
                     newEntryCommentsSolr.setFromUser(new User(id, author, null, null, null));
                     newEntryCommentsSolr.setText(text);
-                   // newEntryCommentsSolr.setCreated();
+                    newEntryCommentsSolr.setCreated(getDate(timestamp, patternDate));
                     newsListSolr.add(newEntryCommentsSolr);
                 }
                 // comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
@@ -532,6 +541,18 @@ public class ZCrawlFeedsHelper {
         marshaller.marshal(posts, out);
 
         //System.out.println("data: " + out);
+    }
+
+    public long getDate(String date, String patternDate) {
+
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat(patternDate);
+        Date fecha = null;
+        try {
+            fecha = formatoDelTexto.parse(date);
+        } catch (ParseException ex) {
+            return 0;
+        }
+        return fecha.getTime();
     }
 
     private void completeLinks(PostsType posts) {
