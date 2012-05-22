@@ -93,6 +93,11 @@ public class GetFeedServiceURL implements GetServiceURL {
                 Logger.getLogger(GetFeedServiceURL.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        //Si agregué commenters, los pongo en la URL
+        if (metadata.getIncluyeComentarios()) {
+            urlServlet += "&comments=true";
+        }
 
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                 "FEED URL GETTER RESULT: {0}", new Object[]{urlServlet});
