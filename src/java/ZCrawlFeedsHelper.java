@@ -1,7 +1,6 @@
 
-import com.google.gson.Gson;
-
 //import com.sun.syndication.feed.rss.Content;
+import com.google.gson.Gson;
 import it.sauronsoftware.feed4j.FeedParser;
 import it.sauronsoftware.feed4j.bean.Feed;
 import it.sauronsoftware.feed4j.bean.FeedItem;
@@ -17,9 +16,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.text.AbstractDocument.Content;
 import javax.swing.text.BadLocationException;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.jsoup.Connection;
@@ -37,19 +33,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
-import org.zonales.entities.ActionType;
-import org.zonales.entities.ActionsType;
-import org.zonales.entities.FeedSelector;
-import org.zonales.entities.FeedSelectors;
-import org.zonales.entities.LinkType;
-import org.zonales.entities.LinksType;
-
-import org.zonales.entities.Post;
-import org.zonales.entities.PostType;
-import org.zonales.entities.PostsType;
-import org.zonales.entities.TagsType;
-import org.zonales.entities.User;
-import org.zonales.entities.Zone;
+import org.zonales.entities.*;
 import org.zonales.feedSelector.daos.FeedSelectorDao;
 import org.zonales.tagsAndZones.daos.PlaceDao;
 import org.zonales.tagsAndZones.daos.ZoneDao;
@@ -361,20 +345,17 @@ public class ZCrawlFeedsHelper {
 
         return link;
     }
-
+    
     private Boolean checkImgSize(String imageURL) {
         try {
             URL url = new URL(imageURL);
             Image image = Toolkit.getDefaultToolkit().getImage(url);
             Integer size = image.getHeight(null) * image.getWidth(null);
             if (size == 1) //El link no es una imagen, sino ASP, PHP o algo por el estilo
-            {
                 return true;
-            }
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "IMAGE SIZE: {0}", size);
-            if (maxImgSize < size) {
+            if (maxImgSize < size)
                 return true;
-            }
         } catch (MalformedURLException ex) {
             Logger.getLogger(ZCrawlFeedsHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -446,45 +427,88 @@ public class ZCrawlFeedsHelper {
         newEntryComments = new PostType();
         newEntryCommentsSolr = new Post();
 
-        if (commenters) {
+        if (commenters && elmts.size() > 0) {
 
             for (Element comment : elmts) {
+                
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Comentario: {0}", comment.html());
+                
+                Boolean validComment = true;
 
                 if (selectorAuthor != null) {
-                    author = comment.select(selectorAuthor).text();
-                    if (expressionAuthor != null) {
-                        patron = Pattern.compile(expressionAuthor);
-                        matcher = patron.matcher(author);
-                        matcher.find();
-                        author.replaceAll(matcher.group(1), "");
+                    for (Element element : comment.select(selectorAuthor)) {
+                        author = element.text();
+                        if (expressionAuthor == null) {
+                            break;
+                        } else {
+                            if (author != null && !"".equals(author)) {
+                                patron = Pattern.compile(expressionAuthor);
+                                matcher = patron.matcher(author);
+                                if (matcher.find()) {
+                                    author.replaceAll(matcher.group(1), "");
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
                 if (selectorText != null) {
-                    text = comment.select(selectorText).text();
-                    if (expressionText != null) {
+                    for (Element element : comment.select(selectorText)) {
+                        if (expressionText != null) {
+                            String html = element.html();
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Text HTML: {0}", html);
+                            if(html != null && !"".equals(html)) {
+                                patron = Pattern.compile("^[^<].*");
+                                matcher = patron.matcher(html);
+                                if (matcher.find()) {
+                                    text = element.text();
+                                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Matchea, Text; {0}", text);
+                                    validComment = true;
+                                    break;
+                                } else {
+                                    validComment = false;
+                                }
+                            } else {
+                                validComment = false;
+                            }
+                        } else {
+                            text = element.text();
+                            break;
+                        }
                     }
                 }
 
                 if (selectorDate != null) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Selector Fecha: {0}", selectorDate);
                     timestamp = comment.select(selectorDate).text();
-                    if (expressionDate != null) {
+                    if (expressionDate != null && timestamp != null && !"".equals(timestamp)) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Validador Fecha: {0}, Texto Fecha: {1}", new Object[]{expressionDate, timestamp});
+                        patron = Pattern.compile(expressionDate);
+                        matcher = patron.matcher(timestamp);
+                        matcher.find();
+                        timestamp.replaceAll(matcher.group(1), "");
                     }
                 }
-                if (!json) {
-                    newEntryComments.setSourcePost(idPost);
-                    newEntryComments.setDocType("comment");
-                    newEntryComments.setFromUser(new User(id, author, null, null, null));
-                    newEntryComments.setText(text);
-                    newEntryComments.setCreated(timestamp);
-                    newsList.add(newEntryComments);
-                } else {
-                    newEntryCommentsSolr.setSourcePost(idPost);
-                    newEntryCommentsSolr.setDocType("comment");
-                    newEntryCommentsSolr.setFromUser(new User(id, author, null, null, null));
-                    newEntryCommentsSolr.setText(text);
-                    newEntryCommentsSolr.setCreated(getDate(timestamp, patternDate));
-                    newsListSolr.add(newEntryCommentsSolr);
+                
+                if (validComment) {
+                    Logger.getLogger(this.getClass().getName()).log(Level.INFO, "El comentario es válido");
+                    if (!json) {
+                        newEntryComments.setSourcePost(idPost);
+                        newEntryComments.setDocType("comment");
+                        newEntryComments.setFromUser(new User(id, author, null, null, null));
+                        newEntryComments.setText(text);
+                        newEntryComments.setCreated(timestamp);
+                        newsList.add(newEntryComments);
+                    } else {
+                        newEntryCommentsSolr.setSourcePost(idPost);
+                        newEntryCommentsSolr.setDocType("comment");
+                        newEntryCommentsSolr.setFromUser(new User(id, author, null, null, null));
+                        newEntryCommentsSolr.setText(text);
+                        if (patternDate != null)
+                            newEntryCommentsSolr.setCreated(getDate(timestamp, patternDate));
+                        newsListSolr.add(newEntryCommentsSolr);
+                    }
                 }
                 // comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
             }
