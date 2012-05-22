@@ -60,7 +60,7 @@ public class ZCrawlFeedsServlet extends HttpServlet {
         String longitud = request.getParameter("longitud") != null ? request.getParameter("longitud") : "0.0";
         params.put("longitud", longitud);
 
-        String comments = request.getParameter("comments") != null ? request.getParameter("comments") : "";
+        Boolean comments = request.getParameter("comments") != null ? true : false;
 
 
         if (request.getParameter("place") != null) {
@@ -92,6 +92,8 @@ public class ZCrawlFeedsServlet extends HttpServlet {
             tagslist.addAll(Arrays.asList(tags.split(",")));
         }
         params.put("tagslist", tagslist);
+        
+        params.put("comments", comments);
 
         ZCrawlFeedsHelper helper = new ZCrawlFeedsHelper(props.getProperty("db_host"), Integer.valueOf(props.getProperty("db_port")), props.getProperty("db_name"), Integer.valueOf(props.getProperty("max_img_size")));
         try {

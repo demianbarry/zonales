@@ -53,10 +53,18 @@ public class test2 {
 //            //System.out.println(matcher.group(1));
 //            
 //        }
+        
+        Pattern patron = Pattern.compile("(- )");
+        Matcher matcher = patron.matcher("- 19/05/2012 19:25:47");
+        if (matcher.find()) {
+            System.out.println("- 19/05/2012 19:25:47".replaceAll(matcher.group(1), ""));
+        } else {
+            System.out.println("No matchea");
+        }
 
          
-        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("- dd/mm/aaaa HH:mm:ss");
-        String strFecha = "- 21/05/2012 00:47:12";
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String strFecha = "19/05/2012 19:25:47";
         Date fecha = null;
         try {
 
