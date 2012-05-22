@@ -159,7 +159,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntry.getActions() == null) {
                         newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
                     }
-                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc, newEntry.getId(), json, (Boolean)params.get("comments"))));
+                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc, newEntry.getId(), json, (Boolean)params.get("comments"), source)));
 
                     if (entry.getPubDate() != null) {
                         newEntry.setCreated(String.valueOf(entry.getPubDate().getTime()));
@@ -244,7 +244,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntrySolr.getActions() == null) {
                         newEntrySolr.setActions(new ArrayList<ActionType>());
                     }
-                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc, newEntrySolr.getId(), json, (Boolean)params.get("comments")));
+                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc, newEntrySolr.getId(), json, (Boolean)params.get("comments"), source));
 
                     if (entry.getPubDate() != null) {
                         newEntrySolr.setCreated((entry.getPubDate().getTime()));
@@ -365,7 +365,7 @@ public class ZCrawlFeedsHelper {
     /**
      * **********************************
      */
-    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc, String idPost, boolean json, boolean comments) throws IOException, BadLocationException {
+    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc, String idPost, boolean json, boolean comments, String source) throws IOException, BadLocationException {
 
         List<ActionType> list = new ArrayList<ActionType>();
 
@@ -503,17 +503,21 @@ public class ZCrawlFeedsHelper {
                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "El comentario es válido");
                     cantCommnents++;
                     if (!json) {
+                        newEntryComments.setId(idPost + author + timestamp);
                         newEntryComments.setSourcePost(idPost);
                         newEntryComments.setDocType("comment");
                         newEntryComments.setFromUser(new User(id, author, null, null, null));
                         newEntryComments.setText(text);
                         newEntryComments.setCreated(timestamp);
+                        newEntryComments.setSource(source);
                         newsList.add(newEntryComments);
                     } else {
+                        newEntryCommentsSolr.setId(idPost + author + timestamp);
                         newEntryCommentsSolr.setSourcePost(idPost);
                         newEntryCommentsSolr.setDocType("comment");
                         newEntryCommentsSolr.setFromUser(new User(id, author, null, null, null));
                         newEntryCommentsSolr.setText(text);
+                        newEntryCommentsSolr.setSource(source);
                         if (patternDate != null)
                             newEntryCommentsSolr.setCreated(getDate(timestamp, patternDate));
                         newsListSolr.add(newEntryCommentsSolr);
