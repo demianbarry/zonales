@@ -159,7 +159,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntry.getActions() == null) {
                         newEntry.setActions(new ActionsType(new ArrayList<ActionType>()));
                     }
-                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc, newEntry.getId(), json)));
+                    newEntry.setActions(new ActionsType(getActions(feedSelectors, doc, newEntry.getId(), json, (Boolean)params.get("comments"))));
 
                     if (entry.getPubDate() != null) {
                         newEntry.setCreated(String.valueOf(entry.getPubDate().getTime()));
@@ -244,7 +244,7 @@ public class ZCrawlFeedsHelper {
                     if (newEntrySolr.getActions() == null) {
                         newEntrySolr.setActions(new ArrayList<ActionType>());
                     }
-                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc, newEntrySolr.getId(), json));
+                    newEntrySolr.getActions().addAll(getActions(feedSelectors, doc, newEntrySolr.getId(), json, (Boolean)params.get("comments")));
 
                     if (entry.getPubDate() != null) {
                         newEntrySolr.setCreated((entry.getPubDate().getTime()));
@@ -365,7 +365,7 @@ public class ZCrawlFeedsHelper {
     /**
      * **********************************
      */
-    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc, String idPost, boolean json) throws IOException, BadLocationException {
+    public List<ActionType> getActions(FeedSelectors feedSelectors, Document doc, String idPost, boolean json, boolean comments) throws IOException, BadLocationException {
 
         List<ActionType> list = new ArrayList<ActionType>();
 
@@ -413,7 +413,6 @@ public class ZCrawlFeedsHelper {
 
             if ("comments".equals(feedSelector.getType())) {
                 elmts = doc.select(feedSelector.getSelector());
-                list.add(new ActionType("comments", elmts.size()));
                 commenters = true;
             }
 
@@ -428,12 +427,13 @@ public class ZCrawlFeedsHelper {
         newEntryCommentsSolr = new Post();
 
         if (commenters && elmts.size() > 0) {
+            Integer cantCommnents = 0;
 
             for (Element comment : elmts) {
                 
                 Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Comentario: {0}", comment.html());
                 
-                Boolean validComment = true;
+                Boolean validComment = false;
 
                 if (selectorAuthor != null) {
                     for (Element element : comment.select(selectorAuthor)) {
@@ -445,7 +445,7 @@ public class ZCrawlFeedsHelper {
                                 patron = Pattern.compile(expressionAuthor);
                                 matcher = patron.matcher(author);
                                 if (matcher.find()) {
-                                    author.replaceAll(matcher.group(1), "");
+                                    author = author.replaceAll(matcher.group(1), "");
                                     break;
                                 }
                             }
@@ -453,6 +453,7 @@ public class ZCrawlFeedsHelper {
                     }
                 }
 
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SelectorText; {0}", selectorText);
                 if (selectorText != null) {
                     for (Element element : comment.select(selectorText)) {
                         if (expressionText != null) {
@@ -474,6 +475,7 @@ public class ZCrawlFeedsHelper {
                             }
                         } else {
                             text = element.text();
+                            validComment = true;
                             break;
                         }
                     }
@@ -481,18 +483,25 @@ public class ZCrawlFeedsHelper {
 
                 if (selectorDate != null) {
                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Selector Fecha: {0}", selectorDate);
-                    timestamp = comment.select(selectorDate).text();
-                    if (expressionDate != null && timestamp != null && !"".equals(timestamp)) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Validador Fecha: {0}, Texto Fecha: {1}", new Object[]{expressionDate, timestamp});
-                        patron = Pattern.compile(expressionDate);
-                        matcher = patron.matcher(timestamp);
-                        matcher.find();
-                        timestamp.replaceAll(matcher.group(1), "");
+                    for (Element element : comment.select(selectorDate)) {
+                        timestamp = element.text();
+                        if (expressionDate != null && timestamp != null && !"".equals(timestamp)) {
+                            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Validador Fecha: {0}, Texto Fecha: {1}", new Object[]{expressionDate, timestamp});
+                            patron = Pattern.compile(expressionDate);
+                            matcher = patron.matcher(timestamp);
+                            if (matcher.find()) {
+                                timestamp = timestamp.replaceAll(matcher.group(1), "");
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
                     }
                 }
                 
-                if (validComment) {
+                if (validComment && comments) {
                     Logger.getLogger(this.getClass().getName()).log(Level.INFO, "El comentario es válido");
+                    cantCommnents++;
                     if (!json) {
                         newEntryComments.setSourcePost(idPost);
                         newEntryComments.setDocType("comment");
@@ -512,6 +521,7 @@ public class ZCrawlFeedsHelper {
                 }
                 // comments.add(new Comment(id , new User (id,author,null,null,null) , text , new Date(timestamp)));
             }
+            list.add(new ActionType("comments", cantCommnents));
         }
 
         if (list.isEmpty()) {
@@ -568,13 +578,17 @@ public class ZCrawlFeedsHelper {
     }
 
     public long getDate(String date, String patternDate) {
+        
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Date: {0}, PatternDate: {1}", new Object[]{date, patternDate});
 
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat(patternDate);
-        Date fecha = null;
+        Date fecha;
         try {
             fecha = formatoDelTexto.parse(date);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fecha retornada: {0}", fecha);
         } catch (ParseException ex) {
-            return 0;
+            ex.printStackTrace();
+            fecha = new Date(0);
         }
         return fecha.getTime();
     }
