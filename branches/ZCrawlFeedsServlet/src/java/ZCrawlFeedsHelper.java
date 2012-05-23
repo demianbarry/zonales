@@ -141,7 +141,7 @@ public class ZCrawlFeedsHelper {
                     newEntry.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
-                    newEntry.setId(entry.getGUID());
+                    newEntry.setId(entry.getGUID() != null ? entry.getGUID() : (entry.getElementValue("http://www.w3.org/2005/Atom", "id") != null ? entry.getElementValue("http://www.w3.org/2005/Atom", "id") : (entry.getTitle())));
                     newEntry.setFromUser(new User(null, source, null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntry.setTitle(entry.getTitle());
                     newEntry.setText(entry.getDescriptionAsText());
@@ -226,7 +226,7 @@ public class ZCrawlFeedsHelper {
                     newEntrySolr.setPostLongitude(Double.parseDouble((String) params.get("longitud")));
                     // newEntry.setId(entry.getUri());
                     // newEntry.setId(entry.getUri() != null && entry.getUri().length() > 0 ? entry.getUri().trim() : entry.getLink().trim()+entry.getTitle().trim());
-                    newEntrySolr.setId(entry.getGUID());
+                    newEntrySolr.setId(entry.getGUID() != null ? entry.getGUID() : (entry.getElementValue("http://www.w3.org/2005/Atom", "id") != null ? entry.getElementValue("http://www.w3.org/2005/Atom", "id") : (entry.getTitle())));
                     newEntrySolr.setFromUser(new User(null, source, null, null, place != null ? new org.zonales.entities.Place(String.valueOf(place.getId()), place.getName(), place.getType().getName()) : null));
                     newEntrySolr.setTitle(entry.getTitle());
                     newEntrySolr.setText(entry.getDescriptionAsText());
