@@ -37,7 +37,7 @@ window.addEvent('domready', function() {
 	  	 });
 	  });	  	  
 	  if(gup('zone') != null && gup('zone') != '') {
-	        $('zoneNameFilter').value = gup('zone').replace(/_/g, ' ').capitalize();
+	        $('zoneNameFilter').value = gup('zone');
 	     }
 	  if(gup('state') != null && gup('state') != '') {
 	        $('zoneStateFilter').value = gup('state');

@@ -86,7 +86,7 @@ module.exports.set = function set(zone, callback) {
 
 //Actualiza una zona existente (búsqueda por ID)
 module.exports.update = function update(id, data, callback) {
-    return baseService.update(zones, 'id', id, data, callback, ['parent', 'type', 'state', 'geoData']);
+    return baseService.update(zones, 'id', id, data, callback, new Array('parent', 'type', 'state', 'geoData'));
 }
 
 //Elimina una zona existente (búsqueda por ID) 

@@ -62,7 +62,10 @@ module.exports.tryEvent = function tryEvent(client) {
     client.on('getZoneByFilters', function(filters, fn) {
         console.log('Recibi el evento getZoneByFilters desde el cliente');
         zoneService.get(filters, function(data){
-            if (typeof(data) != 'undefined') {		    
+            if (typeof(data) != 'undefined') {
+                data.forEach(function(zone){
+                    zone.name = i18n.__(zone.name);
+                });
                 fn(data);
             }
         });		

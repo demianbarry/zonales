@@ -70,7 +70,7 @@ module.exports.getLikeName = function getLikeName(model, name, callback) {
             if (err) {
                 console.log('Error obteniendo datos --> ' + err);
                 throw errors.apiError;
-            }            
+            }
             callback(docs);
             return(this);
         });
@@ -88,18 +88,17 @@ module.exports.searchData = function searchData(model, filters, callback) {
     try {
         //var myregex = RegExp(name);
         //TODO: Chanchada, arreglar esto con parámetros
-        /* if (typeof(filters.name) != 'undefined') {
+        if (typeof(filters.name) != 'undefined') {
             filters.name = RegExp(filters.name);
         }
         if (typeof(filters.zone) != 'undefined') {
             filters.zone = RegExp(filters.zone);
-        }*/
+        }
         model.find(filters, function(err, docs) { 
             if (err) {
                 console.log('Error obteniendo datos --> ' + err);
                 throw errors.apiError;
-            }            
-            console.log('--------------------------------->Docs: '+JSON.stringify(docs));
+            }
             callback(docs);
             return(this);
         });
@@ -137,25 +136,23 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
 	
     try {
         var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');        
-        if(fields){
-            model.findOne(oid, function(err, reg) {
-                if (err) {
-                    console.log('Error buscando el dato --> ' + err);
-                    throw errors.apiError;
-                }            
-                fields.forEach(function(field){
+        if(fields && typeof fields == 'object' && typeof fields.forEach == 'function'){
+            var reg = new Object();    
+            fields.forEach(function(field){
+                if(data[field])
                     reg[field] = data[field];
-                });
-            
-                model.update(oid, data, function(err) {
-                    if (err) {
-                        console.log('Error actualizando el dato --> ' + err);
-                        throw errors.apiError;
-                    }
-                    callback(errors.success);
-                    return(this);
-                });
             });
+            console.log('---------> ID: '+oid + ' --- OBJ: '+JSON.stringify(reg));
+            delete reg._id;
+            
+            model.update(oid, reg, function(err) {
+                if (err) {
+                    console.log('Error actualizando el dato --> ' + err);
+                    throw errors.apiError;
+                }
+                callback(errors.success);
+                return(this);
+            });            
         } else {        
             model.update(oid, data, function(err) {
                 if (err) {
@@ -167,7 +164,7 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
             });
         }
     } catch (err) {
-        console.log('Error --> ' + err);
+        console.log('Error --> ' + JSON.stringify(err));
         throw errors.apiError;
     }
 }
@@ -179,7 +176,9 @@ module.exports.upsert = function upsert(model, searchFieldName, searchFieldData,
 	
     try {
         var oid = JSON.parse('{"' + searchFieldName + '":"' + searchFieldData + '"}');        
-        model.update(oid, data, {upsert: true}, function(err) {
+        model.update(oid, data, {
+            upsert: true
+        }, function(err) {
             if (err) {
                 console.log('Error actualizando el dato --> ' + err);
                 throw errors.apiError;

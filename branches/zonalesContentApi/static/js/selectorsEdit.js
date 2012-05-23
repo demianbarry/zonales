@@ -34,6 +34,9 @@ function addSelector(selector) {
             'html' : 'Validador'
         }).inject(selector_title_tr);
         new Element('td', {
+            'html' : 'Formato'
+        }).inject(selector_title_tr);
+        new Element('td', {
             'html' : 'Eliminar'
         }).inject(selector_title_tr);
     }
@@ -49,7 +52,9 @@ function addSelector(selector) {
     new Element('td', {
         'html': selector.validator
     }).inject(selector_line);
-
+     new Element('td', {
+        'html': selector.format
+    }).inject(selector_line);
     var removeSelector_td = new Element('td').inject(selector_line);
     new Element('img', {
         'width' : '16', 
@@ -124,11 +129,12 @@ function saveSelectors() {
 
     if (selectors.length > 0) {
         for (x in selectors) {
-            if (selectors[x] != null && selectors[x].type != undefined && selectors[x].selector != undefined && selectors[x].validator != undefined) {
+            if (selectors[x] != null && selectors[x].type != undefined && (selectors[x].selector != undefined || selectors[x].validator != undefined || selectors[x].format != undefined) ) {
                 var selector = {
                     type: selectors[x].type,
                     selector: selectors[x].selector,
-                    validator: selectors[x].validator
+                    validator: selectors[x].validator,
+                    format: selectors[x].format
                 };
                 objSelectors.selectors.push(selector);
             }
