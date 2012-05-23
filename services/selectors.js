@@ -8,7 +8,8 @@ var selectorSchema = new Schema(
 {
     type : String,
     selector : String,
-    validator : String
+    validator : String,
+    format : String
 }
 );
 

@@ -47,17 +47,13 @@ module.exports.searchTags = function searchTags(filters, callback) {
 //Crea un nuevo tag
 module.exports.set = function set(tag, callback) {
 	incIdsService.getId("tags", function(id) {
-		//console.log("------>>>>>>----->>>>> NextId: " + id);
-		tag.id = id;
-		baseService.set(tags, tag, function(response) {
-			if (response.cod == 100) {
-				incIdsService.incrementId("tags", function() {
-					console.log("ID de tags Incrementado");
-				});
-			}
-			callback(response);
-			return(this);
-		});
+            //console.log("------>>>>>>----->>>>> NextId: " + id);
+            tag.id = id;
+            baseService.set(tags, tag, function(response) {
+                response.id = id;
+		callback(response);
+		return(this);
+            });
 	})
 }
 

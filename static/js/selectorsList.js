@@ -67,9 +67,6 @@ function makeSelectorsTable(jsonObj){
         'html' : 'Url'
     }).inject(config_title_tr);
     new Element('td', {
-        'html' : 'Selectores'
-    }).inject(config_title_tr);    
-    new Element('td', {
         'html' : 'Editar/Eliminar'
     }).inject(config_title_tr);
 
@@ -81,12 +78,6 @@ function makeSelectorsTable(jsonObj){
         new Element('td', {
             'html' : selector.url
         }).inject(config_title_tr);
-         new Element('td', {
-            'html' : selector.validator
-        }).inject(config_title_tr);
-        new Element('td', {
-            'html' : JSON.stringify(selector.selectors)
-        }).inject(config_title_tr);        
         var editRemoveTd = new Element('td').inject(config_title_tr);
         new Element('img', {
             'width' : '16', 
