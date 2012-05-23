@@ -2,7 +2,7 @@
 
 var zUtilsJS = true;
 var nodeProxy = '/curl_proxy.php?host=localhost&port=4000&ws_path=';
-var servletProxy = '/curl_proxy.php?host=localhost&port=38080&ws_path=';
+var servletProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=';
 var nodeUri = 'zone';
 var servletUri = 'ZCrawlSources';
 
@@ -32,7 +32,7 @@ function gup( name ) {
     if( results == null )
         return "";
     else
-        return results[1];
+        return decodeURIComponent(results[1]);
 }
 
 function fixTime(i) {
@@ -294,6 +294,7 @@ function setOption(field, add, container, callback, fill){
 }
 
 function checkRegExp(str, patt){
+    patt = norm(patt);
     var patt1 = new RegExp("^"+patt+"|\ "+patt,"ig");
     return patt1.test(norm(str));
 }
@@ -323,11 +324,12 @@ function clone(obj) {
 }
 
 function norm(word) {
-        word = word.replace(/à|á|ä|â/, "a");
-        word = word.replace(/è|é|ë|ê/, "e");
-        word = word.replace(/ì|í|ï|î/, "i");
-        word = word.replace(/ò|ó|ö|ô/, "o");
-        word = word.replace(/ù|ú|ü|û/, "u");
+        word = word.toLowerCase()
+        word = word.replace(/à|á|ä|â/ig, "a");
+        word = word.replace(/è|é|ë|ê/ig, "e");
+        word = word.replace(/ì|í|ï|î/ig, "i");
+        word = word.replace(/ò|ó|ö|ô/ig, "o");
+        word = word.replace(/ù|ú|ü|û/ig, "u");
         return word;
 
 }
