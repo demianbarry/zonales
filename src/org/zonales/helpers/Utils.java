@@ -11,7 +11,7 @@ package org.zonales.helpers;
 public class Utils {
 
     public static String normalizeZone(String word) {
-        word = word.toLowerCase();
+        /*word = word.toLowerCase();
         word = word.replaceAll(", ", ",+");
         word = word.replace(" ", "_");
         word = word.replace("+", " ");
@@ -19,7 +19,7 @@ public class Utils {
         word = word.replace("é", "e");
         word = word.replace("í", "i");
         word = word.replace("ó", "o");
-        word = word.replace("ú", "u");
+        word = word.replace("ú", "u");*/
         return word;
     }
 }
