@@ -28,7 +28,7 @@ function ZTabs() {
     this.socket = socket;
     var zCtx = new ZContext(this.socket, this.sessionId, this.nodeURL);
     this.zCtx = zCtx;
-    var zirClient = new ZIRClient(this.socket, this.sessionId);    
+    var zirClient = new ZIRClient(this.socket, this.sessionId);
     this.zirClient = zirClient;
     var htmlPosts;
     var newPosts = new Array();
@@ -37,7 +37,7 @@ function ZTabs() {
     var newPostTime = 5000; //Tiempo durante el que se destacan los nuevos post en milisegundo
     var initialCantComment = 3;
     var pageCantComment = 50;
-    
+
     var postsContainer = null;
     var filtersContainer = null;
     var verNuevosButton = null;
@@ -57,7 +57,7 @@ function ZTabs() {
                     $('postsDiv').removeClass('hidden');
             }
         });
-    }    
+    }
 
     socket.on('solrPosts', function (response) {
         /*console.log("SOLR POSTS: ");
@@ -94,13 +94,14 @@ function ZTabs() {
         //console.log(response);        */
         newPosts.combine(response.response.docs);
         if(newPosts.length > 0){
-            verNuevosButton.innerHTML= newPosts.length+' nuevo'+(newPosts.length > 1 ? 's' : '')+'...';
+            verNuevosButton.innerHTML= (newPosts.length < 20 ? (newPosts.length+' nuevo'+(newPosts.length > 1 ? 's' : '')):'Ver Nuevos')+'...';
+
             verNuevosButton.setStyle('display','block');
         } else{
             verNuevosButton.setStyle('display','none');
-        }        
-    });  
-    
+        }
+    });
+
     socket.on('solrComments', function (solrResponse) {
 //        if (console && console.log)
 //            console.log(JSON.stringify(solrResponse));
@@ -137,32 +138,32 @@ function ZTabs() {
                 commentLi.inject($('commentsOl_' + comment.sourcePost), 'top');
             });
         }
-        
-    }); 
 
-    var initAll = function initAll() {            
-        zCtx.initZCtx(function() {            
+    });
+
+    var initAll = function initAll() {
+        zCtx.initZCtx(function() {
             tab = zCtx.zcGetZTab();
             initZonas(zCtx.zcGetEfZone());
             initVista(zCtx);
             /*if(typeof initMapTab == 'function'){
-                initMapTab();                
+                initMapTab();
             }*/
             if(typeof setActiveTab == 'function'){
                 setActiveTab(zTab.zCtx.zcGetZTab());
-            }            
+            }
         });
         zUserGroups = loguedUser;
     }
     this.initAll = initAll;
-    
-    var initZonas = function initZonas(selZone) {        
+
+    var initZonas = function initZonas(selZone) {
         if (selZone && selZone != '') {
             $('zoneExtended').value = selZone;
         }
     }
     this.initZonas = initZonas;
-    
+
     var initVista = function initVista(zCtx){
         //        if(postsContainer)
         //            postsContainer.empty();
@@ -176,27 +177,27 @@ function ZTabs() {
         //initFilters(zCtx);
         initPost();
         zCtx.setSearchKeyword("");
-        var fileref=document.createElement('script');    
-        fileref.setAttribute('type','text/javascript'); 
+        var fileref=document.createElement('script');
+        fileref.setAttribute('type','text/javascript');
         fileref.setAttribute('src', '/media/system/js/OpenLayers.js');
-        fileref.setAttribute('onload', 'if(typeof initMapTab=="function"){initMapTab()}');    
+        fileref.setAttribute('onload', 'if(typeof initMapTab=="function"){initMapTab()}');
         document.getElementsByTagName("head")[0].appendChild(fileref);
     }
     this.initVista = initVista;
-    
+
     setInterval(function () {
         updatePostDate();
     }, 10000);
- 
-    var initPost = function initPost() {       
-        
+
+    var initPost = function initPost() {
+
         if (this.tab != 'geoActivos' && postsContainer) {
             if(this.postInterval) {
                 clearInterval(this.postInterval);
                 this.postInterval = null;
             }
             this.postInterval = setInterval(function () {
-                zirClient.loadNewSolrPost();                
+                zirClient.loadNewSolrPost();
             }, 60000);
         } else {
             if(this.postInterval) {
@@ -214,7 +215,7 @@ function ZTabs() {
         this.initTagFilters(zCtx);
         this.initTempFilters(zCtx);
     //this.initPost();
-    }   
+    }
 
     this.initSourceFilters = function initSourceFilters(zCtx) {
         //Actualizo filtros de fuente desde contexto
@@ -448,7 +449,7 @@ function ZTabs() {
     var getImgForPost = function (links, target) {
         var img;
         var display = "none";
-        
+
         if (links) {
             links.each(function(link) {
                 if (link.type == 'picture'){
@@ -464,7 +465,7 @@ function ZTabs() {
         else
             return '';
     }
-    
+
     var getComments = function (posts, rows) {
         posts.each(function(post) {
            if (post.actions) {
@@ -478,12 +479,12 @@ function ZTabs() {
            }
         });
     }
-    
+
     var verMasComentarios = function (postId) {
         var start = parseInt($('commentsMoreText_' + postId).title);
         zirClient.loadComments(postId, pageCantComment, start);
     }
-    
+
     this.verMasComentarios = verMasComentarios;
 
     this.removeNewClass = function () {
@@ -547,13 +548,13 @@ function ZTabs() {
                 }
             });
             setTimeout("zTab.removeNewClass();", newPostTime);
-        } else {            
-            htmlPosts.render(posts);            
+        } else {
+            htmlPosts.render(posts);
         }
         getComments(posts, initialCantComment);
         armarTitulo(firstPostZone);
-    }        
-    
+    }
+
     this.updatePosts = updatePosts;
 
     this.checkTag = function checkTag(tag, bottonId){
@@ -785,7 +786,7 @@ function ZTabs() {
         });
     }
 
-   
+
     var armarTitulo = function armarTitulo(){
         var temp = 0 ;
         // tabTemp = this.tab;
@@ -805,7 +806,7 @@ function ZTabs() {
         this.zirClient.loadSolrPost(id, function(doc){
             updatePost(doc);
         });
-    }    
+    }
 }
 
 var zTab = new ZTabs();
@@ -814,5 +815,5 @@ window.addEvent('domready', function() {
     //if(postsContainer){
     //console.log('domready antes de initAll');
     zTab.setComponents($('postTemplate'), $('filtersContainer'), $('verNuevos'));
-    zTab.initAll();    
+    zTab.initAll();
 });
