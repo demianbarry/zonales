@@ -1,9 +1,28 @@
+//document.write('<script type="text/javascript" src="/media/system/js/json2-compressed.js"></script>');
+
+var zUtilsJS = true;
+var nodeProxy = '/curl_proxy.php?host=localhost&port=4000&ws_path=';
+var servletProxy = '/curl_proxy.php?host=localhost&port=38081&ws_path=';
+var nodeUri = 'zone';
+var servletUri = 'ZCrawlSources';
+
 String.prototype.capitalize = function(){
     return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){
         return p1+p2.toUpperCase();
     } );
 };
 
+String.prototype.trim = function() {
+    return this.ltrim().rtrim();
+}
+
+String.prototype.ltrim = function() {
+    return this.replace(/^\s+/,"");
+}
+
+String.prototype.rtrim = function() {
+    return this.replace(/\s+$/,"");
+}
 
 function gup( name ) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -13,112 +32,307 @@ function gup( name ) {
     if( results == null )
         return "";
     else
-        return results[1];
+        return decodeURIComponent(results[1]);
 }
 
-function populateOptions(event, field, add, elmts, callback){
-    var container;
+function fixTime(i) {
+    return (i<10 ? "0" + i : i);
+}
 
-    if((container = field.getNext()) == null) {
-        container = new Element('div', {
-            'class': 'suggestions'
-        }).inject(field, 'after');
-    }
-    switch(event.keyCode){
-        case 13:
-            elmts = eval(JSON.stringify(Array.from(elmts)));
-            if(!add) {
-                if (container.getElement('.selected'))
-                    field.set('value', container.getElement('.selected').get('html'));
-                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1)
-                    if(typeof callback == 'function'){
-                        callback(field.get('value'));
-                    }
-            } else {
-                if(field.get('value') != null && elmts.indexOf(field.get('value'))!=-1){
-                    var value = container.getElement('.selected').get('html').trim();
-                    var fieldValue = field.get('value');
-                    if(fieldValue.indexOf(',') != -1) {
-                        field.set('value', fieldValue.substr(0, fieldValue.lastIndexOf(',')+1).trim() + value);
-                        if(typeof callback == 'function')
-                            callback(field.get('value'));
-                    } else {
-                        field.set('value', value);
-                        if(typeof callback == 'function')
-                            callback(field.get('value'));
-                    }
-                }
+function spanishDate(d){
+    var weekday=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
+
+    var monthname=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+    return fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + ", " + weekday[d.getDay()]+" "+d.getDate()+" de "+monthname[d.getMonth()]+" de "+d.getFullYear();
+}
+
+function getSolrDate(d){
+    return d.getFullYear() + "-" + fixTime(d.getMonth()) + "-" + fixTime(d.getDate())+"T"+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds()) + "Z";
+}
+
+function getReadableDate(d){
+    //alert(d);
+    return  fixTime(d.getDate()) +  "/" +fixTime(d.getMonth() + 1) +  "/" + d.getFullYear() +" "+fixTime(d.getHours()) + ":" + fixTime(d.getMinutes()) + ":" + fixTime(d.getSeconds());
+}
+
+function GetPortNumber(url) {
+    var url_parts = url.split('/');
+
+    var domain_name_parts = url_parts[2].split(':');
+
+    var port_number = domain_name_parts[1];
+
+    return port_number;
+}
+
+function GetLocalPath(url) {
+    var url_parts = url.split('/');
+
+    var local_path_name = url_parts.slice(3).join('/');
+
+    return local_path_name;
+}
+
+function formatJson(val) {
+    var retval = '';
+    var str = val;
+    var pos = 0;
+    var strLen = str.length;
+    var indentStr = '&nbsp;&nbsp;&nbsp;&nbsp;';
+    var newLine = '<br />';
+    var character = '';
+
+    for (var i=0; i<strLen; i++) {
+        character = str.substring(i,i+1);
+
+        if (character == '}' || character == ']') {
+            retval = retval + newLine;
+            pos = pos - 1;
+
+            for (var j=0; j<pos; j++) {
+                retval = retval + indentStr;
+            }
+        }
+
+        retval = retval + character;
+
+        if (character == '{' || character == '[' || character == ',') {
+            retval = retval + newLine;
+
+            if (character == '{' || character == '[') {
+                pos++;
             }
 
-            container.empty();
+            for (var k=0; k<pos; k++) {
+                retval = retval + indentStr;
+            }
+        }
+    }
 
+    return retval;
+}
+
+function lookupGeoData(latitude,longitude,localidad,user) {
+    var geoObj = new Object();
+    var returnFieldMap = new Object();
+    geoObj['startAddress'] = localidad;
+    returnFieldMap[latitude] = '<LAT>';
+    returnFieldMap[longitude] = '<LNG>';
+    window.geoPickerCallback= function(data){
+        $(latitude).value = data.lat;
+        $(longitude).value = data.lng;
+        if(typeof user != 'undefined'){
+            users[user][1] = data.lat;
+            users[user][2] = data.lng;
+        }
+        switchButtons(['compilarButton']);
+    };
+    geoObj['returnCallback'] = 'geoPickerCallback';
+    myGeoPositionGeoPicker(geoObj);
+/*{
+		startAddress     : localidad,//($('localidad') ? $('localidad').value +', ' : '') + 'Argentina',
+		returnFieldMap   : {
+			latitude : '<LAT>',
+            longitude : '<LNG>',
+            'geoposition1c' : '<CITY>',   ...or <COUNTRY>, <STATE>, <DISTRICT>,
+            <CITY>, <SUBURB>, <ZIP>, <STREET>, <STREETNUMBER>
+			'geoposition1d' : '<ADDRESS>'
+		}
+	});*/
+}
+
+var zTags = new Array();
+function getAllTags(){
+    var url = servletUri + "/getTag?name=allNames";
+    var urlProxy = servletProxy + encodeURIComponent(url);
+    new Request({
+        url: urlProxy,
+        method: 'get',
+        onSuccess: function(response) {
+            response.replace('[','').replace(']','').split(',').each(function(tag) {
+                zTags.include(tag.replace(/_/g, ' ').capitalize());
+            });
+        },
+        onFailure: function(){
+        }
+    }).send();
+}
+var extendedStrings = new Array();
+function getAllExtendedStrings(){
+    var url = nodeUri + "/getAllExtendedStrings";
+    var urlProxy = nodeProxy + encodeURIComponent(url);
+    new Request({
+        url: urlProxy,
+        method: 'get',
+        onSuccess: function(response) {
+            JSON.parse(response).each(function(zone) {
+                if(zone)
+                    extendedStrings.include(zone);
+            });
+        },
+        onFailure: function(){
+        }
+    }).send();
+}
+//getAllTags();
+getAllExtendedStrings();
+function populateOptions(event, field, add, elmts, callback, fill){
+    var container;
+    fill = fill ? fill : '';
+    //new Event(event).stop();
+    if((container = field.getNext()) == null || !container.hasClass('suggestions')) {
+        container = new Element('div', {
+            'class': 'suggestions'
+        }).inject(field, 'after').setStyle('display','none');
+        field.addEvent('blur', function(event){
+            if(container && !container.getElement('.selected')){
+                container.empty();
+                container.setStyle('display','none');                
+            }
+        });
+    }
+    
+    switch(event.keyCode){
+        case 13:
+            setOption(field, add, container, callback, fill);
+            //field.fireEvent('blur');
             break;
         case 27:
+            container.setStyle('display','none');
             container.empty();
             break;
         case 38:
-            if(container.getElement('.selected') != container.getFirst()){
-                var previous = container.getElement('.selected').getPrevious();
-                container.getElement('.selected').removeClass('selected');
-                previous.addClass('selected');
+            if(container.getElement('.selected')){
+                if(container.getElement('.selected') != container.getFirst()){
+                    var previous = container.getElement('.selected').getPrevious();
+                    container.getElement('.selected').removeClass('selected');
+                    previous.addClass('selected');
+                }
+            } else {
+                if(container.childNodes.length > 0) {
+                    container.firstChild.addClass('selected');
+                }
             }
             break;
         case 40:
-            if(container.getElement('.selected') != container.getLast()){
-                var next = container.getElement('.selected').getNext();
-                container.getElement('.selected').removeClass('selected');
-                next.addClass('selected');
+            if(container.getElement('.selected')){
+                if(container.getElement('.selected') != container.getLast()){
+                    var next = container.getElement('.selected').getNext();
+                    container.getElement('.selected').removeClass('selected');
+                    next.addClass('selected');
+                }
+            } else {
+                if(container.childNodes.length > 0) {
+                    container.firstChild.addClass('selected');
+                }
             }
+            
             break;
         default:
-
+            if(event.keyCode != 8 && (event.keyCode > 126 || event.keyCode < 32 ))
+                return;
             container.empty();
             // alert("Field: "+field.get('value'));
-            var query = field.get('value').toLowerCase().trim();
-            if(query.length - (add ? query.lastIndexOf(',') - 1 : 0 ) < 3)
+            var query = field.get('value').toLowerCase().trim();            
+            if(query.length - (add ? query.lastIndexOf(typeof add === 'string' ? add : ',') - 1 : 0 ) < 3)
                 return;
             elmts = eval(JSON.stringify(Array.from(elmts)));
             Array.each(elmts,function(el){
-                if(add && query.lastIndexOf(',') != -1)
-                    query = query.substr(query.lastIndexOf(',')+1).trim();
+                if(add && query.lastIndexOf(typeof add === 'string' ? add : ',') != -1)
+                    query = query.substr(query.lastIndexOf(typeof add === 'string' ? add : ',')+1).trim();
                 if(checkRegExp(el.toLowerCase(),query)) {
                     new Element('p', {
-                        'html': el
-                    }).inject(container);
+                        'html': el                        
+                    }).inject(container)
+                    .addEvent('mouseover', function(){
+                        container.getChildren('.selected').removeClass('selected');
+                        this.addClass('selected')
+                    })
+                    .addEvent('mouseout', function(){
+                        container.getChildren('.selected').removeClass('selected');
+                    })
+                    .addEvent('click', function(){
+                        setOption(field, add, container, callback, fill);
+                    });                    
                 }
             });
-            if(container.childNodes.length > 0)
-                container.firstChild.addClass('selected');
-            else {
-                var fieldValue2 = field.get('value');
-                fieldValue2 = fieldValue2.substr(0, fieldValue2.length -1);
-                field.set('value', fieldValue2);
+            if(container.childNodes.length > 0) {
+                container.setStyle('display','block');                
             }
             break;
     }
+        
 }
 
+function setOption(field, add, container, callback, fill){
+    var value = "";
+    var fieldValue = field.get('value');
+    if (container.getElement('.selected')) {
+        value = container.getElement('.selected').get('html').trim();
+        if(!add) {            
+            field.set('value', value);            
+        } else {            
+            add = (typeof add === 'string' ? add : ',');
+            var finalValue = fieldValue.substr(0, fieldValue.lastIndexOf(add)+1).trim();
+            field.set('value', finalValue + value);
+        }
+        if(typeof callback == 'function'){
+            callback(field.get('value'));
+        }
+    } else {
+        if(fieldValue){
+            if(fieldValue != fill)
+                alert("El valor seleccionado no se encuentra en la lista.");
+        
+        }
+        field.set('value',fill);
+    }
+        
+    container.setStyle('display','none');
+    container.empty();    
+}
 
 function checkRegExp(str, patt){
-    var patt1 = new RegExp("^"+patt+"|,\ "+patt,"g");
+    patt = norm(patt);
+    str = norm(str);
+    var regexp= "^"+patt+".*|\ "+patt+".*";
+    alert(regexp + " --- " + str);
+    var patt1 = new RegExp(regexp,"g");
     return patt1.test(str);
 }
 
-function accentsTidy(s){
-    var r=s.toLowerCase();
-    //r = r.replace(new RegExp(/\s/g),"");
-    r = r.replace(new RegExp(/[àáâãäå]/g),"a");
-    r = r.replace(new RegExp(/æ/g),"ae");
-    r = r.replace(new RegExp(/ç/g),"c");
-    r = r.replace(new RegExp(/[èéêë]/g),"e");
-    r = r.replace(new RegExp(/[ìíîï]/g),"i");
-    r = r.replace(new RegExp(/ñ/g),"n");                
-    r = r.replace(new RegExp(/[òóôõö]/g),"o");
-    r = r.replace(new RegExp(/œ/g),"oe");
-    r = r.replace(new RegExp(/[ùúûü]/g),"u");
-    r = r.replace(new RegExp(/[ýÿ]/g),"y");
-    //r = r.replace(new RegExp(/\W/g),"");
-    return r.capitalize();
-};
+function switchButtons(buttons){
+    $$('input[type=submit]').each(function(submit){
+        submit.setStyle('display','none');
+    });
+    buttons.each(function(button){
+        if($(button))
+            $(button).setStyle('display','inline');
+    });
 
+    if($('generateQuery'))
+        $('generateQuery').setStyle('display','inline');
+    if($('volverButton'))
+        $('volverButton').setStyle('display','inline');
+}
 
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+function norm(word) {
+        word = word.toLowerCase()
+        word = word.replace(/à|á|ä|â/g, "a");
+        word = word.replace(/è|é|ë|ê/g, "e");
+        word = word.replace(/ì|í|ï|î/g, "i");
+        word = word.replace(/ò|ó|ö|ô/g, "o");
+        word = word.replace(/ù|ú|ü|û/g, "u");
+        return word;
+
+}

@@ -127,6 +127,7 @@ module.exports.updateExtendedString = function(zone, parent){
 };
 
 function updateExtendedString(zone, parent){
+    var oldExtendedString = zone.extendedString;
     zone.extendedString = normZone(zone.name);
 
     if (parent)
@@ -140,8 +141,11 @@ function updateExtendedString(zone, parent){
         });
     });
     delete zone._id;
-    i18n.add(zone.extendedString, i18n.__(zone.name)+', '+i18n.__(parent.extendedString)); 
-    baseService.update(zones, 'id', zone.id, zone, function(){});
+    if(oldExtendedString)
+        i18n.replace(oldExtendedString, zone.extendedString, i18n.__(zone.name)+', '+i18n.__(parent.extendedString)); 
+    else
+        i18n.add(zone.extendedString, i18n.__(zone.name)+', '+i18n.__(parent.extendedString)); 
+    baseService.update(zones, 'id', zone.id, zone, function(){}, ['parent', 'type', 'state', 'geoData','extendedString']);
     return zone.extendedString;
 }
 

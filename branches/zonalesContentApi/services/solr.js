@@ -113,8 +113,11 @@ function getSolrFilterQuery(zCtx, nuevos) {
         if(zCtx.filters.temp != '' && zCtx.filters.temp != '0')
             res  += (res.length > 0 ? '+AND+' : '&fq=') + 'modified:[NOW-'+zCtx.filters.temp+'+TO+*]';
     } else {        
-        if(nuevos && zCtx.getFirstIndexTime() != "")
-            res  = '&fq=indexTime:['+zCtx.getFirstIndexTime()+'+TO+*]';
+        if(nuevos && zCtx.getFirstModifiedTime() != ""){
+            res  = '&fq=modified:['+zCtx.getFirstModifiedTime()+'+TO+*]';
+//            console.log("");
+        }
+            
     }
     
     if(zCtx.selZone && zCtx.selZone.trim() != '' && (nuevos || zCtx.order === 'relevantes')) {
@@ -203,14 +206,22 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
             if(resp && resp.response && resp.response.docs){
                 var verbatim = {};
                 resp.response.docs.forEach(function(doc){
-                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime())
+                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime()){
                         zCtx.setFirstIndexTime(addMilli(doc.indexTime));
+                    }
+
+                    if(!zCtx.getFirstModifiedTime() || (new Date(zCtx.getFirstModifiedTime()).getTime()) < (new Date(doc.modified)).getTime()){
+                        console.log('MODIFIED: '+doc.modified);
+                        zCtx.setFirstModifiedTime(addMilli(doc.modified));
+                    }
+                        
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                     doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
                     verbatim = JSON.parse(doc.verbatim);
                     verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
                     doc.verbatim = JSON.stringify(verbatim);
+                    
                 });
             }
             if(typeof(resp) != 'undefined'){
@@ -237,14 +248,21 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                 console.log('FIRST INDEX TIME: '+zCtx.getFirstIndexTime());
                 resp.response.docs.forEach(function(doc){
                     console.log('DOC INDEX TIME: '+doc.indexTime);
-                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime())).getTime() < (new Date(doc.indexTime)).getTime())
+                    if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime())).getTime() < (new Date(doc.indexTime)).getTime()){
                         zCtx.setFirstIndexTime(addMilli(doc.indexTime));
+                    }
+                    
+                    if(!zCtx.getFirstModifiedTime() || (new Date(zCtx.getFirstModifiedTime()).getTime()) < (new Date(doc.modified)).getTime()){
+                        console.log('MODIFIED: '+doc.modified);
+                        zCtx.setFirstModifiedTime(addMilli(doc.modified));
+                    }
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
                         zCtx.setMaxRelevance(JSON.parse(doc.verbatim).relevance);
                     doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
                     verbatim = JSON.parse(doc.verbatim);
                     verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
                     doc.verbatim = JSON.stringify(verbatim);
+                    console.log("Source: "+doc.source);
                 });
                 zContextService.setStart(sessionId, resp.response.docs.length+1);
             }

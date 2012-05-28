@@ -251,7 +251,7 @@ a#fdbk_close:hover {
 .resultTable td {
 	border: 1px solid;
     padding: 5px;
-    width: 25%;
+    width: 0%;
     text-align: center;
 }
 

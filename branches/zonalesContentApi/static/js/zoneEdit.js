@@ -143,11 +143,12 @@ function saveZone() {
 
     var objGeo;
     if ($('geoJson').value != '') {
-        objGeo = eval('(' + $('geoJson').value + ')');    
+        objGeo = JSON.parse($('geoJson').value);    
     }
 
     if(geoedit && $('geoJson').value != '') {
         jsonZone += ',"geoData":"' + geoZoneId + '"';
+        objGeo.id = geoZoneId;
         socket.emit('updateGeoData', objGeo, function (resp) {
             //var resp = eval('(' + data + ')');
             if (resp.cod == 100) {

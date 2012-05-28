@@ -142,7 +142,7 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
                 if(data[field])
                     reg[field] = data[field];
             });
-            console.log('---------> ID: '+oid + ' --- OBJ: '+JSON.stringify(reg));
+            //console.log('---------> ID: '+JSON.stringify(oid) + ' --- OBJ: '+JSON.stringify(reg));
             delete reg._id;
             
             model.update(oid, reg, function(err) {
@@ -154,6 +154,7 @@ module.exports.update = function update(model, searchFieldName, searchFieldData,
                 return(this);
             });            
         } else {        
+            //console.log('---------> ID: '+JSON.stringify(oid) + ' --- OBJ: '+JSON.stringify(data));
             model.update(oid, data, function(err) {
                 if (err) {
                     console.log('Error actualizando el dato --> ' + err);
