@@ -50,6 +50,8 @@ public interface Visitor
   public Object visit(ZCrawling zcrawling, Rule$min_num_shuld_match rule);
   public Object visit(ZCrawling zcrawling, Rule$incluyeTagsFuente rule);
   public Object visit(ZCrawling zcrawling, Rule$temporalidad rule);
+  public Object visit(ZCrawling zcrawling, Rule$cantTiempo rule);
+  public Object visit(ZCrawling zcrawling, Rule$unidadTiempo rule);
   public Object visit(ZCrawling zcrawling, Rule$minutos rule);
   public Object visit(ZCrawling zcrawling, Rule$horas rule);
   public Object visit(ZCrawling zcrawling, Rule$dias rule);

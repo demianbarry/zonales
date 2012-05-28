@@ -74,6 +74,10 @@ final public class Rule$minutos extends Rule {
         } else {
             context.index = s0;
         }
+        
+        if(rule != null) {
+            context.getZcrawling().setPeriodicidad(Integer.valueOf(rule.spelling));
+        }
 
         context.pop("minutos", parsed);
 

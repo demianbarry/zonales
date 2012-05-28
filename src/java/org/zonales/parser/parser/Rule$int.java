@@ -45,16 +45,73 @@ final public class Rule$int extends Rule
         {
           boolean f1 = true;
           int c1 = 0;
+          for (int i1 = 0; i1 < 1 && f1; i1++)
+          {
+            parsed = false;
+            if (!parsed)
+            {
+              {
+                ArrayList<Rule> e2 = new ArrayList<Rule>();
+                int s2 = context.index;
+                parsed = true;
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Terminal$NumericValue.parse(context, "%x30-39", "[\\x30-\\x39]", 1);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                  e1.addAll(e2);
+                else
+                  context.index = s2;
+              }
+            }
+            if (parsed) c1++;
+            f1 = parsed;
+          }
           while (f1)
           {
-            rule = Rule$DIGIT.parse(context);
-            if ((f1 = rule != null))
+            parsed = false;
+            if (!parsed)
             {
-              e1.add(rule);
-              c1++;
+              {
+                ArrayList<Rule> e2 = new ArrayList<Rule>();
+                int s2 = context.index;
+                parsed = true;
+                if (parsed)
+                {
+                  boolean f2 = true;
+                  int c2 = 0;
+                  for (int i2 = 0; i2 < 1 && f2; i2++)
+                  {
+                    rule = Terminal$NumericValue.parse(context, "%x30-39", "[\\x30-\\x39]", 1);
+                    if ((f2 = rule != null))
+                    {
+                      e2.add(rule);
+                      c2++;
+                    }
+                  }
+                  parsed = c2 == 1;
+                }
+                if (parsed)
+                  e1.addAll(e2);
+                else
+                  context.index = s2;
+              }
             }
+            if (parsed) c1++;
+            f1 = parsed;
           }
-          parsed = true;
+          parsed = c1 >= 1;
         }
         if (parsed)
           e0.addAll(e1);
@@ -79,3 +136,5 @@ final public class Rule$int extends Rule
  * eof
  * -----------------------------------------------------------------------------
  */
+
+

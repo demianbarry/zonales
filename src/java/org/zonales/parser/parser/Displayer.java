@@ -157,6 +157,14 @@ public class Displayer implements Visitor {
     public Object visit(ZCrawling zcrawling, Rule$temporalidad rule) {
         return visitRules(zcrawling, rule.rules);
     }
+    
+    public Object visit(ZCrawling zcrawling, Rule$unidadTiempo rule) {
+        return visitRules(zcrawling, rule.rules);
+    }
+    
+    public Object visit(ZCrawling zcrawling, Rule$cantTiempo rule) {
+        return visitRules(zcrawling, rule.rules);
+    }
 
     public Object visit(ZCrawling zcrawling, Rule$minutos rule) {
         return visitRules(zcrawling, rule.rules);
