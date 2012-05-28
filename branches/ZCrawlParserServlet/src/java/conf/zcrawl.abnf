@@ -53,9 +53,13 @@ min-num-shuld-match =   cadena;	# segun la especificación y formato de solr
 
 incluyeTagsFuente   =   mspace "incluye" mspace "los" mspace "tags" mspace "de" mspace "la" mspace "fuente" space;
 
-temporalidad    =   minutos mspace "minutos"
-                        /horas mspace "horas"
-                        /dias mspace "dias";
+temporalidad    =   cantTiempo mspace unidadTiempo;
+
+cantTiempo      =   int;
+
+unidadTiempo    =   "minutos" /
+                    "horas" /
+                    "dias";
 
 minutos         =   int;
 
@@ -81,7 +85,7 @@ DIGIT		=   %x30-39; #0-9
 
 HEXDIG		=   DIGIT / "A" / "B" / "C" / "D" / "E" / "F"; 
 								
-int		=   *DIGIT;
+int		=   1*(%x30-39);
 
 URI           = scheme ":" hier-part [ "?" query ] [ "#" fragment ] ;
 

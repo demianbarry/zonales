@@ -78,7 +78,7 @@ final public class Rule$dias extends Rule {
         context.pop("dias", parsed);
 
         if (rule != null) {
-            context.getZcrawling().setTemporalidad(String.valueOf(Integer.valueOf(rule.spelling.trim()) * 24 * 60));
+            context.getZcrawling().setPeriodicidad(Integer.valueOf(rule.spelling) * 24 * 60);
         }
 
         return (Rule$dias) rule;

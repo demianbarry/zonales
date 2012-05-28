@@ -78,7 +78,7 @@ final public class Rule$horas extends Rule {
         context.pop("horas", parsed);
 
         if (rule != null) {
-            context.getZcrawling().setTemporalidad(String.valueOf(Integer.valueOf(rule.spelling.trim()) * 60));
+            context.getZcrawling().setPeriodicidad(Integer.valueOf(rule.spelling) * 60);
         }
 
         return (Rule$horas) rule;
