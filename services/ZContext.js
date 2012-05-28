@@ -33,6 +33,7 @@ function ZContext(){
     this.efZone = "";
     this.start=0;
     this.firstIndexTime="";
+    this.firstModifiedTime="";
     this.maxRelevance=0;
     this.searchKeywords=""; 
     this.order = "";
@@ -43,6 +44,14 @@ function ZContext(){
     
     this.getFirstIndexTime=function(){
         return this.firstIndexTime;
+    }
+
+    this.setFirstModifiedTime=function(modifiedTime){
+        this.firstModifiedTime = modifiedTime;
+    }
+
+    this.getFirstModifiedTime=function(){
+        return this.firstModifiedTime;
     }
 
     this.setMaxRelevance=function(maxRelevance){
