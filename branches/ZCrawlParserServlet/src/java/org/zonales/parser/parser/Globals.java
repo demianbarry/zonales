@@ -25,6 +25,8 @@ public class Globals {
     public static Integer port;
     public static String host;
     public static String db;
+    public static String nodeUrl;
+    public static Integer timeout;
 
     public static HttpURLConnection getURLConnection(String url, int timeout) {
         try {

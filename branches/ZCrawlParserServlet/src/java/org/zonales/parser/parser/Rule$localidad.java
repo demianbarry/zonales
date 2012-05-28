@@ -9,8 +9,17 @@
  */
 package org.zonales.parser.parser;
 
+import com.google.gson.Gson;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.zonales.errors.ZMessages;
+import org.zonales.helpers.ConnHelper;
 import org.zonales.metadata.ZCrawling;
+import org.zonales.scheduler.UrlService;
 import org.zonales.tagsAndZones.daos.ZoneDao;
 
 final public class Rule$localidad extends Rule {
@@ -73,8 +82,25 @@ final public class Rule$localidad extends Rule {
             context.index = s0;
         }
         
-        if(rule != null)
-            context.getZcrawling().setLocalidad(rule.spelling.trim());
+        if(rule != null) {
+            try {
+                String url = Globals.nodeUrl + "/zones/getKey?word=" + rule.spelling.trim().replace("\"", "");
+                Logger.getLogger(Rule$localidad.class.getName()).log(Level.INFO, "Recuperación Key de zona. URL: {0}", url);
+                HttpURLConnection connection = ConnHelper.getURLConnection(url, Globals.timeout);
+                int code = connection.getResponseCode();
+                Logger.getLogger(Rule$localidad.class.getName()).log(Level.INFO, "Recuperación Key de zona. Codigo respuesta: {0}", code);
+                if (code == 200) {                
+                    String zoneKey = ConnHelper.getStringFromInpurStream(connection.getInputStream());
+                    Logger.getLogger(Rule$localidad.class.getName()).log(Level.INFO, "Recuperación Key de zona. Key: {0}", zoneKey);
+                    context.getZcrawling().setLocalidad(zoneKey);
+                }
+                connection.disconnect();
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Rule$localidad.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Rule$localidad.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         context.pop("localidad", parsed);
 

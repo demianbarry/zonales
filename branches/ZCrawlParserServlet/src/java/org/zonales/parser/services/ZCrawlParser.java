@@ -19,12 +19,16 @@ package org.zonales.parser.services;
  *
  */
 import com.google.gson.Gson;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.zonales.errors.ZMessages;
 import org.zonales.metadata.ZCrawling;
 import org.zonales.parser.parser.Globals;
@@ -52,6 +56,8 @@ public class ZCrawlParser extends HttpServlet {
         Globals.host = props.getProperty("db_host");
         Globals.port = Integer.valueOf(props.getProperty("db_port"));
         Globals.db = props.getProperty("db_name");
+        Globals.nodeUrl = props.getProperty("node_url");
+        Globals.timeout = Integer.valueOf(props.getProperty("timeout"));
 
         ZCrawling zcrawling = new ZCrawling();
         String extraction = request.getParameter("q");
