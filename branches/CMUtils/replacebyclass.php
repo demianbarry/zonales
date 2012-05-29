@@ -75,7 +75,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             </tr>
                             <tr>
                                 <td class="label"><label>Localidad</label></td>
-                                <td class="input"><input type="text" id="localidad" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);"></td>
+                                <td class="input"><input type="text" id="localidad" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, extendedString);"></td>
                             </tr>                                                                     
                             <tr id="geoFuente">
                                 <td class="label"><label>Geolocalización Fuente</label></td>

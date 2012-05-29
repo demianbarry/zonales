@@ -5,12 +5,13 @@
     <link href="ZoneStyle.css" rel="stylesheet" type="text/css" />
     <link type="text/css" rel="stylesheet" href="content.css">
     <link type="text/css" rel="stylesheet" href="global.css">
+    <script type="text/javascript" src="/media/system/js/json2-compressed.js"></script>
     <script type="text/javascript" src="mootools.js"></script>
     <script type="text/javascript">
         var host = '<?php echo $tomcat_host; ?>';
         var port = '<?php echo $tomcat_port; ?>';
         window.addEvent('domready', function() {
-            getAllZones();
+            //getAllZones();
             getAllTags();
             //getFuenteTypes();
             //getResultTimes();
@@ -45,7 +46,7 @@
                             <td width="35%" class="label"><label>Zona</label></td>
                             <td>
                                 <div> 
-                                    <input id="getZones" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zones);">
+                                    <input id="getZones" onkeyup="populateOptions(event, this, false, extendedStrings);">
                                 </div>
                             </td>
                         </tr>

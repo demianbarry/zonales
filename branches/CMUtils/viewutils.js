@@ -1,4 +1,5 @@
-document.write('<script type="text/javascript" src="utils.js"></script>');
+if(typeof zUtilsJS === 'undefined' || !zUtilsJS)
+document.write('<script type="text/javascript" src="../components/com_zonales/utils.js"></script>');
 
 /* 
  * To change this template, choose Tools | Templates
