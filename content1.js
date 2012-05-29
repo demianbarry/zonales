@@ -1,4 +1,4 @@
-document.write('<script type="text/javascript" src="utils.js"></script>');
+document.write('<script type="text/javascript" src="../components/com_zonales/utils.js"></script>');
 
 /*
  *  <field name="indexTime" type="date" stored="true" indexed="true" default="NOW-3HOURS"/>

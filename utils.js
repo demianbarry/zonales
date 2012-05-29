@@ -1,5 +1,6 @@
 var proxy = 'curl_proxy.php?host=localhost&port=38080&ws_path=';
 var servletUri = 'ZCrawlSources';
+var proxyNode = 'curl_proxy.php?host=localhost&port=4000&ws_path=';
 
 String.prototype.capitalize = function(){
     return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){
@@ -126,16 +127,35 @@ function lookupGeoData(latitude,longitude,localidad,user) {
 
 var zones = new Array();
 var zTags = new Array();
+var places = new Array();
 
 function getAllZones(){
-    var url = servletUri + "/getZone?name=allNames";
+    var url = servletUri + "/getZone?name=allExtendedStrings";
     var urlProxy = proxy + encodeURIComponent(url);
     new Request({
         url: urlProxy,
         method: 'get',        
         onSuccess: function(response) {
-            response.replace('[','').replace(']','').split(',').each(function(zone) {
+            
+            JSON.parse(response.replace(/'/g,'"')).each(function(zone) {
                 zones.include(zone.replace(/_/g, ' ').capitalize());
+            });
+        },
+        onFailure: function(){
+        }
+    }).send();
+}
+
+function getAllPlaces(){
+    var url = "place/getAllExtendedStrings?short=true";
+    var urlProxy = proxyNode + encodeURIComponent(url);
+    new Request({
+        url: urlProxy,
+        method: 'get',
+        onSuccess: function(response) {
+            var result = JSON.parse(response);
+            result.each(function(place) {
+               places.push(place.replace(/_/g, " ").capitalize());
             });
         },
         onFailure: function(){

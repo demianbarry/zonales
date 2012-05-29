@@ -12,26 +12,17 @@
             var host = '<?php echo $tomcat_host; ?>';
             var port = '<?php echo $tomcat_port; ?>';
             window.addEvent('domready', function(){
+                getAllTags();
                 if(gup('id') != null && gup('id') != '') {
                     getZGram(gup('id'));
                 } else {
                     switchByWorkflow('no-compiled');
                 }
-				
-                getAllZones();
-                getAllTags();
-				
-                $('table_content').getElements('input').each(function(el){
-                    el.addEvent('change', function(){						
-                        switchButtons(['compilarButton']);
-                    });
+                
+                $('fuente').addEvent('change', function(){
+                    toggleInputs();
                 });
-
-                if ($('fuente').options[$('fuente').selectedIndex].value =='facebook') 
-                    $('fbUtilsIcon').setStyle('display','block'); 
-                else 
-                    $('fbUtilsIcon').setStyle('display','none');
-            });
+            });            
         </script>		        
         <script type="text/javascript" src="zgram.js"></script>
         <script type="text/javascript" src="viewutils.js"></script>				
@@ -62,10 +53,10 @@
                                 <td>	
                                     <div class="leftDiv">
                                         <div class="textExtractionDiv">
-                                            <textarea id="textExtraction" cols="50" rows="5" style="float: left;" onchange="switchButtons(['compilarButton']);"></textarea>
+                                            <textarea id="textExtraction" class="noPublish" cols="50" rows="5" style="float: left;" onchange="if (zgram.estado == 'published') publishZgram(false);switchButtons(['compilarButton']);"></textarea>
                                         </div>
                                         <div class="generateButtonDiv">
-                                            <input id="generateQuery" value="< Generar consulta" type="submit" onclick="generateQuery();">
+                                            <input id="generateQuery" class="noPublish" value="< Generar consulta" type="submit" onclick="generateQuery();">
                                         </div>
                                     </div>					
                                 </td>
@@ -99,16 +90,16 @@
                         <tbody>
                             <tr>
                                 <td class="label"><label>Descripción</label></td>
-                                <td class="input"><input type="text" id="descripcion" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="descripcion" value=""></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Localidad</label></td>
-                                <td class="input"><input type="text" id="localidad" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);"></td>
+                                <td class="input"><input type="text" class="noPublish" id="localidad" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, extendedStrings);"></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Fuente</label></td>
                                 <td class="input">
-                                    <select id="fuente" onchange="if (this.value=='facebook') $('fbUtilsIcon').setStyle('display','block'); else $('fbUtilsIcon').setStyle('display','none'); if(this.value == 'feed') {$('uriFuente').setStyle('display','');$('geoFuente').setStyle('display','');} else {$('uriFuente').setStyle('display','none');$('geoFuente').setStyle('display','none');}">
+                                    <select id="fuente" class="noPublish" >
                                         <option value="facebook">Facebook</option>
                                         <option value="twitter">Twitter</option>
                                         <option value="feed">Feed</option>
@@ -117,22 +108,20 @@
                             <!--<input type="text" id="fuente" value="">-->
                                 </td>
                             </tr>
-                            <tr id="uriFuente">
+                            <tr id="uriFuente" style="display:none">
                                 <td class="label"><label>URI Fuente</label></td>
                                 <td class="input">
-                                    <input type="text" id="uri" value="" onchange="if(this.value.trim() != '') {$('geoFuente').setStyle('display','');} else {$('geoFuente').setStyle('display','none');}">
+                                    <input class="noPublish" type="text" id="uri" value="" onchange="if(this.value.trim() != '') {$('geoFuente').setStyle('display','');} else {$('geoFuente').setStyle('display','none');}">
+                                    <img width="16" height="16" border="0" onclick="window.open('http://192.168.0.2:4000/CMUtils/selectorsEdit?url='+$('uri').value, 'feedSelectors')" title="Actualizar selectores CSS del feed" src="geolocation.png" alt="Actualizar selectores CSS del feed">
                                 </td>
-                            </tr>                        
-                            <tr id="geoFuente">
-                                <td class="label"><label>Geolocalización Fuente</label></td>
+                            </tr>
+                            <tr id="geoFuente" style="display:none">
+                                <td class="label"><label>Lugar de la Fuente</label></td>
                                 <td class="input">									
-                                    <label style="width: 10%">Latitud: </label>
-                                    <input type="text" id="latfeed" value="" style="width: 12%">
-                                    <label style="width: 10%">Longitud: </label>
-                                    <input type="text" id="lonfeed" value="" style="width: 12%">
-                                    <img width="16" height="16" border="0" onclick="lookupGeoData('latfeed','lonfeed',($('localidad') ? $('localidad').value +', ' : '') + 'Argentina');" title="Geolocalizar feed" src="geolocation.png" alt="Geolocalizar feed">                                    
+                                    <label style="width: 10%">Lugar: </label>
+                                    <input class="noPublish" type="text" id="feedPlace" value="" style="width: 32%" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, places);">
                                 </td>
-                            </tr>                        
+                            </tr>                           
                             <tr>
                                 <td class="label">
                                     <label>Estado</label>
@@ -150,19 +139,23 @@
                             </tr>
                             <tr>
                                 <td class="label"><label>Tags</label></td>
-                                <td class="input"><input type="text" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zTags);"></td>
+                                <td class="input"><input type="text" class="noPublish" id="tags" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, zTags);"></td>
                             </tr>
-                            <tr>
+                            <tr class="usuarios">
                                 <td class="label"><label>Incluir Usuario</label></td>
                                 <td class="input">
                                     <div>
-                                        <input type="text" id="iusuario" value="" style="width: 50%">
-                                        <label style="width: 10%">Latitud: </label>
-                                        <input type="text" id="latusuario" value="" style="width: 12%">
+                                        <input type="text" id="iusuario" class="noPublish" value="" style="width: 50%">
+                                        <label style="width: 10%">Place: </label>
+                                        <div style="width: 32%;display: inline">
+                                            <input type="text" id="userPlace" class="noPublish" value="" style="width: 32%" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, true, places);">
+                                        </div>
+                                        <!--
                                         <label style="width: 10%">Longitud: </label>
                                         <input type="text" id="lonusuario" value="" style="width: 12%">
                                         <img width="16" height="16" border="0" onclick="lookupGeoData('latusuario','lonusuario',($('localidad') ? $('localidad').value +', ' : '') + 'Argentina');" title="Geolocalizar usuario" src="geolocation.png" alt="Geolocalizar usuario">
-                                        <img border="0" width="16" height="16" alt="Agregar usuario" src="addIcon.gif" title="Agregar usuario" onclick="addUser($('iusuario').get('value'), $('latusuario').get('value'), $('lonusuario').get('value'));">
+                                        -->
+                                        <img border="0" width="16" height="16" class="noPublish noPublishImg" alt="Agregar usuario" src="addIcon.gif" title="Agregar usuario" onclick="addUser($('iusuario').get('value'), $('userPlace').get('value'));">
                                     </div>
                                 </td>
                                 <td>
@@ -177,41 +170,49 @@
                             </tr>
                             <tr>
                                 <td class="label"><label>Incluir Palabras</label></td>
-                                <td class="input"><input type="text" id="ipalabras" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="ipalabras" value=""></td>
                             </tr>
-                            <tr>
+                            <tr class="usuarios">
                                 <td class="label"><label>Excluir Usuario</label></td>
-                                <td class="input"><input type="text" id="eusuario" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="eusuario" value=""></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Excluir Palabras</label></td>
-                                <td class="input"><input type="text" id="epalabras" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="epalabras" value=""></td>
                             </tr>
 
-                            <tr>
+                            <tr class="usuarios">
                                 <td class="label"><label>Commenters</label></td>
-                                <td class="input"><input type="text" id="commenters" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="commenters" value=""></td>
+                            </tr>
+                            <tr class="usuarios">
+                                <td class="label"><label>Incluye Publicaciones de terceros</label></td>
+                                <td class=""><input id="third-party-posts" class="noPublish" type="checkbox" onclick=""></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Incluye Comentarios</label></td>
-                                <td class=""><input id="allCommenters" type="checkbox" onclick=""></td>
+                                <td class=""><input id="allComments" class="noPublish" type="checkbox" onclick=""></td>
                             </tr>
-                            <tr>
+                            <tr class="usuarios">
                                 <td class="label"><label>Lista Negra de Usuarios</label></td>
-                                <td class=""><input id="lnegraus" type="checkbox"></td>
+                                <td class=""><input id="lnegraus" class="noPublish" type="checkbox"></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Lista Negra de Palabras</label></td>
-                                <td class=""><input id="lnegrapa" type="checkbox"></td>
+                                <td class=""><input id="lnegrapa" class="noPublish" type="checkbox"></td>
                             </tr>
                             <tr>
                                 <td class="label"><label>Min Actions</label></td>
-                                <td class="input"><input type="text" id="minActions" value=""></td>
+                                <td class="input"><input type="text" class="noPublish" id="minActions" value=""></td>
                             </tr>
 
                             <tr>
                                 <td class="label"><label>Incluye tags de Fuente</label></td>
-                                <td class=""><input id="sourceTags" type="checkbox"></td>
+                                <td class=""><input id="sourceTags" class="noPublish" type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><label>Periocidad de Extraccion en minutos</label></td>
+                                <td class="input"><input type="text" class="noPublish" id="tempExtraccion" value=""></td>
                             </tr>
                         </tbody>
                     </table>

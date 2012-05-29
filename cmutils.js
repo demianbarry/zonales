@@ -466,9 +466,11 @@ function showFacebookUserProfile() {
 }
 
 function showFacebookUserCommenters() {
+    var url = fbServletURL + "?getCommenters=true&users=" + $('getCommentersUserId').get('value');
+    var urlProxy = proxyfb + encodeURIComponent(url);
     if ($('getCommentersUserId').get('value') != "") {
         var reqId = new Request.JSON({
-            url: fbServletURL + "?getCommenters=true&users=" + $('getCommentersUserId').get('value'),
+            url: urlProxy,
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();
@@ -528,9 +530,12 @@ function showFacebookUserCommenters() {
 }
 
 function showFacebookCommentersByKeywords() {
+    var url = fbServletURL + "?getCommenters=true&keywords=" + $('getCommentersKeywords').get('value');
+    var urlProxy = proxyfb + encodeURIComponent(url);
+    
     if ($('getCommentersKeywords').get('value') != "") {
         var reqId = new Request.JSON({
-            url: fbServletURL + "?getCommenters=true&keywords=" + $('getCommentersKeywords').get('value'),
+            url: urlProxy,
             method: 'get',
             onRequest: function(){
                 $('results_content').empty();

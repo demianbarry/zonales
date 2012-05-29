@@ -7,7 +7,7 @@ var metadata = null;
 var cantExtract = 0;
 var cantUsers = 0;
 var users = new Array();
-
+var node_port = 4000;
 
 function switchByWorkflow(state){
     var estado;
@@ -28,6 +28,12 @@ function switchByWorkflow(state){
             break;
         case 'published':		
             switchButtons(['despublicarButton','extraerButton']);
+            $$('.noPublish').each(function(element) {
+                element.disabled = true;
+                if (element.hasClass('noPublishImg')) {
+                    element.setStyle('visibility', 'hidden');
+                }
+            });
             break;
         case 'unpublished':
             switchButtons(['compilarButton','anularButton']);
@@ -50,68 +56,68 @@ window.addEvent('domready', function(){
 */
 
 function refreshZGram(){	
-    $('table_content').getElements('input').each(function(element){
-        if(element.get('type') == 'checkbox') {
-            element.set('checked', false);
-        } else {
-            element.set('value','');
-        }
-    });
-    if(zgram == null) {
-        $('table_content').setStyle('display','none');
-        return;
-    } else {
-        $('table_content').setStyle('display','block');
-    }		
-		
-    $('descripcion').set('value',zgram.descripcion);
-    $('localidad').set('value',zgram.localidad);
-    $('fuente').set('value',zgram.fuente);
-    if (zgram.fuente =='facebook') 
-        $('fbUtilsIcon').setStyle('display','block'); 
-    else 
-        $('fbUtilsIcon').setStyle('display','none');
-			
-    if(zgram.fuente == 'feed') {
-        $('uriFuente').setStyle('display','');
-        $('geoFuente').setStyle('display','');
-    }
-    else {
-        $('uriFuente').setStyle('display','none');
-        $('geoFuente').setStyle('display','none');
-    }
-		
-    $('uri').set('value',zgram.uriFuente);
-    if($('uri').value.trim() != '') {
-        $('geoFuente').setStyle('display','');
-    } else {
-        $('geoFuente').setStyle('display','none');
-    }
-	
-    $('latfeed').set('value', zgram.sourceLatitude);
-    $('lonfeed').set('value', zgram.sourceLongitude);
-	
-    $('estado').set('value',zgram.estado);
-    $('tags').set('value',zgram.tags.join(','));
-    if (users.length > 0) {
-        $('userstd').removeChild($('users_table'));
-    }
-    users.empty();
-    cantUsers = 0;
-    var usuariosCant = -1;
-    if(typeOf(zgram.criterios) == 'array') {
-        zgram.criterios.each(function(criterio){
-            
-            if (typeOf(criterio.deLosUsuarios) == 'array') {
-                criterio.deLosUsuarios.each(function(usuario) {
-                    usuariosCant++;
-                    user = new Array();
-                    users[usuariosCant] = user;
-                    users[usuariosCant][0] = usuario;
-                });
+    if($('table_content')){
+        $('table_content').getElements('input').each(function(element){
+            if(element.get('type') == 'checkbox') {
+                element.set('checked', false);
+            } else {
+                element.set('value','');
             }
+        });
+        if(zgram == null) {
+            $('table_content').setStyle('display','none');
+            return;
+        } else {
+            $('table_content').setStyle('display','block');
+        }		
+		
+        $('descripcion').set('value',zgram.descripcion);
+        $('localidad').set('value', getZoneWord(zgram.verbatim));
+        $('fuente').set('value',zgram.fuente);
+        if (zgram.fuente =='facebook') 
+            $('fbUtilsIcon').setStyle('display','block'); 
+        else 
+            $('fbUtilsIcon').setStyle('display','none');
+			
+        if(zgram.fuente == 'feed') {
+            $('uriFuente').setStyle('display','');
+            $('geoFuente').setStyle('display','');
+        }
+        else {
+            $('uriFuente').setStyle('display','none');
+            $('geoFuente').setStyle('display','none');
+        }
+		
+        $('uri').set('value',zgram.uriFuente);
+        if($('uri').value.trim() != '') {
+            $('geoFuente').setStyle('display','');
+        } else {
+            $('geoFuente').setStyle('display','none');
+        }
+	
+        $('feedPlace').set('value', zgram.place);        
+	
+        $('estado').set('value',zgram.estado);
+        $('tags').set('value',zgram.tags.join(','));
+        if (users.length > 0) {
+            $('userstd').removeChild($('users_table'));
+        }
+        users.empty();
+        cantUsers = 0;
+        var usuariosCant = -1;
+        if(typeOf(zgram.criterios) == 'array') {
+            zgram.criterios.each(function(criterio){
             
-            if (typeOf(criterio.deLosUsuariosLatitudes) == 'array') {
+                if (typeOf(criterio.deLosUsuarios) == 'array') {
+                    criterio.deLosUsuarios.each(function(usuario) {
+                        usuariosCant++;
+                        user = new Array();
+                        users[usuariosCant] = user;
+                        users[usuariosCant][0] = usuario;
+                    });
+                }
+            
+                /*if (typeOf(criterio.deLosUsuariosLatitudes) == 'array') {
                 var usuariosLat = -1;
                 criterio.deLosUsuariosLatitudes.each(function(usuarioLat) {
                     usuariosLat++;
@@ -125,54 +131,74 @@ function refreshZGram(){
                     usuariosLon++;
                     users[usuariosLon][2] = usuarioLon;
                 });
-            }
+            }*/
+                if (typeOf(criterio.deLosUsuariosPlaces) == 'array') {
+                    var usuariosPlace = -1;
+                    criterio.deLosUsuariosPlaces.each(function(usuarioPlace) {
+                        usuariosPlace++;
+                        users[usuariosPlace][1] = usuarioPlace;
+                    });
+                }
 
-            /*if(typeOf(criterio.deLosUsuarios) == 'array') {
+                /*if(typeOf(criterio.deLosUsuarios) == 'array') {
                 $('iusuario').set('value', ($('iusuario').get('value') != '' ? ($('iusuario').get('value') + ',') : '') + criterio.deLosUsuarios.join(','));
             }*/
 
-            if(typeOf(criterio.palabras) == 'array') {
-                $('ipalabras').set('value', ($('ipalabras').get('value') != '' ? ($('ipalabras').get('value') + ',') : '') + criterio.palabras.join(','));
-            }
-        });
-    }
-    for (i = 0; i <= usuariosCant; i++) {
-        addUser(users[i][0], users[i][1], users[i][2]);
-    }
-    if(typeOf(zgram.noCriterios) == 'array') {
-        zgram.noCriterios.each(function(nocriterio){
-            if(typeOf(nocriterio.deLosUsuarios) == 'array') {
-                $('eusuario').set('value', ($('eusuario').get('value') != '' ? ($('eusuario').get('value') + ',') : '') + nocriterio.deLosUsuarios.join(','));
-            }
-            if(typeOf(nocriterio.palabras) == 'array') {
-                $('epalabras').set('value', ($('epalabras').get('value') != '' ? ($('epalabras').get('value') + ',') : '') + nocriterio.palabras.join(','));
-            }
-        });
-    }
+                if(typeOf(criterio.palabras) == 'array') {
+                    $('ipalabras').set('value', ($('ipalabras').get('value') != '' ? ($('ipalabras').get('value') + ',') : '') + criterio.palabras.join(','));
+                }
+            });
+        }
+        for (i = 0; i <= usuariosCant; i++) {
+            addUser(users[i][0], users[i][1]/*, users[i][2]*/);
+        }
+        if(typeOf(zgram.noCriterios) == 'array') {
+            zgram.noCriterios.each(function(nocriterio){
+                if(typeOf(nocriterio.deLosUsuarios) == 'array') {
+                    $('eusuario').set('value', ($('eusuario').get('value') != '' ? ($('eusuario').get('value') + ',') : '') + nocriterio.deLosUsuarios.join(','));
+                }
+                if(typeOf(nocriterio.palabras) == 'array') {
+                    $('epalabras').set('value', ($('epalabras').get('value') != '' ? ($('epalabras').get('value') + ',') : '') + nocriterio.palabras.join(','));
+                }
+            });
+        }
 
-    $('commenters').set('value', typeOf(zgram.comentarios) == 'array' ? zgram.comentarios.join(',') : '');
-	
-    $('allCommenters').set('checked',zgram.incluyeComentarios);
+        $('commenters').set('value', typeOf(zgram.comentarios) == 'array' ? zgram.comentarios.join(' ') : '');
+        
+        $('third-party-posts').set('checked',zgram.extraePublicacionesDeTerceros);
+        
+        $('allComments').set('checked',zgram.incluyeComentarios);
 
-    if(typeOf(zgram.filtros) == 'array') {
-        zgram.filtros.each(function(filtro){
-            if(filtro.minActions != null) {
-                $('minActions').set('value', filtro.minActions);
-            }
-            if(filtro.listaNegraDeUsuarios != null) {
-                $('lnegraus').set('checked', filtro.listaNegraDeUsuarios);
-            }			
-            if(filtro.listaNegraDePalabras != null) {
-                $('lnegrapa').set('checked',filtro.listaNegraDePalabras);
-            }
+        if(typeOf(zgram.filtros) == 'array') {
+            zgram.filtros.each(function(filtro){
+                if(filtro.minActions != null) {
+                    $('minActions').set('value', filtro.minActions);
+                }
+                if(filtro.listaNegraDeUsuarios != null) {
+                    $('lnegraus').set('checked', filtro.listaNegraDeUsuarios);
+                }			
+                if(filtro.listaNegraDePalabras != null) {
+                    $('lnegrapa').set('checked',filtro.listaNegraDePalabras);
+                }
 			
-        });
-    }
-    if(zgram.verbatim) {
-        $('textExtraction').set('value', zgram.verbatim);
-    }    
+            });
+        }
+        if(zgram.verbatim) {
+            $('textExtraction').set('value', zgram.verbatim.replace(/\\"/g, '"'));
+        }    
 
-    $('sourceTags').set('checked',zgram.tagsFuente);
+        $('sourceTags').set('checked',zgram.tagsFuente);
+        $('tempExtraccion').set('value', getPeriodicidad(zgram.periodicidad));
+    }
+}
+
+function getPeriodicidad(periodicidad) {
+    if (periodicidad < 60)
+        return '' + periodicidad + ' minutos';
+    if (periodicidad < 1440)
+        return '' + Math.round(periodicidad / 60) + ' horas';
+    
+    return '' + Math.round(periodicidad / 1440) + ' dias';
 }
 
 function testExtraction(metadatas){
@@ -186,9 +212,12 @@ function testExtraction(metadatas){
     } 
 }
 
-function publishZgram(publish){
-    if (zgram != null) {
-        var url = '/ZCrawlSources/'+(publish ? 'publishService' : 'unpublishService')+'?id='+zgram._id.$oid;
+function publishZgram(publish, id){
+    if (zgram != null || id) {
+        $$('.noPublish').each(function(element) {
+            element.disabled = publish;
+        });
+        var url = '/ZCrawlSources/'+(publish ? 'publishService' : 'unpublishService')+'?id='+(id ? id : zgram._id.$oid);
         var urlProxy = 'curl_proxy.php';
         new Request({
             url: encodeURIComponent(urlProxy),
@@ -199,13 +228,18 @@ function publishZgram(publish){
                 'ws_path':url
             },
             onRequest: function(){
-                $('postsContainer').empty();
-                $('resultado').empty();
-                $('resultado').addClass('loading');
+                if($('postsContainer'))
+                    $('postsContainer').empty();
+                if($('resultado')){
+                    $('resultado').empty();
+                    $('resultado').addClass('loading');
+                }
             },
             onSuccess: function(response) {
                 // actualizar pagina
-                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+                if($('resultado')){
+                    $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+                }
                 response = JSON.decode(response);
 
                 if(typeof response.cod != 'undefined') {
@@ -213,14 +247,21 @@ function publishZgram(publish){
                     if(response.cod != 100)
                         alert(response.msg);
                 }
-                getZGram(zgram._id.$oid);
+//                switchByWorkflow(publish ? 'published' : 'unpublished');
+//                if($('resultado'))
+//                    $('resultado').innerHTML = response.msg;
+                
+                if(!id)
+                    getZGram(zgram._id.$oid);
             },
 
             // Our request will most likely succeed, but just in case, we'll add an
             // onFailure method which will let the user know what happened.
             onFailure: function(){
-                $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
-                $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+                if($('resultado')){
+                    $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
+                    $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+                }
             }
 
         }).send();
@@ -316,8 +357,8 @@ function extract(url){
     }).send();
 }
 
-function compileZGram(){
-    var url = '/ZCrawlParserServlet/servlet/ZCrawlParser?q='+$('textExtraction').value;
+function compileZGram(value, id){
+    var url = '/ZCrawlParserServlet/servlet/ZCrawlParser?q='+(value ? value : $('textExtraction').value);
     var urlProxy = 'curl_proxy.php';
     new Request({
         url: encodeURIComponent(urlProxy),
@@ -328,15 +369,22 @@ function compileZGram(){
             'ws_path':url
         },
         onRequest: function(){
-            $('postsContainer').empty();
-            $('resultado').empty();
-            $('resultado').addClass('loading');
+            if($('postsContainer'))
+                $('postsContainer').empty();
+            if($('resultado')){
+                $('resultado').empty();
+                $('resultado').addClass('loading');
+            }
         },
         onSuccess: function(jsonObj) {
             // actualizar pagina
-            $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+            if($('resultado'))
+                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
             jsonObj = eval("("+jsonObj+")");
-            if(typeof jsonObj.cod != 'undefined') {
+            if(typeof jsonObj.cod != 'undefined') {                
+                var metadata = jsonObj.meta ? eval("("+jsonObj.meta+")") : null;
+                
+                jsonObj.meta = JSON.stringify(metadata);
                 var state = 'no-compiled';
                 jsonObj.cod = parseInt(jsonObj.cod);
                 switch(jsonObj.cod) {
@@ -348,16 +396,17 @@ function compileZGram(){
                         state = 'no-compiled';                        
                     default:
                         switchByWorkflow(state);
-                        $('resultado').innerHTML = jsonObj.msg;
+                        if($('resultado'))
+                            $('resultado').innerHTML = jsonObj.msg;
                         break;
                 }
 
                 if(jsonObj.cod == 100 || jsonObj.cod == 220) {
                     metadata = jsonObj.meta;
-                    if(zgram != null) {
-                        updateZGram(zgram._id.$oid, jsonObj.cod, jsonObj.msg, jsonObj.meta, $('textExtraction').value, state);
+                    if(value || zgram != null) {
+                        updateZGram(zgram ? zgram._id.$oid : id, jsonObj.cod, jsonObj.msg, jsonObj.meta, value ? value : $('textExtraction').value, state, value ? false : true);
                     } else {
-                        saveZGram(jsonObj.cod, jsonObj.msg, jsonObj.meta, $('textExtraction').value, state);
+                        saveZGram(jsonObj.cod, jsonObj.msg, jsonObj.meta, value ? value : $('textExtraction').value, state);
                     }
                 }
             }
@@ -416,7 +465,7 @@ function saveZGram(cod, msg, meta, verbatim, state){
     }).send();
 }
 
-function updateZGram(id, cod, msg, meta, verbatim, state){
+function updateZGram(id, cod, msg, meta, verbatim, state, retrieve){
     var url = '/ZCrawlSources/updateZGram?id='+id+'&newcod='+cod+'&newmsg='+msg+ '&newmetadata='+ meta +'&newverbatim='+verbatim + '&newstate=' + state;
     var urlProxy = 'curl_proxy.php';
     new Request.JSON({
@@ -428,22 +477,28 @@ function updateZGram(id, cod, msg, meta, verbatim, state){
             'ws_path':url
         },
         onRequest: function(){
-            $('postsContainer').empty();
-            $('resultado').empty();
-            $('resultado').addClass('loading');
+            if($('postsContainer'))
+                $('postsContainer').empty();
+            if($('resultado')){
+                $('resultado').empty();
+                $('resultado').addClass('loading');
+            }
         },
         onSuccess: function(jsonObj) {
             // actualizar pagina
-            $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+            if($('resultado'))
+                $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
             if(typeof jsonObj.cod != 'undefined') {
                 jsonObj.cod = parseInt(jsonObj.cod);
                 switch(jsonObj.cod) {
                     case 100:
-                        getZGram(jsonObj.id);                    
+                        if(retrieve)
+                            getZGram(jsonObj.id);
                         break;
                     default:
                         switchByWorkflow();
-                        $('resultado').innerHTML = jsonObj.msg;
+                        if($('resultado'))
+                            $('resultado').innerHTML = jsonObj.msg;
                         break;
                 }
             }
@@ -452,15 +507,21 @@ function updateZGram(id, cod, msg, meta, verbatim, state){
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
         onFailure: function(){
-            $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
-            $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+            if($('resultado')){
+                $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
+                $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+            }
         }
 
     }).send();
 }
 
-function getZGram(id){
-    var url = '/ZCrawlSources/getZGram?id=' + id;
+function getZGram(id, callback){
+    var url = '';
+    if(id)
+        url = '/ZCrawlSources/getZGram?id=' + id;
+    else 
+        url = '/ZCrawlSources/getZGram?filtros={}';
     var urlProxy = 'curl_proxy.php';
     new Request({
         url: urlProxy,
@@ -471,45 +532,60 @@ function getZGram(id){
             'ws_path':url
         },
         onRequest: function(){
-            $('postsContainer').empty();
-            $('resultado').empty();
-            $('resultado').addClass('loading');
+            if($('postsContainer'))
+                $('postsContainer').empty();
+            if($('resultado')){
+                $('resultado').empty();
+                $('resultado').addClass('loading');
+            }
         },
         onSuccess: function(jsonObj) {
-            // actualizar pagina
-            $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
-            jsonObj = eval('('+jsonObj+')');
-            if(typeof jsonObj.cod != 'undefined') {
-                jsonObj.cod = parseInt(jsonObj.cod);
-                switch(jsonObj.cod) {
-                    case 100:
-                    case 220:
-                        $('resultado').innerHTML = jsonObj.msg;
-                        zgram = jsonObj;
-                        if(metadata == null) {
-                            metadata = Object.clone(zgram);
-                            delete metadata._id;
-                            delete metadata.cod;
-                            delete metadata.msg;
-                            delete metadata.verbatim;
-                            delete metadata.estado;
-                            metadata = JSON.encode(metadata);
-                        }
-                        refreshZGram();                    
-                        break;
-                    default:
-                        $('resultado').innerHTML = jsonObj.msg;
-                        break;
+            if(typeof callback == 'function'){
+                callback(jsonObj);
+            } else {
+                // actualizar pagina
+                if($('resultado'))
+                    $('resultado').removeClass('loading').removeClass('fallo').addClass('resultado');
+                jsonObj = eval('('+jsonObj+')');
+                if(typeof jsonObj.cod != 'undefined') {
+                    jsonObj.cod = parseInt(jsonObj.cod);
+                
+                    switch(jsonObj.cod) {
+                        case 100:
+                        case 220:
+                            if($('resultado'))
+                                $('resultado').innerHTML = jsonObj.msg;
+
+                            zgram = jsonObj;
+                            if(metadata == null) {
+                                metadata = Object.clone(zgram);
+                                delete metadata._id;
+                                delete metadata.cod;
+                                delete metadata.msg;
+                                delete metadata.verbatim;
+                                delete metadata.estado;
+                                metadata = JSON.encode(metadata);
+                            }
+                            refreshZGram();                    
+                            break;
+                        default:
+                            if($('resultado'))
+                                $('resultado').innerHTML = jsonObj.msg;
+                            break;
+                    }
                 }
+                switchByWorkflow();
+                toggleInputs();
             }
-            switchByWorkflow();
         },
 
         // Our request will most likely succeed, but just in case, we'll add an
         // onFailure method which will let the user know what happened.
         onFailure: function(){
-            $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
-            $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+            if($('resultado')){            
+                $('resultado').removeClass('loading').removeClass('oculto').removeClass('resultado').addClass('fallo');
+                $('resultado').innerHTML = this.response.text.substring(this.response.text.indexOf('<h1>')+22, this.response.text.indexOf('</h1>'));
+            }
         }
 
     }).send();
@@ -731,7 +807,7 @@ function generateQuery() {
     var query = "";
 
     if($('descripcion').get('value').trim() != "")
-        var query = '**"'+$('descripcion').get('value').trim()+'"**';
+        query = '**"'+$('descripcion').get('value').trim()+'"**';
 
     query += (query.length > 0 ? ' ' : '') + 'extraer para la localidad "' + $('localidad').get('value').trim() + '"';
 
@@ -741,12 +817,8 @@ function generateQuery() {
         query += ' ubicado en "' + $('uri').get('value').trim() + '"';
     }
 	
-    if($('fuente').get('value').trim() == "feed" && ($('latfeed').get('value').trim() != "" || $('lonfeed').get('value').trim() != "")){
-        if ($('latfeed').get('value').trim() != "" ^ $('lonfeed').get('value').trim() != "") {
-            alert('Ingrese ambas coordenadas para la geolocalización del feed.');
-        } else {
-            query += ' ['+$('latfeed').get('value').trim()+','+$('lonfeed').get('value').trim()+']';
-        }
+    if($('fuente').get('value').trim() == "feed" && ($('feedPlace').get('value').trim() != "")){
+        query += ' ["'+$('feedPlace').get('value').trim()+'"]';
     }
 
     if ($('tags').get('value').trim() != "") {
@@ -774,7 +846,7 @@ function generateQuery() {
                 }
                 query += ' "' + users[i][0] + '"';
                 if (typeof users[i][1] != 'undefined' && users[i][1] && users[i][1] != "") {
-                    query += ' [' + users[i][1] + ',' + users[i][2] + ']';
+                    query += ' ["' + users[i][1]+ '"]';
                 }
             }
         }
@@ -823,20 +895,25 @@ function generateQuery() {
         });
     }
 
-    //commenters allCommenters
+    //commenters allComments
 
-    if ($('allCommenters').checked == true || $('commenters').get('value').trim() != "") {
+    if ($('third-party-posts').checked == true) {
+        query += ' extrae publicaciones de terceros';
+    }
+    
+    if ($('allComments').checked == true) {
         query += ' incluye comentarios';
-        if ($('allCommenters').checked == false && $('commenters').get('value').trim() != "") {
-            query += ' de los usuarios:'
-            var commenters = $('commenters').get('value').trim().split(" ");
-            commenters.each(function(commenter) {
-                if(commenters.indexOf(commenter) != 0) {
-                    query += ",";
-                }
-                query += '"' + commenter + '"';
-            });
-        }
+    }
+    
+    if ($('commenters').get('value').trim() != "") {
+        query += ' de los usuarios: '
+        var commenters = $('commenters').get('value').trim().split(" ");
+        commenters.each(function(commenter) {
+            if(commenters.indexOf(commenter) != 0) {
+                query += ",";
+            }
+            query += '"' + commenter + '"';
+        });
     }
 	
     var filtros = '';
@@ -859,89 +936,135 @@ function generateQuery() {
     if ($('sourceTags').checked == true) {
         query += (filtros.length > 0 ? ' y' : '') + ' incluye los tags de la fuente';
     }
+    
+    if ($('tempExtraccion').get('value').trim() != '') {
+        query += ' cada ' + $('tempExtraccion').get('value').trim();
+    }
 
     query += '.';
 
-    $('textExtraction').set('value', query);
+    $('textExtraction').set('value', query.replace(/\\"/g, '"'));
     if(oldValue != query){
         switchButtons(['compilarButton']);
     }
 }
 
-function addUser(name, lat, lon){
-    if ((lat != "" && lon == "") || (lat == "" && lon != "")) {
+function addUser(name, place){
+    /*if ((lat != "" && lon == "") || (lat == "" && lon != "")) {
         alert("Debe ingresar ambas coordenadas o ninguna");
-    } else {
-        if (cantUsers == 0) {
-            var users_table = new Element('table', {
-                'id' : 'users_table'
-            }).addClass('configTable').inject($('userstd'));
-            var users_title_tr = new Element('tr', {
-                'style': 'background-color: lightGreen'
-            }).inject(users_table);
-            new Element('td', {
-                'html' : 'Name'
-            }).inject(users_title_tr);
-            new Element('td', {
+    } else {*/
+    if (cantUsers == 0) {
+        var users_table = new Element('table', {
+            'id' : 'users_table'
+        }).addClass('configTable').inject($('userstd'));
+        var users_title_tr = new Element('tr', {
+            'style': 'background-color: lightGreen'
+        }).inject(users_table);
+        new Element('td', {
+            'html' : 'Name'
+        }).inject(users_title_tr);
+        /*new Element('td', {
                 'html' : 'Latitud'
             }).inject(users_title_tr);
             new Element('td', {
                 'html' : 'Longitud'
-            }).inject(users_title_tr);
-            new Element('td', {						
-                }).setStyle('min-width','40px').inject(users_title_tr);
-        }
-        var user_line = new Element('tr', {
-            'id' : 'ul' + cantUsers
-        }).inject($('users_table'));
+            }).inject(users_title_tr);*/
         new Element('td', {
-            'html': name
-        }).inject(user_line);
-        new Element('input', {
-            'id': 'lat'+cantUsers,
-            'type':'input',
-            'disabled':true,
-            'value': lat
-        }).inject(new Element('td').inject(user_line));
-        new Element('input', {
-            'id': 'lon'+cantUsers,
-            'type':'input',
-            'disabled':true,
-            'value': lon
-        }).inject(new Element('td').inject(user_line));
-        var removeUser_td = new Element('td').inject(user_line);
-        new Element('img', {
-            'width' : '16', 
-            'height' : '16', 
-            'border': '0', 
-            'alt': cantUsers, 
-            'title' : 'Eliminar usuario', 
-            'src': 'publish_x.png', 
-            'onclick' : 'removeUser('+ cantUsers + ')'
-        }).setStyle('padding-right','5px').inject(removeUser_td);
-        new Element('img', {
-            'width' : '16', 
-            'height' : '16', 
-            'border': '0', 
-            'alt': cantUsers, 
-            'title' : 'Geolocalizar usuario', 
-            'src': 'geolocation.png', 
-            'onclick' : 'lookupGeoData("lat'+ cantUsers + '","lon'+ cantUsers + '","'+($('localidad') ? $('localidad').value +', ' : '') + 'Argentina",'+cantUsers+')'
-        }).inject(removeUser_td);
-        var user = new Array();
-        user[0] = name;
-        user[1] = lat;
-        user[2] = lon;
-        users[cantUsers] = user;
-        cantUsers++;
-        $('iusuario').set('value', '');
-        $('latusuario').set('value', '');
-        $('lonusuario').set('value', '');
+            'html' : 'Place'
+        }).inject(users_title_tr);
+        new Element('td', {						
+            }).setStyle('min-width','40px').inject(users_title_tr);
     }
+    var user_line = new Element('tr', {
+        'id' : 'ul' + cantUsers
+    }).inject($('users_table'));
+    new Element('td', {
+        'html': name
+    }).inject(user_line);
+    /*new Element('input', {
+        'id': 'lat'+cantUsers,
+        'type':'input',
+        'disabled':true,
+        'value': lat
+    }).inject(new Element('td').inject(user_line));
+    new Element('input', {
+        'id': 'lon'+cantUsers,
+        'type':'input',
+        'disabled':true,
+        'value': lon
+    }).inject(new Element('td').inject(user_line));*/
+    new Element('input', {
+        'id': 'place'+cantUsers,
+        'type':'input',
+        'disabled':true,
+        'value': place
+    }).inject(new Element('td').inject(user_line));
+    var removeUser_td = new Element('td').inject(user_line);
+    new Element('img', {
+        'width' : '16', 
+        'height' : '16', 
+        'border': '0',
+        'class': 'noPublish noPublishImg',
+        'alt': cantUsers, 
+        'title' : 'Eliminar usuario', 
+        'src': 'publish_x.png', 
+        'onclick' : 'removeUser('+ cantUsers + ')'
+    }).setStyle('padding-right','5px').inject(removeUser_td);
+    new Element('img', {
+        'width' : '16', 
+        'height' : '16', 
+        'border': '0', 
+        'class': 'noPublish noPublishImg',
+        'alt': cantUsers, 
+        'title' : 'Geolocalizar usuario', 
+        'src': 'geolocation.png', 
+        'onclick' : '$("iusuario").set("value",this.getParent().getPrevious().getPrevious().get("html"));$("userPlace").set("value",$("place'+cantUsers+'").get("value"));removeUser('+ cantUsers + ');'
+    }).inject(removeUser_td);
+    var user = new Array();
+    user[0] = name;
+    /*user[1] = lat;
+        user[2] = lon;*/
+    user[1] = place;
+    users[cantUsers] = user;
+    cantUsers++;
+    $('iusuario').set('value', '');
+    $('userPlace').set('value', '');
+//$('latusuario').set('value', '');
+//$('lonusuario').set('value', '');
+//}
 }
 
 function removeUser(userLine){
     $('users_table').removeChild($('ul'+userLine));
     delete users[userLine];
     switchButtons(['compilarButton']);
+}
+
+function toggleInputs(){
+    if ($('fuente').value =='facebook') 
+        $('fbUtilsIcon').setStyle('display','block'); 
+    else 
+        $('fbUtilsIcon').setStyle('display','none');
+                
+    if($('fuente').value == 'feed') {
+        $$('.usuarios').each(function(el){
+            el.setStyle('display', 'none');
+        });
+        $('uriFuente').setStyle('display','');
+        $('geoFuente').setStyle('display','');
+    } else {
+        $$('.usuarios').each(function(el){
+            el.setStyle('display', '');
+        });
+        $('uriFuente').setStyle('display','none');
+        $('geoFuente').setStyle('display','none');
+    }
+}
+
+function getZoneWord(metadata){
+    var str = metadata.match(/para la localidad .* mediante la fuente/);
+    if (str.length == 1)
+        return str[0].substring(19, str[0].length - 20);
+    
+    return "";
 }

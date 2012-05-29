@@ -111,7 +111,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                 </tr>
                                                 <tr>
                                                     <td class="label"><label>Localidad</label></td>
-                                                    <td class="input"><input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, zones);" autocomplete="off"></td>
+                                                    <td class="input"><input type="text" id="zone" value="" onblur="if(this.getNext() != null) this.getNext().empty();" onkeyup="populateOptions(event, this, false, extendedStrings);" autocomplete="off"></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="label"><label>Contenido</label></td>
