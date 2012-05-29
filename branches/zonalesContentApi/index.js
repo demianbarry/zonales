@@ -969,6 +969,37 @@ app.get('/wikimapia/fetchCategories', function(req, res) {
     }
 });
 
+//Servicio que dada una clave de zona retorna su traducción
+app.get('/zones/getWord', function(req, res) {
+    res.writeHead(200, {
+        "Content-Type": "text/javascript"
+    });
+    try {
+        console.log("Obtengo word: " + i18n.__(req.query.key) + ' desde key: ' + req.query.key);
+        res.write(i18n.__(req.query.key));        
+        res.end();
+    } catch (err) {
+        res.write("Error obteniendo traducción de la clave de Zona!");
+        res.write("Error: " + err);
+        res.end();
+    }
+});
+
+//Servicio que dado un valor de Zona traducido retorna su clave
+app.get('/zones/getKey', function(req, res) {
+    res.writeHead(200, {
+        "Content-Type": "text/javascript"
+    });
+    try {
+        res.write(i18n.r__(req.query.word));        
+        res.end();
+    } catch (err) {
+        res.write("Error obteniendo clave de Zona!");
+        res.write("Error: " + err);
+        res.end();
+    }
+});
+
 //----------------------- SERVER -----------------------
 
 app.listen(port);

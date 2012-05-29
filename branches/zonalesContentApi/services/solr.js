@@ -14,6 +14,14 @@ function getFirstIndexTime() {
     return firstIndexTime;
 }
 
+function setFirstModifiedTime(time) {
+    firstModifiedTime = time;
+}
+
+function getFirstModifiedTime() {
+    return firstModifiedTime;
+}
+
 function setLastIndexTime(time) {
     lastIndexTime = time;
 }
@@ -114,8 +122,9 @@ function getSolrFilterQuery(zCtx, nuevos) {
             res  += (res.length > 0 ? '+AND+' : '&fq=') + 'modified:[NOW-'+zCtx.filters.temp+'+TO+*]';
     } else {        
         if(nuevos && zCtx.getFirstModifiedTime() != ""){
-            res  = '&fq=modified:['+zCtx.getFirstModifiedTime()+'+TO+*]';
-//            console.log("");
+            //console.log("New Date Modified"+(new Date(zCtx.getFirstModifiedTime())).format("yyyy-mm-dd'T'HH:MM:ss'.'l'Z'"));
+           // res  = '&fq=modified:['+(new Date(zCtx.getFirstModifiedTime())).format("yyyy-mm-dd'T'HH:MM:ss'.'l'Z'")+'+TO+*]';
+            res  = '&fq=modified:['+(new Date(zCtx.getFirstModifiedTime())).toISOString()+'+TO+*]';
         }
             
     }
@@ -207,11 +216,12 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
                 var verbatim = {};
                 resp.response.docs.forEach(function(doc){
                     if(!zCtx.getFirstIndexTime() || (new Date(zCtx.getFirstIndexTime()).getTime()) < (new Date(doc.indexTime)).getTime()){
+                       // console.log('IndexTime: '+doc.indexTime);
                         zCtx.setFirstIndexTime(addMilli(doc.indexTime));
                     }
 
                     if(!zCtx.getFirstModifiedTime() || (new Date(zCtx.getFirstModifiedTime()).getTime()) < (new Date(doc.modified)).getTime()){
-                        console.log('MODIFIED: '+doc.modified);
+                       // console.log('MODIFIED: '+addMilli(doc.modified));
                         zCtx.setFirstModifiedTime(addMilli(doc.modified));
                     }
                         
@@ -220,6 +230,7 @@ module.exports.loadPostsFromSolr=function loadPostsFromSolr(client, sessionId, m
                     doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
                     verbatim = JSON.parse(doc.verbatim);
                     verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
+                    console.log('SOURCE: '+verbatim.source);
                     doc.verbatim = JSON.stringify(verbatim);
                     
                 });
@@ -245,6 +256,7 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
     zContextService.getZCtx(sessionId, function(zCtx){
         retrieveNewSolrPosts(zCtx, function(resp){                    
             if(resp && resp.response && resp.response.docs){
+                var verbatim = {};
                 console.log('FIRST INDEX TIME: '+zCtx.getFirstIndexTime());
                 resp.response.docs.forEach(function(doc){
                     console.log('DOC INDEX TIME: '+doc.indexTime);
@@ -253,7 +265,7 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                     }
                     
                     if(!zCtx.getFirstModifiedTime() || (new Date(zCtx.getFirstModifiedTime()).getTime()) < (new Date(doc.modified)).getTime()){
-                        console.log('MODIFIED: '+doc.modified);
+                        //console.log('NEW MODIFIED: '+addMilli(doc.modified));
                         zCtx.setFirstModifiedTime(addMilli(doc.modified));
                     }
                     if(!zCtx.getMaxRelevance() || zCtx.getMaxRelevance() < JSON.parse(doc.verbatim).relevance)
@@ -261,8 +273,8 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                     doc.zoneExtendedString = i18n.__(doc.zoneExtendedString);
                     verbatim = JSON.parse(doc.verbatim);
                     verbatim.zone.extendedString = i18n.__(verbatim.zone.extendedString);
+                    console.log('SOURCE: '+verbatim.source);
                     doc.verbatim = JSON.stringify(verbatim);
-                    console.log("Source: "+doc.source);
                 });
                 zContextService.setStart(sessionId, resp.response.docs.length+1);
             }
@@ -271,7 +283,7 @@ module.exports.loadNewPostsFromSolr=function loadNewPostsFromSolr(client, sessio
                     response: resp.response
                 });
             }
-        }); 
+        });
     });
 }
 
@@ -311,8 +323,16 @@ function reduceMilli(date) {
 }
 
 function addMilli(date) {
-    var milli = TryParseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1), 998);
-    var finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
+    var finalDate = "";
+
+    if (date.lastIndexOf('.') != -1){
+        var milli = TryParseInt(date.substring(date.lastIndexOf('.')+1, date.lastIndexOf('Z')-1), 998);
+        finalDate = date.substr(0, date.lastIndexOf('.')+1) + (milli + 1) + 'Z';
+    }else {
+        finalDate = date.substr(0, date.lastIndexOf('Z')) + '.001Z';
+
+    }
+
     return finalDate;
 }
 
