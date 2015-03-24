@@ -1,0 +1,70 @@
+# Introducción #
+
+El etiquetado automático (autotagging) se ofrece en Zonales como un modo de colaborar con la carga de contenido. El objetivo fundamental es que tanto en la carga manual de contenidos como en su incorporación automática mediante medios de sindicación (Atom, RSS, etc.) el editor cuente con opciones de tags sugeridas por el sistema.
+
+# Funcionamiento #
+El sistema consta de dos partes. En el sitio de Zonales un plugin Joomla! se dispara en el evento de guardar un contenido, ejecutando un _request_ **HTTP GET** a un _servlet_ Java. Este _servlet_ devuelve un lista de tags sugeridos para el contenido.
+
+## Servlet (En desarrollo) ##
+Actualmente, el _servlet_ espera por un **GET HTTP** en donde se le indican id del contenido, la lista de _fields_ para su búsqueda en el índice de Solr y la lista de tags a analizar. El _servlet_ ejecuta una búsqueda en el índice de Solr tag por tag, y discrimina de esta manera cuales son relevantes. Con estos últimos genera un lista que retorna como resultado.
+
+El servlet cuenta con tres clases:
+  * RankingTermsFrequencyConstructor
+  * TagsAnalizer (el servlet propiamente dicho)
+  * TagsFilter
+
+### TagsFilter ###
+Esta clase cuenta con dos métodos: _getSteemedTags_ y _getRelevantTags_.
+
+#### getSteemedTags ####
+Este método lematiza tags recibidos como un array donde los índices impares contienen el id del tag, y los pares el tag propiamente dicho. Debe tenerse en cuenta que el tag puede ser una frase, por lo que se lo tokeniza para lematizar token por token.
+  * Parámetros:
+> > tags: Array de strings donde los índices impares se espera que sean ids y los pares tags.
+  * Retorno: Mapa de tags lematizados con un set de ids donde han sido encontrados.
+  * Prototipo:
+`public static HashMap<String, Set``<Integer>``> getSteemedTags(String[] tags)`
+
+#### getRelevantTags ####
+Busco en el índice de Solr el id del documento (id interno del índice) en función del id del artículo. Podemos recuperar las frecuencias de los términos en función de este id interno del índice, por eso lo recuperamos.
+  * Parámetros:
+> > fields: Array que contiene los _fields_ de Solr que se utilizarán en la búsqueda.
+> > tags: Array de _tags_ a buscar.
+> > id: id del contenido a buscar.
+  * Retorno: TreeMap que contiene los tags relevantes con su id.
+  * Prototipo:
+`public static TreeMap<String, Integer> getRelevantTags(String[] fields, String[] tags, int id);`
+
+### TagsAnalizer ###
+Esta clase es el _servlet_ que atiende el requerimiento HTTP GET. Si recibe un HTTP POST, ejecuta el mismo método que para el GET.
+
+#### doGet ####
+Método que se ejecuta al recibir el _servlet_ requerimientos HTTP GET o POST. El método recupera los parámetros **tags**, **fields** y **id** del requerimiento, y ejecuta las funciones necesarias para retornar como respuesta la lista de **tags sugeridos**.
+  * Request: http://ip_tomcat:puerto_tomcat/servlet/TagsAnalizer?tags=id_tag1,tag1,id_tag2,tag2&fields=field1,field2,field3&id=id_contenido
+  * Response: tag\_relevante1,tag\_relevante2,tag\_relevante3
+
+### RankingTermsFrequencyConstructor ###
+Esta clase posee un único método que genera un mapa de términos y sus respectivas frecuencias ponderadas dentro del índice.
+
+#### getTermFreq ####
+El método recibe una lista de fields y analiza en cada uno de ellos la ocurrencia de los términos presentes en el documento. Si un término aparece en el título, por ejemplo, su frecuencia se multiplica por 5, por considerarse el título como más importante que la introducción o el cuerpo del contenido.
+
+  * Parámetros:
+> > fields: Array que contiene los _fields_ de Solr que se utilizarán en la búsqueda y ponderación.
+> > id: id del contenido a buscar.
+  * Retorno: TreeMap de términos con sus frecuencias ponderadas, ordenados en forma decreciente.
+  * Prototipo:
+`public TreeMap<String, Integer> getTermFreq(String[] fields, int id) throws Throwable`
+
+## Client Side ##
+En **components\com\_customproperties\admin\views\hierarchictagging\view.html.php** se encuentra la función **setSuggestTags**. Esta función realiza el _request_ al servlet indicando los parámetros requeridos y genera una lista de tags sugeridos, que luego puede ser usada por el componente de selección de tags para "marcar" los mismos.
+
+
+  * Parámetros:
+> > $ce\_name: tipo de contenido, pues está prevista la posibilidad de sugerir tags para todo tipo de contenidos (el _servlet_ actualmente ignora este parámetro).
+> > $contentId: id del contenido a buscar.
+  * Retorno: _void_.
+  * Prototipo:
+> > `function setSuggestTags($ce_name,$contentId);`
+
+## Estado ##
+**Esta funcionalidad está en desarrollo.** La versión original sugería tags en función de las palabras de un contenido. Esto no es óptimo porque las palabras no definen la temática de un contenido. Muchas veces son frases o construcciones complejas las que cumplen este cometido. Se deben investigar más a fondo las funciones de **Information Retrieval** de Solr. La implementación que estaba en desarrollo al momento de congelar el mismo buscaba el contenido en el índice de Solr a través de cada tag, y, si lo encontraba, sugería ese tag. Esto tampoco es óptimo porque obliga a realizar una búsqueda por cada tag, para devolver sólo un conjunto reducido como sugerencia.

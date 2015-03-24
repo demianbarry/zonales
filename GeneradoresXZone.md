@@ -1,0 +1,170 @@
+# Introduccion #
+
+Se describen en esta página los formatos utilizados que utilizan los distintos servicios de recuparación de información. Además se mencionan los servlets / plugins implementados hasta el momento.
+
+# Formato XZone #
+
+Contenidos en formato XML
+
+```
+<posts xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="http://200.69.225.53:30082/XZone.xsd">
+    <post>
+        <source>Fuente</source>
+        <id>Post Id</id>
+        <fromUser>
+            <name>Nombre autor</name>
+            <category>Categoría autor</category>
+            <id>Id Autor</id>
+            <url>Link al perfil del autor</url>
+        </fromUser>
+        <toUsers>
+            <toUser>
+                <name>Nombre destinatario</name>
+                <category>Categoría destinatario</category>
+                <id>Id detinatario</id>
+                <url>Link al perfil del destinatario</url>
+            </toUser>
+            ...
+            <toUser>
+                <name>Nombre destinatario</name>
+                <category>Categoría destinatario</category>
+                <id>Id detinatario</id>
+                <url>Link al perfil del destinatario</url>
+            </toUser>
+        </toUsers>
+        <title>Título</title>
+        <text>Contenido</text>
+        <links>
+            <link>
+                <type>link/Picture/Video/Photo/etc.</type>
+                <url>Link</url>
+            </link>
+            ...
+            <link>
+                <type>link/Picture/Video/Photo/etc.</type>
+                <url>Link</url>
+            </link>
+        </links>
+        <actions>
+            <action>
+                <type>comment/like/retweet/share/favorite/etc.</type>
+                <cant>Cantidad</cant>
+            </action>
+            ...
+            <action>
+                <type>comment/like/retweet/share/favorite/etc.</type>
+                <cant>Cantidad</cant>
+            </action>
+        </actions>
+        <created>Fecha creación</created>
+        <modified>Fecha última modificación</modified>
+        <relevance>Relevancia</relevance>
+        <zone>Localidad</zone>
+        <tags>
+            <tag>Tag</tag>
+            ...
+            <tag>Tag</tag>
+        </tags>
+        <verbatim>
+            Post en formato JZONE
+        </verbatim>
+    </post>
+    <post>Post</post>
+    <post>Post</post>
+    ...
+    <post>Post</post>
+</posts>
+```
+
+# Formato JZone #
+
+Contenidos en formato JSON
+
+```
+[
+    "post": {
+        "source": Fuente,
+        "id": Post Id,
+        "docType": Tipo de documento (post, clasificado, etc.),
+        "postLatitude": Latitud del post,
+        "postLongitude": Longitud del post,
+        "from": {
+            "name": Nombre autor,
+            "category": Categoría autor,
+            "id": Id Autor,
+            "url": Link al perfil del autor,
+            "place": {
+                         "id": Id,
+                         "name": Nombre del place,
+                         "type": Tipo de place
+                     }
+        },
+        "to": [
+            {
+            "name": Nombre destinatario,
+            "category": Categoría destinatario,
+            "id": Id detinatario,
+            "url": Link al perfil del destinatario
+            }
+        ],
+        "title": Título,
+        "text": Contenido,
+        "links": [
+            "link": {
+                "type": link/Picture/Video/Photo/etc.,
+                "url": Link
+            }
+        ]
+        "actions": [
+            "action": {
+                "type": comment/like/retweet/share/favorite/etc.,
+                "cant": Cantidad
+            }
+        ],
+        "created": Fecha creación,
+        "modified": Fecha última modificación,
+        "relevance": Relevancia,
+        "relevanceDelta": Delta de relevancia definido por usuarios,
+        "zone" : {
+                    "id": Id de la zona,
+                    "name": Nombre de la zona,
+                    "type": Tipo de la zona
+                 },
+        "tags" : [
+            "tag" : Tag
+        ]
+    }
+]
+```
+
+# Servicios implementados #
+
+## Facebook Information Retrieval Servlet ##
+
+Servicio desarrollado en PHP, crawlea post públicos de diversos usuarios y los almacena en un array que luego retorna en formato XZone o JZone según sea necesario.
+
+**URL Actual**: http://200.69.225.53:30080/fb/index.php
+
+**Descripción:** [Servicio de Recuperacion de Contenidos de Facebook](servletFb.md)
+
+**URL Repositorio**: https://zonales.googlecode.com/svn/branches/fb-information-retrieval
+
+
+## Twitter Retrieval Servlet ##
+
+Servlet desarrollado en JAVA para crawlear contenidos de Twitter que luego retorna en formato XZone o JZone
+
+**URL Actual**: http://200.69.225.53:38080/TwitterRetrievalServlet/servlet/TwitterRetrieval
+
+**Parámetros**:
+  * **_Keywords_**: Palabras claves a buscar. _Ejemplo_: keywords=Madryn
+
+**URL Repositorio**: https://zonales.googlecode.com/svn/branches/TwitterRetrievalServlet
+
+
+## Zonales Feed Plugin Nutch: Nutch Parse Plugin ##
+
+Parser de feeds rss para obtener las noticias rss de diarios online y luego generar
+formato XZone o JZone.
+
+**URL Repositorio**: https://zonales.googlecode.com/svn/branches/ZonalesFeedPluginNutch/

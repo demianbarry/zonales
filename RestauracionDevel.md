@@ -1,0 +1,325 @@
+# Introduccion #
+
+Restauracion de instancia de desarrollo de zonales.Se contemplan todos los pasos de recuperacion e instalacion, luego de haber instalado Centos 6.2 y haber recuperado los directorios /opt/zonales y /va/www/html/zonales-nuevo
+
+
+# Detalles #
+
+1)Instalacion Centos 6.2
+2)Copiar zonales-nuevo(Backup) a /var/www/html/
+> Copiar /opt/zonales(Backup) a /opt/zonales
+3)Configurar Apache
+4)Configurar Tomcat
+5)Instalar MySql y levantar backup
+6)Instalar Mongo y levantar backup
+7)Instalar NodeJs y modulos
+
+**Configuracion de Apache**
+
+
+> vi /etc/httpd/conf/httpd.conf
+
+> Copiamos los siquiente:
+
+> Listen 82
+> Listen 30083
+
+> <VirtualHost **:82>
+> > ServerAdmin webmaster@dummy-host.example.com
+> > > DocumentRoot /var/www/html/zonales-nuevo
+
+> > ServerName zonales-devel.com
+> > ErrorLog /var/log/httpd/zonales-devel.log
+> > CustomLog logs/dummy-host.example.com-access\_log common
+
+> 
+
+Unknown end tag for &lt;/VirtualHost&gt;**
+
+> <VirtualHost **:30083>
+> > ServerAdmin webmaster@dummy-host.example.com
+> > DocumentRoot /var/www/html/fb
+> > ServerName fb.com
+> > ErrorLog /var/log/httpd/fb.log
+> > CustomLog logs/dummy-host.example.com-access\_log common
+
+> 
+
+Unknown end tag for &lt;/VirtualHost&gt;**
+
+
+**Iniciar Tomcat6 atutomaticamente:**
+
+> Crear un script en /etc/init.d para automatizar tomcat
+
+> cd /etc/init.d
+> vi tomcat
+
+> Copiamos lo siguiente:
+> '**'#'**'!/bin/bash
+
+> '**'#'**' Iniciación automatica de TOMCAT6D
+
+> '**'#'**' chkconfig: 2345 55 25
+
+> '**'#'**' description: Demonio de iniciación TOMCAT6D 6.0.29
+
+> '**'#'**' processname: tomcat6d
+
+> '**'#'**' pidfile: /var/run/tomcat6d.pid
+
+> export JAVA\_HOME=/usr/java/jdk1.7.0\_02
+> export CATALINA\_HOME=/opt/zonales/tomcat6
+> start(){
+> > echo "Iniciando Tomcat6"
+> > $CATALINA\_HOME/bin/startup.sh
+> > }
+
+
+> stop() {
+> > echo "Deteniendo Tomcat6"
+> > $CATALINA\_HOME/bin/shutdown.sh
+> > }
+
+> restart(){
+> > stop
+> > start
+> > }
+
+  1. See how we were called.
+
+> case $1 in
+> > start)
+> > start
+
+> ;;
+> > stop)
+> > stop
+
+> ;;
+> > restart)
+> > restart
+
+> ;;
+    * 
+> echo "Utilice los Parámetros: $0 {start|stop|restart}"
+> > exit 1
+
+> esac
+> > exit 0
+
+
+
+
+> Cambiar los permisos, para que se pueda ejecutar
+
+> chmod a+x /etc/init.d/tomcat
+
+> Agregar este script to servicios de sistema
+
+> chkconfig --add tomcat
+
+> Verificar modficaciones (este script utiliza Niveles 2,3 y 4)
+
+> chkconfig --level 234 tomcat on
+> chkconfig --list tomcat
+
+> Agregamos este scrip como un link simbolico para que se inicie automaticamente.
+
+> ln -s /etc/init.d/tomcat /etc/rc5.d/S71tomcat
+
+> Probamos el script con start/stop
+> > service tomcat start
+
+
+> service tomcat stop
+
+
+**Instalacion JDK:**
+
+> Creamos el directorio donde se instalara JAVA
+
+> mkdir /usr/java/
+
+> Instalacion
+
+> rpm -i jdk-7u2-linux-x64.rpm
+
+**Instalacion de PHP:**
+
+> rpm -Uvh http://repo.webtatic.com/yum/centos/5/latest.rpm
+
+> yum --enablerepo=webtatic install php
+
+
+**Instalacion MySql:**
+
+> yum -y install mysql mysql-server
+
+> Para que Centos permita utilizar el cliente mysql para establecer conexiones hacia servidores MySQL, utilice el siguiente mandato:
+
+> setsebool -P allow\_user\_mysql\_connect 1
+
+> Para iniciar por primera vez el servicio mysqld y generar la base de datos inicial (mysql), utilice:
+
+> /sbin/service mysqld start
+
+> Para hacer que el servicio de mysqld esté activo con el siguiente inicio del sistema, en todos los niveles de ejecución (2, 3, 4, y 5), se utiliza lo siguiente:
+
+> /sbin/chkconfig mysqld on
+
+> Asignamos la clave:
+
+> mysqladmin -u root password .....
+
+
+> Restaurar desde Backup
+
+> mysql> CREATE SCHEMA zonales\_nuevo;
+
+> mysql -u root --password=.... zonales\_nuevo  < /var/www/html/zonales-nuevo/backupBDs/20120202\_101357backupMySql.sql
+
+**Instalacion PhpMyAdmin:**
+
+> Cargamos el repositorio EPEl
+
+> wget "http://download.fedora.redhat.com/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm"
+
+> rpm -ivh epel-release-5-4.noarch.rpm
+
+> Instalamos phpmyadmin
+
+> yum -y install phpmyadmin
+
+
+> Configuramos phpMyAdmin
+
+> vi /etc/httpd/conf.d/phpMyAdmin.conf
+
+> Y cambiamos:
+
+> <Directory "/usr/share/phpMyAdmin">
+> > Order Deny,Allow
+> > Deny from all
+> > Allow from 127.0.0.1
+
+> 
+
+Unknown end tag for &lt;/Directory&gt;
+
+
+
+> Por:
+
+> <Directory "/usr/share/phpMyAdmin">
+> > Order Allow,Deny
+> > Allow from all
+
+> '**'#'**'  Order Deny,Allow
+> '**'#'**' Deny from all
+> '**'#'**'  Allow from 127.0.0.1
+> 
+
+Unknown end tag for &lt;/Directory&gt;
+
+
+
+> Reiniciamos el servidor web y MySql:
+
+> /etc/init.d/httpd restart && /etc/init.d/mysqld restart
+
+
+
+**Instalacion de Mongo:**
+
+> Agregamos al repositorio
+
+> cd /etc/yum.repos.d
+
+> sudo vi mongodb.10gen.repo
+
+> Y pegamos los siguiente
+
+> [10gen](10gen.md)
+> name=10gen Repository
+> baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
+> gpgcheck=0
+
+> Instalacion
+
+> cd /
+
+> mkdir data
+
+> yum install mongo-10gen mongo-10gen-server
+
+
+> Configuracion
+
+> vi /etc/mongod.conf
+
+> logpath=/var/log/mongo/mongod.log
+> port=27017
+> dbpath=/var/lib/mongo
+
+> Iniciar
+
+> service mongod start
+
+> /etc/init.d/mongod start
+
+> chkconfig mongod on
+
+> Restaurar
+
+> mongorestore --port 27017 /var/www/html/zonales-nuevo/backupBDs/usr/bin/dump
+
+
+**Instalacion de Nodejs:**
+
+> Instalacion gcc-c++ Package
+
+> yum install gcc-c++
+
+
+> Instalacion open-ssl
+
+> yum install open-ssl
+
+
+> Descargar la última versión estable desde http://nodejs.org/: git clone --depth 1 git://github.com/joyent/node.git y descomprimirla en /opt/zonales
+
+> yum install git --disablerepo=epel
+
+> cd node
+> git checkout v0.6.6
+
+> /configure
+
+> make
+
+> sudo make install
+
+> node –version
+
+> Descargar la última versión estable del npm (node package manager) desde http://npmjs.org/:
+> > git clone http://github.com/isaacs/npm.git
+
+
+> cd npm
+
+> ./configure
+
+> sudo make install
+
+> Instalacion de modulos necesarios
+
+> npm install express
+
+> npm install -g forever
+
+> npm install socket.io
+
+> npm install jade
+
+> npm install mongoose

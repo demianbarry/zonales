@@ -1,0 +1,175 @@
+# Introducción #
+
+A continuación se detalla el resultado obtenido de la ejecución paso a paso de los comandos descriptos en el Workflow de Nutch
+
+En este primer ejemplo utilizo como ejemplo el sitio de Ole, ya que con el servlet de Facebook no tuve éxito.
+
+# Resultados #
+
+## Inject ##
+
+**Previo**: Directorio urls creado con una única URL, la de Olé
+
+**Ejecución**:
+```
+nutch inject crawl.ole urls
+```
+
+**Salida**:
+```
+Injector: starting at 2011-05-31 09:45:50
+Injector: crawlDb: crawl.ole
+Injector: urlDir: urls
+Injector: Converting injected urls to crawl db entries.
+Injector: Merging injected urls into crawl db.
+Injector: finished at 2011-05-31 09:45:55, elapsed: 00:00:05
+```
+
+**Resultados**:
+
+  * Se creó la estructura de directorios: ./crawl.ole/current/part-00000/
+  * Allí se crearon los archivos _data_ e _index_. Cada uno de ellos ocupa unos pocos bytes y están en formato binario.
+  * Realicé un dump del contenido de la crawldb con el comando:
+```
+nutch readdb crawl.ole/ -dump dump/
+```
+  * Se generó un archivo de texto dentro de la carpeta dump con el sigueinte contenido:
+```
+http://www.ole.com.ar/	Version: 7
+Status: 1 (db_unfetched)
+Fetch time: Tue May 31 09:45:50 ART 2011
+Modified time: Wed Dec 31 21:00:00 ART 1969
+Retries since fetch: 0
+Retry interval: 2592000 seconds (30 days)
+Score: 1.0
+Signature: null
+Metadata: 
+```
+  * El contenido de la linkdb es nulo, por lo que no puede ser leido.
+
+
+## Generate ##
+
+**Previo**: Crawldb generada con el comando Inject
+
+**Ejecución**:
+```
+nutch generate crawl.ole/ crawl.ole/segments
+```
+
+**Salida**:
+```
+Generator: starting at 2011-05-31 10:00:55
+Generator: Selecting best-scoring urls due for fetch.
+Generator: filtering: true
+Generator: normalizing: true
+Generator: jobtracker is 'local', generating exactly one partition.
+Generator: Partitioning selected urls for politeness.
+Generator: segment: crawl.ole/segments/20110531100059
+Generator: finished at 2011-05-31 10:01:01, elapsed: 00:00:05
+```
+
+**Resultados**:
+
+  * Se creó la estructura de directorios: ./crawl.ole/segments/20110531100059/crawl\_generate
+  * Allí se creó un archivo binario _part-00000_.
+  * Ni la crawldb ni la linkdb cambiaron.
+  * Leo el segmento creado con el siguiente comando:
+```
+nutch readseg -dump crawl.ole/segments/20110531100059/ dump/ -nocontent -nofetch -noparse -noparsedata -noparsetext
+```
+  * Obtengo el siguiente contenido:
+```
+Recno:: 0
+URL:: http://www.ole.com.ar/
+
+CrawlDatum::
+Version: 7
+Status: 1 (db_unfetched)
+Fetch time: Tue May 31 09:45:50 ART 2011
+Modified time: Wed Dec 31 21:00:00 ART 1969
+Retries since fetch: 0
+Retry interval: 2592000 seconds (30 days)
+Score: 1.0
+Signature: null
+Metadata: _ngt_: 1306846855371
+```
+
+## fetch ##
+
+**Previo**: Segemento generado con el comando Generate
+
+**Ejecución**:
+```
+nutch fetch crawl.ole/segments/20110531100059/ -threads 1
+```
+
+**Salida**:
+```
+Fetcher: Your 'http.agent.name' value should be listed first in 'http.robots.agents' property.
+Fetcher: starting at 2011-05-31 10:27:20
+Fetcher: segment: crawl.ole/segments/20110531100059
+Fetcher: threads: 1
+QueueFeeder finished: total 1 records + hit by time limit :0
+fetching http://www.ole.com.ar/
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=1, spinWaiting=0, fetchQueues.totalSize=0
+-finishing thread FetcherThread, activeThreads=0
+-activeThreads=0, spinWaiting=0, fetchQueues.totalSize=0
+-activeThreads=0
+Fetcher: finished at 2011-05-31 10:27:43, elapsed: 00:00:22
+```
+
+**Resultados**:
+
+  * Dentro del directorio ./crawl.ole/segments/20110531100059/ se crearon los directorios content, crawl\_fetch, crawl\_parse, parse\_data, parse\_text.
+  * Dentro de estos directorios se crearon los archivos _data_ e _index_ en algunos, y _part-00000_ en otros, todos binarios.
+  * Ni la crawldb ni la linkdb cambiaron.
+  * Leo el segmento creado con el siguiente comando:
+  * Generé los dump individuales de cada carpeta del segmento (ver archivos)
+
+
+## parse ##
+
+Al intenter ejecutar esta etapa, obtengo la siguiente salida:
+```
+ParseSegment: starting at 2011-05-31 10:56:11
+ParseSegment: segment: crawl.ole/segments/20110531100059
+Exception in thread "main" java.io.IOException: Segment already parsed!
+```
+
+Deduzco que el comando _fetch_ también realiza parseo de los contenidos.
+
+## updatedb ##
+
+**Previo**: Comando Fetch ejecutado
+
+**Ejecución**:
+```
+
+```
+
+**Salida**:
+```
+
+```
+
+**Resultados**:
+
+  * Bla bla

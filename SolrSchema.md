@@ -1,0 +1,79 @@
+Sección de _fields_ del esquema de Solr
+
+# Esquema Solr #
+
+```
+<fields>
+        <field name="indexTime" type="date" stored="true" indexed="true" default="NOW-3HOURS"/>
+        <field name="docType" type="string" stored="false" indexed="true" default="post"/>
+        <field name="source" type="text_general" stored="false" indexed="true"/>
+        <field name="postLatitude" type="double" stored="false" indexed="true"/>
+        <field name="postLongitude" type="double" stored="false" indexed="true"/>
+        <field name="id" type="string" stored="true" indexed="true" required="true"/>
+        <field name="fromUserName" type="string" stored="false" indexed="true" />
+        <field name="fromUserCategory" type="string" stored="false" indexed="true" />
+        <field name="fromUserId" type="string" stored="false" indexed="true" />
+        <field name="fromUserUrl" type="string" stored="false" indexed="true" />
+        <field name="fromUserPlaceId" type="string" stored="false" indexed="true"/>
+        <field name="fromUserPlaceName" type="string" stored="false" indexed="true"/>
+        <field name="fromUserPlaceType" type="string" stored="false" indexed="true"/>
+        <field name="title" type="text_general" stored="false" indexed="true"/>
+        <field name="text" type="text_general" stored="false" indexed="true"/>
+        <field name="created" type="date" stored="true" indexed="true"/>
+        <field name="modified" type="date" stored="true" indexed="true"/>
+        <field name="relevance" type="int" stored="false" indexed="true"/>
+        <field name="relevanceDelta" type="int" stored="false" indexed="true"/>
+        <field name="tags" type="string" stored="false" indexed="true" multiValued="true"/>
+        <field name="zoneId" type="string" stored="false" indexed="true" />
+        <field name="zoneName" type="string" stored="false" indexed="true" />
+        <field name="zoneType" type="string" stored="false" indexed="true" />
+        <field name="zoneExtendedString" type="string" stored="false" indexed="true"/>
+        <field name="extendedString" type="string" stored="false" indexed="true"/>
+        <field name="state" type="string" stored="false" indexed="true" default="published"/>
+        <field name="verbatim" type="string" stored="true" indexed="false"/>    
+   
+
+   <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
+        will be used if the name matches any of the patterns.
+        RESTRICTION: the glob-like pattern in the name attribute must have
+        a "*" only at the start or the end.
+        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
+        Longer patterns will be matched first.  if equal size patterns
+        both match, the first appearing in the schema will be used.  -->
+        <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
+        <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
+        <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
+        <dynamicField name="*_t"  type="text_general"    indexed="true"  stored="true"/>
+        <dynamicField name="*_txt" type="text_general"    indexed="true"  stored="true" multiValued="true"/>
+        <dynamicField name="*_b"  type="boolean" indexed="true"  stored="true"/>
+        <dynamicField name="*_f"  type="float"  indexed="true"  stored="true"/>
+        <dynamicField name="*_d"  type="double" indexed="true"  stored="true"/>
+
+   <!-- Type used to index the lat and lon components for the "location" FieldType -->
+        <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false"/>
+
+        <dynamicField name="*_dt" type="date"    indexed="true"  stored="true"/>
+        <dynamicField name="*_p"  type="location" indexed="true" stored="true"/>
+
+   <!-- some trie-coded dynamic fields for faster range queries -->
+        <dynamicField name="*_ti" type="tint"    indexed="true"  stored="true"/>
+        <dynamicField name="*_tl" type="tlong"   indexed="true"  stored="true"/>
+        <dynamicField name="*_tf" type="tfloat"  indexed="true"  stored="true"/>
+        <dynamicField name="*_td" type="tdouble" indexed="true"  stored="true"/>
+        <dynamicField name="*_tdt" type="tdate"  indexed="true"  stored="true"/>
+
+        <dynamicField name="*_pi"  type="pint"    indexed="true"  stored="true"/>
+
+        <dynamicField name="ignored_*" type="ignored" multiValued="true"/>
+        <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
+        <dynamicField name="random_*" type="random" />
+
+   <!-- uncomment the following to ignore any fields that don't already match an existing 
+        field name or dynamic field, rather than reporting them as an error. 
+        alternately, change the type="ignored" to some other type e.g. "text" if you want 
+        unknown fields indexed and/or stored by default --> 
+   <!--dynamicField name="*" type="ignored" multiValued="true" /-->
+   
+    </fields>
+```

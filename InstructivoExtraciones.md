@@ -1,0 +1,48 @@
+# CMUtils: gestión de extracciones y utilidades #
+
+## Introducción ##
+
+CMUtils engloba un conjunto de funciones que permite administrar el back-end de noticias de Zonales.
+
+Puede acceder a CMUtils del ambiente QA que utilizaremos para las pruebas desde [aqui](http://200.69.225.53:30081/CMUtils/index.php)
+
+La función principal es la Gestión de las Extracciones, que se lleva a cabo mediante dos pantallas básicas:
+
+CMUtils/index.php       => búsqueda y listado de extracciones cargadas.
+
+CMUtils/extractUtil.php => edición y carga de extracciones
+
+Además se incluye un conjunto de utilidades para Facebook, Twitter y para listar las extracciones programadas en el Scheduler.
+
+# Búsqueda y listado de extracciones cargadas #
+
+La pantalla de búsqueda permite:
+  * Listar las extracciones programadas de acuerdo a un conjunto de filtros
+  * Acceder a la edición de una extracción desde la lista de resultados.
+  * Seleccionar un conjunto de extracciones de los resultados de la búsqueda y realizar un extracción de prueba.
+
+Los filtros que se pueden utilizar son:
+  * Zona: Cadena extendida que representa la zona configurada en la extracción.
+  * Fuente: Tipo de fuente configurada en la extracción. Por el momento Facebook, Twitter y Feed
+  * Periodo: Rango de tiempo en la cual fue cargada la extracción.
+  * Tags: Lista de tags separados por coma.
+  * Estado: estado en el que se encuentra la configuración de la extracción.
+
+
+![http://sursoftware.dyndns.org/pantalla1.gif](http://sursoftware.dyndns.org/pantalla1.gif)
+
+Presionando "Nuevo" nos dirigiremos a la pantalla de carga de extracciones.
+![http://sursoftware.dyndns.org/pantalla2.gif](http://sursoftware.dyndns.org/pantalla2.gif)
+
+Debemos indicar una descripción para la extracción.
+
+Luego utilizaremos el campo de localidad para seleccionar una. Al escribir por lo menos 3 caracteres se nos desplegará una lista de sugerencias. Moviéndonos a través de ellas con las fechas del teclado seleccionamos la deseada y presionamos ENTER.
+
+A continuación indicamos una fuente, tags y un usuario.
+![http://sursoftware.dyndns.org/pantalla3.gif](http://sursoftware.dyndns.org/pantalla3.gif)
+
+En el caso de Facebook los usuarios deben indicarse con su ID. Para obtenerlo podemos utilizar las Facebook Utilities a las que accedemos pulsando en el link ubicado en la esquina superior derecha. Una vez allí indicamos el nick del usuario (mupargentinaoficial en nuestro caso) y el sistema nos devolverá su ID (para mupargentinaoficial sería 150836841649608) que debemos indicar en el campo.
+![http://sursoftware.dyndns.org/pantalla4.gif](http://sursoftware.dyndns.org/pantalla4.gif)
+
+Pulsando el boton [+] confirmamos la incorporación del usuario. Podemos darle una georreferenciación presionando el botón del mapa mundi. Por último debemos indicar el tiempo en minutos con el que el sistema extraerá periódicamente los posts. Finalmente presionamos el botón ubicado en la parte central de la pantalla llamado "Generar consulta", lo que nos llenará el campo de la izquierda con el texto necesario. Pulsamos "Compilar" y esperamos a que el sistema chequee nuestra consulta. En caso de éxito veremos el mensaje "Success". Para ver un vista previa de las extracciones que lograríamos con esta consulta presionamos "Extraer". Los posts que recupere son sólo de ejemplo y no se corresponden 100% con los que generará la extracción. Finalmente, publicamos la extracción presionando "Publicar".
+![http://sursoftware.dyndns.org/pantalla6.gif](http://sursoftware.dyndns.org/pantalla6.gif)

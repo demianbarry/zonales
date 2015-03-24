@@ -1,0 +1,164 @@
+#Especificación EBNF para definir configuraciones de extracción de
+#información para zonales
+
+# ZGram --> Gramática para configurar parámetros de extracción (Crawling) #
+
+## Gramática EBNF ##
+```
+<Zcrawling> 	::= 	["**" <descripcion> "**"]
+                        "extraer para la localidad" <localidad> 
+			"mediante la fuente" <fuente>
+			["asignando los tags" <tags>] 
+			["a partir" <criterios>] 
+			["incluye comentarios" ["de los usuarios" <usuarios>]
+			["y filtrando por" <filtros> ]
+			["incluye los tags de la fuente"]
+                        "."
+ 
+<descripcion>   ::=     ? Cualquier cadena de caracteres ?
+<localidad> 	::= 	? para toda localidad definida en el arbol de localidades de zonales encerrado entre comillas simple ?
+<tags>		::= 	<tag> {","<tag>} 
+<tag>		::= 	? para todo tag (distinto de la zona) definido en la estructura válida de tags de zonales entre comillas simple ?
+<fuente>	::=	"facebook" | "twitter" | "feed ubicado en" <uri_fuente> [ubicacion]
+<uri_fuente>	::=	? uri de rss o atom bien formada ?
+<criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
+<criterio>	::=     "de los usuarios" <usuarios> |
+			"de amigos de los usuarios" <usuarios> |
+			["si o si"] "de las palabras" <palabras>
+<usuarios>      ::=      <usuario> [ubicacion] {"," <usuario> [ubicacion]}
+<usuario>	::= 	? string (palabra) que identifica a un usuario en la fuente (facebook, twitter, linkedin, etc) encerrado entre comillas simple?
+<ubicacion>     ::=     "[" latitud "," longitud "]"
+<palabras>	::= 	<palabra> {"," <palabra>}
+<palabra>	::=	? cualquier palabra ?
+<filtros>	::=	<filtro> {"y" <filtro>}
+<filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" |
+			"con una dispersión entre palabras no mayor a" <numero_entero>" |
+			"lista negra de usuarios" |
+			"lista negra de palabras" |
+			"con al menos" <numero_entero> "actions"
+<min num shuld match> ::= ? según la especificación y formato de solr ?
+<uri_fuente>	::=	? formato uri apuntando al url de definición, encerrada entre comilla simples ?
+```
+
+
+### ejemplos: ###
+extraer para la localidad 'puerto madryn'
+mediante la fuente facebook
+a partir del usuario 'LU17.com' y 'Madryn TV' y de amigos del usuario 'Cultura Puerto Madryn'
+incluye comentarios de los usuarios: 'Demián Barry', 'Juan Manuel Cortez'.
+
+extraer para la localidad 'Argentina'
+mediante la fuente twitter asignando los tags 'política','actualidad'
+a partir del usuario '@CFKArgentina' y del usuario '@mauriciomacri' y del usuario '@ricalfonsin'
+incluye comentarios
+y filtrando por con al menos 50 actions.
+
+extraer para la localidad 'Córdoba'
+mediante la fuente twitter asignando los tags 'Deporte','futbol'
+a partir de las palabras córdona, deporte, futbol, talleres
+y filtrando al menos 75% de las palabras deben estar y con al menos 25 actions
+incluye los tags de la fuente.
+
+extraer para la localidad 'rosario'
+mediante la fuente rss ubicada en 'www.lacapital.com.ar/rss/ultimomomento.xml'
+a partir de todo
+incluye los tags de la fuente.
+
+
+## Gramática ABNF ##
+La Gramática Augmented BNF es una variante moderna de la especificación BNF. Fue definida en la [RFC 5234](http://tools.ietf.org/html/rfc5234) y se implementó para utilizar la librería Parse2 que construye automáticamente parsers para gramáticas definidas mediante ABNF.
+
+La definición se encuentra en el proyecto **ZCrawl Parser** incluído en la rama _branches_ del repositorio Subversion.
+http://code.google.com/p/zonales/source/browse/branches/ZCrawl%20Parser/zcrawl.abnf
+
+## Metadata ##
+
+Formato JSON que debe tener el resultado del parsing
+
+```
+{
+    "localidad" : "Localidad",
+    "tags" : [
+        "tag",
+        "tag",
+        "tag"
+    ],
+    "fuente" : "Fuente",
+    "uri_fuente" : "URI de la fuente",
+    "criterios" : [
+        {
+            "de todo" : true/false
+        },
+        {
+            "usuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "amigos de" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ]
+        }
+    ],
+    "no-criterios" : [
+        {
+            "de todo" : true/false
+        },
+        {
+            "usuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "amigos de" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ]
+        }
+    ],
+    "comentarios" : [
+        "usuario",
+        "usuario",
+        "usuario"
+    ],
+    "filtros" : [
+        {
+            "min_shuld_match" : 9 //Número
+        },
+        {
+            "dispersión" : 9 //Número
+        },
+        {
+            "lista negra de usuarios" : true/false
+        },
+        {
+            "lista negra de palabras" : true/false
+        },
+        {
+            "minActions" : 9 //Número
+        }
+    ],
+    "tagsFuente" : true/false
+}
+```

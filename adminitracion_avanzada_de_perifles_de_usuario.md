@@ -1,0 +1,83 @@
+# Introducción #
+
+El componente de _Administración Avanzada de Perfiles de Usuarios (AAPU)_ permite al administrador del sitio definir fácilmente que datos puede consultar, modificar y especificar un usuario de su perfil.
+
+# Descripción general de la pantalla de administración #
+La pantalla de administración del componente AAPU consta de las siguientes secciones:
+  * Gestión de usuarios
+  * Gestión de pestañas
+  * Gestión de atributos
+  * Gestión de tipos de datos
+  * Configuración
+## Gestión de usuarios ##
+Aquí se puede ver los usuario registrados en el sitio, junto con los datos relevantes.
+
+A los usuarios seleccionados se los puede borrar o editar, dependiendo de la acción elegida (al haber presionado algunos de los botones que se encuentran en la parte superior derecha). A un usuario también se le puede editar su perfil si se presiona su nombre o nombre de usuario.
+
+Se puede agregar un usuario presionando el botón _Crear_ que se encuentra en la parte superior derecha, junto con los otros dos botones. Si se decide por crear un nuevo usuario o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados dependerá de la configuración que haya realizado previamente el administrador. Aunque por defecto el componente solicita los siguientes datos:
+  * Email
+  * Email de respaldo
+  * Fecha de nacimiento
+  * Sexo
+  * Zonal de preferencia
+  * Contraseña
+  * Nombre
+  * Nombre  de usuario
+Si el administrador así lo dispuso podrían aparecer mas campos requeridos en la pestaña básica y/o mas pestañas adicionales.
+## Gestión de pestañas ##
+Aquí se puede ver las distintas pestañas registradas por el administrador. Las pestañas que aquí figuran se podrán seleccionar en el perfil del usuario si las mismas contienen al menos un atributo definido para ser mostrado en esa pestaña.
+
+Con las pestañas listadas se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+Si se decide por crear una nueva pestaña o editar una existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Nombre de la pestaña
+  * Etiqueta (Frase a mostrar al usuario para que identifique la pestaña)
+  * Descripción
+## Gestión de atributos ##
+Aquí se puede ver los distintos atributos registradas por el administrador. Los atributos que aquí figuran aparecerán en la pestaña correspondiente en el perfil del usuario.
+
+Con los atributos listados se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+
+Si se decide por crear un nuevo atributo o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Nombre
+  * Etiqueta
+  * Descripción
+  * Comentarios
+  * Desde (desde cuando es valido el atributo. Implementación futura. Todavía no se utiliza)
+  * Hasta (hasta cuando es valido el atributo. Implementación futura. Todavía no se utiliza)
+  * Requerido (el atributo es requerido?)
+  * Publicado (el atributo va a ser mostrado en una pestaña?)
+  * Archivo con validadores (archivo PHP con la validación de los datos que recibe el atributo)
+  * Pestañas (permite elegir en que pestaña debe mostrarse el atributo. Si se elige _Hard Data_ se mostrara en la pestaña básica)
+  * Tipo de dato (permite elegir el tipo de dato que acepta el atributo)
+  * Lista de valores (datos especiales que necesita el atributo para funcionar)
+> | **Tipo de dato** | **Valores esperados** |
+|:-----------------|:----------------------|
+> | BOOLEAN | _N/A_ |
+> | COMBOBOX | v1,v2,...,vn o SQL |
+> | DATE | _N/A_ |
+> | DOUBLE | _N/A_ |
+> | INT | _N/A_ |
+> | LISTBOX | v1,v2,...,vn o SQL |
+> | MODULE | nombre del modulo |
+> | MULTI\_LISTBOX | v1,v2,...,vn o SQL |
+> | SEX | _N/A_ |
+> | TEXT | _N/A_ |
+> | ZONAL | _N/A_ |
+## Gestión de tipos de datos ##
+Aquí se puede ver los distintos tipos de datos registrados por el administrador, junto con los predefinidos. Los tipos de datos que aquí figuran podrán ser elegidos en el momento de crear o editar un atributo.
+
+Con los atributos listados se pueden hacer las mismas operaciones que con los usuarios, encontrándose los botones en los mismos lugares.
+
+
+Si se decide por crear un nuevo tipo de dato o editar uno existente, entonces aparecerá una pantalla en la cual los datos solicitados son:
+  * Etiqueta (nombre del tipo de dato que vera el usuario)
+  * Descripción
+  * Archivo de renderizado (archivo PHP con la lógica necesaria para mostrar el atributo de ese tipo en pantalla)
+## Configuración ##
+# Renders #
+Los renders son la lógica que muestran por pantalla los tipos de datos soportados. Esta es su función principal. La otra función que tienen es indicar en que campo de la tabla _attribute\_entities_ se guardara el valor que el usuario haya ingresado o elegido. Esto es porque AAPU esta diseñado para poder utilizarlo con cualquier tipo de dato.
+Los renders se encuentran en _RAIZ\_DE\_JOOMLA/administrator/com\_aapu/plugins/renders_ y se reconocen porque su nombre respeta el siguiente formato **render\_for\_TIPODEDATO\_data\_type.php**
+# Validadores #
+Los validadores verifican que el dato ingresado por el usuario sea valido con respecto al tipo de dato, por ejemplo si el tipo de dato es INT se mostrara un mensaje de error si el usuario ingresa una palabra. Los validadores devuelven un mensaje de error si la validación no fue exitosa.

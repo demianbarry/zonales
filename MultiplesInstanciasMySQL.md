@@ -1,0 +1,92 @@
+# Introducción #
+
+Se hará uso del comando [mysqld\_multi](http://dev.mysql.com/doc/refman/5.0/en/mysqld-multi.html) de MySQL, que permite especificar múltiples configuraciones en el archivo `my.cnf`, cada una bajo un grupo `[mysqldN]`, donde **N** es el número de instancia.
+
+Una vez generado el archivo de configuración para las nuevas instancias, se crearán los scripts de inicio a partir del script `/etc/init.d/mysqld`.
+
+## my.multi.cnf ##
+
+Primero, crearemos una copia de seguidad de `my.cnf`. Luego reemplazamos el contenido del archivo por lo siguiente, modificando donde sea neceario:
+
+```
+[mysqld_multi]
+mysqld=/usr/bin/mysqld_safe
+mysqladmin=/usr/bin/mysqladmin
+
+[mysqld1]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+# Default to using old password format for compatibility with mysql 3.x
+# clients (those using the mysqlclient10 compatibility package).
+old_passwords=1
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+port=3306
+
+[mysqld2]
+datadir=/var/lib/mysql2
+socket=/var/lib/mysql2/mysql.sock
+user=mysql
+# Default to using old password format for compatibility with mysql 3.x
+# clients (those using the mysqlclient10 compatibility package).
+old_passwords=1
+log-error=/var/log/mysqld2.log
+pid-file=/var/run/mysqld/mysqld2.pid
+port=3307
+```
+
+Es importante que cada instancia cuenta con su propio `log-error`, `pid-file`, `socket`, `datadir` y `port`. En el ejemplo se siguio la convención de directorios y nombres de RHEL5.
+
+## scripts administrativos ##
+
+Para crear los scripts con los cuales iniciaremos y detendremos las instancias de MySQL, crearemos nuevas copias del archivo `/etc/init.d/mysqld`, las cuales modificaremos acordemente:
+
+`cp /etc/init.d/mysqld /etc/init.d/mysqld1`
+
+`cp /etc/init.d/mysqld /etc/init.d/mysqld2`
+
+Modificamos el primer argumento de las invocaciones a la función `get_mysql_option` por el nombre de la sección correspondiente (`mysqld1`, `mysqld2`, etc):
+
+```
+get_mysql_option mysqld1 datadir "/var/lib/mysql"
+datadir="$result"
+```
+
+Seguidamente agregamos la opción `--datadir` a la invocación del comando `mysqld_install_db`:
+
+```
+action $"Initializing MySQL database: " /usr/bin/mysql_install_db --datadir=$datadir
+```
+
+A continuación modificamos la líneas que ejecutan `/usr/bin/mysqld_safe` en la función `start()` para llamar a `mysqld_multi`:
+
+```
+/usr/bin/mysqld_multi --mysqld=mysqld_safe start 1 >/dev/null 2>&1 &
+```
+
+Buscamos la siguiente línea:
+
+```
+RESPONSE=`/usr/bin/mysqladmin -uUNKNOWN_MYSQL_USER ping 2>&1` && break
+```
+
+y agregamos como parámetro el socket de la instancia:
+
+```
+RESPONSE=`/usr/bin/mysqladmin -uUNKNOWN_MYSQL_USER --socket="$socketfile" ping 2>&1` && break
+```
+
+Finalmente agregamos los scripts creados como nuevos servicios del sistema:
+
+`chkconfig --add /etc/init.d/mysqld1`
+
+`chkconfig --add /etc/init.d/mysqld2`
+
+De esta manera podremos iniciar cada instancia mediante el comando `service`. Para que se inicien de manera automática al inicio del sistema:
+
+`chkconfig --level 3 mysqld1 on`
+
+## Notas ##
+
+Al reutilizar el script `mysqld` de RH, al crear una nueva instancia e iniciarla, automaticamente se creará el directorio de datos, se setearán los permisos del mismo y se iniciará la base de dato (de manerá identica al iniciar por primera vez el servicio `mysqld`).

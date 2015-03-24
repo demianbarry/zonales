@@ -1,0 +1,87 @@
+# Introducción #
+
+Se describe en esta sección el funcionamiento y los parámetros necesarios para la utilización del servicio de Recuperación de Contenidos de Facebook.
+
+
+# Descripción #
+
+El Servicio de Recuperación de Contenidos de Facebook se desarrolló en lenguaje PHP, debido, en parte, a que para este lenguaje existe una librería que permite la manipulación de la API Graph que ofrece Facebook.
+
+Permite obtener un conjunto de contenidos en formato XZone o JZone desde la red social Facebook, utilizando un conjunto de parámetros para configurar las búsquedas.
+
+El servlet está compuesto por los siguientes archivos:
+| **Archivo** | **Funcionalidad que brinda** |
+|:------------|:-----------------------------|
+| _index.php_ | Lógica central del servicio |
+| _fbmain.php_ | Librería para comunicación con la API de facebook |
+| _facebook.php_ | Librería para comunicación con la API de facebook |
+| _FormTools.php_ | Librería para interactuar con los parámetros recibidos |
+| _stemmer\_es_ | Lematización de las palabras en español |
+
+# Parámetros #
+
+| **Parámetro** | **Valores posibles** |
+|:---------------|:---------------------|
+| _users_ | Lista de usuarios a crawlear, separados por comas |
+| _keywords_ | Lista de keywords a buscar, separados por comas |
+| _zone_ | Cadena que representa la zona |
+| _tags_ | Cadenas que representan los tags del contenido, separados por comas |
+| _commenters_ | Lista de usuarios de los cuales desea recuperarse sus comentarios, separados por comas. Si se especifica el valor "all" retorna los contenidos de todos los commenters |
+| _limit_ | Límite de post por cada búsqueda |
+| _since_ | Límite temporal de la búsqueda |
+| _format_ | Formato de respuesta |
+| _minactions_ | Número mínimo de actions (comments, likes) que debe tener el contenido |
+
+# Funcionamiento #
+
+El funcionamiento del servicio puede resumirse en los siguientes items:
+  * Si se especifican usuarios, se realiza un búsqueda de posts de cada uno utilizando la API de faceboook, incluyendo en la misma el límite de post y de fecha especificados (parámetros _limit_ y _since_). **_Importante:_** Los usuarios deben especificarse utilizando su ID de Faceboook.
+    * Sobre cada publicación recuperada, se verifica que haya sido generada por el usuario o por los commenters especificados. Si el parámetro _commenters_ contiene el valor "all" se traen todos las publicaciones.
+    * Se comprueba que el número de actions de la publicación sea mayor o igual que el mínimo especificado en el parámetro _minactions_.
+    * Cada publicación recuperada se filtra por keywords (ver sección _keywords_)
+  * Si no se especificaron usuarios, pero si keywords de búsqueda, se realiza un búsqueda a través de la API utilizando esos keywords (con los paŕametros _limit_ y _since_).
+    * Se comprueba que el número de actions de la publicación sea mayor o igual que el mínimo especificado en el parámetro _minactions_.
+    * Los resultados de esta búsqueda también se filtran por keywords (ver sección _keywords_).
+  * Si no se especificaron ni usuarios ni keywords, no se retorna ningún resultado.
+
+## Filtro por Keywords ##
+
+Pueden especificarse dentro del parámetro _keywords_ las palabras que se deben buscar en los contenidos y las palabras conforman la lista negra (palabras que los contenidos no deben tener). Estas últimas deben ir precedidas por un signo de admiración (Ej: "!prostitución").
+De esta combinación de palabras a buscar y a filtrar surgen las siguientes posibilidades:
+  * _No se especifican palabras a buscar ni a filtrar_: el servicio recupera todos los contenidos acorde al resto de los parámetros, pero no realiza ningún filtro por keyword.
+  * _Se especifican palabras a filtrar (lista negra) pero no criterios de búsqueda por palabras_: el servicio recupera todos los contenidos que coincidan con los resto de los parámetros y elimina aquellos que contengan al menos una de las palabras de la lista negra.
+  * _Se especifican criterios de búsqueda_: el servicio recupera solo aquellos contenidos que contengan las palabras especificadas (su raíz en realidad, ya que realiza lematización). Si se especifican además palabras en la lista negra, elimina los contenidos que contengan al menos una de estas palabras.
+
+# Mapeo del servicio con la gramática EBNF #
+```
+<Zcrawling> 	::= 	"extraer para la localidad" <localidad> 
+			["asignando los tags" <tags>] 
+			"mediante la fuente" <fuente> ["ubicada en" <uri_fuente>]
+			"a partir" <criterios> 
+			["incluye comentarios" ["de los usuarios:" <usuario> {"," <usuario>}]]
+			["y filtrando por" <filtros> ]
+			["incluye los tags de la fuente"]
+                        "."
+ 
+<localidad> 	::= 	parámetro "zone" del servicio
+<tags>		::= 	parámetro "tags" del servicio (tags=tag,tag,...,tag)
+<tag>		::= 	cada uno de los tags del parámetro "tags".
+<fuente>	::=	"facebook"
+<uri_fuente>	::=	URI del servicio??? Depende decisión de configuración. Sino no aplica...???
+<criterios>	::= 	<criterio> {"y" <criterio>} ["pero no" <criterio> {"y" <criterio>}] 
+<criterio>	::=	"de todo" | sin parámetro "users"
+                        "del usuario" <usuario> | cada uno de los usuarios del parámetro "users"
+			"de amigos del usuario" <usuario> | No implementado por el momento
+			"de las palabras" <palabras> | Parámetro "keywords"
+<usuario>	::= 	ID del usuario Facebook
+<palabras>	::= 	parámetro "keywords" del servicio (keywords=keyword,keyword,...,keyword)
+<palabra>	::=	cada uno de los keywords del parámetro "keywords".
+<filtros>	::=	<filtro> {"y" <filtro>}
+<filtro>	::=	"al menos <min num shuld match> "de las palabras deben estar" | No implementado por el momento
+			"con una disperción entre palabras no mayor a" <numero_entero>" | No implementado por el momento
+			"lista negra de usuarios" | No implementado por el momento (Basta con no poner estos usuarios en el parámetro "users", problema solo cuando no se especifica el parámetros "users")
+			"lista negra de palabras" | keywords con signo "!" adelante en parámetros "keywords"
+			"con al menos" <numero_entero> "actions" | parámetro "minactions"
+<min num shuld match> ::= No implementado por el momento
+<uri_fuente>	::=	Decisión de configuración...
+```

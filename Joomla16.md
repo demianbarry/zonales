@@ -1,0 +1,103 @@
+# Introducción #
+
+Se pretende plasmar en esta página las novedades de Joomla 1.6, analizar los cambios y mejoras introducidos y analizar el impacto sobre el proyecto zonales.
+
+# Análisis de la versión #
+
+A modo de introducción al tema, vale la pena leer el siguiente artículo:
+
+http://www.gnumla.com/articulos/joomla-16-si-joomla-16-no-todo-lo-que-necesitas-saber.html
+
+Existe un componente denominado JUpgrade que en teoría realiza automáticamente la migración, generando una nueva instancia de Joomla 1.6 a partir de una 1.5 exitente.
+
+Por el momento está mayormente probado utilizando la versión Joomla 1.5.22, y no recomiendan su uso con una versión anterior a la 1.5.11. Asimismo, solo se migra por el momento el core. La migración de extensiones de terceros está en proceso de desarrollo.
+
+http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6#Upgrading
+
+## Lista de novedades y cambios ##
+
+En el sitio de documentación oficial de Joomla! podemos encontrar las novedades de la versión. Hay que prestar especial atención a la sección **Desarrolladores** donde se detallan los cambios realizados. Deben ser tenidos en cuenta para la revisión del código.
+
+http://docs.joomla.org/What%27s_new_in_Joomla_1.6
+
+# Migración de Zonales de Joomla! 1.5 a 1.6 #
+
+Dado la magnitud de los cambios realizados, no es posible utilizar nada de lo existente sin una revisión y actualización previa.
+
+Podemos resumir el proceso de migración en de la siguiente forma:
+
+  * Debe revisarse la lista de extensiones completa que se utilizaron hasta el momento en Zonales sobre Joomla! 1.5 para determinar, teniendo en cuenta las características de Joomla! 1.6 cuales siguen siendo necesarias y cuales no.
+  * Extensiones de terceros sin modificar que utilizamos en Zonales: checkear la existencia de versiones compatibles con Joomla! 1.6.
+  * Extensiones de terceros modificadas por el equipo de trabajo: además de checkear si existen nuevas versiones debe analizarse si se pueden realizar las mismas modificaciones.
+  * Extensiones desarrolladas por el equipo de trabajo: deben revisarse y actualizarse teniendo en cuenta las nuevas características de Joomla 1.6, la lista de funciones nuevas y deprecadas, cambios en la base de datos, etc.
+  * Para las extensiones de terceros que no estén actualizadas para Joomla! 1.6, deberá buscarse alguna alternativa o desarrollar una propia.
+  * Template: debe modificarse para adaptarlo a la nueva especificación de templates. Existe un instructivo en "Documentación/Joomla 1.6" para tal fin.
+  * Modificaciones realizadas al core de Joomla! 1.5: Debe analizarse si es necesario realizarlas en la nueva versión, y en caso afirmativo deben realizarse nuevamente sobre la nueva arquitectura.
+
+## Análisis de extensiones de Zonales ##
+
+### Extensiones de terceros sin modificar ###
+
+| **Extensión** | **Tipo** | **Necesaria en 1.6?** | **Tareas para migración** | **Observaciones** |
+|:---------------|:---------|:----------------------|:---------------------------|:------------------|
+| Joomla ACL | Componente + Módulo + Plugin | NO | Joomla 1.6 ya incluye ACL | - |
+| JXComments | Paquete | REVISAR | No actualizada para 1.6 | - |
+| CKEditor | Paquete | SI | Instalar artof editor | artof editor es CKEditor con un plugin y tiene una versión para Joomla 1.6. Tmb. existe JCK Editor para J 1.6 |
+| JXLibraries | Librería | REVISAR | No actualizada para 1.6 | - |
+| YooSearch | Módulo | SI | No actualizada para 1.6 | Analizar alternativas |
+| Yoo Efects | Módulo | SI | No actualizada para 1.6 | Analizar alternativas |
+| JComments  | Módulo | REVISAR - Probablemente NO | No actualizada para 1.6 | - |
+| JoomlaXplorer | Componente | NO | No actualizada para 1.6 | Si es necesario un gestor de archivos para Joomla, buscar otro actualizado para 1.6, por ejemplo eXtplorer |
+| Easy SQL  | Componente | REVISAR | No actualizada para 1.6 | - |
+| Cliente PHP para Solr  | Librería PHP | SI | Revisar compatibilidad | Esta librería es PHP, independiente de Joomla, debería funcionar aunque deben revisarse las extensiones Solr |
+
+### Extensiones de terceros modificar ###
+
+| **Extensión** | **Tipo** | **Necesaria en 1.6?** | **Tareas para migración** | **Observaciones** |
+|:---------------|:---------|:----------------------|:---------------------------|:------------------|
+| Custom Properties (Tags) | Componente | SI | No actualizada para 1.6 | Probablemente sea muy dificil de adaptar. Ver desarrollo de extensión propia. Analizar categorías jerárquicas de Joomla 1.6 |
+| Plg. Like  | Plugin | SI | No actualizada para 1.6 | Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad |
+| Plg. Denunciar  | Plugin | SI | No actualizada para 1.6 | Muy modificada. Considerar desarrollar una nueva o buscar otra extensión similar que sea de utilidad |
+
+### Extensiones desarrolladas desde cero ###
+
+| **Extensión** | **Tipo** | **Necesaria en 1.6?** | **Tareas para migración** | **Observaciones** |
+|:---------------|:---------|:----------------------|:---------------------------|:------------------|
+| Admin. Avanzada de Perfiles de Usuario (AAPU) | Componente | REVISAR | Adaptar código fuente | Definir si va a utilizarse en Zonales. Deben terminarse varias características que quedaron pendientes |
+| Admin. de alias de Usuarios | Componente | SI | Adaptar código fuente | Ver integración con ZLogin en un paquete |
+| Ecualizador de intereses | Componente | SI | Adaptar código fuente | - |
+| Conjunto de banners para Zonales (imágenes) | Imágenes | SI | Chequear carpeta de banners | Conjunto de imágenes, solo hay que descomprimir donde Joomla guarda los banners |
+| Zonales Core | Componente | SI | Adaptar código fuente | - |
+| Modificación a la administración de contenidos de Joomla | Modif. al core | SI | Revisar el core de Joomla 1.6 y realizar las mismas modificaciones | Si es posible, realizar los cambios por plugin y no modificar el core |
+| Modificación a los menúes de Joomla | Modif. al core | SI | Revisar el core de Joomla 1.6 y realizar las mismas modificaciones | Si es posible, realizar los cambios por plugin y no modificar el core |
+| Modificación al componente de búsqueda de Joomla | Modif. al core | SI | Revisar el core de Joomla 1.6 y realizar las mismas modificaciones | Si es posible, realizar los cambios por plugin y no modificar el core |
+| Modificación al componente de admin. de Usuarios de Joomla | Modif. al core | SI | La funcionalidad modificada se puede lograr mediante com\_aapu, evitando así modificar el core | - |
+| Librerías e imágenes necesarias para ZLogin | Librerías | SI | Depende de la revisión de Zlogin | Conjunto de librerías necesarias para ZLogin. Adaptar al nuevo tipo de extensión "librería" de Joomla 1.6 |
+| Librerías G2P | Librerías | SI | Depende de la revisión de las extensiones que utilizan las librerías | Adaptar al nuevo tipo de extensión "librería" de Joomla 1.6 |
+| Admin. de alias de Usuarios | Módulo | SI | Adaptar código fuente | Integrar instalador con com\_alias |
+| Selector de Zonal | Módulo | REVISAR | Adaptar código fuente | Decidir si se sigue utilizando el este _combozona_ o se vuelve al mapa |
+| Ecualizador de intereses | Módulo | SI | Adaptar código fuente | Integrar instalador con com\_eqzonales  |
+| La voz del vecino | Módulo | SI | Adaptar código fuente | - |
+| Menú Editor | Módulo | SI | Adaptar código fuente | - |
+| Menú dinámico para Zonales | Módulo | SI | Adaptar código fuente | - |
+| Visualización de Mensajes | Módulo | SI | Adaptar código fuente | - |
+| Alias Notice | Módulo | SI | Adaptar código fuente | Integrar instalador con com\_alias |
+| Información de sesión del usuario | Módulo | SI | Adaptar código fuente | Integrar con ZLogin a com\_aapu |
+| Soy Corresponsal | Módulo | SI | Adaptar código fuente | - |
+| Registro de Usuarios | Módulo | SI | Adaptar código fuente | Esta funcionalidad debería ser parte de com\_aapu. Ya estaba construida una buena parte en el mismo |
+| Zonales Login | Módulo | SI | Adaptar código fuente | Integrar instalador con demás extensiones relacionadas |
+| Zonal Actual | Módulo | SI | Adaptar código fuente | Ver integración con mapa si se vuelve a utilizar |
+| Tagueo de artículos | Plugin | SI | Adaptar código fuente | - |
+| Proxy para autenticación | Plugin | SI | Adaptar código fuente | Integrar instalador con Zlogin |
+| Zonales Content | Plugin | SI | Adaptar código fuente | - |
+| Botón en el editor para tagueo de artículos | Plugin | SI | Adaptar código fuente | - |
+| Eventos del ecualizador | Plugin | SI | Adaptar código fuente | Integrar instalador con Ecualizador de Intereses |
+| Autenticación de usuarios utilizando protocolos externos | Plugin | SI | Adaptar código fuente | Integrar instalador con ZLogin |
+| Indexación de contenidos utilizando Solr | Plugin | SI | Adaptar código fuente | Integrar instalador con demás extensiones relacionadas con el vínculo con Solr |
+| Búsqueda de contenidos utilizando Solr | Plugin | SI | Adaptar código fuente | Integrar instalador con demás extensiones relacionadas con el vínculo con Solr |
+| Autotaggeo | Plugin | SI | Adaptar código fuente | - |
+| Template para Zonales Z1 | Template | SI | Adaptar a nuevos templates de Joomla 1.6 | Instructivo en documentación para realizar migración |
+
+# Otros links de interés #
+
+Sitio oficial de Joomla, lista de extensiones disponibles para la versión 1.6: http://extensions.joomla.org/16-ready

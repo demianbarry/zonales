@@ -1,0 +1,120 @@
+# Introducción #
+
+Nutch es un robot y motor de búsqueda basado en Lucene. Es parte del proyecto Lucene que a su vez es gestionado por la Apache Software Foundation. Nutch es software libre.
+
+Nutch ofrece una solución transparente, pues al ser una tecnología de código abierto es posible conocer como organiza el ranking de resultados de las búsquedas. Está desarrollada en Java, y basa su arquitectura en la plataforma Hadoop de desarrollo de sistemas distribuidos.
+
+[Fuente: Wikipedia](http://es.wikipedia.org/wiki/Nutch)
+
+Nutch utiliza prestaciones de varios proyectos Apache, entre los que podemos destacar:
+
+**Hadoop**: Map-Reduce, Distributed Filesystems
+
+**Tika**: Content type detection, passing
+
+
+# Arquitectura #
+![http://zonales.dyndns.org:30082/images/NutchArq1.png](http://zonales.dyndns.org:30082/images/NutchArq1.png)
+
+**CrawlDB**: Mantiene información de las URL conocidas:
+  * Fetch schedule
+  * Fetch Status
+  * Page signature
+  * Metadata
+  * Mantiene el page rank?
+
+**LinkDB**: Para cada URL destino mantiene información de los links asociados. Aparentemente mantiene una especie de grafo con los links de cada página.
+
+**Shards(segments)**:
+  * Contenido completo de las páginas
+  * Contenido parseado, metadata que se descubrió y outlinks
+  * Texto plano para indexado y fragmentación
+
+# Crawl Workflow #
+
+Se detallan a continuación las distintas etapas del Workflow
+
+## Inject ##
+
+  * Crea la CrawlDB a partir de las URL semillas (almacenadas en un archivo de texto plano).
+  * Crea la LinkDB vacía
+
+**Class**: org.apache.nutch.crawl.Injector
+
+**Command**: nutch inject `<crawldir/crawldb`> `<urldir`>
+
+## Generate ##
+
+  * Genera la lista de fetch en el shard
+  * Indica desde donde hacer fetch, según políticas de crawl-urlfilter.txt
+  * Aparentemente genera los segmentos
+  * Analizar de que se trata la opción freegen...
+
+**Class**: org.apache.nutch.crawl.Generator
+
+**Command**: nutch generate `<crawldir/crawldb`> `<crawldir/segments`>
+
+## Fetch ##
+
+  * Trae el contenido plano
+  * Se puede configurar cantidad de threas para recuperar
+
+**Class**: org.apache.nutch.fetcher.Fetcher
+
+**Command**: nutch fetch `<segments_list`>
+
+## Parse ##
+
+  * Parsea contenido
+  * Descubre outlinks (Ver por qué no añade los links RSS de las noticias a la CrawlDB)
+
+**Class**: org.apache.nutch.parse.ParseSegment
+
+**Command**: nutch parse `<segments_list`>
+
+## UpdateDB ##
+
+  * Actualiza CrawlDB desde los shard
+
+**Class**: org.apache.nutch.crawl.CrawlDb
+
+**Command**: nutch updatedb `<crawldir/crawldb` -dir (`<segments`> | `<seg1`> | `<seg2`> )
+
+## Invert Links ##
+
+  * Actualiza LinkDB desde los shards
+
+**Class**: org.apache.nutch.crawl.LinkDB
+
+**Command**: nutch invertlinks `<crawldir/linkdb`> -dir `<crawldir/segments`>
+
+## Index / Solrindex ##
+
+  * Indexación del contenido
+
+**Class**: org.apache.nutch.indexer.Indexer, org.apache.nutch.indexer.SolrIndexer
+
+**Command**: nutch index `<crawldir/indexes`> `<crawldir/crawldb`> `<crawldir/linkdb`> `<crawldir/segments`>
+
+## Otros comandos ##
+
+Revisar estás opciones
+
+  * dedup
+  * merge
+
+# Objetivos #
+
+## RSS ##
+
+  * Analizar Crawl
+  * Analizar parser para RSS existente
+  * No crawlear canal con Nutch
+  * Consumir RSS con servlet -> Alimentar crawlDB??
+  * Devolver en formato XZone y JZone
+
+## Facebook / Twitter ##
+
+  * Parsear: separar posts
+  * Indexar directamente? o con Nutch?
+  * Outgoing links. Debe actualizar LinkDB.

@@ -1,0 +1,35 @@
+# Introduction #
+
+Pasos para pedir desde el cliente (o MiddleZone) a solr los post incrementalmente.
+
+
+# Querys Solr #
+
+La query para pedir los post más recientes es la siguiente:
+```
+<SOLR_URL>/<SOLR_PATH>/select?indent=on&version=2.2&fq=indexTime:[<LATEST_POST_DATETIME> TO NOW]&start=0&fl=*,score&rows=<MAX_ROWS>&qt=zonalesContent&wt=json&explainOther=&hl.fl='
+```
+
+Por ejemplo:
+```
+http://200.69.225.53:38080/solr-posts/select?indent=on&version=2.2&fq=indexTime:[2011-06-23T17:11:32.95Z TO NOW]&start=0&fl=*,score&rows=100&qt=zonalesContent&wt=standard&explainOther=&hl.fl='
+```
+
+La query para pedir post desde el menos reciente para atrás es la siguiente:
+```
+<SOLR_URL>/<SOLR_PATH>/select?indent=on&version=2.2&fq=indexTime:[* TO <OLDEST_POST_DATETIME>]&start=0&fl=*,score&rows=<MAX_ROWS>&qt=zonalesContent&wt=json&explainOther=&hl.fl='
+```
+En este caso se recuperan post más antiguos que el último mostrado (la cantidad de post que se recuperan dependen del valor MAX\_ROWS)
+
+Por ejemplo:
+```
+http://200.69.225.53:38080/solr-posts/select?indent=on&version=2.2&fq=indexTime:[* TO 2011-06-23T17:11:32.95Z]&start=0&fl=*,score&rows=100&qt=zonalesContent&wt=standard&explainOther=&hl.fl='
+```
+
+## Referencias ##
+
+**SOLR\_URL**: URL del servidor donde se encuentra desplegado Solr
+**SOLR\_PATH**: Path de Solr en el servidor especidicado
+**LATEST\_POST\_DATETIME**: La marca de tiempo del post más reciente recuperado. Debe guardarse este dato en el cliente o en el middleZone.
+**OLDEST\_POST\_DATETIME**: La marca de tiempo del post más antiguo recuperado. Debe guardarse este dato en el cliente o en el middleZone.
+**MAX\_ROWS**: Cantidad máxima de post a recuperar.

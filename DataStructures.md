@@ -1,0 +1,174 @@
+# Estructuras de datos #
+
+Se detallan en esta sección las estructuras de datos diseñadas para persistir las entidades utilizadas en Zonales.
+
+
+## Configuraciones de Fuentes de Extracción ##
+
+```
+//Configuraciones de fuentes de extracción
+{
+    "name" : "String",
+    "uri" : "String",
+    "params" : [
+        {
+            "name" : "String",
+            "required" : true/false //Boolean
+        }
+    ],
+    "plugins" : [
+        {
+            "class_name" : "String",
+            "type" : "String" //Valores posibles por el momento: URLGetter, Publisher
+        }
+    ],
+    "state" : "String" //Valores posibles Generada, Publicada, Despublicada, Anulada
+}
+
+```
+
+## Tags ##
+
+```
+//Tipos de tags (similar al field de la estructura anterior)
+{
+    "name" : "String", //Este campo debe ser único
+    "parents" : [
+        "String" //Nombres de los tipos que son padre del actual
+    ],
+    "state" : "String"  //Generado, publicado, despublicado, anulado
+}
+
+//Tags
+{
+    "id" : 9, //Numérico entero. Este campo debe ser único. No es igual al ID que le pone MongoDB
+    "name" : "String",
+    "parent" : 9, //Numérico, ID del tag padre
+    "type" : "String", //Debe ser el nombre de un tipo de tag existente
+    "state" : "String" ////Generado, publicado, despublicado, anulado
+}
+
+```
+
+## Extracciones ##
+
+```
+{
+    "cod" : 9, //Integer
+    "msg" : "Mensaje",
+    "descripcion" : "Descripción",
+    "localidad" : "Localidad",
+    "fuente" : "Fuente",
+    "tags" : [
+        "tag",
+        "tag",
+        "tag"
+    ],
+    "uriFuente" : "URI de la fuente",
+    "criterios" : [
+        {
+            "deLosUsuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "deLosUsuariosLatitudes" : [
+                -31.4098, //Double values
+                -30.4452,
+                -33.5546
+            ]
+        },
+        {
+            "deLosUsuariosLongitudes" : [
+                -64.1905, //Double values
+                -60.1256,
+                -61.2552
+            ]
+        },
+        {
+            "amigosDe" : "Usuario"
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ],
+            "siosi" : true/false
+        }
+    ],
+    "noCriterios" : [
+        {
+            "deLosUsuarios" : [
+                "usuario",
+                "usuario",
+                "usuario"
+            ]
+        },
+        {
+            "amigosDe" : "Usuario"
+        },
+        {
+            "palabras" : [
+                "palabra",
+                "palabra",
+                "palabra"
+            ],
+            "siosi" : true/false
+        }
+    ],
+    "comentarios" : [
+        "usuario",
+        "usuario",
+        "usuario"
+    ],
+    "incluyeComentarios" : true / false,
+    "filtros" : [
+        {
+            "minShuldMatch" : 9 //Número
+        },
+        {
+            "dispersión" : 9 //Número
+        },
+        {
+            "listaNegraDeUsuarios" : true/false
+        },
+        {
+            "listaNegraDePalabras" : true/false
+        },
+        {
+            "minActions" : 9 //Número
+        }
+    ],
+    "tagsFuente" : true/false,
+    "verbatim" : "Consulta original",
+    "estado" : "Estado",
+    "periodicidad" : 9, //Número que indica en minutos la periodicidad de extracción
+    "creado" : "Fecha de creación en milisegundos",
+    "creadoPor" : "Usuario que creó la extracción",
+    "modificado" : "Fecha de última modificación en milisegundos",
+    "modificadoPor" : "Usuario que realizó la última modificación de la extracción",
+    "ultimaExtraccionConDatos" : "Fecha en milisegundos de la ultima extracción que trajo resultados",
+    "ultimoHitDeExtraccion" : "Fecha en milisegundos del último intento de extracción",
+    "sourceLatitude" : -31.2556, //double value
+    "sourceLongitude" : -64.2211, //double value
+}
+```
+
+## Filtros para las Extracciones ##
+
+```
+{
+    "localidad" : "Localidad",
+    "fuente" : "Fuente",
+    "tags" : [
+        "tag",
+        "tag",
+        "tag"
+    ],
+    "estado" : "estado"
+    "periodo" : "day" / "week" / "month" / "all"
+}
+```

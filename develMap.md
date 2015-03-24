@@ -1,0 +1,87 @@
+# Mapa de tecnologías: Devel #
+
+## Software de base ##
+
+| SO | Ubuntu Server 10.04 LTS |
+|:---|:------------------------|
+| DB | mysql  Ver 14.14 Distrib 5.1.41, for debian-linux-gnu (x86\_64) using readline 6.1 |
+| PHP | 5.3.2-1ubuntu4.11 with Suhosin-Patch |
+| Apache Web Server | Apache/2.2.14 (Ubuntu) |
+| Apache Tomcat | v6.0.35 |
+| Node.js | 	v0.6.6 |
+| MongoDB | MongoDB shell version: 2.0.2 |
+| Apache solr | v3.3.0 |
+| Joomla! | v1.7.1 |
+
+
+## Java WebApps ##
+
+  * SendMail
+  * TwitterRetrievalServlet
+  * ZCrawlFeedsServlet
+  * ZCrawlGeoExtractor
+  * ZCrawlParserServlet
+  * ZCrawlScheduler
+  * ZCrawlSources
+
+
+## Componentes para instalar Zonales ##
+
+  * Joomla! 1.7.1 con todos los componentes, módulos y plugins instalados. Por ahora es un archivo comprimido para pisado de instancia.
+TODO: Detallar por paquetes de instalación en Joomla.
+  * Facebook Information Retrieval
+  * ZonalesContentApi (Desarrollo en Node.js, incluye la parte de CMUtils desarrollada en Node.js)
+  * CMUtils
+
+
+## Datos ##
+
+Último backup:					02/02/2012
+
+  * Script DB MySQL
+  * Dump MongoDB
+  * Índice Solr
+
+
+## Configuraciones para la instalación ##
+
+  * Reemplazar las configuraciones en las webapp desarrolladas en Java de acuerdo a la instancia donde se van a implementar (Archivos servlet.properties)
+  * Reemplazar las referencias a Node.js
+  * Reemplazar las referencias a la raiz del sitio
+  * Reemplazar las referencias a tomcat (más que nada el puerto, el host siempre es localhost)
+
+Ejemplo del script de reemplazos:
+
+> grep "www.sursoftware" -lHIRZi **| xargs -0 -l sed -i "s/www.sursoftware/sursoftware/ig"**
+
+
+## Librerías de desarrollo JAVA ##
+
+| SolrJ | v3.3.0 |
+|:------|:-------|
+| Javamail | v1.4.4 |
+| MongoDB | Driver Java v2.7.2 |
+| GSON | v1.7.1 |
+| Apache Commons HTTP Client | v3.1 |
+| sfl4j | v1.6.2 |
+| apache-log4j | v1.2.16 |
+| Apache Commons Loggin | v1.1.1 |
+| Apache Commons Codec | v1.5 |
+| Quarzt | v2.1.1 |
+| Rome | v1.0 |
+| Feeds Libraries | dom4j v1.6.1, nekohtml, feed4j, xerces, jsoup 1.6.1 |
+| JAXB | v2.2 (Incluida en NetBean) |
+| twitter4j | v2.2.4 |
+
+
+## Librerías PHP ##
+
+| Facebook SDK	| v2.1.2 |
+|:-------------|:-------|
+
+
+## Librerías JavaScript ##
+
+| OpenLayers | v2.11 |
+|:-----------|:------|
+| Mootools | v1.3 |

@@ -1,0 +1,17 @@
+# Introducción #
+
+Esta página debe contener buenas prácticas de programación consensuadas por el equipo para el debugging.
+
+
+# Logger #
+Código básico de debugging de excepciones en Java:
+
+```
+StringBuilder stacktrace = new StringBuilder();
+for (StackTraceElement line : ex.getStackTrace()) {
+    stacktrace.append(line.toString());
+    stacktrace.append("\n");
+}
+Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                "EXCEPCION: {0}\nTRACE: {1}", new Object[]{ex, stacktrace.toString()});
+```

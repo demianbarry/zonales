@@ -1,0 +1,1 @@
+**Zonales** es un conjunto de servicios de información, reunidos en un mismo lugar, que poseen un factor en común: la georefenreciación de la información y servicios desde una perspectiva local para cada comunidad.

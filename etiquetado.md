@@ -1,0 +1,28 @@
+# Introducción #
+
+El etiquetado de contenido es el corazón de Zonales. Se puede etiquetar distintos tipos de elementos: artículos, banners, etc. Cualquier entidad que tenga una tabla en la base de datos que la represente.
+
+# Averiguar que etiquetas posee un elemento #
+En la pantalla de edición del elemento se encontrara una lista de las etiquetas que tiene aplicadas.
+# Etiquetar un elemento soportado #
+En la pantalla de edición del elemento se encontrara un botón que al presionarlo mostrara una pantalla que permitirá la asignación o desvinculación de las etiquetas al elemento.
+Esta pantalla muestra las etiquetas asignadas junto con una equis (X) al lado de cada una para desvincularlas del elemento. Ademas permite buscar etiquetas existentes permitiendo elegir las sugeridas que se muestran luego de haber ingresado 3 (tres) caracteres o mas.
+A medida que se eligen etiquetas desde el cuadro de búsqueda, las mismas van completando la _lista de etiquetas seleccionadas_ que se encuentra debajo del cuadro de búsqueda. Si se selecciona una etiqueta del la _lista de etiquetas seleccionadas_ la misma no sera aplicada cuando se confirme la operación.
+
+# Instalar soporte para un nuevo tipo de elemento #
+En la pantalla de administración del componente Custom Properties (Propiedades Personalizadas), dirigirse a la pestaña **Utilidades** luego a **Manage content elements**. La tabla de la izquierda contiene una lista de los elementos disponibles para instalar. Una vez que se haga click en **install** se puede observar que el elemento aparece en la tabla de la derecha. A partir de ahora se puede empezar a etiquetar este tipo de elementos.
+
+Si el tipo de elemento que se desea etiquetar no se encuentra en la tabla de la izquierda entonces se debe realizar lo siguiente:
+  1. Crear un archivo XML que contenga la metadata del tipo de elemento.
+  1. Copiar el archivo XML en el directorio _samplece_ del componente Custom Properties (raizDeJoomla/administrator/com\_customproperties/samplece)
+  1. Instalar el tipo de elemento como se describió anteriormente.
+  1. Agregar en la pantalla de edición del elemento un botón que apunte a la pantalla de administración de etiquetas.
+## Archivo XML de metadata ##
+La metadata consiste en un nombre que se le asigna al tipo de elemento junto con la información de la tabla de la base de datos que lleva registro de los elementos a etiquetar. Es decir, si por ejemplo se desea etiquetar los banners, hay que analizar la tabla de banners en la base de datos e indicar el nombre de la tabla, los campos y el nombre del tipo de elemento en el archivo XML.
+## Configuración del botón ##
+Para que el botón apunte a la pantalla de administración de etiquetas debe configurarse para que realice un POST o un GET con los siguientes parámetros:
+  * **option**: com\_customproperties
+  * **task**: tags
+  * **cid**: ID\_DEL\_ELEMENTO\_ACTUAL
+  * **tmpl**: component (backend) o component\_only (frontend)
+  * **ce\_name**: NOMBRE\_DEL\_TIPO\_ELEMENTO

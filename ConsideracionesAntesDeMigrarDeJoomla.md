@@ -1,0 +1,393 @@
+# Consideraciones antes de migrar a Joomla 1,7 #
+
+
+**Requerimientos Joomla 1,7**
+
+Apache: v2.x or Microsoft IIS: v7
+
+PHP: v5.2.4 +
+
+MySQL: v5.0.4+
+
+Joomla ha previsto una utilidad de migración, llamada jUpgrade, pero antes de empezar, hay algunas cosas que revisar y / o pensar acerca de:
+
+**¿La version de Joomla 1.5 esta actualizada?** La versión más actualizada de Joomla 1.5 es 1.5.23. Si la versión no está al día, actualizar a 1.5.23 antes de emigrar, sobre todo si se está ejecutando Joomla 1.5.11 o inferior.
+
+**¿Todos las extensiones de Joomla 1.7 tiene versiones nativas?**  Hay que tener en cuenta que jUpgrade no está en condiciones de actualizar las extensiones de Joomla 3 ª parte, por lo que tendra  que hacerse a través de sus respectivos procedimientos de actualización.
+
+**¿Se han modificado los archivos del Core?** Cualquier cambio que se haya hecho a los archivos del núcleo de Joomla se perderá.
+
+**¿Existe una plantilla de Joomla 1.7 compatible disponible ?** Hay que tener en cuenta que aun jUpgrade no es capaz de actualizar las plantillas.
+
+**¿Qué se necesita para migrar a Joomla 1.7? .** A continuacion listamos algunas consideraciones a tener en cuenta para migrar a Joomla 1.7.
+
+
+
+## **Links de Interes para la actualizacion** ##
+
+**Install JUpgrade**
+
+http://docs.joomla.org/Migrating_from_Joomla_1.5_to_Joomla_1.6
+http://extensions.joomla.org/extensions/migration-a-conversion/joomla-migration
+
+**Adaptar una extension Joomla 1,5 a 1,7**
+
+http://docs.joomla.org/Upgrading_a_Joomla_1.5_extension_to_Joomla_1.6#global_.24option_is_gone
+
+**Actualizacion template Joomla 1,5 a 1,7**
+
+http://docs.joomla.org/Upgrading_a_Joomla_1.5_template_to_Joomla_1.6
+http://community.joomla.org/blogs/community/1257-16-templates.html
+
+**Comparacion de menus de back Joomla 1,5 y 1,7**
+
+http://wiki.joomlart.com/wiki/Joomla_1.6/1.6_15_Difference
+
+
+
+## **Como obtener parametros de plugins, modulos, componentes y templates en Joomla 1,7** ##
+
+**Plugin parameters from inside a plugin**
+> $param = $this->params->get('paramName', defaultValue);
+
+**Plugin parameters from outside a plugin**
+> $plugin = JPluginHelper::getPlugin('editors', 'codemirror');
+> $pluginParams = new JRegistry();
+> $pluginParams->loadString($plugin->params);
+> $param = $pluginParams->get('paramName', 'defaultValue');
+
+**Module parameters from inside a module**
+> $param = $params->get('paramName', 'defaultValue');
+
+**Module parameters from outside a module**
+> $module = JModuleHelper::getModule('banners');
+> $moduleParams = new JRegistry();
+> $moduleParams->loadString($module->params);
+> $param = $moduleParams->get('paramName', 'defaultValue');
+
+**Component parameters from inside a component**
+> $app = JFactory::getApplication('site');
+> $componentParams = $app->getParams('com\_content');
+> $param = $componentParams->get('paramName', defaultValue);
+
+**Component parameters from outside a component**
+> $app = JFactory::getApplication('site');
+> $componentParams = $app->getParams('com\_example');
+> $param = $componentParams->get('paramName', defaultValue);
+
+**Template parameters from inside a template**
+> $param = $this->params->get('paramName', defaultValue);
+
+**Template parameters from outside a template**
+> $app = JFactory::getApplication('site');
+> $template = $app->getTemplate(true);
+> $param = $template->params->get('paramName', defaultValue);
+
+
+## Nuevo estilo de seteo de parametros para modulos, componentes: ##
+
+config.xml
+
+
+
+&lt;config&gt;
+
+
+
+
+&lt;fields name="params"&gt;
+
+
+
+
+&lt;fieldset name="basic" label="Module Parameters" description="Module settings"&gt;
+
+
+> 
+
+&lt;field name="moduleclass\_sfx" type="text" default="" label="Module Class Suffix" description="Module class suffix"&gt;
+
+
+
+&lt;/field&gt;
+
+
+> 
+
+&lt;field name="limit" type="text" default="5" label="# of items to show" description="display a certain number of items"&gt;
+
+
+
+&lt;/field&gt;
+
+
+> 
+
+&lt;/fieldset&gt;
+
+
+
+
+&lt;/fields&gt;
+
+
+
+
+&lt;/config&gt;
+
+
+
+## Archivos de plugin en lugares diferentes ##
+
+Joomla 1.7 ahora crea una estructura de jerarquía diferente para los plugins El cambio ha sido que ahora los plugins se encuentran en un subdirectorio adicional.
+
+  * oomla 1.5 example location
+
+JPATH\_SITE . DS . 'plugins' . DS . 'authentication' . DS . 'example.php';
+
+**Joomla 1.6 example locatio\*n**
+
+JPATH\_SITE . DS . 'plugins' . DS . 'authentication' . DS . 'example'. DS . 'example.php';
+
+## Eventos renombrados ##
+
+Un gran número de eventos de Joomla 1.5 han cambiado de nombre. Aquí está la lista de eventos de cambiar el nombre.
+
+onContentAfterSave
+onContentAfterTitle
+onContentAfterDisplay
+onContentBeforeDisplay
+onContentBeforeSave
+onContentSearch
+onContentSearchAreas
+onUserAuthenticate
+onUserAfterDelete
+onUserAfterSave
+onUserBeforeDelete
+onUserBeforeSave
+onUserLogin
+onUserLogout
+
+En Joomla 1.7 se llaman:
+
+onLoginUser
+onLogoutUser
+onAfterDeleteUser
+onBeforeStoreUser
+onUserAfterSave
+onAfterStoreUser
+
+etc..
+
+## Cambios en las llamadas JavaScript ##
+
+joomla 1.5
+
+function submitbutton(pressbutton) {}
+
+
+joomla 1.7
+
+Joomla.submitbutton = function(pressbutton) {}
+
+
+
+
+### **Estructura de directorio Joomla 1.7** ###
+
+Folder		./
+
+Folder		administrator/
+
+Folder		cache/
+
+Folder		cli/
+
+Folder		components/
+
+Folder		images/
+
+Folder		includes/
+
+Folder		installation/
+
+Folder		language/
+
+Folder		libraries/
+
+Folder		logs/
+
+Folder		media/
+
+Folder		modules/
+
+Folder		plugins/
+
+Folder		templates/
+
+Folder		tmp/
+
+File		LICENSE.txt
+
+File		README.txt
+
+File		htaccess.txt
+
+File		index.php
+
+File		joomla.xml
+
+File		robots.txt
+
+File		web.config.txt
+
+
+**Estructura de directorio Template Joomla 1.7**
+
+Folder		css/
+
+Folder		fonts/
+
+Folder		html/
+
+Folder		images/
+
+Folder		javascript/
+
+Folder		language/
+
+File		component.php
+
+File		error.php
+
+File		index.html
+
+File		index.php
+
+File		templateDetails.xml
+
+**Estructura de directorio Componente Joomla 1.7**
+
+File		helloworld.xml
+
+File		script.php
+
+Folder		site/index.html
+
+Folder		site/helloworld.php
+
+Folder		site/controller.php
+
+Folder		site/views/index.html
+
+Folder		site/views/helloworld/index.html
+
+Folder		site/views/helloworld/view.html.php
+
+Folder		site/views/helloworld/tmpl/index.html
+
+Folder		site/views/helloworld/tmpl/default.php
+
+Folder		site/views/helloworld/tmpl/default.xml
+
+Folder		site/models/index.html
+
+Folder		site/models/helloworld.php
+
+Folder		site/language/index.html
+
+Folder		site/language/en-GB/index.html
+
+Folder		site/language/en-GB/en-GB.com\_helloworld.ini
+
+Folder		admin/index.html
+
+Folder		admin/helloworld.php
+
+Folder		admin/controller.php
+
+Folder		admin/config.xml
+
+Folder		admin/helpers/index.html
+
+Folder		admin/helpers/helloworld.php
+
+Folder		admin/controllers/index.html
+
+Folder		admin/controllers/helloworld.php
+
+Folder		admin/controllers/helloworlds.php
+
+Folder		admin/models/index.html
+
+Folder		admin/models/helloworld.php
+
+Folder		admin/models/helloworlds.php
+
+Folder		admin/models/fields/index.html
+
+Folder		admin/models/fields/helloworld.php
+
+Folder		admin/models/forms/index.html
+
+Folder		admin/models/forms/helloworld.xml
+
+Folder		admin/models/rules/index.html
+
+Folder		admin/models/rules/greeting.php
+
+Folder		admin/models/helloworld.php
+
+Folder		admin/views/index.html
+
+Folder		admin/views/helloworld/index.html
+
+Folder		admin/views/helloworld/view.html.php
+
+Folder		admin/views/helloworld/tmpl/index.html
+
+Folder		admin/views/helloworld/tmpl/edit.php
+
+Folder		admin/views/helloworlds/index.html
+
+Folder		admin/views/helloworlds/view.html.php
+
+Folder		admin/views/helloworlds/tmpl/index.html
+
+Folder		admin/views/helloworlds/tmpl/default.php
+
+Folder		admin/views/helloworlds/tmpl/default\_head.php
+
+Folder		admin/views/helloworlds/tmpl/default\_body.php
+
+Folder		admin/views/helloworlds/tmpl/default\_foot.php
+
+Folder		admin/tables/index.html
+
+Folder		admin/tables/helloworld.php
+
+Folder		admin/sql/index.html
+
+Folder		admin/sql/install.mysql.utf8.sql
+
+Folder		admin/sql/uninstall.mysql.utf8.sql
+
+Folder		admin/language/index.html
+
+Folder		admin/language/en-GB/index.html
+
+Folder		admin/language/en-GB/en-GB.com\_helloworld.ini
+
+Folder		admin/language/en-GB/en-GB.com\_helloworld.sys.ini
+
+Folder		media/index.html
+
+Folder		media/images/index.html
+
+Folder		media/images/tux-16x16.png
+
+Folder		media/images/tux-48x48.png
+
+Folder		media/js/index.html
+
+Folder		media/js/helloworld.js }}}
